@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using Microsoft.Extensions.Logging;
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX
 #else
@@ -23,13 +24,13 @@ namespace HelixToolkit.UWP
     namespace Model.Scene2D
     {
         using Core2D;
-
-
+        using Utilities;
         /// <summary>
         ///
         /// </summary>
         public abstract partial class SceneNode2D : DisposeObject, IHitable2D
         {
+            static readonly ILogger logger = Logger.LogManager.Create<SceneNode2D>();
             public sealed class UpdateEventArgs : EventArgs
             {
                 public RenderContext2D Context
@@ -51,6 +52,7 @@ namespace HelixToolkit.UWP
             /// </value>
             public Guid GUID { get; } = Guid.NewGuid();
 
+            private readonly WeakReference<SceneNode2D> parent = new WeakReference<SceneNode2D>(null);
             /// <summary>
             /// Gets or sets the parent.
             /// </summary>
@@ -59,7 +61,19 @@ namespace HelixToolkit.UWP
             /// </value>
             public SceneNode2D Parent
             {
-                set; get;
+                set
+                {
+                    parent.TryGetTarget(out var target);
+                    if (Set(ref target, value))
+                    {
+                        parent.SetTarget(value);
+                    }
+                }
+                get 
+                { 
+                    parent.TryGetTarget(out var target); 
+                    return target; 
+                }
             }
 
             private Visibility visibility = Visibility.Visible;
@@ -175,14 +189,14 @@ namespace HelixToolkit.UWP
             /// <value>
             /// The items.
             /// </value>
-            internal ObservableCollection<SceneNode2D> ItemsInternal { set; get; } = Constants.EmptyRenderable2D;
+            internal ObservableFastList<SceneNode2D> ItemsInternal { set; get; } = Constants.EmptyRenderable2D;
             /// <summary>
             /// Gets the items as readonly. Expose for outside for UI access or bindings
             /// </summary>
             /// <value>
             /// The items.
             /// </value>
-            public ReadOnlyObservableCollection<SceneNode2D> Items { internal set; get; } = Constants.EmptyReadOnlyRenderable2DArray;
+            public ReadOnlyObservableFastList<SceneNode2D> Items { internal set; get; } = Constants.EmptyReadOnlyRenderable2DArray;
 
             private Matrix3x2 modelMatrix = Matrix3x2.Identity;
 
@@ -491,7 +505,10 @@ namespace HelixToolkit.UWP
                     if (IsVisualDirty)
                     {
 #if DEBUGDRAWING
-                        Debug.WriteLine("Redraw bitmap cache");
+                        if (logger.IsEnabled(LogLevel.Debug))
+                        {
+                            logger.LogDebug("Redraw bitmap cache");
+                        }
 #endif
                         context.PushRenderTarget(bitmapCache, true);
                         context.DeviceContext.Transform = Matrix3x2.Identity;

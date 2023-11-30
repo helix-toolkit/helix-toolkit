@@ -500,7 +500,6 @@ namespace HelixToolkit.UWP
         /// </returns>
         private static IList<double> Split(string input)
         {
-            input = input.Trim();
             var fields = input.SplitOnWhitespace();
             var result = new double[fields.Length];
             for (var i = 0; i < fields.Length; i++)

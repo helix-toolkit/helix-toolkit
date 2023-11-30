@@ -18,7 +18,6 @@ namespace HelixToolkit.UWP
 {
     namespace ShaderManager
     {
-        using Logger;
         using Shaders;
         using Utilities;
         /// <summary>
@@ -38,19 +37,16 @@ namespace HelixToolkit.UWP
             }
 
             private readonly Device device;
-            private readonly LogWrapper logger;
             /// <summary>
             /// Initializes a new instance of the <see cref="ShaderPool"/> class.
             /// </summary>
             /// <param name="device">The device.</param>
             /// <param name="cbPool">The cb pool.</param>
-            /// <param name="logger">The logger.</param>
-            public ShaderPool(Device device, IConstantBufferPool cbPool, LogWrapper logger)
+            public ShaderPool(Device device, IConstantBufferPool cbPool)
                 : base(false)
             {
                 ConstantBufferPool = cbPool;
                 this.device = device;
-                this.logger = logger;
             }
 
             protected override bool CanCreate(ref byte[] key, ref ShaderDescription argument)
@@ -61,7 +57,7 @@ namespace HelixToolkit.UWP
             protected override ShaderBase OnCreate(ref byte[] key, ref ShaderDescription description)
             {
                 return description.ByteCode == null ?
-                    Constants.GetNullShader(description.ShaderType) : description.CreateShader(device, ConstantBufferPool, logger);
+                    Constants.GetNullShader(description.ShaderType) : description.CreateShader(device, ConstantBufferPool);
             }
         }
         /// <summary>
@@ -70,17 +66,14 @@ namespace HelixToolkit.UWP
         public sealed class LayoutPool : ReferenceCountedDictionaryPool<byte[], InputLayoutProxy, InputLayoutDescription>
         {
             private readonly Device device;
-            private readonly LogWrapper logger;
             /// <summary>
             /// Initializes a new instance of the <see cref="LayoutPool"/> class.
             /// </summary>
             /// <param name="device">The device.</param>
-            /// <param name="logger"></param>
-            public LayoutPool(Device device, LogWrapper logger)
+            public LayoutPool(Device device)
                 : base(false)
             {
                 this.device = device;
-                this.logger = logger;
             }
 
             protected override bool CanCreate(ref byte[] key, ref InputLayoutDescription argument)
@@ -105,16 +98,15 @@ namespace HelixToolkit.UWP
             /// </summary>
             /// <param name="device">The device.</param>
             /// <param name="cbPool">The cb pool.</param>
-            /// <param name="logger"></param>
-            public ShaderPoolManager(Device device, IConstantBufferPool cbPool, LogWrapper logger)
+            public ShaderPoolManager(Device device, IConstantBufferPool cbPool)
             {
-                shaderPools[Constants.VertexIdx] = new ShaderPool(device, cbPool, logger);
-                shaderPools[Constants.DomainIdx] = new ShaderPool(device, cbPool, logger);
-                shaderPools[Constants.HullIdx] = new ShaderPool(device, cbPool, logger);
-                shaderPools[Constants.GeometryIdx] = new ShaderPool(device, cbPool, logger);
-                shaderPools[Constants.PixelIdx] = new ShaderPool(device, cbPool, logger);
-                shaderPools[Constants.ComputeIdx] = new ShaderPool(device, cbPool, logger);
-                layoutPool = new LayoutPool(device, logger);
+                shaderPools[Constants.VertexIdx] = new ShaderPool(device, cbPool);
+                shaderPools[Constants.DomainIdx] = new ShaderPool(device, cbPool);
+                shaderPools[Constants.HullIdx] = new ShaderPool(device, cbPool);
+                shaderPools[Constants.GeometryIdx] = new ShaderPool(device, cbPool);
+                shaderPools[Constants.PixelIdx] = new ShaderPool(device, cbPool);
+                shaderPools[Constants.ComputeIdx] = new ShaderPool(device, cbPool);
+                layoutPool = new LayoutPool(device);
             }
             /// <summary>
             /// Registers the shader.

@@ -1,8 +1,81 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
-## Next Release
+## [2.24.0] 2023-05-09
+
+### Added
+1. Adding IncreaseSwapchainFPS property for sharpdx wpf viewport for disable/enable FPS increasing feature. (WPF.SharpDX/UWP/WinUI)
+1. Adds additional 2D offset property for billboards. (WPF.SharpDX/UWP/WinUI)
+
+### Improvement
+1. Simplify topology setting in device context. (WPF.SharpDX/UWP/WinUI)
+1. Adds dedicated thread for processing non-rendering related tasks in DefaultRenderHost. (WPF.SharpDX/UWP/WinUI)
+1. Make the guid setter of ShaderResourceViewProxy public. (WPF.SharpDX/UWP/WinUI)
+1. Imporve GC by remvoing static reference to NullSceneNode in SceneNode. (WPF.SharpDX/UWP/WinUI)
+1. Improve node animation to avoid accumulated time dependency. (WPF.SharpDX/UWP/WinUI)
+
+### Breaking Change
+1. Change animation updater to absolute timestamp based. (WPF.SharpDX/UWP/WinUI)
+
+### Fixed
+1. Fixed HelixToolkit.WinUI package severe memory leak. (WinUI)
+1. Fixed bounding sphere is not properly transformed with non-uniform scaling matrix. (WPF.SharpDX/UWP/WinUI)
+1. Fixed the difference size of ZoomExtends of Viewport3DX between different cameras. (WPF.SharpDX/UWP/WinUI)
+1. Fix memory leak by disposing entire tree if top node is being disposed. (WPF.SharpDX/UWP/WinUI)
+1. Fix missing edge clicking, incorrect model updirection in ViewCubeVisual3d (WPF)
+
+## [2.23.0] 2022-11-28
+
+### Added
+1. Add feature of enabling rotation/translation/scale control in every axis for TransformManipulator3D (WPF.SharpDX/UWP/WinUI)
+1. Decouple `HelixToolkit.Wpf` and `HelixToolkit.Core.Wpf` packages from `HelixToolkit` core library. `HelixToolkit` package will no longer be a dependency for both `HelixToolkit.Wpf` and `HelixToolkit.Core.Wpf`. (WPF)
+
+### Improvement
+1. Automatic invert up direction for rotation mode = turntable (WPF.SharpDX/UWP/Core/WinUI)
+1. Improve swapchain framerate under SharpDX.WPF (WPF.SharpDX)
+1. Adds function to invalidate bone matrices/morph target weights manually (WPF.SharpDX/UWP/Core/WinUI)
+
+### Fixed
+1. Fix models are not rendered by adding them directly into viewport3DX.Items. (WPF.SharpDX)
+1. Correct y axis color typo (WPF.SharpDX/UWP/Core/WinUI)
+1. Fix potential null ref exception in HelixToolkit.WinUI. (WinUI)
+1. Fix null reference exception in GeometryRenderCore.OnAttachBuffers(). (WPF.SharpDX/UWP/Core/WinUI)
+1. Fix shadow map light camera property update does not trigger re-rendering. (WPF.SharpDX/UWP/Core/WinUI)
+
+## [2.22.0] 2022-08-29
+
+### Improvement
+1. Change `SceneNode.Attach` to accept `IEffectsManager` instead of `IRenderHost`. This change will allow scene graph to be built and pre-attached in separate thread (all graphics resources are created during attaching). UI thread is still required to add generated sub graph back to the main graph which is associated with the Viewport. Example can be found [here](https://github.com/helix-toolkit/helix-toolkit/blob/15a36dd8a33c7d1fccd07a8dc5ca60523c86fdf2/Source/Examples/WPF.SharpDX/FileLoadDemo/MainViewModel.cs#L266). (WPF.SharpDX/UWP/Core/WinUI)
+1. Re-implement logging to use [Microsoft.Extensions.Logging.Abstractions](https://docs.microsoft.com/en-us/dotnet/api/microsoft.extensions.logging.abstractions?view=dotnet-plat-ext-6.0) logging interface. To override the internal debug logger, set `HelixToolkit.Logger.LogManager.Factory` on app start up to provide your own logging implementation.
+1. Due to logging change, minimum dot net version has been changed for all Helixtoolkit libraries.
+   ```diff
+   + .Net Framework 4.6.2 
+   - .Net Framework 4.5
+   + netstandard 2.0
+   - netstandard 1.3
+   ```
+### Fixed
+1. Fix intersecting hit test in CrossSectionMeshGeometryModel3D. (WPF.SharpDX/UWP/Core/WinUI)
+1. Fix depth peeling not working after Viewport resizing. (WPF.SharpDX/UWP/Core/WinUI)
+1. Fix missing depth peeling shader passes for batched mesh. (WPF.SharpDX/UWP/Core/WinUI)
+
+## [2.21.1] - 2022-06-16
+
+### Improvement
+1. Allow environment map to skip rendering but still available for other object to do reflection. (WPF.SharpDX/UWP/Core/WinUI)
+1. Remove unnecessary scene graph re-creation during loading/unloading. (UWP/WinUI)
+1. Update WinUI AppSDK to 1.1.1. (WinUI)
+
+### Fixed
+1. Fix MSAA enable causes incorrect rendering on screenspaced objects. (WPF.SharpDX/UWP/Core/WinUI)
+1. Fix binding erorr: Converter failed to convert value of type of Element3D. (UWP/WinUI)
+1. Fix missing TeapotGeometry in Helixtoolkit.Core.Wpf. (Core.Wpf)
+1. Fix custom viewcube texture not working. (WPF.SharpDX/UWP/Core/WinUI)
+
+## [2.21.0] - 2022-05-28
 We did some major code refactoring and changes in this release.
+### New
+1. Support Depth peeling based order independent transparency rendering. (WPF.SharpDX/UWP/Core)
 
 ### Improvement
 1. Improved constant buffer array management in `MaterialVariable` and `ConstantBufferComponent`. Use single array to hold all structs used by material with same size.(WPF.SharpDX/UWP/Core)
@@ -11,6 +84,21 @@ We did some major code refactoring and changes in this release.
 1. Upgraded the Dot Net minimum requirements from **4.5** to **4.6** on `HelixToolkit.SharpDX.Wpf`. (WPF.SharpDX)
 1. Upgraded net standard from **1.1** to **1.3** on `Helixtoolkit.SharpDX.Core`. (Core)
 1. Improved resource pool implementation. (WPF.SharpDX/UWP/Core)
+1. Relax manipulator binding target type to Elements instead of GeometryModel3D (WPF.SharpDX)
+
+### Fixed
+1. Fix bone skin rendering crash. (WPF.SharpDX/UWP/Core)
+1. Update HelixToolkit.WinUI to support Windows App SDK 1.0 (WinUI)
+
+## [2.20.2] - 2022-02-01
+### Fixed
+1. Fix viewcube edge hit test is not working properly. #1702 (WPF.SharpDX/UWP/Core)
+1. Fix environment map getting black area under certain conditions when using orthographic camera. (WPF.SharpDX/UWP/Core)
+1. Fix null pointer exception if effects manager is not being set on viewport3DX. (WPF.SharpDX/UWP/Core)
+
+## [2.20.1] - 2022-01-19
+### Fixed
+1. Fixed stl reader failed to read any ASCii files on Dot net 5. (WPF)
 
 ## [2.20.0] - 2021-10-31
 ### Added

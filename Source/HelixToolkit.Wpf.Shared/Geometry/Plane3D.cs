@@ -3,7 +3,7 @@
 //   Copyright (c) 2014 Helix Toolkit contributors
 // </copyright>
 // <summary>
-//   Represents a plane.
+//   Represents a plane in three-dimensional space.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -12,7 +12,7 @@ namespace HelixToolkit.Wpf
     using System.Windows.Media.Media3D;
 
     /// <summary>
-    /// Represents a plane.
+    /// Represents a plane in three-dimensional space.
     /// </summary>
     public class Plane3D
     {
@@ -38,16 +38,16 @@ namespace HelixToolkit.Wpf
         /// <summary>
         /// Initializes a new instance of the <see cref="Plane3D"/> class.
         /// </summary>
-        /// <param name="p0">
-        /// The p0.
+        /// <param name="position">
+        /// The position.
         /// </param>
-        /// <param name="n">
-        /// The n.
+        /// <param name="normal">
+        /// The normal.
         /// </param>
-        public Plane3D(Point3D p0, Vector3D n)
+        public Plane3D(Point3D position, Vector3D normal)
         {
-            this.Position = p0;
-            this.Normal = n;
+            this.Position = position;
+            this.Normal = normal;
         }
 
         /// <summary>
@@ -58,12 +58,12 @@ namespace HelixToolkit.Wpf
         {
             get
             {
-                return this.normal;
+                return normal;
             }
 
             set
             {
-                this.normal = value;
+                normal = value;
             }
         }
 
@@ -75,12 +75,12 @@ namespace HelixToolkit.Wpf
         {
             get
             {
-                return this.position;
+                return position;
             }
 
             set
             {
-                this.position = value;
+                position = value;
             }
         }
 
@@ -100,8 +100,8 @@ namespace HelixToolkit.Wpf
         {
             // http://en.wikipedia.org/wiki/Line-plane_intersection
             var l = lb - la;
-            double a = Vector3D.DotProduct(this.position - la, this.normal);
-            double b = Vector3D.DotProduct(l, this.normal);
+            double a = Vector3D.DotProduct(position - la, normal);
+            double b = Vector3D.DotProduct(l, normal);
             if (a.Equals(0) && b.Equals(0))
             {
                 return null;
@@ -113,6 +113,45 @@ namespace HelixToolkit.Wpf
             }
 
             return la + ((a / b) * l);
+        }
+
+        /// <summary>
+        /// Calculates the distance from a point to a plane.
+        /// </summary>
+        /// <param name="point">The point used to calculate distance</param>
+        /// <returns>
+        /// The distance from given point to the given plane<br/>
+        /// Equal zero: Point on the plane<br/>
+        /// Greater than zero: The point is on the same side of the plane's normal vector<br/>
+        /// Less than zero: The point is on the opposite side of the plane's normal vector<br/>
+        /// </returns>
+        public double DistanceTo(Point3D point)
+        {
+            return point.DistanceToPlane(position, normal);
+        }
+
+        /// <summary>
+        /// Calculates the projection of a point onto a plane.
+        /// </summary>
+        /// <param name="point">The point used to calculate projection</param>
+        /// <returns>
+        /// The projection of a given point on a given plane.
+        /// </returns>
+        public Point3D Project(Point3D point)
+        {
+            return point.ProjectOnPlane(position, normal);
+        }
+
+        /// <summary>
+        /// Check whether a plane intersects with a given <see cref="Rect3D"/> box.
+        /// </summary>
+        /// <param name="rect">The Rect3D bounding box</param>
+        /// <returns>
+        /// Whether the two objects intersected.
+        /// </returns>
+        public PlaneIntersectionType Intersects(Rect3D rect)
+        {
+            return rect.Intersects(position, normal);
         }
 
         // public void SetYZ(double x, int dir)

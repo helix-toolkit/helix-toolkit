@@ -3,12 +3,12 @@ The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
 using SharpDX;
+using SharpDX.Direct3D11;
 using System;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Runtime.CompilerServices;
 using System.Diagnostics;
-
+using Microsoft.Extensions.Logging;
 #if DX11_1
 using Device = SharpDX.Direct3D11.Device1;
 using DeviceContext = SharpDX.Direct3D11.DeviceContext1;
@@ -29,8 +29,8 @@ namespace HelixToolkit.UWP
     namespace Render
     {
         using Core;
-        using HelixToolkit.Logger;
-        using System.Collections.Concurrent;
+        using Logger;
+
 
 
         /// <summary>
@@ -38,14 +38,13 @@ namespace HelixToolkit.UWP
         /// </summary>
         public partial class DefaultRenderHost : DX11RenderHostBase
         {
-            private Task asyncTask;
-            private Task getTriangleCountTask;
-            private Task getPostEffectCoreTask;
-            private OrderablePartitioner<Tuple<int, int>> opaquePartitioner;
-            private OrderablePartitioner<Tuple<int, int>> transparentPartitioner;
+            static readonly ILogger logger = LogManager.Create<DefaultRenderHost>();
+            private AsyncActionWaitable asyncTask;
+            private AsyncActionWaitable getTriangleCountTask;
+            private AsyncActionWaitable getPostEffectCoreTask;
             private Action FrustumTestAction;
-
             private int numRendered = 0;
+            private readonly AsyncActionThread parallelThread = new AsyncActionThread();
             /// <summary>
             /// Initializes a new instance of the <see cref="DefaultRenderHost"/> class.
             /// </summary>
@@ -70,7 +69,7 @@ namespace HelixToolkit.UWP
             /// <returns></returns>
             protected override DX11RenderBufferProxyBase CreateRenderBuffer()
             {
-                Logger.Log(LogLevel.Information, "DX11Texture2DRenderBufferProxy", nameof(DefaultRenderHost));
+                logger.LogInformation("Creating DX11Texture2DRenderBufferProxy");
                 return new DX11Texture2DRenderBufferProxy(EffectsManager);
             }
 
@@ -83,16 +82,18 @@ namespace HelixToolkit.UWP
                 {
                     viewportRenderables.AddRange(Viewport.Renderables);
                     renderer.UpdateSceneGraph(RenderContext, viewportRenderables, perFrameFlattenedScene);
-#if DEBUG
-                    Debug.WriteLine("Flatten Scene Graph");
-#endif
+                    if (logger.IsEnabled(LogLevel.Trace))
+                    {
+                        logger.LogTrace("Flatten Scene Graph");
+                    }
                 }
                 var sceneCount = perFrameFlattenedScene.Count;
                 if (invalidatePerFrameRenderables)
                 {
-#if DEBUG
-                    Debug.WriteLine("Get PerFrameRenderables");
-#endif
+                    if (logger.IsEnabled(LogLevel.Trace))
+                    {
+                        logger.LogTrace("Get PerFrameRenderables");
+                    }
                     var isInScreenSpacedGroup = false;
                     var screenSpacedGroupDepth = int.MaxValue;
                     for (var i = 0; i < sceneCount;)
@@ -181,8 +182,6 @@ namespace HelixToolkit.UWP
                         }
                         particleNodes.Sort();
                     }
-                    opaquePartitioner = opaqueNodes.Count > 0 ? Partitioner.Create(0, opaqueNodes.Count, FrustumPartitionSize) : null;
-                    transparentPartitioner = transparentNodes.Count > 0 ? Partitioner.Create(0, transparentNodes.Count, FrustumPartitionSize) : null;
                     SetupFrustumTestFunctions();
                 }
                 else
@@ -221,13 +220,14 @@ namespace HelixToolkit.UWP
             protected override void PreRender(bool invalidateSceneGraph, bool invalidatePerFrameRenderables)
             {
                 base.PreRender(invalidateSceneGraph, invalidatePerFrameRenderables);
+                parallelThread.Enabled = EnableParallelProcessing;
 
                 SeparateRenderables(RenderContext, invalidateSceneGraph, invalidatePerFrameRenderables);
                 if (invalidateSceneGraph)
                 {
                     TriggerSceneGraphUpdated();
                 }
-                asyncTask = Task.Factory.StartNew(() =>
+                asyncTask = parallelThread.EnqueueAction(() =>
                 {
                     renderer?.UpdateNotRenderParallel(RenderContext, perFrameFlattenedScene);
                 });
@@ -238,7 +238,7 @@ namespace HelixToolkit.UWP
                 CollectPostEffectNodes();
                 if ((ShowRenderDetail & RenderDetail.TriangleInfo) == RenderDetail.TriangleInfo)
                 {
-                    getTriangleCountTask = Task.Factory.StartNew(() =>
+                    getTriangleCountTask = parallelThread.EnqueueAction(() =>
                     {
                         var count = 0;
                         foreach (var core in opaqueNodesInFrustum.Select(x => x.RenderCore))
@@ -269,7 +269,7 @@ namespace HelixToolkit.UWP
                 {
                     if (opaqueNodesInFrustum.Count + transparentNodesInFrustum.Count > 50)
                     {
-                        getPostEffectCoreTask = Task.Run(() =>
+                        getPostEffectCoreTask = parallelThread.EnqueueAction(() =>
                         {
                             for (var i = 0; i < opaqueNodesInFrustum.Count; ++i)
                             {
@@ -330,13 +330,19 @@ namespace HelixToolkit.UWP
                 {
                     needUpdateCores[i].Update(RenderContext, renderer.ImmediateContext);
                 }
+                numRendered += needUpdateCores.Count;
+                if (RenderBuffer.HasMSAA)
+                {
+                    numRendered += DoDepthPrepass();
+                    renderer.SetRenderTargets(ref renderParameter);
+                }
                 renderer.RenderPreProc(RenderContext, preProcNodes, ref renderParameter);
                 numRendered += renderer.RenderOpaque(RenderContext, opaqueNodesInFrustum, ref renderParameter, false);
                 numRendered += renderer.RenderOpaque(RenderContext, particleNodes, ref renderParameter, true);
                 numRendered += renderer.RenderTransparent(RenderContext, transparentNodesInFrustum, ref renderParameter);
 
                 getPostEffectCoreTask?.Wait();
-                getPostEffectCoreTask = null;
+                RemoveAndDispose(ref getPostEffectCoreTask);
                 if (RenderConfiguration.FXAALevel != FXAALevel.None
                     || postEffectNodes.Count > 0 || globalEffectNodes.Count > 0)
                 {
@@ -386,7 +392,7 @@ namespace HelixToolkit.UWP
                         {
                             ++start;
                         }
-                    }                       
+                    }
                 }
                 renderer.RenderToBackBuffer(RenderContext, ref renderParameter);
                 numRendered += preProcNodes.Count + postEffectNodes.Count + screenSpacedNodes.Count;
@@ -398,15 +404,28 @@ namespace HelixToolkit.UWP
                 }
             }
 
+            private int DoDepthPrepass()
+            {
+                renderer.ImmediateContext.ClearDepthStencilView(RenderBuffer.DepthStencilBufferNoMSAA,
+                    DepthStencilClearFlags.Depth | DepthStencilClearFlags.Stencil);
+                renderer.ImmediateContext.SetRenderTarget(RenderBuffer.DepthStencilBufferNoMSAA, null);
+                RenderContext.CustomPassName = DefaultPassNames.DepthPrepass;
+                for (var i = 0; i < PerFrameOpaqueNodesInFrustum.Count; ++i)
+                {
+                    PerFrameOpaqueNodesInFrustum[i].RenderDepth(RenderContext, renderer.ImmediateContext, null);
+                }
+                return PerFrameOpaqueNodesInFrustum.Count;
+            }
+
             /// <summary>
             /// <see cref="DX11RenderHostBase.PostRender"/>
             /// </summary>
             protected override void PostRender()
             {
                 asyncTask?.Wait();
-                asyncTask = null;
+                RemoveAndDispose(ref asyncTask);
                 getTriangleCountTask?.Wait();
-                getTriangleCountTask = null;
+                RemoveAndDispose(ref getTriangleCountTask);
             }
 
             /// <summary>
@@ -474,17 +493,37 @@ namespace HelixToolkit.UWP
                 }
             }
 
+            protected override void OnStartD3D()
+            {
+                base.OnStartD3D();
+#if !WINUI
+                parallelThread.Start();
+#endif
+            }
+
             /// <summary>
             /// Called when [ending d3 d].
             /// </summary>
             protected override void OnEndingD3D()
             {
-                Logger.Log(LogLevel.Information, "", nameof(DefaultRenderHost));
+                logger.LogInformation("On Ending D3D");
                 asyncTask?.Wait();
                 getTriangleCountTask?.Wait();
                 getPostEffectCoreTask?.Wait();
+                RemoveAndDispose(ref asyncTask);
+                RemoveAndDispose(ref getTriangleCountTask);
+                RemoveAndDispose(ref getPostEffectCoreTask);
+#if !WINUI
+                parallelThread.Stop();
+#endif
                 Clear(true, true);
                 base.OnEndingD3D();
+            }
+
+            protected override void OnDispose(bool disposeManagedResources)
+            {
+                parallelThread.Dispose();
+                base.OnDispose(disposeManagedResources);
             }
 
             #region FrustumTest
@@ -496,14 +535,7 @@ namespace HelixToolkit.UWP
                 }
                 else
                 {
-                    if (opaqueNodes.Count < FrustumPartitionSize && transparentNodes.Count < FrustumPartitionSize)
-                    {
-                        FrustumTestAction = FrustumTestDefault;
-                    }
-                    else
-                    {
-                        FrustumTestAction = FrustumTestParallel;
-                    }
+                    FrustumTestAction = FrustumTestDefault;
                 }
             }
 
@@ -530,45 +562,6 @@ namespace HelixToolkit.UWP
                     if (transparentNodes.Items[i].IsInFrustum)
                     {
                         transparentNodesInFrustum.Add(transparentNodes.Items[i]);
-                    }
-                }
-            }
-
-            private void FrustumTestParallel()
-            {
-                var frustum = renderContext.BoundingFrustum;
-                if (opaquePartitioner != null)
-                {
-                    Parallel.ForEach(opaquePartitioner, (range) =>
-                    {
-                        for (var i = range.Item1; i < range.Item2; ++i)
-                        {
-                            opaqueNodes.Items[i].IsInFrustum = opaqueNodes.Items[i].TestViewFrustum(ref frustum);
-                        }
-                    });
-                    for (var i = 0; i < opaqueNodes.Count; ++i)
-                    {
-                        if (opaqueNodes.Items[i].IsInFrustum)
-                        {
-                            opaqueNodesInFrustum.Add(opaqueNodes.Items[i]);
-                        }
-                    }
-                }
-                if (transparentPartitioner != null)
-                {
-                    Parallel.ForEach(transparentPartitioner, (range) =>
-                    {
-                        for (var i = range.Item1; i < range.Item2; ++i)
-                        {
-                            transparentNodes.Items[i].IsInFrustum = transparentNodes.Items[i].TestViewFrustum(ref frustum);
-                        }
-                    });
-                    for (var i = 0; i < transparentNodes.Count; ++i)
-                    {
-                        if (transparentNodes.Items[i].IsInFrustum)
-                        {
-                            transparentNodesInFrustum.Add(transparentNodes.Items[i]);
-                        }
                     }
                 }
             }

@@ -30,6 +30,11 @@ namespace BillboardDemo
         {
             get;
         }
+
+        public Geometry3D AxisLines { private set; get; }
+
+        public BillboardImage3D AxisLabels { private set; get; }
+
         public BillboardSingleText3D SelectedFlagBillboard
         {
             get;
@@ -143,6 +148,24 @@ namespace BillboardDemo
             LandmarkBillboards2 = new BillboardText3D(segoeFont, TextureModel.Create(@"Fonts\SegoeScript.dds"));
             AddLocations();
             AddBatchedText();
+            CreateCoordinateSystem();
+        }
+
+        private void CreateCoordinateSystem()
+        {
+            var linebuilder = new LineBuilder();
+            linebuilder.AddLine(Vector3.Zero, Vector3.UnitX * 6);
+            linebuilder.AddLine(Vector3.Zero, Vector3.UnitY * 6);
+            linebuilder.AddLine(Vector3.Zero, Vector3.UnitZ * 6);
+            AxisLines = linebuilder.ToLineGeometry3D();
+            AxisLines.Colors = new Color4Collection() { Color.Red, Color.Red, Color.Green, Color.Green, Color.Blue, Color.Blue };
+            var texts = new TextInfoExt[]
+            {
+                new TextInfoExt(){Text = "右", Origin = Vector3.UnitX * 8, Foreground = Color.Red, Size = 16, FontWeight = SharpDX.DirectWrite.FontWeight.SemiBold },
+                new TextInfoExt(){Text = "前", Origin= Vector3.UnitY * 8 , Foreground = Color.Green, Size = 16, FontWeight = SharpDX.DirectWrite.FontWeight.SemiBold},
+                new TextInfoExt(){Text = "上", Origin = Vector3.UnitZ * 8, Foreground = Color.Blue, Size = 16, FontWeight = SharpDX.DirectWrite.FontWeight.SemiBold }
+            };
+            AxisLabels = texts.ToBillboardImage3D(EffectsManager);
         }
 
         private void AddLocations()

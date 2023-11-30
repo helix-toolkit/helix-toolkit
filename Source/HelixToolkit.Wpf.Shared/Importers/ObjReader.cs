@@ -7,8 +7,6 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System.Xml;
-
 namespace HelixToolkit.Wpf
 {
     using System;
@@ -197,10 +195,8 @@ namespace HelixToolkit.Wpf
         public override Model3DGroup Read(string path)
         {
             this.TexturePath = Path.GetDirectoryName(path);
-            using (var s = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read))
-            {
-                return this.Read(s);
-            }
+            using var s = GetResourceStream(path);
+            return this.Read(s);
         }
 
         /// <summary>
@@ -223,10 +219,10 @@ namespace HelixToolkit.Wpf
                     }
 
                     line = line.Trim();
-                    while (line.EndsWith("\\")) 
+                    while (line.EndsWith("\\"))
                     {
                         var nextLine = this.Reader.ReadLine();
-                        while (nextLine.Length == 0) 
+                        while (nextLine.Length == 0)
                         {
                             nextLine = this.Reader.ReadLine();
                         }
@@ -342,11 +338,9 @@ namespace HelixToolkit.Wpf
         public Model3DGroup ReadZ(string path)
         {
             this.TexturePath = Path.GetDirectoryName(path);
-            using (var s = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read))
-            {
-                var deflateStream = new GZipStream(s, CompressionMode.Decompress, true);
-                return this.Read(deflateStream);
-            }
+            using var s = GetResourceStream(path);
+            using var deflateStream = new GZipStream(s, CompressionMode.Decompress, true);
+            return this.Read(deflateStream);
         }
 
         /// <summary>
@@ -1211,7 +1205,13 @@ namespace HelixToolkit.Wpf
                     path = path.Substring(1);
                 }
 
-                return !string.IsNullOrWhiteSpace(basePath) ? Path.GetFullPath(Path.Combine(basePath, path)) : "";
+                if (string.IsNullOrWhiteSpace(basePath))
+                {
+                    // If base path is non-existent, trying to set it to absolute path of the current folder.
+                    basePath = AppDomain.CurrentDomain.BaseDirectory;
+                }
+
+                return !string.IsNullOrWhiteSpace(basePath) ? Path.GetFullPath(Path.Combine(basePath, path)) : string.Empty;
             }
         }
     }

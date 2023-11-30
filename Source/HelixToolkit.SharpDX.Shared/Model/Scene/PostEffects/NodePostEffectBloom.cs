@@ -160,13 +160,13 @@ namespace HelixToolkit.UWP
             /// Override this function to set render technique during Attach Host.
             /// <para>If <see cref="SceneNode.OnSetRenderTechnique" /> is set, then <see cref="SceneNode.OnSetRenderTechnique" /> instead of <see cref="SceneNode.OnCreateRenderTechnique" /> function will be called.</para>
             /// </summary>
-            /// <param name="host"></param>
+            /// <param name="effectsManager"></param>
             /// <returns>
             /// Return RenderTechnique
             /// </returns>
-            protected override IRenderTechnique OnCreateRenderTechnique(IRenderHost host)
+            protected override IRenderTechnique OnCreateRenderTechnique(IEffectsManager effectsManager)
             {
-                return host.EffectsManager[DefaultRenderTechniqueNames.PostEffectBloom];
+                return effectsManager[DefaultRenderTechniqueNames.PostEffectBloom];
             }
 
             public sealed override bool HitTest(HitTestContext context, ref List<HitTestResult> hits)

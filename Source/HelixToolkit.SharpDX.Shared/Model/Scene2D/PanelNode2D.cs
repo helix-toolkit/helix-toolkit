@@ -6,7 +6,6 @@ Copyright (c) 2018 Helix Toolkit contributors
 using SharpDX;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 
 #if !NETFX_CORE
@@ -21,14 +20,16 @@ namespace HelixToolkit.UWP
 {
     namespace Model.Scene2D
     {
+        using Utilities;
+
         public class PanelNode2D : SceneNode2D
         {
             protected readonly Dictionary<Guid, SceneNode2D> itemHashSet = new Dictionary<Guid, SceneNode2D>();
 
             public PanelNode2D()
             {
-                ItemsInternal = new ObservableCollection<SceneNode2D>();
-                Items = new ReadOnlyObservableCollection<SceneNode2D>(ItemsInternal);
+                ItemsInternal = new ObservableFastList<SceneNode2D>();
+                Items = new ReadOnlyObservableFastList<SceneNode2D>(ItemsInternal);
             }
 
             public virtual bool AddChildNode(SceneNode2D node)
@@ -55,10 +56,10 @@ namespace HelixToolkit.UWP
             /// </summary>
             public virtual void Clear()
             {
-                for (var i = 0; i < Items.Count; ++i)
+                for (var i = 0; i < ItemsInternal.Count; ++i)
                 {
-                    Items[i].Detach();
-                    Items[i].Parent = null;
+                    ItemsInternal[i].Detach();
+                    ItemsInternal[i].Parent = null;
                 }
                 itemHashSet.Clear();
                 ItemsInternal.Clear();
@@ -97,18 +98,18 @@ namespace HelixToolkit.UWP
 
             protected override bool OnAttach(IRenderHost host)
             {
-                for (var i = 0; i < Items.Count; ++i)
+                for (var i = 0; i < ItemsInternal.Count; ++i)
                 {
-                    Items[i].Attach(host);
+                    ItemsInternal[i].Attach(host);
                 }
                 return true;
             }
 
             protected override void OnDetach()
             {
-                for (var i = 0; i < Items.Count; ++i)
+                for (var i = 0; i < ItemsInternal.Count; ++i)
                 {
-                    Items[i].Detach();
+                    ItemsInternal[i].Detach();
                 }
                 base.OnDetach();
             }
@@ -120,7 +121,7 @@ namespace HelixToolkit.UWP
                 {
                     return false;
                 }
-                foreach (var item in Items.Reverse())
+                foreach (var item in ItemsInternal.Reverse())
                 {
                     if (item.HitTest(mousePoint, out hitResult))
                     {

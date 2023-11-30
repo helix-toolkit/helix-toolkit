@@ -14,6 +14,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Runtime.CompilerServices;
 using System.Collections.ObjectModel;
+using Microsoft.Extensions.Logging;
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX
 #else
@@ -24,7 +25,6 @@ namespace HelixToolkit.UWP
 #endif
 #endif
 {
-    using HelixToolkit.Logger;
     using Model;
     using HxAnimations = Animations;
     using HxScene = Model.Scene;
@@ -35,6 +35,7 @@ namespace HelixToolkit.UWP
         /// </summary>
         public partial class Importer : IDisposable
         {
+            static readonly ILogger logger = Logger.LogManager.Create<Importer>();
             private string path = "";
             public static readonly string[] SupportedTextureFormats = new string[]
             {
@@ -126,13 +127,6 @@ namespace HelixToolkit.UWP
             /// The error code.
             /// </value>
             public ErrorCode ErrorCode { protected set; get; }
-            /// <summary>
-            /// Gets the logger.
-            /// </summary>
-            /// <value>
-            /// The logger.
-            /// </value>
-            public ILogger Logger { get => configuration.Logger; }
             #endregion
 
             private int MaterialIndexForNoName = 0;
@@ -234,7 +228,7 @@ namespace HelixToolkit.UWP
                 }
                 catch (Exception ex)
                 {
-                    Log(LogLevel.Error, ex.Message);
+                    logger.LogError(ex.Message);
                     ErrorCode = ErrorCode.Failed;
                     AssimpExceptionOccurred?.Invoke(this, ex);
                     return ErrorCode;
@@ -304,7 +298,7 @@ namespace HelixToolkit.UWP
                 }
                 catch (Exception ex)
                 {
-                    Log(LogLevel.Error, ex.Message);
+                    logger.LogError(ex.Message);
                     ErrorCode = ErrorCode.Failed;
                     AssimpExceptionOccurred?.Invoke(this, ex);
                     return ErrorCode;
@@ -487,19 +481,6 @@ namespace HelixToolkit.UWP
                 }
                 return group;
             }
-            /// <summary>
-            /// Logs the specified level.
-            /// </summary>
-            /// <typeparam name="Type">The type of the ype.</typeparam>
-            /// <param name="level">The level.</param>
-            /// <param name="msg">The MSG.</param>
-            /// <param name="caller">The caller.</param>
-            /// <param name="sourceLineNumber">The source line number.</param>
-            protected void Log<Type>(LogLevel level, Type msg, [CallerMemberName]string caller = "", [CallerLineNumber] int sourceLineNumber = 0)
-            {
-                Logger.Log(level, msg, nameof(EffectsManager), caller, sourceLineNumber);
-            }
-
 
             #endregion
 

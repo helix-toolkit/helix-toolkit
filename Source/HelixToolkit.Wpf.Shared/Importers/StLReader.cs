@@ -469,8 +469,7 @@ namespace HelixToolkit.Wpf
                 }
 
                 line = line.Trim();
-                if (line.Length == 0 || line.StartsWith("\0") || line.StartsWith("#") || line.StartsWith("!")
-                    || line.StartsWith("$"))
+                if (line.Length == 0 || line[0] == '\0' || line[0] == '#' || line[0] == '!' || line[0] == '$')
                 {
                     continue;
                 }

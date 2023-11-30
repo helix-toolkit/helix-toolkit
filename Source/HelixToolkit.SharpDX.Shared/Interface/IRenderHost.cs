@@ -39,16 +39,6 @@ namespace HelixToolkit.UWP
     public interface IRenderHost : IGUID, IDisposable
     {
         /// <summary>
-        /// Gets the logger.
-        /// </summary>
-        /// <value>
-        /// The logger.
-        /// </value>
-        LogWrapper Logger
-        {
-            get;
-        }
-        /// <summary>
         /// Fired whenever an exception occurred on this object.
         /// </summary>
         event EventHandler<RelayExceptionEventArgs> ExceptionOccurred;
@@ -406,7 +396,7 @@ namespace HelixToolkit.UWP
         /// <summary>
         /// Updates the and render.
         /// </summary>
-        void UpdateAndRender();
+        bool UpdateAndRender();
         /// <summary>
         /// Invalidates the render.
         /// </summary>
@@ -419,6 +409,11 @@ namespace HelixToolkit.UWP
         /// Invalidates the per frame renderables. Called when <see cref="SceneNode.IsRenderable"/> changed or <see cref="SceneNode.RenderType"/> changed.
         /// </summary>
         void InvalidatePerFrameRenderables();
+        /// <summary>
+        /// Invalidate by InvalidateTypes
+        /// </summary>
+        /// <param name="type"></param>
+        void Invalidate(InvalidateTypes type);
         /// <summary>
         /// Resizes
         /// </summary>
@@ -470,11 +465,19 @@ namespace HelixToolkit.UWP
         /// </summary>
         event EventHandler SceneGraphUpdated;
         /// <summary>
+        /// Occurs when effects manager is changed.
+        /// </summary>
+        event EventHandler<IEffectsManager> EffectsManagerChanged;
+        /// <summary>
         /// Clears the render target.
         /// </summary>
         /// <param name="context">The context.</param>
         /// <param name="clearBackBuffer">if set to <c>true</c> [clear back buffer].</param>
         /// <param name="clearDepthStencilBuffer">if set to <c>true</c> [clear depth stencil buffer].</param>
         void ClearRenderTarget(DeviceContextProxy context, bool clearBackBuffer, bool clearDepthStencilBuffer);
+        /// <summary>
+        /// Use separate thread to do non-rendering related tasks during render call.
+        /// </summary>
+        bool EnableParallelProcessing { set; get; }
     }
 }

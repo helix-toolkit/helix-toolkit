@@ -836,7 +836,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// The view cube texture. It must be a 6x1 (ex: 600x100) ratio image. You can also use BitmapExtension.CreateViewBoxBitmapSource to create
         /// </summary>
         public static readonly DependencyProperty ViewCubeTextureProperty = DependencyProperty.Register(
-                "ViewCubeTexture", typeof(System.IO.Stream), typeof(Viewport3DX), new PropertyMetadata(null));
+                "ViewCubeTexture", typeof(TextureModel), typeof(Viewport3DX), new PropertyMetadata());
 
         /// <summary>
         /// The view cube horizontal position property. Relative to viewport center.
@@ -1127,19 +1127,16 @@ namespace HelixToolkit.Wpf.SharpDX
             }));
 
         /// <summary>
-        /// Gets or sets a value indicating whether [enable order independent transparent rendering] for Transparent objects.
+        /// Gets or sets a value indicating for Transparent objects render mode.
         /// <see cref="MaterialGeometryModel3D.IsTransparent"/>, <see cref="BillboardTextModel3D.IsTransparent"/>
         /// </summary>
-        /// <value>
-        ///   <c>true</c> if [enable oit rendering]; otherwise, <c>false</c>.
-        /// </value>
-        public static readonly DependencyProperty EnableOITRenderingProperty =
-            DependencyProperty.Register("EnableOITRendering", typeof(bool), typeof(Viewport3DX), new PropertyMetadata(true, (d, e) =>
+        public static readonly DependencyProperty OITRenderModeProperty =
+            DependencyProperty.Register("OITRenderMode", typeof(OITRenderType), typeof(Viewport3DX), new PropertyMetadata(OITRenderType.DepthPeeling, (d, e) =>
             {
                 var viewport = d as Viewport3DX;
                 if (viewport.renderHostInternal != null)
                 {
-                    viewport.renderHostInternal.RenderConfiguration.EnableOITRendering = (bool)e.NewValue;
+                    viewport.renderHostInternal.RenderConfiguration.OITRenderType = (OITRenderType)e.NewValue;
                     viewport.InvalidateRender();
                 }
             }));
@@ -1189,7 +1186,16 @@ namespace HelixToolkit.Wpf.SharpDX
                 }
             }));
 
-
+        public static readonly DependencyProperty OITDepthPeelingIterationProperty =
+            DependencyProperty.Register("OITDepthPeelingIteration", typeof(int), typeof(Viewport3DX), new PropertyMetadata(4, (d, e) => 
+            {
+                var viewport = d as Viewport3DX;
+                if (viewport.renderHostInternal != null)
+                {
+                    viewport.renderHostInternal.RenderConfiguration.OITDepthPeelingIteration = (int)e.NewValue;
+                    viewport.InvalidateRender();
+                }
+            }));
 
         /// <summary>
         /// The fxaa level property
@@ -1327,6 +1333,15 @@ namespace HelixToolkit.Wpf.SharpDX
                 if (viewport.hostPresenter != null && viewport.hostPresenter.Content is IRenderCanvas canvas)
                 {
                     canvas.EnableDpiScale = (bool)e.NewValue;
+                }
+            }));
+
+        public static readonly DependencyProperty IncreaseSwapchainFPSProperty =
+            DependencyProperty.Register("IncreaseSwapchainFPS", typeof(bool), typeof(Viewport3DX), new PropertyMetadata(true, (d, e) => {
+                var viewport = d as Viewport3DX;
+                if (viewport.hostPresenter != null && viewport.hostPresenter.Content is DPFSurfaceSwapChain surface)
+                {
+                    surface.IncreaseFPS = (bool)e.NewValue;
                 }
             }));
 
@@ -2706,11 +2721,11 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <value>
         /// The view cube texture.
         /// </value>
-        public System.IO.Stream ViewCubeTexture
+        public TextureModel ViewCubeTexture
         {
             get
             {
-                return (System.IO.Stream)this.GetValue(ViewCubeTextureProperty);
+                return (TextureModel)this.GetValue(ViewCubeTextureProperty);
             }
 
             set
@@ -3210,21 +3225,18 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether [enable order independent transparent rendering] for Transparent objects.
+        /// Gets or sets a value indicating the render mode for Transparent objects.
         /// <see cref="MaterialGeometryModel3D.IsTransparent"/>, <see cref="BillboardTextModel3D.IsTransparent"/>
         /// </summary>
-        /// <value>
-        ///   <c>true</c> if [enable oit rendering]; otherwise, <c>false</c>.
-        /// </value>
-        public bool EnableOITRendering
+        public OITRenderType OITRenderMode
         {
             get
             {
-                return (bool)GetValue(EnableOITRenderingProperty);
+                return (OITRenderType)GetValue(OITRenderModeProperty);
             }
             set
             {
-                SetValue(EnableOITRenderingProperty, value);
+                SetValue(OITRenderModeProperty, value);
             }
         }
 
@@ -3284,6 +3296,18 @@ namespace HelixToolkit.Wpf.SharpDX
             set
             {
                 SetValue(OITWeightModeProperty, value);
+            }
+        }
+
+        public int OITDepthPeelingIteration
+        {
+            get
+            {
+                return (int)GetValue(OITDepthPeelingIterationProperty);
+            }
+            set
+            {
+                SetValue(OITDepthPeelingIterationProperty, value);
             }
         }
 
@@ -3527,6 +3551,17 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 SetValue(EnableDpiScaleProperty, value);
             }
+        }
+
+        /// <summary>
+        /// Increase swapchain fps by speed up the wpf composition target frame rate.
+        /// This may negatively impact the performance on low end graphics card.
+        /// Default is enabled.
+        /// </summary>
+        public bool IncreaseSwapchainFPS
+        {
+            get { return (bool)GetValue(IncreaseSwapchainFPSProperty); }
+            set { SetValue(IncreaseSwapchainFPSProperty, value); }
         }
     }
 }

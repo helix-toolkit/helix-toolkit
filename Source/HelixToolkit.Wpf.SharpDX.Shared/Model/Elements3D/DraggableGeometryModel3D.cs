@@ -112,7 +112,6 @@ namespace HelixToolkit.Wpf.SharpDX
             if (this.isCaptured)
             {
                 var args = e as Mouse3DEventArgs;
-
                 // move dragmodel                         
                 var normal = this.camera.LookDirection;
 
@@ -120,7 +119,13 @@ namespace HelixToolkit.Wpf.SharpDX
                 var newHit = this.viewport.UnProjectOnPlane(args.Position, lastHitPos, normal);
                 if (newHit.HasValue)
                 {
-                    var offset = (newHit.Value - lastHitPos);
+                    var delta = (newHit.Value - lastHitPos);
+                    Vector3D offset = new Vector3D(
+                        DragX ? delta.X : 0,
+                        DragY ? delta.Y : 0,
+                        DragZ ? delta.Z : 0
+                        );
+
                     this.lastHitPos = newHit.Value;
                     if (Transform == null)
                     {

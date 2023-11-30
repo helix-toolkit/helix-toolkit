@@ -98,17 +98,9 @@ namespace HelixToolkit.UWP
                 };
             }
 
-            /// <summary>
-            /// Override this function to set render technique during Attach Host.
-            /// <para>If <see cref="SceneNode.OnSetRenderTechnique" /> is set, then <see cref="SceneNode.OnSetRenderTechnique" /> instead of <see cref="OnCreateRenderTechnique" /> function will be called.</para>
-            /// </summary>
-            /// <param name="host"></param>
-            /// <returns>
-            /// Return RenderTechnique
-            /// </returns>
-            protected override IRenderTechnique OnCreateRenderTechnique(IRenderHost host)
+            protected override IRenderTechnique OnCreateRenderTechnique(IEffectsManager effectsManager)
             {
-                return host.EffectsManager[DefaultRenderTechniqueNames.Points];
+                return effectsManager[DefaultRenderTechniqueNames.Points];
             }
 
             /// <summary>
@@ -120,7 +112,7 @@ namespace HelixToolkit.UWP
             {
                 if (base.CanRender(context))
                 {
-                    return !RenderHost.IsDeferredLighting;
+                    return !context.RenderHost.IsDeferredLighting;
                 }
                 else
                 {

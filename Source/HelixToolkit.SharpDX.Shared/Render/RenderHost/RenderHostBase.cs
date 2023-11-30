@@ -10,6 +10,7 @@ using System;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading;
+using Microsoft.Extensions.Logging;
 
 #if DX11_1
 using Device = SharpDX.Direct3D11.Device1;
@@ -29,19 +30,18 @@ namespace HelixToolkit.UWP
     {
         using Core2D;
         using Utilities;
-        using HelixToolkit.Logger;
+        using Logger;
         using Core;
         using Model.Scene;
-
 
         /// <summary>
         /// 
         /// </summary>
         public abstract class DX11RenderHostBase : DisposeObject, IRenderHost
         {
+            private static readonly ILogger logger = LogManager.Create<DX11RenderHostBase>();
             private const int MinWidth = 10;
             private const int MinHeight = 10;
-            private static readonly LogWrapper NullLogger = new LogWrapper(new NullLogger());
             #region Properties        
             /// <summary>
             /// Gets the unique identifier.
@@ -127,6 +127,7 @@ namespace HelixToolkit.UWP
                 }
             }
 
+            private bool isShadowMapEnabled = false;
             /// <summary>
             /// Gets or sets a value indicating whether shadow map enabled.
             /// </summary>
@@ -135,8 +136,16 @@ namespace HelixToolkit.UWP
             /// </value>
             public bool IsShadowMapEnabled
             {
-                set; get;
-            } = false;
+                set
+                {
+                    isShadowMapEnabled = value;
+                    InvalidateRender();
+                }
+                get
+                {
+                    return isShadowMapEnabled;
+                }
+            }
 
             private MSAALevel msaa = MSAALevel.Disable;
             /// <summary>
@@ -173,7 +182,7 @@ namespace HelixToolkit.UWP
                     {
                         return;
                     }
-                    Log(LogLevel.Information, $"Set Viewport, Initialized = {IsInitialized}");
+                    logger.LogInformation("Set Viewport, Initialized = {0}", IsInitialized);
                     DetachRenderable();
                     viewport = value;
                     if (IsInitialized)
@@ -228,7 +237,8 @@ namespace HelixToolkit.UWP
                     var currentManager = effectsManager;
                     if (Set(ref effectsManager, value))
                     {
-                        Log(LogLevel.Information, $"Set new EffectsManager;");
+                        EffectsManagerChanged?.Invoke(this, value);
+                        logger.LogInformation("Set new EffectsManager.");
                         if (currentManager != null)
                         {
                             currentManager.DisposingResources -= OnManagerDisposed;
@@ -261,20 +271,6 @@ namespace HelixToolkit.UWP
                 get
                 {
                     return effectsManager;
-                }
-            }
-
-            /// <summary>
-            /// Gets the logger.
-            /// </summary>
-            /// <value>
-            /// The logger.
-            /// </value>
-            public LogWrapper Logger
-            {
-                get
-                {
-                    return EffectsManager != null ? EffectsManager.Logger : NullLogger;
                 }
             }
 
@@ -599,8 +595,14 @@ namespace HelixToolkit.UWP
             public DX11RenderHostConfiguration RenderConfiguration
             {
                 set; get;
-            }
-                = new DX11RenderHostConfiguration() { UpdatePerFrameData = true, RenderD2D = true, RenderLights = true, ClearEachFrame = true, EnableOITRendering = true };
+            } = new DX11RenderHostConfiguration()
+            {
+                UpdatePerFrameData = true,
+                RenderD2D = true,
+                RenderLights = true,
+                ClearEachFrame = true,
+                OITRenderType = OITRenderType.DepthPeeling
+            };
             /// <summary>
             /// Gets the feature level.
             /// </summary>
@@ -608,6 +610,8 @@ namespace HelixToolkit.UWP
             /// The feature level.
             /// </value>
             public global::SharpDX.Direct3D.FeatureLevel FeatureLevel { get; private set; } = global::SharpDX.Direct3D.FeatureLevel.Level_11_0;
+
+            public bool EnableParallelProcessing { set; get; } = true;
             #endregion
             #endregion
 
@@ -638,6 +642,8 @@ namespace HelixToolkit.UWP
             public event EventHandler<BoolArgs> FrustumEnabledChanged;
 
             public event EventHandler SceneGraphUpdated;
+
+            public event EventHandler<IEffectsManager> EffectsManagerChanged;
             #endregion
 
             #region Private variables
@@ -664,16 +670,12 @@ namespace HelixToolkit.UWP
 
             private uint updateCounter = 0; // Used to render at least twice. D3DImage sometimes not getting refresh if only render once.
 
-            private volatile bool UpdateSceneGraphRequested = true;
+            private volatile bool updateSceneGraphRequested = true;
 
-            private volatile bool UpdatePerFrameRenderableRequested = true;
+            private volatile bool updatePerFrameRenderableRequested = true;
 
             private readonly object lockObj = new object();
 
-            protected SynchronizationContext SyncContext
-            {
-                get => SynchronizationContext.Current;
-            }
             #endregion
 
             /// <summary>
@@ -712,7 +714,7 @@ namespace HelixToolkit.UWP
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public void InvalidateSceneGraph()
             {
-                UpdateSceneGraphRequested = true;
+                updateSceneGraphRequested = true;
                 InvalidatePerFrameRenderables();
             }
             /// <summary>
@@ -721,8 +723,24 @@ namespace HelixToolkit.UWP
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public void InvalidatePerFrameRenderables()
             {
-                UpdatePerFrameRenderableRequested = true;
+                updatePerFrameRenderableRequested = true;
                 InvalidateRender();
+            }
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            public void Invalidate(InvalidateTypes type)
+            {
+                switch (type)
+                {
+                    case InvalidateTypes.SceneGraph:
+                        InvalidateSceneGraph();
+                        break;
+                    case InvalidateTypes.Render:
+                        InvalidateRender();
+                        break;
+                    case InvalidateTypes.PerFrameRenderables:
+                        InvalidatePerFrameRenderables();
+                        break;
+                }
             }
             /// <summary>
             /// Determines whether this instance can render.
@@ -738,7 +756,7 @@ namespace HelixToolkit.UWP
             /// <summary>
             /// Updates the and render.
             /// </summary>
-            public void UpdateAndRender()
+            public bool UpdateAndRender()
             {
                 if (CanRender())
                 {
@@ -766,14 +784,15 @@ namespace HelixToolkit.UWP
                         renderContext.SSAOEnabled = RenderConfiguration.EnableSSAO;
                         renderContext.SSAOBias = RenderConfiguration.SSAOBias;
                         renderContext.SSAOIntensity = RenderConfiguration.SSAOIntensity;
+                        RenderContext.OITDepthPeelingIteration = RenderConfiguration.OITDepthPeelingIteration;
                     }
                     renderBuffer.VSyncInterval = RenderConfiguration.EnableVSync ? 1 : 0;
-                    var updateSceneGraph = UpdateSceneGraphRequested;
-                    var updatePerFrameRenderable = UpdatePerFrameRenderableRequested;
-                    renderContext.UpdateSceneGraphRequested = UpdateSceneGraphRequested;
-                    renderContext.UpdatePerFrameRenderableRequested = UpdatePerFrameRenderableRequested;
-                    UpdateSceneGraphRequested = false;
-                    UpdatePerFrameRenderableRequested = false;
+                    var updateSceneGraph = updateSceneGraphRequested;
+                    var updatePerFrameRenderable = updatePerFrameRenderableRequested;
+                    renderContext.updateSceneGraphRequested = updateSceneGraphRequested;
+                    renderContext.updatePerFrameRenderableRequested = updatePerFrameRenderableRequested;
+                    updateSceneGraphRequested = false;
+                    updatePerFrameRenderableRequested = false;
                     PreRender(updateSceneGraph, updatePerFrameRenderable);
                     try
                     {
@@ -796,19 +815,19 @@ namespace HelixToolkit.UWP
                             || desc == global::SharpDX.DXGI.ResultCode.DeviceHung || desc == global::SharpDX.Direct2D1.ResultCode.RecreateTarget
                             || desc == global::SharpDX.DXGI.ResultCode.AccessLost)
                         {
-                            Log(LogLevel.Warning, $"Device Lost, code = {desc.Code}");
+                            logger.LogWarning("Device Lost, code = {0}", desc.Code);
                             RenderBuffer_OnDeviceLost(RenderBuffer, EventArgs.Empty);
                         }
                         else
                         {
-                            Log(LogLevel.Error, ex);
+                            logger.LogError("DirectX Error during rendering. Exception: {0}", ex);
                             EndD3D();
                             ExceptionOccurred?.Invoke(this, new RelayExceptionEventArgs(ex));
                         }
                     }
                     catch (Exception ex)
                     {
-                        Log(LogLevel.Error, ex);
+                        logger.LogError("Error during rendering. Exception: {0}", ex);
                         EndD3D();
                         ExceptionOccurred?.Invoke(this, new RelayExceptionEventArgs(ex));
                     }
@@ -820,7 +839,9 @@ namespace HelixToolkit.UWP
                     lastRenderingDuration = TimeSpan.FromSeconds((double)Stopwatch.GetTimestamp() / Stopwatch.Frequency) - t0;
                     RenderStatistics.LatencyStatistics.Push(lastRenderingDuration.TotalMilliseconds);
                     Rendered?.Invoke(this, EventArgs.Empty);
+                    return true;
                 }
+                return false;
             }
 
             /// <summary>
@@ -882,7 +903,7 @@ namespace HelixToolkit.UWP
             /// <param name="hotRestart">if set to <c>true</c> [hotRestart].</param>
             protected void Restart(bool hotRestart)
             {
-                Log(LogLevel.Information, $"Init = {IsInitialized}; HotRestart = {hotRestart};");
+                logger.LogInformation("Restart. IsInitialized = {0}; HotRestart = {1};", IsInitialized, hotRestart);
                 if (!IsInitialized)
                 {
                     return;
@@ -907,10 +928,10 @@ namespace HelixToolkit.UWP
             {
                 lock (lockObj)
                 {
-                    Log(LogLevel.Information, $"Width = {width}; Height = {height};");
+                    logger.LogInformation("Starting D3D. Width = {0}; Height = {1};", width, height);
                     if (IsInitialized)
                     {
-                        Log(LogLevel.Information, $"RenderHost already Initialized.");
+                        logger.LogInformation("RenderHost already Initialized.");
                         StartRendering();
                         return;
                     }
@@ -919,7 +940,7 @@ namespace HelixToolkit.UWP
                     isLoaded = true;
                     if (EffectsManager == null || EffectsManager.Device == null || EffectsManager.Device.IsDisposed)
                     {
-                        Log(LogLevel.Information, $"EffectsManager is not valid");
+                        logger.LogInformation("EffectsManager is not valid");
                         return;
                     }
 #if DX11_1
@@ -930,11 +951,17 @@ namespace HelixToolkit.UWP
                     RenderTechnique = EffectsManager[DefaultRenderTechniqueNames.Mesh];
                     CreateAndBindBuffers();
                     IsInitialized = true;
-                    Log(LogLevel.Information, $"Initialized.");
+                    logger.LogInformation("Initialized.");
                     AttachRenderable(EffectsManager);
+                    OnStartD3D();
                     StartRendering();
                 }
             }
+
+            protected virtual void OnStartD3D()
+            {
+            }
+
             /// <summary>
             /// Starts the rendering.
             /// </summary>
@@ -942,7 +969,7 @@ namespace HelixToolkit.UWP
             {
                 lock (lockObj)
                 {
-                    Log(LogLevel.Information, "");
+                    logger.LogInformation("Start rendering.");
                     renderStatistics.Reset();
                     lastRenderingDuration = TimeSpan.Zero;
                     lastRenderTime = TimeSpan.Zero;
@@ -955,7 +982,7 @@ namespace HelixToolkit.UWP
             /// </summary>
             protected void CreateAndBindBuffers()
             {
-                Log(LogLevel.Information, "");
+                logger.LogInformation("CreateAndBindBuffers");
                 RemoveAndDispose(ref renderBuffer);
                 renderBuffer = CreateRenderBuffer();
                 renderBuffer.OnNewBufferCreated += RenderBuffer_OnNewBufferCreated;
@@ -1014,7 +1041,7 @@ namespace HelixToolkit.UWP
                 {
                     return;
                 }
-                Log(LogLevel.Information, "");
+                logger.LogInformation("Attaching renderable.");
                 if (EnableSharingModelMode && SharedModelContainer != null)
                 {
                     SharedModelContainer.CurrentRenderHost = this;
@@ -1052,7 +1079,7 @@ namespace HelixToolkit.UWP
             {
                 lock (lockObj)
                 {
-                    Log(LogLevel.Information, "");
+                    logger.LogInformation("Ending D3D.");
                     StopRendering();
                     IsInitialized = false;
                     RemoveAndDispose(ref immediateDeviceContext);
@@ -1071,7 +1098,7 @@ namespace HelixToolkit.UWP
 
             private void OnManagerDisposed(object sender, EventArgs args)
             {
-                Log(LogLevel.Information, "");
+                logger.LogInformation("OnManagerDisposed.");
                 EndD3D();
             }
             /// <summary>
@@ -1079,7 +1106,7 @@ namespace HelixToolkit.UWP
             /// </summary>
             public virtual void StopRendering()
             {
-                Log(LogLevel.Information, "");
+                logger.LogInformation("Stop rendering");
                 StopRenderLoop?.Invoke(this, EventArgs.Empty);
             }
             /// <summary>
@@ -1087,7 +1114,7 @@ namespace HelixToolkit.UWP
             /// </summary>
             protected virtual void DisposeBuffers()
             {
-                Log(LogLevel.Information, "");
+                logger.LogInformation("Disposing buffers");
                 if (renderBuffer != null)
                 {
                     renderBuffer.OnNewBufferCreated -= RenderBuffer_OnNewBufferCreated;
@@ -1102,7 +1129,7 @@ namespace HelixToolkit.UWP
             /// </summary>
             protected virtual void DetachRenderable()
             {
-                Log(LogLevel.Information, "");
+                logger.LogInformation("Detaching renderable");
                 RemoveAndDispose(ref renderContext);
                 RemoveAndDispose(ref renderContext2D);
                 Viewport?.Detach();
@@ -1125,7 +1152,7 @@ namespace HelixToolkit.UWP
                 }
                 ActualWidth = Math.Max(2, width * DpiScale);
                 ActualHeight = Math.Max(2, height * DpiScale);
-                Log(LogLevel.Information, $"Width = {width}; Height = {height};");
+                logger.LogInformation("Resizing. Width = {0}; Height = {1};", width, height);
                 lock (lockObj)
                 {
                     if (IsInitialized)
@@ -1146,7 +1173,7 @@ namespace HelixToolkit.UWP
                                 overlay.InvalidateAll();
                             }
                         }
-                        SyncContext.Post((o) => { StartRendering(); }, null);
+                        StartRendering();
                     }
                 }
             }
@@ -1164,10 +1191,7 @@ namespace HelixToolkit.UWP
             {
                 if (isLoaded && !IsInitialized)
                 {
-                    SyncContext.Post((o) =>
-                    {
-                        StartD3D((int)Math.Floor(ActualWidth), (int)Math.Floor(ActualHeight));
-                    }, null);
+                    StartD3D((int)Math.Floor(ActualWidth), (int)Math.Floor(ActualHeight));
                 }
             }
 
@@ -1181,15 +1205,8 @@ namespace HelixToolkit.UWP
                 lock (lockObj)
                 {
                     EffectsManager?.DisposeAllResources();
+                    EffectsManager?.Reinitialize();
                 }
-                SyncContext.Post((o) =>
-                {
-                    lock (lockObj)
-                    {
-
-                        EffectsManager?.Reinitialize();
-                    }
-                }, null);
             }
 
             protected void TriggerSceneGraphUpdated()
@@ -1202,6 +1219,7 @@ namespace HelixToolkit.UWP
             /// <param name="disposeManagedResources"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
             protected override void OnDispose(bool disposeManagedResources)
             {
+                logger.LogInformation("Disposing");
                 if (disposeManagedResources)
                 {
                     EffectsManager = null;
@@ -1217,11 +1235,6 @@ namespace HelixToolkit.UWP
                 RemoveAndDispose(ref renderContext2D);
                 DisposeBuffers();
                 base.OnDispose(disposeManagedResources);
-            }
-
-            private void Log<Type>(LogLevel level, Type msg, [CallerMemberName] string caller = "", [CallerLineNumber] int sourceLineNumber = 0)
-            {
-                Logger.Log(level, msg, nameof(DX11RenderHostBase), caller, sourceLineNumber);
             }
         }
     }

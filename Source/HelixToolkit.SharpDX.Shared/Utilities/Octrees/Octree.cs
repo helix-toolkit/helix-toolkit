@@ -7,7 +7,7 @@ using SharpDX;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-//using System.Linq;
+using Microsoft.Extensions.Logging;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 
@@ -28,6 +28,7 @@ namespace HelixToolkit.UWP
     /// <typeparam name="T"></typeparam>
     public abstract class DynamicOctreeBase<T> : IDynamicOctree
     {
+        static readonly ILogger logger = Logger.LogManager.Create<DynamicOctreeBase<T>>();
         /// <summary>
         /// 
         /// </summary>
@@ -189,12 +190,11 @@ namespace HelixToolkit.UWP
         {
             SelfArray = new IDynamicOctree[] { this };
             stack = stackCache ?? new Stack<KeyValuePair<int, IDynamicOctree[]>>(64);
-#if DEBUG
-            if (stackCache == null)
+
+            if (stackCache == null && logger.IsEnabled(LogLevel.Trace))
             {
-                Debug.WriteLine("stack cache is null");
+                logger.LogTrace("Stack cache is null");
             }
-#endif
             if (parameter != null)
                 Parameter = parameter;
             else
@@ -292,13 +292,13 @@ namespace HelixToolkit.UWP
         public void BuildTree(IDynamicOctree root, Stack<KeyValuePair<int, IDynamicOctree[]>> stack)
         {
 #if DEBUG
-            var sw = Stopwatch.StartNew();
+            var now = Stopwatch.GetTimestamp();
 #endif
             TreeTraversal(root, stack, null, (node) => { node.BuildCurretNodeOnly(); }, null, Parameter.EnableParallelBuild);
 #if DEBUG
-            sw.Stop();
-            if (sw.ElapsedMilliseconds > 0)
-                Debug.WriteLine("Buildtree time =" + sw.ElapsedMilliseconds);
+            var elapsed = Stopwatch.GetTimestamp() - now;
+            if (logger.IsEnabled(LogLevel.Debug))
+                logger.LogDebug("Buildtree time = {0} ms", (elapsed * 1e3) / Stopwatch.Frequency);
 #endif
         }
         /// <summary>
@@ -1183,9 +1183,11 @@ namespace HelixToolkit.UWP
         /// <returns></returns>
         public virtual bool RemoveSafe(T item)
         {
-            Debug.WriteLine("RemoveSafe");
-            int index;
-            var node = FindChildByItem(item, out index);
+            if (logger.IsEnabled(LogLevel.Debug))
+            {
+                logger.LogDebug("Remove safe.");
+            }
+            var node = FindChildByItem(item, out var index);
             if (node != null)
             {
                 (node as DynamicOctreeBase<T>).Objects.RemoveAt(index);

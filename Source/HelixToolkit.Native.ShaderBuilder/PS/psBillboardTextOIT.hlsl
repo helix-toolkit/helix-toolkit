@@ -1,5 +1,5 @@
-#ifndef PSBILLBOARDTEXTOIT_HLSL
-#define PSBILLBOARDTEXTOIT_HLSL
+#ifndef PSBILLBOARDTEXTOITDP_HLSL
+#define PSBILLBOARDTEXTOITDP_HLSL
 #define POINTLINE
 #include"..\Common\DataStructs.hlsl"
 #include"..\Common\Common.hlsl"

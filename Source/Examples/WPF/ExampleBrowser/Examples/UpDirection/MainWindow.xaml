@@ -1,15 +1,75 @@
 ﻿<Window x:Class="UpDirectionDemo.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:h="clr-namespace:HelixToolkit.Wpf;assembly=HelixToolkit.Wpf" Title="UpDirectionDemo" Height="480" Width="640">
-    <DockPanel>
-        <TextBlock DockPanel.Dock="Top" HorizontalAlignment="Center" Text="HelixViewport3D.ModelUpDirection = 0,1,0" Padding="8" Foreground="Black"/>
-        <h:HelixViewport3D x:Name="view1" CameraRotationMode="Turntable" ModelUpDirection="0,1,0" ShowCoordinateSystem="True">
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+        xmlns:local="clr-namespace:UpDirectionDemo" 
+        
+        xmlns:h="clr-namespace:HelixToolkit.Wpf;assembly=HelixToolkit.Wpf" 
+        Title="UpDirectionDemo" Height="480" Width="640">
+    <Window.DataContext>
+        <local:UpDirectionViewModel/>
+    </Window.DataContext>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="250"></ColumnDefinition>
+            <ColumnDefinition ></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <StackPanel Grid.Column="0">
+            <WrapPanel >
+                <CheckBox IsChecked="{Binding ElementName=viewport, Path=IsViewCubeEdgeClicksEnabled}" >Enable Edge click</CheckBox>
+                <CheckBox  IsChecked="{Binding ElementName=viewport, Path=IsTopBottomViewOrientedToFrontBack}" >IsTopBottomViewOrientedToFrontBack</CheckBox>
+            </WrapPanel>
+            <WrapPanel >
+                <TextBlock>ModelUpDirectionX</TextBlock>
+                <Slider x:Name="ModelUpDirectionX" 
+                        Value="{Binding X}"
+                        TickFrequency="0.1"
+                        Minimum="-5"
+                        Maximum="5"
+                         AutoToolTipPlacement="TopLeft"
+                        AutoToolTipPrecision="1" 
+                        Width="100"/>
+                <TextBox Text="{Binding X}" Width="30" ></TextBox>
+
+            </WrapPanel>
+            <WrapPanel >
+                <TextBlock>ModelUpDirectionY</TextBlock>
+                <Slider x:Name="ModelUpDirectionY" 
+                        Value="{Binding Y}"
+                        Minimum="-5"
+                        Maximum="5"
+                         AutoToolTipPlacement="TopLeft"
+                        AutoToolTipPrecision="2" 
+                        Width="100"/>
+                <TextBox Text="{Binding Y}"  Width="30"></TextBox>
+
+            </WrapPanel>
+            <WrapPanel >
+                <TextBlock>ModelUpDirectionZ</TextBlock>
+                <Slider x:Name="ModelUpDirectionZ" 
+                        Value="{Binding Z}"
+                        TickFrequency="0.1"
+                        Minimum="-5"
+                        Maximum="5"
+                         AutoToolTipPlacement="TopLeft"
+                        AutoToolTipPrecision="2" 
+                        Width="100"/>
+                <TextBox Text="{Binding Z}"  Width="30" ></TextBox>
+
+            </WrapPanel>
+        </StackPanel>
+
+
+        <h:HelixViewport3D  Grid.Column="1"
+            x:Name="viewport"
+            CameraRotationMode="Turntable"
+            ModelUpDirection="{Binding UpModel}"
+            ShowCoordinateSystem="True">
             <h:HelixViewport3D.Camera>
-                <PerspectiveCamera Position="5, 30, 40"  LookDirection="-5, -30, -40" FieldOfView="45" UpDirection="0,1,0"/>
+                <PerspectiveCamera Position="5, 30, 40"  LookDirection="-5, -30, -40" FieldOfView="45" UpDirection="{Binding UpModel}"/>
             </h:HelixViewport3D.Camera>
             <h:DefaultLights/>
             <h:CoordinateSystemVisual3D ArrowLengths="10"/>
-            <h:GridLinesVisual3D Normal="0,1,0" LengthDirection="1,0,0"/>
+            <h:GridLinesVisual3D Normal="{Binding UpModel}" LengthDirection="1,0,0"/>
         </h:HelixViewport3D>
-    </DockPanel>
+    </Grid>
 </Window>

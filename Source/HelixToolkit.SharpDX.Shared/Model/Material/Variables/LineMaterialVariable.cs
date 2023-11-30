@@ -58,18 +58,15 @@ namespace HelixToolkit.UWP
             /// <param name="manager">The manager.</param>
             /// <param name="technique">The technique.</param>
             /// <param name="materialCore">The material core.</param>
-            /// <param name="linePassName">Name of the line pass.</param>
-            /// <param name="shadowPassName">Name of the shadow pass.</param>
-            /// <param name="depthPassName">Name of the depth pass</param>
+            /// <param name="defaultPassName">Default pass name</param>
             public LineMaterialVariable(IEffectsManager manager, IRenderTechnique technique, LineMaterialCore materialCore,
-                string linePassName = DefaultPassNames.Default, string shadowPassName = DefaultPassNames.ShadowPass,
-                string depthPassName = DefaultPassNames.DepthPrepass)
+                string defaultPassName = DefaultPassNames.Default)
                 : base(manager, technique, DefaultPointLineConstantBufferDesc, materialCore)
             {
                 textureManager = manager.MaterialTextureManager;
-                LinePass = technique[linePassName];
-                ShadowPass = technique[shadowPassName];
-                DepthPass = technique[depthPassName];
+                LinePass = technique[defaultPassName];
+                ShadowPass = technique[DefaultPassNames.ShadowPass];
+                DepthPass = technique[DefaultPassNames.DepthPrepass];
                 this.material = materialCore;
                 shaderTextureSlot = LinePass.PixelShader.ShaderResourceViewMapping.TryGetBindSlot(ShaderTextureName);
                 textureSamplerSlot = LinePass.PixelShader.SamplerMapping.TryGetBindSlot(ShaderTextureSamplerName);

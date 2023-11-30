@@ -85,9 +85,9 @@ namespace HelixToolkit.UWP
                 return new DrawScreenQuadCore();
             }
 
-            protected override IRenderTechnique OnCreateRenderTechnique(IRenderHost host)
+            protected override IRenderTechnique OnCreateRenderTechnique(IEffectsManager effectsManager)
             {
-                return EffectsManager[DefaultRenderTechniqueNames.ScreenQuad];
+                return effectsManager[DefaultRenderTechniqueNames.ScreenQuad];
             }
 
             public sealed override bool HitTest(HitTestContext context, ref List<HitTestResult> hits)

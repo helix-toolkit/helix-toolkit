@@ -236,7 +236,6 @@ namespace HelixToolkit.UWP
 
             public override IDynamicOctree Expand(ref Vector3 direction)
             {
-                //Debug.WriteLine("Expaned");
                 var root = this;
                 if (!IsRoot)
                 {

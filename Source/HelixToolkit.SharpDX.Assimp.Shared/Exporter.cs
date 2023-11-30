@@ -13,6 +13,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Runtime.CompilerServices;
+using Microsoft.Extensions.Logging;
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX
 #else
@@ -33,6 +34,7 @@ namespace HelixToolkit.UWP
     {
         public partial class Exporter : IDisposable
         {
+            static readonly ILogger logger = Logger.LogManager.Create<Exporter>();
             private const string ToUpperDictString = @"..\";
 
             static Exporter()
@@ -88,7 +90,6 @@ namespace HelixToolkit.UWP
                 }
             }
 
-            public ILogger Logger { get => configuration.Logger; }
             #endregion
             protected readonly Dictionary<Geometry3D, int> geometryCollection = new Dictionary<Geometry3D, int>();
             protected readonly Dictionary<MaterialCore, int> materialCollection = new Dictionary<MaterialCore, int>();
@@ -153,14 +154,14 @@ namespace HelixToolkit.UWP
                 {
                     if(!exporter.ExportFile(scene, filePath, formatId, postProcessing))
                     {
-                        Log(LogLevel.Error, $"Export failed. FilePath: {filePath}; Format: {formatId}");
+                        logger.LogError("Export failed. FilePath: {0}; Format: {1}", filePath, formatId);
                         return ErrorCode.Failed;
                     }
                     return ErrorCode.Succeed;
                 }
                 catch(Exception ex)
                 {
-                    Log(LogLevel.Error, ex.Message);
+                    logger.LogError(ex.Message);
                     AssimpExceptionOccurred?.Invoke(this, ex);
                 }
                 finally
@@ -207,7 +208,7 @@ namespace HelixToolkit.UWP
                 }
                 catch (Exception ex)
                 {
-                    Log(LogLevel.Error, ex.Message);
+                    logger.LogError(ex.Message);
                     AssimpExceptionOccurred?.Invoke(this, ex);
                 }
                 finally
@@ -273,7 +274,7 @@ namespace HelixToolkit.UWP
                         }
                         else
                         {
-                            Log(LogLevel.Warning, $"Current node type does not support yet. Type: {s.GetType().Name}");
+                            logger.LogWarning("Current node type does not support yet. Type: {0}", s.GetType().Name);
                         }
                     }
                     if(group.Metadata != null)
@@ -294,7 +295,7 @@ namespace HelixToolkit.UWP
                 }
                 else
                 {
-                    Log(LogLevel.Warning, $"Current node type does not support yet. Type: {current.GetType().Name}");
+                    logger.LogWarning("Current node type does not support yet. Type: {0}", current.GetType().Name);
                 }                
                 return node;
             }
@@ -320,7 +321,7 @@ namespace HelixToolkit.UWP
                         var info = OnCreateMeshInfo(geo);
                         if (info == null)
                         {
-                            Log(LogLevel.Warning, $"Create Mesh info failed. Node Name: {geo.Name}");
+                            logger.LogWarning("Create Mesh info failed. Node Name: {0}", geo.Name);
                             continue;
                         }
                         if (!meshInfos.ContainsKey(info.MaterialMeshKey))
@@ -354,18 +355,6 @@ namespace HelixToolkit.UWP
                 MaterialIndexForNoName = MeshIndexForNoName = 0;
             }
 
-            /// <summary>
-            /// Logs the specified level.
-            /// </summary>
-            /// <typeparam name="Type">The type of the ype.</typeparam>
-            /// <param name="level">The level.</param>
-            /// <param name="msg">The MSG.</param>
-            /// <param name="caller">The caller.</param>
-            /// <param name="sourceLineNumber">The source line number.</param>
-            protected void Log<Type>(LogLevel level, Type msg, [CallerMemberName]string caller = "", [CallerLineNumber] int sourceLineNumber = 0)
-            {
-                Logger.Log(level, msg, nameof(EffectsManager), caller, sourceLineNumber);
-            }
             #region Inner Classes
 
             /// <summary>

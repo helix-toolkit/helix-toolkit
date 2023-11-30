@@ -3,6 +3,7 @@ The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
 using HelixToolkit.Logger;
+using Microsoft.Extensions.Logging;
 using SharpDX.Direct3D11;
 using System;
 using System.Runtime.CompilerServices;
@@ -30,6 +31,7 @@ namespace HelixToolkit.UWP
         /// </summary>
         public class SwapChainRenderHost : DefaultRenderHost
         {
+            static readonly ILogger logger = LogManager.Create<SwapChainRenderHost>();
             protected readonly IntPtr surface;
             /// <summary>
             /// Initializes a new instance of the <see cref="SwapChainRenderHost"/> class.
@@ -55,7 +57,7 @@ namespace HelixToolkit.UWP
             /// <returns></returns>
             protected override DX11RenderBufferProxyBase CreateRenderBuffer()
             {
-                Logger.Log(LogLevel.Information, "DX11SwapChainRenderBufferProxy", nameof(SwapChainRenderHost));
+                logger.LogInformation("Creating DX11SwapChainRenderBufferProxy");
                 return new DX11SwapChainRenderBufferProxy(surface, EffectsManager);
             }
         }

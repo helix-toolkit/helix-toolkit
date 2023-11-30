@@ -37,8 +37,12 @@ namespace HelixToolkit.UWP
         public static readonly DependencyProperty ItemsSourceProperty =
             DependencyProperty.Register("ItemsSource", typeof(IList<Element3D>), typeof(GroupElement3D),
                 new PropertyMetadata(null,
-                    (d, e) => {
-                        (d as GroupElement3D).OnItemsSourceChanged(e.NewValue as IList<Element3D>);
+                    (d, e) =>
+                    {
+                        if (d is GroupElement3D g && g.IsAttached)
+                        {
+                            g.OnItemsSourceChanged(e.NewValue as IList<Element3D>);
+                        }
                     }));
 
         /// <summary>
@@ -133,6 +137,24 @@ namespace HelixToolkit.UWP
         public GroupElement3D()
         {
             Children.CollectionChanged += Items_CollectionChanged;
+            SceneNode.Attached += SceneNode_Attached;
+            SceneNode.Detached += SceneNode_Detached;
+        }
+
+        private void SceneNode_Attached(object sender, EventArgs e)
+        {
+            if (ItemsSource != null)
+            {
+                OnItemsSourceChanged(ItemsSource);
+            }
+        }
+
+        private void SceneNode_Detached(object sender, EventArgs e)
+        {
+            if (itemsSourceInternal != null)
+            {
+                OnItemsSourceChanged(null);
+            }
         }
 
         protected override void OnApplyTemplate()
@@ -147,7 +169,7 @@ namespace HelixToolkit.UWP
                     Items.Add(item);
                 }
             }
-            if(OctreeManager is Element3D elem)
+            if (OctreeManager is Element3D elem)
             {
                 Items.Add(elem);
             }
@@ -222,18 +244,16 @@ namespace HelixToolkit.UWP
 
         private void OnItemsSourceChanged(IList<Element3D> itemsSource)
         {
+            if (itemsSourceInternal == itemsSource)
+            { return; }
             if (itemsSourceInternal != null)
             {
                 if (itemsSourceInternal is INotifyCollectionChanged s)
                 {
                     s.CollectionChanged -= S_CollectionChanged;
                 }
-                foreach (var child in itemsSourceInternal)
-                {
-                    Children.Remove(child);
-                }
             }
-            if(itemsSourceInternal == null && itemsSource != null && Children.Count > 0)
+            if (itemsSourceInternal == null && itemsSource != null && Children.Count > 0)
             {
                 throw new InvalidOperationException("Children must be empty before using ItemsSource");
             }

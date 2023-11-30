@@ -41,42 +41,6 @@ namespace Workitem10048
             return result;
         }
 
-        protected override SceneNode OnCreateSceneNode()
-        {
-            var sn = base.OnCreateSceneNode();
-            sn.Attached += this.OnSceneNodeOnAttached;
-            return sn;
-        }
-
-        private void OnSceneNodeOnAttached(object sender, EventArgs e)
-        {
-            var sn = this.SceneNode;
-            if (sn?.RenderHost?.Viewport is Viewport3DX vp)
-            {
-                vp.OnRendered += this.OnViewportOnRendered;
-                vp.CameraChanged += this.OnViewportCameraChanged;
-            }
-        }
-
-        private void OnViewportCameraChanged(object sender, RoutedEventArgs e)
-        {
-            Debug.WriteLine("Viewport3DX.CameraChanged works!");
-            var sn = this.SceneNode;
-            if (sn?.RenderHost?.Viewport is Viewport3DX vp)
-            {
-                vp.CameraChanged -= this.OnViewportCameraChanged;
-            }                        
-        }
-
-        private void OnViewportOnRendered(object sender, EventArgs e)
-        {
-            Debug.WriteLine("Viewport3DX.OnRendered works!");
-            var sn = this.SceneNode;
-            if (sn?.RenderHost?.Viewport is Viewport3DX vp)
-            {
-                vp.OnRendered -= this.OnViewportOnRendered;
-            }            
-        }
 
         //// alternative way, 3.36 times faster, but wrong PointHit
         //protected bool HitTest2D(IRenderContext context, Ray rayWS, ref List<HitTestResult> hits)

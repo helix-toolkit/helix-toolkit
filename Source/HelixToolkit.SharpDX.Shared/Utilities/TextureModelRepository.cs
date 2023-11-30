@@ -6,7 +6,7 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using System.Runtime.CompilerServices;
-
+using Microsoft.Extensions.Logging;
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX
 #else
@@ -21,6 +21,8 @@ namespace HelixToolkit.UWP
     {
         public sealed class TextureModelRepository : ITextureModelRepository
         {
+            static readonly ILogger logger = Logger.LogManager.Create<TextureModelRepository>();
+
             private readonly ConditionalWeakTable<Stream, WeakReference<TextureModel>> streamDict
                 = new ConditionalWeakTable<Stream, WeakReference<TextureModel>>();
 
@@ -39,14 +41,20 @@ namespace HelixToolkit.UWP
                     {
                         if (tex.TryGetTarget(out var target))
                         {
-                            Debug.WriteLine($"Reuse existing TextureModel. Guid: {target.Guid}");
+                            if (logger.IsEnabled(LogLevel.Debug))
+                            {
+                                logger.LogDebug("Reuse existing TextureModel. Guid: {0}", target.Guid);
+                            }
                             return target;
                         }
                         streamDict.Remove(stream);
                     }
                     var newTexModel = new TextureModel(stream);
                     streamDict.Add(stream, new WeakReference<TextureModel>(newTexModel));
-                    Debug.WriteLine($"Created new TextureModel. Guid: {newTexModel.Guid}");
+                    if (logger.IsEnabled(LogLevel.Debug))
+                    {
+                        logger.LogDebug("Created new TextureModel. Guid: {0}", newTexModel.Guid);
+                    }
                     return newTexModel;
                 }
             }
@@ -63,14 +71,20 @@ namespace HelixToolkit.UWP
                     {
                         if (tex.TryGetTarget(out var target))
                         {
-                            Debug.WriteLine($"Reuse existing TextureModel. Guid: {target.Guid}");
+                            if (logger.IsEnabled(LogLevel.Debug))
+                            {
+                                logger.LogDebug("Reuse existing TextureModel. Guid: {0}", target.Guid);
+                            }
                             return target;
                         }
                         fileDict.Remove(texturePath);
                     }
                     var newTexModel = new TextureModel(texturePath);
                     fileDict.Add(texturePath, new WeakReference<TextureModel>(newTexModel));
-                    Debug.WriteLine($"Created new TextureModel. Guid: {newTexModel.Guid}");
+                    if (logger.IsEnabled(LogLevel.Debug))
+                    {
+                        logger.LogDebug("Created new TextureModel. Guid: {0}", newTexModel.Guid);
+                    }
                     return newTexModel;
                 }
             }

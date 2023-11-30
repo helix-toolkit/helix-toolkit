@@ -4,6 +4,7 @@ Copyright (c) 2018 Helix Toolkit contributors
 */
 
 using System.Runtime.CompilerServices;
+using Microsoft.Extensions.Logging;
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX
 #else
@@ -25,6 +26,7 @@ namespace HelixToolkit.UWP
         /// </summary>
         public sealed class ConstantBufferComponent : CoreComponent
         {
+            static readonly ILogger logger = Logger.LogManager.Create<ConstantBufferComponent>();
             private ConstantBufferProxy modelConstBuffer;
             /// <summary>
             /// Gets or sets the model constant buffer.
@@ -169,7 +171,7 @@ namespace HelixToolkit.UWP
 #if DEBUG
                                 throw new ArgumentException($"Variable not found in constant buffer {bufferDesc.Name}. Variable = {name}");
 #else
-                                Technique.EffectsManager.Logger.Log(Logger.LogLevel.Warning, $"Variable not found in constant buffer {bufferDesc.Name}. Variable = {name}");
+                                logger.LogWarning("Variable not found in constant buffer {0}. Variable = {1}", bufferDesc.Name, name);
 #endif
                             }
                         }
@@ -214,7 +216,7 @@ namespace HelixToolkit.UWP
 #if DEBUG
                                 throw new ArgumentException($"Variable not found in constant buffer {bufferDesc.Name}. Variable = {name}");
 #else
-                                Technique.EffectsManager.Logger.Log(Logger.LogLevel.Warning, $"Variable not found in constant buffer {bufferDesc.Name}. Variable = {name}");
+                                logger.LogWarning("Variable not found in constant buffer {0}. Variable = {1}", bufferDesc.Name, name);
                                 value = v;
                                 return false;
 #endif

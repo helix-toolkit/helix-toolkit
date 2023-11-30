@@ -2,6 +2,7 @@
 The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
+using Microsoft.Extensions.Logging;
 using SharpDX.Direct3D11;
 using SharpDX.WIC;
 using System;
@@ -20,6 +21,7 @@ namespace HelixToolkit.UWP
     {
         public static class ScreenCapture
         {
+            static readonly ILogger logger = Logger.LogManager.Create(nameof(ScreenCapture));
             /// <summary>
             /// Captures the texture.
             /// </summary>
@@ -255,7 +257,7 @@ namespace HelixToolkit.UWP
                                         }
                                         else
                                         {
-                                            Debug.WriteLine("Cannot convert");
+                                            logger.LogDebug("Cannot convert");
                                         }
                                     }
                                 }

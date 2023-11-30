@@ -7,6 +7,7 @@ Copyright (c) 2018 Helix Toolkit contributors
 #endif
 using System;
 using System.Collections.Generic;
+using Microsoft.Extensions.Logging;
 using global::SharpDX.Direct3D;
 using global::SharpDX.Direct3D11;
 using global::SharpDX.DXGI;
@@ -44,15 +45,6 @@ namespace HelixToolkit.UWP
             set; get;
         } = -1;
 
-        public ILogger Logger
-        {
-            set; get;
-        }
-#if DEBUG
-            = new DebugLogger();
-#else
-            = new NullLogger();
-#endif
         /// <summary>
         /// Use software rendering. 
         /// <para>
@@ -70,20 +62,8 @@ namespace HelixToolkit.UWP
     /// </summary>
     public class EffectsManager : DisposeObject, IEffectsManager
     {
-        private readonly LogWrapper logger;
-        /// <summary>
-        /// Gets or sets the logger.
-        /// </summary>
-        /// <value>
-        /// The logger.
-        /// </value>
-        public LogWrapper Logger
-        {
-            get
-            {
-                return logger;
-            }
-        }
+        private static readonly ILogger logger = LogManager.Create<EffectsManager>();
+
         /// <summary>
         /// Occurs when [on dispose resources].
         /// </summary>
@@ -336,14 +316,6 @@ namespace HelixToolkit.UWP
             : this(new EffectsManagerConfiguration())
         {
         }
-        /// <summary>
-        /// Initializes a new instance of the <see cref="EffectsManager"/> class.
-        /// </summary>
-        /// <param name="externallogger">The logger.</param>
-        public EffectsManager(ILogger externallogger)
-            : this(new EffectsManagerConfiguration() { Logger = externallogger })
-        {
-        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="EffectsManager"/> class.
@@ -357,20 +329,9 @@ namespace HelixToolkit.UWP
         {
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="EffectsManager"/> class.
-        /// </summary>
-        /// <param name="adapterIndex">Index of the adapter.</param>
-        /// <param name="externallogger">The logger.</param>
-        public EffectsManager(int adapterIndex, ILogger externallogger) 
-            : this(new EffectsManagerConfiguration() { AdapterIndex = adapterIndex, Logger = externallogger})
-        {
-        }
-
         public EffectsManager(EffectsManagerConfiguration configuration)
         {
             EnableSoftwareRendering = configuration.EnableSoftwareRendering;
-            this.logger = configuration.Logger == null ? new LogWrapper(new NullLogger()) : new LogWrapper(configuration.Logger);
             Initialize(configuration.AdapterIndex);
         }
 
@@ -400,7 +361,7 @@ namespace HelixToolkit.UWP
         /// </summary>
         private void Initialize(int adapterIndex)
         {
-            Log(LogLevel.Information, $"Adapter Index = {adapterIndex}");
+            logger.LogInformation("Adapter Index = {0}", adapterIndex);
             var adapter = GetAdapter(ref adapterIndex);
             AdapterIndex = adapterIndex;
             if (AdapterIndex < 0 || adapter == null)
@@ -448,15 +409,15 @@ namespace HelixToolkit.UWP
 #else
             device = new global::SharpDX.Direct3D11.Device(DriverType.Hardware, DeviceCreationFlags.BgraSupport, FeatureLevel.Level_10_1);
 #endif
-            Log(LogLevel.Information, $"Direct3D device initilized. DriverType: {DriverType}; FeatureLevel: {device.FeatureLevel}");
+            logger.LogInformation("Direct3D device initilized. DriverType: {0}; FeatureLevel: {1}", DriverType, device.FeatureLevel);
 
             #region Initial Internal Pools
-            Log(LogLevel.Information, "Initializing resource pools");
+            logger.LogInformation("Initializing resource pools");
             RemoveAndDispose(ref constantBufferPool);
-            constantBufferPool = new ConstantBufferPool(Device, Logger);
+            constantBufferPool = new ConstantBufferPool(Device);
 
             RemoveAndDispose(ref shaderPoolManager);
-            shaderPoolManager = new ShaderPoolManager(Device, constantBufferPool, Logger);
+            shaderPoolManager = new ShaderPoolManager(Device, constantBufferPool);
 
             RemoveAndDispose(ref statePoolManager);
             statePoolManager = new StatePoolManager(Device);
@@ -474,9 +435,9 @@ namespace HelixToolkit.UWP
             deviceContextPool = new DeviceContextPool(Device);
 
             RemoveAndDispose(ref structArrayPool);
-            structArrayPool = new StructArrayPool(logger);
+            structArrayPool = new StructArrayPool();
             #endregion
-            Log(LogLevel.Information, "Initializing Direct2D resources");
+            logger.LogInformation("Initializing Direct2D resources");
             factory2D = new global::SharpDX.Direct2D1.Factory1(global::SharpDX.Direct2D1.FactoryType.MultiThreaded);
             wicImgFactory = new global::SharpDX.WIC.ImagingFactory();
             directWriteFactory = new global::SharpDX.DirectWrite.Factory(global::SharpDX.DirectWrite.FactoryType.Shared);
@@ -587,12 +548,12 @@ namespace HelixToolkit.UWP
                 var adapterIndex = -1;
                 ulong bestVideoMemory = 0;
                 ulong bestSystemMemory = 0;
-                Log(LogLevel.Information, $"Trying to get best adapter. Number of adapters: {f.Adapters.Length}");
+                logger.LogInformation("Trying to get best adapter. Number of adapters: {0}", f.Adapters.Length);
                 ulong MByte = 1024 * 1024;
                 foreach (var item in f.Adapters)
                 {
                     adapterIndex++;
-                    Log(LogLevel.Information, $"Adapter {adapterIndex}: Description: {item.Description.Description}; " +
+                    logger.LogInformation($"Adapter {adapterIndex}: Description: {item.Description.Description}; " +
                         $"VendorId: {item.Description.VendorId}; " +
                         $"Video Mem: {item.Description.DedicatedVideoMemory.ToUInt64() / MByte} MB; " +
                         $"System Mem: {item.Description.DedicatedSystemMemory.ToUInt64() / MByte} MB; " +
@@ -609,7 +570,7 @@ namespace HelixToolkit.UWP
                     }
 
                     var level = global::SharpDX.Direct3D11.Device.GetSupportedFeatureLevel(item);
-                    Log(LogLevel.Information, $"Feature Level: {level}");
+                    logger.LogInformation("Feature Level: {0}", level);
                     if (level < MinimumFeatureLevel)
                     {
                         continue;
@@ -626,7 +587,7 @@ namespace HelixToolkit.UWP
                         bestSystemMemory = systemMemory;
                     }
                 }
-                Log(LogLevel.Information, $"Best Adapter: {bestAdapterIndex}");
+                logger.LogInformation("Best Adapter: {0}", bestAdapterIndex);
                 return bestAdapter;
             }
         }
@@ -656,8 +617,7 @@ namespace HelixToolkit.UWP
         {
             if (!techniqueDict.TryGetValue(name, out var t))
             {
-                Log(LogLevel.Warning, $"Technique {name} does not exist. Return a null technique.");
-                Debug.WriteLine($"Technique {name} does not exist. Return a null technique.");
+                logger.LogWarning("Technique {0} does not exist. Return a null technique.", name);
 #if DX11_1
                 return new Technique(new TechniqueDescription() { Name = name, IsNull = true }, device1, this);
 #else
@@ -736,22 +696,18 @@ namespace HelixToolkit.UWP
 #if DEBUGMEMORY
         protected void ReportResources()
         {
-            Console.WriteLine(global::SharpDX.Diagnostics.ObjectTracker.ReportActiveObjects());
+            logger.LogDebug(global::SharpDX.Diagnostics.ObjectTracker.ReportActiveObjects());
             var liveObjects = global::SharpDX.Diagnostics.ObjectTracker.FindActiveObjects();
-            Console.WriteLine($"Live object count = {liveObjects.Count}");
+            logger.LogDebug("Live object count = {0}", liveObjects.Count);
             //if (liveObjects.Count != 0)
             //{
             //    foreach(var obj in liveObjects)
             //    {
-            //        Console.WriteLine(obj.ToString());
+            //        logger.LogDebug(obj.ToString());
             //    }
             //}
         }
 #endif
-        private void Log<Type>(LogLevel level, Type msg, [CallerMemberName] string caller = "", [CallerLineNumber] int sourceLineNumber = 0)
-        {
-            Logger.Log(level, msg, nameof(EffectsManager), caller, sourceLineNumber);
-        }
 
         public void RaiseInvalidateRender()
         {

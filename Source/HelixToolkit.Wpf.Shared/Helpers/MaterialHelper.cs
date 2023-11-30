@@ -65,6 +65,24 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
+        /// Creates a scaled material version from the specified bitmap file.
+        /// </summary>
+        /// <param name="uri">The uri.</param>
+        /// <param name="scaleW">Horizontal image scale.</param>
+        /// <param name="scaleH">Vertical image scale.</param>
+        /// <param name="opacity">The opacity.</param>
+        /// <param name="uriKind">Kind of the URI.</param>
+        /// <param name="freeze">Freeze the material if set to <c>true</c>.</param>
+        /// <returns>The image material (texture).</returns>
+        public static Material CreateImageMaterial(string uri, double scaleW, double scaleH, double opacity = 1.0,
+            UriKind uriKind = UriKind.RelativeOrAbsolute, bool freeze = true)
+        {
+            var image = GetImage(uri, uriKind);
+
+            return image == null ? null : CreateTiledImageMaterial(image, opacity, scaleW, scaleH, freeze: freeze);
+        }
+
+        /// <summary>
         /// Creates a material from the specified image.
         /// </summary>
         /// <param name="image">The image.</param>
@@ -74,6 +92,32 @@ namespace HelixToolkit.Wpf
         public static Material CreateImageMaterial(BitmapImage image, double opacity, bool freeze = true)
         {
             var brush = new ImageBrush(image) { Opacity = opacity };
+            var material = new DiffuseMaterial(brush);
+            if (freeze)
+            {
+                material.Freeze();
+            }
+
+            return material;
+        }
+
+        /// <summary>
+        /// Creates a tiled material from the specified image.
+        /// </summary>
+        /// <param name="image">The image.</param>
+        /// <param name="scaleW">Horizontal image scale.</param>
+        /// <param name="scaleH">Vertical image scale.</param>
+        /// <param name="opacity">The opacity value.</param>
+        /// <param name="freeze">Freeze the material if set to <c>true</c>.</param>
+        /// <returns>The image material.</returns>
+        public static Material CreateTiledImageMaterial(BitmapImage image, double opacity, double scaleW, double scaleH, bool freeze = true)
+        {
+            var brush = new ImageBrush(image) {
+                Opacity = opacity,
+                TileMode = TileMode.Tile,
+                Stretch = Stretch.Uniform,
+                Transform = new ScaleTransform(scaleW, scaleH)
+            };
             var material = new DiffuseMaterial(brush);
             if (freeze)
             {

@@ -1,5 +1,6 @@
 ﻿using SharpDX.Direct3D11;
 using System.Collections.Concurrent;
+using Microsoft.Extensions.Logging;
 using Format = SharpDX.DXGI.Format;
 using System.Diagnostics;
 #if !NETFX_CORE
@@ -20,6 +21,7 @@ namespace HelixToolkit.UWP
         /// </summary>
         public sealed class PingPongColorBuffers : DisposeObject
         {
+            static readonly ILogger logger = Logger.LogManager.Create<PingPongColorBuffers>();
             /// <summary>
             /// Gets the current ShaderResourceViewProxy.
             /// </summary>
@@ -183,6 +185,7 @@ namespace HelixToolkit.UWP
 
         public sealed class TexturePool : DisposeObject
         {
+            private static readonly ILogger logger = Logger.LogManager.Create<TexturePool>();
             private sealed class PooledShaderResourceViewProxy : ShaderResourceViewProxy
             {
                 private readonly ConcurrentBag<ShaderResourceViewProxy> pool;
@@ -230,7 +233,7 @@ namespace HelixToolkit.UWP
                 }
                 else
                 {
-                    bag = bag ?? pool.GetOrAdd(format, new System.Func<Format, ConcurrentBag<ShaderResourceViewProxy>>((d) =>
+                    bag ??= pool.GetOrAdd(format, new System.Func<Format, ConcurrentBag<ShaderResourceViewProxy>>((d) =>
                     {
                         return new ConcurrentBag<ShaderResourceViewProxy>();
                     }));
@@ -249,27 +252,28 @@ namespace HelixToolkit.UWP
                     }
                     else if ((desc.BindFlags & BindFlags.DepthStencil) != 0)
                     {
-                        if (format == Format.R32_Typeless)// Special handle for depth buffer used as both depth stencil and shader resource
+                        desc.Format = DepthStencilFormatHelper.ComputeTextureFormat(format, out var canUseAsShaderResource);
+                        if (canUseAsShaderResource)
                         {
                             desc.BindFlags |= BindFlags.ShaderResource;
                         }
                         texture = new PooledShaderResourceViewProxy(deviceResourse.Device, desc, bag);
-                        if (format == Format.R32_Typeless)// Special handle for depth buffer used as both depth stencil and shader resource
+                        texture.CreateView(new DepthStencilViewDescription() { Format = DepthStencilFormatHelper.ComputeDSVFormat(format),
+                            Dimension = DepthStencilViewDimension.Texture2D });
+                        if (canUseAsShaderResource)
                         {
-                            texture.CreateView(new DepthStencilViewDescription() { Format = Format.D32_Float, Dimension = DepthStencilViewDimension.Texture2D });
                             texture.CreateView(new ShaderResourceViewDescription()
                             {
-                                Format = Format.R32_Float,
+                                Format = DepthStencilFormatHelper.ComputeSRVFormat(format),
                                 Dimension = global::SharpDX.Direct3D.ShaderResourceViewDimension.Texture2D,
                                 Texture2D = new ShaderResourceViewDescription.Texture2DResource() { MipLevels = desc.MipLevels }
                             });
                         }
-                        else
-                        {
-                            texture.CreateDepthStencilView();
-                        }
                     }
-                    Debug.WriteLine("Create New Full Screen Texture");
+                    if (logger.IsEnabled(LogLevel.Trace))
+                    {
+                        logger.LogTrace("Create New Full Screen Texture");
+                    }
                     texture.IncRef();
                     return texture;
                 }

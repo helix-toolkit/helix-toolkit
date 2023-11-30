@@ -5,7 +5,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:hx="http://helix-toolkit.org/wpf/SharpDX"
     xmlns:local="clr-namespace:CrossSectionDemo"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" d:DataContext="{d:DesignInstance Type=local:MainViewModel}"
     Title="CrossSectionDemo"
     Width="800"
     Height="600"
@@ -13,13 +13,14 @@
     <Grid Background="Black">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="Auto"
+                              MinWidth="140"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <hx:Viewport3DX
+        <local:CustomViewport3DX
             x:Name="view1"
             Grid.Row="0"
             Grid.Column="0"
@@ -28,14 +29,16 @@
             Camera="{Binding Camera}"
             CameraRotationMode="Trackball"
             EffectsManager="{Binding EffectsManager}"
+            EnableCursorPosition="True"
             FixedRotationPoint="0,0,0"
             FixedRotationPointEnabled="True"
             MSAA="Disable"
             RotateAroundMouseDownPoint="False"
             SubTitle="{Binding SubTitle}"
             TextBrush="Black"
-            UseDefaultGestures="False">
-            <hx:Viewport3DX.InputBindings>
+            UseDefaultGestures="False"
+            ModelAtCursor="{Binding ModelAtCursor, Mode=TwoWay}">
+            <local:CustomViewport3DX.InputBindings>
                 <KeyBinding Key="B" Command="hx:ViewportCommands.BackView" />
                 <KeyBinding Key="F" Command="hx:ViewportCommands.FrontView" />
                 <KeyBinding Key="U" Command="hx:ViewportCommands.TopView" />
@@ -43,9 +46,9 @@
                 <KeyBinding Key="L" Command="hx:ViewportCommands.LeftView" />
                 <KeyBinding Key="R" Command="hx:ViewportCommands.RightView" />
                 <KeyBinding Command="hx:ViewportCommands.ZoomExtents" Gesture="Control+E" />
-                <MouseBinding Command="hx:ViewportCommands.Rotate" Gesture="RightClick" />
+                <MouseBinding Command="hx:ViewportCommands.Rotate" Gesture="LeftClick" />
                 <MouseBinding Command="hx:ViewportCommands.Zoom" Gesture="MiddleClick" />
-            </hx:Viewport3DX.InputBindings>
+            </local:CustomViewport3DX.InputBindings>
             <hx:DirectionalLight3D Direction="{Binding Camera.LookDirection}" Color="White" />
             <hx:CrossSectionMeshGeometryModel3D
                 x:Name="crossModel"
@@ -60,8 +63,7 @@
                 Material="{Binding ModelMaterial}"
                 Plane1="{Binding Plane1}"
                 Plane2="{Binding Plane2}"
-                Transform="{Binding ModelTransform}" 
-                Mouse3DDown="geometry_Mouse3DDown" 
+                Transform="{Binding ModelTransform}"
                 />
             <hx:CrossSectionMeshGeometryModel3D
                 x:Name="crossModel2"
@@ -75,8 +77,7 @@
                 IsHitTestVisible="True"
                 Material="{Binding ModelMaterial}"
                 Plane1="{Binding Plane1}"
-                Plane2="{Binding Plane2}"
-                Mouse3DDown="geometry_Mouse3DDown" />
+                Plane2="{Binding Plane2}" />
             <local:CrossSectionPlaneManipulator3D
                 CornerScale="4"
                 CutPlane="{Binding Plane1, Mode=TwoWay}"
@@ -85,13 +86,14 @@
                 SizeScale="10" />
             <local:CrossSectionPlaneManipulator3D
                 CornerScale="4"
+                ConstrainAxis="{Binding ConstraintVector}"
                 CutPlane="{Binding Plane2, Mode=TwoWay}"
                 EdgeThicknessScale="4"
                 IsRendering="{Binding EnablePlane2}"
                 SizeScale="10" />
             <hx:AxisPlaneGridModel3D />
            
-        </hx:Viewport3DX>
+        </local:CustomViewport3DX>
         <StackPanel
             Grid.Column="1"
             HorizontalAlignment="Right"
@@ -117,6 +119,9 @@
                 <ComboBoxItem>Intersect</ComboBoxItem>
                 <ComboBoxItem>Substract</ComboBoxItem>
             </ComboBox>
+            <Label Foreground="White"
+
+                Content="{Binding NameOfModelAtCursor}"/>
         </StackPanel>
     </Grid>
 </Window>

@@ -179,11 +179,11 @@ namespace HelixToolkit.UWP
             public delegate bool OnCheckGeometryDelegate(Geometry3D geometry);
             public OnCheckGeometryDelegate OnCheckGeometry;
 
-            private GeometryNode elementCore;
+            private readonly WeakReference<GeometryNode> elementCore;
 
             public GeometryBoundManager(GeometryNode core)
             {
-                this.elementCore = core;
+                this.elementCore = new WeakReference<GeometryNode>(core);
                 core.TransformChanged += OnTransformChanged;
             }
 
@@ -233,6 +233,10 @@ namespace HelixToolkit.UWP
                 }
                 else
                 {
+                    if (!elementCore.TryGetTarget(out var target))
+                    {
+                        return;
+                    }
                     BoundingBox oldBound;
                     if (!HasInstances)
                     {
@@ -240,7 +244,7 @@ namespace HelixToolkit.UWP
                         Bounds = Geometry.Bound;
                         RaiseOnBoundChanged(Bounds, oldBound);
                         oldBound = BoundsWithTransform;
-                        BoundsWithTransform = Bounds.Transform(elementCore.TotalModelMatrixInternal);
+                        BoundsWithTransform = Bounds.Transform(target.TotalModelMatrixInternal);
                         RaiseOnTransformBoundChanged(BoundsWithTransform, oldBound);
                     }
                     else
@@ -255,7 +259,7 @@ namespace HelixToolkit.UWP
                         Bounds = bound;
                         RaiseOnBoundChanged(Bounds, oldBound);
                         oldBound = BoundsWithTransform;
-                        BoundsWithTransform = Bounds.Transform(elementCore.TotalModelMatrixInternal);
+                        BoundsWithTransform = Bounds.Transform(target.TotalModelMatrixInternal);
                         RaiseOnTransformBoundChanged(BoundsWithTransform, oldBound);
                     }
                 }
@@ -270,6 +274,10 @@ namespace HelixToolkit.UWP
                 }
                 else
                 {
+                    if (!elementCore.TryGetTarget(out var target))
+                    {
+                        return;
+                    }
                     BoundingSphere oldSphere;
                     if (!HasInstances)
                     {
@@ -277,7 +285,7 @@ namespace HelixToolkit.UWP
                         BoundsSphere = Geometry.BoundingSphere;
                         RaiseOnBoundSphereChanged(BoundsSphere, oldSphere);
                         oldSphere = BoundsSphereWithTransform;
-                        BoundsSphereWithTransform = BoundsSphere.TransformBoundingSphere(elementCore.TotalModelMatrixInternal);
+                        BoundsSphereWithTransform = BoundsSphere.TransformBoundingSphere(target.TotalModelMatrixInternal);
                         RaiseOnTransformBoundSphereChanged(BoundsSphereWithTransform, oldSphere);
                     }
                     else
@@ -292,7 +300,7 @@ namespace HelixToolkit.UWP
                         BoundsSphere = boundSphere;
                         RaiseOnBoundSphereChanged(BoundsSphere, oldSphere);
                         oldSphere = BoundsSphereWithTransform;
-                        BoundsSphereWithTransform = BoundsSphere.TransformBoundingSphere(elementCore.TotalModelMatrixInternal);
+                        BoundsSphereWithTransform = BoundsSphere.TransformBoundingSphere(target.TotalModelMatrixInternal);
                         RaiseOnTransformBoundSphereChanged(BoundsSphereWithTransform, oldSphere);
                     }
                 }
@@ -323,7 +331,10 @@ namespace HelixToolkit.UWP
                         {
                             geometry.PropertyChanged -= OnGeometryPropertyChangedPrivate;
                         }
-                        elementCore.TransformChanged -= OnTransformChanged;
+                        if (elementCore.TryGetTarget(out var target))
+                        {
+                            target.TransformChanged -= OnTransformChanged;
+                        }
                         OnBoundChanged = null;
                         OnTransformBoundChanged = null;
                         OnBoundSphereChanged = null;

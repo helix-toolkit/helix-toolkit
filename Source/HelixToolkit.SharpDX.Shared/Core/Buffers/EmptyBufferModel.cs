@@ -130,27 +130,12 @@ namespace HelixToolkit.UWP
             {
                 return false;
             }
-            /// <summary>
-            /// Attaches the render host.
-            /// </summary>
-            /// <param name="host">The host.</param>
-            public void AttachRenderHost(IRenderHost host)
-            {
 
-            }
 
             /// <summary>
             /// Detaches this instance.
             /// </summary>
             public void Detach()
-            {
-
-            }
-            /// <summary>
-            /// Detaches the render host.
-            /// </summary>
-            /// <param name="host">The host.</param>
-            public void DetachRenderHost(IRenderHost host)
             {
 
             }

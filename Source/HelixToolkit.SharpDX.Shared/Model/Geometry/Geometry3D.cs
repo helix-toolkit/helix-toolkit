@@ -19,6 +19,7 @@ namespace HelixToolkit.UWP
 
     using Core;
     using Model;
+    using System.ComponentModel;
 
 
 #if !NETFX_CORE
@@ -29,6 +30,12 @@ namespace HelixToolkit.UWP
     {
         public const string VertexBuffer = "VertexBuffer";
         public const string TriangleBuffer = "TriangleBuffer";
+        private static readonly PropertyChangedEventArgs vertexBufferPropChanged = new PropertyChangedEventArgs(VertexBuffer);
+        private static readonly PropertyChangedEventArgs triangleBufferPropChanged = new PropertyChangedEventArgs(TriangleBuffer);
+        private static readonly PropertyChangedEventArgs colorsPropChanged = new PropertyChangedEventArgs(nameof(Colors));
+        private static readonly PropertyChangedEventArgs positionPropChanged = new PropertyChangedEventArgs(nameof(Positions));
+        private static readonly PropertyChangedEventArgs indicesPropChanged = new PropertyChangedEventArgs(nameof(Indices));
+
         [DataMember]
         public Guid GUID { set; get; } = Guid.NewGuid();
 
@@ -46,9 +53,10 @@ namespace HelixToolkit.UWP
             }
             set
             {
-                if (Set(ref indices, value))
+                if (Set(ref indices, value, false))
                 {
                     ClearOctree();
+                    RaisePropertyChanged(indicesPropChanged);
                 }
             }
         }
@@ -67,14 +75,12 @@ namespace HelixToolkit.UWP
             }
             set
             {
-                if (position == value)
+                if (Set(ref position, value, false))
                 {
-                    return;
+                    ClearOctree();
+                    RaisePropertyChanged(positionPropChanged);
+                    UpdateBounds();
                 }
-                position = value;
-                ClearOctree();
-                RaisePropertyChanged();
-                UpdateBounds();
             }
         }
 
@@ -131,7 +137,10 @@ namespace HelixToolkit.UWP
             }
             set
             {
-                Set(ref colors, value);
+                if (Set(ref colors, value, false))
+                {
+                    RaisePropertyChanged(colorsPropChanged);
+                }
             }
         }
 
@@ -237,7 +246,7 @@ namespace HelixToolkit.UWP
         /// </summary>
         public void UpdateVertices()
         {
-            RaisePropertyChanged(VertexBuffer);
+            RaisePropertyChanged(vertexBufferPropChanged);
         }
         /// <summary>
         /// Call to manually update triangle buffer.
@@ -245,7 +254,7 @@ namespace HelixToolkit.UWP
         /// </summary>
         public void UpdateTriangles()
         {
-            RaisePropertyChanged(TriangleBuffer);
+            RaisePropertyChanged(triangleBufferPropChanged);
         }
 
         /// <summary>
@@ -255,7 +264,7 @@ namespace HelixToolkit.UWP
         /// </summary>
         public void UpdateColors()
         {
-            RaisePropertyChanged(nameof(Colors));
+            RaisePropertyChanged(colorsPropChanged);
         }
 
         /// <summary>

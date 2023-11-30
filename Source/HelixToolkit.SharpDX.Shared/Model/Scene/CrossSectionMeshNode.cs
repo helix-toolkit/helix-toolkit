@@ -373,17 +373,9 @@ namespace HelixToolkit.UWP
                 return new Plane(v.ToXYZ(), v.W);
             }
 
-            /// <summary>
-            /// Override this function to set render technique during Attach Host.
-            /// <para>If <see cref="SceneNode.OnSetRenderTechnique" /> is set, then <see cref="SceneNode.OnSetRenderTechnique" /> instead of <see cref="OnCreateRenderTechnique" /> function will be called.</para>
-            /// </summary>
-            /// <param name="host"></param>
-            /// <returns>
-            /// Return RenderTechnique
-            /// </returns>
-            protected override IRenderTechnique OnCreateRenderTechnique(IRenderHost host)
+            protected override IRenderTechnique OnCreateRenderTechnique(IEffectsManager effectsManager)
             {
-                return host.EffectsManager[DefaultRenderTechniqueNames.CrossSection];
+                return effectsManager[DefaultRenderTechniqueNames.CrossSection];
             }
 
             /// <summary>
@@ -444,14 +436,18 @@ namespace HelixToolkit.UWP
             private static bool RemoveHitPointBehindCrossingPlane(Plane plane, List<HitTestResult> hits, int hitsBeforeCheck)
             {
                 // Loop backwards to remove at end of list when possible
-                for (var i = hits.Count - 1; i >= hitsBeforeCheck; i--)
+                for (int i = hits.Count - 1; i >= hitsBeforeCheck; i--)
                 {
-                    if (hits[i].PointHit.PointToPlanePosition(ref plane) == PlaneIntersectionType.Back)
+                    var pointTimesNormal = (hits[i].PointHit * plane.Normal);
+                    float distanceToPlane = pointTimesNormal.X + pointTimesNormal.Y + pointTimesNormal.Z - plane.D;
+                    if (distanceToPlane < 0)
                     {
                         hits.RemoveAt(i);
                     }
                 }
-                return hits.Count > hitsBeforeCheck;
+                if (hits.Count == hitsBeforeCheck)
+                    return false;
+                return true;
             }
 
             private bool RemoveHitPointInFrontOfAllCrossingPlanes(List<HitTestResult> hits, int hitsBeforeCheck)

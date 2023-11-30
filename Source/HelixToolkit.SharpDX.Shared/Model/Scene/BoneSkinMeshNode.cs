@@ -218,7 +218,7 @@ namespace HelixToolkit.UWP
             /// </summary>
             public void WeightUpdated()
             {
-                (RenderCore as BoneSkinRenderCore).SetWeight(0, MorphTargetWeights[0]);
+                (RenderCore as BoneSkinRenderCore).InvalidateMorphTargetWeights();
                 InvalidateRender();
             }
 
@@ -237,6 +237,16 @@ namespace HelixToolkit.UWP
             {
                 BoneMatrices = new Matrix[Bones.Length];
                 BoneMatrices = BoneMatrices.Select((m, i) => Bones[i].Node.TotalModelMatrixInternal).ToArray();
+            }
+
+            public void InvalidateBoneMatrices()
+            {
+                (RenderCore as BoneSkinRenderCore).InvalidateBoneMatrices();
+            }
+
+            public void InvalidateMorphTargetWeights()
+            {
+                (RenderCore as BoneSkinRenderCore).InvalidateMorphTargetWeights();
             }
 
             public bool InitializeMorphTargets(MorphTargetVertex[] mtv, int pitch)

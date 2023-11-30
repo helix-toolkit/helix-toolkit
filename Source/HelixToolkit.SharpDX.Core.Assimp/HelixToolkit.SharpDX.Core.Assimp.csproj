@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard1.3</TargetFramework>
-    <Copyright>Copyright (C) Helix Toolkit 2019.</Copyright>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <Copyright>Copyright (C) Helix Toolkit 2022.</Copyright>
     <PackageLicenseUrl></PackageLicenseUrl>
     <PackageProjectUrl>http://www.helix-toolkit.org/</PackageProjectUrl>
     <PackageIconUrl>https://avatars3.githubusercontent.com/u/8432523?s=200&amp;v=4</PackageIconUrl>
@@ -18,13 +18,13 @@
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(TargetFramework)|$(Configuration)|$(Platform)'=='netstandard1.3|Release|AnyCPU'">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <DefineConstants>TRACE;NETFX_CORE;CORE;</DefineConstants>
     <DocumentationFile>bin\Release\HelixToolkit.SharpDX.Core.Assimp.xml</DocumentationFile>
     <OutputPath>bin\Release\</OutputPath>
     <NoWarn>1701;1702;1591;</NoWarn>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(TargetFramework)|$(Configuration)|$(Platform)'=='netstandard1.3|Debug|AnyCPU'">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DefineConstants>TRACE;NETFX_CORE;CORE;</DefineConstants>
     <OutputPath>bin\Debug\</OutputPath>
     <DocumentationFile></DocumentationFile>
@@ -32,11 +32,12 @@
 
     <ItemGroup>
     <PackageReference Include="AssimpNet" Version="5.0.0-beta1" />
-    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0">
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>
     <PackageReference Include="SharpDX.Mathematics" Version="4.2.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="6.0.0" />
   </ItemGroup>
 
   <ItemGroup>

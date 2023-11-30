@@ -374,6 +374,7 @@ namespace HelixToolkit.Wpf.SharpDX
                     partItemsControl?.Items.Remove(item);
                     if (item is Element3D element)
                     {
+                        element.SceneNode.Invalidated -= NodeInvalidated;
                         element.SceneNode.Detach();
                     }
                 }
@@ -385,10 +386,12 @@ namespace HelixToolkit.Wpf.SharpDX
                     partItemsControl?.Items.Add(item);
                     if (this.IsAttached && item is Element3D element)
                     {
-                        element.SceneNode.Attach(renderHostInternal);
+                        element.SceneNode.Invalidated += NodeInvalidated;
+                        element.SceneNode.Attach(EffectsManager);
                     }
                 }
             }
+            InvalidateRender();
         }
 
         /// <summary>
@@ -705,10 +708,11 @@ namespace HelixToolkit.Wpf.SharpDX
                 this.renderHostInternal.IsRendering = this.Visibility == System.Windows.Visibility.Visible;
                 this.renderHostInternal.RenderConfiguration.RenderD2D = EnableD2DRendering;
                 this.renderHostInternal.RenderConfiguration.AutoUpdateOctree = EnableAutoOctreeUpdate;
-                this.renderHostInternal.RenderConfiguration.EnableOITRendering = EnableOITRendering;
+                this.renderHostInternal.RenderConfiguration.OITRenderType = this.OITRenderMode;
                 this.renderHostInternal.RenderConfiguration.OITWeightPower = (float)OITWeightPower;
                 this.renderHostInternal.RenderConfiguration.OITWeightDepthSlope = (float)OITWeightDepthSlope;
                 this.renderHostInternal.RenderConfiguration.OITWeightMode = OITWeightMode;
+                this.renderHostInternal.RenderConfiguration.OITDepthPeelingIteration = OITDepthPeelingIteration;
                 this.renderHostInternal.RenderConfiguration.FXAALevel = FXAALevel;
                 this.renderHostInternal.RenderConfiguration.EnableRenderOrder = EnableRenderOrder;
                 this.renderHostInternal.RenderConfiguration.EnableSSAO = EnableSSAO;
@@ -973,7 +977,8 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 foreach (var e in this.OwnedRenderables)
                 {
-                    e.Attach(host);
+                    e.Attach(EffectsManager);
+                    e.Invalidated += NodeInvalidated;
                 }
                 SharedModelContainerInternal?.Attach(host);
                 foreach (var e in this.D2DRenderables)
@@ -982,6 +987,11 @@ namespace HelixToolkit.Wpf.SharpDX
                 }
                 IsAttached = true;
             }
+        }
+
+        private void NodeInvalidated(object sender, InvalidateTypes e)
+        {
+            renderHostInternal?.Invalidate(e);
         }
 
         /// <summary>
@@ -994,6 +1004,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 IsAttached = false;
                 foreach (var e in this.OwnedRenderables)
                 {
+                    e.Invalidated -= NodeInvalidated;
                     e.Detach();
                 }
                 SharedModelContainerInternal?.Detach(this.renderHostInternal);
@@ -1916,6 +1927,12 @@ namespace HelixToolkit.Wpf.SharpDX
                         }
                         Camera = null;
                         EffectsManager = null;
+                        foreach (var item in Items)
+                        {
+                            item.Dispose();
+                        }
+                        viewCube?.Dispose();
+                        coordinateView?.Dispose();
                         Items.Clear();
                     }
                     // TODO: dispose managed state (managed objects).

@@ -4,13 +4,13 @@
     <id>HelixToolkit.UWP</id>
     <version>$version$</version>
     <title>HelixToolkit for UWP (based on SharpDX)</title>
-    <authors>objo, Lunci</authors>
+    <authors>Lunci</authors>
     <license type="expression">MIT</license>
     <projectUrl>https://github.com/helix-toolkit/helix-toolkit</projectUrl>
     <icon>helixtoolkit.png</icon>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Provides custom 3D controls for UWP and a scene graph based on SharpDX.</description>
-    <tags>UWP SharpDX 3D</tags>
+    <tags>UWP SharpDX 3D DirectX</tags>
     <dependencies>
 	    <group targetFramework="UAP10.0">
 		    <dependency id="Microsoft.NETCore.UniversalWindowsPlatform" version="6.1.7" exclude="Build,Analyzers" />
@@ -23,8 +23,9 @@
 		    <dependency id="SharpDX.DXGI" version="4.2.0" />
 		    <dependency id="SharpDX.Mathematics" version="4.2.0" />
 		    <dependency id="System.ComponentModel.TypeConverter" version="4.3.0"/>
-		    <dependency id="System.Drawing.Primitives" version="4.3.0"/>		
+		    <dependency id="System.Drawing.Primitives" version="4.3.0"/>
 		    <dependency id="System.Private.DataContractSerialization" version="4.3.0"/>
+        <dependency id="Microsoft.Extensions.Logging.Abstractions" version="6.0.0"/>
       </group>
     </dependencies>
     <contentFiles>

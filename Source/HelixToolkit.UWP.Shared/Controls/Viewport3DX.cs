@@ -23,6 +23,7 @@ using HelixToolkit.SharpDX.Core.Cameras;
 using HelixToolkit.SharpDX.Core.Model.Scene;
 using HelixToolkit.SharpDX.Core.Model.Scene2D;
 using HelixToolkit.SharpDX.Core.Utilities;
+using PointerDeviceType = Microsoft.UI.Input.PointerDeviceType;
 namespace HelixToolkit.WinUI
 #else
 using Windows.UI.Xaml;
@@ -31,6 +32,7 @@ using Windows.UI.Xaml.Markup;
 using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using VisibilityEnum = Windows.UI.Xaml.Visibility;
+using PointerDeviceType = Windows.Devices.Input.PointerDeviceType;
 namespace HelixToolkit.UWP
 #endif
 {
@@ -55,7 +57,7 @@ namespace HelixToolkit.UWP
     /// Renders the contained 3-D content within the 2-D layout bounds of the Viewport3DX element.
     /// </summary>
     [ContentProperty(Name = "Items")]
-    [TemplatePart(Name = ViewportPartNames.PART_RenderTarget, Type =typeof(SwapChainRenderHost))]
+    [TemplatePart(Name = ViewportPartNames.PART_RenderTarget, Type =typeof(HelixToolkitRenderPanel))]
     [TemplatePart(Name = ViewportPartNames.PART_CoordinateGroup, Type = typeof(ItemsControl))]
     [TemplatePart(Name = ViewportPartNames.PART_HostPresenter, Type =typeof(ContentPresenter))]
     [TemplatePart(Name = ViewportPartNames.PART_ItemsContainer, Type = typeof(ItemsControl))]
@@ -256,7 +258,7 @@ namespace HelixToolkit.UWP
         private void Viewport3DX_DpiChanged(DisplayInformation sender, object args)
         {
             var dpi = sender.RawPixelsPerViewPixel;
-            if (hostPresenter != null && hostPresenter.Content is SwapChainRenderHost host)
+            if (hostPresenter != null && hostPresenter.Content is HelixToolkitRenderPanel host)
             {
                 host.DpiScale = (float)dpi;
             }
@@ -315,6 +317,7 @@ namespace HelixToolkit.UWP
                     if (item is Element3D element)
                     {
                         element.SceneNode.Detach();
+                        element.SceneNode.Invalidated -= NodeInvalidated;
                     }
                 }
             }
@@ -328,12 +331,14 @@ namespace HelixToolkit.UWP
                     }
                     if (this.IsAttached && item is Element3D element)
                     {
-                        element.SceneNode.Attach(renderHostInternal);
+                        element.SceneNode.Invalidated += NodeInvalidated;
+                        element.SceneNode.Attach(EffectsManager);
                     }
                 }
             }
             InvalidateRender();
         }
+
 
         protected override void OnApplyTemplate()
         {
@@ -364,7 +369,7 @@ namespace HelixToolkit.UWP
             hostPresenter = GetTemplateChild(ViewportPartNames.PART_HostPresenter) as ContentPresenter;
             if (hostPresenter != null)
             {
-                var host = new SwapChainRenderHost(EnableDeferredRendering);
+                var host = new HelixToolkitRenderPanel(EnableDeferredRendering);
                 hostPresenter.Content = host;
 #if WINDOWS_UWP
                 var view = DisplayInformation.GetForCurrentView();
@@ -374,7 +379,7 @@ namespace HelixToolkit.UWP
 #endif
                 host.DpiScale = (float)dpi;
                 host.EnableDpiScale = EnableDpiScale;
-                renderHostInternal = (hostPresenter.Content as SwapChainRenderHost).RenderHost;
+                renderHostInternal = (hostPresenter.Content as HelixToolkitRenderPanel).RenderHost;
                 if (renderHostInternal != null)
                 {
                     renderHostInternal.RenderConfiguration.RenderD2D = false;
@@ -390,7 +395,8 @@ namespace HelixToolkit.UWP
                     renderHostInternal.MSAA = this.MSAA;
 #endif
                     renderHostInternal.RenderConfiguration.AutoUpdateOctree = this.EnableAutoOctreeUpdate;
-                    renderHostInternal.RenderConfiguration.EnableOITRendering = EnableOITRendering;
+                    renderHostInternal.RenderConfiguration.OITRenderType = OITRenderMode;
+                    renderHostInternal.RenderConfiguration.OITDepthPeelingIteration = OITDepthPeelingIteration;
                     renderHostInternal.RenderConfiguration.OITWeightPower = (float)OITWeightPower;
                     renderHostInternal.RenderConfiguration.OITWeightDepthSlope = (float)OITWeightDepthSlope;
                     renderHostInternal.RenderConfiguration.OITWeightMode = OITWeightMode;
@@ -511,7 +517,8 @@ namespace HelixToolkit.UWP
             {
                 foreach (var e in this.OwnedRenderables)
                 {
-                    e.Attach(host);
+                    e.Attach(EffectsManager);
+                    e.Invalidated += NodeInvalidated;
                 }
                 SharedModelContainerInternal?.Attach(host);
                 foreach (var e in this.D2DRenderables)
@@ -520,6 +527,11 @@ namespace HelixToolkit.UWP
                 }
                 IsAttached = true;
             }
+        }
+
+        private void NodeInvalidated(object sender, InvalidateTypes e)
+        {
+            renderHostInternal?.Invalidate(e);
         }
 
         /// <summary>
@@ -582,14 +594,14 @@ namespace HelixToolkit.UWP
         /// <param name="e">Event data for the event.</param>
         protected override void OnManipulationStarted(ManipulationStartedRoutedEventArgs e)
         {
-            if(e.PointerDeviceType == Windows.Devices.Input.PointerDeviceType.Touch)
+            if(e.PointerDeviceType == PointerDeviceType.Touch)
                 CameraController.OnManipulationStarted(e);
             base.OnManipulationStarted(e);
         }
 
         protected override void OnManipulationCompleted(ManipulationCompletedRoutedEventArgs e)
         {
-            if (e.PointerDeviceType == Windows.Devices.Input.PointerDeviceType.Touch)
+            if (e.PointerDeviceType == PointerDeviceType.Touch)
                 CameraController.OnManipulationCompleted(e);
             base.OnManipulationCompleted(e);
         }
@@ -597,7 +609,7 @@ namespace HelixToolkit.UWP
 
         protected override void OnManipulationDelta(ManipulationDeltaRoutedEventArgs e)
         {
-            if (e.PointerDeviceType == Windows.Devices.Input.PointerDeviceType.Touch)
+            if (e.PointerDeviceType == PointerDeviceType.Touch)
                 CameraController.OnManipulationDelta(e);
             base.OnManipulationDelta(e);
         }
@@ -919,11 +931,25 @@ namespace HelixToolkit.UWP
                 if (disposing)
                 {
                     EffectsManager = null;
-                    Camera = null;
+                    Camera = null; 
+                    foreach (var item in Items)
+                    {
+                        item.Dispose();
+                    }
+                    viewCube?.Dispose();
+                    coordinateSystem?.Dispose();
                     Items.Clear();
+                    if (hostPresenter.Content is IDisposable host)
+                    {
+                        host.Dispose();
+                    }
                     RenderHost.Dispose();
                     CameraController.Dispose();
-                    DisplayInformation.GetForCurrentView().DpiChanged -= Viewport3DX_DpiChanged;
+                    try
+                    {
+                        DisplayInformation.GetForCurrentView().DpiChanged -= Viewport3DX_DpiChanged;
+                    }
+                    catch (Exception) { }
                 }
                 disposedValue = true;
             }

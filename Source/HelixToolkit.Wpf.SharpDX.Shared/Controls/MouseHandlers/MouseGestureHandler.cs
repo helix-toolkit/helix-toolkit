@@ -240,6 +240,7 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 return;
             }
+            
 
             this.Viewport.MouseMove -= this.OnMouseMove;
             this.Viewport.MouseUp -= this.OnMouseUp;
@@ -389,6 +390,8 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </param>
         protected virtual void OnMouseMove(object sender, MouseEventArgs e)
         {
+            if (e.Handled)
+                return;
             this.Delta(Mouse.GetPosition(this.Viewport));
         }
 

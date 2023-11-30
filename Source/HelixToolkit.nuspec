@@ -4,19 +4,21 @@
     <id>HelixToolkit</id>
     <version>$version$</version>
     <title>Helix Toolkit (portable library)</title>
-    <authors>objo</authors>
+    <authors>Lunci, objo</authors>
     <license type="expression">MIT</license>
     <projectUrl>https://github.com/helix-toolkit/helix-toolkit</projectUrl>
     <icon>helixtoolkit.png</icon>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Portable core assembly that is referenced by the other Helix Toolkit packages.</description>
-    <tags>3D wpf</tags>
+    <tags>3D</tags>
 	<dependencies>
-	    <group targetFramework="netstandard1.1"/>
+	    <group targetFramework="netstandard2.0">
+        <dependency id="Microsoft.Extensions.Logging.Abstractions" version="6.0.0"/>
+      </group>
 	</dependencies>
   </metadata>
   <files>
-    <file src="HelixToolkit\bin\Release\netstandard1.1\HelixToolkit.???" target="lib\netstandard1.1" />
+    <file src="HelixToolkit\bin\Release\netstandard2.0\HelixToolkit.???" target="lib\netstandard2.0" />
     <file src="..\LICENSE" />
     <file src="..\AUTHORS" />
     <file src="..\CONTRIBUTORS" />

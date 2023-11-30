@@ -146,13 +146,28 @@ namespace HelixToolkit.UWP
                     return nearField;
                 }
             }
+
+            private ProjectionCameraCore lightCamera = null;
             /// <summary>
             /// Distance of the directional light from origin
             /// </summary>
             public ProjectionCameraCore LightCamera
             {
-                set; get;
-            } = null;
+                set
+                {
+                    if (lightCamera != null)
+                    {
+                        lightCamera.PropertyChanged -= LightCamera_PropertyChanged;
+                    }
+                    SetAffectsRender(ref lightCamera, value);
+                    if (lightCamera != null)
+                    {
+                        lightCamera.PropertyChanged += LightCamera_PropertyChanged;
+                    }
+                }
+                get => lightCamera;
+            }
+
             /// <summary>
             /// Gets or sets a value indicating whether shadow map should automatically cover complete scene. Only effective with directional light.
             /// <para>Limitation: Currently unable to properly cover BoneSkinned model animation.</para>
@@ -221,34 +236,39 @@ namespace HelixToolkit.UWP
                 c.Height = (int)(Resolution.Height);
             }
 
+            private void LightCamera_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+            {
+                InvalidateRender();
+            }
+
             /// <summary>
             /// To override Attach routine, please override this.
             /// </summary>
-            /// <param name="host"></param>
+            /// <param name="effectsManager"></param>
             /// <returns>
             /// Return true if attached
             /// </returns>
-            protected override bool OnAttach(IRenderHost host)
+            protected override bool OnAttach(IEffectsManager effectsManager)
             {
-                base.OnAttach(host);
+                base.OnAttach(effectsManager);
                 shadowCore = RenderCore as ShadowMapCore;
-                host.SceneGraphUpdated += Host_SceneGraphUpdated;
+                this.Invalidated += Host_SceneGraphUpdated;
                 sceneChanged = true;
                 return true;
             }
 
             protected override void OnDetach()
             {
-                if (RenderHost != null)
-                {
-                    RenderHost.SceneGraphUpdated -= Host_SceneGraphUpdated;
-                }
+                this.Invalidated -= Host_SceneGraphUpdated;
                 base.OnDetach();
             }
 
-            private void Host_SceneGraphUpdated(object sender, System.EventArgs e)
+            private void Host_SceneGraphUpdated(object sender, InvalidateTypes type)
             {
-                sceneChanged = true;
+                if (type == InvalidateTypes.SceneGraph)
+                {
+                    sceneChanged = true;
+                }
             }
 
             /// <summary>
@@ -258,10 +278,11 @@ namespace HelixToolkit.UWP
             /// <returns></returns>
             protected override bool CanRender(RenderContext context)
             {
-                return base.CanRender(context) && RenderHost.IsShadowMapEnabled;
+                (RenderCore as ShadowMapCore).NeedRender = base.CanRender(context) && context.RenderHost.IsShadowMapEnabled;
+                return true;
             }
 
-            private BoundingBox FindSceneBound(FastList<SceneNode> nodes)
+            private BoundingBox FindSceneBound(FastList<SceneNode> nodes) 
             {
                 var box = new BoundingBox();
                 if (nodes.Count > 0)
@@ -357,7 +378,7 @@ namespace HelixToolkit.UWP
                             var dir = Vector3.TransformNormal(dlight.Direction, dlight.ModelMatrix).Normalized();
                             if (AutoCoverCompleteScene)
                             {
-                                if (sceneChanged || IsSceneDynamic)
+                                if (sceneChanged || e.Context.updateSceneGraphRequested || IsSceneDynamic)
                                 {
                                     sceneChanged = false;
                                     var boundingBox = FindSceneBound(e.Context.RenderHost.PerFrameOpaqueNodes);

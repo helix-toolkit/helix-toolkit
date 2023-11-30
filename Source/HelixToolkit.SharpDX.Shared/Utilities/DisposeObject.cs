@@ -111,6 +111,8 @@ namespace HelixToolkit.UWP
             get; private set;
         }
 
+        private int disposeCount_ = 0;
+
         /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
@@ -138,16 +140,19 @@ namespace HelixToolkit.UWP
             var currRef = RefCount;
             if (currRef == 0 && !IsDisposed)
             {
-                AddBackToPool = null;
-                Disposing?.Invoke(this, disposing ? BoolEventArgs.TrueArgs : BoolEventArgs.FalseArgs);
-                Disposing = null;
-                OnDispose(disposing);
-                //GC.SuppressFinalize(this);
+                if (Interlocked.Increment(ref disposeCount_) == 1)
+                {
+                    AddBackToPool = null;
+                    Disposing?.Invoke(this, disposing ? BoolEventArgs.TrueArgs : BoolEventArgs.FalseArgs);
+                    Disposing = null;
+                    OnDispose(disposing);
+                    //GC.SuppressFinalize(this);
 
-                IsDisposed = true;
+                    IsDisposed = true;
 
-                Disposed?.Invoke(this, disposing ? BoolEventArgs.TrueArgs : BoolEventArgs.FalseArgs);
-                Disposed = null;
+                    Disposed?.Invoke(this, disposing ? BoolEventArgs.TrueArgs : BoolEventArgs.FalseArgs);
+                    Disposed = null;
+                }
             }
             else if (currRef == 1)
             {

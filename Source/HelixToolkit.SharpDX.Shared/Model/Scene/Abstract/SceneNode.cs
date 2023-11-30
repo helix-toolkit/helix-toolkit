@@ -24,7 +24,24 @@ namespace HelixToolkit.UWP
     namespace Model.Scene
     {
         using Core;
+        using Utilities;
         using Render;
+
+        public enum InvalidateTypes
+        {
+            /// <summary>
+            /// Notify if scene needs re-rendered.
+            /// </summary>
+            Render,
+            /// <summary>
+            /// Notify if scene graph structure has changed.
+            /// </summary>
+            SceneGraph,
+            /// <summary>
+            /// Notify to rebuild per frame renderables.
+            /// </summary>
+            PerFrameRenderables
+        }
 
         /// <summary>
         ///
@@ -32,7 +49,7 @@ namespace HelixToolkit.UWP
         public abstract partial class SceneNode : DisposeObject, IComparable<SceneNode>, Animations.IAnimationNode
         {
             #region Properties
-
+            private static readonly string NodeStr = "Node";
             /// <summary>
             ///
             /// </summary>
@@ -43,7 +60,7 @@ namespace HelixToolkit.UWP
                     return RenderCore.GUID;
                 }
             }
-            private string name = "Node";
+            private string name = NodeStr;
             /// <summary>
             /// Gets or sets the name.
             /// </summary>
@@ -142,7 +159,7 @@ namespace HelixToolkit.UWP
                 }
             }
 
-            private SceneNode parent = NullSceneNode.NullNode;
+            private readonly WeakReference<SceneNode> parent = new WeakReference<SceneNode>(null);
             /// <summary>
             /// Gets or sets the parent.
             /// </summary>
@@ -153,18 +170,16 @@ namespace HelixToolkit.UWP
             {
                 internal set
                 {
-                    if (Set(ref parent, value))
+                    parent.TryGetTarget(out var target);
+                    if (Set(ref target, value))
                     {
+                        parent.SetTarget(value);
                         NeedMatrixUpdate = true;
-                        if (value == null)
-                        {
-                            parent = NullSceneNode.NullNode;
-                        }
                     }
                 }
                 get
                 {
-                    return parent;
+                    return parent.TryGetTarget(out var target) ? target : null;
                 }
             }
 
@@ -221,25 +236,14 @@ namespace HelixToolkit.UWP
             }
 
             /// <summary>
-            ///
-            /// </summary>
-            public IRenderHost RenderHost
-            {
-                get; private set;
-            }
-
-            /// <summary>
             /// Gets the effects manager.
             /// </summary>
             /// <value>
             /// The effects manager.
             /// </value>
-            protected IEffectsManager EffectsManager
+            public IEffectsManager EffectsManager
             {
-                get
-                {
-                    return RenderHost.EffectsManager;
-                }
+                private set; get;
             }
 
             /// <summary>
@@ -248,7 +252,7 @@ namespace HelixToolkit.UWP
             /// <value>
             /// The items.
             /// </value>
-            internal ObservableCollection<SceneNode> ItemsInternal
+            internal ObservableFastList<SceneNode> ItemsInternal
             {
                 set; get;
             } = Constants.EmptyRenderableArray;
@@ -259,7 +263,7 @@ namespace HelixToolkit.UWP
             /// <value>
             /// The children.
             /// </value>
-            public ReadOnlyObservableCollection<SceneNode> Items { internal set; get; } = Constants.EmptyReadOnlyRenderableArray;
+            public ReadOnlyObservableFastList<SceneNode> Items { internal set; get; } = Constants.EmptyReadOnlyRenderableArray;
             /// <summary>
             /// Gets the items count.
             /// </summary>
@@ -268,7 +272,7 @@ namespace HelixToolkit.UWP
             /// </value>
             public int ItemsCount
             {
-                get => Items.Count;
+                get => ItemsInternal.Count;
             }
 
             private bool isHitTestVisible = true;
@@ -396,9 +400,9 @@ namespace HelixToolkit.UWP
             /// <summary>
             ///
             /// </summary>
-            /// <param name="host"></param>
+            /// <param name="effectsManager"></param>
             /// <returns></returns>
-            public delegate IRenderTechnique SetRenderTechniqueFunc(IRenderHost host);
+            public delegate IRenderTechnique SetRenderTechniqueFunc(IEffectsManager effectsManager);
 
             /// <summary>
             /// A delegate function to change render technique.
@@ -412,11 +416,11 @@ namespace HelixToolkit.UWP
             /// Override this function to set render technique during Attach Host.
             /// <para>If <see cref="OnSetRenderTechnique"/> is set, then <see cref="OnSetRenderTechnique"/> instead of <see cref="OnCreateRenderTechnique"/> function will be called.</para>
             /// </summary>
-            /// <param name="host"></param>
+            /// <param name="effectsManager"></param>
             /// <returns>Return RenderTechnique</returns>
-            protected virtual IRenderTechnique OnCreateRenderTechnique(IRenderHost host)
+            protected virtual IRenderTechnique OnCreateRenderTechnique(IEffectsManager effectsManager)
             {
-                return host.RenderTechnique;
+                return effectsManager[DefaultRenderTechniqueNames.Mesh];
             }
 
             /// <summary>
@@ -504,6 +508,11 @@ namespace HelixToolkit.UWP
             /// Occurs when [mouse up].
             /// </summary>
             public event EventHandler<SceneNodeMouseUpArgs> MouseUp;
+            /// <summary>
+            /// Occurs when invalidation has happened.
+            /// This is a bubble up event.
+            /// </summary>
+            public event EventHandler<InvalidateTypes> Invalidated;
             #endregion Events
 
             private RenderCore core;
@@ -529,29 +538,34 @@ namespace HelixToolkit.UWP
                 Name = name;
             }
             /// <summary>
-            /// <para>Attaches the element to the specified host. To overide Attach, please override <see cref="OnAttach(IRenderHost)"/> function.</para>
+            /// <para>Attaches the element to the specified effectsManager and initialize all necessary graphics resources.</para>
+            /// <para>To overide Attach, please override <see cref="OnAttach(IEffectsManager)"/> function.</para>
             /// <para>To set different render technique instead of using technique from host, override <see cref="OnCreateRenderTechnique"/></para>
-            /// <para>Attach Flow: <see cref="OnCreateRenderTechnique(IRenderHost)"/> -> Set RenderHost -> Get Effect -> <see cref="OnAttach(IRenderHost)"/> -> <see cref="InvalidateSceneGraph"/></para>
+            /// <para>Attach Flow: <see cref="OnCreateRenderTechnique(IEffectsManager)"/> -> Set RenderHost -> Get Effect -> <see cref="OnAttach(IEffectsManager)"/> -> <see cref="InvalidateSceneGraph"/></para>
             /// </summary>
-            /// <param name="host">The host.</param>
-            public void Attach(IRenderHost host)
+            /// <param name="effectsManager">The effectsManager.</param>
+            public void Attach(IEffectsManager effectsManager)
             {
-                if (IsAttached || host == null || host.EffectsManager == null)
+                if (IsAttached && effectsManager != EffectsManager)
+                {
+                    throw new InvalidOperationException("EffectsManager instances must be the same during attaching.");
+                }
+                if (IsAttached || effectsManager == null)
                 {
                     return;
                 }
-                RenderHost = host;
-                this.renderTechnique = OnSetRenderTechnique != null ? OnSetRenderTechnique(host) : OnCreateRenderTechnique(host);
+                EffectsManager = effectsManager;
+                this.renderTechnique = OnSetRenderTechnique != null ? OnSetRenderTechnique(effectsManager) : OnCreateRenderTechnique(effectsManager);
                 if (renderTechnique == null)
                 {
-                    var techniqueName = RenderHost.EffectsManager.RenderTechniques.FirstOrDefault();
+                    var techniqueName = EffectsManager.RenderTechniques.FirstOrDefault();
                     if (string.IsNullOrEmpty(techniqueName))
                     {
                         return;
                     }
-                    renderTechnique = RenderHost.EffectsManager[techniqueName];
+                    renderTechnique = EffectsManager[techniqueName];
                 }
-                IsAttached = OnAttach(host);
+                IsAttached = OnAttach(effectsManager);
                 if (IsAttached)
                 {
                     NeedMatrixUpdate = true;
@@ -564,13 +578,13 @@ namespace HelixToolkit.UWP
             /// <summary>
             /// To override Attach routine, please override this.
             /// </summary>
-            /// <param name="host"></param>
+            /// <param name="effectsManager"></param>
             /// <returns>Return true if attached</returns>
-            protected virtual bool OnAttach(IRenderHost host)
+            protected virtual bool OnAttach(IEffectsManager effectsManager)
             {
                 RenderCore.Attach(renderTechnique);
                 AssignDefaultValuesToCore(RenderCore);
-                return RenderCore == null ? false : RenderCore.IsAttached;
+                return RenderCore != null && RenderCore.IsAttached;
             }
 
             /// <summary>
@@ -581,7 +595,7 @@ namespace HelixToolkit.UWP
             }
 
             /// <summary>
-            /// Detaches the element from the host. Override <see cref="OnDetach"/>
+            /// Detaches the element from the effectsManager and release all graphics resources. Override <see cref="OnDetach"/>
             /// </summary>
             public void Detach()
             {
@@ -593,6 +607,7 @@ namespace HelixToolkit.UWP
                     OnDetach();
                     renderTechnique = null;
                     Detached?.Invoke(this, EventArgs.Empty);
+                    Invalidated = null;
                 }
             }
 
@@ -601,12 +616,12 @@ namespace HelixToolkit.UWP
             /// </summary>
             protected virtual void OnDetach()
             {
-                RenderHost = null;
+                EffectsManager = null;
             }
 
             protected void InvalidateRenderEvent(object sender, EventArgs arg)
             {
-                RenderHost?.InvalidateRender();
+                Invalidate(InvalidateTypes.Render);
             }
 
             /// <summary>
@@ -615,7 +630,7 @@ namespace HelixToolkit.UWP
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public void InvalidateRender()
             {
-                RenderHost?.InvalidateRender();
+                Invalidate(InvalidateTypes.Render);
             }
 
             /// <summary>
@@ -624,7 +639,7 @@ namespace HelixToolkit.UWP
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             protected void InvalidateSceneGraph()
             {
-                RenderHost?.InvalidateSceneGraph();
+                Invalidate(InvalidateTypes.SceneGraph);
             }
 
             /// <summary>
@@ -633,7 +648,23 @@ namespace HelixToolkit.UWP
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             protected void InvalidatePerFrameRenderables()
             {
-                RenderHost?.InvalidatePerFrameRenderables();
+                Invalidate(InvalidateTypes.PerFrameRenderables);
+            }
+            /// <summary>
+            /// Invalidate by type
+            /// </summary>
+            /// <param name="type"></param>
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            protected void Invalidate(InvalidateTypes type)
+            {
+                Invalidated?.Invoke(this, type);              
+                if (parent.TryGetTarget(out var target))
+                {
+                    foreach(var node in TreeTraverser.TraverseUp(target))
+                    {
+                        node.Invalidated?.Invoke(this, type);
+                    }
+                }
             }
             /// <summary>
             /// Updates the element total transforms, determine renderability, etc. by the specified time span.
@@ -655,7 +686,8 @@ namespace HelixToolkit.UWP
             {
                 if (NeedMatrixUpdate)
                 {
-                    TotalModelMatrixInternal = modelMatrix * parent.TotalModelMatrixInternal;
+                    parent.TryGetTarget(out var target);
+                    TotalModelMatrixInternal = modelMatrix * (target == null ? Matrix.Identity : target.TotalModelMatrixInternal);
                     for (var i = 0; i < ItemsInternal.Count; ++i)
                     {
                         ItemsInternal[i].NeedMatrixUpdate = true;
@@ -783,7 +815,7 @@ namespace HelixToolkit.UWP
             /// </returns>
             protected virtual bool CanHitTest(HitTestContext context)
             {
-                return AlwaysHittable || (IsHitTestVisible && IsRenderable);
+                return context != null && (AlwaysHittable || (IsHitTestVisible && IsRenderable));
             }
 
             /// <summary>
@@ -1051,8 +1083,9 @@ namespace HelixToolkit.UWP
 
             protected override void OnDispose(bool disposeManagedResources)
             {
-                ItemsInternal.Clear();
+                Detach();
                 RenderCore.Dispose();
+                Invalidated = null;
                 VisibleChanged = null;
                 TransformChanged = null;
                 OnSetRenderTechnique = null;
@@ -1075,23 +1108,12 @@ namespace HelixToolkit.UWP
             /// <returns></returns>
             public bool RemoveSelf()
             {
-                if (parent != null && parent is GroupNodeBase group)
-                {
-                    return group.RemoveChildNode(this);
-                }
-                else
-                {
-                    return false;
-                }
+                return parent.TryGetTarget(out var target) && target is GroupNodeBase group && group.RemoveChildNode(this);
             }
 
             public int CompareTo(SceneNode other)
             {
-                if (other == null)
-                {
-                    return 1;
-                }
-                return RenderOrderKey.CompareTo(other.RenderOrderKey);
+                return other == null ? 1 : RenderOrderKey.CompareTo(other.RenderOrderKey);
             }
 
             public void RaiseMouseDownEvent(IViewport3DX viewport, Vector2 pos, HitTestResult hit, object originalInputEventArgs = null)
@@ -1146,16 +1168,6 @@ namespace HelixToolkit.UWP
                 backingField = value;
                 InvalidateSceneGraph();
                 return true;
-            }
-        }
-
-        public sealed class NullSceneNode : SceneNode
-        {
-            public static readonly NullSceneNode NullNode = new NullSceneNode();
-
-            protected override bool OnHitTest(HitTestContext context, Matrix totalModelMatrix, ref List<HitTestResult> hits)
-            {
-                return false;
             }
         }
 

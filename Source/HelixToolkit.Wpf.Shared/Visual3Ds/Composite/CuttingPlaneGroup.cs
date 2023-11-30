@@ -224,7 +224,10 @@ namespace HelixToolkit.Wpf
             var newGeometry = originalGeometry;
             var originalMeshGeometry = originalGeometry as MeshGeometry3D;
 
-            if (this.IsEnabled && originalMeshGeometry != null)
+            if (this.IsEnabled
+                && this.CuttingPlanes != null
+                && originalMeshGeometry != null
+               )
             {
                 var inverseTransform = transform.Inverse;
                 if (inverseTransform == null)
@@ -285,6 +288,13 @@ namespace HelixToolkit.Wpf
             }
 
             return MeshGeometryHelper.Cut(source, p, n);
+        }
+        /// <summary>
+        /// Update the cutting planes to the model.
+        /// </summary>
+        public void UpdateModel()
+        {
+            ApplyCuttingGeometries(true);
         }
     }
 }

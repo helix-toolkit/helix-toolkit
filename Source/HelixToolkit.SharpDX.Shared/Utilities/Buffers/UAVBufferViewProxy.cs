@@ -24,51 +24,61 @@ namespace HelixToolkit.UWP
         /// </summary>
         public sealed class UAVBufferViewProxy : IDisposable
         {
-            private SDX11.Buffer buffer;
-            /// <summary>
-            /// The uav
-            /// </summary>
-            public UnorderedAccessView uav;
-            /// <summary>
-            /// The SRV
-            /// </summary>
-            public ShaderResourceViewProxy srv;
-
+            private SDX11.Resource resource;
+            public Resource Resource => resource;
+ 
+            private UnorderedAccessView uav;
             /// <summary>
             /// Get UnorderedAccessView
             /// </summary>
-            public UnorderedAccessView UAV
-            {
-                get
-                {
-                    return uav;
-                }
-            }
-
+            public UnorderedAccessView UAV => uav;
+            private ShaderResourceViewProxy srv;
             /// <summary>
             /// Get ShaderResourceView
             /// </summary>
-            public ShaderResourceViewProxy SRV
-            {
-                get
-                {
-                    return srv;
-                }
-            }
+            public ShaderResourceViewProxy SRV => srv;
+
             /// <summary>
-            /// Initializes a new instance of the <see cref="UAVBufferViewProxy"/> class.
+            /// Create a raw buffer based UAV
             /// </summary>
             /// <param name="device">The device.</param>
             /// <param name="bufferDesc">The buffer desc.</param>
             /// <param name="uavDesc">The uav desc.</param>
             /// <param name="srvDesc">The SRV desc.</param>
-            public UAVBufferViewProxy(Device device, ref BufferDescription bufferDesc, ref UnorderedAccessViewDescription uavDesc, ref ShaderResourceViewDescription srvDesc)
+            public UAVBufferViewProxy(Device device, ref BufferDescription bufferDesc, 
+                ref UnorderedAccessViewDescription uavDesc, ref ShaderResourceViewDescription srvDesc)
+                : this(device, ref bufferDesc, ref uavDesc)
             {
-                buffer = new SDX11.Buffer(device, bufferDesc);
-                srv = new ShaderResourceViewProxy(device, buffer);
+                srv = new ShaderResourceViewProxy(device, resource);
                 srv.CreateTextureView();
-                uav = new UnorderedAccessView(device, buffer, uavDesc);
             }
+            /// <summary>
+            /// Create a raw buffer based UAV
+            /// </summary>
+            /// <param name="device"></param>
+            /// <param name="bufferDesc"></param>
+            /// <param name="uavDesc"></param>
+            public UAVBufferViewProxy(Device device, ref BufferDescription bufferDesc, ref UnorderedAccessViewDescription uavDesc)
+            {
+                resource = new SDX11.Buffer(device, bufferDesc);
+                uav = new UnorderedAccessView(device, resource, uavDesc);
+            }
+            /// <summary>
+            /// Create a texture2D based UAV
+            /// </summary>
+            /// <param name="device"></param>
+            /// <param name="texture2DDesc"></param>
+            /// <param name="uavDesc"></param>
+            /// <param name="srvDesc"></param>
+            public UAVBufferViewProxy(Device device, ref Texture2DDescription texture2DDesc, 
+                ref UnorderedAccessViewDescription uavDesc, ref ShaderResourceViewDescription srvDesc)
+            {
+                resource = new SDX11.Texture2D(device, texture2DDesc);
+                srv = new ShaderResourceViewProxy(device, resource);
+                srv.CreateTextureView(ref srvDesc);
+                uav = new UnorderedAccessView(device, resource, uavDesc);
+            }
+
             /// <summary>
             /// Copies the count.
             /// </summary>
@@ -102,7 +112,7 @@ namespace HelixToolkit.UWP
                     {
                         Disposer.RemoveAndDispose(ref uav);
                         Disposer.RemoveAndDispose(ref srv);
-                        Disposer.RemoveAndDispose(ref buffer);
+                        Disposer.RemoveAndDispose(ref resource);
                     }
 
                     // TODO: free unmanaged resources (unmanaged objects) and override a finalizer below.

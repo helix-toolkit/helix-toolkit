@@ -30,6 +30,27 @@ namespace HelixToolkit.UWP
     using Utilities;
     using Render;
 
+    public enum OITRenderType
+    {
+        None,
+        /// <summary>
+        /// Use weighted order independent transparent rendering. This OIT is the fastest but not color accurate in many cases.
+        /// </summary>
+        SinglePassWeighted,
+        /// <summary>
+        /// Use classic depth peeling method for independent transparent rendering.
+        /// </summary>
+        DepthPeeling
+    }
+
+    public enum OITRenderStage
+    {
+        None,
+        SinglePassWeighted,
+        DepthPeelingInitMinMaxZ,
+        DepthPeeling,
+    }
+
     /// <summary>
     /// The render-context is currently generated per frame
     /// Optimizations might be possible
@@ -221,12 +242,12 @@ namespace HelixToolkit.UWP
         public bool IsDeferredPass;
 
         /// <summary>
-        /// Gets or sets a value indicating whether is order independent transparent pass.
+        /// Gets or sets a value indicating order independent transparent pass stage.
         /// </summary>
         /// <value>
-        ///   <c>true</c> if this instance is oit pass; otherwise, <c>false</c>.
+        ///   <c>None</c> It is not using oit pass <c>false</c>.
         /// </value>
-        public bool IsOITPass = false;
+        public OITRenderStage OITRenderStage = OITRenderStage.None;
 
         /// <summary>
         /// Gets or sets the name of the custom pass.
@@ -234,7 +255,7 @@ namespace HelixToolkit.UWP
         /// <value>
         /// The name of the custom pass.
         /// </value>
-        public string CustomPassName = "";
+        public string CustomPassName = string.Empty;
 
         /// <summary>
         /// Gets or sets the time stamp.
@@ -352,6 +373,14 @@ namespace HelixToolkit.UWP
             }
         }
         /// <summary>
+        /// Depth peeling iteration. Default is 4. 
+        /// Iteration depends on estimating number of overlapping semi-transparent layers to be accurately rendered.
+        /// </summary>
+        public int OITDepthPeelingIteration
+        {
+            set; get;
+        } = 4;
+        /// <summary>
         /// Gets or sets a value indicating whether [ssao enabled].
         /// </summary>
         /// <value>
@@ -408,7 +437,7 @@ namespace HelixToolkit.UWP
         /// <value>
         ///   <c>true</c> if [update scene graph requested]; otherwise, <c>false</c>.
         /// </value>
-        public bool UpdateSceneGraphRequested
+        public bool updateSceneGraphRequested
         {
             internal set; get;
         }
@@ -418,7 +447,7 @@ namespace HelixToolkit.UWP
         /// <value>
         ///   <c>true</c> if [update per frame renderable requested]; otherwise, <c>false</c>.
         /// </value>
-        public bool UpdatePerFrameRenderableRequested
+        public bool updatePerFrameRenderableRequested
         {
             internal set; get;
         }

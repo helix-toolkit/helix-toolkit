@@ -13,7 +13,7 @@ using DeviceContext = SharpDX.Direct3D11.DeviceContext1;
 #endif
 
 #if NETFX_CORE
-using  Windows.UI.Xaml;
+using Windows.UI.Xaml;
 using HelixToolkit.UWP.Utilities;
 namespace HelixToolkit.UWP
 #elif WINUI 
@@ -79,21 +79,6 @@ namespace HelixToolkit.Wpf.SharpDX
         public IRenderTechnique RenderTechnique
         {
             set; get;
-        }
-
-        private static readonly LogWrapper NullLogger = new LogWrapper(new NullLogger());
-        /// <summary>
-        /// Gets the logger.
-        /// </summary>
-        /// <value>
-        /// The logger.
-        /// </value>
-        public LogWrapper Logger
-        {
-            get
-            {
-                return CurrentRenderHost != null ? CurrentRenderHost.Logger : NullLogger;
-            }
         }
 
         private readonly HashSet<IViewport3DX> viewports = new HashSet<IViewport3DX>();
@@ -298,6 +283,7 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 viewport.EffectsManager = this.EffectsManager;
             }
+            EffectsManagerChanged?.Invoke(this, EffectsManager);
         }
 
         /// <summary>
@@ -346,6 +332,14 @@ namespace HelixToolkit.Wpf.SharpDX
             foreach (var v in attachedRenderHosts)
             {
                 v.InvalidatePerFrameRenderables();
+            }
+        }
+
+        public void Invalidate(InvalidateTypes type)
+        {
+            foreach (var v in attachedRenderHosts)
+            {
+                v.Invalidate(type);
             }
         }
         /// <summary>
@@ -632,6 +626,10 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
+        public event EventHandler<IEffectsManager> EffectsManagerChanged;
+
+        public bool EnableParallelProcessing { set; get; }
+
         public ModelContainer3DX()
         {
             this.IsHitTestVisible = false;
@@ -652,11 +650,18 @@ namespace HelixToolkit.Wpf.SharpDX
                 {
                     foreach (var renderable in Renderables)
                     {
-                        renderable.Attach(this);
+                        renderable.Invalidated += RenderableInvalidated;
+                        renderable.Attach(EffectsManager);
                     }
                 }
             }
         }
+
+        private void RenderableInvalidated(object sender, InvalidateTypes e)
+        {
+            Invalidate(e);
+        }
+
         /// <summary>
         /// Detaches this instance.
         /// </summary>
@@ -671,6 +676,7 @@ namespace HelixToolkit.Wpf.SharpDX
                     foreach (var renderable in Renderables)
                     {
                         renderable.Detach();
+                        renderable.Invalidated -= RenderableInvalidated;
                     }
                 }
                 else if (d3dCounter < 0)
@@ -685,6 +691,7 @@ namespace HelixToolkit.Wpf.SharpDX
             foreach (var renderable in Renderables)
             {
                 renderable.Detach();
+                renderable.Invalidated -= RenderableInvalidated;
             }
         }
         /// <summary>
@@ -716,9 +723,9 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// Updates the and render.
         /// </summary>
-        public void UpdateAndRender()
+        public bool UpdateAndRender()
         {
-
+            return false;
         }
         /// <summary>
         /// Resizes
@@ -751,6 +758,13 @@ namespace HelixToolkit.Wpf.SharpDX
                 {
                     attachedRenderHosts.Clear();
                     Detach();
+                    foreach (var item in Items)
+                    {
+                        if (item is IDisposable d)
+                        {
+                            d.Dispose();
+                        }
+                    }
                     // TODO: dispose managed state (managed objects).
                     viewports.Clear();
                     currentRenderHost = null;

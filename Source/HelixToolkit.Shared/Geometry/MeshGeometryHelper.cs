@@ -283,13 +283,13 @@ namespace HelixToolkit.Wpf
             var p = new Point3DCollection();
             var ti = new Int32Collection();
             Vector3DCollection n = null;
-            if (input.Normals != null)
+            if (input.Normals != null && input.Normals.Count>0)
             {
                 n = new Vector3DCollection();
             }
 
             PointCollection tc = null;
-            if (input.TextureCoordinates != null)
+            if (input.TextureCoordinates != null && input.TextureCoordinates.Count > 0 )
             {
                 tc = new PointCollection();
             }
@@ -827,6 +827,20 @@ namespace HelixToolkit.Wpf
                     removeOutOfRangeTriangles.RemoveRange(idx, 3);
                 }
             }
+        }
+
+        public static Point3D GetCentroid(this IList<Point3D> vertices)
+        {
+            if (vertices.Count == 0)
+            {
+                return default;
+            }
+            var centroid = vertices[0];
+            for (var i = 1; i < vertices.Count; i++)
+            {
+                centroid += (vertices[i] - centroid) / (i + 1);
+            }
+            return centroid;
         }
     }
 }

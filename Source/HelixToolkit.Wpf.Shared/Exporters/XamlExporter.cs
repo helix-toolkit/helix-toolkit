@@ -61,11 +61,11 @@ namespace HelixToolkit.Wpf
                     i++;
                 }
             }
-            else
+            else if(obj != null)
             {
                 rd.Add("Model", obj);
             }
-
+            
             return rd;
         }
 

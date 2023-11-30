@@ -111,6 +111,7 @@ namespace HelixToolkit.UWP
             private void OnBoneChanged(object sender, System.EventArgs e)
             {
                 matricsChanged = true;
+                RaiseInvalidateRender();
             }
 
             protected override void OnGeometryBufferChanged(IAttachableBufferModel buffer)
@@ -170,6 +171,17 @@ namespace HelixToolkit.UWP
             {
                 mtChanged = true;
                 internalMTBuffer.SetWeight(i, w);
+            }
+
+            public void InvalidateBoneMatrices()
+            {
+                matricsChanged = true;
+            }
+
+            public void InvalidateMorphTargetWeights()
+            {
+                mtChanged = true;
+                internalMTBuffer.InvalidateWeight();
             }
         }
     }

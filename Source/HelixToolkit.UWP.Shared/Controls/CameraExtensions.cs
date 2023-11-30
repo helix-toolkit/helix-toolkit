@@ -12,6 +12,13 @@ using Windows.UI.Xaml.Media.Animation;
 namespace HelixToolkit.UWP
 #endif
 {
+#if !COREWPF
+#if WINUI
+    using SharpDX.Core.Cameras;
+#else
+    using Cameras;
+#endif
+#endif
     /// <summary>
     /// 
     /// </summary>
@@ -386,12 +393,7 @@ namespace HelixToolkit.UWP
         {
             var bounds = viewport.FindBoundsInternal();
 
-            if (bounds.Maximum.IsUndefined() || bounds.Maximum == bounds.Minimum)
-            {
-                return;
-            }
-
-            ZoomExtents(camera as ProjectionCamera, viewport, bounds, animationTime);
+            ZoomExtents(camera, viewport, bounds, animationTime);
         }
 
         /// <summary>
@@ -410,17 +412,25 @@ namespace HelixToolkit.UWP
         /// The animation time.
         /// </param>
         public static void ZoomExtents(
-            this Camera camera, Viewport3DX viewport, BoundingBox bounds, double animationTime = 0)
+            this Camera camera, Viewport3DX viewport, global::SharpDX.BoundingBox bounds, double animationTime = 0)
         {
-            if (!(camera is ProjectionCamera projectionCamera))
+            var diagonal = bounds.Maximum - bounds.Minimum;
+
+            if (diagonal.LengthSquared().Equals(0))
             {
                 return;
             }
-
-            var diagonal = bounds.Maximum - bounds.Minimum;
-            var center = (bounds.Maximum + bounds.Minimum) / 2 + (diagonal * 0.5f);
-            var radius = diagonal.Length() * 0.5f;
-            ZoomExtents(projectionCamera, viewport, center, radius, animationTime);
+            if (camera is PerspectiveCamera p && camera.CameraInternal is PerspectiveCameraCore pCore)
+            {
+                pCore.ZoomExtents((float)(viewport.ActualWidth / viewport.ActualHeight), bounds, out var pos, out var look, out var up);
+                p.AnimateTo(pos, look, up, animationTime);
+            }
+            else if (camera is OrthographicCamera orth && camera.CameraInternal is OrthographicCameraCore oCore)
+            {
+                oCore.ZoomExtents((float)(viewport.ActualWidth / viewport.ActualHeight), bounds, out var pos, out var look, out var up, out var width);
+                orth.AnimateWidth(width, animationTime);
+                orth.AnimateTo(pos, look, up, animationTime);
+            }
         }
 
         /// <summary>

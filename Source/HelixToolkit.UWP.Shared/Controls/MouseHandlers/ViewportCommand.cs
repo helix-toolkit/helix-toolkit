@@ -79,7 +79,6 @@ namespace HelixToolkit.UWP
     /// <summary>
     /// 
     /// </summary>
-    /// <seealso cref="Windows.UI.Xaml.Markup.MarkupExtension" />
     public class ViewportCommandExtension : MarkupExtension
     {
         private readonly ViewportCommand value;

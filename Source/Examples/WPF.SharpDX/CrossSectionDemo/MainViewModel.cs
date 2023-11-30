@@ -155,6 +155,51 @@
             binding.Mode = mode;
             BindingOperations.SetBinding(dobj, property, binding);
         }
+
+        private Vector3? constraintVector = new Vector3(0,1,0);
+        private object modelAtCursor;
+
+        public Vector3? ConstraintVector { get => constraintVector; set => SetValue(ref constraintVector, value); }
+
+        public object ModelAtCursor
+        {
+            get => modelAtCursor;
+            set
+            {
+                if (modelAtCursor != value)
+                {
+                    modelAtCursor = value;
+                    OnPropertyChanged();
+                    OnPropertyChanged(nameof(NameOfModelAtCursor));
+                }
+            }
+        }
+
+
+        public string NameOfModelAtCursor
+        {
+            get
+            {
+                if (ModelAtCursor is GeometryModel3D geometry)
+                {
+                    if (geometry.Geometry == BoxModel)
+                        return nameof(BoxModel);
+                    if (geometry.Geometry == FloorModel)
+                        return nameof(FloorModel);
+                    if (geometry.Geometry == Model)
+                        return nameof(Model);
+                    if (geometry.Geometry == Plane1Model)
+                        return nameof(Plane1Model);
+                    if (geometry.Geometry == Plane2Model)
+                        return nameof(Plane2Model);
+                }
+
+                if (ModelAtCursor is AxisPlaneGridModel3D)
+                    return nameof(AxisPlaneGridModel3D);
+                return null;
+            }
+
+        }
     }
 
 }

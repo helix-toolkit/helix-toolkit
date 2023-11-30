@@ -496,7 +496,7 @@ namespace HelixToolkit.UWP
                 {
                     if (Set(ref material, value))
                     {
-                        if (RenderHost != null)
+                        if (EffectsManager != null)
                         {
                             if (IsAttached)
                             {
@@ -505,9 +505,9 @@ namespace HelixToolkit.UWP
                             }
                             else
                             {
-                                var host = RenderHost;
+                                var effectsMgr = EffectsManager;
                                 Detach();
-                                Attach(host);
+                                Attach(effectsMgr);
                             }
                         }
                     }
@@ -553,9 +553,9 @@ namespace HelixToolkit.UWP
                 };
             }
 
-            protected override IRenderTechnique OnCreateRenderTechnique(IRenderHost host)
+            protected override IRenderTechnique OnCreateRenderTechnique(IEffectsManager effectsManager)
             {
-                return host.EffectsManager[DefaultRenderTechniqueNames.MeshBatched];
+                return effectsManager[DefaultRenderTechniqueNames.MeshBatched];
             }
 
             /// <summary>
@@ -606,16 +606,9 @@ namespace HelixToolkit.UWP
                 }
             }
 
-            /// <summary>
-            /// This function initialize the Geometry Buffer and Instance Buffer
-            /// </summary>
-            /// <param name="host"></param>
-            /// <returns>
-            /// Return true if attached
-            /// </returns>
-            protected override bool OnAttach(IRenderHost host)
+            protected override bool OnAttach(IEffectsManager effectsManager)
             {
-                if (base.OnAttach(host))
+                if (base.OnAttach(effectsManager))
                 {
                     batchingBuffer = new DefaultStaticMeshBatchingBuffer();
                     batchingBuffer.Geometries = Geometries;

@@ -37,7 +37,7 @@ namespace HelixToolkit.UWP
                 {
                     if (Set(ref material, value))
                     {
-                        if (RenderHost != null)
+                        if (EffectsManager != null)
                         {
                             if (IsAttached)
                             {
@@ -47,7 +47,7 @@ namespace HelixToolkit.UWP
                             else
                             {
                                 Detach();
-                                Attach(RenderHost);
+                                Attach(EffectsManager);
                             }
                         }
                     }
@@ -61,9 +61,9 @@ namespace HelixToolkit.UWP
                 RenderType = RenderType.Transparent;
             }
 
-            protected override bool OnAttach(IRenderHost host)
+            protected override bool OnAttach(IEffectsManager effectsManager)
             {
-                if (base.OnAttach(host))
+                if (base.OnAttach(effectsManager))
                 {
                     AttachMaterial();
                     return true;
@@ -107,9 +107,9 @@ namespace HelixToolkit.UWP
                 return new VolumeRenderCore() { DefaultStateBinding = StateType.All };
             }
 
-            protected override IRenderTechnique OnCreateRenderTechnique(IRenderHost host)
+            protected override IRenderTechnique OnCreateRenderTechnique(IEffectsManager effectsManager)
             {
-                return host.EffectsManager[DefaultRenderTechniqueNames.Volume3D];
+                return effectsManager[DefaultRenderTechniqueNames.Volume3D];
             }
 
             protected override bool OnHitTest(HitTestContext context, Matrix totalModelMatrix, ref List<HitTestResult> hits)

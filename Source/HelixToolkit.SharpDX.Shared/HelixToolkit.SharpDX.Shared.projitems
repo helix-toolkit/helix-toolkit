@@ -48,6 +48,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Core\DynamicCubeMapCore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\EmptyRenderCore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\AxisPlaneGridCore.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\OITDepthPeeling.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\TopMostMeshRenderCore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\InstancingBillboardRenderCore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\InstancingMeshRenderCore.cs" />
@@ -92,12 +93,14 @@
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\BoundingBoxExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\BoundingFrustumExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\BoundingSphereExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)extensions\CameraCoreExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\CollectionExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\Color4Extensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\DataStreamExtension.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\IRenderMetricesExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\IViewportExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\MatrixExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)extensions\PlaneExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\PointerSizeHelpers.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\RayExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\SceneNodeExtensions.cs" />
@@ -136,6 +139,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Model\Animations\KeyFrameUpdater.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Animations\MorphTargetKeyFrameUpdater.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Animations\NodeAnimationUpdater.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)model\animations\Utils.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Camera\Camera.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Camera\CameraMath.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Camera\CameraMode.cs" />
@@ -199,6 +203,12 @@
     <Compile Include="$(MSBuildThisFileDirectory)Model\Scene\VolumeTextureNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Render\RenderHost\DefaultRenderHostPartial_Properties.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Render\RenderHost\DX11RenderHostConfiguration.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)utilities\asynctasks\AsyncActionThread.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utilities\DepthStencilFormatHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)utilities\ObservableFastList.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utilities\StringHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Viewport\ViewportCore.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Viewport\ViewportCoreProperties.cs" />
     <Compile Include="..\HelixToolkit.SharpDX.Shared\ShaderManager\StructArrayPool.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ShaderManager\MaterialVariablePool.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ShaderManager\TextureResourceManager.cs" />
@@ -403,5 +413,6 @@
     <Folder Include="$(MSBuildThisFileDirectory)Model\Collection\" />
     <Folder Include="$(MSBuildThisFileDirectory)Model\Lights\" />
     <Folder Include="$(MSBuildThisFileDirectory)Render\Renderer\" />
+    <Folder Include="$(MSBuildThisFileDirectory)Utilities\AsyncTasks\" />
   </ItemGroup>
 </Project>

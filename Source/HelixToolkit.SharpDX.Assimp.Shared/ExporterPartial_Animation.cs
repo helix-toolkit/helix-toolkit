@@ -5,7 +5,7 @@ Copyright (c) 2018 Helix Toolkit contributors
 using Assimp;
 using System.Linq;
 using Animation = Assimp.Animation;
-
+using Microsoft.Extensions.Logging;
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX
 #else
@@ -40,7 +40,7 @@ namespace HelixToolkit.UWP
                     {
                         if(f.Node == null || string.IsNullOrEmpty(f.Node.Name))
                         {
-                            Log(HelixToolkit.Logger.LogLevel.Warning, $"Node Animation NodeName is empty. AnimationName:{ani.Name}");
+                            logger.LogWarning("Node Animation NodeName is empty. AnimationName:{0}", ani.Name);
                             continue;
                         }
                         var ch = new NodeAnimationChannel

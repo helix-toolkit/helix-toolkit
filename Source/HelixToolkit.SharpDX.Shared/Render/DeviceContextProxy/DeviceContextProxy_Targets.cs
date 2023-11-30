@@ -295,7 +295,53 @@ namespace HelixToolkit.UWP
             {
                 deviceContext.ClearUnorderedAccessView(unorderedAccessViewRef, values);
             }
+
+            /// <summary>
+            /// Clears an unordered access resource with bit-precise values.
+            /// </summary>
+            /// <param name="unorderedAccessViewRef">The unordered access view reference.</param>
+            /// <param name="values">The values.</param>
+            /// <remarks>
+            ///     This API copies the lower ni bits from each array element i to the corresponding
+            ///     channel, where ni is the number of bits in the ith channel of the resource format
+            ///     (for example, R8G8B8_FLOAT has 8 bits for the first 3 channels). This works on
+            ///     any UAV with no format conversion. For a raw or structured buffer view, only
+            ///     the first array element value is used.
+            /// </remarks>
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            public void ClearUnorderedAccessView(UnorderedAccessView unorderedAccessViewRef, ref Int4 values)
+            {
+                deviceContext.ClearUnorderedAccessView(unorderedAccessViewRef, values);
+            }
+
+            /// <summary>
+            /// Clears an unordered access resource with a float value.
+            /// </summary>
+            /// <param name="unorderedAccessViewRef">The unordered access view reference.</param>
+            /// <param name="values">The values.</param>
+            /// <remarks>
+            ///     This API works on FLOAT, UNORM, and SNORM unordered access views (UAVs), with
+            ///     format conversion from FLOAT to *NORM where appropriate. On other UAVs, the operation
+            ///     is invalid and the call will not reach the driver.
+            /// </remarks>
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            public void ClearUnorderedAccessView(UnorderedAccessView unorderedAccessViewRef, ref Vector4 values)
+            {
+                deviceContext.ClearUnorderedAccessView(unorderedAccessViewRef, values);
+            }
             #endregion Clear Targets
+
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            public void SetOutputUAV(int slot, UnorderedAccessView uav)
+            {
+                deviceContext.OutputMerger.SetUnorderedAccessView(slot, uav);
+            }
+
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            public void SetOutputUAVs(int startSlot, UnorderedAccessView[] uavs)
+            {
+                deviceContext.OutputMerger.SetUnorderedAccessViews(startSlot, uavs);
+            }
         }
     }
 }

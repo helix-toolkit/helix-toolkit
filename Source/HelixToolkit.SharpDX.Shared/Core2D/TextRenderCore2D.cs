@@ -20,7 +20,7 @@ namespace HelixToolkit.UWP
     {
         public class TextRenderCore2D : RenderCore2DBase
         {
-            private string text = "";
+            private string text = string.Empty;
             public string Text
             {
                 set
@@ -255,7 +255,7 @@ namespace HelixToolkit.UWP
 
             protected override bool CanRender(RenderContext2D context)
             {
-                return base.CanRender(context) && Foreground != null;
+                return base.CanRender(context) && Foreground != null && Text != null;
             }
 
             protected override void OnRender(RenderContext2D context)

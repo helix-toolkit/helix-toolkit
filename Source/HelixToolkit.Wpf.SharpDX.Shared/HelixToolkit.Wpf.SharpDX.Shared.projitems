@@ -10,7 +10,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)Controls\CameraController.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Controls\CameraExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Extensions\CameraExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\CompositionTargetEX.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\DPFCanvas.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\DPFSurfaceSwapChain.cs" />
@@ -41,7 +41,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Controls\Viewport3DX.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\Viewport3DX.Properties.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\ViewportCommands.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Controls\ViewportExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Extensions\ViewportExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\VisualTargetPresentationSource.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\VisualWrapper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\WinformHostExtend.cs" />

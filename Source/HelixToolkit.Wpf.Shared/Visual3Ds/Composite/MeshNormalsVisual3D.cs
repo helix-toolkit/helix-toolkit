@@ -116,9 +116,10 @@ namespace HelixToolkit.Wpf
             }
 
             this.Content = new GeometryModel3D
-                {
-                   Geometry = builder.ToMesh(true), Material = MaterialHelper.CreateMaterial(this.Color)
-                };
+            {
+                Geometry = builder.ToMesh(true),
+                Material = MaterialHelper.CreateMaterial(this.Color)
+            };
         }
 
     }

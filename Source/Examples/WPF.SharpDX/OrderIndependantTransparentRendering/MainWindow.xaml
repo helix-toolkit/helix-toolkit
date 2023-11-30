@@ -31,7 +31,8 @@
             CameraRotationMode="Turnball"
             CoordinateSystemLabelForeground="White"
             EffectsManager="{Binding EffectsManager}"
-            FXAALevel="Medium"
+            OITRenderMode="{Binding OITRenderType}"
+            FXAALevel="Medium" EnableSwapChainRendering="True" EnableD2DRendering="False"
             ShowCoordinateSystem="True">
             <hx:Viewport3DX.InputBindings>
                 <KeyBinding Key="B" Command="hx:ViewportCommands.BackView" />
@@ -45,7 +46,6 @@
                 <MouseBinding Command="hx:ViewportCommands.Zoom" Gesture="MiddleClick" />
                 <MouseBinding Command="hx:ViewportCommands.Pan" Gesture="LeftClick" />
             </hx:Viewport3DX.InputBindings>
-            <hx:AmbientLight3D />
             <hx:DirectionalLight3D Direction="{Binding Camera.LookDirection}" Color="White" />
             <hx:LineGeometryModel3D
                 Geometry="{Binding GridModel}"
@@ -73,22 +73,33 @@
                 Reset Camera
             </Button>
             <CheckBox Foreground="White" IsChecked="{Binding ShowWireframe}">Show Wireframe</CheckBox>
-            <CheckBox Foreground="White" IsChecked="{Binding ElementName=view, Path=EnableOITRendering}">Enable OIT</CheckBox>
-            <ComboBox ItemsSource="{Binding OITWeights}" SelectedItem="{Binding ElementName=view, Path=OITWeightMode}" />
-            <StackPanel Orientation="Horizontal">
-                <TextBlock Foreground="White">OIT Weight Power:</TextBlock>
-                <TextBlock Foreground="#FFF400" Text="{Binding ElementName=view, Path=OITWeightPower, StringFormat={}{0:#,0.0}}" />
+            <ComboBox ItemsSource="{Binding MaterialTypes}" SelectedItem="{Binding MaterialType}"/>
+            <ComboBox ItemsSource="{Binding OITRenderTypes}" SelectedItem="{Binding OITRenderType}"></ComboBox>
+            <StackPanel Orientation="Vertical" IsEnabled="{Binding OITDepthPeelModeEnabled}" Margin="2, 4">
+                <Label Foreground="White">Depth Peeling Iteration:</Label>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Foreground="White" Width="14" Text="{Binding ElementName=view, Path=OITDepthPeelingIteration}"></TextBlock>
+                    <Slider Minimum="1" Maximum="16" Value="{Binding ElementName=view, Path=OITDepthPeelingIteration}" Width="100"/>
+                </StackPanel>
             </StackPanel>
-            <Slider
-                LargeChange="1"
-                Maximum="5"
-                Minimum="0.5"
-                SmallChange="0.1"
-                Value="{Binding ElementName=view, Path=OITWeightPower}" />
-            <StackPanel Orientation="Horizontal">
-                <TextBlock Foreground="White">OIT Weight Slope:</TextBlock>
-                <TextBlock Foreground="#FFF400" Text="{Binding ElementName=view, Path=OITWeightDepthSlope, StringFormat={}{0:#,0.0}}" />
+            <StackPanel Orientation="Vertical" IsEnabled="{Binding OITWeightedModeEnabled}">
+                <ComboBox ItemsSource="{Binding OITWeights}" SelectedItem="{Binding ElementName=view, Path=OITWeightMode}" />
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Foreground="White">OIT Weight Power:</TextBlock>
+                    <TextBlock Foreground="#FFF400" Text="{Binding ElementName=view, Path=OITWeightPower, StringFormat={}{0:#,0.0}}" />
+                </StackPanel>
+                <Slider
+                    LargeChange="1"
+                    Maximum="5"
+                    Minimum="0.5"
+                    SmallChange="0.1"
+                    Value="{Binding ElementName=view, Path=OITWeightPower}" />
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Foreground="White">OIT Weight Slope:</TextBlock>
+                    <TextBlock Foreground="#FFF400" Text="{Binding ElementName=view, Path=OITWeightDepthSlope, StringFormat={}{0:#,0.0}}" />
+                </StackPanel>                
             </StackPanel>
+
             <Slider
                 LargeChange="1"
                 Maximum="5"

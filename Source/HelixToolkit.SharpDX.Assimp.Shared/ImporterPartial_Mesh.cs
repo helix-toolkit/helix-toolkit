@@ -7,6 +7,7 @@ using SharpDX;
 using SharpDX.Direct3D11;
 using System;
 using System.Linq;
+using Microsoft.Extensions.Logging;
 
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX
@@ -221,6 +222,12 @@ namespace HelixToolkit.UWP
                         for (var i = 0; i < mesh.Bones[j].VertexWeightCount; ++i)
                         {
                             var vWeight = mesh.Bones[j].VertexWeights[i];
+                            if (vWeight.VertexID >= accumArray.Length)
+                            {
+                                logger.LogWarning("Bone weight index is out of range. Num verts: {0}; Bone vert index: {1}", 
+                                    accumArray.Length, vWeight.VertexID);
+                                continue;
+                            }
                             var currIdx = accumArray[vWeight.VertexID]++;
                             ref var id = ref vertBoneInternal[vWeight.VertexID];
                             switch (currIdx)
@@ -240,6 +247,9 @@ namespace HelixToolkit.UWP
                                 case 3:
                                     id.Bone4 = j;
                                     id.Weights.W = vWeight.Weight;
+                                    break;
+                                default:
+                                    logger.LogWarning("Bone index count {0} is out of range. Maximum 4 bone indices per vertex are supported.", currIdx);
                                     break;
                             }
                         }

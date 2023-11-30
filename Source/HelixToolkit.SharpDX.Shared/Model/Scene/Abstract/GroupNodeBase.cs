@@ -19,6 +19,7 @@ namespace HelixToolkit.UWP
 {
     namespace Model.Scene
     {
+        using Utilities;
         /// <summary>
         /// 
         /// </summary>
@@ -88,8 +89,8 @@ namespace HelixToolkit.UWP
             /// </summary>
             public GroupNodeBase()
             {
-                ItemsInternal = new System.Collections.ObjectModel.ObservableCollection<SceneNode>();
-                Items = new System.Collections.ObjectModel.ReadOnlyObservableCollection<SceneNode>(ItemsInternal);
+                ItemsInternal = new ObservableFastList<SceneNode>();
+                Items = new ReadOnlyObservableFastList<SceneNode>(ItemsInternal);
             }
             /// <summary>
             /// Initializes a new instance of the <see cref="GroupNodeBase"/> class.
@@ -107,18 +108,18 @@ namespace HelixToolkit.UWP
             /// <exception cref="System.ArgumentException">SceneNode already attach to a different node</exception>
             public bool AddChildNode(SceneNode node)
             {
-                if (node != null && !itemHashSet.ContainsKey(node.GUID) && !node.IsAttached)
+                if (node != null && !itemHashSet.ContainsKey(node.GUID))
                 {
                     itemHashSet.Add(node.GUID, node);
                     ItemsInternal.Add(node);
-                    if (node.Parent != NullSceneNode.NullNode && node.Parent != this)
+                    if (node.Parent != null && node.Parent != this)
                     {
                         throw new ArgumentException("SceneNode already attach to a different node");
                     }
                     node.Parent = this;
                     if (IsAttached)
                     {
-                        node.Attach(RenderHost);
+                        node.Attach(EffectsManager);
                         InvalidateSceneGraph();
                     }
                     ChildNodeAdded?.Invoke(this, new OnChildNodeChangedArgs(node, Operation.Add));
@@ -159,7 +160,7 @@ namespace HelixToolkit.UWP
                 node.Parent = this;
                 if (IsAttached)
                 {
-                    node.Attach(RenderHost);
+                    node.Attach(EffectsManager);
                     InvalidateSceneGraph();
                 }
                 ChildNodeAdded?.Invoke(this, new OnChildNodeChangedArgs(node, Operation.Add));
@@ -184,13 +185,17 @@ namespace HelixToolkit.UWP
                 return targetGroup.AddChildNode(node);
             }
             /// <summary>
-            /// Clears this instance.
+            /// Clears this instance. If detach = false, then developer must manage the life cycle of the cleared child nodes manually.
             /// </summary>
-            public void Clear()
+            /// <param name="detachChildren">Whether to detach the child nodes automatically after removing. Default = true.</param>
+            public void Clear(bool detachChildren = true)
             {
                 for (var i = 0; i < ItemsInternal.Count; ++i)
                 {
-                    ItemsInternal[i].Detach();
+                    if (detachChildren)
+                    {
+                        ItemsInternal[i].Detach();
+                    }
                     ItemsInternal[i].Parent = null;
                 }
                 ItemsInternal.Clear();
@@ -198,15 +203,19 @@ namespace HelixToolkit.UWP
                 Cleared?.Invoke(this, new OnChildNodeChangedArgs(null, Operation.Clear));
             }
             /// <summary>
-            /// Removes the child node.
+            /// Removes the child node. If detach = false, then developer must manage the life cycle of the removed node manually.
             /// </summary>
             /// <param name="node">The node.</param>
+            /// <param name="detachChild">Whether to detach the child node automatically after removing. Default = true.</param>
             /// <returns></returns>
-            public bool RemoveChildNode(SceneNode node)
+            public bool RemoveChildNode(SceneNode node, bool detachChild = true)
             {
                 if (node != null && itemHashSet.Remove(node.GUID))
                 {
-                    node.Detach();
+                    if (detachChild)
+                    {
+                        node.Detach();
+                    }
                     ItemsInternal.Remove(node);
                     node.Parent = null;
                     ChildNodeRemoved?.Invoke(this, new OnChildNodeChangedArgs(node, Operation.Remove));
@@ -230,15 +239,15 @@ namespace HelixToolkit.UWP
             /// <summary>
             /// Called when [attach].
             /// </summary>
-            /// <param name="host">The host.</param>
+            /// <param name="effectsManager">The effectsManager.</param>
             /// <returns></returns>
-            protected override bool OnAttach(IRenderHost host)
+            protected override bool OnAttach(IEffectsManager effectsManager)
             {
-                if (base.OnAttach(host))
+                if (base.OnAttach(effectsManager))
                 {
                     for (var i = 0; i < ItemsInternal.Count; ++i)
                     {
-                        ItemsInternal[i].Attach(host);
+                        ItemsInternal[i].Attach(effectsManager);
                     }
                     return true;
                 }
@@ -285,8 +294,11 @@ namespace HelixToolkit.UWP
             /// <param name="disposeManagedResources">if set to <c>true</c> [dispose managed resources].</param>
             protected override void OnDispose(bool disposeManagedResources)
             {
-                Clear();
                 Cleared = null;
+                foreach (var c in this.ItemsInternal)
+                {
+                    c?.Dispose();
+                }
                 base.OnDispose(disposeManagedResources);
             }
         }

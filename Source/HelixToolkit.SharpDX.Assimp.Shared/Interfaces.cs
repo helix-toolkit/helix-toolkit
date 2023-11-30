@@ -24,8 +24,7 @@ namespace HelixToolkit.UWP
         /// </summary>
         /// <param name="modelPath">The model path.</param>
         /// <param name="texturePath">The texture path.</param>
-        /// <param name="logger">The logger.</param>
         /// <returns>Absolute file path for the texture</returns>
-        string Resolve(string modelPath, string texturePath, ILogger logger);
+        string Resolve(string modelPath, string texturePath);
     }
 }

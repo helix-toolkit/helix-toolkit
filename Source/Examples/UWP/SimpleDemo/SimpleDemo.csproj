@@ -18,7 +18,7 @@
     <ProjectTypeGuids>{A5A43C5B-DE2A-4C0C-9213-0A381AF9435A};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <PackageCertificateKeyFile>SimpleDemo_TemporaryKey.pfx</PackageCertificateKeyFile>
     <RuntimeIdentifiers>win10-arm;win10-arm-aot;win10-x86;win10-x86-aot;win10-x64;win10-x64-aot</RuntimeIdentifiers>
-    <PackageCertificateThumbprint>70E90AC2F4D53C1E2BD8E9615E90665C3E2A815B</PackageCertificateThumbprint>
+    <PackageCertificateThumbprint>DEB56031D6051567FCBEC7E9EDBFFA2C811451D7</PackageCertificateThumbprint>
     <AppxPackageSigningEnabled>True</AppxPackageSigningEnabled>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
@@ -118,7 +118,6 @@
     <Compile Include="MainPageViewModel.cs" />
     <Compile Include="OITDemoViewModel.cs" />
     <Compile Include="ParticleViewModel.cs" />
-    
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
@@ -160,14 +159,11 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.ApplicationInsights">
-      <Version>2.14.0</Version>
-    </PackageReference>
     <PackageReference Include="Microsoft.ApplicationInsights.PersistenceChannel">
       <Version>1.2.3</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
-      <Version>6.2.10</Version>
+      <Version>6.2.14</Version>
     </PackageReference>
     <PackageReference Include="MvvmLightLibs">
       <Version>5.4.1.1</Version>

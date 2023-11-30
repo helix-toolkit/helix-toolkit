@@ -536,7 +536,7 @@ namespace HelixToolkit.UWP
         /// The view cube texture. It must be a 6x1 (ex: 600x100) ratio image. You can also use BitmapExtension.CreateViewBoxBitmapSource to create
         /// </summary>
         public static readonly DependencyProperty ViewCubeTextureProperty = DependencyProperty.Register(
-                "ViewCubeTexture", typeof(System.IO.Stream), typeof(Viewport3DX), new PropertyMetadata(null));
+                "ViewCubeTexture", typeof(TextureModel), typeof(Viewport3DX), new PropertyMetadata(null));
 
         /// <summary>
         /// The view cube horizontal position property. Relative to viewport center.
@@ -596,11 +596,11 @@ namespace HelixToolkit.UWP
         /// <value>
         /// The view cube texture.
         /// </value>
-        public System.IO.Stream ViewCubeTexture
+        public TextureModel ViewCubeTexture
         {
             get
             {
-                return (System.IO.Stream)this.GetValue(ViewCubeTextureProperty);
+                return (TextureModel)this.GetValue(ViewCubeTextureProperty);
             }
 
             set
@@ -1913,38 +1913,58 @@ namespace HelixToolkit.UWP
             DependencyProperty.Register("FrameRate", typeof(double), typeof(Viewport3DX), new PropertyMetadata(0));
 
         /// <summary>
-        /// Gets or sets a value indicating whether [enable order independent transparent rendering] for Transparent objects.
+        /// Gets or sets order independent transparency render mode
         /// <see cref="MaterialGeometryModel3D.IsTransparent"/>, <see cref="BillboardTextModel3D.IsTransparent"/>
         /// </summary>
         /// <value>
         ///   <c>true</c> if [enable oit rendering]; otherwise, <c>false</c>.
         /// </value>
-        public bool EnableOITRendering
+        public OITRenderType OITRenderMode
         {
-            get { return (bool)GetValue(EnableOITRenderingProperty); }
-            set { SetValue(EnableOITRenderingProperty, value); }
+            get { return (OITRenderType)GetValue(OITRenderModeProperty); }
+            set { SetValue(OITRenderModeProperty, value); }
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether [enable order independent transparent rendering] for Transparent objects.
-        /// <see cref="MaterialGeometryModel3D.IsTransparent"/>, <see cref="BillboardTextModel3D.IsTransparent"/>
+        /// 
         /// </summary>
-        /// <value>
-        ///   <c>true</c> if [enable oit rendering]; otherwise, <c>false</c>.
-        /// </value>
-        public static readonly DependencyProperty EnableOITRenderingProperty =
-            DependencyProperty.Register("EnableOITRendering", typeof(bool), typeof(Viewport3DX), new PropertyMetadata(true, (d, e) =>
+        public static readonly DependencyProperty OITRenderModeProperty =
+            DependencyProperty.Register("OITRenderMode", typeof(OITRenderType), typeof(Viewport3DX), new PropertyMetadata(OITRenderType.DepthPeeling, (d, e) =>
             {
                 var viewport = d as Viewport3DX;
                 if (viewport.renderHostInternal != null)
                 {
-                    viewport.renderHostInternal.RenderConfiguration.EnableOITRendering = (bool)e.NewValue;
+                    viewport.renderHostInternal.RenderConfiguration.OITRenderType = (OITRenderType)e.NewValue;
                     viewport.InvalidateRender();
                 }
             }));
-
         /// <summary>
-        /// Gets or sets the Order independent transparent rendering color weight power. 
+        /// Sets or gets Order independent transparency depth peeling mode iteration.
+        /// </summary>
+        public int OITDepthPeelingIteration
+        {
+            get
+            {
+                return (int)GetValue(OITDepthPeelingIterationProperty);
+            }
+            set
+            {
+                SetValue(OITDepthPeelingIterationProperty, value);
+            }
+        }
+
+        public static readonly DependencyProperty OITDepthPeelingIterationProperty =
+            DependencyProperty.Register("OITDepthPeelingIteration", typeof(int), typeof(Viewport3DX), new PropertyMetadata(4, (d, e) =>
+            {
+                var viewport = d as Viewport3DX;
+                if (viewport.renderHostInternal != null)
+                {
+                    viewport.renderHostInternal.RenderConfiguration.OITDepthPeelingIteration = (int)e.NewValue;
+                    viewport.InvalidateRender();
+                }
+            }));
+        /// <summary>
+        /// Gets or sets the Order independent transparency rendering color weight power. 
         /// Used for color weight calculation. 
         /// <para>Different near field/far field settings may need different power value for z value based weight calculation.</para>
         /// </summary>
@@ -2308,7 +2328,7 @@ namespace HelixToolkit.UWP
         /// The render detail output property
         /// </summary>
         public static readonly DependencyProperty RenderDetailOutputProperty =
-            DependencyProperty.Register("RenderDetailOutput", typeof(string), typeof(Viewport3DX), new PropertyMetadata(""));
+            DependencyProperty.Register("RenderDetailOutput", typeof(string), typeof(Viewport3DX), new PropertyMetadata(string.Empty));
 
         /// <summary>
         /// Gets or sets a value indicating whether [enable render order]. 
@@ -2497,7 +2517,7 @@ namespace HelixToolkit.UWP
             DependencyProperty.Register("EnableDpiScale", typeof(bool), typeof(Viewport3DX), new PropertyMetadata(true, (d, e)=> 
             {
                 var viewport = (d as Viewport3DX);
-                if (viewport.hostPresenter != null && viewport.hostPresenter.Content is SwapChainRenderHost host)
+                if (viewport.hostPresenter != null && viewport.hostPresenter.Content is HelixToolkitRenderPanel host)
                 {
                     host.EnableDpiScale = (bool)e.NewValue;
                 }

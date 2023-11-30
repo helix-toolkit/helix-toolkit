@@ -21,15 +21,19 @@ namespace HelixToolkit.UWP
     namespace Utilities
     {
         /// <summary>
-        /// Base implementation for reference counted dictionary pool.
-        /// Object created by the pool will be added back to the pool once being disposed externally.
+        /// Base implementation for reference counted dictionary.
+        /// <para></para>
+        /// Object with same key will be returned by the pool or create an new object if key is not dictionary. 
+        /// And object reference count will be incremented by 1.
+        /// <para></para>
+        /// Set autoDispose = true in constructor if you want to automatically dispose the object once not being used from outside.
         /// </summary>
         /// <typeparam name="TKey"></typeparam>
         /// <typeparam name="TValue"></typeparam>
         /// <typeparam name="TArgument"></typeparam>
         public abstract class ReferenceCountedDictionaryPool<TKey, TValue, TArgument> : DisposeObject where TValue : DisposeObject
         {
-            private readonly ConcurrentDictionary<TKey, TValue> pool_ = new ConcurrentDictionary<TKey, TValue>();
+            private readonly Dictionary<TKey, TValue> pool_ = new Dictionary<TKey, TValue>();
             private readonly bool autoDispose_ = false;
 
             public int DictionaryCount => pool_.Count;
@@ -66,31 +70,31 @@ namespace HelixToolkit.UWP
                 }
                 do
                 {
-                    if (!pool_.TryGetValue(key, out objOut))
+                    lock (pool_)
                     {
-                        lock (pool_)
+                        if (!pool_.TryGetValue(key, out objOut))
                         {
-                            if (!pool_.TryGetValue(key, out objOut))
+                            objOut = OnCreate(ref key, ref argument);
+                            pool_.Add(key, objOut);
+                            if (objOut == null)
                             {
-                                objOut = pool_.GetOrAdd(key, (k) => OnCreate(ref k, ref argument));
-                                if (objOut == null)
-                                {
-                                    pool_.TryRemove(key, out objOut);
-                                    return false;
-                                }
-                                objOut.AddBackToPool = Item_AddBackToPool;
-                                objOut.Disposed += (s, e) =>
-                                {
-                                    pool_.TryRemove(key, out var val);
-                                };                            
+                                pool_.Remove(key);
+                                return false;
                             }
+                            objOut.AddBackToPool = Item_AddBackToPool;
+                            objOut.Disposed += (s, e) =>
+                            {
+                                pool_.Remove(key);
+                            };
+                        }
+                        if (objOut.IncRef() <= 1 || objOut.IsDisposed)
+                        {
+                            System.Threading.Tasks.Task.Delay(1).Wait();
+                            continue;
                         }
                     }
-                    if (objOut == null)
-                    {
-                        return false;
-                    }
-                } while (objOut.IncRef() <= 1 || objOut.IsDisposed);
+                    break;
+                } while (true);
                 return true;
             }
 
@@ -111,11 +115,14 @@ namespace HelixToolkit.UWP
                 return false;
 #endif
                 }
-                if (!pool_.TryGetValue(key, out objOut))
+                lock (pool_)
                 {
-                    return false;
+                    if (!pool_.TryGetValue(key, out objOut))
+                    {
+                        return false;
+                    }
+                    return objOut.IncRef() > 1 && !objOut.IsDisposed;
                 }
-                return objOut.IncRef() > 1 && !objOut.IsDisposed;
             }
             /// <summary>
             /// Try detach from the pool. The object will be removed from the pool and reference is not incremented before returning.
@@ -134,11 +141,14 @@ namespace HelixToolkit.UWP
                 return false;
 #endif
                 }
-                if (!pool_.TryRemove(key, out objOut))
+                lock (pool_)
                 {
-                    return false;
+                    if (!pool_.Remove(key))
+                    {
+                        return false;
+                    }
+                    objOut.AddBackToPool = null;
                 }
-                objOut.AddBackToPool = null;
                 return !objOut.IsDisposed;
             }
 
@@ -146,8 +156,16 @@ namespace HelixToolkit.UWP
             {
                 if (autoDispose_)
                 {
-                    e.AddBackToPool = null;
-                    e.Dispose();
+                    lock (pool_)
+                    {
+                        if (e.RefCount > 1 || e.IsDisposed)
+                        {
+                            return;
+                        }
+                        Debug.Assert(e.RefCount == 1);
+                        e.AddBackToPool = null;
+                        e.Dispose();
+                    }
                 }
             }
 
@@ -163,15 +181,16 @@ namespace HelixToolkit.UWP
                 {
                     throw new InvalidOperationException("Pool has been disposed.");
                 }
-                var items = pool_.Values.ToArray();
-                pool_.Clear();
+                TValue[] items;
+                lock (pool_)
+                {
+                    items = pool_.Values.ToArray();
+                    pool_.Clear();
+                }
                 foreach (var item in items)
                 {
                     item.Dispose();
-                    if (!item.IsDisposed)
-                    {
-                        Debug.Assert(false);                    
-                    }
+                    Debug.Assert(item.IsDisposed);
                 }
             }
 

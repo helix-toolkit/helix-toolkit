@@ -4,7 +4,7 @@ using System.Runtime.CompilerServices;
 using Windows.System;
 using Windows.UI.Core;
 #if WINUI
-using PointerPointProperties = Microsoft.UI.Input.Experimental.ExpPointerPointProperties;
+using PointerPointProperties = Microsoft.UI.Input.PointerPointProperties;
 using Microsoft.UI.Xaml.Input;
 namespace HelixToolkit.WinUI
 #else
@@ -454,13 +454,23 @@ namespace HelixToolkit.UWP
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool IsCtrlKeyPressed()
         {
-            var ctrlState = CoreWindow.GetForCurrentThread().GetKeyState(VirtualKey.Control);
+            var t = CoreWindow.GetForCurrentThread();
+            if (t == null)
+            {
+                return false;
+            }
+            var ctrlState = t.GetKeyState(VirtualKey.Control);
             return (ctrlState & CoreVirtualKeyStates.Down) == CoreVirtualKeyStates.Down;
         }
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool IsShiftKeyPressed()
         {
-            var ctrlState = CoreWindow.GetForCurrentThread().GetKeyState(VirtualKey.Shift);
+            var t = CoreWindow.GetForCurrentThread();
+            if (t == null)
+            {
+                return false;
+            }
+            var ctrlState = t.GetKeyState(VirtualKey.Shift);
             return (ctrlState & CoreVirtualKeyStates.Down) == CoreVirtualKeyStates.Down;
         }
         #endregion

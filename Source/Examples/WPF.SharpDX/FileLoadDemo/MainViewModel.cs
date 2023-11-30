@@ -24,6 +24,9 @@ namespace FileLoadDemo
     using System.Threading.Tasks;
     using System.Windows;
     using System.Windows.Input;
+    using System.Linq;
+    using SharpDX;
+    using Point3D = System.Windows.Media.Media3D.Point3D;
 
     public class MainViewModel : BaseViewModel
     {
@@ -103,24 +106,40 @@ namespace FileLoadDemo
             get => isLoading;
         }
 
-        private bool enableAnimation = false;
-        public bool EnableAnimation
+        private bool isPlaying = false;
+        public bool IsPlaying
+        {
+            private set => SetValue(ref isPlaying, value);
+            get => isPlaying;
+        }
+
+        private float startTime;
+        public float StartTime
+        {
+            private set => SetValue(ref startTime, value);
+            get => startTime;
+        }
+
+        private float endTime;
+        public float EndTime
+        {
+            private set => SetValue(ref endTime, value);
+            get => endTime;
+        }
+
+        private float currAnimationTime = 0;
+        public float CurrAnimationTime
         {
             set
             {
-                if (SetValue(ref enableAnimation, value))
+                if (EndTime == 0)
+                { return; }
+                if (SetValue(ref currAnimationTime, value % EndTime + StartTime))
                 {
-                    if (value)
-                    {
-                        StartAnimation();
-                    }
-                    else
-                    {
-                        StopAnimation();
-                    }
+                    animationUpdater?.Update(value, 1);
                 }
             }
-            get { return enableAnimation; }
+            get => currAnimationTime;
         }
 
         public ObservableCollection<IAnimationUpdater> Animations { get; } = new ObservableCollection<IAnimationUpdater>();
@@ -135,20 +154,19 @@ namespace FileLoadDemo
                 if (SetValue(ref selectedAnimation, value))
                 {
                     StopAnimation();
+                    CurrAnimationTime = 0;
                     if (value != null)
                     {
                         animationUpdater = value;
                         animationUpdater.Reset();
                         animationUpdater.RepeatMode = AnimationRepeatMode.Loop;
-                        animationUpdater.Speed = Speed;
+                        StartTime = value.StartTime;
+                        EndTime = value.EndTime;
                     }
                     else
                     {
                         animationUpdater = null;
-                    }
-                    if (enableAnimation)
-                    {
-                        StartAnimation();
+                        StartTime = EndTime = 0;
                     }
                 }
             }
@@ -163,16 +181,26 @@ namespace FileLoadDemo
         {
             set
             {
-                if (SetValue(ref speed, value))
-                {
-                    if (animationUpdater != null)
-                        animationUpdater.Speed = value;
-                }
+                SetValue(ref speed, value);
             }
             get => speed;
         }
 
+        private Point3D modelCentroid = default;
+        public Point3D ModelCentroid
+        {
+            private set => SetValue(ref modelCentroid, value);
+            get => modelCentroid;
+        }
+        private BoundingBox modelBound = new BoundingBox();
+        public BoundingBox ModelBound
+        {
+            private set => SetValue(ref modelBound, value);
+            get => modelBound;
+        }
         public TextureModel EnvironmentMap { get; }
+
+        public ICommand PlayCommand { get; }
 
         private SynchronizationContext context = SynchronizationContext.Current;
         private HelixToolkitScene scene;
@@ -180,6 +208,7 @@ namespace FileLoadDemo
         private List<BoneSkinMeshNode> boneSkinNodes = new List<BoneSkinMeshNode>();
         private List<BoneSkinMeshNode> skeletonNodes = new List<BoneSkinMeshNode>();
         private CompositionTargetEx compositeHelper = new CompositionTargetEx();
+        private long initTimeStamp = 0;
 
         private MainWindow mainWindow = null;
 
@@ -209,6 +238,18 @@ namespace FileLoadDemo
             CopyAsHiresBitmapCommand = new DelegateCommand(() => { CopyAsHiResBitmapToClipBoard(mainWindow.view); });
 
             EnvironmentMap = TextureModel.Create("Cubemap_Grandcanyon.dds");
+
+            PlayCommand = new DelegateCommand(() =>
+            {
+                if (!IsPlaying && SelectedAnimation != null)
+                {
+                    StartAnimation();
+                }
+                else
+                {
+                    StopAnimation();
+                }
+            });
         }
 
         private void CopyAsBitmapToClipBoard(Viewport3DX viewport)
@@ -256,12 +297,25 @@ namespace FileLoadDemo
                 return;
             }
             StopAnimation();
-
+            var syncContext = SynchronizationContext.Current;
             IsLoading = true;
             Task.Run(() =>
             {
                 var loader = new Importer();
-                return loader.Load(path);
+                var scene = loader.Load(path);
+                scene.Root.Attach(EffectsManager); // Pre attach scene graph
+                scene.Root.UpdateAllTransformMatrix();
+                if (scene.Root.TryGetBound(out var bound))
+                {
+                    /// Must use UI thread to set value back.
+                    syncContext.Post((o) => { ModelBound = bound; }, null);
+                }
+                if (scene.Root.TryGetCentroid(out var centroid))
+                {
+                    /// Must use UI thread to set value back.
+                    syncContext.Post((o) => { ModelCentroid = centroid.ToPoint3D(); }, null);
+                }
+                return scene;
             }).ContinueWith((result) =>
             {
                 IsLoading = false;
@@ -269,7 +323,13 @@ namespace FileLoadDemo
                 {
                     scene = result.Result;
                     Animations.Clear();
-                    GroupModel.Clear();
+                    var oldNode = GroupModel.SceneNode.Items.ToArray();
+                    GroupModel.Clear(false);
+                    Task.Run(() =>
+                    {
+                        foreach (var node in oldNode)
+                        { node.Dispose(); }
+                    });
                     if (scene != null)
                     {
                         if (scene.Root != null)
@@ -303,6 +363,7 @@ namespace FileLoadDemo
                         {
                             n.Tag = new AttachedNodeViewModel(n);
                         }
+                        FocusCameraToScene();
                     }
                 }
                 else if (result.IsFaulted && result.Exception != null)
@@ -314,11 +375,14 @@ namespace FileLoadDemo
 
         public void StartAnimation()
         {
+            initTimeStamp = Stopwatch.GetTimestamp();
             compositeHelper.Rendering += CompositeHelper_Rendering;
+            IsPlaying = true;
         }
 
         public void StopAnimation()
         {
+            IsPlaying = false;
             compositeHelper.Rendering -= CompositeHelper_Rendering;
         }
 
@@ -326,7 +390,21 @@ namespace FileLoadDemo
         {
             if (animationUpdater != null)
             {
-                animationUpdater.Update(Stopwatch.GetTimestamp(), Stopwatch.Frequency);
+                var elapsed = (Stopwatch.GetTimestamp() - initTimeStamp) * speed;
+                CurrAnimationTime = elapsed / Stopwatch.Frequency;
+            }
+        }
+
+        private void FocusCameraToScene()
+        {
+            var maxWidth = Math.Max(Math.Max(modelBound.Width, modelBound.Height), modelBound.Depth);
+            var pos = modelBound.Center + new Vector3(0, 0, maxWidth);
+            Camera.Position = pos.ToPoint3D();
+            Camera.LookDirection = (modelBound.Center - pos).ToVector3D();
+            Camera.UpDirection = Vector3.UnitY.ToVector3D();
+            if (Camera is OrthographicCamera orthCam)
+            {
+                orthCam.Width = maxWidth;
             }
         }
 

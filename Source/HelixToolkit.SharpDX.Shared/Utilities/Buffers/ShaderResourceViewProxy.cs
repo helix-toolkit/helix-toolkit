@@ -5,6 +5,7 @@ using System.Threading;
 using System.Diagnostics;
 using System.IO;
 using System.Runtime.InteropServices;
+using Microsoft.Extensions.Logging;
 
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX
@@ -24,7 +25,8 @@ namespace HelixToolkit.UWP
         /// </summary>
         public class ShaderResourceViewProxy : DisposeObject
         {
-            public Guid Guid { internal set; get; } = Guid.NewGuid();
+            static readonly ILogger logger = Logger.LogManager.Create<ShaderResourceViewProxy>();
+            public Guid Guid { set; get; } = Guid.NewGuid();
             public static ShaderResourceViewProxy Empty { get; } = new ShaderResourceViewProxy();
             /// <summary>
             /// Gets the texture view.
@@ -132,7 +134,36 @@ namespace HelixToolkit.UWP
                 resource = new Texture3D(device, textureDesc);
                 TextureFormat = textureDesc.Format;
             }
-
+            /// <summary>
+            /// Initializes a new instance of the <see cref="ShaderResourceViewProxy"/> class.
+            /// </summary>
+            /// <param name="device">The device.</param>
+            /// <param name="textureDesc">The texture desc.</param>
+            public ShaderResourceViewProxy(Device device, ref Texture1DDescription textureDesc) : this(device)
+            {
+                resource = new Texture1D(device, textureDesc);
+                TextureFormat = textureDesc.Format;
+            }
+            /// <summary>
+            /// Initializes a new instance of the <see cref="ShaderResourceViewProxy"/> class.
+            /// </summary>
+            /// <param name="device">The device.</param>
+            /// <param name="textureDesc">The texture desc.</param>
+            public ShaderResourceViewProxy(Device device, ref Texture2DDescription textureDesc) : this(device)
+            {
+                resource = new Texture2D(device, textureDesc);
+                TextureFormat = textureDesc.Format;
+            }
+            /// <summary>
+            /// Initializes a new instance of the <see cref="ShaderResourceViewProxy"/> class.
+            /// </summary>
+            /// <param name="device">The device.</param>
+            /// <param name="textureDesc">The texture desc.</param>
+            public ShaderResourceViewProxy(Device device, ref Texture3DDescription textureDesc) : this(device)
+            {
+                resource = new Texture3D(device, textureDesc);
+                TextureFormat = textureDesc.Format;
+            }
             /// <summary>
             /// 
             /// </summary>
@@ -163,7 +194,7 @@ namespace HelixToolkit.UWP
                     var stream = content.Texture;
                     if (stream == null || !stream.CanRead)
                     {
-                        Debug.WriteLine("Stream is null or unreadable.");
+                        logger.LogWarning("Stream is null or unreadable.");
                         return false;
                     }
                     resource = TextureLoader.FromMemoryAsShaderResource(device, stream, !enableAutoGenMipMap);
@@ -192,7 +223,7 @@ namespace HelixToolkit.UWP
                             case TextureDataType.Stream:
                                 if (content.Texture == null || !content.Texture.CanRead)
                                 {
-                                    Debug.WriteLine("Data is null or unreadable.");
+                                    logger.LogWarning("Data is null or unreadable.");
                                     return false;
                                 }
                                 var temp = new byte[content.Texture.Length];
@@ -319,6 +350,26 @@ namespace HelixToolkit.UWP
                 textureView = new ShaderResourceView(device, resource);
             }
             /// <summary>
+            /// Creates the view.
+            /// </summary>
+            /// <param name="desc"></param>
+            public void CreateTextureView(ShaderResourceViewDescription desc)
+            {
+                CreateTextureView(ref desc);
+            }
+            /// <summary>
+            /// Creates the view.
+            /// </summary>
+            public void CreateTextureView(ref ShaderResourceViewDescription desc)
+            {
+                RemoveAndDispose(ref textureView);
+                if (resource == null)
+                {
+                    return;
+                }
+                textureView = new ShaderResourceView(device, resource, desc);
+            }
+            /// <summary>
             /// Creates the render target.
             /// </summary>
             public void CreateRenderTargetView()
@@ -341,6 +392,20 @@ namespace HelixToolkit.UWP
                 depthStencilView = new DepthStencilView(device, resource);
             }
 
+            public void CreateDepthStencilView(DepthStencilViewDescription desc)
+            {
+                CreateDepthStencilView(ref desc);
+            }
+
+            public void CreateDepthStencilView(ref DepthStencilViewDescription desc)
+            {
+                RemoveAndDispose(ref depthStencilView);
+                if (resource == null)
+                {
+                    return;
+                }
+                depthStencilView = new DepthStencilView(device, resource, desc);
+            }
             /// <summary>
             /// Creates the 1D texture view from data array.
             /// </summary>

@@ -4,6 +4,7 @@ Copyright (c) 2018 Helix Toolkit contributors
 */
 
 //#define DEBUG
+using Microsoft.Extensions.Logging;
 using SharpDX;
 using System;
 using System.Collections.Generic;
@@ -29,6 +30,7 @@ namespace HelixToolkit.UWP
         /// <typeparam name="T"></typeparam>
         public abstract class StaticOctree<T> : IOctreeBasic where T : unmanaged
         {
+            static readonly ILogger logger = Logger.LogManager.Create<StaticOctree<T>>();
             public const int OctantSize = 8;
             /// <summary>
             /// Octant structure, size = 80 bytes
@@ -404,7 +406,7 @@ namespace HelixToolkit.UWP
                 Bound = octants[0].Bound;
 #if DEBUG
                 tick = Stopwatch.GetTimestamp() - tick;
-                Console.WriteLine($"Build static tree time ={(double)tick / Stopwatch.Frequency * 1000}; Total = {octants.Count}");
+                logger.LogDebug("Build static tree time = {0}; Total = {1}", (double)tick / Stopwatch.Frequency * 1000, octants.Count);
 #endif
             }
 
@@ -475,7 +477,7 @@ namespace HelixToolkit.UWP
                                     {
                                         if (!octants.Add(index, childOctantIdx, octantBounds[childOctantIdx], ref octant))
                                         {
-                                            Debug.WriteLine("Add child failed.");
+                                            logger.LogDebug("Failed to add child");
                                             break;
                                         }
                                         childIdx = octant[childOctantIdx];
@@ -486,7 +488,7 @@ namespace HelixToolkit.UWP
                                     childOctant.End = end;
                                     var s = end - count;
                                     childOctant.Start = s;
-                                    var o = Objects[i];
+                                    T o = Objects[i];
                                     Objects[i] = Objects[s]; //swap objects. Move object into parent octant start/end range
                                     Objects[s] = o; //Move object into child octant start/end range
                                 }

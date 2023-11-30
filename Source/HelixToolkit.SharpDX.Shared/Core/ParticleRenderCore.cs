@@ -11,6 +11,7 @@ using SharpDX.Direct3D11;
 using SharpDX.Direct3D;
 using System.Diagnostics;
 using System.IO;
+using Microsoft.Extensions.Logging;
 
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX
@@ -28,11 +29,14 @@ namespace HelixToolkit.UWP
         using Shaders;
         using Render;
         using Components;
+        
+
         /// <summary>
         /// 
         /// </summary>
         public class ParticleRenderCore : RenderCore
         {
+            static readonly ILogger logger = Logger.LogManager.Create<ParticleRenderCore>();
 #pragma warning disable 1591
             public static readonly int DefaultParticleCount = 512;
             public static readonly float DefaultInitialVelocity = 1f;
@@ -840,7 +844,7 @@ namespace HelixToolkit.UWP
                     // Get consume buffer count.
                     //Due to some intel integrated graphic card having issue copy structure count directly into constant buffer.
                     //Has to use staging buffer to read and pass into constant buffer              
-                    FrameVariables.NumParticles = (uint)ReadCount("", deviceContext, BufferProxies[0]);
+                    FrameVariables.NumParticles = (uint)ReadCount(string.Empty, deviceContext, BufferProxies[0]);
                     perFrameCB.Upload(deviceContext, ref FrameVariables);
                     #endregion
 
@@ -906,13 +910,15 @@ namespace HelixToolkit.UWP
             {
                 context.CopyStructureCount(particleCountStaging, 0, uav);
                 var db = context.MapSubresource(particleCountStaging, MapMode.Read, MapFlags.None);
-                var CurrentParticleCount = 0;
-                CurrentParticleCount = UnsafeHelper.Read<int>(db.DataPointer);
+                var currentParticleCount = UnsafeHelper.Read<int>(db.DataPointer);
 #if OUTPUTDEBUGGING
-                Debug.WriteLine("{0}: {1}", src, CurrentParticleCount);
+                if (logger.IsEnabled(LogLevel.Debug))
+                {
+                    logger.LogDebug("{0}: {1}", src, currentParticleCount);
+                }
 #endif
                 context.UnmapSubresource(particleCountStaging, 0);
-                return CurrentParticleCount;
+                return currentParticleCount;
             }
         }
     }

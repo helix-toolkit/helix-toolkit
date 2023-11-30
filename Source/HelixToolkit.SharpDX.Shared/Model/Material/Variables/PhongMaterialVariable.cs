@@ -57,10 +57,21 @@ namespace HelixToolkit.UWP
             {
                 get;
             }
-            public ShaderPass MaterialOITPass
+            public ShaderPass OITPass
             {
                 get;
             }
+
+            public ShaderPass OITDepthPeelingInit
+            { 
+                get;
+            }
+
+            public ShaderPass OITDepthPeeling
+            {
+                get;
+            }
+
             public ShaderPass ShadowPass
             {
                 get;
@@ -73,11 +84,19 @@ namespace HelixToolkit.UWP
             {
                 get;
             }
+            public ShaderPass WireframeOITDPPass 
+            { 
+                get;
+            }
             public ShaderPass TessellationPass
             {
                 get;
             }
             public ShaderPass TessellationOITPass
+            {
+                get;
+            }
+            public ShaderPass TessellationOITDPPass
             {
                 get;
             }
@@ -142,9 +161,7 @@ namespace HelixToolkit.UWP
                 {
                     if (Set(ref enableTessellation, value))
                     {
-                        currentMaterialPass = value ? TessellationPass : MaterialPass;
                         UpdateMappings(currentMaterialPass);
-                        currentOITPass = value ? TessellationOITPass : MaterialOITPass;
                         InvalidateRenderer();
                     }
                 }
@@ -155,8 +172,7 @@ namespace HelixToolkit.UWP
             }
 
             private readonly PhongMaterialCore material;
-            private ShaderPass currentMaterialPass = ShaderPass.NullPass;
-            private ShaderPass currentOITPass = ShaderPass.NullPass;
+            private ShaderPass currentMaterialPass => EnableTessellation ? TessellationPass : MaterialPass;
 
             /// <summary>
             /// Initializes a new instance of the <see cref="PhongMaterialVariables"/> class.
@@ -164,21 +180,9 @@ namespace HelixToolkit.UWP
             /// <param name="manager">The manager.</param>
             /// <param name="technique">The technique.</param>
             /// <param name="materialCore">The material core.</param>
-            /// <param name="materialPassName">Name of the material pass.</param>
-            /// <param name="wireframePassName">Name of the wireframe pass.</param>
-            /// <param name="materialOITPassName">Name of the material oit pass.</param>
-            /// <param name="wireframeOITPassName">Name of the wireframe oit pass.</param>
-            /// <param name="shadowPassName">Name of the shadow pass.</param>
-            /// <param name="tessellationPassName">Name of the tessellation pass.</param>
-            /// <param name="tessellationOITPassName">Name of the tessellation oit pass.</param>
-            /// <param name="depthPassName">Name of the depth pass</param>
-            public PhongMaterialVariables(IEffectsManager manager, IRenderTechnique technique, PhongMaterialCore materialCore,
-                string materialPassName = DefaultPassNames.Default, string wireframePassName = DefaultPassNames.Wireframe,
-                string materialOITPassName = DefaultPassNames.OITPass, string wireframeOITPassName = DefaultPassNames.WireframeOITPass,
-                string shadowPassName = DefaultPassNames.ShadowPass,
-                string tessellationPassName = DefaultPassNames.MeshTriTessellation,
-                string tessellationOITPassName = DefaultPassNames.MeshTriTessellationOIT,
-                string depthPassName = DefaultPassNames.DepthPrepass)
+            /// <param name="defaultPassName">Default pass name</param>
+            public PhongMaterialVariables(IEffectsManager manager, IRenderTechnique technique, PhongMaterialCore materialCore, 
+                string defaultPassName = DefaultPassNames.Default)
                 : base(manager, technique, DefaultMeshConstantBufferDesc, materialCore)
             {
                 this.material = materialCore;
@@ -187,30 +191,20 @@ namespace HelixToolkit.UWP
                 textureManager = manager.MaterialTextureManager;
                 statePoolManager = manager.StateManager;
 
-                MaterialPass = technique[materialPassName];
-                MaterialOITPass = technique[materialOITPassName];
-                ShadowPass = technique[shadowPassName];
-                WireframePass = technique[wireframePassName];
-                WireframeOITPass = technique[wireframeOITPassName];
-                TessellationPass = technique[tessellationPassName];
-                TessellationOITPass = technique[tessellationOITPassName];
-                DepthPass = technique[depthPassName];
+                MaterialPass = technique[defaultPassName];
+                OITPass = technique[DefaultPassNames.OITPass];
+                OITDepthPeelingInit = technique[DefaultPassNames.OITDepthPeelingInit];
+                OITDepthPeeling = technique[DefaultPassNames.OITDepthPeeling];
+                ShadowPass = technique[DefaultPassNames.ShadowPass];
+                WireframePass = technique[DefaultPassNames.Wireframe];
+                WireframeOITPass = technique[DefaultPassNames.WireframeOITPass];
+                WireframeOITDPPass = technique[DefaultPassNames.WireframeOITDPPass];
+                TessellationPass = technique[DefaultPassNames.MeshTriTessellation];
+                TessellationOITPass = technique[DefaultPassNames.MeshTriTessellationOIT];
+                TessellationOITDPPass = technique[DefaultPassNames.MeshPBRTriTessellationOITDP];
+                DepthPass = technique[DefaultPassNames.DepthPrepass];
                 UpdateMappings(MaterialPass);
                 EnableTessellation = materialCore.EnableTessellation;
-                currentMaterialPass = EnableTessellation ? TessellationPass : MaterialPass;
-                currentOITPass = EnableTessellation ? TessellationOITPass : MaterialOITPass;
-            }
-
-            /// <summary>
-            /// Initializes a new instance of the <see cref="PhongMaterialVariables"/> class. This construct will be using the PassName pass into constructor only.
-            /// </summary>
-            /// <param name="passName">Name of the pass.</param>
-            /// <param name="manager">The manager.</param>
-            /// <param name="technique"></param>
-            /// <param name="material">The material.</param>
-            public PhongMaterialVariables(string passName, IEffectsManager manager, IRenderTechnique technique, PhongMaterialCore material)
-                : this(manager, technique, material, passName)
-            {
             }
 
             protected override void OnInitialPropertyBindings()
@@ -419,7 +413,21 @@ namespace HelixToolkit.UWP
 
             public override ShaderPass GetPass(RenderType renderType, RenderContext context)
             {
-                return renderType == RenderType.Transparent && context.IsOITPass ? currentOITPass : currentMaterialPass;
+                if (renderType == RenderType.Transparent)
+                {
+                    switch (context.OITRenderStage)
+                    {
+                        case OITRenderStage.SinglePassWeighted:
+                            return EnableTessellation ? TessellationOITPass : OITPass;
+                        case OITRenderStage.DepthPeelingInitMinMaxZ:
+                            return OITDepthPeelingInit;
+                        case OITRenderStage.DepthPeeling:
+                            return EnableTessellation ? TessellationOITDPPass : OITDepthPeeling;
+                        default:
+                            break;
+                    }
+                }
+                return currentMaterialPass;
             }
 
             public override ShaderPass GetShadowPass(RenderType renderType, RenderContext context)
@@ -429,7 +437,21 @@ namespace HelixToolkit.UWP
 
             public override ShaderPass GetWireframePass(RenderType renderType, RenderContext context)
             {
-                return renderType == RenderType.Transparent && context.IsOITPass ? WireframeOITPass : WireframePass;
+                if (renderType == RenderType.Transparent)
+                {
+                    switch (context.OITRenderStage)
+                    {
+                        case OITRenderStage.SinglePassWeighted:
+                            return WireframeOITPass;
+                        case OITRenderStage.DepthPeelingInitMinMaxZ:
+                            return OITDepthPeelingInit;
+                        case OITRenderStage.DepthPeeling:
+                            return WireframeOITDPPass;
+                        default:
+                            break;
+                    }
+                }
+                return WireframePass;
             }
 
             public override ShaderPass GetDepthPass(RenderType renderType, RenderContext context)

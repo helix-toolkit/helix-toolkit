@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using Microsoft.Extensions.Logging;
 
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX
@@ -31,6 +32,7 @@ namespace HelixToolkit.UWP
         /// </summary>
         public class ViewBoxNode : ScreenSpacedNode
         {
+            static readonly ILogger logger = Logger.LogManager.Create<ViewBoxNode>();
             #region Properties
             private TextureModel viewboxTexture;
             /// <summary>
@@ -115,6 +117,7 @@ namespace HelixToolkit.UWP
             private readonly InstancingMeshNode CornerModel;
 
             private bool isRightHanded = true;
+            private List<HitTestResult> hitsInternal = new List<HitTestResult>();
             #endregion
 
             static ViewBoxNode()
@@ -189,14 +192,14 @@ namespace HelixToolkit.UWP
                 UpdateModel(UpDirection);
             }
 
-            protected override bool OnAttach(IRenderHost host)
+            protected override bool OnAttach(IEffectsManager effectsManager)
             {
-                if (base.OnAttach(host))
+                if (base.OnAttach(effectsManager))
                 {
                     var material = (ViewBoxMeshModel.Material as ViewCubeMaterialCore);
                     if (material.DiffuseMap == null)
                     {
-                        material.DiffuseMap = ViewBoxTexture ?? new TextureModel(BitmapExtensions.CreateViewBoxTexture(host.EffectsManager,
+                        material.DiffuseMap = ViewBoxTexture ?? new TextureModel(BitmapExtensions.CreateViewBoxTexture(effectsManager,
                             "F", "B", "L", "R", "U", "D", Color.Red, Color.Red, Color.Blue, Color.Blue, Color.Green, Color.Green,
                             Color.White, Color.White, Color.White, Color.White, Color.White, Color.White), true);
                     }
@@ -307,12 +310,17 @@ namespace HelixToolkit.UWP
 
             protected override bool OnHitTest(HitTestContext context, Matrix totalModelMatrix, ref List<HitTestResult> hits)
             {
-                if (base.OnHitTest(context, totalModelMatrix, ref hits))
+                if (base.OnHitTest(context, totalModelMatrix, ref hitsInternal))
                 {
-                    Debug.WriteLine("View box hit.");
-                    var hit = hits[0];
-                    var normal = Vector3.Zero;
-                    var inv = isRightHanded ? 1 : -1;
+                    if (logger.IsEnabled(LogLevel.Debug))
+                    {
+                        logger.LogDebug("View box hit.");
+                    }
+                    var hit = hitsInternal.OrderBy(x => x.Distance).FirstOrDefault();
+                    if (hit == null)
+                    { return false; }
+                    Vector3 normal = Vector3.Zero;
+                    int inv = isRightHanded ? 1 : -1;
                     if (hit.ModelHit == ViewBoxMeshModel)
                     {
                         normal = -hit.NormalAtHit * inv;
@@ -345,6 +353,10 @@ namespace HelixToolkit.UWP
                     }
                     normal.Normalize();
                     hit.NormalAtHit = normal;
+                    hit.ModelHit = this;
+                    hit.Tag = this.Tag;
+                    hits.Add(hit);
+                    hitsInternal.Clear();
                     return true;
                 }
                 else

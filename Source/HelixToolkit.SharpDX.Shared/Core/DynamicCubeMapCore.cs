@@ -417,7 +417,7 @@ namespace HelixToolkit.UWP
                     RaiseInvalidateRender();
                     return; // Skip this frame if texture resized to reduce latency.
                 }
-                else if (!(IsDynamicScene || context.UpdateSceneGraphRequested || context.UpdatePerFrameRenderableRequested))
+                else if (!(IsDynamicScene || context.updateSceneGraphRequested || context.updatePerFrameRenderableRequested))
                 {
                     return;
                 }

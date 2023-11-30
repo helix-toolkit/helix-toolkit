@@ -7,6 +7,7 @@ using System;
 using System.Windows.Input;
 using HelixToolkit.Wpf.SharpDX.Model.Scene;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace CrossSectionDemo
 {
@@ -34,6 +35,24 @@ namespace CrossSectionDemo
                         model.UpdateTransform(false);
                     }
                 }));
+
+
+
+        /// <summary>
+        /// This is used to demonstrate the code to constraint the rotation against a fixed axis instead 
+        /// of a free gimble. If left null a free trakcball approach is used, otherwise the rotation
+        /// is determined around the specified axis.
+        /// </summary>
+        public Vector3? ConstrainAxis
+        {
+            get { return (Vector3?)GetValue(ConstrainAxisProperty); }
+            set { SetValue(ConstrainAxisProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for ConstrainAxis.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty ConstrainAxisProperty =
+            DependencyProperty.Register("ConstrainAxis", typeof(Vector3?), typeof(CrossSectionPlaneManipulator3D), new PropertyMetadata(null));
+
 
         public double SizeScale
         {
@@ -151,8 +170,10 @@ namespace CrossSectionDemo
             EdgeHGeometry.UpdateOctree();
         }
 
+
         public CrossSectionPlaneManipulator3D()
         {
+            // corner manipulation is used to move the plane along its normal
             this.cornerHandle = new MeshGeometryModel3D()
             {
                 Geometry = NodeGeometry,
@@ -162,14 +183,19 @@ namespace CrossSectionDemo
             this.cornerHandle.MouseUp3D += OnNodeMouse3DUp;
             this.cornerHandle.MouseDown3D += OnNodeMouse3DDown;
 
+            // edge manipulation is used to rotate the plane
             this.edgeHandle = new MeshGeometryModel3D()
             {
                 Geometry = EdgeHGeometry,
                 CullMode = SharpDX.Direct3D11.CullMode.Back,
             };
+
             this.edgeHandle.MouseMove3D += OnEdgeMouse3DMove;
             this.edgeHandle.MouseUp3D += OnEdgeMouse3DUp;
             this.edgeHandle.MouseDown3D += OnEdgeMouse3DDown;
+
+
+            // completing setup
             this.Children.Add(cornerHandle);
             this.Children.Add(edgeHandle);
 
@@ -223,11 +249,11 @@ namespace CrossSectionDemo
         {
             if (e is Mouse3DEventArgs arg)
             {
+                arg.Handled = true;
                 viewport = arg.Viewport;
                 camera = viewport.Camera;
                 startPoint = arg.Position;
                 isCaptured = true;
-                e.Handled = true;
                 if(EdgeMaterial is DiffuseMaterial m)
                 {
                     orgColor = m.DiffuseColor;
@@ -238,9 +264,10 @@ namespace CrossSectionDemo
 
         private void OnEdgeMouse3DUp(object sender, RoutedEventArgs e)
         {
-            if (isCaptured && EdgeMaterial is DiffuseMaterial m)
+            if (isCaptured && EdgeMaterial is DiffuseMaterial m && e is Mouse3DEventArgs arg)
             {
                 m.DiffuseColor = orgColor;
+                arg.Handled = true;
             }
             isCaptured = false;
             viewport = null;
@@ -253,6 +280,7 @@ namespace CrossSectionDemo
             {
                 RotateTrackball(startPoint, arg.Position, currentTranslation.TranslationVector);
                 startPoint = arg.Position;
+                arg.Handled=true;
             }
         }
 
@@ -264,7 +292,7 @@ namespace CrossSectionDemo
                 camera = viewport.Camera;
                 startHitPoint = arg.HitTestResult.PointHit;
                 isCaptured = true;
-                e.Handled = true;
+                arg.Handled = true;
                 if (CornerMaterial is DiffuseMaterial m)
                 {
                     orgColor = m.DiffuseColor;
@@ -275,9 +303,10 @@ namespace CrossSectionDemo
 
         private void OnNodeMouse3DUp(object sender, RoutedEventArgs e)
         {
-            if (isCaptured && CornerMaterial is DiffuseMaterial m)
+            if (isCaptured && CornerMaterial is DiffuseMaterial m && e is Mouse3DEventArgs arg)
             {
                 m.DiffuseColor = orgColor;
+                arg.Handled = true;
             }
             isCaptured = false;
             viewport = null;
@@ -292,11 +321,12 @@ namespace CrossSectionDemo
                 if (newHit.HasValue)
                 {
                     var newPos = newHit.Value.ToVector3();
+                    newPos = new Vector3(newPos.X, startHitPoint.Y, newPos.Z); // trying to constraint elevation
                     var offset = newPos - startHitPoint;
                     startHitPoint = newPos;
                     currentTranslation.TranslationVector += offset;
                     UpdateTransform();
-                    e.Handled = true;
+                    arg.Handled = true;
                 }
             }
         }
@@ -310,44 +340,75 @@ namespace CrossSectionDemo
             double z2 = 1 - (x * x) - (y * y);
             double z = z2 > 0 ? Math.Sqrt(z2) : 0;
 
-            return new Vector3((float)x, (float)y, (float)z);
+            return new Vector3((float)x, (float)y, (float)z); 
         }
 
         private void RotateTrackball(Point p1, Point p2, Vector3 rotateAround)
         {
             // http://viewport3d.com/trackball.htm
             // http://www.codeplex.com/3DTools/Thread/View.aspx?ThreadId=22310
-            var v1 = ProjectToTrackball(p1, viewport.ActualWidth, viewport.ActualHeight);
-            var v2 = ProjectToTrackball(p2, viewport.ActualWidth, viewport.ActualHeight);
 
-            // transform the trackball coordinates to view space
-            var viewZ = camera.CameraInternal.LookDirection;
-            var viewX = Vector3.Cross(camera.CameraInternal.UpDirection, viewZ);
-            var viewY = Vector3.Cross(viewX, viewZ);
-            viewX.Normalize();
-            viewY.Normalize();
-            viewZ.Normalize();
-            var u1 = (viewZ * v1.Z) + (viewX * v1.X) + (viewY * v1.Y);
-            var u2 = (viewZ * v2.Z) + (viewX * v2.X) + (viewY * v2.Y);
-
-            // Could also use the Camera ViewMatrix
-            // var vm = Viewport3DHelper.GetViewMatrix(this.ActualCamera);
-            // vm.Invert();
-            // var ct = new MatrixTransform3D(vm);
-            // var u1 = ct.Transform(v1);
-            // var u2 = ct.Transform(v2);
-
-            // Find the rotation axis and angle
-            var axis = Vector3.Cross(u1, u2);
-            if (axis.LengthSquared() < 1e-8)
+            Vector3 v1, v2;
+            if (ConstrainAxis.HasValue)
             {
-                return;
-            }
+                // preparing to compute the ratio to the screen
+                var diag = Math.Sqrt(
+                    viewport.ActualWidth * viewport.ActualWidth +
+                    viewport.ActualHeight * viewport.ActualHeight
+                    );
 
-            var angle = u1.AngleBetween(u2);
-            // Create the transform
-            currentRotation *= Matrix.RotationAxis(Vector3.Normalize(axis), (float)(angle * this.RotationSensitivity * 5));
-            UpdateTransform();
+                // can we project the constraintAxis onto the view?
+                var t3 = Vector3.TransformCoordinate(ConstrainAxis.Value, camera.CameraInternal.GetViewMatrix());
+                var dir = new Vector2(t3.X, t3.Y); // axis of Constraint in view coordinates
+                
+                var pp1 = p1.ToVector2(); // computing distance perpendicular to axis in view coordinates
+                var r1 =  pp1 - (pp1 * dir);
+
+                var pp2 = p2.ToVector2(); // computing distance perpendicular to axis in view coordinates
+                var r2 = pp2 - (pp2 * dir);
+
+                var angle = (r2.Length() - r1.Length()) / diag * 4;
+                // Create the transform
+                currentRotation *= Matrix.RotationAxis(Vector3.Normalize(ConstrainAxis.Value), (float)(angle * this.RotationSensitivity * 5));
+                UpdateTransform();
+            }
+            else
+            {
+                v1 = ProjectToTrackball(p1, viewport.ActualWidth, viewport.ActualHeight);
+                v2 = ProjectToTrackball(p2, viewport.ActualWidth, viewport.ActualHeight);
+
+                // transform the trackball coordinates to view space
+                var viewZ = camera.CameraInternal.LookDirection;
+                var viewX = Vector3.Cross(camera.CameraInternal.UpDirection, viewZ);
+                var viewY = Vector3.Cross(viewX, viewZ);
+                viewX.Normalize();
+                viewY.Normalize();
+                viewZ.Normalize();
+                var u1 = (viewZ * v1.Z) + (viewX * v1.X) + (viewY * v1.Y);
+                var u2 = (viewZ * v2.Z) + (viewX * v2.X) + (viewY * v2.Y);
+
+                // Could also use the Camera ViewMatrix
+                // var vm = Viewport3DHelper.GetViewMatrix(this.ActualCamera);
+                // vm.Invert();
+                // var ct = new MatrixTransform3D(vm);
+                // var u1 = ct.Transform(v1);
+                // var u2 = ct.Transform(v2);
+
+                // Find the rotation axis and angle
+                var axis = Vector3.Cross(u1, u2);
+                if (axis.LengthSquared() < 1e-8)
+                {
+                    return;
+                }
+
+                var angle = u1.AngleBetween(u2);
+                // Create the transform
+                currentRotation *= Matrix.RotationAxis(Vector3.Normalize(axis), (float)(angle * this.RotationSensitivity * 5));
+                UpdateTransform();
+            }
+            
+
+           
         }
 
         private void UpdateCutPlane()
