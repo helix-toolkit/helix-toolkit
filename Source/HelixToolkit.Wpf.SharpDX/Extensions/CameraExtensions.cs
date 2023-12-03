@@ -524,7 +524,7 @@ public static class CameraExtensions
 
     public static BoundingBox ToBoundingBox(this Rect3D bounds)
     {
-        return new BoundingBox(bounds.Location.ToVector3(), bounds.Location.ToVector3() + new Vector3((float)bounds.X, (float)bounds.Y, (float)bounds.Z));
+        return new BoundingBox(bounds.Location.ToVector3(), bounds.Location.ToVector3() + new Vector3((float)bounds.SizeX, (float)bounds.SizeY, (float)bounds.SizeZ));
     }
     /// <summary>
     /// Zooms to fit the specified bounding rectangle.
