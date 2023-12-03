@@ -297,11 +297,15 @@ public class BillboardTextVisual3D : BillboardVisual3D, IBoundsIgnoredVisual3D
         }
         set
         {
+            if (value != 0 && rotateTransform is null)
+            {
+                rotateTransform = new RotateTransform();
+            }
             this.SetValue(AngleProperty, value);
         }
     }
 
-    private readonly RotateTransform rotateTransform = new();
+    private RotateTransform? rotateTransform = null;
 
     /// <summary>
     /// The visual appearance changed.
@@ -353,8 +357,9 @@ public class BillboardTextVisual3D : BillboardVisual3D, IBoundsIgnoredVisual3D
             : textBlock;
 
         // Only prevent assign when angle == 0, it is equal origin value 
-        if (rotateTransform.Angle != Angle || Angle != 0)
+        if (Angle != 0 || (rotateTransform != null && rotateTransform.Angle != Angle))
         {
+            rotateTransform ??= new ();
             rotateTransform.Angle = Angle;
             element.LayoutTransform = rotateTransform;
         }

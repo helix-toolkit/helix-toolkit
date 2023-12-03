@@ -22,11 +22,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HelixToolkit.Wpf.Tests", "H
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HelixToolkit.Wpf.SharpDX.Tests", "HelixToolkit.Wpf.SharpDX.Tests\HelixToolkit.Wpf.SharpDX.Tests.csproj", "{0613B839-5FC6-4FED-8F82-09D4ABA413E1}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Éléments de solution", "Éléments de solution", "{1DBA106F-64E3-4627-8ADA-95383E54D653}"
-	ProjectSection(SolutionItems) = preProject
-		Directory.Build.props = Directory.Build.props
-	EndProjectSection
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HelixToolkit.Assimp", "HelixToolkit.Assimp\HelixToolkit.Assimp.csproj", "{42497A50-5C2E-4A35-8C1F-35029083BD8B}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HelixToolkit.Assimp.Tests", "HelixToolkit.Assimp.Tests\HelixToolkit.Assimp.Tests.csproj", "{45C6C475-C0DA-4BF3-98F6-CF9EF7A3CEC8}"
@@ -159,9 +154,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ModelViewerDemo", "Examples
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Wpf.SharpDX.Core", "Wpf.SharpDX.Core", "{B3FEEC76-84AD-4FA6-9FD9-1E793725DB7B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DynamicPointsAndLinesDemo", "Examples\Wpf.SharpDX.Core\DynamicPointsAndLinesDemo\DynamicPointsAndLinesDemo.csproj", "{74EB3303-F0D0-465E-9A20-BF822BFAC20B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DynamicPointsAndLinesDemo", "Examples\Wpf.SharpDX.Core\DynamicPointsAndLinesDemo\DynamicPointsAndLinesDemo.csproj", "{74EB3303-F0D0-465E-9A20-BF822BFAC20B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OffScreenRenderingDemo", "Examples\Wpf.SharpDX.Core\OffScreenRenderingDemo\OffScreenRenderingDemo.csproj", "{E00380A0-45E9-4045-AD95-A3662C4682B6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OffScreenRenderingDemo", "Examples\Wpf.SharpDX.Core\OffScreenRenderingDemo\OffScreenRenderingDemo.csproj", "{E00380A0-45E9-4045-AD95-A3662C4682B6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
