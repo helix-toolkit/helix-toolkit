@@ -321,11 +321,15 @@ namespace HelixToolkit.Wpf
             }
             set
             {
+                if (value != 0 && rotateTransform is null)
+                {
+                    rotateTransform = new RotateTransform();
+                }
                 this.SetValue(AngleProperty, value);
             }
         }
 
-        private RotateTransform rotateTransform = new RotateTransform();
+        private RotateTransform rotateTransform = null;
 
         /// <summary>
         /// The visual appearance changed.
@@ -376,7 +380,7 @@ namespace HelixToolkit.Wpf
                               : textBlock;
 
             // Only prevent assign when angle == 0, it is equal origin value 
-            if (rotateTransform.Angle != Angle || Angle != 0)
+            if (Angle != 0 || (rotateTransform != null && rotateTransform.Angle != Angle))
             {
                 rotateTransform.Angle = Angle;
                 element.LayoutTransform = rotateTransform;
