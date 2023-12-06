@@ -1,0 +1,38 @@
+﻿<Window x:Class="BackgroundUpdate.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:h="http://helix-toolkit.org/wpf"
+        xmlns:local="clr-namespace:BackgroundUpdate"
+        mc:Ignorable="d"
+        Title="Background worker update"
+        Height="480"
+        Width="640">
+    <Grid>
+        <h:HelixViewport3D>
+            <h:SunLight />
+            <ModelVisual3D x:Name="model1" />
+            <ModelVisual3D x:Name="model2" />
+            <ModelVisual3D x:Name="model3" />
+            <ModelVisual3D x:Name="model4" />
+        </h:HelixViewport3D>
+        <StackPanel Margin="8">
+            <CheckBox IsChecked="{Binding AddPoints}"
+                      Content="Points (blue)" />
+            <CheckBox IsChecked="{Binding AddFrozenGeometry}"
+                      Content="Geometry (red)" />
+            <CheckBox IsChecked="{Binding AddFrozenModel}"
+                      Content="Model (green)" />
+            <CheckBox IsChecked="{Binding AddToModelGroup}"
+                      Content="ModelGroup (gold)" />
+        </StackPanel>
+        <StackPanel Margin="8"
+                    VerticalAlignment="Bottom">
+            <TextBlock Text="{Binding Count1, StringFormat='Points: {0}'}" />
+            <TextBlock Text="{Binding Count2, StringFormat='Geometry: {0}'}" />
+            <TextBlock Text="{Binding Count3, StringFormat='Model: {0}'}" />
+            <TextBlock Text="{Binding Count4, StringFormat='ModelGroup: {0}'}" />
+        </StackPanel>
+    </Grid>
+</Window>

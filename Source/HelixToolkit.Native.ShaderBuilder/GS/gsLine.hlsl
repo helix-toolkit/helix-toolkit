@@ -1,8 +1,8 @@
 #ifndef GSLINE_HLSL
 #define GSLINE_HLSL
 #define POINTLINE
-#include"..\Common\DataStructs.hlsl"
-#include"..\Common\Common.hlsl"
+#include "..\Common\DataStructs.hlsl"
+#include "..\Common\Common.hlsl"
 //--------------------------------------------------------------------------------------
 // Make a a ribbon line of the specified pixel width from 2 points in the projection frame.
 //--------------------------------------------------------------------------------------

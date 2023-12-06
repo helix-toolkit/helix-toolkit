@@ -2,8 +2,8 @@
 #define VSMESHDEPTH_HLSL
 
 #define MESHSIMPLE
-#include"..\Common\Common.hlsl"
-#include"..\Common\DataStructs.hlsl"
+#include "..\Common\Common.hlsl"
+#include "..\Common\DataStructs.hlsl"
 
 float4 main(float4 pos : POSITION0,
 float4 mr0 : TEXCOORD1,

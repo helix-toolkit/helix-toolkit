@@ -1,5 +1,5 @@
-#include"..\Common\DataStructs.hlsl"
-#include"..\Common\CommonBuffers.hlsl"
+#include "..\Common\DataStructs.hlsl"
+#include "..\Common\CommonBuffers.hlsl"
 
 float4 main(MeshOutlinePS_INPUT Input) : SV_Target
 {

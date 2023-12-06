@@ -2,7 +2,7 @@
 // Vertex Shader
 //--------------------------------------------------------------------------------------
 #define SCREENQUAD
-#include"..\Common\CommonBuffers.hlsl"
+#include "..\Common\CommonBuffers.hlsl"
 
 #pragma pack_matrix( row_major )
 

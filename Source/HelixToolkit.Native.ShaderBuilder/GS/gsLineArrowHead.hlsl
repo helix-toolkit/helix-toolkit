@@ -1,7 +1,7 @@
 #ifndef GSLINEARROWHEAD_HLSL
 #define GSLINEARROWHEAD_HLSL
 #define POINTLINE
-#include"..\GS\gsLine.hlsl"
+#include "..\GS\gsLine.hlsl"
 
 const static float default_cone_w = 0.5;
 const static float default_cone_h = 1.5;

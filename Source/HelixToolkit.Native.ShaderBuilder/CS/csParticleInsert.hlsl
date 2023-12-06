@@ -1,8 +1,8 @@
 #ifndef CSPARTICLEINSERT_HLSL
 #define CSPARTICLEINSERT_HLSL
 #define PARTICLE
-#include"..\Common\CommonBuffers.hlsl"
-#include"..\Common\DataStructs.hlsl"
+#include "..\Common\CommonBuffers.hlsl"
+#include "..\Common\DataStructs.hlsl"
 
 uint wang_hash(uint seed)
 {

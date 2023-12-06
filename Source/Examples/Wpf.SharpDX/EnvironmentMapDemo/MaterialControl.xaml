@@ -1,0 +1,96 @@
+﻿<UserControl x:Class="EnvironmentMapDemo.MaterialControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:hx="http://helix-toolkit.org/wpf/SharpDX"
+             xmlns:pt="http://propertytools.org/wpf"
+             xmlns:local="clr-namespace:EnvironmentMapDemo"
+             mc:Ignorable="d"
+             d:DesignHeight="450"
+             d:DesignWidth="800"
+             x:Name="matControl">
+    <UserControl.Resources>
+        <local:ColorConverter x:Key="htxColorConverter" />
+    </UserControl.Resources>
+    <Grid>
+        <Grid.Resources>
+            <Style TargetType="{x:Type Slider}">
+                <Setter Property="Margin"
+                        Value="{Binding Margin, ElementName=matControl}" />
+                <Setter Property="VerticalAlignment"
+                        Value="Center" />
+                <Setter Property="HorizontalAlignment"
+                        Value="Stretch" />
+            </Style>
+            <Style TargetType="{x:Type TextBlock}">
+                <Setter Property="Margin"
+                        Value="{Binding Margin, ElementName=matControl}" />
+                <Setter Property="VerticalAlignment"
+                        Value="Center" />
+            </Style>
+            <Style TargetType="{x:Type RowDefinition}">
+                <Setter Property="Height"
+                        Value="Auto" />
+            </Style>
+            <Style TargetType="{x:Type pt:ColorPicker}">
+                <Setter Property="Margin"
+                        Value="{Binding Margin, ElementName=matControl}" />
+                <Setter Property="HorizontalAlignment"
+                        Value="Stretch" />
+            </Style>
+        </Grid.Resources>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="60" />
+            <ColumnDefinition Width="40*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="0" />
+            <RowDefinition x:Name="row" />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition MinHeight="{Binding ActualHeight, ElementName=row}" />
+        </Grid.RowDefinitions>
+        <TextBlock Grid.Row="1"
+                   Grid.Column="0"
+                   Text="Ambient:" />
+        <TextBlock Grid.Row="2"
+                   Grid.Column="0"
+                   Text="Diffuse:" />
+        <TextBlock Grid.Row="3"
+                   Grid.Column="0"
+                   Text="Emissive:" />
+        <TextBlock Grid.Row="4"
+                   Grid.Column="0"
+                   Text="Reflective:" />
+        <TextBlock Grid.Row="5"
+                   Grid.Column="0"
+                   Text="Specular:" />
+        <TextBlock Grid.Row="6"
+                   Grid.Column="0"
+                   Text="Shininess:" />
+
+        <pt:ColorPicker Grid.Row="1"
+                        Grid.Column="1"
+                        SelectedColor="{Binding AmbientColor, Converter={StaticResource htxColorConverter}}" />
+        <pt:ColorPicker Grid.Row="2"
+                        Grid.Column="1"
+                        SelectedColor="{Binding DiffuseColor, Converter={StaticResource htxColorConverter}}" />
+        <pt:ColorPicker Grid.Row="3"
+                        Grid.Column="1"
+                        SelectedColor="{Binding EmissiveColor, Converter={StaticResource htxColorConverter}}" />
+        <pt:ColorPicker Grid.Row="4"
+                        Grid.Column="1"
+                        SelectedColor="{Binding ReflectiveColor, Converter={StaticResource htxColorConverter}}" />
+        <pt:ColorPicker Grid.Row="5"
+                        Grid.Column="1"
+                        SelectedColor="{Binding SpecularColor, Converter={StaticResource htxColorConverter}}" />
+        <Slider Grid.Row="6"
+                Grid.Column="1"
+                Maximum="100"
+                Minimum="1"
+                Value="{Binding SpecularShininess}" />
+    </Grid>
+</UserControl>

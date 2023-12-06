@@ -1,0 +1,71 @@
+﻿<Window x:Class="ParticleSystem.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:h="http://helix-toolkit.org/wpf"
+        xmlns:pt="http://propertytools.org/wpf"
+        xmlns:local="clr-namespace:ParticleSystem"
+        mc:Ignorable="d"
+        Title="ParticleSystem"
+        Height="720"
+        Width="1080">
+    <Window.Resources>
+        <ImageBrush x:Key="SmokeBrush"
+                    ImageSource="smoke.png" />
+    </Window.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1.61*" />
+            <ColumnDefinition Width="1*" />
+        </Grid.ColumnDefinitions>
+        <h:HelixViewport3D Background="Black"
+                           ZoomExtentsWhenLoaded="True">
+            <ModelVisual3D>
+                <h:DefaultLights />
+                <h:BoxVisual3D Fill="DarkGreen"
+                               Width="20"
+                               Height="0.2"
+                               Length="20"
+                               Center="0,0,-0.5" />
+                <h:TruncatedConeVisual3D BaseRadius="1.06"
+                                         TopRadius="1"
+                                         Height="0.4"
+                                         Origin="0,0,-0.4"
+                                         Fill="Black" />
+            </ModelVisual3D>
+            <ModelVisual3D>
+                <ModelVisual3D.Content>
+                    <AmbientLight Color="White" />
+                </ModelVisual3D.Content>
+                <h:ParticleSystem x:Name="particleSystem1"
+                                  Texture="{StaticResource SmokeBrush}"
+                                  LifeTime="{Binding LifeTime}"
+                                  EmitRate="{Binding EmitRate}"
+                                  Position="{Binding Position}"
+                                  VelocityDamping="{Binding VelocityDamping}"
+                                  AngularVelocity="{Binding AngularVelocity}"
+                                  SizeRate="{Binding SizeRate}"
+                                  AccelerationDirection="{Binding AccelerationDirection}"
+                                  Acceleration="{Binding Acceleration}"
+                                  AccelerationSpreading="{Binding AccelerationSpreading}"
+                                  StartRadius="{Binding StartRadius}"
+                                  StartDirection="{Binding StartDirection}"
+                                  StartSpreading="{Binding StartSpreading}"
+                                  StartSize="{Binding StartSize}"
+                                  StartVelocity="{Binding StartVelocity}"
+                                  StartVelocityRandomness="{Binding StartVelocityRandomness}"
+                                  FadeOutTime="{Binding FadeOutTime}" />
+            </ModelVisual3D>
+        </h:HelixViewport3D>
+        <TextBlock Grid.Column="0"
+                   Text="{Binding AliveParticles, ElementName=particleSystem1, StringFormat='Alive particles: {0}'}"
+                   Foreground="White"
+                   VerticalAlignment="Bottom"
+                   Margin="4" />
+        <pt:PropertyGrid Grid.Column="1"
+                         SelectedObject="{Binding}"
+                         TabVisibility="Collapsed"
+                         Margin="4" />
+    </Grid>
+</Window>

@@ -4,10 +4,10 @@
 #define CLIPPLANE
 #define MESH
 
-#include"..\Common\Common.hlsl"
-#include"..\Common\DataStructs.hlsl"
-#include"psCommon.hlsl"
-#include"psDiffuseMap.hlsl"
+#include "..\Common\Common.hlsl"
+#include "..\Common\DataStructs.hlsl"
+#include "psCommon.hlsl"
+#include "psDiffuseMap.hlsl"
 //--------------------------------------------------------------------------------------
 // PER PIXEL LIGHTING - BLINN-PHONG for Order Independant Transparent A-buffer rendering
 // http://casual-effects.blogspot.com/2014/03/weighted-blended-order-independent.html

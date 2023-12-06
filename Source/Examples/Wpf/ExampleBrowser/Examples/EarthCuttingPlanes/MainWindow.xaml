@@ -1,0 +1,46 @@
+﻿<Window x:Class="EarthCuttingPlanes.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:h="http://helix-toolkit.org/wpf"
+        xmlns:ht="clr-namespace:HelixToolkit.Wpf.Geometry;assembly=HelixToolkit.Wpf"
+        xmlns:local="clr-namespace:EarthCuttingPlanes"
+        mc:Ignorable="d"
+        Title="EarthCuttingPlanes"
+        Height="300"
+        Width="300">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <h:HelixViewport3D x:Name="view1"
+                           Grid.Row="0"
+                           Background="Black"
+                           RotationSensitivity="0.3"
+                           InfiniteSpin="True"
+                           ZoomExtentsWhenLoaded="True">
+            <h:DefaultLights />
+            <h:CuttingPlaneGroup x:Name="cuttingGroup1">
+                <h:CuttingPlaneGroup.CuttingPlanes>
+                    <ht:Plane3D Normal="0,0.5,-1" />
+                </h:CuttingPlaneGroup.CuttingPlanes>
+                <h:SphereVisual3D Radius="1"
+                                  Material="{h:ImageMaterial 'pack://application:,,,/Examples/Earth/earth.jpg'}"
+                                  ThetaDiv="180"
+                                  PhiDiv="90" />
+                <h:SphereVisual3D Radius="1.05"
+                                  Material="{Binding CloudsMaterial}"
+                                  ThetaDiv="90"
+                                  PhiDiv="45" />
+            </h:CuttingPlaneGroup>
+        </h:HelixViewport3D>
+        <CheckBox Grid.Row="1"
+                  Content="Enable cutting planes"
+                  IsChecked="{Binding IsEnabled, ElementName=cuttingGroup1}"
+                  HorizontalAlignment="Left"
+                  VerticalAlignment="Top"
+                  Margin="8" />
+    </Grid>
+</Window>

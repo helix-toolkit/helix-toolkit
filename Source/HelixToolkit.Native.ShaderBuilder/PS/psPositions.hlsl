@@ -1,7 +1,7 @@
 #ifndef PSPOSITION_HLSL
 #define PSPOSITION_HLSL
 
-#include"..\Common\DataStructs.hlsl"
+#include "..\Common\DataStructs.hlsl"
 
 //--------------------------------------------------------------------------------------
 // Render Positions as Color

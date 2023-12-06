@@ -1,73 +1,69 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="MeshBuilderTests.cs" company="Helix Toolkit">
-//   Copyright (c) 2014 Helix Toolkit contributors
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
-
-using System.Collections.Generic;
+﻿using HelixToolkit.SharpDX;
 using NUnit.Framework;
 using SharpDX;
 
-namespace HelixToolkit.Wpf.SharpDX.Tests.Utilities
+namespace HelixToolkit.Wpf.SharpDX.Tests.Utilities;
+
+[TestFixture]
+class MeshBuilderTests
 {
-    [TestFixture]
-    class MeshBuilderTests
+    [Test]
+    public void ComputeNormals()
     {
-        [Test]
-        public void ComputeNormals()
-        {
-            var builder = new MeshBuilder(false);
-            builder.AddPolygon(new List<Vector3>
+        var builder = new MeshBuilder(false);
+        builder.AddPolygon(new List<System.Numerics.Vector3>
                 {
-                    new Vector3(0f, 0f, 0f),
-                    new Vector3(7f, 0f, 0f),
-                    new Vector3(7f, 0f, 7f),
+                    new Vector3(0f, 0f, 0f).ToVector(),
+                    new Vector3(7f, 0f, 0f).ToVector(),
+                    new Vector3(7f, 0f, 7f).ToVector(),
                 });
 
-            Assert.IsNull(builder.Normals);
-            Assert.IsFalse(builder.HasNormals);
-
-            builder.ComputeNormalsAndTangents(MeshFaces.Default);
-
-            Assert.IsTrue(builder.HasNormals);
-            Assert.AreEqual(3, builder.Normals.Count);
-        }
-
-        [Test]
-        public void AddTriangle_Normals()
+        Assert.Multiple(() =>
         {
-            var mb = new MeshBuilder();
-            var p0 = new Vector3(0, 0, 0);
-            var p1 = new Vector3(1, 0, 0);
-            var p2 = new Vector3(1, 1, 0);
-            mb.AddTriangle(p0, p1, p2);
+            Assert.That(builder.Normals, Is.Null);
+            Assert.That(builder.HasNormals, Is.False);
+        });
 
-            Assert.IsTrue(mb.HasNormals);
-            Assert.AreEqual(3, mb.Normals.Count);
+        builder.ComputeNormalsAndTangents(MeshFaces.Default);
 
-            foreach (Vector3 normal in mb.Normals)
-            {
-                Assert.AreEqual(new Vector3(0, 0, 1), normal);
-            }
-        }
+        Assert.That(builder.HasNormals);
+        Assert.AreEqual(3, builder.Normals!.Count);
+    }
 
-        [Test]
-        public void AddQuad_Normals()
+    [Test]
+    public void AddTriangle_Normals()
+    {
+        var mb = new MeshBuilder();
+        var p0 = new Vector3(0, 0, 0);
+        var p1 = new Vector3(1, 0, 0);
+        var p2 = new Vector3(1, 1, 0);
+        mb.AddTriangle(p0.ToVector(), p1.ToVector(), p2.ToVector());
+
+        Assert.That(mb.HasNormals);
+        Assert.AreEqual(3, mb.Normals!.Count);
+
+        foreach (System.Numerics.Vector3 normal in mb.Normals)
         {
-            var mb = new MeshBuilder();
-            var p0 = new Vector3(0, 0, 0);
-            var p1 = new Vector3(1, 0, 0);
-            var p2 = new Vector3(1, 1, 0);
-            var p3 = new Vector3(0, 1, 0);
-            mb.AddQuad(p0, p1, p2, p3);
+            Assert.AreEqual(new System.Numerics.Vector3(0, 0, 1), normal);
+        }
+    }
 
-            Assert.IsTrue(mb.HasNormals);
-            Assert.AreEqual(4, mb.Normals.Count);
+    [Test]
+    public void AddQuad_Normals()
+    {
+        var mb = new MeshBuilder();
+        var p0 = new Vector3(0, 0, 0);
+        var p1 = new Vector3(1, 0, 0);
+        var p2 = new Vector3(1, 1, 0);
+        var p3 = new Vector3(0, 1, 0);
+        mb.AddQuad(p0.ToVector(), p1.ToVector(), p2.ToVector(), p3.ToVector());
 
-            foreach (Vector3 normal in mb.Normals)
-            {
-                Assert.AreEqual(new Vector3(0, 0, 1), normal);
-            }
+        Assert.That(mb.HasNormals);
+        Assert.AreEqual(4, mb.Normals!.Count);
+
+        foreach (System.Numerics.Vector3 normal in mb.Normals)
+        {
+            Assert.AreEqual(new System.Numerics.Vector3(0, 0, 1), normal);
         }
     }
 }

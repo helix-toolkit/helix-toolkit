@@ -1,7 +1,7 @@
 #ifndef VSSSAOQUAD_HLSL
 #define VSSSAOQUAD_HLSL
 #define SSAO
-#include"..\Common\CommonBuffers.hlsl"
+#include "..\Common\CommonBuffers.hlsl"
 
 #pragma pack_matrix( row_major )
 

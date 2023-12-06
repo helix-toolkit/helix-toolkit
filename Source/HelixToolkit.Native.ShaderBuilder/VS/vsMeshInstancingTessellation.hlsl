@@ -3,7 +3,7 @@
 
 #define MESH
 #define INSTANCINGPARAM
-#include"vsMeshTessellation.hlsl"
+#include "vsMeshTessellation.hlsl"
 #pragma pack_matrix( row_major )
 
 //--------------------------------------------------------------------------------------

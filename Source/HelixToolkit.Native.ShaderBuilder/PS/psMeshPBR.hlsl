@@ -5,9 +5,9 @@
 #define PBR
 #define CLEARCOAT
 
-#include"..\Common\Common.hlsl"
-#include"..\Common\DataStructs.hlsl"
-#include"psCommon.hlsl"
+#include "..\Common\Common.hlsl"
+#include "..\Common\DataStructs.hlsl"
+#include "psCommon.hlsl"
 
 float3 calcNormal(PSInput input)
 {

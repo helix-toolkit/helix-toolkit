@@ -1,6 +1,6 @@
 #define BORDEREFFECTS
-#include"..\Common\DataStructs.hlsl"
-#include"..\Common\CommonBuffers.hlsl"
+#include "..\Common\DataStructs.hlsl"
+#include "..\Common\CommonBuffers.hlsl"
 
 
 float4 main(PSInputXRay input) : SV_Target

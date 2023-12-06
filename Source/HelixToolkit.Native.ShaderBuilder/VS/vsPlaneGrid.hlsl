@@ -1,8 +1,8 @@
 #ifndef VSPLANEGRID_HLSL
 #define VSPLANEGRID_HLSL
 #define PLANEGRID
-#include"..\Common\DataStructs.hlsl"
-#include"..\Common\CommonBuffers.hlsl"
+#include "..\Common\DataStructs.hlsl"
+#include "..\Common\CommonBuffers.hlsl"
 #pragma pack_matrix( row_major )
 
 static const float2 vertCoord[4] =

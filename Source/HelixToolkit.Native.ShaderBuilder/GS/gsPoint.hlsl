@@ -1,8 +1,8 @@
 #ifndef GSPOINT_HLSL
 #define GSPOINT_HLSL
 #define POINTLINE
-#include"..\Common\DataStructs.hlsl"
-#include"..\Common\Common.hlsl"
+#include "..\Common\DataStructs.hlsl"
+#include "..\Common\Common.hlsl"
 
 void makeQuad(out float4 points[4], in float4 posA, in float w, in float h)
 {

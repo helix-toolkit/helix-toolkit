@@ -1,75 +1,91 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <MSBuildAllProjects Condition="'$(MSBuildVersion)' == '' Or '$(MSBuildVersion)' &lt; '16.0'">$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
     <HasSharedItems>true</HasSharedItems>
-    <SharedGUID>1aefcb64-e997-425a-8c84-dc93263cc4a7</SharedGUID>
+    <SharedGUID>254360e5-0c36-44c9-a0fc-fb01b327cba6</SharedGUID>
   </PropertyGroup>
   <PropertyGroup Label="Configuration">
     <Import_RootNamespace>HelixToolkit.SharpDX.SharedModel</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)Camera\Camera.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Camera\ICameraModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Camera\IOrthographicCameraModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Camera\IPerspectiveCameraModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Camera\IProjectionCameraModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Camera\OrthographicCamera.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Camera\PerspectiveCamera.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Camera\ProjectionCamera.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\HelixItemsControl.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\ModelContainer3DX.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Element2D\Element2DCore.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Element3D\Abstract\Element3DCore.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Element3D\Abstract\GeometryModel3D.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Element3D\Abstract\MaterialGeometryModel3D.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Element3D\BatchedMeshGeometryModel3D.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Element3D\BillboardTextModel3D.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Element3D\BoneGroupModel3D.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Element3D\BoneSkinmeshGeometryModel3D.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Element3D\ContinuousRender3D.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Element3D\CoordinateSystemModel3D.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Element3D\CrossSectionMeshGeometryModel3D.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Element3D\DepthPrepassElement3D.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Element3D\DynamicCodeSurfaceModel3D.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Element3D\DynamicReflectionMap3D.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Element3D\Element3DCollection.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Element3D\EnvironmentMap3D.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Element3D\InstancingBillboardModel3D.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Element3D\InstancingMeshGeometryModel3D.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Element3D\LineGeometryModel3D.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Element3D\LineMaterialGeometryModel3D.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Element3D\MeshGeometryModel3D.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Element3D\OutLineMeshGeometryModel3D.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Element3D\ParticleStormModel3D.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Element3D\AxisPlaneGridModel3D.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Element3D\PointGeometryModel3D.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Element3D\PointMaterialGeometryModel3D.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Element3D\TopMostGroup3D.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Element3D\PostEffects\PostEffectBloom.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Element3D\PostEffects\PostEffectMeshBorderHighlight.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Element3D\PostEffects\PostEffectMeshOutlineBlur.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Element3D\PostEffects\PostEffectMeshXRay.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Element3D\PostEffects\PostEffectMeshXRayGrid.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Element3D\SceneNodeGroupModel3D.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Element3D\ScreenQuadModel3D.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Element3D\ScreenSpacedGroup3D.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Element3D\TransformManipulator3D.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Element3D\VolumeTextureModel3D.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\CommonExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\MaterialExtension.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\Media3DExtension.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Light3D\ShadowMap3D.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Material\ColorStripeMaterial.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Material\DiffuseMaterial.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Material\LineArrowHeadMaterial.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Material\LineMaterial.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Material\NormalVectorMaterial.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Material\PBRMaterial.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Material\PointMaterial.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Material\PositionColorMaterial.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Material\VertColorMaterial.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Material\Material.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Material\NormalMaterial.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Material\PhongMaterial.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Material\VolumeMaterials.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)GlobalUsings.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Elements2D\Element2DCore.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Elements3D\Abstract\BoundChangedEventArgs.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Elements3D\Abstract\Element3DCore.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Elements3D\Abstract\GeometryModel3D.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Elements3D\Abstract\MaterialGeometryModel3D.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Elements3D\AxisPlaneGridModel3D.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Elements3D\BatchedMeshGeometryModel3D.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Elements3D\BillboardTextModel3D.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Elements3D\BoneGroupModel3D.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Elements3D\BoneSkinMeshGeometryModel3D.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Elements3D\ContinuousRender3D.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Elements3D\CoordinateSystemModel3D.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Elements3D\CrossSectionMeshGeometryModel3D.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Elements3D\DepthPrepassElement3D.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Elements3D\DynamicCodeSurfaceModel3D.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Elements3D\DynamicReflectionMap3D.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Elements3D\EnvironmentMap3D.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Elements3D\InstancingBillboardModel3D.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Elements3D\InstancingMeshGeometryModel3D.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Elements3D\LineGeometryModel3D.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Elements3D\LineMaterialGeometryModel3D.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Elements3D\MeshGeometryModel3D.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Elements3D\ObservableElement2DCollection.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Elements3D\ObservableElement3DCollection.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Elements3D\OutLineMeshGeometryModel3D.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Elements3D\ParticleStormModel3D.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Elements3D\PointGeometryModel3D.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Elements3D\PointMaterialGeometryModel3D.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Elements3D\PostEffects\PostEffectBloom.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Elements3D\PostEffects\PostEffectMeshBorderHighlight.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Elements3D\PostEffects\PostEffectMeshOutlineBlur.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Elements3D\PostEffects\PostEffectMeshXRay.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Elements3D\PostEffects\PostEffectMeshXRayGrid.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Elements3D\SceneNodeGroupModel3D.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Elements3D\ScreenQuadModel3D.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Elements3D\ScreenSpacedGroup3D.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Elements3D\TopMostGroup3D.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Elements3D\TransformManipulator3D.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Elements3D\VolumeTextureModel3D.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Lights3D\ShadowMap3D.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Materials\ColorStripeMaterial.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Materials\DiffuseMaterial.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Materials\DiffuseMaterialCollection.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Materials\DiffuseMaterials.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Materials\LineArrowHeadMaterial.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Materials\LineArrowHeadTailMaterial.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Materials\LineMaterial.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Materials\Material.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Materials\NormalMaterial.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Materials\NormalVectorMaterial.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Materials\PBRMaterial.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Materials\PBRSampleColors.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Materials\PhongMaterial.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Materials\PointMaterial.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Materials\PositionColorMaterial.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Materials\VertColorMaterial.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Materials\VolumeTextureDDS3DMaterial.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Materials\VolumeTextureDiffuseMaterial.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Materials\VolumeTextureMaterialBase.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Materials\VolumeTextureRawDataMaterial.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utilities\GeometryModel3DOctreeManager.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utilities\InstancingModel3DOctreeManager.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\IOctreeManagerWrapper.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Utilities\OctreeManager.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utilities\OctreeManagerBaseWrapper.cs" />
   </ItemGroup>
 </Project>

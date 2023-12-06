@@ -1,7 +1,7 @@
 #ifndef VSOUTLINESCREENQUAD_HLSL
 #define VSOUTLINESCREENQUAD_HLSL
 
-#include"..\Common\DataStructs.hlsl"
+#include "..\Common\DataStructs.hlsl"
 
 #pragma pack_matrix( row_major )
 

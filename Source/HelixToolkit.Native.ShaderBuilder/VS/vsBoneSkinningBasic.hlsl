@@ -1,6 +1,6 @@
 #ifndef VSBONESKINNING_HLSL
 #define VSBONESKINNING_HLSL
-#include"..\Common\Common.hlsl"
+#include "..\Common\Common.hlsl"
 
 VSSkinnedOutput main(VSSkinnedInput input, uint vertexID : SV_VertexID)
 {

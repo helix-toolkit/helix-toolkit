@@ -1,0 +1,316 @@
+﻿<Window x:Class="ShadowMapDemo.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:hx="http://helix-toolkit.org/wpf/SharpDX"
+        xmlns:local="clr-namespace:ShadowMapDemo"
+        mc:Ignorable="d"
+        Title="ShadowMapDemo"
+        Width="900"
+        Height="800">
+    <Window.DataContext>
+        <local:MainViewModel />
+    </Window.DataContext>
+    <Window.Resources>
+        <hx:RenderTechniqueConverter x:Key="RenderTechniqueConverter" />
+    </Window.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+        <Menu Grid.Row="0"
+              VerticalAlignment="Top">
+            <Menu.Background>
+                <SolidColorBrush Opacity="0.5"
+                                 Color="WhiteSmoke" />
+            </Menu.Background>
+            <MenuItem Header="View">
+                <MenuItem Command="hx:ViewportCommands.ZoomExtents"
+                          Header="Zoom extents" />
+            </MenuItem>
+        </Menu>
+
+        <hx:Viewport3DX x:Name="view1"
+                        Title="{Binding Title}"
+                        Grid.Row="1"
+                        Grid.Column="0"
+                        Camera="{Binding Camera}"
+                        CoordinateSystemLabelForeground="#616161"
+                        EffectsManager="{Binding EffectsManager}"
+                        IsShadowMappingEnabled="True"
+                        ModelUpDirection="0,1,0"
+                        ShowCoordinateSystem="True"
+                        SubTitle="{Binding SubTitle}"
+                        TextBrush="Black"
+                        UseDefaultGestures="False">
+            <hx:Viewport3DX.InputBindings>
+                <KeyBinding Key="B"
+                            Command="hx:ViewportCommands.BackView" />
+                <KeyBinding Key="F"
+                            Command="hx:ViewportCommands.FrontView" />
+                <KeyBinding Key="U"
+                            Command="hx:ViewportCommands.TopView" />
+                <KeyBinding Key="D"
+                            Command="hx:ViewportCommands.BottomView" />
+                <KeyBinding Key="L"
+                            Command="hx:ViewportCommands.LeftView" />
+                <KeyBinding Key="R"
+                            Command="hx:ViewportCommands.RightView" />
+                <KeyBinding Command="hx:ViewportCommands.ZoomExtents"
+                            Gesture="Control+E" />
+                <MouseBinding Command="hx:ViewportCommands.Rotate"
+                              Gesture="RightClick" />
+                <MouseBinding Command="hx:ViewportCommands.Zoom"
+                              Gesture="MiddleClick" />
+                <MouseBinding Command="hx:ViewportCommands.Pan"
+                              Gesture="Shift+LeftClick" />
+            </hx:Viewport3DX.InputBindings>
+
+            <hx:AmbientLight3D Color="#717171" />
+            <hx:SpotLight3D x:Name="spotLight"
+                            Direction="{Binding Camera1.LookDirection, Mode=OneWay}"
+                            OuterAngle="{Binding Camera1.FieldOfView}"
+                            Position="{Binding Camera1.Position, Mode=OneWay}"
+                            Range="{Binding Camera1.FarPlaneDistance}"
+                            Color="{Binding DirectionalLightColor}" />
+            <!--<hx:DirectionalLight3D Color="#646464" Direction="0,-1,0"/>-->
+            <hx:ShadowMap3D x:Name="shadowMap"
+                            LightCamera="{Binding Camera1}"
+                            Resolution="{Binding ShadowMapResolution}"
+                            IsSceneDynamic="True" />
+            <hx:CameraModel3D x:Name="lightCamera"
+                              Camera="{Binding Camera1}" />
+            <hx:UICompositeManipulator3D CanRotateX="true"
+                                         CanRotateY="true"
+                                         CanRotateZ="true"
+                                         CanTranslateX="False"
+                                         CanTranslateY="False"
+                                         CanTranslateZ="False"
+                                         Diameter="2"
+                                         TargetTransform="{Binding Transform, ElementName=lightCamera}" />
+            <hx:MeshGeometryModel3D x:Name="model1"
+                                    CullMode="Back"
+                                    Geometry="{Binding Model}"
+                                    Instances="{Binding Instances}"
+                                    IsThrowingShadow="True"
+                                    Material="{Binding RedMaterial}"
+                                    Transform="{Binding Model1Transform}" />
+            <hx:MeshGeometryModel3D x:Name="model2"
+                                    CullMode="Back"
+                                    Geometry="{Binding Model}"
+                                    Instances="{Binding Instances}"
+                                    IsThrowingShadow="True"
+                                    Material="{Binding GreenMaterial}"
+                                    Transform="{Binding Model2Transform}" />
+            <hx:MeshGeometryModel3D x:Name="model3"
+                                    CullMode="Back"
+                                    Geometry="{Binding Model}"
+                                    IsThrowingShadow="True"
+                                    Material="{Binding BlueMaterial}"
+                                    Transform="{Binding Model3Transform}" />
+            <hx:MeshGeometryModel3D x:Name="plane"
+                                    CullMode="Back"
+                                    Geometry="{Binding Plane}"
+                                    IsThrowingShadow="false"
+                                    Material="{Binding GrayMaterial}"
+                                    Transform="{Binding PlaneTransform}" />
+            <hx:LineGeometryModel3D x:Name="lines"
+                                    Geometry="{Binding Lines}"
+                                    Instances="{Binding Instances}"
+                                    IsThrowingShadow="True"
+                                    Transform="{Binding Model1Transform}"
+                                    Color="Black" />
+            <hx:LineGeometryModel3D x:Name="grid"
+                                    Geometry="{Binding Grid}"
+                                    IsThrowingShadow="True"
+                                    Transform="{Binding GridTransform}"
+                                    Color="{Binding GridColor}" />
+        </hx:Viewport3DX>
+
+        <StackPanel Grid.Row="1"
+                    Grid.Column="1">
+            <Expander x:Name="shadingPanel"
+                      Width="150"
+                      Margin="10"
+                      HorizontalAlignment="Right"
+                      VerticalAlignment="Top"
+                      BorderBrush="LightGray"
+                      Header="Render Technique"
+                      IsExpanded="True">
+                <Expander.Background>
+                    <SolidColorBrush Opacity="0.25"
+                                     Color="WhiteSmoke" />
+                </Expander.Background>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="23*" />
+                        <ColumnDefinition Width="51*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                </Grid>
+            </Expander>
+            <Expander Width="150"
+                      Margin="10"
+                      HorizontalAlignment="Right"
+                      VerticalAlignment="Top"
+                      BorderBrush="LightGray"
+                      Header="Shadows"
+                      IsExpanded="True">
+                <Expander.Background>
+                    <SolidColorBrush Opacity="0.25"
+                                     Color="WhiteSmoke" />
+                </Expander.Background>
+                <StackPanel Orientation="Vertical">
+                    <CheckBox Margin="3"
+                              IsChecked="{Binding IsThrowingShadow, ElementName=model1}">Model 1</CheckBox>
+                    <CheckBox Margin="3"
+                              IsChecked="{Binding IsThrowingShadow, ElementName=model2}">Model 2</CheckBox>
+                    <CheckBox Margin="3"
+                              IsChecked="{Binding IsThrowingShadow, ElementName=model3}">Model 3</CheckBox>
+                    <CheckBox Margin="3"
+                              IsChecked="{Binding IsThrowingShadow, ElementName=lines}">Bounding Box</CheckBox>
+                    <CheckBox Margin="3"
+                              IsChecked="{Binding RedMaterial.RenderShadowMap}">Model 1 RenderShadow</CheckBox>
+                    <CheckBox Margin="3"
+                              IsChecked="{Binding BlueMaterial.RenderShadowMap}">Model 2 RenderShadow</CheckBox>
+                    <CheckBox Margin="3"
+                              IsChecked="{Binding GreenMaterial.RenderShadowMap}">Model 3 RenderShadow</CheckBox>
+                    <Separator />
+                    <CheckBox Margin="3"
+                              IsChecked="{Binding IsShadowMappingEnabled, ElementName=view1}">Shadow Mapping</CheckBox>
+                    <StackPanel Margin="0"
+                                IsEnabled="{Binding IsRendering, ElementName=shadowMap}"
+                                Orientation="Horizontal">
+                        <TextBlock Margin="3">Int:</TextBlock>
+                        <Slider x:Name="sliderInt"
+                                Width="70"
+                                Margin="3"
+                                Maximum="1"
+                                Minimum="0"
+                                Value="{Binding Intensity, ElementName=shadowMap}" />
+                        <TextBox Width="35"
+                                 Margin="3"
+                                 Text="{Binding Value, ElementName=sliderInt}" />
+                    </StackPanel>
+                    <StackPanel Margin="0"
+                                IsEnabled="{Binding IsRendering, ElementName=shadowMap}"
+                                Orientation="Horizontal">
+                        <TextBlock Margin="3">Bias:</TextBlock>
+                        <Slider x:Name="sliderBias"
+                                Width="70"
+                                Margin="3"
+                                Maximum="0.002"
+                                Minimum="0.00001"
+                                Value="{Binding Bias, ElementName=shadowMap}" />
+                        <TextBox Width="35"
+                                 Margin="3"
+                                 Text="{Binding Value, ElementName=sliderBias}" />
+                    </StackPanel>
+                </StackPanel>
+            </Expander>
+            <Expander Width="200"
+                      Margin="10"
+                      HorizontalAlignment="Right"
+                      VerticalAlignment="Top"
+                      BorderBrush="LightGray"
+                      Header="Spot Light"
+                      IsExpanded="True">
+                <Expander.Background>
+                    <SolidColorBrush Opacity="0.25"
+                                     Color="WhiteSmoke" />
+                </Expander.Background>
+                <StackPanel Orientation="Vertical">
+                    <StackPanel Margin="0"
+                                Orientation="Horizontal">
+                        <TextBlock Margin="3">Fall off:</TextBlock>
+                        <Slider Width="70"
+                                Margin="3"
+                                Maximum="5"
+                                Minimum="0.1"
+                                Value="{Binding Falloff, ElementName=spotLight}" />
+                        <TextBox Width="35"
+                                 Margin="3"
+                                 Text="{Binding Falloff, ElementName=spotLight}" />
+                    </StackPanel>
+                    <StackPanel Margin="0"
+                                Orientation="Horizontal">
+                        <TextBlock Margin="3">Outer Angle:</TextBlock>
+                        <Slider Width="70"
+                                Margin="3"
+                                Maximum="90"
+                                Minimum="15"
+                                Value="{Binding Camera1.FieldOfView}" />
+                        <TextBox Width="35"
+                                 Margin="3"
+                                 Text="{Binding Camera1.FieldOfView}" />
+                    </StackPanel>
+                    <StackPanel Margin="0"
+                                Orientation="Horizontal">
+                        <TextBlock Margin="3">Inner Angle:</TextBlock>
+                        <Slider Width="70"
+                                Margin="3"
+                                Maximum="75"
+                                Minimum="0"
+                                Value="{Binding InnerAngle, ElementName=spotLight}" />
+                        <TextBox Width="35"
+                                 Margin="3"
+                                 Text="{Binding InnerAngle, ElementName=spotLight}" />
+                    </StackPanel>
+                    <StackPanel Margin="0"
+                                Orientation="Horizontal">
+                        <TextBlock Margin="3">Range:</TextBlock>
+                        <Slider Width="70"
+                                Margin="3"
+                                Maximum="5000"
+                                Minimum="100"
+                                Value="{Binding Camera1.FarPlaneDistance}" />
+                        <TextBox Width="35"
+                                 Margin="3"
+                                 Text="{Binding Camera1.FarPlaneDistance}" />
+                    </StackPanel>
+                </StackPanel>
+            </Expander>
+            <Button HorizontalAlignment="Right"
+                    Click="Button_Click">MultiViewports</Button>
+        </StackPanel>
+
+        <StatusBar Grid.Row="2"
+                   VerticalAlignment="Bottom">
+            <StatusBar.Background>
+                <SolidColorBrush Opacity="0.5"
+                                 Color="WhiteSmoke" />
+            </StatusBar.Background>
+            <StatusBarItem>
+                <TextBlock HorizontalAlignment="Left"
+                           VerticalAlignment="Top"
+                           Text="{Binding FrameRate, ElementName=view1, StringFormat=D3D11 - \{0:0.00\} FPS}" />
+            </StatusBarItem>
+            <Separator />
+            <StatusBarItem>
+                <TextBlock Text="{Binding Camera.Position, StringFormat=Position: \{0:0.0\}}" />
+            </StatusBarItem>
+            <Separator />
+            <StatusBarItem>
+                <TextBlock Text="{Binding Camera.LookDirection, StringFormat=LookDirection: \{0:0.0\}}" />
+            </StatusBarItem>
+            <Separator />
+            <StatusBarItem>
+                <TextBlock Text="{Binding Camera.UpDirection, StringFormat=UpDirection: \{0:0.0\}}" />
+            </StatusBarItem>
+            <Separator />
+            <StatusBarItem>
+                <TextBlock Text="{Binding Items.Count, ElementName=view1, StringFormat=Children: \{0\}}" />
+            </StatusBarItem>
+        </StatusBar>
+
+    </Grid>
+</Window>

@@ -1,8 +1,8 @@
 #ifndef VSPARTICLE_HLSL
 #define VSPARTICLE_HLSL
 #define PARTICLE
-#include"..\Common\CommonBuffers.hlsl"
-#include"..\Common\DataStructs.hlsl"
+#include "..\Common\CommonBuffers.hlsl"
+#include "..\Common\DataStructs.hlsl"
 
 //--------------------------------------------------------------------------------
 ParticleGS_INPUT main(in ParticleVS_INPUT input, in uint vertexid : SV_VertexID)

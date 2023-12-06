@@ -2,8 +2,8 @@
 #define VSMESHBATCHED_HLSL
 
 #define MESH
-#include"..\Common\Common.hlsl"
-#include"..\Common\DataStructs.hlsl"
+#include "..\Common\Common.hlsl"
+#include "..\Common\DataStructs.hlsl"
 #pragma pack_matrix( row_major )
 
 PSInput main(VSInputBatched input)

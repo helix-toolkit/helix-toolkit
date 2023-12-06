@@ -1,8 +1,8 @@
 #ifndef PSSPRITE_HLSL
 #define PSSPRITE_HLSL
 
-#include"..\Common\DataStructs.hlsl"
-#include"..\Common\Common.hlsl"
+#include "..\Common\DataStructs.hlsl"
+#include "..\Common\Common.hlsl"
 
 float4 main(SpritePS_INPUT input) : SV_Target
 {

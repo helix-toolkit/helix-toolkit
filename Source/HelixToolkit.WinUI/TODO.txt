@@ -1,1 +1,0 @@
-﻿- Remove warning CA1416

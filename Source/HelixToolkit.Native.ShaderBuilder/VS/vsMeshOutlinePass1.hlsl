@@ -2,9 +2,9 @@
 #define VSMESHOUTLINEP1_HLSL
 
 #define MESH
-#include"..\Common\Common.hlsl"
-#include"..\Common\DataStructs.hlsl"
-#include"vsMeshDefault.hlsl"
+#include "..\Common\Common.hlsl"
+#include "..\Common\DataStructs.hlsl"
+#include "vsMeshDefault.hlsl"
 #pragma pack_matrix( row_major )
 
 float4 VSMeshOutlineP1(VSInput input) : SV_POSITION

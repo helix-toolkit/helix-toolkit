@@ -1,8 +1,8 @@
 #ifndef GSPARTICLE_HLSL
 #define GSPARTICLE_HLSL
 #define PARTICLE
-#include"..\Common\CommonBuffers.hlsl"
-#include"..\Common\DataStructs.hlsl"
+#include "..\Common\CommonBuffers.hlsl"
+#include "..\Common\DataStructs.hlsl"
 static float2 one = float2(1, 1);
 static const float scale = 0.5f;
 

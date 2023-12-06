@@ -1,38 +1,27 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="CanvasMock.cs" company="Helix Toolkit">
-//   Copyright (c) 2014 Helix Toolkit contributors
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
-
-using System;
+﻿using HelixToolkit.SharpDX;
+using HelixToolkit.SharpDX.Render;
+using HelixToolkit.SharpDX.Utilities;
 using HelixToolkit.Wpf.SharpDX.Controls;
-using HelixToolkit.Wpf.SharpDX.Core2D;
-using HelixToolkit.Wpf.SharpDX.Model;
-using HelixToolkit.Wpf.SharpDX.Render;
-using SharpDX;
-using SharpDX.Direct3D11;
 
-namespace HelixToolkit.Wpf.SharpDX.Tests.Controls
+namespace HelixToolkit.Wpf.SharpDX.Tests.Controls;
+
+class CanvasMock : IRenderCanvas
 {
-    using SharpDX.Utilities;
+    public IRenderHost RenderHost { private set; get; } = new DefaultRenderHost();
 
-    class CanvasMock : IRenderCanvas
+    public double DpiScale
     {
-        public IRenderHost RenderHost { private set; get; } = new DefaultRenderHost();
-        public double DpiScale
-        {
-            set; get;
-        }
-        public bool EnableDpiScale
-        {
-            set; get;
-        }
+        set; get;
+    }
+    public bool EnableDpiScale
+    {
+        set; get;
+    }
 
-        public event EventHandler<RelayExceptionEventArgs> ExceptionOccurred;
+    public event EventHandler<RelayExceptionEventArgs>? ExceptionOccurred;
 
-        public CanvasMock()
-        {
-            RenderHost.EffectsManager = new DefaultEffectsManager();
-        }
+    public CanvasMock()
+    {
+        RenderHost.EffectsManager = new DefaultEffectsManager();
     }
 }

@@ -2,7 +2,7 @@
 #define VSBILLBOARDINSTANCING_HLSL
 #define POINTLINE
 #define INSTANCINGPARAM
-#include"vsBillboard.hlsl"
+#include "vsBillboard.hlsl"
 #pragma pack_matrix( row_major )
 
 GSInputBT mainInstancing(VSInputBTInstancing input)

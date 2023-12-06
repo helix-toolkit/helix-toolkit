@@ -1,0 +1,130 @@
+﻿<Window x:Class="Selection.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:h="http://helix-toolkit.org/wpf"
+        xmlns:local="clr-namespace:Selection"
+        mc:Ignorable="d"
+        d:DataContext="{d:DesignInstance Type=local:MainWindowViewModel}"
+        Title="Selection"
+        Height="400"
+        Width="700">
+    <DockPanel>
+
+        <StackPanel  DockPanel.Dock="Top"
+                     Orientation="Horizontal">
+            <TextBlock Text="SelectedVisuals:" />
+            <TextBlock Text="{Binding SelectedVisuals}" />
+        </StackPanel>
+        <StackPanel DockPanel.Dock="Left"
+                    Margin="7, 5">
+            <RadioButton GroupName="selection"
+                         IsChecked="{Binding IsPointSelectionCommand}">
+                Point Selection (Left Click)</RadioButton>
+            <WrapPanel Orientation="Vertical">
+                <RadioButton x:Name="rectSelection"
+                             GroupName="selection"
+                             IsChecked="{Binding IsRectangleSelectionCommand}">
+                    <TextBlock>
+                        <Run>Rectangle Selection</Run>
+                        <LineBreak />
+                        <Run> (Ctrl + Left Click)</Run>
+                    </TextBlock>
+                </RadioButton>
+                <ComboBox SelectedValue="{Binding SelectionMode}"
+                          ItemsSource="{Binding SelectionModes}"
+                          IsEnabled="{Binding ElementName=rectSelection, Path=IsChecked}" />
+            </WrapPanel>
+            <WrapPanel  Orientation="Vertical">
+                <RadioButton  x:Name="combinedSelection"
+                              GroupName="selection"
+                              IsChecked="{Binding IsCombinedSelectionCommand}">
+
+                    <TextBlock>
+                            <Run>Combined Selection</Run>
+                            <LineBreak />
+                            <Run> (Shift + Left Click)</Run>
+                    </TextBlock>
+
+                </RadioButton>
+                <CheckBox IsEnabled="{Binding ElementName=combinedSelection, Path=IsChecked}"
+                          IsChecked="{Binding AllowAutoSetSelectionHitMode}">
+                    AllowAutoSetSelectionHitMode
+                </CheckBox>
+                <ComboBox SelectedValue="{Binding CombinedSelectionMode,UpdateSourceTrigger=PropertyChanged}"
+                          ItemsSource="{Binding SelectionModes}"
+                          IsEnabled="{Binding ElementName=combinedSelection, Path=IsChecked}" />
+
+            </WrapPanel>
+
+        </StackPanel>
+        <h:HelixViewport3D x:Name="view1"
+                           x:FieldModifier="private">
+            <h:DefaultLights />
+
+            <h:ArrowVisual3D Point1="5 0 -0.45"
+                             Point2="5 0 0.45"
+                             Diameter="0.2" />
+            <h:BoxVisual3D Center="4 0 0"
+                           Length="0.8"
+                           Width="0.6"
+                           Height="0.9" />
+            <h:CubeVisual3D Center="3 0 0"
+                            SideLength="0.9" />
+            <h:EllipsoidVisual3D Center="2 0 0"
+                                 RadiusX="0.45"
+                                 RadiusY="0.3"
+                                 RadiusZ="0.45" />
+            <h:ExtrudedVisual3D Path="1 0 -0.45 1 0 0.45"
+                                Section="0 0 0.45 0 0 0.45" />
+            <h:HelixVisual3D Origin="0 0 -0.45"
+                             Diameter="0.1"
+                             Turns="2"
+                             Length="0.9"
+                             Radius="0.35" />
+            <h:PieSliceVisual3D Center="-1 0 0"
+                                OuterRadius="0.45"
+                                InnerRadius="0.1" />
+            <h:PipeVisual3D Point1="-2 0 -0.45"
+                            Point2="-2 0 0.45"
+                            Diameter="0.9"
+                            InnerDiameter="0.7" />
+            <h:QuadVisual3D Point1="-3 -0.45 -0.45"
+                            Point2="-3 0.45 -0.45"
+                            Point3="-3 0.45 0.45"
+                            Point4="-3 -0.45 0.45" />
+            <h:RectangleVisual3D Origin="-4 0 0"
+                                 Width="0.9"
+                                 Length="0.7" />
+            <h:SphereVisual3D Center="-5 0 0"
+                              Radius="0.45" />
+            <h:TruncatedConeVisual3D Origin="-6 0 -0.45"
+                                     Height="0.9"
+                                     BaseRadius="0.45"
+                                     TopRadius="0.05" />
+            <h:TubeVisual3D Path="-7 0 -0.45 -7 0.1 0 -7 0 0.45"
+                            Diameter="0.1" />
+
+            <h:SphereVisual3D Center="0 3 0"
+                              Radius="0.1">
+                <h:SphereVisual3D.Transform>
+                    <TranslateTransform3D OffsetX="0.5" />
+                </h:SphereVisual3D.Transform>
+            </h:SphereVisual3D>
+            <h:SphereVisual3D Center="0 3 0"
+                              Radius="0.1">
+                <h:SphereVisual3D.Transform>
+                    <TranslateTransform3D OffsetX="1" />
+                </h:SphereVisual3D.Transform>
+            </h:SphereVisual3D>
+            <h:SphereVisual3D Center="0 3 0"
+                              Radius="0.1">
+                <h:SphereVisual3D.Transform>
+                    <TranslateTransform3D OffsetX="1.5" />
+                </h:SphereVisual3D.Transform>
+            </h:SphereVisual3D>
+
+        </h:HelixViewport3D>
+    </DockPanel>
+</Window>

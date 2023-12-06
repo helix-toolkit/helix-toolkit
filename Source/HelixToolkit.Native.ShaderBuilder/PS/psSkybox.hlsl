@@ -1,8 +1,8 @@
 #ifndef PSSKYBOX_HLSL
 #define PSSKYBOX_HLSL
-#include"..\Common\DataStructs.hlsl"
-#include"..\Common\CommonBuffers.hlsl"
-#include"psCommon.hlsl"
+#include "..\Common\DataStructs.hlsl"
+#include "..\Common\CommonBuffers.hlsl"
+#include "psCommon.hlsl"
 //--------------------------------------------------------------------------------------
 //  Render coordinate system
 //--------------------------------------------------------------------------------------

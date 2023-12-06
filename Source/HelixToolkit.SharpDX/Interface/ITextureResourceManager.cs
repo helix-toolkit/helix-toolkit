@@ -1,0 +1,24 @@
+﻿using HelixToolkit.SharpDX.Utilities;
+
+namespace HelixToolkit.SharpDX;
+
+public interface ITextureResourceManager : IDisposable
+{
+    int Count
+    {
+        get;
+    }
+    /// <summary>
+    /// Registers the specified texture stream. This creates mipmaps automatically
+    /// </summary>
+    /// <param name="textureStream">The texture stream.</param>
+    /// <returns></returns>
+    ShaderResourceViewProxy? Register(TextureModel? textureStream);
+    /// <summary>
+    /// Registers the specified texture stream.
+    /// </summary>
+    /// <param name="textureStream">The texture stream.</param>
+    /// <param name="enableAutoGenMipMap">if set to <c>false</c> [disable automatic gen mip map].</param>
+    /// <returns></returns>
+    ShaderResourceViewProxy? Register(TextureModel? textureStream, bool enableAutoGenMipMap);
+}

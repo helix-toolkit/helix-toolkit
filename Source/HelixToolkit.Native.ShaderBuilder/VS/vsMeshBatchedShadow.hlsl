@@ -2,8 +2,8 @@
 #define VSMESHBATCHEDSHADOW_HLSL
 
 #define MESHSIMPLE
-#include"..\Common\Common.hlsl"
-#include"..\Common\DataStructs.hlsl"
+#include "..\Common\Common.hlsl"
+#include "..\Common\DataStructs.hlsl"
 #pragma pack_matrix( row_major )
 
 PSShadow main(VSInputBatched input)

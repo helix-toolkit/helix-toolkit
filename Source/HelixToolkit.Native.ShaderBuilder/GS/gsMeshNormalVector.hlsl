@@ -1,8 +1,8 @@
 #ifndef GSMESHNORMALVECTOR_HLSL
 #define GSMESHNORMALVECTOR_HLSL
 #define MESH
-#include"..\Common\DataStructs.hlsl"
-#include"..\Common\Common.hlsl"
+#include "..\Common\DataStructs.hlsl"
+#include "..\Common\Common.hlsl"
 void makeLine(out float4 points[4], in float4 posA, in float4 posB, in float width)
 {
     // Bring A and B in window space

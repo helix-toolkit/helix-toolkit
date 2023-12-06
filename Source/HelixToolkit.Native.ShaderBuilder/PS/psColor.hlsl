@@ -1,7 +1,7 @@
 #ifndef PSCOLOR_HLSL
 #define PSCOLOR_HLSL
 
-#include"..\Common\DataStructs.hlsl"
+#include "..\Common\DataStructs.hlsl"
 
 //--------------------------------------------------------------------------------------
 // Given Per-Vertex Color

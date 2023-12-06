@@ -1,0 +1,120 @@
+﻿using NAudio.Wave;
+using System;
+
+namespace Audio;
+
+internal sealed class AudioPlayback : IDisposable
+{
+    private IWavePlayer? playbackDevice;
+    private WaveChannel32? inputStream;
+
+    public event EventHandler<SampleEventArgs>? OnSample;
+
+    public AudioPlayback()
+    {
+    }
+
+    public void Load(string fileName)
+    {
+        Stop();
+        EnsureDeviceCreated();
+        CloseFile();
+        OpenFile(fileName);
+    }
+
+    private void CloseFile()
+    {
+        inputStream?.Dispose();
+        inputStream = null;
+    }
+
+    private void OpenFile(string fileName)
+    {
+        CreateInputStream(fileName);
+        playbackDevice?.Init(inputStream);
+    }
+
+    private void CreateInputStream(string fileName)
+    {
+        if (fileName.EndsWith(".wav"))
+        {
+            inputStream = OpenWavStream(fileName);
+        }
+        else if (fileName.EndsWith(".mp3"))
+        {
+            inputStream = OpenMp3Stream(fileName);
+        }
+        else
+        {
+            throw new InvalidOperationException("Unsupported extension");
+        }
+        inputStream.Sample += new EventHandler<SampleEventArgs>(InputStream_Sample);
+    }
+
+    void InputStream_Sample(object? sender, SampleEventArgs e)
+    {
+        OnSample?.Invoke(this, e);
+    }
+
+    private static WaveChannel32 OpenMp3Stream(string fileName)
+    {
+        WaveStream mp3Reader = new Mp3FileReader(fileName);
+        WaveStream pcmStream = WaveFormatConversionStream.CreatePcmStream(mp3Reader);
+        WaveStream blockAlignedStream = new BlockAlignReductionStream(pcmStream);
+        WaveChannel32 inputStream = new(blockAlignedStream);
+        return inputStream;
+    }
+
+    private static WaveChannel32 OpenWavStream(string fileName)
+    {
+        WaveChannel32 inputStream;
+        WaveStream readerStream = new WaveFileReader(fileName);
+        if (readerStream.WaveFormat.Encoding != WaveFormatEncoding.Pcm)
+        {
+            readerStream = WaveFormatConversionStream.CreatePcmStream(readerStream);
+            readerStream = new BlockAlignReductionStream(readerStream);
+        }
+        if (readerStream.WaveFormat.BitsPerSample != 16)
+        {
+            var format = new WaveFormat(readerStream.WaveFormat.SampleRate,
+                16, readerStream.WaveFormat.Channels);
+            readerStream = new WaveFormatConversionStream(format, readerStream);
+        }
+        inputStream = new WaveChannel32(readerStream);
+        return inputStream;
+    }
+
+    private void EnsureDeviceCreated()
+    {
+        if (playbackDevice == null)
+        {
+            CreateDevice();
+        }
+    }
+
+    private void CreateDevice()
+    {
+        playbackDevice = new WaveOut();
+    }
+
+    public void Play()
+    {
+        if (playbackDevice != null && inputStream != null && playbackDevice.PlaybackState != PlaybackState.Playing)
+        {
+            playbackDevice!.Play();
+        }
+    }
+
+    public void Stop()
+    {
+        playbackDevice?.Stop();
+        CloseFile();
+    }
+
+    public void Dispose()
+    {
+        Stop();
+        playbackDevice?.Dispose();
+        playbackDevice = null;
+    }
+}

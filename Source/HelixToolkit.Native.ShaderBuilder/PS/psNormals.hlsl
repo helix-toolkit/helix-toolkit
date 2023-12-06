@@ -1,6 +1,6 @@
 #ifndef PSNORMAL_HLSL
 #define PSNORMAL_HLSL
-#include"..\Common\DataStructs.hlsl"
+#include "..\Common\DataStructs.hlsl"
 
 //--------------------------------------------------------------------------------------
 //  Render Normals as Color

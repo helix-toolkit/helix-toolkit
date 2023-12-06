@@ -1,8 +1,8 @@
 #ifndef PSMESHXRAY_HLSL
 #define PSMESHXRAY_HLSL
 #define MESH
-#include"..\Common\DataStructs.hlsl"
-#include"..\Common\CommonBuffers.hlsl"
+#include "..\Common\DataStructs.hlsl"
+#include "..\Common\CommonBuffers.hlsl"
 
 
 float4 main(PSInputXRay input) : SV_Target

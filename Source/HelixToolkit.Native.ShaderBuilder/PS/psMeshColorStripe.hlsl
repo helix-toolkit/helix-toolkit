@@ -1,8 +1,8 @@
 
 
 #define MESH
-#include"..\Common\DataStructs.hlsl"
-#include"..\Common\CommonBuffers.hlsl"
+#include "..\Common\DataStructs.hlsl"
+#include "..\Common\CommonBuffers.hlsl"
 //--------------------------------------------------------------------------------------
 //  Render diffuse map
 //--------------------------------------------------------------------------------------

@@ -1,8 +1,8 @@
 #ifndef CSPARTICLEUPDATE_HLSL
 #define CSPARTICLEUPDATE_HLSL
 #define PARTICLE
-#include"..\Common\CommonBuffers.hlsl"
-#include"..\Common\DataStructs.hlsl"
+#include "..\Common\CommonBuffers.hlsl"
+#include "..\Common\DataStructs.hlsl"
 
 bool PointInBoundingBox(in float3 boundMax, in float3 boundMin, in float3 p)
 {

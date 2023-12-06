@@ -1,0 +1,7 @@
+﻿u = (u-0.5)*2;
+v =(v-0.5)*2;
+
+// Whitney umbrella
+x=u*v;
+y=u;
+z=v*v;

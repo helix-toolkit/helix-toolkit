@@ -3,9 +3,9 @@
 
 #define PLANEGRID
 
-#include"..\Common\Common.hlsl"
-#include"..\Common\DataStructs.hlsl"
-#include"psCommon.hlsl"
+#include "..\Common\Common.hlsl"
+#include "..\Common\DataStructs.hlsl"
+#include "psCommon.hlsl"
 
 float4 main(PSPlaneGridInput input) : SV_TARGET
 {

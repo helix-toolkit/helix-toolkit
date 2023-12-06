@@ -2113,8 +2113,8 @@ half4 FxaaPixelShader(
 #endif
 
 #define BORDEREFFECTS
-#include"..\Common\DataStructs.hlsl"
-#include"..\Common\CommonBuffers.hlsl"
+#include "..\Common\DataStructs.hlsl"
+#include "..\Common\CommonBuffers.hlsl"
 
 /*
 cbuffer cbFxaa : register(b1) {

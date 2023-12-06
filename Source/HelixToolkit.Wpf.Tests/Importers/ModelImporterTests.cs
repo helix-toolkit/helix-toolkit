@@ -1,35 +1,36 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ModelImporterTests.cs" company="Helix Toolkit">
-//   Copyright (c) 2014 Helix Toolkit contributors
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
+﻿using NUnit.Framework;
+using System.Diagnostics.CodeAnalysis;
+using System.IO;
+using System.Windows.Media.Media3D;
 
-namespace HelixToolkit.Wpf.Tests
+namespace HelixToolkit.Wpf.Tests.Importers;
+
+// ReSharper disable InconsistentNaming
+[SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
+[TestFixture]
+public class ModelImporterTests
 {
-    using System.Diagnostics.CodeAnalysis;
-    using System.Windows.Media.Media3D;
-
-    using HelixToolkit.Wpf;
-    using NUnit.Framework;
-
-    // ReSharper disable InconsistentNaming
-    [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
-    [TestFixture]
-    public class ModelImporterTests
+    [SetUp]
+    public void SetUp()
     {
-        [Test]
-        public void Load_TestObj_ValidNumberOfVertices()
-        {
-            var importer = new ModelImporter();
-            var model = importer.Load(@"Models\obj\test.obj");
-            int countVertices = 0;
-            model.Traverse<GeometryModel3D>((geometryModel, transform) =>
-                {
-                    var mesh = (MeshGeometry3D)geometryModel.Geometry;
-                    countVertices += mesh.Positions.Count;
-                });
+        string dir = Path.GetDirectoryName(typeof(ModelImporterTests).Assembly.Location) ?? "";
+        dir = Path.Combine(dir!, string.Concat(Enumerable.Repeat("..\\", 5)));
+        Directory.SetCurrentDirectory(dir);
+    }
 
-            Assert.AreEqual(17, countVertices);
-        }
+    [Test]
+    public void Load_TestObj_ValidNumberOfVertices()
+    {
+        var importer = new ModelImporter();
+        var model = importer.Load(@"Models\obj\test\test.obj");
+        Assert.That(model, Is.Not.Null);
+        int countVertices = 0;
+        model.Traverse<GeometryModel3D>((geometryModel, transform) =>
+        {
+            var mesh = (MeshGeometry3D)geometryModel.Geometry;
+            countVertices += mesh.Positions.Count;
+        });
+
+        Assert.AreEqual(17, countVertices);
     }
 }

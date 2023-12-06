@@ -1,7 +1,7 @@
 #ifndef VSFULLSCREENQUAD_HLSL
 #define VSFULLSCREENQUAD_HLSL
 
-#include"..\Common\DataStructs.hlsl"
+#include "..\Common\DataStructs.hlsl"
 
 #pragma pack_matrix( row_major )
 

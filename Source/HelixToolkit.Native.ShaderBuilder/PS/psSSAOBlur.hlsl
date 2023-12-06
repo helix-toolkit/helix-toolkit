@@ -1,5 +1,5 @@
 #define SSAO
-#include"..\Common\CommonBuffers.hlsl"
+#include "..\Common\CommonBuffers.hlsl"
 #pragma pack_matrix( row_major )
 
 static const float div = 1.0 / 16;

@@ -2,8 +2,8 @@
 #define VSMESHSSAO_HLSL
 
 #define MESHSIMPLE
-#include"..\Common\Common.hlsl"
-#include"..\Common\DataStructs.hlsl"
+#include "..\Common\Common.hlsl"
+#include "..\Common\DataStructs.hlsl"
 
 struct SSAOIn
 {

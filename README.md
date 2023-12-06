@@ -6,33 +6,20 @@
 
 **Helix Toolkit is a collection of 3D components for .NET Framework.**
 
-[**HelixToolkit.WPF:**](/Source/HelixToolkit.Wpf) 
-Adds variety of functionalities/models on the top of internal WPF 3D models (Media3D namespace). 
+[**HelixToolkit.WPF:**](/Source/HelixToolkit.Wpf)
+Adds variety of functionalities/models on the top of internal WPF 3D models (Media3D namespace).
 
-[**HelixToolkit.Core.WPF:**](/Source/HelixToolkit.Core.Wpf) 
-Adds variety of functionalities/models on the top of internal .NET Core WPF 3D models (Media3D namespace).
+[**HelixToolkit.SharpDX.WPF:**](/Source/HelixToolkit.Wpf.SharpDX)
+Custom 3D Engine and XAML/MVVM compatible Scene Graphs based on [SharpDX](https://github.com/sharpdx/SharpDX)(DirectX 11) for WPF.
 
-[**HelixToolkit.SharpDX.WPF:**](/Source/HelixToolkit.Wpf.SharpDX) 
-Custom 3D Engine and XAML/MVVM compatible Scene Graphs based on [SharpDX](https://github.com/sharpdx/SharpDX)(DirectX 11) for high performance usage.
-
-[**HelixToolkit.UWP:**](/Source/HelixToolkit.UWP) 
-Custom 3D Engine and XAML/MVVM compatible Scene Graphs based on [SharpDX](https://github.com/sharpdx/SharpDX)(DirectX 11) for Universal Windows App.
-
-[**HelixToolkit.SharpDX.Core:**](/Source/HelixToolkit.SharpDX.Core) 
-Custom 3D Engine and Scene Graphs based on [SharpDX](https://github.com/sharpdx/SharpDX)(DirectX 11) for netstandard and .NET Core.
-
-[**HelixToolkit.SharpDX.Core.Wpf:**](/Source/HelixToolkit.SharpDX.Core.Wpf) 
-Wpf Wrapper Components based on `HelixToolkit.SharpDX.Core` for .NET Core Wpf.
-
-[**HelixToolkit.WinUI:**](/Source/HelixToolkit.WinUI) 
+[**HelixToolkit.SharpDX.WinUI:**](/Source/HelixToolkit.WinUI.SharpDX)
 Custom 3D Engine and XAML/MVVM compatible Scene Graphs based on [SharpDX](https://github.com/sharpdx/SharpDX)(DirectX 11) for WinUI.
 
-
-[**HelixToolkit.SharpDX.Assimp:**](/Source/HelixToolkit.Wpf.SharpDX.Assimp) 
+[**HelixToolkit.SharpDX.Assimp:**](/Source/HelixToolkit.SharpDX.Assimp)
 [Assimp.Net](https://bitbucket.org/Starnick/assimpnet/src/master/) 3D model importer/expoter support for HelixToolkit.SharpDX Components.
 
 [**Examples:**](/Source/Examples)
-Please download full source code to run examples. Or download [compiled version](https://ci.appveyor.com/project/objorke/helix-toolkit/branch/master/artifacts)
+Please download full source code to run examples.
 
 [![License: MIT](https://img.shields.io/github/license/helix-toolkit/helix-toolkit)](https://github.com/helix-toolkit/helix-toolkit/blob/develop/LICENSE)
 [![Build status](https://ci.appveyor.com/api/projects/status/vbrornad55ln8tp4?svg=true)](https://ci.appveyor.com/project/holance/helix-toolkit-qqf1e)
@@ -55,7 +42,7 @@ Twitter             | https://twitter.com/hashtag/Helix3DToolkit
 
 ## Project Build
 
-**Visual Studio 2019. Windows 10 SDK (Min Ver.10.0.18362.0).**
+**Visual Studio 2022.**
 
 ## Notes
 
@@ -75,22 +62,19 @@ FXAA, Order Independant Transparent Rendering, Particle system, Tessellation.
 
 ```mermaid
 graph TD
-    wpf[WPF Framework] --> hxWpf[HelixToolkit.Wpf]
-    wpf --> hxCoreWpf[HelixToolkit.Core.Wpf]
+    hx[HelixToolkit] --> hxWpf[HelixToolkit.Wpf]
+    wpf[WPF Framework] --> hxWpf
 ```
+
 ### HelixToolkit DirectX11 Engine
 
 ```mermaid
 graph TD
-    hx[HelixToolkit] --> dx11[DirectX11 Engine]    
-    dx11 --> hxSharpDX[HelixToolkit.Wpf.SharpDX]
-    dx11 --> hxUWP[HelixToolkit.UWP]
-    dx11 --> hxCore[HelixToolkit.SharpDX.Core]
-    hxCore --> hxWinUI[HelixToolkit.SharpDX.Core.Wpf]
-    hxCore --> hxSharpDXCoreWpf[HelixToolkit.WinUI]
-    hxSharpDX --> hxAssimp[HelixToolkit.SharpDX.Assimp]
-    hxUWP --> hxAssimp
-    hxCore --> hxAssimp
+    hx[HelixToolkit] --> hxdx[HelixToolkit.SharpDX]
+    dx11[DirectX11 Engine] --> hxdx
+    hxdx --> hxAssimp[HelixToolkit.SharpDX.Assimp]
+    hxdx --> hxWpf[HelixToolkit.Wpf.SharpDX]
+    hxdx --> hxWinUI[HelixToolkit.WinUI.SharpDX]
 ```
 
 ## Bug Report
@@ -119,3 +103,4 @@ Please use the following template to report bugs.
 
 #### 2023-03-17
 Nightly build myget feed link has been updated to: https://www.myget.org/F/helixtoolkit-nightly
+

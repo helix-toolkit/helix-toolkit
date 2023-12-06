@@ -1,8 +1,8 @@
 #ifndef VSCUBMAP_HLSL
 #define VSCUBMAP_HLSL
 #define MESH
-#include"..\Common\DataStructs.hlsl"
-#include"..\Common\Common.hlsl"
+#include "..\Common\DataStructs.hlsl"
+#include "..\Common\Common.hlsl"
 
 PSInputCube main(float4 p : POSITION)
 {

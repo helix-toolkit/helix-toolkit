@@ -1,9 +1,9 @@
 #ifndef VSPOINT_HLSL
 #define VSPOINT_HLSL
 #define POINTLINE
-#include"..\Common\DataStructs.hlsl"
-#include"..\Common\CommonBuffers.hlsl"
-#include"..\Common\Common.hlsl"
+#include "..\Common\DataStructs.hlsl"
+#include "..\Common\CommonBuffers.hlsl"
+#include "..\Common\Common.hlsl"
 
 GSInputPS main(VSInputPS input)
 {

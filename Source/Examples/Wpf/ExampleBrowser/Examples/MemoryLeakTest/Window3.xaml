@@ -1,0 +1,39 @@
+﻿<Window x:Class="MemoryLeakTest.Window3"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:h="http://helix-toolkit.org/wpf"
+        xmlns:local="clr-namespace:MemoryLeakTest"
+        mc:Ignorable="d"
+        Title="Window3"
+        Height="300"
+        Width="300">
+    <Grid>
+        <h:HelixViewport3D>
+            <h:SunLight />
+            <h:SortingVisual3D Method="BoundingBoxCorners"
+                               SortingFrequency="2">
+                <h:RectangleVisual3D Origin="0,0,0"
+                                     Normal="1,0,0"
+                                     LengthDirection="0,1,0"
+                                     Fill="#80FF0000" />
+                <h:RectangleVisual3D Origin="1,0,0"
+                                     Normal="1,0,0"
+                                     LengthDirection="0,1,0"
+                                     Fill="#8000FF00" />
+                <h:RectangleVisual3D Origin="-1,0,0"
+                                     Normal="1,0,0"
+                                     LengthDirection="0,1,0"
+                                     Fill="#800000FF" />
+
+                <h:CubeVisual3D Center="-3,0,0"
+                                SideLength="1"
+                                Fill="Black" />
+                <h:CubeVisual3D Center="3,0,0"
+                                SideLength="1"
+                                Fill="Black" />
+            </h:SortingVisual3D>
+        </h:HelixViewport3D>
+    </Grid>
+</Window>

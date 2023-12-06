@@ -1,7 +1,7 @@
 #ifndef GSLINEARROWTAIL_HLSL
 #define GSLINEARROWTAIL_HLSL
 #define POINTLINE
-#include"..\GS\gsLineArrowHead.hlsl"
+#include "..\GS\gsLineArrowHead.hlsl"
 
 [maxvertexcount(24)]
 void mainArrowHeadTail(line GSInputPS input[2], inout TriangleStream<PSInputPS> outStream)

@@ -1,8 +1,8 @@
 #ifndef PSBILLBOARDTEXT_HLSL
 #define PSBILLBOARDTEXT_HLSL
 #define POINTLINE
-#include"..\Common\DataStructs.hlsl"
-#include"..\Common\Common.hlsl"
+#include "..\Common\DataStructs.hlsl"
+#include "..\Common\Common.hlsl"
 
 static const uint BillboardSingleText = 1;
 static const uint BillboardMultiText = 2;

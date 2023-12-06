@@ -1,10 +1,10 @@
 #ifndef PSBILLBOARDTEXTOITDP_HLSL
 #define PSBILLBOARDTEXTOITDP_HLSL
 #define POINTLINE
-#include"..\Common\DataStructs.hlsl"
-#include"..\Common\Common.hlsl"
-#include"psBillboardText.hlsl"
-#include"psCommon.hlsl"
+#include "..\Common\DataStructs.hlsl"
+#include "..\Common\Common.hlsl"
+#include "psBillboardText.hlsl"
+#include "psCommon.hlsl"
 
 PSOITOutput billboardTextOIT(PSInputBT input)
 {

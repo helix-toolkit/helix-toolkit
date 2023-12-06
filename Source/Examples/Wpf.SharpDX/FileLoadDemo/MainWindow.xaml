@@ -1,0 +1,185 @@
+﻿<Window x:Class="FileLoadDemo.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:hx="http://helix-toolkit.org/wpf/SharpDX"
+        xmlns:local="clr-namespace:FileLoadDemo"
+        mc:Ignorable="d"
+        Title="FileLoadDemo"
+        Width="1000"
+        Height="800">
+    <Grid>
+        <Grid.Resources>
+            <BooleanToVisibilityConverter x:Key="boolToVisibilityConverter" />
+        </Grid.Resources>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+        <hx:Viewport3DX x:Name="view"
+                        Grid.Row="1"
+                        BackgroundColor="#595959"
+                        Camera="{Binding Camera}"
+                        EffectsManager="{Binding EffectsManager}"
+                        EnableSwapChainRendering="True"
+                        FXAALevel="Low"
+                        FixedRotationPoint="{Binding ModelCentroid}"
+                        FixedRotationPointEnabled="True">
+            <hx:Viewport3DX.InputBindings>
+                <KeyBinding Key="B"
+                            Command="hx:ViewportCommands.BackView" />
+                <KeyBinding Key="F"
+                            Command="hx:ViewportCommands.FrontView" />
+                <KeyBinding Key="U"
+                            Command="hx:ViewportCommands.TopView" />
+                <KeyBinding Key="D"
+                            Command="hx:ViewportCommands.BottomView" />
+                <KeyBinding Key="L"
+                            Command="hx:ViewportCommands.LeftView" />
+                <KeyBinding Key="R"
+                            Command="hx:ViewportCommands.RightView" />
+                <KeyBinding Command="hx:ViewportCommands.ZoomExtents"
+                            Gesture="Control+E" />
+                <MouseBinding Command="hx:ViewportCommands.Rotate"
+                              Gesture="RightClick" />
+                <MouseBinding Command="hx:ViewportCommands.Zoom"
+                              Gesture="MiddleClick" />
+                <MouseBinding Command="hx:ViewportCommands.Pan"
+                              Gesture="LeftClick" />
+            </hx:Viewport3DX.InputBindings>
+            <hx:AmbientLight3D Color="#363636" />
+            <hx:DirectionalLight3D Direction="{Binding Camera.LookDirection}"
+                                   Color="#D6D6D6" />
+            <hx:EnvironmentMap3D IsRendering="{Binding RenderEnvironmentMap}"
+                                 Texture="{Binding EnvironmentMap}" />
+            <hx:Element3DPresenter Content="{Binding GroupModel}" />
+            <hx:PostEffectMeshBorderHighlight EffectName="highlight" />
+        </hx:Viewport3DX>
+        <Grid Grid.Row="1"
+              Background="#7B363636"
+              Visibility="{Binding IsLoading, Converter={StaticResource boolToVisibilityConverter}}">
+            <StackPanel HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Orientation="Vertical">
+                <TextBlock Foreground="White">Loading Model</TextBlock>
+                <ProgressBar Grid.Row="1"
+                             Width="200"
+                             Height="30"
+                             IsIndeterminate="True" />
+            </StackPanel>
+        </Grid>
+        <Menu Grid.Row="0"
+              Height="20"
+              VerticalAlignment="Top">
+            <MenuItem Header="File">
+                <MenuItem Command="{Binding OpenFileCommand}"
+                          Header="Open File" />
+                <MenuItem Command="{Binding ExportCommand}"
+                          Header="Export" />
+            </MenuItem>
+            <MenuItem Header="Edit">
+                <MenuItem Command="{Binding CopyAsBitmapCommand}"
+                          Header="Copy As Bitmap (Window Size)" />
+                <MenuItem Command="{Binding CopyAsHiresBitmapCommand}"
+                          Header="Copy as Hiresolution Bitmap (1920x1080)" />
+            </MenuItem>
+        </Menu>
+
+        <Grid Grid.Row="1"
+              Grid.Column="1"
+              Width="250"
+              VerticalAlignment="Stretch">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <StackPanel Margin="4"
+                        HorizontalAlignment="Stretch"
+                        Orientation="Vertical">
+                <Button Command="{Binding ResetCameraCommand}">
+                    Reset Camera
+                </Button>
+                <Separator />
+                <CheckBox Margin="4"
+                          IsChecked="{Binding ShowWireframe}">Show Wireframe</CheckBox>
+                <CheckBox Margin="4"
+                          IsChecked="{Binding ElementName=view, Path=EnableSSAO}">Enable SSAO</CheckBox>
+                <CheckBox Margin="4"
+                          IsChecked="{Binding RenderEnvironmentMap}">Render EnvironmentMap</CheckBox>
+                <CheckBox Margin="4"
+                          IsChecked="{Binding RenderFlat}">Flat Shading</CheckBox>
+                <Separator />
+                <TextBlock>Animations</TextBlock>
+                <ComboBox DisplayMemberPath="Name"
+                          IsEnabled="{Binding ElementName=aniCheckbox, Path=IsChecked}"
+                          ItemsSource="{Binding Animations}"
+                          SelectedItem="{Binding SelectedAnimation}" />
+                <StackPanel Orientation="Vertical">
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="PlayBack Speed: " />
+                        <TextBlock VerticalAlignment="Center"
+                                   Text="{Binding Speed}" />
+                        <Button Command="{Binding PlayCommand}">Play</Button>
+                    </StackPanel>
+
+                    <Slider Maximum="50"
+                            Minimum="0"
+                            SmallChange="0.5"
+                            Value="{Binding Speed}" />
+                    <Label>
+                        <TextBlock>
+                            <Run>TimeStamp:</Run>
+                            <Run Text="{Binding CurrAnimationTime}" />
+                        </TextBlock>
+                    </Label>
+                    <Slider LargeChange="1"
+                            Maximum="{Binding EndTime}"
+                            Minimum="{Binding StartTime}"
+                            SmallChange="0.1"
+                            Value="{Binding CurrAnimationTime}" />
+                </StackPanel>
+                <Separator />
+                <TextBlock>Scene Graph</TextBlock>
+            </StackPanel>
+            <ScrollViewer Grid.Row="1">
+                <TreeView ItemsSource="{Binding GroupModel.GroupNode.Items}">
+                    <TreeView.ItemContainerStyle>
+                        <Style TargetType="TreeViewItem">
+                            <Setter Property="IsSelected"
+                                    Value="{Binding Tag.Selected, Mode=TwoWay}" />
+                            <Setter Property="IsExpanded"
+                                    Value="{Binding Tag.Expanded, Mode=TwoWay}" />
+                        </Style>
+                    </TreeView.ItemContainerStyle>
+                    <TreeView.ItemTemplate>
+                        <HierarchicalDataTemplate ItemsSource="{Binding Items}">
+                            <TextBlock Text="{Binding Name}">
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock">
+                                        <Style.Setters>
+                                            <Setter Property="Foreground"
+                                                    Value="Black" />
+                                        </Style.Setters>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding IsAnimationNode}"
+                                                         Value="true">
+                                                <Setter Property="Foreground"
+                                                        Value="Blue" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
+                        </HierarchicalDataTemplate>
+                    </TreeView.ItemTemplate>
+                </TreeView>
+            </ScrollViewer>
+
+        </Grid>
+    </Grid>
+</Window>

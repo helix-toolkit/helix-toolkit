@@ -1,0 +1,49 @@
+﻿<Window x:Class="ColorAxis.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:h="http://helix-toolkit.org/wpf"
+        xmlns:local="clr-namespace:ColorAxis"
+        mc:Ignorable="d"
+        Title="ColorAxis"
+        Height="480"
+        Width="640">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition />
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="80" />
+            <RowDefinition />
+            <RowDefinition Height="80" />
+        </Grid.RowDefinitions>
+        <h:HelixViewport3D Grid.ColumnSpan="3"
+                           Grid.RowSpan="3"
+                           Background="CornflowerBlue">
+            <h:SunLight />
+            <h:BoxVisual3D />
+        </h:HelixViewport3D>
+        <h:CategorizedColorAxis Grid.Row="1"
+                                Margin="4"
+                                Padding="4 4 8 8"
+                                Categories="{Binding Categories}"
+                                ColorScheme="{Binding ColorScheme2}"
+                                Position="Left"
+                                Background="#80FFFFFF"
+                                BorderBrush="Black"
+                                BorderThickness="1" />
+        <h:RangeColorAxis Grid.Row="1"
+                          Grid.Column="2"
+                          Minimum="4"
+                          Maximum="104"
+                          Step="10"
+                          Margin="8"
+                          Padding="4 8 4 8"
+                          ColorScheme="{Binding ColorScheme}"
+                          Background="#80FFFFFF"
+                          Position="Right" />
+    </Grid>
+</Window>

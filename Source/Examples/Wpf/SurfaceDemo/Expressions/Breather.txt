@@ -1,0 +1,13 @@
+﻿// http://xahlee.org/surface/breather_p/breather_p.html
+
+u = (u-0.5)*13.2*2;
+v = (v-0.5)*37.4*2;
+
+double b=w*0.4;
+double r = 1 - b*b;
+double p = sqrt(r);
+double coshbu=Math.Cosh(b*u);
+double denom = b*sqr(p*coshbu) + sqr(b*sin(p*v));
+x=-u +(2*r*coshbu*Math.Sinh(b*u))/denom;
+y=(2*p*coshbu*(-(p*cos(v)*cos(p*v)) - sin(v)*sin(p*v)))/denom;
+z=(2*p*coshbu*(-(p*sin(v)*cos(p*v)) + cos(v)*sin(p*v)))/denom;

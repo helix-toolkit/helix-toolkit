@@ -1,0 +1,670 @@
+﻿using HelixToolkit.SharpDX.Core;
+using HelixToolkit.SharpDX.Model.Components;
+using SharpDX;
+using SharpDX.Direct3D11;
+
+namespace HelixToolkit.SharpDX.Model.Scene;
+
+public abstract class GeometryNode : SceneNode, IHitable, IThrowingShadow, IInstancing, IBoundable, IApplyPostEffect
+{
+    #region Properties
+
+    private Geometry3D? geometry;
+    /// <summary>
+    /// Gets or sets the geometry.
+    /// </summary>
+    /// <value>
+    /// The geometry.
+    /// </value>
+    public Geometry3D? Geometry
+    {
+        set
+        {
+            var old = geometry;
+            if (Set(ref geometry, value))
+            {
+                BoundManager.Geometry = value;
+                if (IsAttached)
+                {
+                    CreateGeometryBuffer();
+                }
+                OnGeometryChanged(value, old);
+                InvalidateRender();
+            }
+        }
+        get
+        {
+            return geometry;
+        }
+    }
+
+    private IList<Matrix>? instances;
+    /// <summary>
+    /// Gets or sets the instances.
+    /// </summary>
+    /// <value>
+    /// The instances.
+    /// </value>
+    public IList<Matrix>? Instances
+    {
+        set
+        {
+            if (Set(ref instances, value))
+            {
+                BoundManager.Instances = value;
+                InstanceBuffer.Elements = value;
+                InstancesChanged();
+            }
+        }
+        get
+        {
+            return instances;
+        }
+    }
+
+    /// <summary>
+    /// Gets a value indicating whether this instance has instances.
+    /// </summary>
+    /// <value>
+    ///   <c>true</c> if this instance has instances; otherwise, <c>false</c>.
+    /// </value>
+    public bool HasInstances
+    {
+        get
+        {
+            return InstanceBuffer.HasElements;
+        }
+    }
+
+    /// <summary>
+    /// Gets the instance buffer.
+    /// </summary>
+    /// <value>
+    /// The instance buffer.
+    /// </value>
+    public IElementsBufferModel<Matrix> InstanceBuffer { get; } = new MatrixInstanceBufferModel();
+
+    /// <summary>
+    /// Instanceses the changed.
+    /// </summary>
+    protected virtual void InstancesChanged()
+    {
+    }
+
+    /// <summary>
+    /// The reuse vertex array buffer
+    /// </summary>
+    protected bool reuseVertexArrayBuffer = false;
+
+    /// <summary>
+    ///
+    /// </summary>
+    /// <returns></returns>
+    public delegate RasterizerStateDescription CreateRasterStateFunc();
+
+    /// <summary>
+    /// Create raster state description delegate.
+    /// <para>If <see cref="OnCreateRasterState"/> is set, then <see cref="CreateRasterState"/> will not be called.</para>
+    /// </summary>
+    public CreateRasterStateFunc? OnCreateRasterState;
+    /// <summary>
+    /// Gets the buffer model internal.
+    /// </summary>
+    /// <value>
+    /// The buffer model internal.
+    /// </value>
+    protected IAttachableBufferModel? BufferModelInternal
+    {
+        get
+        {
+            return bufferModelInternal;
+        }
+    }
+    private IAttachableBufferModel? bufferModelInternal;
+
+    /// <summary>
+    /// Gets a value indicating whether [geometry valid].
+    /// </summary>
+    /// <value>
+    ///   <c>true</c> if [geometry valid]; otherwise, <c>false</c>.
+    /// </value>
+    public bool GeometryValid
+    {
+        get
+        {
+            return BoundManager.GeometryValid;
+        }
+    }
+
+    /// <summary>
+    /// Gets or sets the bound manager.
+    /// </summary>
+    /// <value>
+    /// The bound manager.
+    /// </value>
+    public readonly GeometryBoundManager BoundManager;
+    /// <summary>
+    /// Gets the original bound from the geometry. Same as <see cref="Geometry3D.Bound"/>
+    /// </summary>
+    /// <value>
+    /// The original bound.
+    /// </value>
+    public sealed override BoundingBox OriginalBounds
+    {
+        get
+        {
+            return BoundManager.OriginalBounds;
+        }
+    }
+    /// <summary>
+    /// Gets the original bound sphere from the geometry. Same as <see cref="Geometry3D.BoundingSphere"/> 
+    /// </summary>
+    /// <value>
+    /// The original bound sphere.
+    /// </value>
+    public sealed override BoundingSphere OriginalBoundsSphere
+    {
+        get
+        {
+            return BoundManager.OriginalBoundsSphere;
+        }
+    }
+
+    /// <summary>
+    /// Gets the bounds. Usually same as <see cref="OriginalBounds"/>. If have instances, the bound will enclose all instances.
+    /// </summary>
+    /// <value>
+    /// The bounds.
+    /// </value>
+    public sealed override BoundingBox Bounds
+    {
+        get
+        {
+            return BoundManager.Bounds;
+        }
+    }
+
+    /// <summary>
+    /// Gets the bounds with transform. Usually same as <see cref="Bounds"/>. If have transform, the bound is the transformed <see cref="Bounds"/>
+    /// </summary>
+    /// <value>
+    /// The bounds with transform.
+    /// </value>
+    public sealed override BoundingBox BoundsWithTransform
+    {
+        get
+        {
+            return BoundManager.BoundsWithTransform;
+        }
+    }
+
+
+    /// <summary>
+    /// Gets the bounds sphere. Usually same as <see cref="OriginalBoundsSphere"/>. If have instances, the bound sphere will enclose all instances.
+    /// </summary>
+    /// <value>
+    /// The bounds sphere.
+    /// </value>
+    public override BoundingSphere BoundsSphere
+    {
+        get
+        {
+            return BoundManager.BoundsSphere;
+        }
+    }
+
+    /// <summary>
+    /// Gets the bounds sphere with transform. If have transform, the bound is the transformed <see cref="BoundsSphere"/>
+    /// </summary>
+    /// <value>
+    /// The bounds sphere with transform.
+    /// </value>
+    public override BoundingSphere BoundsSphereWithTransform
+    {
+        get
+        {
+            return BoundManager.BoundsSphereWithTransform;
+        }
+    }
+
+    #region Rasterizer parameters
+
+    private int depthBias = 0;
+    /// <summary>
+    /// Gets or sets the depth bias.
+    /// </summary>
+    /// <value>
+    /// The depth bias.
+    /// </value>
+    public int DepthBias
+    {
+        set
+        {
+            if (Set(ref depthBias, value))
+            {
+                OnRasterStateChanged();
+            }
+        }
+        get
+        {
+            return depthBias;
+        }
+    }
+
+    private float slopScaledDepthBias = 0;
+    /// <summary>
+    /// Gets or sets the slope scaled depth bias.
+    /// </summary>
+    /// <value>
+    /// The slope scaled depth bias.
+    /// </value>
+    public float SlopeScaledDepthBias
+    {
+        get
+        {
+            return slopScaledDepthBias;
+        }
+        set
+        {
+            if (Set(ref slopScaledDepthBias, value))
+            {
+                OnRasterStateChanged();
+            }
+        }
+    }
+
+    private bool isMSAAEnabled = true;
+    /// <summary>
+    /// Gets or sets a value indicating whether Multisampling Anti-Aliasing enabled.
+    /// </summary>
+    /// <value>
+    ///   <c>true</c> if this instance is msaa enabled; otherwise, <c>false</c>.
+    /// </value>
+    public bool IsMSAAEnabled
+    {
+        get
+        {
+            return isMSAAEnabled = true;
+        }
+        set
+        {
+            if (Set(ref isMSAAEnabled, value))
+            {
+                OnRasterStateChanged();
+            }
+        }
+    }
+
+    private bool isScissorEnabled = true;
+    /// <summary>
+    /// Gets or sets a value indicating whether this instance is scissor enabled.
+    /// </summary>
+    /// <value>
+    ///   <c>true</c> if this instance is scissor enabled; otherwise, <c>false</c>.
+    /// </value>
+    public bool IsScissorEnabled
+    {
+        get
+        {
+            return isScissorEnabled;
+        }
+        set
+        {
+            if (Set(ref isScissorEnabled, value))
+            {
+                OnRasterStateChanged();
+            }
+        }
+    }
+
+    private FillMode fillMode = FillMode.Solid;
+    /// <summary>
+    /// Gets or sets the fill mode.
+    /// </summary>
+    /// <value>
+    /// The fill mode.
+    /// </value>
+    public FillMode FillMode
+    {
+        get
+        {
+            return fillMode;
+        }
+        set
+        {
+            if (Set(ref fillMode, value))
+            {
+                OnRasterStateChanged();
+            }
+        }
+    }
+
+    private bool isDepthClipEnabled = true;
+    /// <summary>
+    /// Gets or sets a value indicating whether this instance is depth clip enabled.
+    /// </summary>
+    /// <value>
+    ///   <c>true</c> if this instance is depth clip enabled; otherwise, <c>false</c>.
+    /// </value>
+    public bool IsDepthClipEnabled
+    {
+        get
+        {
+            return isDepthClipEnabled;
+        }
+        set
+        {
+            if (Set(ref isDepthClipEnabled, value))
+            {
+                OnRasterStateChanged();
+            }
+        }
+    }
+
+    #endregion Rasterizer parameters        
+    private bool enableViewFrustumCheck = true;
+    /// <summary>
+    /// Gets or sets a value indicating whether [enable view frustum check].
+    /// </summary>
+    /// <value>
+    ///   <c>true</c> if [enable view frustum check]; otherwise, <c>false</c>.
+    /// </value>
+    public bool EnableViewFrustumCheck
+    {
+        set
+        {
+            enableViewFrustumCheck = value;
+        }
+        get
+        {
+            return enableViewFrustumCheck && HasBound;
+        }
+    }
+
+    private string postEffects = string.Empty;
+    /// <summary>
+    /// Gets or sets the post effects.
+    /// </summary>
+    /// <value>
+    /// The post effects.
+    /// </value>
+    public string PostEffects
+    {
+        get
+        {
+            return postEffects;
+        }
+        set
+        {
+            if (Set(ref postEffects, value))
+            {
+                ClearPostEffect();
+                if (value is string effects)
+                {
+                    if (!string.IsNullOrEmpty(effects))
+                    {
+                        foreach (var effect in EffectAttributes.Parse(effects))
+                        {
+                            AddPostEffect(effect);
+                        }
+                    }
+                }
+            }
+        }
+    }
+    /// <summary>
+    /// Gets or sets a value indicating whether this instance is throwing shadow.
+    /// </summary>
+    /// <value>
+    ///   <c>true</c> if this instance is throwing shadow; otherwise, <c>false</c>.
+    /// </value>
+    public bool IsThrowingShadow
+    {
+        set
+        {
+            RenderCore.IsThrowingShadow = value;
+        }
+        get
+        {
+            return RenderCore.IsThrowingShadow;
+        }
+    }
+    #endregion Properties
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="GeometryNode"/> class.
+    /// </summary>
+    public GeometryNode()
+    {
+        BoundManager = new GeometryBoundManager(this);
+        BoundManager.OnBoundChanged += (s, e) => { RaiseOnBoundChanged(e); };
+        BoundManager.OnTransformBoundChanged += (s, e) => { RaiseOnTransformBoundChanged(e); };
+        BoundManager.OnBoundSphereChanged += (s, e) => { RaiseOnBoundSphereChanged(e); };
+        BoundManager.OnTransformBoundSphereChanged += (s, e) => { RaiseOnTransformBoundSphereChanged(e); };
+        BoundManager.OnCheckGeometry = OnCheckGeometry;
+        HasBound = true;
+    }
+
+    /// <summary>
+    /// Called when [check geometry].
+    /// </summary>
+    /// <param name="geometry">The geometry.</param>
+    /// <returns></returns>
+    protected virtual bool OnCheckGeometry(Geometry3D? geometry)
+    {
+        return !(geometry == null || geometry.Positions == null || geometry.Positions.Count == 0);
+    }
+
+    /// <summary>
+    /// Called when [create buffer model].
+    /// </summary>
+    /// <returns></returns>
+    protected virtual IAttachableBufferModel OnCreateBufferModel(Guid modelGuid, Geometry3D? geometry)
+    {
+        return EmptyGeometryBufferModel.Empty;
+    }
+
+    /// <summary>
+    /// Called when [raster state changed].
+    /// </summary>
+    protected virtual void OnRasterStateChanged()
+    {
+        if (IsAttached && RenderCore is IGeometryRenderCore r)
+        {
+            r.RasterDescription = OnCreateRasterState != null ? OnCreateRasterState() : CreateRasterState();
+        }
+    }
+
+    /// <summary>
+    /// Called when [geometry changed].
+    /// </summary>
+    /// <param name="newGeometry">The new geometry.</param>
+    /// <param name="oldGeometry">The old geometry.</param>
+    protected virtual void OnGeometryChanged(Geometry3D? newGeometry, Geometry3D? oldGeometry)
+    {
+    }
+
+    /// <summary>
+    /// Create raster state description.
+    /// <para>If <see cref="OnCreateRasterState"/> is set, then <see cref="OnCreateRasterState"/> instead of <see cref="CreateRasterState"/> will be called.</para>
+    /// </summary>
+    /// <returns></returns>
+    protected abstract RasterizerStateDescription CreateRasterState();
+
+    /// <summary>
+    /// This function initialize the Geometry Buffer and Instance Buffer
+    /// </summary>
+    /// <param name="effectsManager"></param>
+    /// <returns>
+    /// Return true if attached
+    /// </returns>
+    protected override bool OnAttach(IEffectsManager effectsManager)
+    {
+        if (base.OnAttach(effectsManager))
+        {
+            CreateGeometryBuffer();
+            BoundManager.Geometry = Geometry;
+            InstanceBuffer.Initialize();
+            InstanceBuffer.Elements = this.Instances;
+            if (RenderCore is IGeometryRenderCore r)
+            {
+                r.InstanceBuffer = InstanceBuffer;
+            }
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    private void CreateGeometryBuffer()
+    {
+        var newBuffer = OnCreateBufferModel(this.GUID, geometry);
+        RemoveAndDispose(ref bufferModelInternal);
+        bufferModelInternal = newBuffer;
+        if (RenderCore is IGeometryRenderCore core)
+        {
+            core.GeometryBuffer = bufferModelInternal;
+        }
+    }
+    /// <summary>
+    /// Called when [attached].
+    /// </summary>
+    protected override void OnAttached()
+    {
+        OnRasterStateChanged();
+        base.OnAttached();
+    }
+
+    /// <summary>
+    /// Used to override Detach
+    /// </summary>
+    protected override void OnDetach()
+    {
+        if (RenderCore is IGeometryRenderCore core)
+        {
+            core.GeometryBuffer = null;
+        }
+        RemoveAndDispose(ref bufferModelInternal);
+        InstanceBuffer.DisposeAndClear();
+        BoundManager.DisposeAndClear();
+        base.OnDetach();
+    }
+
+    /// <summary>
+    /// <para>Determine if this can be rendered.</para>
+    /// </summary>
+    /// <param name="context"></param>
+    /// <returns></returns>
+    protected override bool CanRender(RenderContext context)
+    {
+        if (base.CanRender(context) && GeometryValid)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    /// <summary>
+    /// Views the frustum test.
+    /// </summary>
+    /// <param name="viewFrustum">The view frustum.</param>
+    /// <returns></returns>
+    public override bool TestViewFrustum(ref BoundingFrustum viewFrustum)
+    {
+        if (!EnableViewFrustumCheck)
+        {
+            return true;
+        }
+        return BoundingFrustumExtensions.IsInOrIntersectFrustum(ref viewFrustum, ref BoundManager.BoundsWithTransform, ref BoundManager.BoundsSphereWithTransform);
+    }
+
+    /// <summary>
+    /// Pre hit test on <see cref="BoundsWithTransform"/> and <see cref="BoundsSphereWithTransform"/>. 
+    /// If return false, <see cref="SceneNode.OnHitTest"/> will not be called.
+    /// </summary>
+    /// <param name="context"></param>
+    /// <returns></returns>
+    protected virtual bool PreHitTestOnBounds(HitTestContext? context)
+    {
+        if (context is null)
+        {
+            return false;
+        }
+
+        var ray = context.RayWS;
+        return BoundsSphereWithTransform.Intersects(ref ray) && BoundsWithTransform.Intersects(ref ray);
+    }
+    /// <summary>
+    ///
+    /// </summary>
+    public override bool HitTest(HitTestContext? context, ref List<HitTestResult> hits)
+    {
+        if (CanHitTest(context) && PreHitTestOnBounds(context))
+        {
+            if (this.InstanceBuffer.HasElements)
+            {
+                var hit = false;
+                var idx = 0;
+                if (InstanceBuffer.Elements is not null)
+                {
+                    foreach (var modelMatrix in InstanceBuffer.Elements)
+                    {
+                        if (OnHitTest(context, modelMatrix * TotalModelMatrixInternal, ref hits))
+                        {
+                            hit = true;
+                            var lastHit = hits[^1];
+                            lastHit.Tag = idx;
+                            hits[^1] = lastHit;
+                        }
+                        ++idx;
+                    }
+                }
+                return hit;
+            }
+            else
+            {
+                return OnHitTest(context, TotalModelMatrixInternal, ref hits);
+            }
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    /// <summary>
+    /// Determines whether this instance [can hit test] the specified context.
+    /// </summary>
+    /// <param name="context">The hit context.</param>
+    /// <returns>
+    ///   <c>true</c> if this instance [can hit test] the specified context; otherwise, <c>false</c>.
+    /// </returns>
+    protected override bool CanHitTest(HitTestContext? context)
+    {
+        return base.CanHitTest(context) && GeometryValid;
+    }
+
+    /// <summary>
+    /// Updates the not render.
+    /// </summary>
+    /// <param name="context">The context.</param>
+    public override void UpdateNotRender(RenderContext context)
+    {
+        base.UpdateNotRender(context);
+        if (IsHitTestVisible && context.AutoUpdateOctree && geometry != null && geometry.OctreeDirty)
+        {
+            geometry?.UpdateOctree();
+        }
+    }
+
+    protected override void OnDispose(bool disposeManagedResources)
+    {
+        BoundManager.Dispose();
+        base.OnDispose(disposeManagedResources);
+    }
+}

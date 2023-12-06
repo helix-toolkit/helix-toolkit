@@ -5,9 +5,9 @@
 #define MESH
 #define BORDEREFFECTS
 
-#include"..\Common\Common.hlsl"
-#include"..\Common\DataStructs.hlsl"
-#include"psCommon.hlsl"
+#include "..\Common\Common.hlsl"
+#include "..\Common\DataStructs.hlsl"
+#include "psCommon.hlsl"
 //--------------------------------------------------------------------------------------
 // Blinn-Phong Lighting Reflection Model
 //--------------------------------------------------------------------------------------

@@ -1,5 +1,5 @@
 #define BORDEREFFECTS
-#include"..\Common\CommonBuffers.hlsl"
+#include "..\Common\CommonBuffers.hlsl"
 #pragma pack_matrix( row_major )
 
 static const int KSize = 5;

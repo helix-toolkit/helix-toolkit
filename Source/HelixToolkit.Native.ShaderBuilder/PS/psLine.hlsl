@@ -1,8 +1,8 @@
 #ifndef PSLINE_HLSL
 #define PSLINE_HLSL
 #define POINTLINE
-#include"..\Common\DataStructs.hlsl"
-#include"..\Common\Common.hlsl"
+#include "..\Common\DataStructs.hlsl"
+#include "..\Common\Common.hlsl"
 
 float4 main(PSInputPS input) : SV_Target
 {

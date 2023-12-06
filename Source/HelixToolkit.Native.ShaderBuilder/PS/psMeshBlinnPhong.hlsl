@@ -4,9 +4,9 @@
 #define CLIPPLANE
 #define MESH
 
-#include"..\Common\Common.hlsl"
-#include"..\Common\DataStructs.hlsl"
-#include"psCommon.hlsl"
+#include "..\Common\Common.hlsl"
+#include "..\Common\DataStructs.hlsl"
+#include "psCommon.hlsl"
 //--------------------------------------------------------------------------------------
 // normal mapping
 //--------------------------------------------------------------------------------------

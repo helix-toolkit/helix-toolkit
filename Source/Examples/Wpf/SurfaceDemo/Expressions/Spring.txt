@@ -1,0 +1,8 @@
+﻿u *= 2 * pi;
+v *= 2 * pi;
+
+double b = 3;
+double r = 0.3;
+x=cos(b*u)*(1+r*cos(v))+cos(b*u);
+y=sin(b*u)*(1+r*cos(v))+sin(b*u);
+z=u+r*sin(v);

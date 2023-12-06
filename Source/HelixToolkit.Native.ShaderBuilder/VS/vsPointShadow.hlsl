@@ -2,8 +2,8 @@
 #define VSPOINTSHADOW_HLSL
 
 #define MESHSIMPLE
-#include"..\Common\DataStructs.hlsl"
-#include"..\Common\Common.hlsl"
+#include "..\Common\DataStructs.hlsl"
+#include "..\Common\Common.hlsl"
 
 GSInputPS main(VSInputPS input)
 {

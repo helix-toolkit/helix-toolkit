@@ -2,9 +2,9 @@
 #define PSVIEWBOX_HLSL
 
 #define MESH
-#include"..\Common\DataStructs.hlsl"
-#include"..\Common\CommonBuffers.hlsl"
-#include"psCommon.hlsl"
+#include "..\Common\DataStructs.hlsl"
+#include "..\Common\CommonBuffers.hlsl"
+#include "psCommon.hlsl"
 //--------------------------------------------------------------------------------------
 //  Render coordinate system
 //--------------------------------------------------------------------------------------

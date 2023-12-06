@@ -1,6 +1,6 @@
 #ifndef COMMON_HLSL
 #define COMMON_HLSL
-#include"CommonBuffers.hlsl"
+#include "CommonBuffers.hlsl"
 
 #pragma pack_matrix( row_major )
 

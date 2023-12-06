@@ -1,0 +1,234 @@
+﻿<Window x:Class="ViewportFeatures.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:h="http://helix-toolkit.org/wpf"
+        xmlns:hInput="clr-namespace:HelixToolkit.Wpf.TDxInput;assembly=HelixToolkit.Wpf.TDxInput"
+        xmlns:local="clr-namespace:ViewportFeatures"
+        mc:Ignorable="d"
+        Title="ViewportFeatures"
+        Height="480"
+        Width="640">
+    <TabControl Margin="8">
+        <TabItem Header="Information">
+            <FlowDocumentScrollViewer>
+                <FlowDocument>
+                    <Paragraph>
+                        This demo shows usage of the HelixViewport3D control.
+                    </Paragraph>
+                    <Paragraph>
+                        See the
+                        <Hyperlink NavigateUri="http://helixtoolkit.codeplex.com/documentation"
+                                   RequestNavigate="Hyperlink_RequestNavigate">documentation</Hyperlink> for information on how to control the camera.
+                    </Paragraph>
+                </FlowDocument>
+            </FlowDocumentScrollViewer>
+        </TabItem>
+        <TabItem Header="HeadLight">
+            <h:HelixViewport3D IsHeadLightEnabled="True">
+                <h:CubeVisual3D SideLength="4"
+                                Fill="Blue" />
+            </h:HelixViewport3D>
+        </TabItem>
+        <TabItem Header="Default light setup">
+            <h:HelixViewport3D x:Name="view2"
+                               Background="Black">
+                <h:DefaultLights />
+                <h:CubeVisual3D SideLength="4"
+                                Center="0,0,2.5" />
+                <h:RectangleVisual3D DivLength="128"
+                                     DivWidth="128"
+                                     Origin="0,0,0"
+                                     Width="10"
+                                     Length="10"
+                                     Fill="Gray" />
+            </h:HelixViewport3D>
+        </TabItem>
+        <TabItem Header="Binding">
+            <DockPanel x:Name="bindingPanel">
+                <StackPanel Orientation="Horizontal"
+                            DockPanel.Dock="Bottom"
+                            Margin="8">
+                    <Label Content="Cube size:" />
+                    <Slider Name="slider1"
+                            Width="200"
+                            Maximum="10"
+                            Value="2"
+                            Margin="8 0 0 0" />
+                </StackPanel>
+                <Grid>
+                    <!-- todo: should not be neccessary to set DataContext to get the slider binding to work... -->
+                    <h:HelixViewport3D x:Name="view1"
+                                       IsHeadLightEnabled="True"
+                                       DataContext="{Binding ElementName=slider1}"
+                                       ShowFrameRate="{Binding IsChecked, ElementName=showFramerate}"
+                                       ShowFieldOfView="{Binding IsChecked, ElementName=showFieldOfView}"
+                                       ShowCoordinateSystem="{Binding IsChecked, ElementName=showCoordSystem}"
+                                       ShowViewCube="{Binding IsChecked, ElementName=showViewCube}"
+                                       InfiniteSpin="{Binding IsChecked, ElementName=infiniteSpin}">
+                        <h:CubeVisual3D x:Name="cube1"
+                                        SideLength="{Binding Value}"
+                                        Fill="Blue" />
+                        <h:CubeVisual3D Center="-6,-6,0"
+                                        SideLength="0.3"
+                                        Fill="Green" />
+                        <h:CubeVisual3D Center="-6,6,0"
+                                        SideLength="0.3"
+                                        Fill="Green" />
+                        <h:CubeVisual3D Center="6,-6,0"
+                                        SideLength="0.3"
+                                        Fill="Green" />
+                        <h:CubeVisual3D Center="6,6,0"
+                                        SideLength="0.3"
+                                        Fill="Green" />
+                    </h:HelixViewport3D>
+                    <StackPanel HorizontalAlignment="Left"
+                                VerticalAlignment="Top"
+                                Margin="8">
+                        <CheckBox Name="showFramerate"
+                                  Content="Show framerate" />
+                        <CheckBox Name="showFieldOfView"
+                                  Content="Show field of view (FOV)" />
+                        <CheckBox Name="showCoordSystem"
+                                  Content="Show coordinate system" />
+                        <CheckBox Name="showViewCube"
+                                  Content="Show view cube" />
+                        <CheckBox Name="infiniteSpin"
+                                  Content="Infinite spin" />
+                    </StackPanel>
+                </Grid>
+            </DockPanel>
+        </TabItem>
+        <TabItem Header="Orthographic Camera">
+            <Grid>
+                <h:HelixViewport3D Orthographic="{Binding IsChecked, ElementName=UseOrthographicCamera}">
+                    <h:DefaultLights />
+                    <h:CubeVisual3D SideLength="4"
+                                    Fill="Blue" />
+                </h:HelixViewport3D>
+                <StackPanel HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            Margin="8">
+                    <CheckBox Name="UseOrthographicCamera"
+                              Content="Orthographic camera" />
+                </StackPanel>
+
+            </Grid>
+        </TabItem>
+        <TabItem Header="Camera modes">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <h:HelixViewport3D CameraMode="Inspect"
+                                   Title="Inspect">
+                    <h:DefaultLights />
+                    <h:CubeVisual3D SideLength="4"
+                                    Fill="Blue" />
+                </h:HelixViewport3D>
+                <h:HelixViewport3D CameraMode="WalkAround"
+                                   Title="WalkAround"
+                                   Grid.Column="1">
+                    <h:DefaultLights />
+                    <h:CubeVisual3D SideLength="4"
+                                    Fill="Blue" />
+                </h:HelixViewport3D>
+                <h:HelixViewport3D CameraMode="FixedPosition"
+                                   Title="FixedPosition"
+                                   Grid.Column="2">
+                    <h:DefaultLights />
+                    <h:CubeVisual3D SideLength="4"
+                                    Fill="Blue" />
+                </h:HelixViewport3D>
+            </Grid>
+        </TabItem>
+        <TabItem Header="Space navigator">
+            <DockPanel>
+                <TextBlock Text="{Binding Type, ElementName=navigator}"
+                           DockPanel.Dock="Bottom" />
+                <hInput:SpaceNavigatorDecorator x:Name="navigator">
+                    <h:HelixViewport3D IsHeadLightEnabled="True">
+                        <h:CubeVisual3D SideLength="4"
+                                        Fill="Blue" />
+                    </h:HelixViewport3D>
+                </hInput:SpaceNavigatorDecorator>
+            </DockPanel>
+        </TabItem>
+        <TabItem Header="Transformed model">
+            <h:HelixViewport3D IsHeadLightEnabled="True">
+                <ModelVisual3D>
+                    <ModelVisual3D.Transform>
+                        <TranslateTransform3D OffsetX="4"
+                                              OffsetZ="3" />
+                    </ModelVisual3D.Transform>
+                    <h:CubeVisual3D SideLength="4"
+                                    Fill="Blue">
+                        <h:CubeVisual3D.Transform>
+                            <Transform3DGroup>
+                                <TranslateTransform3D OffsetX="2"
+                                                      OffsetZ="1" />
+                                <RotateTransform3D>
+                                    <RotateTransform3D.Rotation>
+                                        <AxisAngleRotation3D Axis="0,1,1"
+                                                             Angle="30" />
+                                    </RotateTransform3D.Rotation>
+                                </RotateTransform3D>
+                                <TranslateTransform3D OffsetZ="3" />
+                            </Transform3DGroup>
+                        </h:CubeVisual3D.Transform>
+                    </h:CubeVisual3D>
+                </ModelVisual3D>
+                <h:CoordinateSystemVisual3D />
+            </h:HelixViewport3D>
+        </TabItem>
+        <TabItem Header="Zoom extents">
+            <h:HelixViewport3D x:Name="view7"
+                               IsHeadLightEnabled="True"
+                               ZoomExtentsWhenLoaded="True">
+                <ModelVisual3D>
+                    <ModelVisual3D.Transform>
+                        <TranslateTransform3D OffsetX="4"
+                                              OffsetZ="3" />
+                    </ModelVisual3D.Transform>
+                    <h:CubeVisual3D SideLength="4"
+                                    Fill="Blue">
+                        <h:CubeVisual3D.Transform>
+                            <Transform3DGroup>
+                                <TranslateTransform3D OffsetX="2"
+                                                      OffsetZ="1" />
+                                <RotateTransform3D>
+                                    <RotateTransform3D.Rotation>
+                                        <AxisAngleRotation3D Axis="0,1,1"
+                                                             Angle="30" />
+                                    </RotateTransform3D.Rotation>
+                                </RotateTransform3D>
+                                <TranslateTransform3D OffsetZ="3" />
+                            </Transform3DGroup>
+                        </h:CubeVisual3D.Transform>
+                    </h:CubeVisual3D>
+                </ModelVisual3D>
+            </h:HelixViewport3D>
+        </TabItem>
+        <TabItem Header="Fit view">
+            <h:HelixViewport3D x:Name="view8"
+                               Title="Press Home to call FitView"
+                               SubTitle="LookDirection will be set to 1,-1,-1 and then scaled to fit the model into the view"
+                               ResetCameraKeyGesture="{x:Null}"
+                               IsHeadLightEnabled="True"
+                               ZoomExtentsWhenLoaded="True"
+                               ShowCameraInfo="True">
+                <h:HelixViewport3D.InputBindings>
+                    <KeyBinding Command="{Binding ResetCommand}"
+                                Key="Home" />
+                </h:HelixViewport3D.InputBindings>
+                <ModelVisual3D>
+                    <h:CubeVisual3D SideLength="4"
+                                    Fill="Gold" />
+                </ModelVisual3D>
+            </h:HelixViewport3D>
+        </TabItem>
+    </TabControl>
+</Window>

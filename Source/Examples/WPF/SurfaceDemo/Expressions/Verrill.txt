@@ -1,8 +1,0 @@
-﻿http://local.wasp.uwa.edu.au/~pbourke/geometry/verrill/
-
-double r=0.5+u*0.5;
-double p=v*2*pi;
-
-x = -2*r*cos(p) + 2*cos(p) / r - 2* r*r*r* cos(3*p) / 3;
-y = 6*r*sin(p) - 2 *sin(p) / r - 2* r*r*r* sin(3*p) / 3;
-z = 4 * log(r);

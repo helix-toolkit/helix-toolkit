@@ -1,156 +1,145 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ExporterTests.cs" company="Helix Toolkit">
-//   Copyright (c) 2014 Helix Toolkit contributors
-// </copyright>
-// <summary>
-//   Provides a base class for Exporter test classes.
-// </summary>
-// --------------------------------------------------------------------------------------------------------------------
+﻿using System.IO;
+using System.Windows.Controls;
+using System.Windows.Media.Media3D;
+using System.Xml.Schema;
+using System.Xml;
 
-namespace HelixToolkit.Wpf.Tests
+namespace HelixToolkit.Wpf.Tests.Exporters;
+
+/// <summary>
+/// Provides a base class for Exporter test classes.
+/// </summary>
+public class ExporterTests
 {
-    using System;
-    using System.IO;
-    using System.Windows.Controls;
-    using System.Windows.Media.Media3D;
-    using System.Xml;
-    using System.Xml.Schema;
+    /// <summary>
+    /// Exports a simple model in a STA.
+    /// </summary>
+    /// <param name="e">The exporter.</param>
+    /// <param name="stream">The stream.</param>
+    protected void ExportSimpleModel(IExporter e, Stream stream)
+    {
+        Exception? exception = null;
+        CrossThreadTestRunner.RunInSTA(
+            () =>
+            {
+                var vp = new Viewport3D { Camera = CameraHelper.CreateDefaultCamera(), Width = 1280, Height = 720 };
+                vp.Children.Add(new DefaultLights());
+                var box = new BoxVisual3D();
+                box.UpdateModel();
+                vp.Children.Add(box);
+                try
+                {
+                    e.Export(vp, stream);
+                }
+                catch (Exception ex)
+                {
+                    exception = ex;
+                }
+            });
 
-    using NUnitHelpers;
+        if (exception != null)
+        {
+            throw exception;
+        }
+    }
 
     /// <summary>
-    /// Provides a base class for Exporter test classes.
+    /// Exports the model in a STA.
     /// </summary>
-    public class ExporterTests
+    /// <param name="e">The exporter.</param>
+    /// <param name="stream">The output stream.</param>
+    /// <param name="visual">The visual to export.</param>
+    protected void ExportModel(IExporter e, Stream stream, Func<Visual3D> visual)
     {
-        /// <summary>
-        /// Exports a simple model in a STA.
-        /// </summary>
-        /// <param name="e">The exporter.</param>
-        /// <param name="stream">The stream.</param>
-        protected void ExportSimpleModel(IExporter e, Stream stream)
-        {
-            Exception exception = null;
-            CrossThreadTestRunner.RunInSTA(
-                () =>
-                {
-                    var vp = new Viewport3D { Camera = CameraHelper.CreateDefaultCamera(), Width = 1280, Height = 720 };
-                    vp.Children.Add(new DefaultLights());
-                    var box = new BoxVisual3D();
-                    box.UpdateModel();
-                    vp.Children.Add(box);
-                    try
-                    {
-                        e.Export(vp, stream);
-                    }
-                    catch (Exception ex)
-                    {
-                        exception = ex;
-                    }
-                });
-
-            if (exception != null)
+        Exception? exception = null;
+        CrossThreadTestRunner.RunInSTA(
+            () =>
             {
-                throw exception;
-            }
+                var vp = new Viewport3D { Camera = CameraHelper.CreateDefaultCamera(), Width = 1280, Height = 720 };
+                vp.Children.Add(new DefaultLights());
+                vp.Children.Add(visual());
+                try
+                {
+                    e.Export(vp, stream);
+                }
+                catch (Exception ex)
+                {
+                    exception = ex;
+                }
+            });
+
+        if (exception != null)
+        {
+            throw exception;
         }
+    }
 
-        /// <summary>
-        /// Exports the model in a STA.
-        /// </summary>
-        /// <param name="e">The exporter.</param>
-        /// <param name="stream">The output stream.</param>
-        /// <param name="visual">The visual to export.</param>
-        protected void ExportModel(IExporter e, Stream stream, Func<Visual3D> visual)
+    /// <summary>
+    /// Validates the specified XML file against a XSL schema.
+    /// </summary>
+    /// <param name="path">The path.</param>
+    /// <param name="sc">The schema.</param>
+    /// <returns>Number of errors and warnings, or null if the number of errors and warnings is zero.</returns>
+    protected string? Validate(string path, XmlSchemaSet sc)
+    {
+        // http://msdn.microsoft.com/en-us/library/as3tta56.aspx
+        var settings = new XmlReaderSettings
         {
-            Exception exception = null;
-            CrossThreadTestRunner.RunInSTA(
-                () =>
-                {
-                    var vp = new Viewport3D { Camera = CameraHelper.CreateDefaultCamera(), Width = 1280, Height = 720 };
-                    vp.Children.Add(new DefaultLights());
-                    vp.Children.Add(visual());
-                    try
-                    {
-                        e.Export(vp, stream);
-                    }
-                    catch (Exception ex)
-                    {
-                        exception = ex;
-                    }
-                });
+            ConformanceLevel = ConformanceLevel.Document,
+            DtdProcessing = DtdProcessing.Parse,
+            ValidationType = ValidationType.Schema,
+            Schemas = sc,
+            ValidationFlags = XmlSchemaValidationFlags.ProcessSchemaLocation | XmlSchemaValidationFlags.ProcessInlineSchema,
+        };
 
-            if (exception != null)
+        settings.Schemas.XmlResolver = new XmlUrlResolver();
+
+        int warnings = 0;
+        int errors = 0;
+
+        settings.ValidationEventHandler += (sender, e) =>
+        {
+            Console.WriteLine(e.Message);
+            if (e.Severity == XmlSeverityType.Warning)
             {
-                throw exception;
+                warnings++;
             }
-        }
+            else
+            {
+                errors++;
+            }
+        };
 
-        /// <summary>
-        /// Validates the specified XML file against a XSL schema.
-        /// </summary>
-        /// <param name="path">The path.</param>
-        /// <param name="sc">The schema.</param>
-        /// <returns>Number of errors and warnings, or null if the number of errors and warnings is zero.</returns>
-        protected string Validate(string path, XmlSchemaSet sc)
+        using (var input = File.OpenRead(path))
         {
-            // http://msdn.microsoft.com/en-us/library/as3tta56.aspx
-            var settings = new XmlReaderSettings
+            using (var xvr = XmlReader.Create(input, settings))
             {
-                ConformanceLevel = ConformanceLevel.Document,
-                DtdProcessing = DtdProcessing.Parse,
-                ValidationType = ValidationType.Schema,
-                Schemas = sc,
-                ValidationFlags = XmlSchemaValidationFlags.ProcessSchemaLocation | XmlSchemaValidationFlags.ProcessInlineSchema,
-            };
-
-            int warnings = 0;
-            int errors = 0;
-
-            settings.ValidationEventHandler += (sender, e) =>
-            {
-                Console.WriteLine(e.Message);
-                if (e.Severity == XmlSeverityType.Warning)
+                while (xvr.Read())
                 {
-                    warnings++;
+                    // do nothing
                 }
-                else
+
+                if (errors + warnings == 0)
                 {
-                    errors++;
+                    return null;
                 }
-            };
 
-            using (var input = File.OpenRead(path))
-            {
-                using (var xvr = XmlReader.Create(input, settings))
+                return string.Format("Errors: {0}, Warnings: {1}", errors, warnings);
+                /*
+                catch (XmlSchemaException e)
                 {
-                    while (xvr.Read())
-                    {
-                        // do nothing
-                    }
+                    Console.Error.WriteLine("Failed to read XML: {0}", e.Message);
 
-                    if (errors + warnings == 0)
-                    {
-                        return null;
-                    }
-
-                    return string.Format("Errors: {0}, Warnings: {1}", errors, warnings);
-                    /*
-                    catch (XmlSchemaException e)
-                    {
-                        Console.Error.WriteLine("Failed to read XML: {0}", e.Message);
-
-                    }
-                    catch (XmlException e)
-                    {
-                        Console.Error.WriteLine("XML Error: {0}", e.Message);
-
-                    }
-                    catch (IOException e)
-                    {
-                        Console.Error.WriteLine("IO error: {0}", e.Message);
-                    }*/
                 }
+                catch (XmlException e)
+                {
+                    Console.Error.WriteLine("XML Error: {0}", e.Message);
+
+                }
+                catch (IOException e)
+                {
+                    Console.Error.WriteLine("IO error: {0}", e.Message);
+                }*/
             }
         }
     }

@@ -1,8 +1,8 @@
 #ifndef VSSKYBOX_HLSL
 #define VSSKYBOX_HLSL
 
-#include"..\Common\DataStructs.hlsl"
-#include"..\Common\Common.hlsl"
+#include "..\Common\DataStructs.hlsl"
+#include "..\Common\Common.hlsl"
 const static float d = 1.0 / tan(3.1415926 / 4);
 
 PSInputCube main(float3 input : SV_Position)

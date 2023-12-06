@@ -1,8 +1,8 @@
 #ifndef VSBILLBOARD_HLSL
 #define VSBILLBOARD_HLSL
 #define POINTLINE
-#include"..\Common\DataStructs.hlsl"
-#include"..\Common\Common.hlsl"
+#include "..\Common\DataStructs.hlsl"
+#include "..\Common\Common.hlsl"
 #pragma pack_matrix( row_major )
 #if !defined(INSTANCINGPARAM)
 GSInputBT main(VSInputBT input)

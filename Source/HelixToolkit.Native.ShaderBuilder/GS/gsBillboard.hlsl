@@ -1,8 +1,8 @@
 #ifndef GSBILLBOARD_HLSL
 #define GSBILLBOARD_HLSL
 #define POINTLINE
-#include"..\Common\DataStructs.hlsl"
-#include"..\Common\Common.hlsl"
+#include "..\Common\DataStructs.hlsl"
+#include "..\Common\Common.hlsl"
 #pragma pack_matrix( row_major )
 
 //--------------------------------------------------------------------------------

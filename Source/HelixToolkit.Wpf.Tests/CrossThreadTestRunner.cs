@@ -1,97 +1,85 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="CrossThreadTestRunner.cs" company="Helix Toolkit">
-//   Copyright (c) 2014 Helix Toolkit contributors
-// </copyright>
-// <summary>
-//   http://www.peterprovost.org/blog/post/NUnit-and-Multithreaded-Tests-CrossThreadTestRunner.aspx
-// </summary>
-// --------------------------------------------------------------------------------------------------------------------
+﻿using System.Reflection;
+using System.Security.Permissions;
 
-namespace NUnitHelpers
+namespace HelixToolkit.Wpf.Tests;
+
+/// <summary>
+/// http://www.peterprovost.org/blog/post/NUnit-and-Multithreaded-Tests-CrossThreadTestRunner.aspx
+/// </summary>
+public sealed class CrossThreadTestRunner
 {
-    using System;
-    using System.Reflection;
-    using System.Security.Permissions;
-    using System.Threading;
+    private Exception? lastException;
 
-    /// <summary>
-    /// http://www.peterprovost.org/blog/post/NUnit-and-Multithreaded-Tests-CrossThreadTestRunner.aspx
-    /// </summary>
-    public class CrossThreadTestRunner
+    public static void RunInSTA(Action action)
     {
-        private Exception lastException;
+        var r = new CrossThreadTestRunner();
+        r.Run(new ThreadStart(action), ApartmentState.STA);
+    }
 
-        public static void RunInSTA(Action action)
+    public static void RunInSTAThrowException(Action action)
+    {
+        Exception? exception = null;
+
+        void action2()
         {
-            var r = new CrossThreadTestRunner();
-            r.Run(new ThreadStart(action), ApartmentState.STA);
-        }
-
-        public static void RunInSTAThrowException(Action action)
-        {
-            Exception exception = null;
-
-            Action action2 = () =>
+            try
             {
-                try
-                {
-                    action();
-                }
-                catch (Exception ex)
-                {
-                    exception = ex;
-                }
-            };
-
-            RunInSTA(action2);
-
-            if (exception != null)
+                action();
+            }
+            catch (Exception ex)
             {
-                throw exception;
+                exception = ex;
             }
         }
 
-        //public void RunInMTA(ThreadStart userDelegate)
-        //{
-        //    this.Run(userDelegate, ApartmentState.MTA);
-        //}
+        RunInSTA(action2);
 
-        //public void RunInSTA(ThreadStart userDelegate)
-        //{
-        //    this.Run(userDelegate, ApartmentState.STA);
-        //}
-
-        [ReflectionPermission(SecurityAction.Demand)]
-        private static void ThrowExceptionPreservingStack(Exception exception)
+        if (exception != null)
         {
-            var remoteStackTraceString = typeof(Exception).GetField("_remoteStackTraceString", BindingFlags.Instance | BindingFlags.NonPublic);
-            if (remoteStackTraceString != null)
-            {
-                remoteStackTraceString.SetValue(exception, exception.StackTrace + Environment.NewLine);
-            }
-
             throw exception;
         }
+    }
 
-        private void Run(ThreadStart userDelegate, ApartmentState apartmentState)
+    //public void RunInMTA(ThreadStart userDelegate)
+    //{
+    //    this.Run(userDelegate, ApartmentState.MTA);
+    //}
+
+    //public void RunInSTA(ThreadStart userDelegate)
+    //{
+    //    this.Run(userDelegate, ApartmentState.STA);
+    //}
+
+    //[ReflectionPermission(SecurityAction.Demand)]
+    private static void ThrowExceptionPreservingStack(Exception exception)
+    {
+        var remoteStackTraceString = typeof(Exception).GetField("_remoteStackTraceString", BindingFlags.Instance | BindingFlags.NonPublic);
+        if (remoteStackTraceString != null)
         {
-            this.lastException = null;
-
-            var thread = new Thread(userDelegate.Invoke);
-            thread.SetApartmentState(apartmentState);
-
-            thread.Start();
-            thread.Join();
-
-            if (this.ExceptionWasThrown())
-            {
-                ThrowExceptionPreservingStack(this.lastException);
-            }
+            remoteStackTraceString.SetValue(exception, exception.StackTrace + Environment.NewLine);
         }
 
-        private bool ExceptionWasThrown()
+        throw exception;
+    }
+
+    private void Run(ThreadStart userDelegate, ApartmentState apartmentState)
+    {
+        this.lastException = null;
+
+        var thread = new Thread(userDelegate.Invoke);
+        thread.SetApartmentState(apartmentState);
+
+        thread.Start();
+        thread.Join();
+
+        if (this.ExceptionWasThrown())
         {
-            return this.lastException != null;
+            ThrowExceptionPreservingStack(this.lastException!);
         }
+    }
+
+    private bool ExceptionWasThrown()
+    {
+        return this.lastException != null;
     }
 }

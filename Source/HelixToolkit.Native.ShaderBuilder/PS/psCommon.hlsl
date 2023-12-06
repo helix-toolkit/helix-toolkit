@@ -2,7 +2,7 @@
 #define PSCOMMON_HLSL
 
 #define MESH
-#include"..\Common\Common.hlsl"
+#include "..\Common\Common.hlsl"
 
 float lookUp(in float4 loc, in float2 offset)
 {

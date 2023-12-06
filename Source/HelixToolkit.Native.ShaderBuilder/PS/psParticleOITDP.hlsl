@@ -2,7 +2,7 @@
 #define PSPARTICLEOITDP_HLSL
 #define PARTICLE
 #include "psOITDepthPeelingCommon.hlsl"
-#include"psParticle.hlsl"
+#include "psParticle.hlsl"
 
 DDPOutputMRT particleOITDP(ParticlePS_INPUT input)
 {

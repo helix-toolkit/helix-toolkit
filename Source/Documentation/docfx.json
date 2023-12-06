@@ -1,0 +1,88 @@
+{
+  "metadata": [
+    {
+      "src": [
+        {
+          "files": [
+            "HelixToolkit/**.csproj",
+            "HelixToolkit.Assimp/**.csproj",
+            "HelixToolkit.Wpf/**.csproj",
+            "HelixToolkit.Wpf.TDxInput/**.csproj",
+            "HelixToolkit.SharpDX/**.csproj",
+            "HelixToolkit.SharpDX.Assimp/**.csproj",
+            "HelixToolkit.Wpf.SharpDX/**.csproj",
+            "HelixToolkit.WinUI.SharpDX/**.csproj",
+          ],
+          "src": "../"
+        }
+      ],
+      "dest": "api",
+      "includePrivateMembers": false,
+      "disableGitFeatures": false,
+      "disableDefaultFilter": false,
+      "noRestore": false,
+      "namespaceLayout": "flattened",
+      "memberLayout": "samePage",
+      "EnumSortOrder": "alphabetic",
+      "allowCompilationErrors": false
+    }
+  ],
+  "build": {
+    "content": [
+      {
+        "files": [
+          "api/**.yml",
+          "api/index.md"
+        ]
+      },
+      {
+        "files": [
+          "articles/**.md",
+          "articles/**/toc.yml",
+          "toc.yml",
+          "*.md"
+        ]
+      }
+    ],
+    "resource": [
+      {
+        "files": [
+          "images/**"
+        ]
+      }
+    ],
+    "overwrite": [
+      {
+        "files": [
+          "apidoc/**.md"
+        ],
+        "exclude": [
+          "obj/**",
+          "_site/**"
+        ]
+      }
+    ],
+    "output": "_site",
+    "globalMetadataFiles": [],
+    "fileMetadataFiles": [],
+    "template": [
+      "default",
+      "modern"
+    ],
+    "postProcessors": [ "ExtractSearchIndex" ],
+    "globalMetadata": {
+      "_appTitle": "Helix Toolkit - 3D for .NET",
+      "_appFooter": "Copyright (c) 2023 Helix Toolkit contributors",
+      "_appLogoPath": "images/favicon.ico",
+      "_appFaviconPath": "images/favicon.ico",
+      "_enableSearch": true,
+      "pdf": false
+    },
+    "markdownEngineName": "markdig",
+    "noLangKeyword": false,
+    "keepFileLink": false,
+    "cleanupCacheHistory": false,
+    "disableGitFeatures": false,
+    "xrefservice": [ "https://xref.docs.microsoft.com/query?uid={uid}" ]
+  }
+}

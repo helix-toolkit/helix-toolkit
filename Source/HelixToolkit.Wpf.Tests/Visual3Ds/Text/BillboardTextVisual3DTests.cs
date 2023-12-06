@@ -1,25 +1,17 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="BillboardTextVisual3DTests.cs" company="Helix Toolkit">
-//   Copyright (c) 2014 Helix Toolkit contributors
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
+﻿using NUnit.Framework;
+using System.Windows;
 
-namespace HelixToolkit.Wpf.Tests.Visual3Ds.Text
+namespace HelixToolkit.Wpf.Tests.Visual3Ds.Text;
+
+[TestFixture]
+public class BillboardTextVisual3DTests
 {
-    using System.Windows;
-
-    using NUnit.Framework;
-
-    [TestFixture]
-    public class BillboardTextVisual3DTests
+    [Test]
+    public void MaterialTypeProperty_Metadata_DefaultValues()
     {
-        [Test]
-        public void MaterialTypeProperty_Metadata_DefaultValues()
-        {
-            PropertyMetadata metadata = BillboardTextVisual3D.MaterialTypeProperty.GetMetadata(typeof(BillboardTextVisual3D));
+        PropertyMetadata metadata = BillboardTextVisual3D.MaterialTypeProperty.GetMetadata(typeof(BillboardTextVisual3D));
 
-            Assert.AreEqual((MaterialType)metadata.DefaultValue, MaterialType.Diffuse);
-            Assert.NotNull(metadata.PropertyChangedCallback);
-        }
+        Assert.That((MaterialType)metadata.DefaultValue, Is.EqualTo(MaterialType.Diffuse));
+        Assert.That(metadata.PropertyChangedCallback, Is.Not.Null);
     }
 }

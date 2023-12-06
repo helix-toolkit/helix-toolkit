@@ -1,8 +1,8 @@
 #ifndef VSSPRITE_HLSL
 #define VSSPRITE_HLSL
 
-#include"..\Common\DataStructs.hlsl"
-#include"..\Common\Common.hlsl"
+#include "..\Common\DataStructs.hlsl"
+#include "..\Common\Common.hlsl"
 
 SpritePS_INPUT main(SpriteVS_INPUT input)
 {

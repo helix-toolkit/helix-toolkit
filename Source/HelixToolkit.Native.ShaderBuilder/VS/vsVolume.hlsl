@@ -1,8 +1,8 @@
 #ifndef VSVOLUME_HLSL
 #define VSVOLUME_HLSL
 #define VOLUME
-#include"..\Common\DataStructs.hlsl"
-#include"..\Common\Common.hlsl"
+#include "..\Common\DataStructs.hlsl"
+#include "..\Common\Common.hlsl"
 
 VolumePS_INPUT main(float3 input : SV_Position)
 {

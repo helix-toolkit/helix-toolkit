@@ -4,9 +4,9 @@ Ref: Nvidia Direct3D SDK 11 Samples: https://developer.download.nvidia.com/gamew
 */
 #ifndef PSOITDEPTHPEELINGCOMMON_HLSL
 #define PSOITDEPTHPEELINGCOMMON_HLSL
-#include"..\Common\Common.hlsl"
-#include"..\Common\DataStructs.hlsl"
-#include"psCommon.hlsl"
+#include "..\Common\Common.hlsl"
+#include "..\Common\DataStructs.hlsl"
+#include "psCommon.hlsl"
 #define MAX_DEPTH_FLOAT 1.0f
 
 Texture2DMS<float4> tLayerColor : register(t100);

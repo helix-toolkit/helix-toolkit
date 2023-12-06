@@ -1,0 +1,45 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFrameworks>net6.0-windows;net48</TargetFrameworks>
+    <LangVersion>11.0</LangVersion>
+    <Nullable>enable</Nullable>
+    <UseWPF>true</UseWPF>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CommunityToolkit.Common" Version="8.2.2" />
+    <PackageReference Include="CommunityToolkit.Diagnostics" Version="8.2.2" />
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
+    <PackageReference Include="DependencyPropertyGenerator" Version="1.3.3">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>compile; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="PolySharp" Version="1.13.2">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\HelixToolkit.Wpf.SharpDX\HelixToolkit.Wpf.SharpDX.csproj" />
+    <ProjectReference Include="..\DemoCore\DemoCore.csproj" />
+    <ProjectReference Include="..\BoneSkinDemo\BoneSkinDemo.csproj" />
+    <ProjectReference Include="..\CustomShaderDemo\CustomShaderDemo.csproj" />
+    <ProjectReference Include="..\DeferredShadingDemo\DeferredShadingDemo.csproj" />
+    <ProjectReference Include="..\DynamicTextureDemo\DynamicTextureDemo.csproj" />
+    <ProjectReference Include="..\EnvironmentMapDemo\EnvironmentMapDemo.csproj" />
+    <ProjectReference Include="..\InstancingDemo\InstancingDemo.csproj" />
+    <ProjectReference Include="..\LightingDemo\LightingDemo.csproj" />
+    <ProjectReference Include="..\MaterialDemo\MaterialDemo.csproj" />
+    <ProjectReference Include="..\OctreeDemo\OctreeDemo.csproj" />
+    <ProjectReference Include="..\ParticleSystemDemo\ParticleSystemDemo.csproj" />
+    <ProjectReference Include="..\ScreenSpaceDemo\ScreenSpaceDemo.csproj" />
+    <ProjectReference Include="..\ShadowMapDemo\ShadowMapDemo.csproj" />
+    <ProjectReference Include="..\SimpleDemo\SimpleDemo.csproj" />
+    <ProjectReference Include="..\TessellationDemo\TessellationDemo.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -5,8 +5,8 @@
 #define MESH
 #define BORDEREFFECTS
 
-#include"..\Common\Common.hlsl"
-#include"psDiffuseMap.hlsl"
+#include "..\Common\Common.hlsl"
+#include "psDiffuseMap.hlsl"
 
 //--------------------------------------------------------------------------------------
 // PER PIXEL LIGHTING - BLINN-PHONG

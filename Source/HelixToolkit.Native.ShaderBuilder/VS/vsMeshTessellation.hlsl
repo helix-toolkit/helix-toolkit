@@ -2,8 +2,8 @@
 #define VSMESHTESSELLATION_HLSL
 
 #define MESH
-#include"..\Common\CommonBuffers.hlsl"
-#include"..\Common\DataStructs.hlsl"
+#include "..\Common\CommonBuffers.hlsl"
+#include "..\Common\DataStructs.hlsl"
 #pragma pack_matrix( row_major )
 
 //--------------------------------------------------------------------------------------
