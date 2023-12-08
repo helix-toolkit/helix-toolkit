@@ -18,8 +18,6 @@ public class HelixItemsControl : ItemsControl
 #else
         Focusable = false;
 #endif
-
-        Visibility = Visibility.Collapsed;
         IsHitTestVisible = false;
         this.DefaultStyleKey = typeof(HelixItemsControl);
     }
