@@ -11,6 +11,9 @@ skip_commits:
 install:
   - cinst gitversion.portable --version=5.12.0 -y
 
+environment:
+  IGNORE_NORMALISATION_GIT_HEAD_MOVE: 1
+
 configuration: Release
 dotnet_csproj:
   patch: true
