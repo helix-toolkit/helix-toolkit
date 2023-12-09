@@ -283,7 +283,7 @@ public partial class ViewportCore
     /// <value>
     /// The model up direction.
     /// </value>
-    internal Vector3 ModelUpDirection
+    public Vector3 ModelUpDirection
     {
         set
         {
