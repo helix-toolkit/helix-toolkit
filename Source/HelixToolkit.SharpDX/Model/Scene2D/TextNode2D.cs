@@ -208,17 +208,17 @@ public class TextNode2D : SceneNode2D
         }
     }
 
-    protected override Size2F MeasureOverride(Size2F availableSize)
+    protected override Vector2 MeasureOverride(Vector2 availableSize)
     {
         if (textRenderable is null)
         {
-            return Size2F.Zero;
+            return new Vector2();
         }
 
-        textRenderable.MaxWidth = availableSize.Width;
-        textRenderable.MaxHeight = availableSize.Height;
+        textRenderable.MaxWidth = availableSize.X;
+        textRenderable.MaxHeight = availableSize.Y;
         var metrices = textRenderable.Metrices;
-        return new Size2F(metrices.WidthIncludingTrailingWhitespace, metrices.Height);
+        return new Vector2(metrices.WidthIncludingTrailingWhitespace, metrices.Height);
     }
 
     protected override RectangleF ArrangeOverride(RectangleF finalSize)

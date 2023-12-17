@@ -279,7 +279,7 @@ public class SkyBoxRenderCore : GeometryRenderCore, ISkyboxRenderParams
     /// </summary>
     private sealed class SkyBoxBufferModel : PointGeometryBufferModel<Vector3>
     {
-        public SkyBoxBufferModel() : base(Vector3.SizeInBytes)
+        public SkyBoxBufferModel() : base(NativeHelper.SizeOf<Vector3>())
         {
             Topology = PrimitiveTopology.TriangleList;
         }

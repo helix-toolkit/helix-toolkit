@@ -57,7 +57,7 @@ public class NodePostEffectMeshOutlineBlur : SceneNode
                 return core.Color;
             }
 
-            return global::SharpDX.Color.Zero;
+            return Maths.Color.Zero;
         }
     }
 

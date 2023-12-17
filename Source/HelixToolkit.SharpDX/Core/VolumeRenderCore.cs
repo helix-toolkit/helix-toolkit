@@ -201,7 +201,7 @@ public sealed class VolumeRenderCore : RenderCore
     /// </summary>
     private sealed class VolumeCubeBufferModel : MeshGeometryBufferModel<Vector3>
     {
-        public VolumeCubeBufferModel() : base(Vector3.SizeInBytes)
+        public VolumeCubeBufferModel() : base(NativeHelper.SizeOf<Vector3>())
         {
             Topology = PrimitiveTopology.TriangleList;
         }

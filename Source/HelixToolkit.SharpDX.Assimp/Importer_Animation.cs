@@ -39,7 +39,7 @@ public partial class Importer
             }
             if (rotCount == 0)
             {
-                channel.RotationKeys.Add(new QuaternionKey(0, new Quaternion()));
+                channel.RotationKeys.Add(new QuaternionKey(0, new global::Assimp.Quaternion()));
             }
             if (scaleCount == 0)
             {
@@ -56,9 +56,9 @@ public partial class Importer
                 ret.Add(new HxAnimations.Keyframe()
                 {
                     Time = (float)(minT / ticksPerSecond),
-                    Translation = channel.PositionKeys[i].Value.ToSharpDXVector3(),
-                    Rotation = channel.RotationKeys[j].Value.ToSharpDXQuaternion(),
-                    Scale = channel.ScalingKeys[k].Value.ToSharpDXVector3(),
+                    Translation = channel.PositionKeys[i].Value.ToVector3(),
+                    Rotation = channel.RotationKeys[j].Value.ToHelixQuaternion(),
+                    Scale = channel.ScalingKeys[k].Value.ToVector3(),
                 });
                 nextT1 = (i + 1) < posCount ? channel.PositionKeys[i + 1].Time : double.MaxValue; // Set to max so index will not increase
                 nextT2 = (j + 1) < rotCount ? channel.RotationKeys[j + 1].Time : double.MaxValue;
@@ -86,9 +86,9 @@ public partial class Importer
                 ret.Add(new HxAnimations.Keyframe()
                 {
                     Time = (float)(channel.PositionKeys[i].Time / ticksPerSecond),
-                    Translation = channel.PositionKeys[i].Value.ToSharpDXVector3(),
-                    Rotation = channel.RotationKeys[i].Value.ToSharpDXQuaternion(),
-                    Scale = channel.ScalingKeys[i].Value.ToSharpDXVector3()
+                    Translation = channel.PositionKeys[i].Value.ToVector3(),
+                    Rotation = channel.RotationKeys[i].Value.ToHelixQuaternion(),
+                    Scale = channel.ScalingKeys[i].Value.ToVector3()
                 });
             }
         }

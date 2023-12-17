@@ -1,7 +1,4 @@
-﻿using Vector3 = SharpDX.Vector3;
-using Vector2 = SharpDX.Vector2;
-using Matrix = SharpDX.Matrix;
-using HelixToolkit.SharpDX;
+﻿using HelixToolkit.SharpDX;
 using HelixToolkit.SharpDX.Cameras;
 using System.Windows.Input;
 

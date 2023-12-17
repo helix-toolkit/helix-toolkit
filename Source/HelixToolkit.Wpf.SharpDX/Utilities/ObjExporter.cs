@@ -220,7 +220,7 @@ public class ObjExporter : Exporter
             foreach (var v in m.Positions)
             {
                 vertexIndexMap.Add(index++, this.vertexIndex++);
-                var p = Vector3.TransformCoordinate(v, t.Value);
+                var p = Vector3Helper.TransformCoordinate(v, t.Value);
                 this.writer.WriteLine(
                     string.Format(
                         CultureInfo.InvariantCulture,

@@ -1,4 +1,5 @@
 ﻿using SharpDX;
+using SharpDX.Mathematics.Interop;
 using D2D = SharpDX.Direct2D1;
 
 namespace HelixToolkit.SharpDX.Core2D;
@@ -28,7 +29,7 @@ public class ArcSegment : Segment
         sink.AddArc(new D2D.ArcSegment()
         {
             ArcSize = ArcSize,
-            Point = Point,
+            Point = Point.ToStruct<Vector2, RawVector2>(),
             RotationAngle = Rotation,
             Size = Size,
             SweepDirection = SweepDirection

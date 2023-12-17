@@ -171,7 +171,7 @@ internal class ZoomHandler : MouseGestureHandler
     /// </summary>
     /// <param name="delta">The translation vector in camera space (z in look direction, y in up direction, and x perpendicular to the two others)</param>
     /// <param name="stopOther">Stop other manipulation</param>
-    public void MoveCameraPosition(Vector3D delta, bool stopOther = true)
+    public void MoveCameraPosition(Vector3 delta, bool stopOther = true)
     {
         if (stopOther)
         {
@@ -184,12 +184,10 @@ internal class ZoomHandler : MouseGestureHandler
             return;
         }
 
-        var z = this.Camera.CameraInternal.LookDirection;
-        z.Normalize();
-        var x = Vector3D.Cross(this.Camera.CameraInternal.LookDirection, this.Camera.CameraInternal.UpDirection);
-        var y = Vector3D.Cross(x, z);
-        y.Normalize();
-        x = Vector3D.Cross(z, y);
+        var z = Vector3.Normalize(this.Camera.CameraInternal.LookDirection);
+        var x = Vector3.Cross(this.Camera.CameraInternal.LookDirection, this.Camera.CameraInternal.UpDirection);
+        var y = Vector3.Normalize(Vector3.Cross(x, z));
+        x = Vector3.Cross(z, y);
 
         // delta *= this.ZoomSensitivity;
         switch (this.CameraMode)
@@ -278,8 +276,7 @@ internal class ZoomHandler : MouseGestureHandler
         {
             if (delta > 0) //If Zoom out from very close distance, increase the initial relativePosition
             {
-                relativePosition.Normalize();
-                relativePosition /= 10;
+                relativePosition = Vector3.Normalize(relativePosition) / 10;
                 zoomAround = relativePosition + this.Camera.CameraInternal.Position;
                 relativeTarget = zoomAround - target;
             }

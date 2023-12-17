@@ -22,10 +22,10 @@ public class InstancingModel3DOctree : DynamicOctreeBase<KeyValuePair<int, Bound
     {
         InstanceMatrix = instanceMatrix;
         var counter = 0;
-        var totalBound = geometryBound.Transform(instanceMatrix[0]);// BoundingBox.FromPoints(geometryBound.GetCorners().Select(x => Vector3.TransformCoordinate(x, instanceMatrix[0])).ToArray());
+        var totalBound = geometryBound.Transform(instanceMatrix[0]);// BoundingBox.FromPoints(geometryBound.GetCorners().Select(x => Vector3Helper.TransformCoordinate(x, instanceMatrix[0])).ToArray());
         for (var i = 0; i < instanceMatrix.Count; ++i)
         {
-            var b = geometryBound.Transform(instanceMatrix[i]);// BoundingBox.FromPoints(geometryBound.GetCorners().Select(x => Vector3.TransformCoordinate(x, m)).ToArray());
+            var b = geometryBound.Transform(instanceMatrix[i]);// BoundingBox.FromPoints(geometryBound.GetCorners().Select(x => Vector3Helper.TransformCoordinate(x, m)).ToArray());
             Objects?.Add(new KeyValuePair<int, BoundingBox>(counter, b));
             BoundingBox.Merge(ref totalBound, ref b, out totalBound);
             ++counter;
@@ -47,14 +47,14 @@ public class InstancingModel3DOctree : DynamicOctreeBase<KeyValuePair<int, Bound
         InstanceMatrix = instanceMatrix;
     }
     /// <summary>
-    /// <see cref="DynamicOctreeBase{T}.FindNearestPointBySphereExcludeChild(HitTestContext, ref global::SharpDX.BoundingSphere, ref List{HitTestResult}, ref bool)"/>
+    /// <see cref="DynamicOctreeBase{T}.FindNearestPointBySphereExcludeChild(HitTestContext, ref BoundingSphere, ref List{HitTestResult}, ref bool)"/>
     /// </summary>
     /// <param name="context"></param>
     /// <param name="sphere"></param>
     /// <param name="points"></param>
     /// <param name="isIntersect"></param>
     /// <returns></returns>
-    public override bool FindNearestPointBySphereExcludeChild(HitTestContext? context, ref global::SharpDX.BoundingSphere sphere,
+    public override bool FindNearestPointBySphereExcludeChild(HitTestContext? context, ref BoundingSphere sphere,
         ref List<HitTestResult> points, ref bool isIntersect)
     {
         return false;
@@ -85,7 +85,7 @@ public class InstancingModel3DOctree : DynamicOctreeBase<KeyValuePair<int, Bound
             return false;
         }
         var isHit = false;
-        var bound = Bound.Transform(modelMatrix);// BoundingBox.FromPoints(Bound.GetCorners().Select(x => Vector3.TransformCoordinate(x, modelMatrix)).ToArray());
+        var bound = Bound.Transform(modelMatrix);// BoundingBox.FromPoints(Bound.GetCorners().Select(x => Vector3Helper.TransformCoordinate(x, modelMatrix)).ToArray());
         var rayWS = context.RayWS;
         if (rayWS.Intersects(ref bound))
         {
@@ -94,7 +94,7 @@ public class InstancingModel3DOctree : DynamicOctreeBase<KeyValuePair<int, Bound
             {
                 for (var i = 0; i < this.Objects.Count; ++i)
                 {
-                    var b = Objects[i].Value.Transform(modelMatrix);// BoundingBox.FromPoints(t.Item2.GetCorners().Select(x => Vector3.TransformCoordinate(x, modelMatrix)).ToArray());
+                    var b = Objects[i].Value.Transform(modelMatrix);// BoundingBox.FromPoints(t.Item2.GetCorners().Select(x => Vector3Helper.TransformCoordinate(x, modelMatrix)).ToArray());
                     if (b.Intersects(ref rayWS))
                     {
                         var result = new HitTestResult()

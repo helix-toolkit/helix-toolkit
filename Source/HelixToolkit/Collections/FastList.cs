@@ -7,7 +7,7 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 
-namespace HelixToolkit.SharpDX;
+namespace HelixToolkit;
 
 /// <summary>
 /// Similar to <see cref="List{T}"/>, with direct access to underlying array.
@@ -18,15 +18,15 @@ public class FastList<T> : IList<T>, IReadOnlyList<T>, ICollection<T>, IEnumerab
 {
     // Fields
     private const int _defaultCapacity = 4;
-
+    private static readonly T[] empty = Array.Empty<T>();
     /// <summary>
     /// Gets the items from internal array. Make sure to access this array using <see cref="Count"/> instead of Array Length
     /// </summary>
     internal T[] Items
     {
         get; private set;
-    }
-    private static readonly T[] empty = Array.Empty<T>();
+    } = empty;
+
     private int _size;
 
     public FastList()
@@ -36,7 +36,14 @@ public class FastList<T> : IList<T>, IReadOnlyList<T>, ICollection<T>, IEnumerab
 
     public FastList(IEnumerable<T> collection)
     {
-        if (collection is ICollection<T> is2)
+        if (collection is FastList<T> flist)
+        {
+            Capacity = flist._size;
+            _size = flist._size;
+            Items = new T[_size];
+            Array.Copy(flist.Items, Items, _size);
+        }
+        else if (collection is ICollection<T> is2)
         {
             var count = is2.Count;
             Items = new T[count];
@@ -202,6 +209,11 @@ public class FastList<T> : IList<T>, IReadOnlyList<T>, ICollection<T>, IEnumerab
         {
             Items[index] = value;
         }
+    }
+
+    public ref T At(int index)
+    {
+        return ref Items[index];
     }
 
     bool ICollection<T>.IsReadOnly => false;
@@ -647,5 +659,24 @@ public class FastList<T> : IList<T>, IReadOnlyList<T>, ICollection<T>, IEnumerab
     public T[] GetInternalArray()
     {
         return Items;
+    }
+
+    /// <summary>
+    /// Swap two fast list contents
+    /// </summary>
+    /// <param name="collection"></param>
+    public void Swap(FastList<T> collection)
+    {
+        var currItems = Items;
+        var currCapacity = Capacity;
+        var currSize = _size;
+
+        Items = collection.Items;
+        Capacity = collection.Capacity;
+        _size = collection._size;
+
+        collection.Items = currItems;
+        collection.Capacity = currCapacity;
+        collection._size = currSize;
     }
 }

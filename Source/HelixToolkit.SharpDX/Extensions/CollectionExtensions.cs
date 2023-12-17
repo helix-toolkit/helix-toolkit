@@ -51,7 +51,7 @@ public static class CollectionExtensions
         }
         else if (list is FastList<T> f)
         {
-            array = f.Items;
+            array = f.GetInternalArray();
         }
         else if (list is List<T> l)
         {
@@ -84,7 +84,7 @@ public static class CollectionExtensions
         }
         else if (list is FastList<T> f)
         {
-            array = f.Items;
+            array = f.GetInternalArray();
         }
         else
         {

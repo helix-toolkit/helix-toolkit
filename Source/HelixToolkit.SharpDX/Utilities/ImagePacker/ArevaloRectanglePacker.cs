@@ -97,7 +97,7 @@ internal class ArevaloRectanglePacker : RectanglePacker
         public int Compare(Point left, Point right)
         {
             //return Math.Min(left.X, left.Y) - Math.Min(right.X, right.Y);
-            return (left.X + left.Y) - (right.X + right.Y);
+            return (int)((left.X + left.Y) - (right.X + right.Y));
         }
 
         #endregion
@@ -174,7 +174,7 @@ internal class ArevaloRectanglePacker : RectanglePacker
         InsertAnchor(new Point(placement.X, placement.Y + rectangleHeight));
 
         // Finally, we can add the rectangle to our packed rectangles list
-        packedRectangles.Add(new Rectangle(placement.X, placement.Y, rectangleWidth, rectangleHeight));
+        packedRectangles.Add(new Rectangle((int)placement.X, (int)placement.Y, rectangleWidth, rectangleHeight));
 
         return true;
     }
@@ -189,7 +189,7 @@ internal class ArevaloRectanglePacker : RectanglePacker
     /// <param name="rectangleHeight">Height of the rectangle to be optimized</param>
     private void OptimizePlacement(ref Point placement, int rectangleWidth, int rectangleHeight)
     {
-        var rectangle = new Rectangle(placement.X, placement.Y, rectangleWidth, rectangleHeight);
+        var rectangle = new Rectangle((int)placement.X, (int)placement.Y, rectangleWidth, rectangleHeight);
 
         // Try to move the rectangle to the left as far as possible
         var leftMost = placement.X;
@@ -200,7 +200,7 @@ internal class ArevaloRectanglePacker : RectanglePacker
         }
 
         // Reset rectangle to original position
-        rectangle.X = placement.X;
+        rectangle.X = (int)placement.X;
 
         // Try to move the rectangle upwards as far as possible
         var topMost = placement.Y;
@@ -290,8 +290,8 @@ internal class ArevaloRectanglePacker : RectanglePacker
         // can house the new rectangle.
         for (var index = 0; index < anchors.Count; ++index)
         {
-            potentialLocation.X = anchors[index].X;
-            potentialLocation.Y = anchors[index].Y;
+            potentialLocation.X = (int)anchors[index].X;
+            potentialLocation.Y = (int)anchors[index].Y;
 
             // See if the rectangle would fit in at this anchor point
             if (IsFree(ref potentialLocation, testedPackingAreaWidth, testedPackingAreaHeight))

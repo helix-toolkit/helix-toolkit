@@ -1,4 +1,5 @@
 ﻿using SharpDX;
+using SharpDX.Mathematics.Interop;
 using D2D = SharpDX.Direct2D1;
 
 namespace HelixToolkit.SharpDX.Core2D;
@@ -171,13 +172,13 @@ public class BorderRenderCore2D : RenderCore2DBase
     /// <param name="context">The context.</param>
     protected override void OnRender(RenderContext2D context)
     {
-        var roundRect = new D2D.RoundedRectangle() { Rect = LayoutBound, RadiusX = CornerRadius, RadiusY = CornerRadius };
+        var roundRect = new D2D.RoundedRectangle() { Rect = LayoutBound.ToStruct<RectangleF, RawRectangleF>(), RadiusX = CornerRadius, RadiusY = CornerRadius };
         if (Background != null)
         {
             context.DeviceContext.FillRoundedRectangle(roundRect, Background);
         }
         var thickness = BorderThickness * context.DpiScale;
-        if (!thickness.IsZero && StrokeBrush != null && StrokeStyle != null)
+        if (!thickness.IsZero() && StrokeBrush != null && StrokeStyle != null)
         {
             if (thickness.X == thickness.Y && thickness.X == thickness.Z && thickness.X == thickness.W)
             {

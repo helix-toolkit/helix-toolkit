@@ -54,7 +54,7 @@ public sealed class BoneUploaderCore : RenderCore
 
     protected override bool OnAttach(IRenderTechnique? technique)
     {
-        boneSkinSB = new StructuredBufferProxy(Matrix.SizeInBytes, false);
+        boneSkinSB = new StructuredBufferProxy(NativeHelper.SizeOf<Matrix>(), false);
         return true;
     }
 

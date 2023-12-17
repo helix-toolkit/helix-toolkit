@@ -214,7 +214,6 @@ public sealed class SSAOCore : RenderCore
                 var y = rnd.NextFloat(-1, 1);
                 var z = rnd.NextFloat(1e-3f, 1);
                 var v = Vector3.Normalize(new Vector3(x, y, z));
-                var angle = Vector3.Dot(v, Vector3.UnitZ);
                 if (Vector3.Dot(v, Vector3.UnitZ) < thres)
                 {
                     continue;

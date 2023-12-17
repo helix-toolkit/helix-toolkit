@@ -39,9 +39,9 @@ public static class BitmapExtensions
 
         using var bitmap = CreateBitmapStream(deviceResources, (int)width, (int)height, Direct2DImageFormat.Bmp, (target) =>
         {
-            target.Clear(background);
-            using var brush = new SolidColorBrush(target, foreground);
-            target.DrawTextLayout(new Vector2(padding.X, padding.Y), layout, brush);
+            target.Clear(NativeHelper.ToStruct<Color4, RawColor4>(background));
+            using var brush = new SolidColorBrush(target, NativeHelper.ToStruct<Color4, RawColor4>(foreground));
+            target.DrawTextLayout(new RawVector2(padding.X, padding.Y), layout, brush);
         });
         return bitmap?.ToMemoryStream(deviceResources, Direct2DImageFormat.Bmp);
     }
@@ -79,7 +79,7 @@ public static class BitmapExtensions
                 PixelFormat = new global::SharpDX.Direct2D1.PixelFormat(global::SharpDX.DXGI.Format.Unknown, AlphaMode.Unknown)
             }))
         {
-            target.Transform = Matrix3x2.Identity;
+            target.Transform = NativeHelper.ToStruct<Matrix3x2, RawMatrix3x2>(Matrix3x2.Identity);
             target.BeginDraw();
             drawingAction(target);
             target.EndDraw();
@@ -115,7 +115,7 @@ public static class BitmapExtensions
     {
         using var bmp = CreateBitmapStream(deviceResources, width, height, imageType, (target) =>
         {
-            using var brush = new SolidColorBrush(target, color, new BrushProperties() { Opacity = color.Alpha });
+            using var brush = new SolidColorBrush(target, NativeHelper.ToStruct<Color4, RawColor4>(color), new BrushProperties() { Opacity = color.Alpha });
             target.FillRectangle(new RawRectangleF(0, 0, width, height), brush);
         });
         return bmp?.ToMemoryStream(deviceResources, imageType);
@@ -130,8 +130,8 @@ public static class BitmapExtensions
             using var gradientCol = new GradientStopCollection(target, gradients, gamma, extendMode);
             using var brush = new LinearGradientBrush(target, new LinearGradientBrushProperties()
             {
-                StartPoint = startPoint,
-                EndPoint = endPoint
+                StartPoint = NativeHelper.ToStruct<Vector2, RawVector2>(startPoint),
+                EndPoint = NativeHelper.ToStruct<Vector2, RawVector2>(endPoint)
             }, gradientCol);
             target.FillRectangle(new RawRectangleF(0, 0, width, height), brush);
         });
@@ -148,8 +148,8 @@ public static class BitmapExtensions
             using var gradientCol = new GradientStopCollection(target, gradients, gamma, extendMode);
             using var brush = new RadialGradientBrush(target, new RadialGradientBrushProperties()
             {
-                Center = center,
-                GradientOriginOffset = gradientOriginOffset,
+                Center = NativeHelper.ToStruct<Vector2, RawVector2>(center),
+                GradientOriginOffset = NativeHelper.ToStruct<Vector2, RawVector2>(gradientOriginOffset),
                 RadiusX = radiusX,
                 RadiusY = radiusY,
             }, gradientCol);
@@ -166,7 +166,7 @@ public static class BitmapExtensions
     {
         using var bmp = CreateBitmapStream(deviceResources, faceSize * 6, faceSize, Direct2DImageFormat.Bmp, (target) =>
         {
-            target.Clear(Color.Black);
+            target.Clear(new RawColor4(0, 0, 0, 1));
             var faceRect = new RectangleF(0, 0, faceSize, faceSize);
             var faceColors = new Color4[] { frontFaceColor, backFaceColor, leftFaceColor, rightFaceColor, topFaceColor, bottomFaceColor };
             var textColors = new Color4[] { frontTextColor, backTextColor, leftTextColor, rightTextColor, topTextColor, bottomTextColor };
@@ -178,13 +178,13 @@ public static class BitmapExtensions
                     var metrices = layout.Metrics;
                     var offset = new Vector2((faceSize - metrices.WidthIncludingTrailingWhitespace) / 2, (faceSize - metrices.Height) / 2);
                     offset.X += faceRect.Left;
-                    using (var brush = new SolidColorBrush(target, faceColors[i]))
+                    using (var brush = new SolidColorBrush(target, NativeHelper.ToStruct<Color4, RawColor4>(faceColors[i])))
                     {
-                        target.FillRectangle(faceRect, brush);
+                        target.FillRectangle(NativeHelper.ToStruct<RectangleF, RawRectangleF>(faceRect), brush);
                     }
-                    using (var brush = new SolidColorBrush(target, textColors[i]))
+                    using (var brush = new SolidColorBrush(target, NativeHelper.ToStruct<Color4, RawColor4>(textColors[i])))
                     {
-                        target.DrawTextLayout(offset, layout, brush);
+                        target.DrawTextLayout(NativeHelper.ToStruct<Vector2, RawVector2>(offset), layout, brush);
                     }
                 }
                 faceRect.Left += faceSize;

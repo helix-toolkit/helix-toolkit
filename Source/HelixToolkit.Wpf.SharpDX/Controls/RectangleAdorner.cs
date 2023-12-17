@@ -51,8 +51,8 @@ public class RectangleAdorner : Adorner
     public RectangleAdorner(
         UIElement adornedElement,
         Rect rectangle,
-        Color color1,
-        Color color2,
+        System.Windows.Media.Color color1,
+        System.Windows.Media.Color color2,
         double thickness1 = 1.0,
         double thickness2 = 1.0,
         double crossHairSize = 10)
@@ -90,8 +90,8 @@ public class RectangleAdorner : Adorner
     public RectangleAdorner(
         UIElement adornedElement,
         Rect rectangle,
-        Color color1,
-        Color color2,
+        System.Windows.Media.Color color1,
+        System.Windows.Media.Color color2,
         double thickness1,
         double thickness2,
         double crossHairSize,

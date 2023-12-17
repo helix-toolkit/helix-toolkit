@@ -324,7 +324,7 @@ public partial class SceneNode2D
         }
     }
 
-    private Size2F? previousMeasureSize;
+    private Vector2? previousMeasureSize;
     private RectangleF? previousArrange;
 
     #endregion Properties
@@ -441,14 +441,14 @@ public partial class SceneNode2D
         }
     }
 
-    public void Measure(Size2F size)
+    public void Measure(Vector2 size)
     {
         if (!IsAttached || Visibility == Visibility.Collapsed || (!IsMeasureDirty && previousMeasureSize == size))
         {
             return;
         }
         previousMeasureSize = size;
-        var availableSize = size.ToVector2();
+        var availableSize = size;
         var availableSizeWithoutMargin = availableSize - MarginWidthHeight * DpiScale;
         Vector2 maxSize = Vector2.Zero, minSize = Vector2.Zero;
         CalculateMinMax(ref minSize, ref maxSize);
@@ -456,7 +456,7 @@ public partial class SceneNode2D
         availableSizeWithoutMargin.X = Math.Max(minSize.X, Math.Min(availableSizeWithoutMargin.X, maxSize.X));
         availableSizeWithoutMargin.Y = Math.Max(minSize.Y, Math.Min(availableSizeWithoutMargin.Y, maxSize.Y));
 
-        var desiredSize = MeasureOverride(availableSizeWithoutMargin.ToSize2F()).ToVector2();
+        var desiredSize = MeasureOverride(availableSizeWithoutMargin);
 
         var unclippedDesiredSize = desiredSize;
 
@@ -517,7 +517,7 @@ public partial class SceneNode2D
         }
         if (IsMeasureDirty)
         {
-            Measure(previousMeasureSize ?? rect.Size);
+            Measure(previousMeasureSize ?? rect.Size());
         }
         var ancestorDirty = false;
         TraverseUp(this, (parent) =>
@@ -535,7 +535,7 @@ public partial class SceneNode2D
 
         var rectWidthHeight = new Vector2(rect.Width, rect.Height);
 
-        if ((!IsArrangeDirty && !ancestorDirty && previousArrange == rect) || rectWidthHeight.IsZero)
+        if ((!IsArrangeDirty && !ancestorDirty && previousArrange == rect) || rectWidthHeight.IsZero())
             return;
         previousArrange = rect;
         var arrangeSize = rectWidthHeight;
@@ -707,7 +707,7 @@ public partial class SceneNode2D
     {
         LayoutBound = new RectangleF((float)Margin.Left * DpiScale, (float)Margin.Top * DpiScale, RenderSize.X, RenderSize.Y);
         LayoutClipBound = new RectangleF(0, 0, RenderSize.X + MarginWidthHeight.X * DpiScale, RenderSize.Y + MarginWidthHeight.Y * DpiScale);
-        LayoutTranslate = Matrix3x2.Translation((float)Math.Round(LayoutOffsets.X), (float)Math.Round(LayoutOffsets.Y));
+        LayoutTranslate = Matrix3x2.CreateTranslation((float)Math.Round(LayoutOffsets.X), (float)Math.Round(LayoutOffsets.Y));
     }
 
     protected virtual RectangleF ArrangeOverride(RectangleF finalSize)
@@ -719,7 +719,7 @@ public partial class SceneNode2D
         return finalSize;
     }
 
-    protected virtual Size2F MeasureOverride(Size2F availableSize)
+    protected virtual Vector2 MeasureOverride(Vector2 availableSize)
     {
         for (var i = 0; i < ItemsInternal.Count; ++i)
         {

@@ -62,7 +62,7 @@ public class FrameStatisticsNode2D : SceneNode2D
         return false;
     }
 
-    protected override bool OnHitTest(ref global::SharpDX.Vector2 mousePoint, out HitTest2DResult? hitResult)
+    protected override bool OnHitTest(ref Vector2 mousePoint, out HitTest2DResult? hitResult)
     {
         hitResult = null;
         return false;

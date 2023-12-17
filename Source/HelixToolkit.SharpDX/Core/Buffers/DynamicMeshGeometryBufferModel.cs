@@ -14,11 +14,11 @@ public sealed class DynamicMeshGeometryBufferModel : DefaultMeshGeometryBufferMo
     /// </summary>
     public DynamicMeshGeometryBufferModel()
         : base(new[]
-              {
-                          new DynamicBufferProxy(DefaultVertex.SizeInBytes, BindFlags.VertexBuffer),
-                          new DynamicBufferProxy(Vector2.SizeInBytes, BindFlags.VertexBuffer),
-                          new DynamicBufferProxy(Vector4.SizeInBytes, BindFlags.VertexBuffer)
-              } as IElementsBufferProxy[], true)
+        {
+            new DynamicBufferProxy(DefaultVertex.SizeInBytes, BindFlags.VertexBuffer),
+            new DynamicBufferProxy(NativeHelper.SizeOf<Vector2>(), BindFlags.VertexBuffer),
+            new DynamicBufferProxy(NativeHelper.SizeOf<Vector4>(), BindFlags.VertexBuffer)
+        } as IElementsBufferProxy[], true)
     {
     }
 }

@@ -96,11 +96,10 @@ public class UITranslateManipulator3D : UIManipulator3D
     {
         var mb = new MeshBuilder();
         var p0 = this.Offset;// new Vector3(0, 0, 0);
-        var d = this.Direction;
-        d.Normalize();
+        var d = Vector3.Normalize(this.Direction);
         var p1 = p0 + (d * (float)this.Length);
-        mb.AddArrow(p0.ToVector(), p1.ToVector(), (float)this.Diameter, 2, 64);
-        this.Geometry = mb.ToMesh().ToMeshGeometry3D();
+        mb.AddArrow(p0, p1, (float)this.Diameter, 2, 64);
+        this.Geometry = mb.ToMeshGeometry3D();
     }
 
     /// <summary>
@@ -120,8 +119,7 @@ public class UITranslateManipulator3D : UIManipulator3D
         // up direction
         var upWS = Vector3.Cross(normalWS, directionWS);
         // the direction plane
-        normalWS = Vector3.Cross(upWS, directionWS);
-        normalWS.Normalize();
+        normalWS = Vector3.Normalize(Vector3.Cross(upWS, directionWS));
         // find new hit on the camera-direction plane
         if (viewport.UnProjectOnPlane(args.Position.ToVector2(), lastHitPosWS, normalWS, out var newHit))
         {

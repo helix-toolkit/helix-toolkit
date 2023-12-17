@@ -182,10 +182,10 @@ namespace WinFormsTest
             viewport.Items.AddChildNode(groupModel);
             var builder = new MeshBuilder(true, true, true);
             builder.AddSphere(System.Numerics.Vector3.Zero, 1, 12, 12);
-            sphere = builder.ToMesh().ToMeshGeometry3D();
+            sphere = builder.ToMeshGeometry3D();
             builder = new MeshBuilder(true, true, true);
             builder.AddBox(System.Numerics.Vector3.Zero, 1, 1, 1);
-            box = builder.ToMesh().ToMeshGeometry3D();
+            box = builder.ToMeshGeometry3D();
             points = new PointGeometry3D() { Positions = sphere.Positions };
             var lineBuilder = new LineBuilder();
             lineBuilder.AddBox(Vector3.Zero, 2, 2, 2);
@@ -202,8 +202,8 @@ namespace WinFormsTest
                 builder.AddSphere(System.Numerics.Vector3.Zero, 1);
                 for (int i = 0; i < NumItems; ++i)
                 {
-                    var sphere1 = builder.ToMesh().ToMeshGeometry3D();
-                    var transform = Matrix.Translation(new Vector3(rnd.NextFloat(-20, 20), rnd.NextFloat(-20, 20), rnd.NextFloat(-20, 20)));
+                    var sphere1 = builder.ToMeshGeometry3D();
+                    var transform = Matrix.CreateTranslation(new Vector3(rnd.NextFloat(-20, 20), rnd.NextFloat(-20, 20), rnd.NextFloat(-20, 20)));
                     var material = materials[i % materialCount];
                     var node = new MeshNode()
                     {
@@ -224,7 +224,7 @@ namespace WinFormsTest
             Task.Run(() => {
                 for (int i = 0; i < NumItems; ++i)
                 {
-                    var transform = Matrix.Translation(new Vector3(rnd.NextFloat(-50, 50), rnd.NextFloat(-50, 50), rnd.NextFloat(-50, 50)));
+                    var transform = Matrix.CreateTranslation(new Vector3(rnd.NextFloat(-50, 50), rnd.NextFloat(-50, 50), rnd.NextFloat(-50, 50)));
                     var material = materials[i % materialCount];
                     var node = new MeshNode()
                     {
@@ -246,7 +246,7 @@ namespace WinFormsTest
             Task.Run(() => { 
                 for (int i = 0; i < NumItems; ++i)
                 {
-                    var transform = Matrix.Translation(new Vector3(rnd.NextFloat(-50, 50), rnd.NextFloat(-50, 50), rnd.NextFloat(-50, 50)));
+                    var transform = Matrix.CreateTranslation(new Vector3(rnd.NextFloat(-50, 50), rnd.NextFloat(-50, 50), rnd.NextFloat(-50, 50)));
                     var node = new PointNode() { Geometry = points, ModelMatrix = transform, Material = new PointMaterialCore() { PointColor = Color.Red } };
                     node.Attach(effectsManager);
                     context.Post((o) =>
@@ -260,7 +260,7 @@ namespace WinFormsTest
             Task.Run(() => { 
                 for (int i = 0; i < NumItems; ++i)
                 {
-                    var transform = Matrix.Translation(new Vector3(rnd.NextFloat(-50, 50), rnd.NextFloat(-50, 50), rnd.NextFloat(-50, 50)));
+                    var transform = Matrix.CreateTranslation(new Vector3(rnd.NextFloat(-50, 50), rnd.NextFloat(-50, 50), rnd.NextFloat(-50, 50)));
                     var node = new LineNode() { Geometry = lines, ModelMatrix = transform, Material = new LineMaterialCore() { LineColor = Color.LightBlue } };
                     node.Attach(effectsManager);
                     context.Post((o) =>
@@ -349,8 +349,6 @@ namespace WinFormsTest
 
         private void Viewport_OnStartRendering(object sender, EventArgs e)
         {
-            bool isGoingOut = true;
-            bool isAddingNode = false;
             RenderLoop.Run(window, () => 
             {
                 if (resizeRequested)

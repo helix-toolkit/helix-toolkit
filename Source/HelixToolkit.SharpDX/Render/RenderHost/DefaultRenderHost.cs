@@ -437,7 +437,7 @@ public partial class DefaultRenderHost : DX11RenderHostBase
         if (d2dRoot != null && d2dRoot.ItemsInternal.Count > 0 && RenderConfiguration.RenderD2D)
         {
             renderD2D = true;
-            d2dRoot.Measure(new Size2F((float)ActualWidth, (float)ActualHeight));
+            d2dRoot.Measure(new Vector2((float)ActualWidth, (float)ActualHeight));
             d2dRoot.Arrange(new RectangleF(0, 0, (float)ActualWidth, (float)ActualHeight));
         }
         if (!renderD2D || RenderContext2D is null || D2DTarget?.D2DTarget is null)
@@ -554,18 +554,18 @@ public partial class DefaultRenderHost : DX11RenderHostBase
         var frustum = renderContext.BoundingFrustum;
         for (var i = 0; i < opaqueNodes.Count; ++i)
         {
-            opaqueNodes.Items[i].IsInFrustum = opaqueNodes.Items[i].TestViewFrustum(ref frustum);
-            if (opaqueNodes.Items[i].IsInFrustum)
+            opaqueNodes[i].IsInFrustum = opaqueNodes[i].TestViewFrustum(ref frustum);
+            if (opaqueNodes[i].IsInFrustum)
             {
-                opaqueNodesInFrustum.Add(opaqueNodes.Items[i]);
+                opaqueNodesInFrustum.Add(opaqueNodes[i]);
             }
         }
         for (var i = 0; i < transparentNodes.Count; ++i)
         {
-            transparentNodes.Items[i].IsInFrustum = transparentNodes.Items[i].TestViewFrustum(ref frustum);
-            if (transparentNodes.Items[i].IsInFrustum)
+            transparentNodes[i].IsInFrustum = transparentNodes[i].TestViewFrustum(ref frustum);
+            if (transparentNodes[i].IsInFrustum)
             {
-                transparentNodesInFrustum.Add(transparentNodes.Items[i]);
+                transparentNodesInFrustum.Add(transparentNodes[i]);
             }
         }
     }

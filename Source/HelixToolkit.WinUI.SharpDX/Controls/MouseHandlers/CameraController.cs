@@ -98,11 +98,11 @@ public class CameraController : IDisposable
     /// <summary>
     /// Gets or sets CameraLookDirection.
     /// </summary>
-    public Vector3D CameraLookDirection
+    public Vector3 CameraLookDirection
     {
         get
         {
-            return this.ActualCamera?.LookDirection ?? new Vector3D();
+            return this.ActualCamera?.LookDirection ?? new Vector3();
         }
 
         set
@@ -151,11 +151,11 @@ public class CameraController : IDisposable
     /// <summary>
     /// Gets or sets CameraUpDirection.
     /// </summary>
-    public Vector3D CameraUpDirection
+    public Vector3 CameraUpDirection
     {
         get
         {
-            return this.ActualCamera?.UpDirection ?? new Vector3D();
+            return this.ActualCamera?.UpDirection ?? new Vector3();
         }
 
         set
@@ -304,10 +304,10 @@ public class CameraController : IDisposable
     /// <summary>
     /// Gets or sets the model up direction.
     /// </summary>
-    public Vector3D ModelUpDirection
+    public Vector3 ModelUpDirection
     {
         set; get;
-    } = new Vector3D(0, 1, 0);
+    } = new Vector3(0, 1, 0);
 
     /// <summary>
     /// Gets or sets the move sensitivity.
@@ -587,7 +587,7 @@ public class CameraController : IDisposable
     /// <summary>
     /// The move speed.
     /// </summary>
-    private Vector3D moveSpeed;
+    private Vector3 moveSpeed;
 
     /// <summary>
     /// The number of fingers used for panning.
@@ -602,7 +602,7 @@ public class CameraController : IDisposable
     /// <summary>
     /// The pan speed.
     /// </summary>
-    private Vector3D panSpeed;
+    private Vector3 panSpeed;
 
     ///// <summary>
     ///// The rectangle adorner.
@@ -691,7 +691,7 @@ public class CameraController : IDisposable
 
     private static readonly Point PointZero = new(0, 0);
     private static readonly Vector2 VectorZero = new();
-    private static readonly Vector3D Vector3DZero = new();
+    private static readonly Vector3 Vector3DZero = new();
     internal List<MouseGestureHandler> MouseHandlers { get; } = new();
 
     public Viewport3DX Viewport { private set; get; }
@@ -822,7 +822,7 @@ public class CameraController : IDisposable
     /// <param name="delta">
     /// The delta.
     /// </param>
-    public void AddMoveForce(Vector3D delta)
+    public void AddMoveForce(Vector3 delta)
     {
         if (!this.Viewport.IsMoveEnabled)
         {
@@ -854,7 +854,7 @@ public class CameraController : IDisposable
     /// <param name="pan">
     /// The pan.
     /// </param>
-    public void AddPanForce(Vector3D pan)
+    public void AddPanForce(Vector3 pan)
     {
         if (!this.Viewport.IsPanEnabled)
         {
@@ -972,7 +972,7 @@ public class CameraController : IDisposable
     /// <param name="animationTime">
     /// The animation time.
     /// </param>
-    public void ChangeDirection(Vector3D lookDir, Vector3D upDir, double animationTime = 500)
+    public void ChangeDirection(Vector3 lookDir, Vector3 upDir, double animationTime = 500)
     {
         if (!Viewport.IsRotationEnabled)
         {
@@ -1407,19 +1407,17 @@ public class CameraController : IDisposable
     /// The delta y.
     /// </param>
     /// <returns>
-    /// The <see cref="Vector3D"/> .
+    /// The <see cref="Vector3"/> .
     /// </returns>
-    private Vector3D FindPanVector(double dx, double dy)
+    private Vector3 FindPanVector(double dx, double dy)
     {
         if (ActualCamera is null)
         {
-            return new Vector3D();
+            return new Vector3();
         }
 
-        var axis1 = Vector3D.Cross(this.CameraLookDirection, this.CameraUpDirection);
-        var axis2 = Vector3D.Cross(axis1, this.CameraLookDirection);
-        axis1.Normalize();
-        axis2.Normalize();
+        var axis1 = Vector3.Normalize(Vector3.Cross(this.CameraLookDirection, this.CameraUpDirection));
+        var axis2 = Vector3.Normalize(Vector3.Cross(axis1, this.CameraLookDirection));
         axis1 *= ActualCamera.CreateLeftHandSystem ? -1 : 1;
         float l = 0;
         if (ActualCamera is PerspectiveCamera)
@@ -1543,7 +1541,7 @@ public class CameraController : IDisposable
         if (Viewport.ZoomAroundMouseDownPoint)
         {
             var point = e.GetCurrentPoint(Viewport).Position;
-            if (this.Viewport.FindNearest(point, out Point3D nearestPoint, out Vector3D normal, out Element3D? visual, out var node))
+            if (this.Viewport.FindNearest(point, out Point3D nearestPoint, out Vector3 normal, out Element3D? visual, out var node))
             {
                 this.AddZoomForce(-delta * 0.001, nearestPoint);
                 e.Handled = true;
@@ -1586,11 +1584,11 @@ public class CameraController : IDisposable
     {
         if (this.IsModelUpDirectionY())
         {
-            this.ChangeDirection(new Vector3D(0, -1, 0), new Vector3D(0, 0, 1));
+            this.ChangeDirection(new Vector3(0, -1, 0), new Vector3(0, 0, 1));
         }
         else
         {
-            this.ChangeDirection(new Vector3D(0, 0, -1), new Vector3D(0, 1, 0));
+            this.ChangeDirection(new Vector3(0, 0, -1), new Vector3(0, 1, 0));
         }
     }
 
@@ -1598,11 +1596,11 @@ public class CameraController : IDisposable
     {
         if (this.IsModelUpDirectionY())
         {
-            this.ChangeDirection(new Vector3D(0, 1, 0), new Vector3D(0, 0, 1));
+            this.ChangeDirection(new Vector3(0, 1, 0), new Vector3(0, 0, 1));
         }
         else
         {
-            this.ChangeDirection(new Vector3D(0, 0, 1), new Vector3D(0, -1, 0));
+            this.ChangeDirection(new Vector3(0, 0, 1), new Vector3(0, -1, 0));
         }
     }
 
@@ -1610,11 +1608,11 @@ public class CameraController : IDisposable
     {
         if (this.IsModelUpDirectionY())
         {
-            this.ChangeDirection(new Vector3D(1, 0, 0), new Vector3D(0, 1, 0));
+            this.ChangeDirection(new Vector3(1, 0, 0), new Vector3(0, 1, 0));
         }
         else
         {
-            this.ChangeDirection(new Vector3D(0, 1, 0), new Vector3D(0, 0, 1));
+            this.ChangeDirection(new Vector3(0, 1, 0), new Vector3(0, 0, 1));
         }
     }
 
@@ -1622,11 +1620,11 @@ public class CameraController : IDisposable
     {
         if (this.IsModelUpDirectionY())
         {
-            this.ChangeDirection(new Vector3D(-1, 0, 0), new Vector3D(0, 1, 0));
+            this.ChangeDirection(new Vector3(-1, 0, 0), new Vector3(0, 1, 0));
         }
         else
         {
-            this.ChangeDirection(new Vector3D(0, -1, 0), new Vector3D(0, 0, 1));
+            this.ChangeDirection(new Vector3(0, -1, 0), new Vector3(0, 0, 1));
         }
     }
 
@@ -1634,11 +1632,11 @@ public class CameraController : IDisposable
     {
         if (this.IsModelUpDirectionY())
         {
-            this.ChangeDirection(new Vector3D(0, 0, -1), new Vector3D(0, 1, 0));
+            this.ChangeDirection(new Vector3(0, 0, -1), new Vector3(0, 1, 0));
         }
         else
         {
-            this.ChangeDirection(new Vector3D(-1, 0, 0), new Vector3D(0, 0, 1));
+            this.ChangeDirection(new Vector3(-1, 0, 0), new Vector3(0, 0, 1));
         }
     }
 
@@ -1646,11 +1644,11 @@ public class CameraController : IDisposable
     {
         if (this.IsModelUpDirectionY())
         {
-            this.ChangeDirection(new Vector3D(0, 0, 1), new Vector3D(0, 1, 0));
+            this.ChangeDirection(new Vector3(0, 0, 1), new Vector3(0, 1, 0));
         }
         else
         {
-            this.ChangeDirection(new Vector3D(1, 0, 0), new Vector3D(0, 0, 1));
+            this.ChangeDirection(new Vector3(1, 0, 0), new Vector3(0, 0, 1));
         }
     }
 

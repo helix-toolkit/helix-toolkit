@@ -78,9 +78,9 @@ public abstract class ContentNode2D : PresenterNode2D
         }
     }
 
-    protected override Size2F MeasureOverride(Size2F availableSize)
+    protected override Vector2 MeasureOverride(Vector2 availableSize)
     {
-        var maxContentSize = new Size2F();
+        var maxContentSize = new Vector2();
         foreach (var item in Items)
         {
             if (item is SceneNode2D e)
@@ -88,44 +88,44 @@ public abstract class ContentNode2D : PresenterNode2D
                 e.HorizontalAlignment = HorizontalContentAlignment;
                 e.VerticalAlignment = VerticalContentAlignment;
                 e.Measure(availableSize);
-                maxContentSize.Width = Math.Max(maxContentSize.Width, e.DesiredSize.X);
-                maxContentSize.Height = Math.Max(maxContentSize.Height, e.DesiredSize.Y);
+                maxContentSize.X = Math.Max(maxContentSize.X, e.DesiredSize.X);
+                maxContentSize.Y = Math.Max(maxContentSize.Y, e.DesiredSize.Y);
             }
         }
         if (HorizontalAlignment == HorizontalAlignment.Center)
         {
-            availableSize.Width = Math.Min(availableSize.Width, maxContentSize.Width);
+            availableSize.X = Math.Min(availableSize.X, maxContentSize.X);
         }
         else
         {
-            if (float.IsInfinity(availableSize.Width))
+            if (float.IsInfinity(availableSize.X))
             {
                 if (float.IsInfinity(Width))
                 {
-                    availableSize.Width = maxContentSize.Width;
+                    availableSize.X = maxContentSize.X;
                 }
                 else
                 {
-                    availableSize.Width = Width;
+                    availableSize.X = Width;
                 }
             }
         }
 
         if (VerticalAlignment == VerticalAlignment.Center)
         {
-            availableSize.Height = Math.Min(availableSize.Height, maxContentSize.Height);
+            availableSize.Y = Math.Min(availableSize.Y, maxContentSize.Y);
         }
         else
         {
-            if (float.IsInfinity(availableSize.Height))
+            if (float.IsInfinity(availableSize.Y))
             {
                 if (float.IsInfinity(Height))
                 {
-                    availableSize.Height = maxContentSize.Height;
+                    availableSize.Y = maxContentSize.Y;
                 }
                 else
                 {
-                    availableSize.Height = Height;
+                    availableSize.Y = Height;
                 }
             }
         }

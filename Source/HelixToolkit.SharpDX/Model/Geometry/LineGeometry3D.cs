@@ -54,12 +54,12 @@ public class LineGeometry3D : Geometry3D
             var lineIndex = 0;
             foreach (var line in Lines)
             {
-                var t0 = Vector3.TransformCoordinate(line.P0, modelMatrix);
-                var t1 = Vector3.TransformCoordinate(line.P1, modelMatrix);
+                var t0 = Vector3Helper.TransformCoordinate(line.P0, modelMatrix);
+                var t1 = Vector3Helper.TransformCoordinate(line.P1, modelMatrix);
                 var rayToLineDistance = LineBuilder.GetRayToLineDistance(context.RayWS, t0, t1, out var sp, out var tp, out var sc, out var tc);
                 var svpm = context.RenderMatrices?.ScreenViewProjectionMatrix ?? Matrix.Identity;
-                Vector3.TransformCoordinate(ref sp, ref svpm, out var sp3);
-                Vector3.TransformCoordinate(ref tp, ref svpm, out var tp3);
+                Vector3Helper.TransformCoordinate(ref sp, ref svpm, out var sp3);
+                Vector3Helper.TransformCoordinate(ref tp, ref svpm, out var tp3);
                 var tv2 = new Vector2(tp3.X - sp3.X, tp3.Y - sp3.Y);
                 var dist = tv2.Length() / context.RenderMatrices?.DpiScale ?? 1.0f;
                 if (dist < lastDist && dist <= hitTestThickness)

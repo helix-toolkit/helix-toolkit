@@ -142,12 +142,11 @@ public class UIRotateManipulator3D : UIManipulator3D
         if (this.InnerDiameter >= this.OuterDiameter)
             this.OuterDiameter = this.InnerDiameter + 0.3;
 
-        var d = this.Axis;
-        d.Normalize();
+        var d = Vector3.Normalize(this.Axis);
         var p1 = p0 - (d * (float)this.Length * 0.5f);
         var p2 = p0 + (d * (float)this.Length * 0.5f);
-        mb.AddPipe(p1.ToVector(), p2.ToVector(), (float)this.InnerDiameter, (float)this.OuterDiameter, 64);
-        this.Geometry = mb.ToMesh().ToMeshGeometry3D();
+        mb.AddPipe(p1, p2, (float)this.InnerDiameter, (float)this.OuterDiameter, 64);
+        this.Geometry = mb.ToMeshGeometry3D();
     }
 
     /// <summary>
@@ -165,16 +164,13 @@ public class UIRotateManipulator3D : UIManipulator3D
 
         // --- get the plane for translation (camera normal is a good choice)                     
         var normal = this.cameraNormal;
-        var position = this.TotalModelMatrix.TranslationVector;
-        //var position = this.totalModelMatrix.TranslationVector;
+        var position = this.TotalModelMatrix.Translation;
 
         // --- hit position 
         if (this.viewport.UnProjectOnPlane(args.Position.ToVector2(), lastHitPosWS, normal, out var newHitPos))
         {
-            var v = this.lastHitPosWS - position;
-            var u = newHitPos - position;
-            v.Normalize();
-            u.Normalize();
+            var v = Vector3.Normalize(this.lastHitPosWS - position);
+            var u = Vector3.Normalize(newHitPos - position);
 
             var currentAxis = Vector3.Cross(u, v);
             var mainAxis = ToWorldVec(this.Axis);// this.Transform.Transform(this.Axis.ToVector3D()).ToVector3();

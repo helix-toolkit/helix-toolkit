@@ -121,9 +121,9 @@ public class KeyFrameUpdater : IAnimationUpdater
             var diff = timeElapsed - currFrame.Time;
             var length = nextFrame.Time - currFrame.Time;
             var amount = diff / length;
-            tempBones[currFrame.BoneIndex] = Matrix.Scaling(Vector3.Lerp(currFrame.Scale, nextFrame.Scale, amount)) *
-                        Matrix.RotationQuaternion(Quaternion.Slerp(currFrame.Rotation, nextFrame.Rotation, amount)) *
-                        Matrix.Translation(Vector3.Lerp(currFrame.Translation, nextFrame.Translation, amount));
+            tempBones[currFrame.BoneIndex] = MatrixHelper.Scaling(Vector3.Lerp(currFrame.Scale, nextFrame.Scale, amount)) *
+                        Quaternion.Slerp(currFrame.Rotation, nextFrame.Rotation, amount).ToMatrix() *
+                        MatrixHelper.Translation(Vector3.Lerp(currFrame.Translation, nextFrame.Translation, amount));
         }
 
         // Apply parent bone transforms

@@ -1,6 +1,6 @@
 ﻿using HelixToolkit.SharpDX.Utilities;
-using SharpDX;
 using SharpDX.Direct2D1;
+using SharpDX.Mathematics.Interop;
 using System.Runtime.CompilerServices;
 
 namespace HelixToolkit.SharpDX;
@@ -134,7 +134,7 @@ public sealed class RenderContext2D : DisposeObject
         DeviceContext.BeginDraw();
         if (clear)
         {
-            DeviceContext.Clear(Color.Transparent);
+            DeviceContext.Clear(new RawColor4(0, 0, 0, 0));
         }
     }
     /// <summary>

@@ -1,7 +1,4 @@
-﻿using Vector3 = SharpDX.Vector3;
-using Plane = SharpDX.Plane;
-using Ray = SharpDX.Ray;
-using HelixToolkit.SharpDX;
+﻿using HelixToolkit.SharpDX;
 using System.Diagnostics;
 using System.Windows.Input;
 using HelixToolkit.SharpDX.Model.Scene;
@@ -278,7 +275,7 @@ internal abstract class MouseGestureHandler
         {
             return null;
         }
-        var plane = new Plane(position, normal);
+        var plane = PlaneHelper.GetPlane(position, normal);
         if (ray.Value.Intersects(ref plane, out Vector3 point))
         {
             return point;

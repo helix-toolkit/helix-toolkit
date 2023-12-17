@@ -64,7 +64,7 @@ public abstract class ParametricSurface3DNode : MeshNode
         tesselationTask = Task.Run(() =>
         {
             var mesh = OnTesselatingAsync(token);
-            mesh.Normals = Converter.ToVector3Collection(MeshGeometryHelper.CalculateNormals(mesh.ToWndMeshGeometry3D()));
+            mesh.UpdateNormals();
             mesh?.UpdateOctree();
             mesh?.UpdateBounds();
             return mesh;

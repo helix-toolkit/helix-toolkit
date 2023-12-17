@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Logging;
 using SharpDX;
 using SharpDX.Direct3D11;
+using SharpDX.Mathematics.Interop;
 
 namespace HelixToolkit.SharpDX.Model.Scene;
 
@@ -102,34 +103,34 @@ public class ViewBoxNode : ScreenSpacedNode
     {
         var builder = new MeshBuilder(true, false);
         var cornerSize = size / 5;
-        builder.AddBox(Vector3.Zero.ToVector(), cornerSize, cornerSize, cornerSize);
-        cornerGeometry = builder.ToMesh().ToMeshGeometry3D();
+        builder.AddBox(Vector3.Zero, cornerSize, cornerSize, cornerSize);
+        cornerGeometry = builder.ToMeshGeometry3D();
 
         builder = new MeshBuilder(true, false);
         var halfSize = size / 2;
         var edgeSize = halfSize * 1.5f;
-        builder.AddBox(Vector3.Zero.ToVector(), cornerSize, edgeSize, cornerSize);
-        edgeGeometry = builder.ToMesh().ToMeshGeometry3D();
+        builder.AddBox(Vector3.Zero, cornerSize, edgeSize, cornerSize);
+        edgeGeometry = builder.ToMeshGeometry3D();
 
         cornerInstances = new Matrix[cornerPoints.Length];
         for (var i = 0; i < cornerPoints.Length; ++i)
         {
-            cornerInstances[i] = Matrix.Translation(cornerPoints[i] * size / 2 * 0.95f);
+            cornerInstances[i] = Matrix.CreateTranslation(cornerPoints[i] * size / 2 * 0.95f);
         }
         var count = xAligned.Length;
         edgeInstances = new Matrix[count * 3];
 
         for (var i = 0; i < count; ++i)
         {
-            edgeInstances[i] = Matrix.RotationZ((float)Math.PI / 2) * Matrix.Translation(xAligned[i] * halfSize * 0.95f);
+            edgeInstances[i] = Matrix.CreateRotationX((float)Math.PI / 2) * Matrix.CreateTranslation(xAligned[i] * halfSize * 0.95f);
         }
         for (var i = count; i < count * 2; ++i)
         {
-            edgeInstances[i] = Matrix.Translation(yAligned[i % count] * halfSize * 0.95f);
+            edgeInstances[i] = Matrix.CreateTranslation(yAligned[i % count] * halfSize * 0.95f);
         }
         for (var i = count * 2; i < count * 3; ++i)
         {
-            edgeInstances[i] = Matrix.RotationX((float)Math.PI / 2) * Matrix.Translation(zAligned[i % count] * halfSize * 0.95f);
+            edgeInstances[i] = Matrix.CreateRotationX((float)Math.PI / 2) * Matrix.CreateTranslation(zAligned[i % count] * halfSize * 0.95f);
         }
     }
 
@@ -139,7 +140,7 @@ public class ViewBoxNode : ScreenSpacedNode
         RelativeScreenLocationX = 0.8f;
         ViewBoxMeshModel = new MeshNode() { EnableViewFrustumCheck = false, CullMode = CullMode.Back };
         var sampler = DefaultSamplers.LinearSamplerWrapAni1;
-        sampler.BorderColor = Color.Gray;
+        sampler.BorderColor = Color.Gray.ToColor4().ToStruct<Color4, RawColor4>();
         sampler.AddressU = sampler.AddressV = sampler.AddressW = TextureAddressMode.Border;
         this.AddChildNode(ViewBoxMeshModel);
         ViewBoxMeshModel.Material = new ViewCubeMaterialCore()
@@ -225,14 +226,14 @@ public class ViewBoxNode : ScreenSpacedNode
             left *= -1;
         }
         var builder = new MeshBuilder(true, true, false);
-        builder.AddCubeFace(new Vector3(0, 0, 0).ToVector(), front.ToVector(), up.ToVector(), size, size, size);
-        builder.AddCubeFace(new Vector3(0, 0, 0).ToVector(), -front.ToVector(), up.ToVector(), size, size, size);
-        builder.AddCubeFace(new Vector3(0, 0, 0).ToVector(), left.ToVector(), up.ToVector(), size, size, size);
-        builder.AddCubeFace(new Vector3(0, 0, 0).ToVector(), -left.ToVector(), up.ToVector(), size, size, size);
-        builder.AddCubeFace(new Vector3(0, 0, 0).ToVector(), up.ToVector(), left.ToVector(), size, size, size);
-        builder.AddCubeFace(new Vector3(0, 0, 0).ToVector(), -up.ToVector(), -left.ToVector(), size, size, size);
+        builder.AddCubeFace(new Vector3(0, 0, 0), front, up, size, size, size);
+        builder.AddCubeFace(new Vector3(0, 0, 0), -front, up, size, size, size);
+        builder.AddCubeFace(new Vector3(0, 0, 0), left, up, size, size, size);
+        builder.AddCubeFace(new Vector3(0, 0, 0), -left, up, size, size, size);
+        builder.AddCubeFace(new Vector3(0, 0, 0), up, left, size, size, size);
+        builder.AddCubeFace(new Vector3(0, 0, 0), -up, -left, size, size, size);
 
-        var mesh = builder.ToMesh().ToMeshGeometry3D();
+        var mesh = builder.ToMeshGeometry3D();
         CreateTextureCoordinates(mesh);
 
         var pts = new List<Vector3>();
@@ -248,8 +249,8 @@ public class ViewBoxNode : ScreenSpacedNode
             pts.Add(center + (dir * (size + 1.1f)));
         }
         builder = new MeshBuilder(false, false, false);
-        builder.AddTriangleStrip(pts.Select(t => t.ToVector()).ToList());
-        var pie = builder.ToMesh().ToMeshGeometry3D();
+        builder.AddTriangleStrip(pts.Select(t => t).ToList());
+        var pie = builder.ToMeshGeometry3D();
         var count = pie.Indices?.Count ?? 0;
         for (var i = 0; i < count;)
         {
@@ -282,7 +283,7 @@ public class ViewBoxNode : ScreenSpacedNode
         {
             newMesh.Colors?.AddRange(Enumerable.Repeat(new Color4(1, 1, 1, 1), mesh.Positions.Count));
         }
-        newMesh.Normals = Converter.ToVector3Collection(MeshGeometryHelper.CalculateNormals(newMesh.ToWndMeshGeometry3D()));
+        newMesh.UpdateNormals();
         ViewBoxMeshModel.Geometry = newMesh;
     }
 
@@ -340,12 +341,12 @@ public class ViewBoxNode : ScreenSpacedNode
                 if (hit.ModelHit == EdgeModel && index < edgeInstances.Length)
                 {
                     var transform = edgeInstances[index];
-                    normal = -transform.TranslationVector;
+                    normal = -transform.Translation;
                 }
                 else if (hit.ModelHit == CornerModel && index < cornerInstances.Length)
                 {
                     var transform = cornerInstances[index];
-                    normal = -transform.TranslationVector;
+                    normal = -transform.Translation;
                 }
                 else
                 {
@@ -356,7 +357,7 @@ public class ViewBoxNode : ScreenSpacedNode
             {
                 return false;
             }
-            normal.Normalize();
+            normal = Vector3.Normalize(normal);
             hit.NormalAtHit = normal;
             hit.ModelHit = this;
             hit.Tag = this.Tag;

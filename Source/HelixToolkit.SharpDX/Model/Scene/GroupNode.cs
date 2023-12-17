@@ -95,7 +95,7 @@ public class GroupNode : GroupNodeBase, IHitable
     /// <param name="totalModelMatrix">The total model matrix.</param>
     /// <param name="hits">The hits.</param>
     /// <returns></returns>
-    protected override bool OnHitTest(HitTestContext? context, global::SharpDX.Matrix totalModelMatrix, ref List<HitTestResult> hits)
+    protected override bool OnHitTest(HitTestContext? context, Matrix totalModelMatrix, ref List<HitTestResult> hits)
     {
         var isHit = false;
         if (octreeManager != null)

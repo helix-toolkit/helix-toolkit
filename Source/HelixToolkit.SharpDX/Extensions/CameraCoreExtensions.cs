@@ -91,16 +91,16 @@ public static class CameraCoreExtensions
             }
         }
 
-        var plane1 = new Plane(corners[leftMostPoint], leftNormal);
-        var plane2 = new Plane(corners[rightMostPoint], rightNormal);
-        PlaneExtensions.PlaneIntersectsPlane(ref plane1, ref plane2, out var horizontalIntersection);
-        plane1 = new Plane(corners[topMostPoint], topNormal);
-        plane2 = new Plane(corners[bottomMostPoint], bottomNormal);
-        PlaneExtensions.PlaneIntersectsPlane(ref plane1, ref plane2, out var verticalIntersection);
+        var plane1 = PlaneHelper.GetPlane(corners[leftMostPoint], leftNormal);
+        var plane2 = PlaneHelper.GetPlane(corners[rightMostPoint], rightNormal);
+        Collision.PlaneIntersectsPlane(ref plane1, ref plane2, out var horizontalIntersection);
+        plane1 = PlaneHelper.GetPlane(corners[topMostPoint], topNormal);
+        plane2 = PlaneHelper.GetPlane(corners[bottomMostPoint], bottomNormal);
+        Collision.PlaneIntersectsPlane(ref plane1, ref plane2, out var verticalIntersection);
         FindClosestPointsOnTwoLines(ref horizontalIntersection, ref verticalIntersection, out var closestPointLine1, out var closestPointLine2);
         position = Vector3.Dot(closestPointLine1 - closestPointLine2, cameraDir) < 0 ? closestPointLine1 : closestPointLine2;
         upDir = cameraUp;
-        var boundPlane = new Plane(boundingBox.Center, cameraDir);
+        var boundPlane = PlaneHelper.GetPlane(boundingBox.Center, cameraDir);
         var lookRay = new Ray(position, cameraDir);
         boundPlane.Intersects(ref lookRay, out float dist);
         lookDir = cameraDir * dist;
@@ -122,7 +122,7 @@ public static class CameraCoreExtensions
         var view = camera.CreateViewMatrix();
         foreach (var p in corners)
         {
-            var local = Vector3.TransformCoordinate(p, view);
+            var local = Vector3Helper.TransformCoordinate(p, view);
             minX = Math.Min(minX, local.X);
             minY = Math.Min(minY, local.Y);
             maxX = Math.Max(maxX, local.X);
@@ -265,12 +265,9 @@ public static class CameraCoreExtensions
                         (zoomRectangle.Left + zoomRectangle.Right) * 0.5f,
                         (zoomRectangle.Top + zoomRectangle.Bottom) * 0.5f), out var centerRay))
             {
-                var u = topLeftRay.Direction;
-                var v = topRightRay.Direction;
-                var w = centerRay.Direction;
-                u.Normalize();
-                v.Normalize();
-                w.Normalize();
+                var u = Vector3.Normalize(topLeftRay.Direction);
+                var v = Vector3.Normalize(topRightRay.Direction);
+                var w = Vector3.Normalize(centerRay.Direction);
                 if (camera is PerspectiveCameraCore perspectiveCamera)
                 {
                     var distance = pcam.LookDirection.Length();
@@ -392,7 +389,7 @@ public static class CameraCoreExtensions
     /// The animation time.
     /// </param>
     public static void ZoomExtents(
-        this CameraCore camera, ViewportCore viewport, global::SharpDX.BoundingBox bounds, float animationTime = 0)
+        this CameraCore camera, ViewportCore viewport, BoundingBox bounds, float animationTime = 0)
     {
         var diagonal = bounds.Maximum - bounds.Minimum;
 
@@ -442,8 +439,7 @@ public static class CameraCoreExtensions
             float distv = radius / (float)Math.Tan(0.75 * vfov * Math.PI / 180);
 
             float dist = Math.Max(disth, distv);
-            var dir = camera.LookDirection;
-            dir.Normalize();
+            var dir = Vector3.Normalize(camera.LookDirection);
             LookAt(camera, center, dir * dist, animationTime);
         }
         else if (camera is OrthographicCameraCore orth)

@@ -107,7 +107,7 @@ public class PlyReader : ModelReader
         {
             foreach (var p in this.Vertices)
             {
-                mb.Positions.Add(p.ToVector());
+                mb.Positions.Add(p);
             }
         }
 
@@ -126,7 +126,7 @@ public class PlyReader : ModelReader
             {
                 foreach (var item in Normals)
                 {
-                    mb.Normals.Add(item.ToVector());
+                    mb.Normals.Add(item);
                 }
             }
         }
@@ -142,7 +142,7 @@ public class PlyReader : ModelReader
             {
                 foreach (var item in TextureCoordinates)
                 {
-                    mb.TextureCoordinates.Add(item.ToVector());
+                    mb.TextureCoordinates.Add(item);
                 }
             }
         }
@@ -154,13 +154,13 @@ public class PlyReader : ModelReader
             mb.CreateTextureCoordinates = false;
         }
 
-        var mesh = mb.ToMesh();
+        var mesh = mb.ToMeshGeometry3D();
         if (mesh.Normals == null || mesh.Normals.Count == 0)
         {
-            mesh.Normals = mesh.CalculateNormals();
+            mesh.UpdateNormals();
         }
 
-        return mesh.ToMeshGeometry3D();
+        return mesh;
     }
 
     /// <summary>

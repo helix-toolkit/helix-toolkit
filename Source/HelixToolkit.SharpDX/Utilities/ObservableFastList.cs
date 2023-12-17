@@ -16,7 +16,7 @@ public sealed class ObservableFastList<T> : INotifyCollectionChanged, INotifyPro
 
     public bool IsReadOnly => false;
 
-    public T this[int index] { get => list.Items[index]; set => list.Items[index] = value; }
+    public T this[int index] { get => list.GetInternalArray()[index]; set => list.GetInternalArray()[index] = value; }
 
     public ObservableFastList()
     {

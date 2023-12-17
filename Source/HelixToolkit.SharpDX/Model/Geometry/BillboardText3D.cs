@@ -174,7 +174,7 @@ public class BillboardText3D : BillboardBase
                     rect.Height = Math.Max(rect.Height, Math.Abs(tempList.Last().OffBR.Y));
                 }
             }
-            var transform = textInfo.Angle != 0 ? Matrix3x2.Rotation(textInfo.Angle) : Matrix3x2.Identity;
+            var transform = textInfo.Angle != 0 ? Matrix3x2.CreateRotation(textInfo.Angle) : Matrix3x2.Identity;
             GetQuadOffset(rect.Width, rect.Height, textInfo.HorizontalAlignment, textInfo.VerticalAlignment, out var tl, out var br);
             var tr = new Vector2(br.X, tl.Y);
             var bl = new Vector2(tl.X, br.Y);
@@ -185,10 +185,10 @@ public class BillboardText3D : BillboardBase
                 Background = textInfo.Background,
                 TexTL = Vector2.Zero,
                 TexBR = Vector2.Zero,
-                OffTL = Matrix3x2.TransformPoint(transform, tl) + textInfo.Offset,
-                OffBR = Matrix3x2.TransformPoint(transform, br) + textInfo.Offset,
-                OffTR = Matrix3x2.TransformPoint(transform, tr) + textInfo.Offset,
-                OffBL = Matrix3x2.TransformPoint(transform, bl) + textInfo.Offset,
+                OffTL = Matrix3x2Helper.TransformPoint(transform, tl) + textInfo.Offset,
+                OffBR = Matrix3x2Helper.TransformPoint(transform, br) + textInfo.Offset,
+                OffTR = Matrix3x2Helper.TransformPoint(transform, tr) + textInfo.Offset,
+                OffBL = Matrix3x2Helper.TransformPoint(transform, bl) + textInfo.Offset,
             });
 
             textInfo.UpdateTextInfo(rect.Width, rect.Height);
@@ -197,10 +197,10 @@ public class BillboardText3D : BillboardBase
             for (var k = tempPrevCount; k < tempList.Count; ++k)
             {
                 var v = tempList[k];
-                v.OffTL = Matrix3x2.TransformPoint(transform, v.OffTL + tl) + textInfo.Offset;
-                v.OffBR = Matrix3x2.TransformPoint(transform, v.OffBR + tl) + textInfo.Offset;
-                v.OffTR = Matrix3x2.TransformPoint(transform, v.OffTR + tl) + textInfo.Offset;
-                v.OffBL = Matrix3x2.TransformPoint(transform, v.OffBL + tl) + textInfo.Offset;
+                v.OffTL = Matrix3x2Helper.TransformPoint(transform, v.OffTL + tl) + textInfo.Offset;
+                v.OffBR = Matrix3x2Helper.TransformPoint(transform, v.OffBR + tl) + textInfo.Offset;
+                v.OffTR = Matrix3x2Helper.TransformPoint(transform, v.OffTR + tl) + textInfo.Offset;
+                v.OffBL = Matrix3x2Helper.TransformPoint(transform, v.OffBL + tl) + textInfo.Offset;
                 tempList[k] = v;
             }
             Width += rect.Width;

@@ -4,12 +4,12 @@ using HelixToolkit.Wpf.SharpDX;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Numerics;
 using Color = System.Windows.Media.Color;
 using Colors = System.Windows.Media.Colors;
 using Point3D = System.Windows.Media.Media3D.Point3D;
 using Transform3D = System.Windows.Media.Media3D.Transform3D;
 using TranslateTransform3D = System.Windows.Media.Media3D.TranslateTransform3D;
-using Vector3 = SharpDX.Vector3;
 using Vector3D = System.Windows.Media.Media3D.Vector3D;
 
 namespace DynamicPointsAndLinesDemo;

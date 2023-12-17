@@ -21,11 +21,11 @@ public class PerspectiveCameraCore : ProjectionCameraCore
         Matrix projM;
         if (this.CreateLeftHandSystem)
         {
-            projM = Matrix.PerspectiveFovLH((float)fov, aspectRatio, nearPlane, farPlane);
+            projM = MatrixHelper.PerspectiveFovLH((float)fov, aspectRatio, nearPlane, farPlane);
         }
         else
         {
-            projM = Matrix.PerspectiveFovRH((float)fov, (float)aspectRatio, nearPlane, farPlane);
+            projM = MatrixHelper.PerspectiveFovRH((float)fov, (float)aspectRatio, nearPlane, farPlane);
         }
         if (float.IsNaN(projM.M33) || float.IsNaN(projM.M43))
         {

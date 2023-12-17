@@ -674,12 +674,12 @@ public abstract class StaticOctree<T> : IOctreeBasic where T : unmanaged
         var isHit = false;
         var modelHits = new List<HitTestResult>();
         var modelInv = modelMatrix.Inverted();
-        if (modelInv == Matrix.Zero)
+        if (modelInv == MatrixHelper.Zero)
         {
             return false;
         }//Cannot be inverted
         var rayWS = context.RayWS;
-        var rayModel = new Ray(Vector3.TransformCoordinate(rayWS.Position, modelInv), Vector3.Normalize(Vector3.TransformNormal(rayWS.Direction, modelInv)));
+        var rayModel = new Ray(Vector3Helper.TransformCoordinate(rayWS.Position, modelInv), Vector3.Normalize(Vector3.TransformNormal(rayWS.Direction, modelInv)));
 
         var parent = -1;
         var curr = -1;
@@ -880,7 +880,7 @@ public abstract class StaticOctree<T> : IOctreeBasic where T : unmanaged
     /// <returns></returns>
     public bool FindNearestPointByPointAndSearchRadius(HitTestContext? context, ref Vector3 point, float radius, ref List<HitTestResult> result)
     {
-        var sphere = new global::SharpDX.BoundingSphere(point, radius);
+        var sphere = new BoundingSphere(point, radius);
         return FindNearestPointBySphere(context, ref sphere, ref result);
     }
     /// <summary>
@@ -961,7 +961,7 @@ public abstract class StaticOctree<T> : IOctreeBasic where T : unmanaged
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     protected static bool BoxDisjointSphere(BoundingBox box, ref BoundingSphere sphere)
     {
-        Vector3.Clamp(ref sphere.Center, ref box.Minimum, ref box.Maximum, out var vector);
+        Vector3Helper.Clamp(ref sphere.Center, ref box.Minimum, ref box.Maximum, out var vector);
         var distance = Vector3.DistanceSquared(sphere.Center, vector);
 
         return distance > sphere.Radius * sphere.Radius;

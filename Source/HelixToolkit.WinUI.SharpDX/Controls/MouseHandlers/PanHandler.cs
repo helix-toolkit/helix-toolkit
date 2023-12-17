@@ -64,7 +64,7 @@ internal class PanHandler : MouseGestureHandler
     /// The panning vector.
     /// </param>
     /// <param name="stopOther">Stop other manipulation</param>
-    public void Pan(Vector3D delta, bool stopOther = true)
+    public void Pan(Vector3 delta, bool stopOther = true)
     {
         if (!this.Controller.IsPanEnabled)
         {

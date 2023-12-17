@@ -80,8 +80,8 @@ public class BoneSkinnedMeshGeometry3D : MeshGeometry3D
         }
 
         var builder = new MeshBuilder(true, false);
-        builder.AddPyramid(new Vector3(0, scale / 2, 0).ToVector(), Vector3.UnitZ.ToVector(), Vector3.UnitY.ToVector(), scale, 0, true);
-        var singleBone = builder.ToMesh().ToMeshGeometry3D();
+        builder.AddPyramid(new Vector3(0, scale / 2, 0), Vector3.UnitZ, Vector3.UnitY, scale, 0, true);
+        var singleBone = builder.ToMeshGeometry3D();
         var boneIds = new List<BoneIds>();
         var positions = new Vector3Collection(bones.Count * singleBone.Positions?.Count ?? 0);
         var tris = new IntCollection(bones.Count * singleBone.Indices?.Count ?? 0);
@@ -99,16 +99,16 @@ public class BoneSkinnedMeshGeometry3D : MeshGeometry3D
                     var j = 0;
                     for (; j < singleBone.Positions.Count - 6; j += 3)
                     {
-                        positions.Add(Vector3.TransformCoordinate(singleBone.Positions[j], bones[bones[i].ParentIndex].BindPose));
-                        positions.Add(Vector3.TransformCoordinate(singleBone.Positions[j + 1], bones[bones[i].ParentIndex].BindPose));
-                        positions.Add(bones[i].BindPose.TranslationVector);
+                        positions.Add(Vector3Helper.TransformCoordinate(singleBone.Positions[j], bones[bones[i].ParentIndex].BindPose));
+                        positions.Add(Vector3Helper.TransformCoordinate(singleBone.Positions[j + 1], bones[bones[i].ParentIndex].BindPose));
+                        positions.Add(bones[i].BindPose.Translation);
                         boneIds.Add(new BoneIds() { Bone1 = bones[i].ParentIndex, Weights = new Vector4(1, 0, 0, 0) });
                         boneIds.Add(new BoneIds() { Bone1 = bones[i].ParentIndex, Weights = new Vector4(1, 0, 0, 0) });
                         boneIds.Add(new BoneIds() { Bone1 = i, Weights = new Vector4(1, 0, 0, 0) });
                     }
                     for (; j < singleBone.Positions.Count; ++j)
                     {
-                        positions.Add(Vector3.TransformCoordinate(singleBone.Positions[j], bones[bones[i].ParentIndex].BindPose));
+                        positions.Add(Vector3Helper.TransformCoordinate(singleBone.Positions[j], bones[bones[i].ParentIndex].BindPose));
                         boneIds.Add(new BoneIds() { Bone1 = bones[i].ParentIndex, Weights = new Vector4(1, 0, 0, 0) });
                     }
                     offset += singleBone.Positions.Count;
@@ -120,17 +120,17 @@ public class BoneSkinnedMeshGeometry3D : MeshGeometry3D
         for (var i = 0; i < bones.Count; ++i)
         {
             var currPos = builder.Positions.Count;
-            builder.AddSphere(Vector3.Zero.ToVector(), scale / 2, 12, 12);
+            builder.AddSphere(Vector3.Zero, scale / 2, 12, 12);
             for (var j = currPos; j < builder.Positions.Count; ++j)
             {
-                builder.Positions[j] = Vector3.TransformCoordinate(builder.Positions[j].ToDxVector(), bones[i].BindPose).ToVector();
+                builder.Positions[j] = Vector3Helper.TransformCoordinate(builder.Positions[j], bones[i].BindPose);
                 boneIds.Add(new BoneIds() { Bone1 = i, Weights = new Vector4(1, 0, 0, 0) });
             }
         }
-        positions.AddRange(builder.Positions.Select(t => t.ToDxVector()));
+        positions.AddRange(builder.Positions);
         tris.AddRange(builder.TriangleIndices.Select(x => x + offset));
         var mesh = new BoneSkinnedMeshGeometry3D() { Positions = positions, Indices = tris, VertexBoneIds = boneIds };
-        mesh.Normals = Converter.ToVector3Collection(mesh.ToWndMeshGeometry3D().CalculateNormals());
+        mesh.UpdateNormals();
         return mesh;
     }
 
@@ -164,13 +164,13 @@ public class BoneSkinnedMeshGeometry3D : MeshGeometry3D
             Distance = double.MaxValue
         };
         var modelInvert = modelMatrix.Inverted();
-        if (modelInvert == Matrix.Zero)//Check if model matrix can be inverted.
+        if (modelInvert == MatrixHelper.Zero)//Check if model matrix can be inverted.
         {
             return false;
         }
         var rayWS = context.RayWS;
         //transform ray into model coordinates
-        var rayModel = new Ray(Vector3.TransformCoordinate(rayWS.Position, modelInvert), Vector3.Normalize(Vector3.TransformNormal(rayWS.Direction, modelInvert)));
+        var rayModel = new Ray(Vector3Helper.TransformCoordinate(rayWS.Position, modelInvert), Vector3.Normalize(Vector3.TransformNormal(rayWS.Direction, modelInvert)));
 
         var index = 0;
         var minDistance = float.MaxValue;
@@ -200,14 +200,13 @@ public class BoneSkinnedMeshGeometry3D : MeshGeometry3D
                     minDistance = d;
                     result.IsValid = true;
                     result.ModelHit = originalSource;
-                    var pointWorld = Vector3.TransformCoordinate(rayModel.Position + (rayModel.Direction * d), modelMatrix);
+                    var pointWorld = Vector3Helper.TransformCoordinate(rayModel.Position + (rayModel.Direction * d), modelMatrix);
                     result.PointHit = pointWorld;
                     result.Distance = (rayWS.Position - pointWorld).Length();
-                    var p0 = Vector3.TransformCoordinate(v0, modelMatrix);
-                    var p1 = Vector3.TransformCoordinate(v1, modelMatrix);
-                    var p2 = Vector3.TransformCoordinate(v2, modelMatrix);
-                    var n = Vector3.Cross(p1 - p0, p2 - p0);
-                    n.Normalize();
+                    var p0 = Vector3Helper.TransformCoordinate(v0, modelMatrix);
+                    var p1 = Vector3Helper.TransformCoordinate(v1, modelMatrix);
+                    var p2 = Vector3Helper.TransformCoordinate(v2, modelMatrix);
+                    var n = Vector3.Normalize(Vector3.Cross(p1 - p0, p2 - p0));
                     // transform hit-info to world space now:
                     result.NormalAtHit = n;// Vector3.TransformNormal(n, m).ToVector3D();
                     result.TriangleIndices = new System.Tuple<int, int, int>(Indices[index], Indices[index + 1], Indices[index + 2]);

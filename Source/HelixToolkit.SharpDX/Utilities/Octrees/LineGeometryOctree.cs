@@ -171,16 +171,16 @@ public class LineGeometryOctree : DynamicOctreeBase<KeyValuePair<int, BoundingBo
                 var v0 = Positions![idx1];
                 var v1 = Positions![idx2];
 
-                var t0 = Vector3.TransformCoordinate(v0, modelMatrix);
-                var t1 = Vector3.TransformCoordinate(v1, modelMatrix);
+                var t0 = Vector3Helper.TransformCoordinate(v0, modelMatrix);
+                var t1 = Vector3Helper.TransformCoordinate(v1, modelMatrix);
                 Vector3 sp, tp;
                 float sc, tc;
                 var rayToLineDistance = LineBuilder.GetRayToLineDistance(rayWS, t0, t1, out sp, out tp, out sc, out tc);
                 var svpm = context.RenderMatrices?.ScreenViewProjectionMatrix ?? Matrix.Identity;
                 Vector4 sp4;
                 Vector4 tp4;
-                Vector3.Transform(ref sp, ref svpm, out sp4);
-                Vector3.Transform(ref tp, ref svpm, out tp4);
+                Vector3Helper.Transform(ref sp, ref svpm, out sp4);
+                Vector3Helper.Transform(ref tp, ref svpm, out tp4);
                 var sp3 = sp4.ToVector3();
                 var tp3 = tp4.ToVector3();
                 var tv2 = new Vector2(tp3.X - sp3.X, tp3.Y - sp3.Y);
@@ -226,7 +226,7 @@ public class LineGeometryOctree : DynamicOctreeBase<KeyValuePair<int, BoundingBo
     }
 
     /// <summary>
-    /// <see cref="DynamicOctreeBase{T}.FindNearestPointBySphereExcludeChild(HitTestContext, ref global::SharpDX.BoundingSphere,
+    /// <see cref="DynamicOctreeBase{T}.FindNearestPointBySphereExcludeChild(HitTestContext, ref BoundingSphere,
     /// ref List{HitTestResult}, ref bool)"/>
     /// </summary>
     /// <param name="context"></param>
@@ -234,7 +234,7 @@ public class LineGeometryOctree : DynamicOctreeBase<KeyValuePair<int, BoundingBo
     /// <param name="result"></param>
     /// <param name="isIntersect"></param>
     /// <returns></returns>
-    public override bool FindNearestPointBySphereExcludeChild(HitTestContext? context, ref global::SharpDX.BoundingSphere sphere,
+    public override bool FindNearestPointBySphereExcludeChild(HitTestContext? context, ref BoundingSphere sphere,
         ref List<HitTestResult> result, ref bool isIntersect)
     {
         var isHit = false;

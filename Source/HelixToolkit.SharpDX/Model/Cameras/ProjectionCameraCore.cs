@@ -45,8 +45,8 @@ public abstract class ProjectionCameraCore : CameraCore
 
     public override Matrix CreateViewMatrix()
     {
-        return CreateLeftHandSystem ? Matrix.LookAtLH(this.Position, this.Position + this.LookDirection, this.UpDirection)
-            : Matrix.LookAtRH(this.Position, this.Position + this.LookDirection, this.UpDirection);
+        return CreateLeftHandSystem ? MatrixHelper.LookAtLH(this.Position, this.Position + this.LookDirection, this.UpDirection)
+            : MatrixHelper.LookAtRH(this.Position, this.Position + this.LookDirection, this.UpDirection);
     }
 
     public override string ToString()

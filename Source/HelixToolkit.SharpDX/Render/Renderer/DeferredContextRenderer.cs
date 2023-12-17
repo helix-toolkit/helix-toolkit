@@ -1,5 +1,6 @@
 ﻿using HelixToolkit.SharpDX.Model.Scene;
 using SharpDX.Direct3D11;
+using SharpDX.Mathematics.Interop;
 using Device = SharpDX.Direct3D11.Device1;
 using DeviceContext = SharpDX.Direct3D11.DeviceContext1;
 
@@ -64,7 +65,7 @@ public class DeferredContextRenderer : ImmediateContextRenderer
     private void SetRenderTargets(DeviceContext context, ref RenderParameter parameter)
     {
         context.OutputMerger.SetTargets(parameter.DepthStencilView, parameter.RenderTargetView);
-        context.Rasterizer.SetViewport(parameter.ViewportRegion);
+        context.Rasterizer.SetViewport(parameter.ViewportRegion.ToStruct<ViewportF, RawViewportF>());
         context.Rasterizer.SetScissorRectangle(parameter.ScissorRegion.Left, parameter.ScissorRegion.Top,
             parameter.ScissorRegion.Right, parameter.ScissorRegion.Bottom);
     }

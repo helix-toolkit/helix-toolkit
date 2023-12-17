@@ -16,7 +16,6 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Media.Media3D;
 using HitTestResult = HelixToolkit.SharpDX.HitTestResult;
-using Vector3 = SharpDX.Vector3;
 
 namespace HelixToolkit.Wpf.SharpDX;
 
@@ -252,11 +251,11 @@ public partial class Viewport3DX : Control, IViewport3DX, IDisposable
         }
     }
 
-    public global::SharpDX.Rectangle ViewportRectangle
+    public Rectangle ViewportRectangle
     {
         get
         {
-            return new global::SharpDX.Rectangle(0, 0, (int)ActualWidth, (int)ActualHeight);
+            return new Rectangle(0, 0, (int)ActualWidth, (int)ActualHeight);
         }
     }
 
@@ -1123,7 +1122,7 @@ public partial class Viewport3DX : Control, IViewport3DX, IDisposable
     }
 
     /// <summary>
-    /// Updates the property <see cref="CurrentPosition"/>.
+    /// Updates the property <see cref="CursorPosition"/>.
     /// </summary>
     /// <param name="pt">The current mouse hit point.</param>
     private void UpdateCurrentPosition(Point pt)
@@ -1132,23 +1131,6 @@ public partial class Viewport3DX : Control, IViewport3DX, IDisposable
         {
             this.CursorOnElementPosition = this.FindNearestPoint(pt);
             this.CursorPosition = this.UnProjectOnPlane(pt);
-        }
-
-        if (this.EnableCurrentPosition)
-        {
-            var pos = this.FindNearestPoint(pt);
-            if (pos != null)
-            {
-                this.CurrentPosition = pos.Value;
-            }
-            else
-            {
-                var p = this.UnProjectOnPlane(pt);
-                if (p != null)
-                {
-                    this.CurrentPosition = p.Value;
-                }
-            }
         }
     }
 

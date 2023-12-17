@@ -21,9 +21,9 @@ public class DefaultMeshGeometryBufferModel : MeshGeometryBufferModel<DefaultVer
         : base(PrimitiveTopology.TriangleList,
               new[]
               {
-                          new ImmutableBufferProxy(DefaultVertex.SizeInBytes, BindFlags.VertexBuffer),
-                          new ImmutableBufferProxy(Vector2.SizeInBytes, BindFlags.VertexBuffer),
-                          new ImmutableBufferProxy(Vector4.SizeInBytes, BindFlags.VertexBuffer)
+                    new ImmutableBufferProxy(DefaultVertex.SizeInBytes, BindFlags.VertexBuffer),
+                    new ImmutableBufferProxy(NativeHelper.SizeOf<Vector2>(), BindFlags.VertexBuffer),
+                    new ImmutableBufferProxy(NativeHelper.SizeOf<Vector4>(), BindFlags.VertexBuffer)
               } as IElementsBufferProxy[])
     {
     }

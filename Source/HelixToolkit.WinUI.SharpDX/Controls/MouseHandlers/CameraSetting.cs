@@ -52,7 +52,7 @@ public struct CameraSetting
     /// <summary>
     /// Gets or sets LookDirection.
     /// </summary>
-    public Vector3D LookDirection { get; set; }
+    public Vector3 LookDirection { get; set; }
 
     /// <summary>
     /// Gets or sets NearPlaneDistance.
@@ -67,7 +67,7 @@ public struct CameraSetting
     /// <summary>
     /// Gets or sets UpDirection.
     /// </summary>
-    public Vector3D UpDirection { get; set; }
+    public Vector3 UpDirection { get; set; }
 
     /// <summary>
     /// Gets or sets Width.

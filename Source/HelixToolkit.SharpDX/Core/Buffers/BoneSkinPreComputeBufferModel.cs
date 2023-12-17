@@ -212,7 +212,7 @@ public sealed class BoneSkinPreComputeBufferModel : DisposeObject, IAttachableBu
     /// <param name="context">The context.</param>
     /// <param name="array">The array.</param>
     /// <returns>Number of vertex has been copied.</returns>
-    public int CopySkinnedToArray(DeviceContextProxy context, global::SharpDX.Vector3[] array)
+    public int CopySkinnedToArray(DeviceContextProxy context, Vector3[] array)
     {
         if (skinnedVertexBuffer?.Buffer == null)
         {
@@ -241,7 +241,7 @@ public sealed class BoneSkinPreComputeBufferModel : DisposeObject, IAttachableBu
                     var p = (byte*)box.Value.DataPointer;
                     for (var i = 0; i < size; ++i)
                     {
-                        array[i] = *(global::SharpDX.Vector3*)p;
+                        array[i] = *(Vector3*)p;
                         p += skinnedVertexStagingBuffer.StructureSize;
                     }
                 }

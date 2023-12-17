@@ -96,10 +96,10 @@ public class DefaultStaticMeshBatchingBuffer
                     textures.MoveNext();
                     array[i] = new BatchedMeshVertex()
                     {
-                        Position = Vector3.Transform(positions.Current, transform),
-                        Normal = Vector3.TransformNormal(normals.Current, transform),
-                        Tangent = Vector3.TransformNormal(tangents.Current, transform),
-                        BiTangent = Vector3.TransformNormal(bitangents.Current, transform),
+                        Position = positions.Current.ToVector4().Transform(ref transform),
+                        Normal = Vector3Helper.TransformNormal(normals.Current, ref transform),
+                        Tangent = Vector3Helper.TransformNormal(tangents.Current, ref transform),
+                        BiTangent = Vector3Helper.TransformNormal(bitangents.Current, ref transform),
                         TexCoord = textures.Current,
                         Color = colorEncode,
                         Color2 = colorEncode2

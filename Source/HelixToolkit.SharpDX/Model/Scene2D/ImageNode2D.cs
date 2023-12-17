@@ -98,37 +98,37 @@ public class ImageNode2D : SceneNode2D
         }
     }
 
-    protected override Size2F MeasureOverride(Size2F availableSize)
+    protected override Vector2 MeasureOverride(Vector2 availableSize)
     {
         if (ImageStream != null)
         {
-            var imageSize = (RenderCore as ImageRenderCore2D)?.ImageSize ?? Size2F.Zero;
-            imageSize.Width *= DpiScale;
-            imageSize.Height *= DpiScale;
+            var imageSize = (RenderCore as ImageRenderCore2D)?.ImageSize ?? Vector2Helper.Zero;
+            imageSize.X *= DpiScale;
+            imageSize.Y *= DpiScale;
             if (Width == 0 && Height == 0)
             {
-                return new Size2F(Math.Min(availableSize.Width, imageSize.Width), Math.Min(availableSize.Height, imageSize.Height));
+                return new Vector2(Math.Min(availableSize.X, imageSize.X), Math.Min(availableSize.Y, imageSize.Y));
             }
-            else if (imageSize.Width == 0 || imageSize.Height == 0)
+            else if (imageSize.X == 0 || imageSize.Y == 0)
             {
                 return availableSize;
             }
             else
             {
-                var aspectRatio = imageSize.Width / imageSize.Height;
+                var aspectRatio = imageSize.X / imageSize.Y;
                 if (Width == 0)
                 {
-                    var height = Math.Min(availableSize.Height, Height) * DpiScale;
-                    return new Size2F(height / aspectRatio, height);
+                    var height = Math.Min(availableSize.Y, Height) * DpiScale;
+                    return new Vector2(height / aspectRatio, height);
                 }
                 else
                 {
-                    var width = Math.Min(availableSize.Width, Width) * DpiScale;
-                    return new Size2F(width, width * aspectRatio);
+                    var width = Math.Min(availableSize.Y, Width) * DpiScale;
+                    return new Vector2(width, width * aspectRatio);
                 }
             }
         }
-        return new Size2F(Math.Max(0, Width * DpiScale), Math.Max(0, Height * DpiScale));
+        return new Vector2(Math.Max(0, Width * DpiScale), Math.Max(0, Height * DpiScale));
     }
 
     protected override bool OnHitTest(ref Vector2 mousePoint, out HitTest2DResult? hitResult)

@@ -959,7 +959,7 @@ public abstract partial class SceneNode : DisposeObject, IComparable<SceneNode>,
     /// Raises the on transform bound sphere changed.
     /// </summary>
     /// <param name="args">The arguments.</param>
-    protected void RaiseOnTransformBoundSphereChanged(BoundChangeArgs<global::SharpDX.BoundingSphere> args)
+    protected void RaiseOnTransformBoundSphereChanged(BoundChangeArgs<BoundingSphere> args)
     {
         TransformBoundSphereChanged?.Invoke(this, args);
     }
@@ -968,7 +968,7 @@ public abstract partial class SceneNode : DisposeObject, IComparable<SceneNode>,
     /// Raises the on bound sphere changed.
     /// </summary>
     /// <param name="args">The arguments.</param>
-    protected void RaiseOnBoundSphereChanged(BoundChangeArgs<global::SharpDX.BoundingSphere> args)
+    protected void RaiseOnBoundSphereChanged(BoundChangeArgs<BoundingSphere> args)
     {
         BoundSphereChanged?.Invoke(this, args);
     }

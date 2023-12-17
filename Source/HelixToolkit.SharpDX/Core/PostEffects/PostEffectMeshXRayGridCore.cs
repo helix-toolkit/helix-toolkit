@@ -129,7 +129,7 @@ public class PostEffectMeshXRayGridCore : RenderCore, IPostEffectMeshXRayGrid
     public PostEffectMeshXRayGridCore() : base(RenderType.PostEffect)
     {
         modelCB = AddComponent(new ConstantBufferComponent(new ConstantBufferDescription(DefaultBufferNames.BorderEffectCB, BorderEffectStruct.SizeInBytes)));
-        Color = global::SharpDX.Color.Blue;
+        Color = Maths.Color.Blue;
     }
 
     protected override bool OnAttach(IRenderTechnique? technique)

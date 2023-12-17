@@ -35,19 +35,19 @@ public static class IRenderMetricesExtensions
             Y = -(2 * py / h - 1) / projMatrix.M22,
             Z = 1 / projMatrix.M33
         };
-        Vector3.TransformCoordinate(ref v, ref viewInv, out var zf);
+        Vector3Helper.TransformCoordinate(ref v, ref viewInv, out var zf);
         Vector3 zn;
         if (renderMatrices.IsPerspective)
         {
-            zn = viewInv.Row4.ToVector3();
+            zn = viewInv.Row4().ToVector3();
         }
         else
         {
             v.Z = 0;
-            Vector3.TransformCoordinate(ref v, ref viewInv, out zn);
+            Vector3Helper.TransformCoordinate(ref v, ref viewInv, out zn);
         }
         var r = zf - zn;
-        r.Normalize();
+        r = Vector3.Normalize(r);
         ray = new Ray(zn + r * renderMatrices.CameraParams.ZNear, r);
         return true;
     }
@@ -56,7 +56,7 @@ public static class IRenderMetricesExtensions
     {
         renderMatrices.Update();
         var matrix = renderMatrices.ScreenViewProjectionMatrix;
-        var pointTransformed = Vector3.TransformCoordinate(point, matrix);
+        var pointTransformed = Vector3Helper.TransformCoordinate(point, matrix);
         var pt = new Vector2(pointTransformed.X, pointTransformed.Y) / renderMatrices.DpiScale;
         return pt;
     }

@@ -214,11 +214,11 @@ public class ScreenSpacedMeshRenderCore : RenderCore, IScreenSpacedRenderParams
         eye = -renderContext.Camera.LookDirection.Normalized() * CameraDistance;
         if (IsRightHand)
         {
-            return Matrix.LookAtRH(eye, Vector3.Zero, renderContext.Camera.UpDirection);
+            return MatrixHelper.LookAtRH(eye, Vector3.Zero, renderContext.Camera.UpDirection);
         }
         else
         {
-            return Matrix.LookAtLH(eye, Vector3.Zero, renderContext.Camera.UpDirection);
+            return MatrixHelper.LookAtLH(eye, Vector3.Zero, renderContext.Camera.UpDirection);
         }
     }
     /// <summary>
@@ -270,11 +270,11 @@ public class ScreenSpacedMeshRenderCore : RenderCore, IScreenSpacedRenderParams
     {
         if (isPerspective)
         {
-            return isRightHand ? Matrix.PerspectiveFovRH(fov, w / h, near, far) : Matrix.PerspectiveFovLH(fov, w / h, near, far);
+            return isRightHand ? MatrixHelper.PerspectiveFovRH(fov, w / h, near, far) : MatrixHelper.PerspectiveFovLH(fov, w / h, near, far);
         }
         else
         {
-            return isRightHand ? Matrix.OrthoRH(w, h, near, far) : Matrix.OrthoLH(w, h, near, far);
+            return isRightHand ? MatrixHelper.OrthoRH(w, h, near, far) : MatrixHelper.OrthoLH(w, h, near, far);
         }
     }
 
@@ -432,7 +432,7 @@ public class ScreenSpacedMeshRenderCore : RenderCore, IScreenSpacedRenderParams
         GlobalTransform = globalTrans;
         var svp = context.ScreenViewProjectionMatrix;
         var pos = absolutePosition;
-        Vector3.TransformCoordinate(ref pos, ref svp, out var screenPoint);
+        Vector3Helper.TransformCoordinate(ref pos, ref svp, out var screenPoint);
         var offX = (screenPoint.X - viewportSize / 2);
         var offY = (screenPoint.Y - viewportSize / 2);
         var viewport = new ViewportF(offX, offY, viewportSize, viewportSize);

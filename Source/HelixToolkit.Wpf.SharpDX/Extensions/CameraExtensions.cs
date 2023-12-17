@@ -1,8 +1,4 @@
-﻿using Matrix = SharpDX.Matrix;
-using Matrix3x3 = SharpDX.Matrix3x3;
-using Vector3 = SharpDX.Vector3;
-using BoundingBox = SharpDX.BoundingBox;
-using System.Text;
+﻿using System.Text;
 using System.Globalization;
 using HelixToolkit.SharpDX.Cameras;
 using HelixToolkit.SharpDX;
@@ -237,8 +233,11 @@ public static class CameraExtensions
     public static Matrix GetInverseViewProjectionMatrix(this CameraCore? camera, double aspectRatio)
     {
         var m = GetViewProjectionMatrix(camera, aspectRatio);
-        m.Invert();
-        return m;
+        if (Matrix.Invert(m, out var result))
+        {
+            return result;
+        }
+        return new Matrix();
     }
 
     /// <summary>
@@ -321,13 +320,13 @@ public static class CameraExtensions
     public static Matrix3D GetInversedViewMatrix(this Camera camera)
     {
         var viewMatrix = GetViewMatrix(camera);
-        return MatrixExtensions.PsudoInvert(ref viewMatrix).ToMatrix3D();
+        return viewMatrix.PsudoInvert().ToMatrix3D();
     }
 
     public static Matrix GetInversedViewMatrix(this CameraCore? camera)
     {
         var viewMatrix = GetViewMatrix(camera);
-        return MatrixExtensions.PsudoInvert(ref viewMatrix);
+        return viewMatrix.PsudoInvert();
     }
     /// <summary>
     /// Set the camera target point without changing the look direction.
@@ -542,7 +541,7 @@ public static class CameraExtensions
     /// The animation time.
     /// </param>
     public static void ZoomExtents(
-        this Camera camera, Viewport3DX viewport, global::SharpDX.BoundingBox bounds, double animationTime = 0)
+        this Camera camera, Viewport3DX viewport, BoundingBox bounds, double animationTime = 0)
     {
         var diagonal = bounds.Maximum - bounds.Minimum;
 
@@ -623,7 +622,7 @@ public static class CameraExtensions
     {
         if (viewport.UnProject(zoomRectangle.TopLeft.ToVector2(), out var topLeftRay)
             && viewport.UnProject(zoomRectangle.TopRight.ToVector2(), out var topRightRay)
-            && viewport.UnProject(new global::SharpDX.Vector2(
+            && viewport.UnProject(new Vector2(
                     (float)(zoomRectangle.Left + zoomRectangle.Right) * 0.5f,
                     (float)(zoomRectangle.Top + zoomRectangle.Bottom) * 0.5f), out var centerRay))
         {

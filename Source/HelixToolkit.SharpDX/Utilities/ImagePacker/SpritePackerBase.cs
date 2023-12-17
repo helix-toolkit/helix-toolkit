@@ -26,6 +26,7 @@ using SharpDX.Direct2D1;
 using SharpDX.WIC;
 using SharpDX;
 using Bitmap = SharpDX.WIC.Bitmap;
+using SharpDX.Mathematics.Interop;
 
 namespace HelixToolkit.SharpDX.Utilities.ImagePacker;
 
@@ -223,7 +224,7 @@ public abstract class SpritePackerBase<T, E> : IDisposable
                     PixelFormat = new global::SharpDX.Direct2D1.PixelFormat(global::SharpDX.DXGI.Format.Unknown, AlphaMode.Unknown)
                 }))
             {
-                target.Transform = Matrix3x2.Identity;
+                target.Transform = Matrix3x2.Identity.ToStruct<Matrix3x2, RawMatrix3x2>();
                 target.BeginDraw();
                 action(target);
                 target.EndDraw();

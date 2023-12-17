@@ -31,8 +31,8 @@ public static class VectorExtensions
     /// <returns></returns>
     public static float AngleBetween(this Vector3 vector1, Vector3 vector2)
     {
-        vector1.Normalize();
-        vector2.Normalize();
+        vector1 = Vector3.Normalize(vector1);
+        vector2 = Vector3.Normalize(vector2);
         var ratio = Vector3.Dot(vector1, vector2);
         float theta;
 
@@ -80,29 +80,24 @@ public static class VectorExtensions
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Vector3 Normalized(this Vector3 vector)
     {
-        vector.Normalize();
-        return vector;
+        return Vector3.Normalize(vector);
     }
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Vector4 Normalized(this Vector4 vector)
     {
-        vector.Normalize();
-        return vector;
+        return Vector4.Normalize(vector);
     }
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Color4 Normalized(this Color4 vector)
     {
         var v = vector.ToVector3();
-        v.Normalize();
-        return v.ToColor4();
+        return v.Normalized().ToColor4();
     }
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Matrix Inverted(this Matrix m)
     {
-        m.Invert();
-        return m;
+        return !Matrix.Invert(m, out var inv) ? new() : inv;
     }
-
     /// <summary>
     /// Find a <see cref="Vector3"/> that is perpendicular to the given <see cref="Vector3"/>.
     /// </summary>
@@ -115,7 +110,7 @@ public static class VectorExtensions
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Vector3 FindAnyPerpendicular(this Vector3 n)
     {
-        n.Normalize();
+        n = n.Normalized();
         var u = Vector3.Cross(new Vector3(0, 1, 0), n);
         if (u.LengthSquared() < 1e-3)
         {

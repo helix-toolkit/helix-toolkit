@@ -431,7 +431,7 @@ public partial class Importer : IDisposable
         var group = new HxScene.GroupNode
         {
             Name = string.IsNullOrEmpty(node.Name) ? nameof(HxScene.GroupNode) : node.Name,
-            ModelMatrix = node.Transform.ToSharpDXMatrix(configuration.IsSourceMatrixColumnMajor)
+            ModelMatrix = node.Transform.ToHxMatrix(configuration.IsSourceMatrixColumnMajor)
         };
         if (node.HasChildren)
         {

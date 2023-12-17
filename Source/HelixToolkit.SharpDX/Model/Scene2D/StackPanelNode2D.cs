@@ -23,19 +23,19 @@ public class StackPanelNode2D : PanelNode2D
         EnableBitmapCache = true;
     }
 
-    protected override Size2F MeasureOverride(Size2F availableSize)
+    protected override Vector2 MeasureOverride(Vector2 availableSize)
     {
         var constraint = availableSize;
 
-        var size = new Size2F();
+        var size = new Vector2();
         switch (Orientation)
         {
             case Orientation.Horizontal:
-                availableSize.Width = float.PositiveInfinity;
+                availableSize.X = float.PositiveInfinity;
                 break;
 
             case Orientation.Vertical:
-                availableSize.Height = float.PositiveInfinity;
+                availableSize.Y = float.PositiveInfinity;
                 break;
         }
 
@@ -47,13 +47,13 @@ public class StackPanelNode2D : PanelNode2D
                 switch (Orientation)
                 {
                     case Orientation.Horizontal:
-                        size.Width += c.DesiredSize.X;
-                        size.Height = Math.Max(size.Height, c.DesiredSize.Y);
+                        size.X += c.DesiredSize.X;
+                        size.Y = Math.Max(size.Y, c.DesiredSize.Y);
                         break;
 
                     case Orientation.Vertical:
-                        size.Width = Math.Max(c.DesiredSize.X, size.Width);
-                        size.Height += c.DesiredSize.Y;
+                        size.X = Math.Max(c.DesiredSize.X, size.X);
+                        size.Y += c.DesiredSize.Y;
                         break;
                 }
             }

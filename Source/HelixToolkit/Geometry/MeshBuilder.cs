@@ -89,27 +89,27 @@ public sealed class MeshBuilder
     /// <summary>
     /// The positions.
     /// </summary>
-    public List<Vector3> Positions { get; set; }
+    public FastList<Vector3> Positions { get; set; }
     /// <summary>
     /// The triangle indices.
     /// </summary>
-    public List<int> TriangleIndices { get; set; }
+    public FastList<int> TriangleIndices { get; set; }
     /// <summary>
     /// The normal vectors.
     /// </summary>
-    public List<Vector3>? Normals { get; set; }
+    public FastList<Vector3>? Normals { get; set; }
     /// <summary>
     /// The texture coordinates.
     /// </summary>
-    public List<Vector2>? TextureCoordinates { get; set; }
+    public FastList<Vector2>? TextureCoordinates { get; set; }
     /// <summary>
     /// The Tangents.
     /// </summary>
-    public List<Vector3>? Tangents { get; set; }
+    public FastList<Vector3>? Tangents { get; set; }
     /// <summary>
     /// The Bi-Tangents.
     /// </summary>
-    public List<Vector3>? BiTangents { get; set; }
+    public FastList<Vector3>? BiTangents { get; set; }
     /// <summary>
     /// Do we have Normals or not.
     /// </summary>
@@ -138,7 +138,7 @@ public sealed class MeshBuilder
         {
             if (value && this.Normals is null)
             {
-                this.Normals = new();
+                this.Normals = new FastList<Vector3>();
             }
             if (!value)
             {
@@ -162,7 +162,7 @@ public sealed class MeshBuilder
         {
             if (value && this.TextureCoordinates is null)
             {
-                this.TextureCoordinates = new();
+                this.TextureCoordinates = new FastList<Vector2>();
             }
             if (!value)
             {
@@ -198,20 +198,20 @@ public sealed class MeshBuilder
     /// </param>
     public MeshBuilder(bool generateNormals = true, bool generateTexCoords = true, bool tangentSpace = false)
     {
-        this.Positions = new();
-        this.TriangleIndices = new();
+        this.Positions = new FastList<Vector3>();
+        this.TriangleIndices = new FastList<int>();
         if (generateNormals)
         {
-            this.Normals = new();
+            this.Normals = new FastList<Vector3>();
         }
         if (generateTexCoords)
         {
-            this.TextureCoordinates = new();
+            this.TextureCoordinates = new FastList<Vector2>();
         }
         if (tangentSpace)
         {
-            this.Tangents = new();
-            this.BiTangents = new();
+            this.Tangents = new FastList<Vector3>();
+            this.BiTangents = new FastList<Vector3>();
         }
     }
     #endregion Constructors
@@ -238,7 +238,7 @@ public sealed class MeshBuilder
         if ((!closed && !CircleCache.Value!.TryGetValue(thetaDiv, out circle)) ||
             (closed && !ClosedCircleCache.Value!.TryGetValue(thetaDiv, out circle)))
         {
-            circle = new List<Vector2>();
+            circle = new FastList<Vector2>();
             // Add to the cache
             if (!closed)
             {
@@ -258,7 +258,7 @@ public sealed class MeshBuilder
         }
         // Since Vector2Collection is not Freezable,
         // return new IList<Vector> to avoid manipulation of the Cached Values
-        IList<Vector2> result = new List<Vector2>();
+        IList<Vector2> result = new FastList<Vector2>();
         if (circle is not null)
         {
             foreach (var point in circle)
@@ -280,7 +280,7 @@ public sealed class MeshBuilder
     /// </returns>
     public static IList<Vector2> GetCircleSegment(int thetaDiv, float totalAngle = 2 * (float)Math.PI, float angleOffset = 0)
     {
-        IList<Vector2> circleSegment = new List<Vector2>();
+        IList<Vector2> circleSegment = new FastList<Vector2>();
         for (var i = 0; i < thetaDiv; i++)
         {
             var theta = totalAngle * ((float)i / (thetaDiv - 1)) + angleOffset;
@@ -328,9 +328,9 @@ public sealed class MeshBuilder
     /// <param name="positions">The Positions.</param>
     /// <param name="triangleIndices">The TriangleIndices.</param>
     /// <param name="normals">The calcualted Normals.</param>
-    private static void ComputeNormals(IList<Vector3> positions, IList<int> triangleIndices, out List<Vector3> normals)
+    private static void ComputeNormals(IList<Vector3> positions, IList<int> triangleIndices, out IList<Vector3> normals)
     {
-        normals = new List<Vector3>(positions.Count);
+        normals = new FastList<Vector3>(positions.Count);
         for (var i = 0; i < positions.Count; i++)
         {
             normals.Add(Vector3.Zero);
@@ -374,18 +374,22 @@ public sealed class MeshBuilder
                 if (this.Positions != null && this.TriangleIndices != null && this.Normals != null && this.TextureCoordinates != null)
                 {
                     ComputeTangents(this.Positions, this.Normals, this.TextureCoordinates, this.TriangleIndices,
-                        out List<Vector3> t1, out List<Vector3> t2);
-                    this.Tangents = t1;
-                    this.BiTangents = t2;
+                        out var t1, out var t2);
+                    Debug.Assert(t1 is FastList<Vector3>);
+                    Debug.Assert(t2 is FastList<Vector3>);
+                    this.Tangents = t1 as FastList<Vector3>;
+                    this.BiTangents = t2 as FastList<Vector3>;
                 }
                 break;
             case MeshFaces.QuadPatches:
                 if (this.Positions != null && this.TriangleIndices != null && this.Normals != null && this.TextureCoordinates != null)
                 {
                     ComputeTangentsQuads(this.Positions, this.Normals, this.TextureCoordinates, this.TriangleIndices,
-                        out List<Vector3> t1, out List<Vector3> t2);
-                    this.Tangents = t1;
-                    this.BiTangents = t2;
+                        out var t1, out var t2);
+                    Debug.Assert(t1 is FastList<Vector3>);
+                    Debug.Assert(t2 is FastList<Vector3>);
+                    this.Tangents = t1 as FastList<Vector3>;
+                    this.BiTangents = t2 as FastList<Vector3>;
                 }
                 break;
             default:
@@ -399,11 +403,11 @@ public sealed class MeshBuilder
     /// http://www.terathon.com/code/tangent.html
     /// </summary>
     public static void ComputeTangents(IList<Vector3>? positions, IList<Vector3>? normals, IList<Vector2>? textureCoordinates, IList<int> triangleIndices,
-        out List<Vector3> tangents, out List<Vector3> bitangents)
+        out IList<Vector3> tangents, out IList<Vector3> bitangents)
     {
-        positions ??= new List<Vector3>();
-        normals ??= new List<Vector3>();
-        textureCoordinates ??= new List<Vector2>();
+        positions ??= new FastList<Vector3>();
+        normals ??= new FastList<Vector3>();
+        textureCoordinates ??= new FastList<Vector2>();
 
         var tan1 = new Vector3[positions.Count];
         for (var t = 0; t < triangleIndices.Count; t += 3)
@@ -433,8 +437,8 @@ public sealed class MeshBuilder
             tan1[i2] += udir;
             tan1[i3] += udir;
         }
-        tangents = new List<Vector3>(positions.Count);
-        bitangents = new List<Vector3>(positions.Count);
+        tangents = new FastList<Vector3>(positions.Count);
+        bitangents = new FastList<Vector3>(positions.Count);
         for (var i = 0; i < positions.Count; i++)
         {
             var n = normals[i];
@@ -456,11 +460,11 @@ public sealed class MeshBuilder
     /// <param name="tangents">The calculated Tangens.</param>
     /// <param name="bitangents">The calculated Bi-Tangens.</param>
     public static void ComputeTangentsQuads(IList<Vector3>? positions, IList<Vector3>? normals, IList<Vector2>? textureCoordinates, IList<int> indices,
-        out List<Vector3> tangents, out List<Vector3> bitangents)
+        out IList<Vector3> tangents, out IList<Vector3> bitangents)
     {
-        positions ??= new List<Vector3>();
-        normals ??= new List<Vector3>();
-        textureCoordinates ??= new List<Vector2>();
+        positions ??= new FastList<Vector3>();
+        normals ??= new FastList<Vector3>();
+        textureCoordinates ??= new FastList<Vector2>();
 
         var tan1 = new Vector3[positions.Count];
         for (var t = 0; t < indices.Count; t += 4)
@@ -494,8 +498,8 @@ public sealed class MeshBuilder
             tan1[i3] += udir;
             tan1[i4] += udir;
         }
-        tangents = new List<Vector3>(positions.Count);
-        bitangents = new List<Vector3>(positions.Count);
+        tangents = new FastList<Vector3>(positions.Count);
+        bitangents = new FastList<Vector3>(positions.Count);
         for (var i = 0; i < positions.Count; i++)
         {
             var n = normals[i];
@@ -516,7 +520,7 @@ public sealed class MeshBuilder
         if (meshGeometry.Positions is not null && meshGeometry.Normals is not null && meshGeometry.TextureCoordinates is not null && meshGeometry.TriangleIndices is not null)
         {
             ComputeTangents(meshGeometry.Positions, meshGeometry.Normals, meshGeometry.TextureCoordinates, meshGeometry.TriangleIndices,
-                out List<Vector3> t1, out List<Vector3> t2);
+                out var t1, out var t2);
 
             meshGeometry.Tangents = t1;
             meshGeometry.BiTangents = t2;
@@ -532,8 +536,9 @@ public sealed class MeshBuilder
     {
         if (!this.HasNormals && this.Positions != null && this.TriangleIndices != null)
         {
-            ComputeNormals(this.Positions, this.TriangleIndices, out List<Vector3> normals);
-            this.Normals = normals;
+            ComputeNormals(this.Positions, this.TriangleIndices, out var normals);
+            Debug.Assert(normals is FastList<Vector3>);
+            this.Normals = normals as FastList<Vector3>;
         }
         switch (meshFaces)
         {
@@ -541,18 +546,22 @@ public sealed class MeshBuilder
                 if (tangents && this.HasNormals && this.Positions != null && this.Normals != null && this.TextureCoordinates != null && this.TriangleIndices != null)
                 {
                     ComputeTangents(this.Positions, this.Normals, this.TextureCoordinates, this.TriangleIndices,
-                        out List<Vector3> t1, out List<Vector3> t2);
-                    this.Tangents = t1;
-                    this.BiTangents = t2;
+                        out var t1, out var t2);
+                    Debug.Assert(t1 is FastList<Vector3>);
+                    Debug.Assert(t2 is FastList<Vector3>);
+                    this.Tangents = t1 as FastList<Vector3>;
+                    this.BiTangents = t2 as FastList<Vector3>;
                 }
                 break;
             case MeshFaces.QuadPatches:
                 if (tangents && this.HasNormals && this.Positions != null && this.Normals != null && this.TextureCoordinates != null && this.TriangleIndices != null)
                 {
                     ComputeTangentsQuads(this.Positions, this.Normals, this.TextureCoordinates, this.TriangleIndices,
-                        out List<Vector3> t1, out List<Vector3> t2);
-                    this.Tangents = t1;
-                    this.BiTangents = t2;
+                        out var t1, out var t2);
+                    Debug.Assert(t1 is FastList<Vector3>);
+                    Debug.Assert(t2 is FastList<Vector3>);
+                    this.Tangents = t1 as FastList<Vector3>;
+                    this.BiTangents = t2 as FastList<Vector3>;
                 }
                 break;
             default:
@@ -587,7 +596,7 @@ public sealed class MeshBuilder
         var length = SharedFunctions.Length(ref dir);
         var r = diameter / 2;
 
-        var pc = new List<Vector2>
+        var pc = new FastList<Vector2>
                 {
                     new Vector2(0, 0),
                     new Vector2(0, r),
@@ -773,7 +782,7 @@ public sealed class MeshBuilder
         float baseRadius, float topRadius, float height,
         bool baseCap, bool topCap, int thetaDiv)
     {
-        var pc = new List<Vector2>();
+        var pc = new FastList<Vector2>();
         var tc = new List<float>();
         if (baseCap)
         {
@@ -990,7 +999,7 @@ public sealed class MeshBuilder
         var baseCenter = center - up * vectorDown;
         var pentagonPoints = GetCircle(5, true);
         // Base Points
-        var basePoints = new List<Vector3>();
+        var basePoints = new FastList<Vector3>();
         foreach (var point in pentagonPoints)
         {
             var newPoint = baseCenter + forward * point.X * radiusFace + right * point.Y * radiusFace;
@@ -1012,7 +1021,7 @@ public sealed class MeshBuilder
 
         // Top Points
         var topCenter = center + up * vectorDown;
-        var topPoints = new List<Vector3>();
+        var topPoints = new FastList<Vector3>();
         foreach (var point in pentagonPoints)
         {
             var newPoint = topCenter - forward * point.X * radiusFace + right * point.Y * radiusFace;
@@ -1067,7 +1076,7 @@ public sealed class MeshBuilder
         for (var i = 0; i < 5; i++)
         {
             // Polygon one
-            var pIndices = new List<int>() {
+            var pIndices = new FastList<int>() {
                     (i + 1) % 5 + positionsCount,
                     i, i + 5 + positionsCount,
                     (5 - i + 2) % 5 + 10 + positionsCount,
@@ -1076,7 +1085,7 @@ public sealed class MeshBuilder
             this.AddPolygonByTriangulation(pIndices);
 
             // Polygon two
-            pIndices = new List<int>() {
+            pIndices = new FastList<int>() {
                     i + 15 + positionsCount,
                     i + 10 + positionsCount,
                     (5 - i + 2) % 5 + 5 + positionsCount,
@@ -1230,8 +1239,9 @@ public sealed class MeshBuilder
             this.TriangleIndices.Add(i2);
         }
 
-        ComputeNormals(this.Positions, this.TriangleIndices, out List<Vector3> normals);
-        this.Normals = normals;
+        ComputeNormals(this.Positions, this.TriangleIndices, out var normals);
+        Debug.Assert(normals is FastList<Vector3>);
+        this.Normals = normals as FastList<Vector3>;
     }
 
     /// <summary>
@@ -1801,7 +1811,7 @@ public sealed class MeshBuilder
         var height = SharedFunctions.Length(ref dir);
         dir = Vector3.Normalize(dir);
 
-        var pc = new List<Vector2>
+        var pc = new FastList<Vector2>
                 {
                     new Vector2(0, innerDiameter / 2),
                     new Vector2(0, diameter / 2),
@@ -3090,7 +3100,7 @@ public sealed class MeshBuilder
             {
                 // Add bottom Cap by creating a List of Vertex-Indices
                 // and using them to create a Triangle-Fan
-                var verts = new List<int>
+                var verts = new FastList<int>
                 {
                     0
                 };
@@ -3111,7 +3121,7 @@ public sealed class MeshBuilder
 
                 // Add top Cap by creating a List of Vertex-Indices
                 // and using them to create a Triangle-Fan
-                verts = new List<int>
+                verts = new FastList<int>
                 {
                     phiDiv - 1 + positionsCount
                 };
@@ -4092,10 +4102,10 @@ public sealed class MeshBuilder
     /// </summary>
     private void NoSharedVertices()
     {
-        var p = new List<Vector3>();
-        var ti = new List<int>();
-        List<Vector3>? n = this.Normals is not null ? new() : null;
-        List<Vector2>? tc = this.TextureCoordinates is not null ? new() : null;
+        var p = new FastList<Vector3>();
+        var ti = new FastList<int>();
+        FastList<Vector3>? n = this.Normals is not null ? new() : null;
+        FastList<Vector2>? tc = this.TextureCoordinates is not null ? new() : null;
 
         for (var i = 0; i < this.TriangleIndices.Count; i += 3)
         {
@@ -4379,9 +4389,11 @@ public sealed class MeshBuilder
         if (this.HasTangents && this.Tangents!.Count == 0 && this.Normals is not null && this.TextureCoordinates is not null)
         {
             ComputeTangents(this.Positions, this.Normals, this.TextureCoordinates, this.TriangleIndices,
-                out List<Vector3> tan, out List<Vector3> bitan);
-            this.Tangents = tan;
-            this.BiTangents = bitan;
+                out var tan, out var bitan);
+            Debug.Assert(tan is FastList<Vector3>);
+            Debug.Assert(bitan is FastList<Vector3>);
+            this.Tangents = tan as FastList<Vector3>;
+            this.BiTangents = bitan as FastList<Vector3>;
         }
 
         return new MeshGeometry3D()
@@ -4439,7 +4451,7 @@ public sealed class MeshBuilder
     public void AppendSphere(Vector3 center, float radius = 1, int thetaSteps = 64, int phiSteps = 64)
     {
         AppendSphere(center, radius, thetaSteps, phiSteps,
-            out List<Vector3> pos, out List<Vector3> nor, out List<Vector2> tcoord, out List<int> tind);
+            out var pos, out var nor, out var tcoord, out List<int> tind);
 
         int i0 = this.Positions.Count;
         this.Positions.AddRange(pos);
@@ -4449,11 +4461,11 @@ public sealed class MeshBuilder
     }
 
     private static void AppendSphere(Vector3 center, float radius, int thetaSteps, int phiSteps,
-        out List<Vector3> positions, out List<Vector3> normals, out List<Vector2> textureCoordinates, out List<int> triangleIndices)
+        out IList<Vector3> positions, out IList<Vector3> normals, out IList<Vector2> textureCoordinates, out List<int> triangleIndices)
     {
-        positions = new();
-        normals = new();
-        textureCoordinates = new();
+        positions = new FastList<Vector3>();
+        normals = new FastList<Vector3>();
+        textureCoordinates = new FastList<Vector2>();
         triangleIndices = new();
 
         float dt = DegToRad(360.0f) / thetaSteps;

@@ -23,7 +23,7 @@ public static class MeshGeometryHelper
     /// <returns>
     /// Collection of normal vectors.
     /// </returns>
-    public static List<Vector3> CalculateNormals(this MeshGeometry3D mesh)
+    public static IList<Vector3> CalculateNormals(this MeshGeometry3D mesh)
     {
         return CalculateNormals(mesh.Positions, mesh.TriangleIndices);
     }
@@ -40,9 +40,9 @@ public static class MeshGeometryHelper
     /// <returns>
     /// Collection of normal vectors.
     /// </returns>
-    public static List<Vector3> CalculateNormals(IList<Vector3> positions, IList<int> triangleIndices)
+    public static IList<Vector3> CalculateNormals(IList<Vector3> positions, IList<int> triangleIndices)
     {
-        var normals = new List<Vector3>(positions.Count);
+        var normals = new FastList<Vector3>(positions.Count);
         for (var i = 0; i < positions.Count; i++)
         {
             normals.Add(Vector3.Zero);
@@ -84,7 +84,7 @@ public static class MeshGeometryHelper
     /// <returns>
     /// The edge indices for the edges that are only used by one triangle.
     /// </returns>
-    public static List<int> FindBorderEdges(this MeshGeometry3D mesh)
+    public static IList<int> FindBorderEdges(this MeshGeometry3D mesh)
     {
         var dict = new Dictionary<ulong, int>();
 
@@ -109,7 +109,7 @@ public static class MeshGeometryHelper
             }
         }
 
-        var edges = new List<int>();
+        var edges = new FastList<int>();
         foreach (var kvp in dict)
         {
             // find edges only used by 1 triangle
@@ -133,9 +133,9 @@ public static class MeshGeometryHelper
     /// <returns>
     /// The edge indices (minimum index first).
     /// </returns>
-    public static List<int> FindEdges(this MeshGeometry3D mesh)
+    public static IList<int> FindEdges(this MeshGeometry3D mesh)
     {
-        var edges = new List<int>();
+        var edges = new FastList<int>();
         var dict = new HashSet<ulong>();
 
         for (var i = 0; i < mesh.TriangleIndices.Count / 3; i++)
@@ -187,9 +187,9 @@ public static class MeshGeometryHelper
     /// <returns>
     /// The edge indices.
     /// </returns>
-    public static List<int> FindSharpEdges(this MeshGeometry3D mesh, float minimumAngle)
+    public static IList<int> FindSharpEdges(this MeshGeometry3D mesh, float minimumAngle)
     {
-        var edgeIndices = new List<int>();
+        var edgeIndices = new FastList<int>();
         var edgeNormals = new Dictionary<EdgeKey, Vector3>();
         for (var i = 0; i < mesh.TriangleIndices.Count / 3; i++)
         {
@@ -247,8 +247,8 @@ public static class MeshGeometryHelper
     /// </returns>
     public static MeshGeometry3D NoSharedVertices(this MeshGeometry3D input)
     {
-        var p = new List<Vector3>();
-        var ti = new List<int>();
+        var p = new FastList<Vector3>();
+        var ti = new FastList<int>();
         List<Vector3>? n = input.Normals != null && input.Normals.Count > 0 ? new() : null;
         List<Vector2>? tc = input.TextureCoordinates != null && input.TextureCoordinates.Count > 0 ? new() : null;
 
@@ -326,8 +326,8 @@ public static class MeshGeometryHelper
             }
         }
 
-        var p = new List<Vector3>();
-        var ti = new List<int>();
+        var p = new FastList<Vector3>();
+        var ti = new FastList<int>();
 
         // create new positions array
         var newIndex = new Dictionary<int, int>(); // map old index to new index
@@ -492,7 +492,7 @@ public static class MeshGeometryHelper
     /// </returns>
     public static IList<Vector3> GetContourSegments(this MeshGeometry3D mesh, Vector3 plane, Vector3 normal)
     {
-        var segments = new List<Vector3>();
+        var segments = new FastList<Vector3>();
         var contourHelper = new ContourHelper(plane, normal, mesh);
         for (var i = 0; i < mesh.TriangleIndices.Count; i += 3)
         {
@@ -528,7 +528,7 @@ public static class MeshGeometryHelper
     {
         // This is a simple, slow, naïve method - should be improved:
         // http://stackoverflow.com/questions/1436091/joining-unordered-line-segments
-        var curve = new List<Vector3>();
+        var curve = new FastList<Vector3>();
         var curveCount = 0;
 
         var segmentCount = segments.Count;
@@ -585,7 +585,7 @@ public static class MeshGeometryHelper
                 if (curveCount > 0)
                 {
                     yield return curve;
-                    curve = new List<Vector3>();
+                    curve = new FastList<Vector3>();
                     curveCount = 0;
                 }
 
@@ -678,7 +678,7 @@ public static class MeshGeometryHelper
     public static MeshGeometry3D RemoveIsolatedVertices(this MeshGeometry3D mesh)
     {
         RemoveIsolatedVertices(mesh.Positions, mesh.TriangleIndices, mesh.TextureCoordinates, mesh.Normals,
-            out List<Vector3> vertNew, out List<int> triNew, out List<Vector2>? textureNew, out List<Vector3>? normalNew);
+            out var vertNew, out var triNew, out var textureNew, out var normalNew);
 
         var newMesh = new MeshGeometry3D()
         {
@@ -703,22 +703,22 @@ public static class MeshGeometryHelper
     /// <param name="textureOut"></param>
     /// <param name="normalOut"></param>
     public static void RemoveIsolatedVertices(IList<Vector3> vertices, IList<int> triangles, IList<Vector2>? texture, IList<Vector3>? normals,
-        out List<Vector3> verticesOut, out List<int> trianglesOut, out List<Vector2>? textureOut, out List<Vector3>? normalOut)
+        out IList<Vector3> verticesOut, out IList<int> trianglesOut, out IList<Vector2>? textureOut, out IList<Vector3>? normalOut)
     {
         textureOut = null;
         normalOut = null;
-        var tracking = new List<List<int>>(vertices.Count);
+        var tracking = new FastList<FastList<int>>(vertices.Count);
         Debug.WriteLine(string.Format("NumVert:{0}; NumTriangle:{1};", vertices.Count, triangles.Count));
         for (var i = 0; i < vertices.Count; ++i)
         {
-            tracking.Add(new List<int>());
+            tracking.Add(new FastList<int>());
         }
         for (var i = 0; i < triangles.Count; ++i)
         {
             tracking[triangles[i]].Add(i);
         }
 
-        var vertToRemove = new List<int>(vertices.Count);
+        var vertToRemove = new FastList<int>(vertices.Count);
         for (var i = 0; i < vertices.Count; ++i)
         {
             if (tracking[i].Count == 0)
@@ -727,15 +727,15 @@ public static class MeshGeometryHelper
             }
         }
 
-        verticesOut = new List<Vector3>(vertices.Count - vertToRemove.Count);
-        trianglesOut = new List<int>(triangles);
+        verticesOut = new FastList<Vector3>(vertices.Count - vertToRemove.Count);
+        trianglesOut = new FastList<int>(triangles);
         if (texture != null)
         {
-            textureOut = new List<Vector2>(vertices.Count - vertToRemove.Count);
+            textureOut = new FastList<Vector2>(vertices.Count - vertToRemove.Count);
         }
         if (normals != null)
         {
-            normalOut = new List<Vector3>(vertices.Count - vertToRemove.Count);
+            normalOut = new FastList<Vector3>(vertices.Count - vertToRemove.Count);
         }
         if (vertices.Count == vertToRemove.Count)
         {
@@ -775,7 +775,7 @@ public static class MeshGeometryHelper
     /// <param name="numVerts"></param>
     public static void RemoveOutOfRangeTriangles(this IList<int> triangles, int numVerts)
     {
-        var removeOutOfRangeTriangles = new List<int>();
+        var removeOutOfRangeTriangles = new FastList<int>();
         for (var i = 0; i < triangles.Count; i += 3)
         {
             if (triangles[i] >= numVerts || triangles[i + 1] >= numVerts || triangles[i + 2] >= numVerts)

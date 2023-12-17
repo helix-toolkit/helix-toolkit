@@ -5,15 +5,10 @@ using SharpDX.Direct3D11;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Media.Media3D;
 using HitTestResult = HelixToolkit.SharpDX.HitTestResult;
-using Matrix = SharpDX.Matrix;
-using Plane = SharpDX.Plane;
-using Ray = SharpDX.Ray;
-using Vector2 = SharpDX.Vector2;
-using Vector3 = SharpDX.Vector3;
+
 
 namespace HelixToolkit.Wpf.SharpDX;
 

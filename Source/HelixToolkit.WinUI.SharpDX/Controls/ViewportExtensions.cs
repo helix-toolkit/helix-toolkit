@@ -151,8 +151,7 @@ public static class ViewportExtensions
 
         pcamera.FieldOfView = fov;
         double d2 = r / Math.Tan(0.5 * fov / 180 * Math.PI);
-        var newLookDirection = pcamera.LookDirection;
-        newLookDirection.Normalize();
+        var newLookDirection = Vector3.Normalize(pcamera.LookDirection);
         newLookDirection *= (float)d2;
         var target = pcamera.Position + pcamera.LookDirection;
         pcamera.Position = target - newLookDirection;

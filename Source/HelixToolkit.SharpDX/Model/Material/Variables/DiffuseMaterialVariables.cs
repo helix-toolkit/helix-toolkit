@@ -138,8 +138,8 @@ public class DiffuseMaterialVariables : MaterialVariable
         AddPropertyBinding(nameof(DiffuseMaterialCore.UVTransform), () =>
         {
             Matrix m = material.UVTransform;
-            WriteValue(PhongPBRMaterialStruct.UVTransformR1Str, m.Column1);
-            WriteValue(PhongPBRMaterialStruct.UVTransformR2Str, m.Column2);
+            WriteValue(PhongPBRMaterialStruct.UVTransformR1Str, m.Column1());
+            WriteValue(PhongPBRMaterialStruct.UVTransformR2Str, m.Column2());
         });
         AddPropertyBinding(nameof(DiffuseMaterialCore.DiffuseMap), () =>
         {

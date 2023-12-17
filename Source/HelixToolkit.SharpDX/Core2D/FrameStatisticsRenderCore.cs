@@ -1,6 +1,7 @@
 ﻿using HelixToolkit.SharpDX.Utilities;
 using SharpDX;
 using SharpDX.DirectWrite;
+using SharpDX.Mathematics.Interop;
 using D2D = SharpDX.Direct2D1;
 
 namespace HelixToolkit.SharpDX.Core2D;
@@ -105,11 +106,11 @@ public class FrameStatisticsRenderCore : RenderCore2DBase
     {
         if (background == null)
         {
-            Background = new D2D.SolidColorBrush(context.DeviceContext, new Color4(0.8f, 0.8f, 0.8f, 0.6f));
+            Background = new D2D.SolidColorBrush(context.DeviceContext, new RawColor4(0.8f, 0.8f, 0.8f, 0.6f));
         }
         if (foreground == null)
         {
-            Foreground = new D2D.SolidColorBrush(context.DeviceContext, Color.Blue);
+            Foreground = new D2D.SolidColorBrush(context.DeviceContext, new RawColor4(0f, 0f, 1f, 1f));
         }
         var str = statistics?.GetDetailString() ?? string.Empty;
         if (str != previousStr || textLayout == null)
@@ -121,8 +122,8 @@ public class FrameStatisticsRenderCore : RenderCore2DBase
         var metrices = textLayout.Metrics;
         renderBound.Width = Math.Max(metrices.Width, renderBound.Width);
         renderBound.Height = metrices.Height;
-        context.DeviceContext.Transform = Matrix3x2.Translation((float)context.ActualWidth - renderBound.Width, 0);
-        context.DeviceContext.FillRectangle(renderBound, background);
-        context.DeviceContext.DrawTextLayout(Vector2.Zero, textLayout, foreground);
+        context.DeviceContext.Transform = Matrix3x2Helper.Translation(new Vector2((float)context.ActualWidth - renderBound.Width, 0)).ToStruct<Matrix3x2, RawMatrix3x2>();
+        context.DeviceContext.FillRectangle(renderBound.ToStruct<RectangleF, RawRectangleF>(), background);
+        context.DeviceContext.DrawTextLayout(new RawVector2(), textLayout, foreground);
     }
 }

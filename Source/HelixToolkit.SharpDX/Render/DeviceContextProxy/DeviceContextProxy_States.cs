@@ -1,5 +1,6 @@
 ﻿using HelixToolkit.SharpDX.Utilities;
 using SharpDX;
+using SharpDX.Mathematics.Interop;
 using System.Runtime.CompilerServices;
 using Device = SharpDX.Direct3D11.Device1;
 using DeviceContext = SharpDX.Direct3D11.DeviceContext1;
@@ -59,7 +60,7 @@ public partial class DeviceContextProxy
         {
             return;
         }
-        deviceContext?.OutputMerger.SetBlendState(blendState, blendFactor, sampleMask);
+        deviceContext?.OutputMerger.SetBlendState(blendState, blendFactor?.ToStruct<Color4, RawColor4>(), sampleMask);
         currBlendState = blendState;
         currBlendFactor = blendFactor;
         currSampleMask = sampleMask == -1 ? uint.MaxValue : (uint)sampleMask;
@@ -78,7 +79,7 @@ public partial class DeviceContextProxy
         {
             return;
         }
-        deviceContext?.OutputMerger.SetBlendState(blendState, blendFactor, sampleMask);
+        deviceContext?.OutputMerger.SetBlendState(blendState, blendFactor?.ToStruct<Color4, RawColor4>(), sampleMask);
         currBlendState = blendState;
         currBlendFactor = blendFactor;
         currSampleMask = sampleMask;

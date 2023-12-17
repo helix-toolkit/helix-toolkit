@@ -163,8 +163,8 @@ public class PBRMaterialVariable : MaterialVariable
         AddPropertyBinding(nameof(PBRMaterialCore.UVTransform), () =>
         {
             Matrix m = material.UVTransform;
-            WriteValue(PhongPBRMaterialStruct.UVTransformR1Str, m.Column1);
-            WriteValue(PhongPBRMaterialStruct.UVTransformR2Str, m.Column2);
+            WriteValue(PhongPBRMaterialStruct.UVTransformR1Str, m.Column1());
+            WriteValue(PhongPBRMaterialStruct.UVTransformR2Str, m.Column2());
         });
         AddPropertyBinding(nameof(PBRMaterialCore.AlbedoMap), () => { CreateTextureView(material.AlbedoMap, AlbedoMapIdx); TriggerPropertyAction(nameof(PBRMaterialCore.RenderAlbedoMap)); });
         AddPropertyBinding(nameof(PBRMaterialCore.EmissiveMap), () => { CreateTextureView(material.EmissiveMap, EmissiveMapIdx); TriggerPropertyAction(nameof(PBRMaterialCore.RenderEmissiveMap)); });
