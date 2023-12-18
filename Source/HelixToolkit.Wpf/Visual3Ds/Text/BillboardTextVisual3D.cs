@@ -95,7 +95,7 @@ public class BillboardTextVisual3D : BillboardVisual3D, IBoundsIgnoredVisual3D
     /// Identifies the <see cref="Angle"/> dependency property.
     /// </summary>        
     public static readonly DependencyProperty AngleProperty =
-        DependencyProperty.Register("AngleProperty", typeof(double), typeof(BillboardTextVisual3D), new PropertyMetadata(0d, VisualChanged));
+        DependencyProperty.Register("AngleProperty", typeof(double), typeof(BillboardTextVisual3D), new UIPropertyMetadata(0.0, VisualChanged));
 
     /// <summary>
     /// Gets or sets the background.
@@ -357,6 +357,7 @@ public class BillboardTextVisual3D : BillboardVisual3D, IBoundsIgnoredVisual3D
             : textBlock;
 
         // Only prevent assign when angle == 0, it is equal origin value 
+        // https://stackoverflow.com/questions/10329298/performance-impact-of-applying-either-layouttransform-vs-rendertransform
         if (Angle != 0 || (rotateTransform != null && rotateTransform.Angle != Angle))
         {
             rotateTransform ??= new ();
@@ -372,6 +373,7 @@ public class BillboardTextVisual3D : BillboardVisual3D, IBoundsIgnoredVisual3D
         var rtb = new RenderTargetBitmap(
             (int)element.ActualWidth + 1, (int)element.ActualHeight + 1, 96, 96, PixelFormats.Pbgra32);
         rtb.Render(element);
+        rtb.Freeze();
 
         var brush = new ImageBrush(rtb);
 
