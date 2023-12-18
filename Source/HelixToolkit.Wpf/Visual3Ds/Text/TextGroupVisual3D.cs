@@ -4,6 +4,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Media.Media3D;
 using System.Windows.Media;
 using System.Windows;
+using System.Numerics;
 
 namespace HelixToolkit.Wpf;
 
@@ -533,26 +534,26 @@ public class TextGroupVisual3D : ModelVisual3D
                 var p3 = p0 + (upDirection * height);
 
                 builder.AddQuad(
-                    p0.ToVector(),
-                    p1.ToVector(),
-                    p2.ToVector(),
-                    p3.ToVector(),
-                    new Point(u0, v1).ToVector(),
-                    new Point(u1, v1).ToVector(),
-                    new Point(u1, v0).ToVector(),
-                    new Point(u0, v0).ToVector());
+                    p0.ToVector3(),
+                    p1.ToVector3(),
+                    p2.ToVector3(),
+                    p3.ToVector3(),
+                    new Vector2((float)u0, (float)v1),
+                    new Vector2((float)u1, (float)v1),
+                    new Vector2((float)u1, (float)v0),
+                    new Vector2((float)u0, (float)v0));
 
                 if (this.IsDoubleSided)
                 {
                     builder.AddQuad(
-                        p1.ToVector(),
-                        p0.ToVector(),
-                        p3.ToVector(),
-                        p2.ToVector(),
-                        new Point(u0, v1).ToVector(),
-                        new Point(u1, v1).ToVector(),
-                        new Point(u1, v0).ToVector(),
-                        new Point(u0, v0).ToVector());
+                        p1.ToVector3(),
+                        p0.ToVector3(),
+                        p3.ToVector3(),
+                        p2.ToVector3(),
+                        new Vector2((float)u0, (float)v1),
+                        new Vector2((float)u1, (float)v1),
+                        new Vector2((float)u1, (float)v0),
+                        new Vector2((float)u0, (float)v0));
                 }
 
                 addedChildren.Add(item);

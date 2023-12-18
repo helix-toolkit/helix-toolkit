@@ -1,7 +1,7 @@
 ﻿using DependencyPropertyGenerator;
 using HelixToolkit;
 using HelixToolkit.Wpf;
-using System.Windows;
+using System.Numerics;
 using System.Windows.Media.Media3D;
 
 namespace Lego;
@@ -46,28 +46,28 @@ public sealed partial class LegoVisual3D : MeshElement3D
         for (int i = 0; i < Columns; i++)
             for (int j = 0; j < Rows; j++)
             {
-                var o = new Point3D((i + 0.5) * grid, (j + 0.5) * grid, height);
-                builder.AddCone(o.ToVector(), new Vector3D(0, 0, 1).ToVector(), (float)(knobDiameter / 2), (float)(knobDiameter / 2), (float)knobHeight, false, true,
+                var o = new Vector3((i + 0.5f) * (float)grid, (j + 0.5f) * (float)grid, (float)height);
+                builder.AddCone(o, new Vector3(0, 0, 1), (float)(knobDiameter / 2), (float)(knobDiameter / 2), (float)knobHeight, false, true,
                                 Divisions);
-                builder.AddPipe(new Point3D(o.X, o.Y, o.Z - wallThickness).ToVector(), new Point3D(o.X, o.Y, wallThickness).ToVector(),
+                builder.AddPipe(new Vector3(o.X, o.Y, o.Z - (float)wallThickness), new Vector3(o.X, o.Y, (float)wallThickness),
                                 (float)knobDiameter, (float)outerDiameter, Divisions);
             }
 
-        builder.AddBox(new Point3D(Columns * 0.5 * grid, Rows * 0.5 * grid, height - wallThickness / 2).ToVector(), (float)width, (float)length,
+        builder.AddBox(new Vector3((float)(Columns * 0.5 * grid), (float)(Rows * 0.5 * grid), (float)(height - wallThickness / 2)), (float)width, (float)length,
                       (float)wallThickness,
                       BoxFaces.All);
-        builder.AddBox(new Point3D(margin + wallThickness / 2, Rows * 0.5 * grid, height / 2 - wallThickness / 2).ToVector(),
+        builder.AddBox(new Vector3((float)(margin + wallThickness / 2), (float)(Rows * 0.5 * grid), (float)(height / 2 - wallThickness / 2)),
                        (float)wallThickness, (float)length, (float)(height - wallThickness),
                        BoxFaces.All ^ BoxFaces.Top);
         builder.AddBox(
-            new Point3D(Columns * grid - margin - wallThickness / 2, Rows * 0.5 * grid, height / 2 - wallThickness / 2).ToVector(),
+            new Vector3((float)(Columns * grid - margin - wallThickness / 2), (float)(Rows * 0.5 * grid), (float)(height / 2 - wallThickness / 2)),
             (float)wallThickness, (float)length, (float)(height - wallThickness),
             BoxFaces.All ^ BoxFaces.Top);
-        builder.AddBox(new Point3D(Columns * 0.5 * grid, margin + wallThickness / 2, height / 2 - wallThickness / 2).ToVector(),
+        builder.AddBox(new Vector3((float)(Columns * 0.5 * grid), (float)(margin + wallThickness / 2), (float)(height / 2 - wallThickness / 2)),
                        (float)width, (float)wallThickness, (float)(height - wallThickness),
                        BoxFaces.All ^ BoxFaces.Top);
         builder.AddBox(
-            new Point3D(Columns * 0.5 * grid, Rows * grid - margin - wallThickness / 2, height / 2 - wallThickness / 2).ToVector(),
+            new Vector3((float)(Columns * 0.5 * grid), (float)(Rows * grid - margin - wallThickness / 2), (float)(height / 2 - wallThickness / 2)),
             (float)width, (float)wallThickness, (float)(height - wallThickness),
             BoxFaces.All ^ BoxFaces.Top);
 

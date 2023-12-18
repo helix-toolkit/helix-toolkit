@@ -31,9 +31,9 @@ public partial class MainViewModel : DemoCore.BaseViewModel
         EffectsManager = new DefaultEffectsManager();
 
         var builder = new MeshBuilder();
-        builder.AddSphere(new Vector3().ToVector(), 2);
+        builder.AddSphere(new Vector3(), 2);
         builder.AddTorus(5, 1);
-        MeshModel = builder.ToMesh().ToMeshGeometry3D();
+        MeshModel = builder.ToMeshGeometry3D();
 
         var lineBuilder = new LineBuilder();
         lineBuilder.AddGrid(BoxFaces.All, 10, 10, 10, 10);

@@ -1,18 +1,15 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
-using HelixToolkit;
 using HelixToolkit.SharpDX;
 using HelixToolkit.Wpf.SharpDX;
-using SharpDX;
 using SharpDX.Direct3D11;
 using System.Collections.Generic;
 using System.Linq;
 using Color = System.Windows.Media.Color;
-using Color4 = SharpDX.Color4;
 using Colors = System.Windows.Media.Colors;
 using Media3D = System.Windows.Media.Media3D;
 using Point3D = System.Windows.Media.Media3D.Point3D;
 using Transform3D = System.Windows.Media.Media3D.Transform3D;
-using Vector3 = SharpDX.Vector3;
+
 using Vector3D = System.Windows.Media.Media3D.Vector3D;
 
 namespace TessellationDemo;
@@ -139,10 +136,14 @@ public partial class MainViewModel : DemoCore.BaseViewModel
         this.GridTransform = new Media3D.TranslateTransform3D(-5, -4, -5);
 
         var builder = new MeshBuilder(true, true, true);
-        builder.AddBox(new Vector3(0, -5, 0).ToVector(), 60, 0.5f, 60, BoxFaces.All);
-        FloorModel = builder.ToMesh().ToMeshGeometry3D();
+        builder.AddBox(new Vector3(0, -5, 0), 60, 0.5f, 60, BoxFaces.All);
+        FloorModel = builder.ToMeshGeometry3D();
 
-        Instances = new Matrix[] { Matrix.Identity, Matrix.Translation(10, 0, 10), Matrix.Translation(-10, 0, 10), Matrix.Translation(10, 0, -10), Matrix.Translation(-10, 0, -10), };
+        Instances = new Matrix[] { Matrix.Identity, 
+            Matrix.CreateTranslation(10, 0, 10), 
+            Matrix.CreateTranslation(-10, 0, 10), 
+            Matrix.CreateTranslation(10, 0, -10), 
+            Matrix.CreateTranslation(-10, 0, -10), };
     }
 
     /// <summary>

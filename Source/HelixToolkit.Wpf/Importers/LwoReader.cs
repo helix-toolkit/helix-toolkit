@@ -17,8 +17,7 @@ public sealed class LwoReader : ModelReader
     /// Initializes a new instance of the <see cref="LwoReader" /> class.
     /// </summary>
     /// <param name="dispatcher">The dispatcher.</param>
-    public LwoReader(Dispatcher? dispatcher = null) :
-        base(dispatcher)
+    public LwoReader(Dispatcher? dispatcher = null) : base(dispatcher)
     {
         // http://www.martinreddy.net/gfx/3d/LWOB.txt
         // http://www.modwiki.net/wiki/LWO_(file_format)
@@ -261,7 +260,7 @@ public sealed class LwoReader : ModelReader
             short surfaceIndex = this.ReadShortInt(reader);
             size -= (2 + nverts) * 2;
 
-            this.Meshes[surfaceIndex - 1].AddTriangleFan(pts.Select(t => t.ToVector()).ToList());
+            this.Meshes[surfaceIndex - 1].AddTriangleFan(pts.Select(t => t.ToVector3()).ToList());
         }
     }
 

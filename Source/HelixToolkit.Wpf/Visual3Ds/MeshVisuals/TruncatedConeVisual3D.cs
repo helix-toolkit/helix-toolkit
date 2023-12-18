@@ -204,8 +204,8 @@ public class TruncatedConeVisual3D : MeshElement3D
     {
         var builder = new MeshBuilder(false, true);
         builder.AddCone(
-            this.Origin.ToVector(),
-            this.Normal.ToVector(),
+            this.Origin.ToVector3(),
+            this.Normal.ToVector3(),
             (float)this.BaseRadius,
             (float)this.TopRadius,
             (float)this.Height,

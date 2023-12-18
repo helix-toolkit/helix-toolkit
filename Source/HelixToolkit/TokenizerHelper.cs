@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics;
 using System.Globalization;
 
-namespace HelixToolkit.SharpDX.Utilities;
+namespace HelixToolkit;
 
 public sealed class TokenizerHelper
 {

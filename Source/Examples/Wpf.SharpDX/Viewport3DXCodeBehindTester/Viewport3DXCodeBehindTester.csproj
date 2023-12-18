@@ -33,5 +33,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
-
+    <ItemGroup>
+        <Compile Include="..\..\GlobalUsing.cs"/>
+    </ItemGroup>
 </Project>

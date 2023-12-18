@@ -1,8 +1,9 @@
-﻿using HelixToolkit.SharpDX;
+﻿using HelixToolkit.Maths;
+using HelixToolkit.SharpDX;
 using HelixToolkit.Wpf.SharpDX.Tests.Controls;
 using NUnit.Framework;
-using SharpDX;
 using System.IO;
+using System.Numerics;
 
 namespace HelixToolkit.Wpf.SharpDX.Tests.Elements3D;
 
@@ -43,10 +44,10 @@ class MeshGeometryModel3DTests
     private MeshGeometryModel3D GetGeometryModel3D()
     {
         var meshBuilder = new MeshBuilder();
-        meshBuilder.AddBox(new Vector3(0f).ToVector(), 1, 1, 1);
+        meshBuilder.AddBox(new Vector3(0f), 1, 1, 1);
         return new MeshGeometryModel3D()
         {
-            Geometry = meshBuilder.ToMesh().ToMeshGeometry3D(),
+            Geometry = meshBuilder.ToMeshGeometry3D(),
         };
     }
 

@@ -2099,10 +2099,12 @@ namespace HelixToolkit.Maths
         /// <returns>
         /// A <see cref="System.String"/> that represents this instance.
         /// </returns>
-        public string ToString(string format, IFormatProvider formatProvider)
+        public string ToString(string? format, IFormatProvider? formatProvider)
         {
-            return format == null
-                ? ToString(formatProvider)
+            return format == null && formatProvider == null 
+                ? string.Empty 
+                : format == null
+                ? ToString(formatProvider!)
                 : string.Format(format, formatProvider, "[M11:{0} M12:{1} M13:{2}] [M21:{3} M22:{4} M23:{5}] [M31:{6} M32:{7} M33:{8}]",
                 M11.ToString(format, formatProvider), M12.ToString(format, formatProvider), M13.ToString(format, formatProvider),
                 M21.ToString(format, formatProvider), M22.ToString(format, formatProvider), M23.ToString(format, formatProvider),
@@ -2192,7 +2194,7 @@ namespace HelixToolkit.Maths
         /// <returns>
         /// <c>true</c> if the specified <see cref="System.Object"/> is equal to this instance; otherwise, <c>false</c>.
         /// </returns>
-        public override bool Equals(object value)
+        public override bool Equals(object? value)
         {
             return value is Matrix3x3 matrix && Equals(ref matrix);
         }

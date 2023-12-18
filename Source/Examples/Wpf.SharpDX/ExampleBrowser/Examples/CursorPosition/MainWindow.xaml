@@ -69,7 +69,6 @@
         <Grid>
             <hx:Viewport3DX x:Name="view1"
                             EnableCursorPosition="True"
-                            EnableCurrentPosition="True"
                             Title="{Binding Title}"
                             Camera="{Binding Camera}"
                             CoordinateSystemLabelForeground="White"

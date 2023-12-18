@@ -275,7 +275,7 @@ internal abstract class MouseGestureHandler
         {
             return null;
         }
-        var plane = PlaneHelper.GetPlane(position, normal);
+        var plane = PlaneHelper.Create(position, normal);
         if (ray.Value.Intersects(ref plane, out Vector3 point))
         {
             return point;

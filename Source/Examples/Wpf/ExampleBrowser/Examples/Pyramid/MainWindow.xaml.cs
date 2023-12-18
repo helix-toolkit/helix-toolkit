@@ -85,7 +85,7 @@ public partial class MainWindow : Window
                     var center = new Point3D(a * (j - (double)mx / 2), a * (k - (double)mx / 2), (i + 0.5) * a);
 
                     if (allInOneGeometry)
-                        builder!.AddBox(center.ToVector(), (float)(a * b), (float)(a * b), (float)(a * b));
+                        builder!.AddBox(center.ToVector3(), (float)(a * b), (float)(a * b), (float)(a * b));
                     else
                     {
                         // add a new visual for each cubit, but reuse the geometry

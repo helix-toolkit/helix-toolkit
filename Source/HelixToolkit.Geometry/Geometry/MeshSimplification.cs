@@ -328,8 +328,8 @@ public sealed class MeshSimplification
     /// <returns></returns>
     public MeshGeometry3D GetMesh()
     {
-        var pos = new List<Vector3>(vertices.Select(x => new Vector3(x.p.X, x.p.Y, x.p.Z)));
-        var tris = new List<int>(triangles.Count * 3);
+        var pos = new Vector3Collection(vertices.Select(x => new Vector3(x.p.X, x.p.Y, x.p.Z)));
+        var tris = new IntCollection(triangles.Count * 3);
         foreach (var tri in triangles)
         {
             tris.Add(tri.v[0]);
@@ -544,8 +544,8 @@ public sealed class MeshSimplification
 
         if (iteration == 0)
         {
-            var vCount = new List<int>();
-            var vids = new List<int>();
+            var vCount = new IntCollection();
+            var vids = new IntCollection();
             foreach (var vert in vertices)
             {
                 vert.border = false;

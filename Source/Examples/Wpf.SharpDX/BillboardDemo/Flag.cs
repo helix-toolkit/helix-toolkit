@@ -1,5 +1,5 @@
 ﻿using HelixToolkit.SharpDX;
-using SharpDX;
+using System.Numerics;
 
 namespace BillboardDemo;
 

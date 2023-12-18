@@ -1,20 +1,12 @@
 ﻿using HelixToolkit;
+using HelixToolkit.Maths;
 using HelixToolkit.SharpDX;
 using HelixToolkit.Wpf.SharpDX;
-using SharpDX;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using System.Numerics;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace PolygonTriangulationDemo;
 
@@ -107,8 +99,8 @@ public partial class MainWindow : Window
         // Triangulate and measure the Time needed for the Triangulation
         var before = DateTime.Now;
         var sLTI = SweepLinePolygonTriangulator.Triangulate(
-            mPolygonPoints.Select(t => t.ToVector()).ToList(),
-            holes.Select(t => t.Select(u => u.ToVector()).ToList()).ToList())
+            mPolygonPoints.ToList(),
+            holes.Select(t => t.ToList()).ToList())
             ?? new();
         var after = DateTime.Now;
 

@@ -34,7 +34,7 @@ public static class Extensions
                 var outline = outlines[i];
                 var isHole = i != outlines.Count - 1 && IsPointInPolygon(outerOutline, outline[0]);
                 polygon.AddContour(outline.Select(p => new Vertex(p.X, p.Y)), marker++, isHole);
-                builder.AddExtrudedSegments(outline.ToSegments().Select(t => t.ToVector()).ToList(), textDirection.ToVector(), p0.ToVector(), p1.ToVector());
+                builder.AddExtrudedSegments(outline.ToSegments().Select(t => t.ToVector()).ToList(), textDirection.ToVector3(), p0.ToVector3(), p1.ToVector3());
             }
         }
 
@@ -57,10 +57,10 @@ public static class Extensions
 
             // Add the top triangle.
             // Project the X/Y vertices onto a plane defined by textdirection, p0 and p1.                
-            builder.AddTriangle(v0.Project(p0, u, v, z, 1).ToVector(), v1.Project(p0, u, v, z, 1).ToVector(), v2.Project(p0, u, v, z, 1).ToVector());
+            builder.AddTriangle(v0.Project(p0, u, v, z, 1).ToVector3(), v1.Project(p0, u, v, z, 1).ToVector3(), v2.Project(p0, u, v, z, 1).ToVector3());
 
             // Add the bottom triangle.
-            builder.AddTriangle(v2.Project(p0, u, v, z, 0).ToVector(), v1.Project(p0, u, v, z, 0).ToVector(), v0.Project(p0, u, v, z, 0).ToVector());
+            builder.AddTriangle(v2.Project(p0, u, v, z, 0).ToVector3(), v1.Project(p0, u, v, z, 0).ToVector3(), v0.Project(p0, u, v, z, 0).ToVector3());
         }
     }
 

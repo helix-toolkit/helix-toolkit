@@ -32,7 +32,7 @@ public partial class GenericUIElement3D : UIElement3D
     private void SetGeometry()
     {
         var meshBuilder = new MeshBuilder(false, false);
-        meshBuilder.AddBox(new Point3D(0, 0, 0).ToVector(), 0.5f, 0.5f, 0.5f);
+        meshBuilder.AddBox(new System.Numerics.Vector3(0, 0, 0), 0.5f, 0.5f, 0.5f);
         Model.Geometry = meshBuilder.ToMesh().ToMeshGeometry3D();
     }
 

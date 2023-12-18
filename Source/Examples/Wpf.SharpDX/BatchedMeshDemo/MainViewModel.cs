@@ -1,12 +1,13 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using HelixToolkit;
+using HelixToolkit.Maths;
 using HelixToolkit.SharpDX;
 using HelixToolkit.SharpDX.Model;
 using HelixToolkit.Wpf.SharpDX;
-using SharpDX;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Threading;
 using System.Threading.Tasks;
 using Media3D = System.Windows.Media.Media3D;
@@ -60,8 +61,8 @@ public partial class MainViewModel : DemoCore.BaseViewModel
         Camera = new PerspectiveCamera() { Position = new Point3D(0, 0, 200), LookDirection = new Vector3D(0, 0, -200), UpDirection = new Vector3D(0, 1, 0), FarPlaneDistance = 1000 };
         Task.Run(LoadModels);
         var builder = new MeshBuilder(true);
-        builder.AddBox(new Vector3(0, -65, 0).ToVector(), 600, 1, 600);
-        FloorModel = builder.ToMesh().ToMeshGeometry3D();
+        builder.AddBox(new Vector3(0, -65, 0), 600, 1, 600);
+        FloorModel = builder.ToMeshGeometry3D();
 
         if (MainMaterial is PhongMaterial mainPhong)
         {
@@ -111,7 +112,7 @@ public partial class MainViewModel : DemoCore.BaseViewModel
             }
             else
             {
-                modelList.Add(new BatchedMeshGeometryConfig(model.Geometry, Matrix.Identity, materialDict[model.Material]));
+                modelList.Add(new BatchedMeshGeometryConfig(model.Geometry, Matrix4x4.Identity, materialDict[model.Material]));
                 //modelList.Add(new BatchedMeshGeometryConfig(model.Geometry, Matrix.Identity, 0));
             }
         }

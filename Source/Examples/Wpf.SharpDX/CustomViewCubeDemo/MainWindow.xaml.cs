@@ -37,8 +37,7 @@ public partial class MainWindow : Window
             return;
         }
 
-        var normal = e.HitTestResult.NormalAtHit;
-        normal.Normalize();
+        var normal = Vector3.Normalize(e.HitTestResult.NormalAtHit);
         var upDirection = Vector3.Zero;
         var lookDirection = -normal;
         if (Vector3.Cross(normal, view1.ModelUpDirection.ToVector3()).LengthSquared() < 1e-5)

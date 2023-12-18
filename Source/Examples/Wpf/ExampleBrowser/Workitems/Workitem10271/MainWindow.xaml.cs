@@ -4,6 +4,7 @@ using HelixToolkit.Wpf;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -38,10 +39,10 @@ public partial class MainWindow : Window
     private static object BuildTri()
     {
         var mb = new MeshBuilder(true, false);
-        var p0 = new Point3D(0, 0, 0);
-        var p1 = new Point3D(1, 0, 0);
-        var p2 = new Point3D(1, 1, 0);
-        mb.AddTriangle(p0.ToVector(), p1.ToVector(), p2.ToVector());
+        var p0 = new Vector3(0, 0, 0);
+        var p1 = new Vector3(1, 0, 0);
+        var p2 = new Vector3(1, 1, 0);
+        mb.AddTriangle(p0, p1, p2);
         mb.Normals?.ToList().ForEach(x => System.Diagnostics.Trace.WriteLine(x.ToString()));
         return mb.ToMesh().ToMeshGeometry3D();
     }
@@ -49,11 +50,11 @@ public partial class MainWindow : Window
     private static object BuildQuad()
     {
         var mb = new MeshBuilder(true, false);
-        var p0 = new Point3D(0, 0, 0);
-        var p1 = new Point3D(1, 0, 0);
-        var p2 = new Point3D(1, 1, 0);
-        var p3 = new Point3D(0, 1, 0);
-        mb.AddQuad(p0.ToVector(), p1.ToVector(), p2.ToVector(), p3.ToVector());
+        var p0 = new Vector3(0, 0, 0);
+        var p1 = new Vector3(1, 0, 0);
+        var p2 = new Vector3(1, 1, 0);
+        var p3 = new Vector3(0, 1, 0);
+        mb.AddQuad(p0, p1, p2, p3);
         mb.Normals?.ToList().ForEach(x => System.Diagnostics.Trace.WriteLine(x.ToString()));
         return mb.ToMesh().ToMeshGeometry3D();
     }

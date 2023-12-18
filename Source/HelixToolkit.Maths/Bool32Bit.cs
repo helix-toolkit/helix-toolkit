@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Runtime.InteropServices;
-using System.Text;
+﻿using System.Runtime.InteropServices;
 
 namespace HelixToolkit.Maths
 {
@@ -22,7 +19,7 @@ namespace HelixToolkit.Maths
             return Value == other.Value;
         }
 
-        public string ToString(string format, IFormatProvider formatProvider)
+        public string ToString(string? format, IFormatProvider? formatProvider)
         {
             return Value.ToString(format, formatProvider);
         }
@@ -37,7 +34,7 @@ namespace HelixToolkit.Maths
             return value.Value != 0;
         }
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             return obj is Bool32Bit bit && Equals(bit);
         }

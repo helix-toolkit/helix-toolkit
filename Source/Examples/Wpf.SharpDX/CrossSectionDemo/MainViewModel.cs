@@ -1,5 +1,4 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
-using HelixToolkit;
 using HelixToolkit.SharpDX;
 using HelixToolkit.Wpf.SharpDX;
 using System;
@@ -8,14 +7,11 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Data;
 using Color = System.Windows.Media.Color;
-using Color4 = SharpDX.Color4;
 using Colors = System.Windows.Media.Colors;
 using Media3D = System.Windows.Media.Media3D;
-using Plane = SharpDX.Plane;
 using Point3D = System.Windows.Media.Media3D.Point3D;
 using Transform3D = System.Windows.Media.Media3D.Transform3D;
 using TranslateTransform3D = System.Windows.Media.Media3D.TranslateTransform3D;
-using Vector3 = SharpDX.Vector3;
 using Vector3D = System.Windows.Media.Media3D.Vector3D;
 
 namespace CrossSectionDemo;
@@ -90,12 +86,12 @@ public partial class MainViewModel : DemoCore.BaseViewModel
         this.Light1Color = Colors.White;
 
         var builder = new MeshBuilder(true, false, false);
-        builder.AddBox(new Vector3().ToVector(), 40, 0.1f, 40);
-        Plane1Model = FloorModel = builder.ToMesh().ToMeshGeometry3D();
+        builder.AddBox(new Vector3(), 40, 0.1f, 40);
+        Plane1Model = FloorModel = builder.ToMeshGeometry3D();
 
         builder = new MeshBuilder(true, false, false);
-        builder.AddBox(new Vector3().ToVector(), 0.1f, 40, 40);
-        Plane2Model = builder.ToMesh().ToMeshGeometry3D();
+        builder.AddBox(new Vector3(), 0.1f, 40, 40);
+        Plane2Model = builder.ToMeshGeometry3D();
 
         FloorMaterial = new PhongMaterial
         {
@@ -125,8 +121,8 @@ public partial class MainViewModel : DemoCore.BaseViewModel
         Plane2Transform = new TranslateTransform3D(new Vector3D(15, 0, 0));
 
         var meshBuilder = new MeshBuilder();
-        meshBuilder.AddBox(new Vector3(5f).ToVector(), 40, 1, 2);
-        BoxModel = meshBuilder.ToMesh().ToMeshGeometry3D();
+        meshBuilder.AddBox(new Vector3(5f), 40, 1, 2);
+        BoxModel = meshBuilder.ToMeshGeometry3D();
     }
 
     public List<Object3D> Load3ds(string path)

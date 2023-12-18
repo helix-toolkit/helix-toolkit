@@ -110,7 +110,7 @@ public class SphereVisual3D : MeshElement3D
     protected override MeshGeometry3D? Tessellate()
     {
         var builder = new MeshBuilder(true, true);
-        builder.AddSphere(this.Center.ToVector(), (float)this.Radius, this.ThetaDiv, this.PhiDiv);
+        builder.AddSphere(this.Center.ToVector3(), (float)this.Radius, this.ThetaDiv, this.PhiDiv);
         return builder.ToMesh().ToMeshGeometry3D();
     }
 }

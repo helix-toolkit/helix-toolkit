@@ -49,7 +49,7 @@ public class SlopeTexture : TerrainTexture
         var up = new Vector3D(0, 0, 1);
         for (int i = 0; i < normals.Count; i++)
         {
-            double slope = Math.Acos(Vector3D.DotProduct(normals[i].ToWndVector(), up)) * 180 / Math.PI;
+            double slope = Math.Acos(Vector3D.DotProduct(normals[i].ToWndVector3D(), up)) * 180 / Math.PI;
             double u = slope / 40;
             if (u > 1)
             {

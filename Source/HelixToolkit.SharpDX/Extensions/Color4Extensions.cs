@@ -1,4 +1,5 @@
 ﻿using SharpDX;
+using SharpDX.Mathematics.Interop;
 using System.ComponentModel;
 using System.Globalization;
 using System.Runtime.CompilerServices;
@@ -222,5 +223,15 @@ public static class Color4Extensions
     public static Color4 ChangeIntensity(this Color4 c, float intensity)
     {
         return new Color4(c.Red * intensity, c.Green * intensity, c.Blue * intensity, c.Alpha);
+    }
+
+    public static RawColor4 ToRawColor4(this Color4 color)
+    {
+        return color.ToStruct<Color4, RawColor4>();
+    }
+
+    public static RawColor4 ToRawColor4(this Color color)
+    {
+        return new RawColor4(color.R / 255f, color.G / 255f, color.B / 255f, color.A / 255f);
     }
 }

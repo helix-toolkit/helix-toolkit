@@ -10,6 +10,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Media.Media3D;
+using System.Numerics;
 
 namespace Rubik;
 
@@ -170,22 +171,22 @@ public sealed partial class RubikCube : ModelVisual3D
         switch (face)
         {
             case 0:
-                b.AddCubeFace(center.ToVector(), new Vector3D(-1, 0, 0).ToVector(), new Vector3D(0, 0, 1).ToVector(), (float)length, (float)width, (float)height);
+                b.AddCubeFace(center.ToVector3(), new Vector3(-1, 0, 0), new Vector3(0, 0, 1), (float)length, (float)width, (float)height);
                 break;
             case 1:
-                b.AddCubeFace(center.ToVector(), new Vector3D(1, 0, 0).ToVector(), new Vector3D(0, 0, -1).ToVector(), (float)length, (float)width, (float)height);
+                b.AddCubeFace(center.ToVector3(), new Vector3(1, 0, 0), new Vector3(0, 0, -1), (float)length, (float)width, (float)height);
                 break;
             case 2:
-                b.AddCubeFace(center.ToVector(), new Vector3D(0, -1, 0).ToVector(), new Vector3D(0, 0, 1).ToVector(), (float)width, (float)length, (float)height);
+                b.AddCubeFace(center.ToVector3(), new Vector3(0, -1, 0), new Vector3(0, 0, 1), (float)width, (float)length, (float)height);
                 break;
             case 3:
-                b.AddCubeFace(center.ToVector(), new Vector3D(0, 1, 0).ToVector(), new Vector3D(0, 0, -1).ToVector(), (float)width, (float)length, (float)height);
+                b.AddCubeFace(center.ToVector3(), new Vector3(0, 1, 0), new Vector3(0, 0, -1), (float)width, (float)length, (float)height);
                 break;
             case 4:
-                b.AddCubeFace(center.ToVector(), new Vector3D(0, 0, -1).ToVector(), new Vector3D(0, 1, 0).ToVector(), (float)height, (float)length, (float)width);
+                b.AddCubeFace(center.ToVector3(), new Vector3(0, 0, -1), new Vector3(0, 1, 0), (float)height, (float)length, (float)width);
                 break;
             case 5:
-                b.AddCubeFace(center.ToVector(), new Vector3D(0, 0, 1).ToVector(), new Vector3D(0, -1, 0).ToVector(), (float)height, (float)length, (float)width);
+                b.AddCubeFace(center.ToVector3(), new Vector3(0, 0, 1), new Vector3(0, -1, 0), (float)height, (float)length, (float)width);
                 break;
         }
 

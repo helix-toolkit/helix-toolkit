@@ -16,6 +16,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Media.Media3D;
 using System.Windows.Shapes;
+using System.Numerics;
 
 namespace DataTemplate;
 
@@ -72,7 +73,7 @@ public partial class MainWindow : Window
             if (this.ObservableElements.Count % 3 == 1)
             {
                 var modelBuilder = new MeshBuilder();
-                modelBuilder.AddCylinder(new Point3D(0, 0, 0).ToVector(), new Point3D(0, 1, 0).ToVector(), 0.75f, 15);
+                modelBuilder.AddCylinder(new Vector3(0, 0, 0), new Vector3(0, 1, 0), 0.75f, 15);
 
                 ModelElement model = new ModelElement1();
                 if (this.ObservableElements.Count % 2 == 0)

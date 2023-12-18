@@ -1,7 +1,7 @@
 ﻿using NUnit.Framework;
 using System.Diagnostics.CodeAnalysis;
+using System.Numerics;
 using System.Windows;
-using System.Windows.Media.Media3D;
 
 namespace HelixToolkit.Wpf.Tests.Geometry;
 
@@ -14,10 +14,10 @@ public class Polygon3DTests
     public void IsPlanar_PlanarPolygon_ReturnsTrue()
     {
         var p = new Polygon3D();
-        p.Points.Add(new Point3D(0, 0, 0).ToVector());
-        p.Points.Add(new Point3D(1, 0, 0).ToVector());
-        p.Points.Add(new Point3D(1, 1, 0.76).ToVector());
-        p.Points.Add(new Point3D(0, 1, 0.76).ToVector());
+        p.Points.Add(new Vector3(0, 0, 0));
+        p.Points.Add(new Vector3(1, 0, 0));
+        p.Points.Add(new Vector3(1, 1, 0.76f));
+        p.Points.Add(new Vector3(0, 1, 0.76f));
         Assert.That(p.IsPlanar());
     }
 
@@ -25,10 +25,10 @@ public class Polygon3DTests
     public void IsPlanar_NotPlanarPolygon_ReturnsFalse()
     {
         var p = new Polygon3D();
-        p.Points.Add(new Point3D(0, 0, 0).ToVector());
-        p.Points.Add(new Point3D(1, 0, 0).ToVector());
-        p.Points.Add(new Point3D(1, 1, 0).ToVector());
-        p.Points.Add(new Point3D(0, 1, 0.3).ToVector());
+        p.Points.Add(new Vector3(0, 0, 0));
+        p.Points.Add(new Vector3(1, 0, 0));
+        p.Points.Add(new Vector3(1, 1, 0));
+        p.Points.Add(new Vector3(0, 1, 0.3f));
         Assert.That(p.IsPlanar(), Is.False);
     }
 
@@ -36,22 +36,22 @@ public class Polygon3DTests
     public void GetNormal_PlanarPolygon_ReturnsCorrectResult()
     {
         var p = new Polygon3D();
-        p.Points.Add(new Point3D(0, 0, 0).ToVector());
-        p.Points.Add(new Point3D(1, 0, 0).ToVector());
-        p.Points.Add(new Point3D(1, 1, 0).ToVector());
-        p.Points.Add(new Point3D(0, 1, 0).ToVector());
-        var n = p.GetNormal().ToWndVector();
-        Assert.That(n, Is.EqualTo(new Vector3D(0, 0, 1)));
+        p.Points.Add(new Vector3(0, 0, 0));
+        p.Points.Add(new Vector3(1, 0, 0));
+        p.Points.Add(new Vector3(1, 1, 0));
+        p.Points.Add(new Vector3(0, 1, 0));
+        var n = p.GetNormal();
+        Assert.That(n, Is.EqualTo(new Vector3(0, 0, 1)));
     }
 
     [Test]
     public void Flatten_PlanarPolygon_ReturnsCorrectResult()
     {
         var p = new Polygon3D();
-        p.Points.Add(new Point3D(0, 0, 4).ToVector());
-        p.Points.Add(new Point3D(1, 0, 4).ToVector());
-        p.Points.Add(new Point3D(1, 1, 4).ToVector());
-        p.Points.Add(new Point3D(0, 1, 4).ToVector());
+        p.Points.Add(new Vector3(0, 0, 4));
+        p.Points.Add(new Vector3(1, 0, 4));
+        p.Points.Add(new Vector3(1, 1, 4));
+        p.Points.Add(new Vector3(0, 1, 4));
         var p2 = p.Flatten();
         Assert.AreEqual(4, p2.Points.Count);
         Assert.AreEqual(new Point(0, 0), p2.Points[0].ToWndPoint());
@@ -67,10 +67,10 @@ public class Polygon3DTests
     public void Flatten_PlanarPolygon2_ReturnsCorrectResult()
     {
         var p = new Polygon3D();
-        p.Points.Add(new Point3D(0, 0, 4).ToVector());
-        p.Points.Add(new Point3D(1, 0, 4).ToVector());
-        p.Points.Add(new Point3D(1, 1, 4.01).ToVector());
-        p.Points.Add(new Point3D(0, 1, 4.01).ToVector());
+        p.Points.Add(new Vector3(0, 0, 4));
+        p.Points.Add(new Vector3(1, 0, 4));
+        p.Points.Add(new Vector3(1, 1, 4.01f));
+        p.Points.Add(new Vector3(0, 1, 4.01f));
         var p2 = p.Flatten();
         Assert.AreEqual(4, p2.Points.Count);
         var tri = p2.Triangulate();
@@ -81,16 +81,16 @@ public class Polygon3DTests
     [Test]
     public void Polygon_GetNormal_NotThrows()
     {
-        var points = new List<Point3D>()
+        var points = new List<Vector3>()
             {
-                new Point3D(-1.39943, 0.328622, 0.97968),
-                new Point3D(-1.39969, 0.328622, 0.99105),
-                new Point3D(-1.39963, 0.328631, 0.99105),
-                new Point3D(-1.39954, 0.328631, 0.98726),
-                new Point3D(-1.39937, 0.328631, 0.97968),
+                new(-1.39943f, 0.328622f, 0.97968f),
+                new(-1.39969f, 0.328622f, 0.99105f),
+                new(-1.39963f, 0.328631f, 0.99105f),
+                new(-1.39954f, 0.328631f, 0.98726f),
+                new(-1.39937f, 0.328631f, 0.97968f),
             };
 
-        var polygon = new Polygon3D(points.Select(t => t.ToVector()).ToList());
-        Vector3D normal = polygon.GetNormal().ToWndVector();
+        var polygon = new Polygon3D(points);
+        var normal = polygon.GetNormal();
     }
 }

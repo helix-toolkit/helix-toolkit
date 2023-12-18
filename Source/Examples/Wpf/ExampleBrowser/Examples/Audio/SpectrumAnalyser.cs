@@ -78,7 +78,7 @@ public sealed partial class SpectrumAnalyser : ModelVisual3D, ISpectrumAnalyser
     {
         // The default geometry is a box
         var mb = new MeshBuilder(false, false);
-        mb.AddBox(new Point3D(0, 0, 0.5).ToVector(), 0.8f, 0.8f, 1);
+        mb.AddBox(new System.Numerics.Vector3(0, 0, 0.5f), 0.8f, 0.8f, 1);
         return mb.ToMesh().ToMeshGeometry3D();
     }
 

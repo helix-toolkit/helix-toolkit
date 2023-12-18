@@ -188,12 +188,12 @@ public partial class MainViewModel : DemoCore.BaseViewModel
             var model = simHelper.Simplify(size, 7, true, Lossless);
             sw.Stop();
             CalculationTime = sw.ElapsedMilliseconds;
-            model.Normals = model.CalculateNormals();
+            model.Normals = new Vector3Collection(model.CalculateNormals());
             return model;
         }).ContinueWith(x =>
         {
             Busy = false;
-            Model = x.Result?.ToMeshGeometry3D();
+            Model = x.Result.ToMeshGeometry3D();
             CommandManager.InvalidateRequerySuggested();
         }, TaskScheduler.FromCurrentSynchronizationContext());
     }

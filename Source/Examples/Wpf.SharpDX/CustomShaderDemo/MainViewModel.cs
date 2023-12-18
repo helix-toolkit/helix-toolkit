@@ -2,13 +2,14 @@
 using CommunityToolkit.Mvvm.Input;
 using CustomShaderDemo.Materials;
 using HelixToolkit;
+using HelixToolkit.Maths;
 using HelixToolkit.SharpDX;
 using HelixToolkit.Wpf.SharpDX;
-using SharpDX;
 using SharpDX.Direct3D11;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using Color = System.Windows.Media.Color;
 using Colors = System.Windows.Media.Colors;
 using Point3D = System.Windows.Media.Media3D.Point3D;
@@ -105,8 +106,8 @@ public partial class MainViewModel : DemoCore.BaseViewModel
                 points[i * Width + j] = new Vector3(i / 10f, 0, j / 10f);
             }
         }
-        builder.AddRectangularMesh(points.Select(t => t.ToVector()).ToList(), Width);
-        Model = builder.ToMesh().ToMeshGeometry3D();
+        builder.AddRectangularMesh(points.ToList(), Width);
+        Model = builder.ToMeshGeometry3D();
 
         if (Model.Normals is not null)
         {
@@ -142,8 +143,8 @@ public partial class MainViewModel : DemoCore.BaseViewModel
         AxisLabel.TextInfo.Add(new TextInfo() { Origin = new Vector3(0, 0, 11), Text = "Z", Foreground = Colors.Blue.ToColor4() });
 
         builder = new MeshBuilder(true);
-        builder.AddSphere(new Vector3(-15, 0, 0).ToVector(), 5);
-        SphereModel = builder.ToMesh().ToMeshGeometry3D();
+        builder.AddSphere(new Vector3(-15, 0, 0), 5);
+        SphereModel = builder.ToMeshGeometry3D();
 
         GenerateNoise();
 

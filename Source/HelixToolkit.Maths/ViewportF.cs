@@ -180,7 +180,7 @@ namespace HelixToolkit.Maths
 		/// <returns>
 		/// <c>true</c> if the specified object is equal to this instance; otherwise, <c>false</c>.
 		/// </returns>
-		public override bool Equals(object obj)
+		public override bool Equals(object? obj)
 		{
 			return obj is ViewportF v && Equals(ref v);
 		}

@@ -1,5 +1,6 @@
 ﻿using System.Windows.Media.Media3D;
 using System.Windows;
+using System.Numerics;
 
 namespace HelixToolkit.Wpf;
 
@@ -62,44 +63,44 @@ public class CubeVisual3D : MeshElement3D
     {
         var b = new MeshBuilder(false, true);
         b.AddCubeFace(
-            this.Center.ToVector(),
-            new Vector3D(-1, 0, 0).ToVector(),
-            new Vector3D(0, 0, 1).ToVector(),
+            this.Center.ToVector3(),
+            new Vector3(-1, 0, 0),
+            new Vector3(0, 0, 1),
             (float)this.SideLength,
             (float)this.SideLength,
             (float)this.SideLength);
         b.AddCubeFace(
-            this.Center.ToVector(),
-            new Vector3D(1, 0, 0).ToVector(),
-            new Vector3D(0, 0, -1).ToVector(),
+            this.Center.ToVector3(),
+            new Vector3(1, 0, 0),
+            new Vector3(0, 0, -1),
             (float)this.SideLength,
             (float)this.SideLength,
             (float)this.SideLength);
         b.AddCubeFace(
-            this.Center.ToVector(),
-            new Vector3D(0, -1, 0).ToVector(),
-            new Vector3D(0, 0, 1).ToVector(),
+            this.Center.ToVector3(),
+            new Vector3(0, -1, 0),
+            new Vector3(0, 0, 1),
             (float)this.SideLength,
             (float)this.SideLength,
             (float)this.SideLength);
         b.AddCubeFace(
-            this.Center.ToVector(),
-            new Vector3D(0, 1, 0).ToVector(),
-            new Vector3D(0, 0, -1).ToVector(),
+            this.Center.ToVector3(),
+            new Vector3(0, 1, 0),
+            new Vector3(0, 0, -1),
             (float)this.SideLength,
             (float)this.SideLength,
             (float)this.SideLength);
         b.AddCubeFace(
-            this.Center.ToVector(),
-            new Vector3D(0, 0, 1).ToVector(),
-            new Vector3D(0, -1, 0).ToVector(),
+            this.Center.ToVector3(),
+            new Vector3(0, 0, 1),
+            new Vector3(0, -1, 0),
             (float)this.SideLength,
             (float)this.SideLength,
             (float)this.SideLength);
         b.AddCubeFace(
-            this.Center.ToVector(),
-            new Vector3D(0, 0, -1).ToVector(),
-            new Vector3D(0, 1, 0).ToVector(),
+            this.Center.ToVector3(),
+            new Vector3(0, 0, -1),
+            new Vector3(0, 1, 0),
             (float)this.SideLength,
             (float)this.SideLength,
             (float)this.SideLength);

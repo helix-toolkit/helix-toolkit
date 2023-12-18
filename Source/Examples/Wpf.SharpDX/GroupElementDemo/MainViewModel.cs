@@ -10,7 +10,6 @@ using Media3D = System.Windows.Media.Media3D;
 using Point3D = System.Windows.Media.Media3D.Point3D;
 using Transform3D = System.Windows.Media.Media3D.Transform3D;
 using TranslateTransform3D = System.Windows.Media.Media3D.TranslateTransform3D;
-using Vector3 = SharpDX.Vector3;
 using Vector3D = System.Windows.Media.Media3D.Vector3D;
 
 namespace GroupElementDemo;
@@ -82,14 +81,14 @@ public partial class MainViewModel : DemoCore.BaseViewModel
         AxisLabel.TextInfo.Add(new TextInfo() { Origin = new Vector3(0, 0, 11), Text = "Z", Foreground = Colors.Blue.ToColor4() });
 
         var meshBuilder = new MeshBuilder(true);
-        meshBuilder.AddSphere(new Vector3(0, 0, 0).ToVector(), 0.5f);
-        SphereModel = meshBuilder.ToMesh().ToMeshGeometry3D();
+        meshBuilder.AddSphere(new Vector3(0, 0, 0), 0.5f);
+        SphereModel = meshBuilder.ToMeshGeometry3D();
         meshBuilder = new MeshBuilder(true);
-        meshBuilder.AddBox(Vector3.Zero.ToVector(), 0.5f, 0.5f, 0.5f);
-        BoxModel = meshBuilder.ToMesh().ToMeshGeometry3D();
+        meshBuilder.AddBox(Vector3.Zero, 0.5f, 0.5f, 0.5f);
+        BoxModel = meshBuilder.ToMeshGeometry3D();
         meshBuilder = new MeshBuilder(true);
-        meshBuilder.AddCone(Vector3.Zero.ToVector(), new Vector3(0, 2, 0).ToVector(), 1, true, 24);
-        ConeModel = meshBuilder.ToMesh().ToMeshGeometry3D();
+        meshBuilder.AddCone(Vector3.Zero, new Vector3(0, 2, 0), 1, true, 24);
+        ConeModel = meshBuilder.ToMeshGeometry3D();
     }
 
     [RelayCommand]

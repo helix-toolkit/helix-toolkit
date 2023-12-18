@@ -6,6 +6,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Media3D;
+using System.Numerics;
 
 namespace Workitem10046;
 
@@ -218,11 +219,11 @@ public partial class FaceTheCameraBillboard : MeshElement3D
         Point3D tr = centrePoint - halfWidthVector - halfHeightVector;
         // Top-left corner to visual space
         Point3D tl = centrePoint + halfWidthVector - halfHeightVector;
-        builder.AddQuad(bl.ToVector(), br.ToVector(), tr.ToVector(), tl.ToVector(),
-                 new Point(0, 1).ToVector(),
-               new Point(1, 1).ToVector(),
-               new Point(1, 0).ToVector(),
-               new Point(0, 0).ToVector()
+        builder.AddQuad(bl.ToVector3(), br.ToVector3(), tr.ToVector3(), tl.ToVector3(),
+                 new Vector2(0, 1),
+               new Vector2(1, 1),
+               new Vector2(1, 0),
+               new Vector2(0, 0)
                );
         //  new Point(0, 1),
         //new Point(1, 1),

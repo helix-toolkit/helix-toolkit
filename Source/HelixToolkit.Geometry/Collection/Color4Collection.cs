@@ -1,42 +1,40 @@
-﻿using HelixToolkit.SharpDX.Utilities;
-using SharpDX;
-using System.ComponentModel;
-using System.Globalization;
+﻿using System.Globalization;
 using System.Text;
 
-namespace HelixToolkit.SharpDX;
+namespace HelixToolkit;
 
 [Serializable]
-[TypeConverter(typeof(Vector2CollectionConverter))]
-public sealed class Vector2Collection : FastList<Vector2>
+public sealed class Color4Collection : FastList<Color4>
 {
-    public Vector2Collection()
+    public Color4Collection()
     {
     }
 
-    public Vector2Collection(int capacity)
+    public Color4Collection(int capacity)
         : base(capacity)
     {
     }
 
-    public Vector2Collection(IEnumerable<Vector2> items)
+    public Color4Collection(IEnumerable<Color4> items)
         : base(items)
     {
     }
 
-    public static Vector2Collection Parse(string source)
+    public static Color4Collection Parse(string source)
     {
         IFormatProvider formatProvider = CultureInfo.InvariantCulture;
 
         var th = new TokenizerHelper(source, formatProvider);
-        var resource = new Vector2Collection();
+        var resource = new Color4Collection();
 
-        Vector2 value;
+        Color4 value;
 
         while (th.NextToken())
         {
-            value = new Vector2(
+            value = new Color4(
                 Convert.ToSingle(th.GetCurrentToken(), formatProvider),
+                Convert.ToSingle(th.NextTokenRequired(), formatProvider),
+                Convert.ToSingle(th.NextTokenRequired(), formatProvider),
                 Convert.ToSingle(th.NextTokenRequired(), formatProvider));
 
             resource.Add(value);
@@ -56,7 +54,7 @@ public sealed class Vector2Collection : FastList<Vector2>
         for (var i = 0; i < this.Count; i++)
         {
             //str.AppendFormat(provider, "{0:" + format + "}", this[i]);
-            str.AppendFormat(provider, "{0},{1}", this[i].X, this[i].Y);
+            str.AppendFormat(provider, "{0},{1},{2},{3}", this[i].Red, this[i].Green, this[i].Blue, this[i].Alpha);
             if (i != this.Count - 1)
             {
                 str.Append(' ');

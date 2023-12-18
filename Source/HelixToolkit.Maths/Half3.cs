@@ -221,7 +221,7 @@ namespace HelixToolkit.Maths
         /// <param name="obj">Object to make the comparison with.</param>
         /// <returns>
         /// <c>true</c> if the current instance is equal to the specified object; <c>false</c> otherwise.</returns>
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             return obj is Half3 half && this.Equals(half);
         }

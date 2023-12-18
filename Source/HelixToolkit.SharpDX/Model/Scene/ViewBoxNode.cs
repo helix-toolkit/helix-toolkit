@@ -249,7 +249,7 @@ public class ViewBoxNode : ScreenSpacedNode
             pts.Add(center + (dir * (size + 1.1f)));
         }
         builder = new MeshBuilder(false, false, false);
-        builder.AddTriangleStrip(pts.Select(t => t).ToList());
+        builder.AddTriangleStrip(pts.ToList());
         var pie = builder.ToMeshGeometry3D();
         var count = pie.Indices?.Count ?? 0;
         for (var i = 0; i < count;)

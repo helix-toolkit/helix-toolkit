@@ -200,7 +200,7 @@ namespace HelixToolkit.SharpDX.Controls
         public Vector3? UnProject(Vector2 p, Vector3 position, Vector3 normal)
         {
             var ray = this.GetRay(p);
-            var plane = PlaneHelper.GetPlane(position, normal);
+            var plane = PlaneHelper.Create(position, normal);
             if (Collision.RayIntersectsPlane(ref ray, ref plane, out Vector3 point))
             {
                 return point;

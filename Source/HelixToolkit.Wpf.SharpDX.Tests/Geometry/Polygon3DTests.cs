@@ -1,6 +1,5 @@
-﻿using HelixToolkit.SharpDX;
-using NUnit.Framework;
-using SharpDX;
+﻿using NUnit.Framework;
+using System.Numerics;
 
 namespace HelixToolkit.Wpf.SharpDX.Tests.Geometry;
 
@@ -19,7 +18,7 @@ public class Polygon3DTests
                 new Vector3(-1.39937f, 0.328631f, 0.97968f),
             };
 
-        var polygon = new Polygon3D(points.ConvertAll(t => t.ToVector()));
-        Vector3 normal = polygon.GetNormal().ToDxVector();
+        var polygon = new Polygon3D(points.ConvertAll(t => t));
+        Vector3 normal = polygon.GetNormal();
     }
 }

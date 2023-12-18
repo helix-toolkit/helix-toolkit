@@ -49,7 +49,7 @@ namespace HelixToolkit.Maths
         /// <param name="point">The point.</param>
         /// <param name="normal">The normal.</param>
         /// <returns></returns>
-        public static Plane GetPlane(Vector3 point, Vector3 normal)
+        public static Plane Create(Vector3 point, Vector3 normal)
         {
             normal = Vector3.Normalize(normal);
             return new Plane(normal, -Vector3.Dot(normal, point));
@@ -61,7 +61,7 @@ namespace HelixToolkit.Maths
         /// <param name="point2">The point2.</param>
         /// <param name="point3">The point3.</param>
         /// <returns></returns>
-        public static Plane GetPlane(Vector3 point1, Vector3 point2, Vector3 point3)
+        public static Plane Create(Vector3 point1, Vector3 point2, Vector3 point3)
         {
             var p12 = point2 - point1;
             var p13 = point3 - point1;

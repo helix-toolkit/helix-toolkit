@@ -1,5 +1,6 @@
-﻿using System.Numerics;
-using System.Runtime.CompilerServices;
+﻿global using HelixToolkit.Maths;
+global using System.Numerics;
+global using System.Runtime.CompilerServices;
 
 namespace HelixToolkit;
 

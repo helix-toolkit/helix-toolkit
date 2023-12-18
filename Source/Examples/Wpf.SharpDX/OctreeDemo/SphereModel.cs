@@ -20,17 +20,17 @@ public partial class SphereModel : DataModel
     {
         var builder = new MeshBuilder(true, false, false);
         var center = new Vector3();
-        builder.AddSphere(center.ToVector(), 1, 12, 12);
-        Sphere = builder.ToMesh().ToMeshGeometry3D();
+        builder.AddSphere(center, 1, 12, 12);
+        Sphere = builder.ToMeshGeometry3D();
         builder = new MeshBuilder(true, false, false);
-        builder.AddBox(center.ToVector(), 1, 1, 1);
-        Box = builder.ToMesh().ToMeshGeometry3D();
+        builder.AddBox(center, 1, 1, 1);
+        Box = builder.ToMeshGeometry3D();
         builder = new MeshBuilder(true, false, false);
-        builder.AddPyramid(center.ToVector(), 1, 1, true);
-        Pyramid = builder.ToMesh().ToMeshGeometry3D();
+        builder.AddPyramid(center, 1, 1, true);
+        Pyramid = builder.ToMeshGeometry3D();
         builder = new MeshBuilder(true, false, false);
-        builder.AddPipe(center.ToVector(), (center + new Vector3(0, 1, 0)).ToVector(), 0, 2, 12);
-        Pipe = builder.ToMesh().ToMeshGeometry3D();
+        builder.AddPipe(center, (center + new Vector3(0, 1, 0)), 0, 2, 12);
+        Pipe = builder.ToMeshGeometry3D();
     }
 
     private static readonly Random rnd = new();
@@ -46,7 +46,7 @@ public partial class SphereModel : DataModel
             CreateAnimatedTransform1(DynamicTransform, center.ToVector3D(), new Media3D.Vector3D(rnd.Next(-1, 1), rnd.Next(-1, 1), rnd.Next(-1, 1)), rnd.Next(10, 100));
         }
         var color = rnd.NextColor();
-        Material = new PhongMaterial() { DiffuseColor = color.ToColor4() };
+        Material = new PhongMaterial() { DiffuseColor = color };
     }
 
     [ObservableProperty]

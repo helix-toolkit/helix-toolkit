@@ -1,16 +1,13 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using HelixToolkit;
 using HelixToolkit.SharpDX;
 using HelixToolkit.SharpDX.Model;
 using HelixToolkit.SharpDX.Utilities;
 using HelixToolkit.Wpf.SharpDX;
-using SharpDX;
 using System;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using Color4 = SharpDX.Color4;
 using Colors = System.Windows.Media.Colors;
 using Media3D = System.Windows.Media.Media3D;
 using Point3D = System.Windows.Media.Media3D.Point3D;
@@ -42,10 +39,10 @@ public partial class MainViewModel : DemoCore.BaseViewModel
         EffectsManager = new DefaultEffectsManager();
         Camera = new OrthographicCamera() { Position = new Point3D(0, 0, -5), LookDirection = new Vector3D(0, 0, 5), UpDirection = new Vector3D(0, 1, 0) };
         var builder = new MeshBuilder();
-        //builder.AddBox(new Vector3(0, 0, 0).ToVector(), 2, 2, 0.001f);
-        builder.AddSphere(Vector3.Zero.ToVector(), 0.1f);
-        builder.AddBox(Vector3.UnitX.ToVector(), 0.2f, 0.2f, 0.2f);
-        MeshModel = builder.ToMesh().ToMeshGeometry3D();
+        //builder.AddBox(new Vector3(0, 0, 0), 2, 2, 0.001f);
+        builder.AddSphere(Vector3.Zero, 0.1f);
+        builder.AddBox(Vector3.UnitX, 0.2f, 0.2f, 0.2f);
+        MeshModel = builder.ToMeshGeometry3D();
         MeshMaterial = PhongMaterials.Yellow;
 
         var lineBuilder = new LineBuilder();
@@ -126,8 +123,8 @@ public partial class MainViewModel : DemoCore.BaseViewModel
         m.Color = new Color4(1, 1, 1, 0.4f);
         m.TransferMap = transferMap;
         m.Freeze();
-        var scale = Matrix.Scaling(2, 2, 178 / 256f * 2);
-        var rotate = Matrix.RotationAxis(new Vector3(1, 0, 0), (float)Math.PI);
+        var scale = Matrix.CreateScale(2, 2, 178 / 256f * 2);
+        var rotate = Matrix.CreateFromAxisAngle(new Vector3(1, 0, 0), (float)Math.PI);
         var t = new Media3D.MatrixTransform3D((scale * rotate).ToMatrix3D());
         t.Freeze();
         return new Tuple<Material, Media3D.Transform3D>(m, t);
@@ -141,7 +138,7 @@ public partial class MainViewModel : DemoCore.BaseViewModel
         m.Color = new Color4(0.6f, 0.6f, 0.6f, 1f);
         m.TransferMap = transferMap;
         m.Freeze();
-        var rotate = Matrix.RotationAxis(new Vector3(1, 0, 0), (float)Math.PI);
+        var rotate = Matrix.CreateFromAxisAngle(new Vector3(1, 0, 0), (float)Math.PI);
         var transform = new Media3D.MatrixTransform3D(rotate.ToMatrix3D());
         transform.Freeze();
         return new Tuple<Material, Media3D.Transform3D>(m, transform);

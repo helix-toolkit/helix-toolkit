@@ -7,11 +7,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
-using Color4 = SharpDX.Color4;
 using Media3D = System.Windows.Media.Media3D;
 using Point3D = System.Windows.Media.Media3D.Point3D;
 using Transform3D = System.Windows.Media.Media3D.Transform3D;
-using Vector3 = SharpDX.Vector3;
 using Vector3D = System.Windows.Media.Media3D.Vector3D;
 
 namespace MaterialDemo;
@@ -89,12 +87,12 @@ public partial class MainViewModel : DemoCore.BaseViewModel
         };
 
         var builder = new MeshBuilder();
-        builder.AddBox(new Vector3(0, -6, 0).ToVector(), 200, 2, 100);
+        builder.AddBox(new Vector3(0, -6, 0), 200, 2, 100);
 
-        Floor = builder.ToMesh().ToMeshGeometry3D();
+        Floor = builder.ToMeshGeometry3D();
 
         builder = new MeshBuilder();
-        builder.AddSphere(Vector3.Zero.ToVector(), 2);
+        builder.AddSphere(Vector3.Zero, 2);
 
         LoadObj(@"shaderBall\shaderBall.obj");
 

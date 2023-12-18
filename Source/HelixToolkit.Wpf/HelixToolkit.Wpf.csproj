@@ -60,6 +60,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\HelixToolkit.Geometry\HelixToolkit.Geometry.csproj" />
     <ProjectReference Include="..\HelixToolkit\HelixToolkit.csproj" />
   </ItemGroup>
 

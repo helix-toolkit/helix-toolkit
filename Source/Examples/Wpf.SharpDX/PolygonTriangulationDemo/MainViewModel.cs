@@ -29,12 +29,12 @@ public partial class MainViewModel : DemoCore.BaseViewModel
     /// <summary>
     /// Color of the Gridlines
     /// </summary>
-    public SharpDX.Color GridColor { get; private set; }
+    public Color GridColor { get; private set; }
 
     /// <summary>
     /// Color of the Triangle Lines
     /// </summary>
-    public SharpDX.Color TriangulationColor { get; private set; }
+    public Color TriangulationColor { get; private set; }
 
     /// <summary>
     /// Transform of the Grid

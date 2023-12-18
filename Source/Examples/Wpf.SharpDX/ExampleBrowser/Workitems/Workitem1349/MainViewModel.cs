@@ -1,6 +1,5 @@
 ﻿using HelixToolkit;
 using HelixToolkit.SharpDX;
-using SharpDX;
 using System.Linq;
 using Color = System.Windows.Media.Color;
 using Colors = System.Windows.Media.Colors;
@@ -15,7 +14,7 @@ public class MainViewModel : DemoCore.BaseViewModel
     public MeshGeometry3D Model { get; private set; }
     public LineGeometry3D Grid { get; private set; }
 
-    public SharpDX.Color GridColor { get; private set; }
+    public HelixToolkit.Maths.Color GridColor { get; private set; }
 
     public Color DirectionalLightColor { get; private set; }
     public Color AmbientLightColor { get; private set; }
@@ -42,13 +41,13 @@ public class MainViewModel : DemoCore.BaseViewModel
 
         // floor plane grid
         this.Grid = LineBuilder.GenerateGrid();
-        this.GridColor = SharpDX.Color.Black;
+        this.GridColor = HelixToolkit.Maths.Color.Black;
 
         // scene model3d
         var b1 = new MeshBuilder();
-        b1.AddSphere(new Vector3(0, 0, 0).ToVector(), 0.05f);
+        b1.AddSphere(new Vector3(0, 0, 0), 0.05f);
 
-        var meshGeometry = b1.ToMesh().ToMeshGeometry3D();
+        var meshGeometry = b1.ToMeshGeometry3D();
         meshGeometry.Colors = meshGeometry.TextureCoordinates is null ? null : new Color4Collection(meshGeometry.TextureCoordinates.Select(x => x.ToColor4()));
         this.Model = meshGeometry;
 
@@ -57,9 +56,9 @@ public class MainViewModel : DemoCore.BaseViewModel
         float scale = 0.8f;
         //            Text3D.TextInfo.Add(new TextInfo("Origin", new Vector3(0,0,0)) { Foreground = SharpDX.Color.Red, Scale = scale * 2 });
         //            Text3D.TextInfo.Add(new TextInfo("1", new Vector3(1,0,0)) { Foreground = SharpDX.Color.Blue, Scale = scale * 2 });
-        Text3D.TextInfo.Add(new TextInfo("2", new Vector3(2, 0, 0)) { Foreground = SharpDX.Color.Blue, Scale = scale * 2 });
-        Text3D.TextInfo.Add(new TextInfo("3", new Vector3(3, 0, 3)) { Foreground = SharpDX.Color.Blue, Scale = scale * 2 });
-        Text3D.TextInfo.Add(new TextInfo("4", new Vector3(4, 0, 3)) { Foreground = SharpDX.Color.Blue, Scale = scale * 2 });
-        Text3D.TextInfo.Add(new TextInfo("5", new Vector3(5, 0, 3)) { Foreground = SharpDX.Color.Blue, Scale = scale * 2 });
+        Text3D.TextInfo.Add(new TextInfo("2", new Vector3(2, 0, 0)) { Foreground = HelixToolkit.Maths.Color.Blue, Scale = scale * 2 });
+        Text3D.TextInfo.Add(new TextInfo("3", new Vector3(3, 0, 3)) { Foreground = HelixToolkit.Maths.Color.Blue, Scale = scale * 2 });
+        Text3D.TextInfo.Add(new TextInfo("4", new Vector3(4, 0, 3)) { Foreground = HelixToolkit.Maths.Color.Blue, Scale = scale * 2 });
+        Text3D.TextInfo.Add(new TextInfo("5", new Vector3(5, 0, 3)) { Foreground = HelixToolkit.Maths.Color.Blue, Scale = scale * 2 });
     }
 }

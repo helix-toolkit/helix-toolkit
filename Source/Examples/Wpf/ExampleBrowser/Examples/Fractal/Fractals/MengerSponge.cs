@@ -70,7 +70,7 @@ public sealed class MengerSponge : FractalBase
         var builder = new MeshBuilder();
         foreach (var center in centers)
         {
-            builder.AddBox(center.ToVector(), (float)L, (float)L, (float)L);
+            builder.AddBox(center.ToVector3(), (float)L, (float)L, (float)L);
         }
         var geometry = builder.ToMesh().ToMeshGeometry3D();
         geometry.Freeze();

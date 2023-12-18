@@ -1,12 +1,9 @@
-﻿using HelixToolkit.SharpDX.Utilities;
-using System.ComponentModel;
-using System.Globalization;
+﻿using System.Globalization;
 using System.Text;
 
-namespace HelixToolkit.SharpDX;
+namespace HelixToolkit;
 
 [Serializable]
-[TypeConverter(typeof(IntCollectionConverter))]
 public sealed class IntCollection : FastList<int>
 {
     public IntCollection()

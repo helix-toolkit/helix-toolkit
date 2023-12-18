@@ -29,13 +29,10 @@ The MIT License (MIT)
 Copyright (c) 2007-2011 SlimDX Group
 The MIT License (MIT)
 */
-using System;
 using System.Globalization;
+using System.Numerics;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
-
-using System.Numerics;
-using Matrix = System.Numerics.Matrix4x4;
 namespace HelixToolkit.Maths
 {
     /// <summary>
@@ -613,14 +610,13 @@ namespace HelixToolkit.Maths
         /// <returns>
         /// A <see cref = "System.String" /> that represents this instance.
         /// </returns>
-        public string ToString(string format, IFormatProvider formatProvider)
+        public string ToString(string? format, IFormatProvider? formatProvider)
         {
-            if (format == null)
-            {
-                ToString(formatProvider);
-            }
-
-            return string.Format(formatProvider, "X:{0} Y:{1} Z:{2} W:{3}", X.ToString(format, formatProvider),
+            return format == null && formatProvider == null 
+                ? string.Empty
+                : format == null
+                ? ToString(formatProvider!)
+                : string.Format(formatProvider, "X:{0} Y:{1} Z:{2} W:{3}", X.ToString(format, formatProvider),
                                  Y.ToString(format, formatProvider), Z.ToString(format, formatProvider),
                                  W.ToString(format, formatProvider));
         }
@@ -676,7 +672,7 @@ namespace HelixToolkit.Maths
         /// <returns>
         /// <c>true</c> if the specified <see cref = "System.Object" /> is equal to this instance; otherwise, <c>false</c>.
         /// </returns>
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             return obj is Int4 int4 && Equals(ref int4);
         }

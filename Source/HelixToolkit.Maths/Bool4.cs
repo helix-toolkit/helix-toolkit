@@ -299,6 +299,11 @@ namespace HelixToolkit.Maths
             return string.Format(CultureInfo.CurrentCulture, "X:{0} Y:{1} Z:{2} W:{3}", X, Y, Z, W);
         }
 
+        public string ToString(IFormatProvider formatProvider)
+        {
+            return string.Format(formatProvider, "[X:{0} Y:{1} Z:{2} W:{3}]",
+                X.ToString(formatProvider), Y.ToString(formatProvider), Z.ToString(formatProvider), W.ToString(formatProvider));
+        }
         /// <summary>
         /// Returns a <see cref="System.String"/> that represents this instance.
         /// </summary>
@@ -307,9 +312,13 @@ namespace HelixToolkit.Maths
         /// <returns>
         /// A <see cref="System.String"/> that represents this instance.
         /// </returns>
-        public string ToString(string format, IFormatProvider formatProvider)
+        public string ToString(string? format, IFormatProvider? formatProvider)
         {
-            return string.Format(formatProvider, format, X, Y, Z, W);
+            return format == null && formatProvider == null 
+                ? string.Empty 
+                : format == null 
+                ? ToString(formatProvider!)
+                : string.Format(formatProvider, format, X, Y, Z, W);
         }
 
         /// <summary>
@@ -363,7 +372,7 @@ namespace HelixToolkit.Maths
         /// <returns>
         /// <c>true</c> if the specified <see cref = "System.Object" /> is equal to this instance; otherwise, <c>false</c>.
         /// </returns>
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             return obj is Bool4 b && Equals(ref b);
         }

@@ -442,10 +442,12 @@ namespace HelixToolkit.Maths
         /// <returns>
         /// A <see cref="System.String"/> that represents this instance.
         /// </returns>
-        public string ToString(string format, IFormatProvider formatProvider)
+        public string ToString(string? format, IFormatProvider? formatProvider)
         {
-            return format == null
-                ? ToString(formatProvider)
+            return format == null && formatProvider == null
+                ? string.Empty
+                : format == null
+                ? ToString(formatProvider!)
                 : string.Format(formatProvider, "Center:{0} Radius:{1}", Center.ToString(format, formatProvider),
                 Radius.ToString(format, formatProvider));
         }
@@ -497,7 +499,7 @@ namespace HelixToolkit.Maths
         /// <returns>
         /// <c>true</c> if the specified <see cref="System.Object"/> is equal to this instance; otherwise, <c>false</c>.
         /// </returns>
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             return obj is BoundingSphere b && Equals(ref b);
         }

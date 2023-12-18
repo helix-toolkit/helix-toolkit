@@ -29,11 +29,9 @@ The MIT License (MIT)
 Copyright (c) 2007-2011 SlimDX Group
 The MIT License (MIT)
 */
-using System;
+using System.Numerics;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
-using System.Numerics;
-using Matrix = System.Numerics.Matrix4x4;
 namespace HelixToolkit.Maths
 {
     /// <summary>
@@ -253,7 +251,7 @@ namespace HelixToolkit.Maths
         /// <param name="obj">Object to make the comparison with.</param>
         /// <returns>
         /// <c>true</c> if the current instance is equal to the specified object; <c>false</c> otherwise.</returns>
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             return obj is Half4 half && this.Equals(half);
         }

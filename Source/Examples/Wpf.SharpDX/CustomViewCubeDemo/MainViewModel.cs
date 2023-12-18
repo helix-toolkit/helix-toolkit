@@ -1,7 +1,6 @@
 ﻿using HelixToolkit;
 using HelixToolkit.SharpDX;
 using HelixToolkit.Wpf.SharpDX;
-using SharpDX;
 using System.Linq;
 
 namespace CustomViewCubeDemo;
@@ -39,33 +38,33 @@ public class MainViewModel : DemoCore.BaseViewModel
     private void InitializeModels()
     {
         var builder = new MeshBuilder();
-        builder.AddBox(Vector3.Zero.ToVector(), 1, 1, 1);
+        builder.AddBox(Vector3.Zero, 1, 1, 1);
         var reader = new ObjReader();
         var models = reader.Read("bunny.obj");
         Geometry = models?[0].Geometry;
         Material = PhongMaterials.Red;
 
         builder = new MeshBuilder();
-        builder.AddBox(new Vector3(0, 0, -4).ToVector(), 2, 2, 6);
-        RectGeometry = builder.ToMesh().ToMeshGeometry3D();
+        builder.AddBox(new Vector3(0, 0, -4), 2, 2, 6);
+        RectGeometry = builder.ToMeshGeometry3D();
     }
 
     private void InitializeViewCubes()
     {
         var builder = new MeshBuilder();
-        builder.AddPyramid(Vector3.Zero.ToVector(), 10, 10, true);
-        ViewCubeGeometry1 = builder.ToMesh().ToMeshGeometry3D();
+        builder.AddPyramid(Vector3.Zero, 10, 10, true);
+        ViewCubeGeometry1 = builder.ToMeshGeometry3D();
         ViewCubeMaterial1 = DiffuseMaterials.Orange;
 
         builder = new MeshBuilder();
-        builder.AddDodecahedron(Vector3.Zero.ToVector(), Vector3.UnitX.ToVector(), Vector3.UnitY.ToVector(), 5);
-        ViewCubeGeometry2 = builder.ToMesh().ToMeshGeometry3D();
+        builder.AddDodecahedron(Vector3.Zero, Vector3.UnitX, Vector3.UnitY, 5);
+        ViewCubeGeometry2 = builder.ToMeshGeometry3D();
         ViewCubeMaterial2 = DiffuseMaterials.Blue;
 
         ViewCubeMaterial3 = DiffuseMaterials.Gray;
         ViewCubeMaterial4 = DiffuseMaterials.Pearl;
         //Center the model first and do scaling
-        var transform = Matrix.Translation(0, -2, 0) * Matrix.Scaling(3.5f);
+        var transform = Matrix.CreateTranslation(0, -2, 0) * Matrix.CreateScale(3.5f);
         ViewCubeTransform3 = new System.Windows.Media.Media3D.MatrixTransform3D(transform.ToMatrix3D());
     }
 

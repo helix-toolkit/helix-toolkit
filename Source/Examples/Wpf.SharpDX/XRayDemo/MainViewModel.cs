@@ -2,7 +2,6 @@
 using HelixToolkit;
 using HelixToolkit.SharpDX;
 using HelixToolkit.Wpf.SharpDX;
-using SharpDX;
 using SharpDX.Direct3D11;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +12,6 @@ using Colors = System.Windows.Media.Colors;
 using Media3D = System.Windows.Media.Media3D;
 using Point3D = System.Windows.Media.Media3D.Point3D;
 using Transform3D = System.Windows.Media.Media3D.Transform3D;
-using Vector3 = SharpDX.Vector3;
 using Vector3D = System.Windows.Media.Media3D.Vector3D;
 
 namespace XRayDemo;
@@ -105,10 +103,10 @@ public partial class MainViewModel : DemoCore.BaseViewModel
         // ----------------------------------------------
         // floor model3d
         var b2 = new MeshBuilder(true, true, true);
-        b2.AddBox(new Vector3(0.0f, 0, 0.0f).ToVector(), 150, 1, 150, BoxFaces.All);
-        b2.AddBox(new Vector3(0, 25, 70).ToVector(), 150, 50, 20);
-        b2.AddBox(new Vector3(0, 25, -70).ToVector(), 150, 50, 20);
-        this.Floor = b2.ToMesh().ToMeshGeometry3D();
+        b2.AddBox(new Vector3(0.0f, 0, 0.0f), 150, 1, 150, BoxFaces.All);
+        b2.AddBox(new Vector3(0, 25, 70), 150, 50, 20);
+        b2.AddBox(new Vector3(0, 25, -70), 150, 50, 20);
+        this.Floor = b2.ToMeshGeometry3D();
         this.FloorMaterial = PhongMaterials.Bisque;
         this.FloorMaterial.DiffuseMap = TextureModel.Create(new System.Uri(@"TextureCheckerboard2.jpg", System.UriKind.RelativeOrAbsolute).ToString());
         this.FloorMaterial.NormalMap = TextureModel.Create(new System.Uri(@"TextureCheckerboard2_dot3.jpg", System.UriKind.RelativeOrAbsolute).ToString());
@@ -141,13 +139,13 @@ public partial class MainViewModel : DemoCore.BaseViewModel
         Instances = new Matrix[6];
         for (int i = 0; i < Instances.Length; ++i)
         {
-            Instances[i] = Matrix.Translation(new Vector3(15 * i - 30, 15 * (i % 2) - 30, 0));
+            Instances[i] = Matrix.CreateTranslation(new Vector3(15 * i - 30, 15 * (i % 2) - 30, 0));
         }
 
         OutlineInstances = new Matrix[6];
         for (int i = 0; i < Instances.Length; ++i)
         {
-            OutlineInstances[i] = Matrix.Translation(new Vector3(15 * i - 30, 15 * (i % 2), 0));
+            OutlineInstances[i] = Matrix.CreateTranslation(new Vector3(15 * i - 30, 15 * (i % 2), 0));
         }
 
         var blendDesc = new BlendStateDescription();

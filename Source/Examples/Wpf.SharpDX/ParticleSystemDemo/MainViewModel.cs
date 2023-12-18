@@ -1,8 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
-using HelixToolkit;
 using HelixToolkit.SharpDX;
 using HelixToolkit.Wpf.SharpDX;
-using SharpDX;
 using SharpDX.Direct3D11;
 using System;
 using System.Collections.Generic;
@@ -60,9 +58,9 @@ public partial class MainViewModel : DemoCore.BaseViewModel
         ConsumerTransform = new Media3D.MatrixTransform3D(matrix);
     }
 
-    public Material EmitterMaterial { get; } = new PhongMaterial() { DiffuseColor = new SharpDX.Color4(1, 0, 1, 1) };
+    public Material EmitterMaterial { get; } = new PhongMaterial() { DiffuseColor = new Color4(1, 0, 1, 1) };
 
-    public Material ConsumerMaterial { get; } = new PhongMaterial() { DiffuseColor = new SharpDX.Color4(0.5f, 1f, 0.5f, 1) };
+    public Material ConsumerMaterial { get; } = new PhongMaterial() { DiffuseColor = new Color4(0.5f, 1f, 0.5f, 1) };
 
     [ObservableProperty]
     private Stream? particleTexture;
@@ -222,7 +220,7 @@ public partial class MainViewModel : DemoCore.BaseViewModel
     [ObservableProperty]
     private Media.SolidColorBrush blendFactorColorBrush = new(Media.Colors.White);
 
-    public IList<Matrix> Instances { private set; get; }
+    public IList<Matrix4x4> Instances { private set; get; }
 
     public readonly Tuple<int, int>[] TextureColumnsRows = new Tuple<int, int>[] { new(1, 1), new(4, 4), new(4, 4), new(6, 5) };
     public readonly string[] Textures = new string[] { @"Snowflake.png", @"FXT_Explosion_Fireball_Atlas_d.png", @"FXT_Sparks_01_Atlas_d.png", @"Smoke30Frames_0.png" };
@@ -235,12 +233,12 @@ public partial class MainViewModel : DemoCore.BaseViewModel
         EffectsManager = new DefaultEffectsManager();
 
         var lineBuilder = new LineBuilder();
-        lineBuilder.AddBox(new SharpDX.Vector3(), 1, 1, 1);
+        lineBuilder.AddBox(new Vector3(), 1, 1, 1);
         BoundingLines = lineBuilder.ToLineGeometry3D();
         LoadTexture(SelectedTextureIndex);
         var meshBuilder = new MeshBuilder();
-        meshBuilder.AddSphere(new SharpDX.Vector3(0, 0, 0).ToVector(), 0.5f, 16, 16);
-        Model = meshBuilder.ToMesh().ToMeshGeometry3D();
+        meshBuilder.AddSphere(new Vector3(0, 0, 0), 0.5f, 16, 16);
+        Model = meshBuilder.ToMeshGeometry3D();
         Camera = new PerspectiveCamera()
         {
             Position = new Media3D.Point3D(0, 0, 20),
@@ -248,8 +246,8 @@ public partial class MainViewModel : DemoCore.BaseViewModel
             LookDirection = new Media3D.Vector3D(0, 0, -20)
         };
         Instances = new Matrix[] {
-                Matrix.Identity, Matrix.Scaling(1,-1, 1) * Matrix.Translation(10, 0, 10), Matrix.Translation(-10, 0, 10), Matrix.Translation(10, 0, -10),
-                Matrix.RotationAxis(new Vector3(1,0,0), 90) *  Matrix.Translation(-10, 0, -10), };
+                Matrix.Identity, Matrix.CreateScale(1,-1, 1) * Matrix.CreateTranslation(10, 0, 10), Matrix.CreateTranslation(-10, 0, 10), Matrix.CreateTranslation(10, 0, -10),
+                Matrix.CreateFromAxisAngle(new Vector3(1,0,0), (float)Math.PI / 2) *  Matrix.CreateTranslation(-10, 0, -10), };
     }
 
     private void LoadTexture(int index)

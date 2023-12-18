@@ -369,7 +369,7 @@ public class Mesh3D : ICloneable
                         vertex += (shrinkFactor * (centroid - vertex));
                     }
 
-                    tm.Positions.Add(vertex.ToVector());
+                    tm.Positions.Add(vertex.ToVector3());
                     if (tm.CreateTextureCoordinates)
                     {
                         tm.TextureCoordinates!.Add(this.TextureCoordinates![v].ToVector());
@@ -397,7 +397,7 @@ public class Mesh3D : ICloneable
             var tm = new MeshBuilder(false, this.TextureCoordinates != null);
             foreach (var v in this.Vertices)
             {
-                tm.Positions.Add(v.ToVector());
+                tm.Positions.Add(v.ToVector3());
             }
 
             if (this.TextureCoordinates != null)

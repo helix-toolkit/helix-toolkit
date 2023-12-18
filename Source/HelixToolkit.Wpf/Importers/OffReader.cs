@@ -80,7 +80,7 @@ public sealed class OffReader : ModelReader
         var mb = new MeshBuilder(false, false);
         foreach (var p in this.Vertices)
         {
-            mb.Positions.Add(p.ToVector());
+            mb.Positions.Add(p.ToVector3());
         }
 
         foreach (var face in this.Faces)

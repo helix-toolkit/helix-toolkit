@@ -457,17 +457,17 @@ public class StudioReader : IModelReader
         MeshBuilder.ComputeTangents(positions, normals, textureCoordinates, triangleIndices, out var tangents_, out var bitangents_);
         tangents = new Vector3Collection();
         bitangents = new Vector3Collection();
-        if (tangents_ is FastList<Vector3> t)
+        if (tangents_ is Vector3Collection t)
         {
-            tangents.Swap(t);
+            tangents = t;
         }
         else
         {
             tangents.AddRange(tangents_);
         }
-        if (bitangents_ is FastList<Vector3> b)
+        if (bitangents_ is Vector3Collection b)
         {
-            bitangents.Swap(b);
+            bitangents = b;
         }
         else
         {

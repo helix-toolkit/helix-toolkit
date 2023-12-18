@@ -29,7 +29,6 @@ The MIT License (MIT)
 Copyright (c) 2007-2011 SlimDX Group
 The MIT License (MIT)
 */
-using System;
 using System.Globalization;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
@@ -405,7 +404,7 @@ namespace HelixToolkit.Maths
         /// <returns>
         /// <c>true</c> if the specified <see cref="System.Object"/> is equal to this instance; otherwise, <c>false</c>.
         /// </returns>
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             return obj is Rectangle rect && Equals(ref rect);
         }

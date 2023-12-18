@@ -1,16 +1,16 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using Cyotek.Drawing.BitmapFont;
 using HelixToolkit;
+using HelixToolkit.Maths;
 using HelixToolkit.SharpDX;
 using HelixToolkit.Wpf.SharpDX;
-using SharpDX;
 using System;
 using System.IO;
 using System.Linq;
+using System.Numerics;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using FontWeight = SharpDX.DirectWrite.FontWeight;
 using FontWeights = SharpDX.DirectWrite.FontWeight;
 using Thickness = HelixToolkit.SharpDX.Model.Scene2D.Thickness;
 
@@ -100,8 +100,8 @@ public partial class MainViewModel : DemoCore.BaseViewModel
             Width = 10
         };
         var builder = new MeshBuilder();
-        builder.AddSphere(Vector3.Zero.ToVector(), 4, 16, 16);
-        SphereModel = builder.ToMesh().ToMeshGeometry3D();
+        builder.AddSphere(Vector3.Zero, 4, 16, 16);
+        SphereModel = builder.ToMeshGeometry3D();
         SphereModel.UpdateOctree();
         EarthMaterial = PhongMaterials.White;
         EarthMaterial.SpecularShininess = 10;
@@ -122,8 +122,8 @@ public partial class MainViewModel : DemoCore.BaseViewModel
             BitmapExtensions.CreateLinearGradientBitmapStream(EffectsManager, 128, 128, Direct2DImageFormat.Bmp,
             new Vector2(0, 0), new Vector2(0, 128), new SharpDX.Direct2D1.GradientStop[]
             {
-                    new SharpDX.Direct2D1.GradientStop(){ Color = Color.DarkBlue, Position = 0f },
-                    new SharpDX.Direct2D1.GradientStop(){ Color = Color.Black, Position = 1f }
+                    new SharpDX.Direct2D1.GradientStop(){ Color = Color.DarkBlue.ToRawColor4(), Position = 0f },
+                    new SharpDX.Direct2D1.GradientStop(){ Color = Color.Black.ToRawColor4(), Position = 1f }
             });
 
         FlagsBillboard = new BillboardImage3D(TextureModel.Create("Flags.jpg"));

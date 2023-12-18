@@ -48,12 +48,12 @@ public static class Converter
     {
         return new Geometry.MeshGeometry3D()
         {
-            Normals = mesh.Normals is not null? new FastList<Vector3>(mesh.Normals) : null,
-            Positions = mesh.Positions is not null? new FastList<Vector3>(mesh.Positions) : new FastList<Vector3>(),
-            TextureCoordinates = mesh.TextureCoordinates is not null? new FastList<Vector2>(mesh.TextureCoordinates) : null,
-            TriangleIndices = mesh.TriangleIndices is not null? new FastList<int>(mesh.TriangleIndices) : new FastList<int>(),
-            Tangents = mesh.Tangents is not null ? new FastList<Vector3>(mesh.Tangents) : null,
-            BiTangents = mesh.BiTangents is not null ? new FastList<Vector3>(mesh.BiTangents) : null
+            Normals = mesh.Normals,
+            Positions = mesh.Positions?? new(),
+            TextureCoordinates = mesh.TextureCoordinates,
+            TriangleIndices = mesh.TriangleIndices?? new(),
+            Tangents = mesh.Tangents,
+            BiTangents = mesh.BiTangents
         };
     }
 }

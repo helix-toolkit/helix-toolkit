@@ -6,6 +6,7 @@ using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Media3D;
 using BrowsableAttribute = System.ComponentModel.BrowsableAttribute;
+using System.Numerics;
 
 namespace Building;
 
@@ -116,32 +117,32 @@ public sealed class HouseVisual3D : UIElement3D
         {
             if (i > 0 && this.FloorThickness > 0)
             {
-                wallBuilder.AddBox(new Point3D(0, 0, y0 + this.FloorThickness / 2).ToVector(), (float)(this.Length + 0.2), (float)(this.Width + 0.2), (float)this.FloorThickness);
+                wallBuilder.AddBox(new Vector3(0, 0, (float)(y0 + this.FloorThickness / 2)), (float)(this.Length + 0.2), (float)(this.Width + 0.2), (float)this.FloorThickness);
                 y0 += this.FloorThickness;
             }
 
-            wallBuilder.AddBox(new Point3D(0, 0, y0 + this.StoryHeight / 2).ToVector(), (float)this.Length, (float)this.Width, (float)this.StoryHeight);
+            wallBuilder.AddBox(new Vector3(0, 0, (float)(y0 + this.StoryHeight / 2)), (float)this.Length, (float)this.Width, (float)this.StoryHeight);
             y0 += this.StoryHeight;
         }
 
         var theta = Math.PI / 180 * this.RoofAngle;
         var roofBuilder = new MeshBuilder(false, false);
         var y1 = y0 + Math.Tan(theta) * this.Width / 2;
-        var p0 = new Point(0, y1);
-        var p1 = new Point(this.Width / 2 + 0.2 * Math.Cos(theta), y0 - 0.2 * Math.Sin(theta));
-        var p2 = new Point(p1.X + this.RoofThickness * Math.Sin(theta), p1.Y + this.RoofThickness * Math.Cos(theta));
-        var p3 = new Point(0, y1 + this.RoofThickness / Math.Cos(theta));
-        var p4 = new Point(-p2.X, p2.Y);
-        var p5 = new Point(-p1.X, p1.Y);
-        var roofSection = new[] { p0.ToVector(), p1.ToVector(), p1.ToVector(), p2.ToVector(), p2.ToVector(), p3.ToVector(), p3.ToVector(), p4.ToVector(), p4.ToVector(), p5.ToVector(), p5.ToVector(), p0.ToVector() };
-        roofBuilder.AddExtrudedSegments(roofSection, new Vector3D(0, -1, 0).ToVector(), new Point3D(-this.Length / 2, 0, 0).ToVector(), new Point3D(this.Length / 2, 0, 0).ToVector());
-        var cap = new[] { p0.ToVector(), p1.ToVector(), p2.ToVector(), p3.ToVector(), p4.ToVector(), p5.ToVector() };
-        roofBuilder.AddPolygon(cap, new Vector3D(0, -1, 0).ToVector(), new Vector3D(0, 0, 1).ToVector(), new Point3D(-this.Length / 2, 0, 0).ToVector());
-        roofBuilder.AddPolygon(cap, new Vector3D(0, 1, 0).ToVector(), new Vector3D(0, 0, 1).ToVector(), new Point3D(this.Length / 2, 0, 0).ToVector());
-        var p6 = new Point(this.Width / 2, y0);
-        var p7 = new Point(-this.Width / 2, y0);
-        wallBuilder.AddPolygon(new[] { p0.ToVector(), p6.ToVector(), p7.ToVector() }, new Vector3D(0, -1, 0).ToVector(), new Vector3D(0, 0, 1).ToVector(), new Point3D(-this.Length / 2, 0, 0).ToVector());
-        wallBuilder.AddPolygon(new[] { p0.ToVector(), p6.ToVector(), p7.ToVector() }, new Vector3D(0, 1, 0).ToVector(), new Vector3D(0, 0, 1).ToVector(), new Point3D(this.Length / 2, 0, 0).ToVector());
+        var p0 = new Vector2(0, (float)y1);
+        var p1 = new Vector2((float)(this.Width / 2 + 0.2 * Math.Cos(theta)), (float)(y0 - 0.2 * Math.Sin(theta)));
+        var p2 = new Vector2((float)(p1.X + this.RoofThickness * Math.Sin(theta)), (float)(p1.Y + this.RoofThickness * Math.Cos(theta)));
+        var p3 = new Vector2(0, (float)(y1 + this.RoofThickness / Math.Cos(theta)));
+        var p4 = new Vector2(-p2.X, p2.Y);
+        var p5 = new Vector2(-p1.X, p1.Y);
+        var roofSection = new[] { p0, p1, p1, p2, p2, p3, p3, p4, p4, p5, p5, p0 };
+        roofBuilder.AddExtrudedSegments(roofSection, new Vector3(0, -1, 0), new Vector3((float)-this.Length / 2, 0, 0), new Vector3((float)this.Length / 2, 0, 0));
+        var cap = new[] { p0, p1, p2, p3, p4, p5 };
+        roofBuilder.AddPolygon(cap, new Vector3(0, -1, 0), new Vector3(0, 0, 1), new Vector3((float)-this.Length / 2, 0, 0));
+        roofBuilder.AddPolygon(cap, new Vector3(0, 1, 0), new Vector3(0, 0, 1), new Vector3((float)this.Length / 2, 0, 0));
+        var p6 = new Vector2((float)this.Width / 2, (float)y0);
+        var p7 = new Vector2((float)-this.Width / 2, (float)y0);
+        wallBuilder.AddPolygon(new Vector2[] { p0, p6, p7 }, new Vector3(0, -1, 0), new Vector3(0, 0, 1), new Vector3((float)-this.Length / 2, 0, 0));
+        wallBuilder.AddPolygon(new Vector2[] { p0, p6, p7 }, new Vector3(0, 1, 0), new Vector3(0, 0, 1), new Vector3((float)this.Length / 2, 0, 0));
         this.walls.Geometry = wallBuilder.ToMesh().ToMeshGeometry3D(true);
         this.roof.Geometry = roofBuilder.ToMesh().ToMeshGeometry3D(true);
     }

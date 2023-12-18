@@ -48,13 +48,13 @@ public partial class MainWindow : Window
     private ModelVisual3D CreateDice()
     {
         var diceMesh = new MeshBuilder();
-        diceMesh.AddBox(new Point3D(0, 0, 0).ToVector(), 1, 1, 1);
+        diceMesh.AddBox(new Vector3(0, 0, 0), 1, 1, 1);
         for (int i = 0; i < 2; i++)
             for (int j = 0; j < 2; j++)
                 for (int k = 0; k < 2; k++)
                 {
                     var points = new List<Vector3>();
-                    diceMesh.ChamferCorner(new Point3D(i - 0.5, j - 0.5, k - 0.5).ToVector(), 0.1f, 1e-6f, points);
+                    diceMesh.ChamferCorner(new Vector3(i - 0.5f, j - 0.5f, k - 0.5f), 0.1f, 1e-6f, points);
                     //foreach (var p in points)
                     //    diceMesh.ChamferCorner(p, 0.03f);
                 }

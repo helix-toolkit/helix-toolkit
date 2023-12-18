@@ -4,7 +4,6 @@ using HelixToolkit.SharpDX;
 using HelixToolkit.SharpDX.Assimp;
 using HelixToolkit.SharpDX.Model.Scene;
 using HelixToolkit.WinUI.SharpDX;
-using SharpDX;
 using System;
 using System.Threading;
 using System.Threading.Tasks;

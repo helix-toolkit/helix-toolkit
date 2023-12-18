@@ -29,11 +29,10 @@ The MIT License (MIT)
 Copyright (c) 2007-2011 SlimDX Group
 The MIT License (MIT)
 */
-using System;
 using System.Globalization;
+using System.Numerics;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
-using System.Numerics;
 using Matrix = System.Numerics.Matrix4x4;
 
 namespace HelixToolkit.Maths
@@ -267,7 +266,7 @@ namespace HelixToolkit.Maths
         /// <returns></returns>
         public bool PlaneIntersection(Vector3 planePosition, Vector3 planeNormal, out Vector3 intersect)
         {
-            var plane = PlaneHelper.GetPlane(planePosition, planeNormal);
+            var plane = PlaneHelper.Create(planePosition, planeNormal);
             return Collision.RayIntersectsPlane(ref this, ref plane, out intersect);
         }
         /// <summary>
@@ -361,7 +360,7 @@ namespace HelixToolkit.Maths
         /// <returns>
         /// A <see cref="System.String"/> that represents this instance.
         /// </returns>
-        public string ToString(string format, IFormatProvider formatProvider)
+        public string ToString(string? format, IFormatProvider? formatProvider)
         {
             return string.Format(formatProvider, "Position:{0} Direction:{1}", Position.ToString(format, formatProvider),
                 Direction.ToString(format, formatProvider));
@@ -414,7 +413,7 @@ namespace HelixToolkit.Maths
         /// <returns>
         /// <c>true</c> if the specified <see cref="System.Object"/> is equal to this instance; otherwise, <c>false</c>.
         /// </returns>
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             return obj is Ray ray && Equals(ref ray);
         }

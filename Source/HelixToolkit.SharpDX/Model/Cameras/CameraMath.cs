@@ -1,4 +1,5 @@
 ﻿using SharpDX;
+using HelixToolkit.Maths;
 
 namespace HelixToolkit.SharpDX.Cameras;
 
@@ -53,7 +54,7 @@ public static class CameraMath
             return;
         }
 
-        var angle = VectorExtensions.AngleBetween(u1, u2);
+        var angle = u1.AngleBetween(u2);
 
         // Create the transform
         var rotate = MatrixHelper.RotationAxis(Vector3.Normalize(axis), -angle * sensitivity * 5);

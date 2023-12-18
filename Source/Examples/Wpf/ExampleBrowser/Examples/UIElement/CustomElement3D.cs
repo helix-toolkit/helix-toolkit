@@ -3,6 +3,7 @@ using HelixToolkit.Wpf;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -17,7 +18,7 @@ public class CustomElement3D : UIElement3D
     {
         var gm = new GeometryModel3D();
         var mb = new MeshBuilder();
-        mb.AddSphere(new Point3D(0, 0, 0).ToVector(), 2, 100, 50);
+        mb.AddSphere(new Vector3(0, 0, 0), 2, 100, 50);
         gm.Geometry = mb.ToMesh().ToMeshGeometry3D();
         gm.Material = Materials.Blue;
 

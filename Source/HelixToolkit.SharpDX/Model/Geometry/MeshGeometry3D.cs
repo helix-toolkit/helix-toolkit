@@ -199,12 +199,13 @@ public class MeshGeometry3D : Geometry3D
         if (Positions is null || Indices is null) return;
         var normals = MeshGeometryHelper.CalculateNormals(Positions, Indices);
         Normals ??= new Vector3Collection();
-        if (normals is FastList<Vector3> ns)
+        if (normals is Vector3Collection ns)
         {
-            Normals.Swap(ns);
+            Normals = ns;
         }
         else
         {
+            Normals.Clear();
             Normals.AddRange(normals);
         }
     }

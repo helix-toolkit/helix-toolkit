@@ -29,7 +29,6 @@ The MIT License (MIT)
 Copyright (c) 2007-2011 SlimDX Group
 The MIT License (MIT)
 */
-using System;
 using System.Globalization;
 using System.Runtime.InteropServices;
 
@@ -633,7 +632,7 @@ namespace HelixToolkit.Maths
         /// to the other. If the value is greater than zero, the current instance is
         /// greater than the other.
         /// </returns>
-        public readonly int CompareTo(object other)
+        public readonly int CompareTo(object? other)
         {
             if (other == null)
             {
@@ -737,10 +736,12 @@ namespace HelixToolkit.Maths
         /// <returns>
         /// A <see cref="System.String"/> that represents this instance.
         /// </returns>
-        public string ToString(string format, IFormatProvider formatProvider)
+        public string ToString(string? format, IFormatProvider? formatProvider)
         {
-            return format == null
-                ? ToString(formatProvider)
+            return format == null && formatProvider == null
+                ? string.Empty
+                : format == null
+                ? ToString(formatProvider!)
                 : string.Format(formatProvider, "{0}°", MathUtil.RadiansToDegrees(radians_).ToString(format, CultureInfo.CurrentCulture));
         }
 
@@ -764,7 +765,7 @@ namespace HelixToolkit.Maths
         /// its value is equal to the value of the current SharpDX.Angle
         /// object; otherwise, false.
         /// </returns>
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             return (obj is AngleSingle) && (this == (AngleSingle)obj);
         }

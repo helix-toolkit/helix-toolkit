@@ -36,4 +36,7 @@
         </PackageReference>
       <PackageReference Include="ImGui.NET" Version="1.87.3" />
     </ItemGroup>
+    <ItemGroup>
+        <Compile Include="..\..\GlobalUsing.cs"/>
+    </ItemGroup>
 </Project>

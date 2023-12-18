@@ -7,6 +7,7 @@ using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Media3D;
 using BrowsableAttribute = System.ComponentModel.BrowsableAttribute;
+using System.Numerics;
 
 namespace Building;
 
@@ -99,7 +100,7 @@ public sealed class KerbVisual3D : UIElement3D
         }
 
         // create the extruded geometry
-        builder.AddTube(this.Positions.ToCollection()!, null, values, null, section.ToCollection(), new Vector3D(1, 0, 0).ToVector(), false, false);
+        builder.AddTube(this.Positions.ToCollection()!, null, values, null, section.ToCollection(), new Vector3(1, 0, 0), false, false);
 
         this.kerbModel.Geometry = builder.ToMesh().ToMeshGeometry3D();
     }

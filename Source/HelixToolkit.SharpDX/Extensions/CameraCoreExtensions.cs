@@ -91,16 +91,16 @@ public static class CameraCoreExtensions
             }
         }
 
-        var plane1 = PlaneHelper.GetPlane(corners[leftMostPoint], leftNormal);
-        var plane2 = PlaneHelper.GetPlane(corners[rightMostPoint], rightNormal);
+        var plane1 = PlaneHelper.Create(corners[leftMostPoint], leftNormal);
+        var plane2 = PlaneHelper.Create(corners[rightMostPoint], rightNormal);
         Collision.PlaneIntersectsPlane(ref plane1, ref plane2, out var horizontalIntersection);
-        plane1 = PlaneHelper.GetPlane(corners[topMostPoint], topNormal);
-        plane2 = PlaneHelper.GetPlane(corners[bottomMostPoint], bottomNormal);
+        plane1 = PlaneHelper.Create(corners[topMostPoint], topNormal);
+        plane2 = PlaneHelper.Create(corners[bottomMostPoint], bottomNormal);
         Collision.PlaneIntersectsPlane(ref plane1, ref plane2, out var verticalIntersection);
         FindClosestPointsOnTwoLines(ref horizontalIntersection, ref verticalIntersection, out var closestPointLine1, out var closestPointLine2);
         position = Vector3.Dot(closestPointLine1 - closestPointLine2, cameraDir) < 0 ? closestPointLine1 : closestPointLine2;
         upDir = cameraUp;
-        var boundPlane = PlaneHelper.GetPlane(boundingBox.Center, cameraDir);
+        var boundPlane = PlaneHelper.Create(boundingBox.Center, cameraDir);
         var lookRay = new Ray(position, cameraDir);
         boundPlane.Intersects(ref lookRay, out float dist);
         lookDir = cameraDir * dist;

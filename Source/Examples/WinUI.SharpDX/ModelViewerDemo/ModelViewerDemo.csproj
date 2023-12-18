@@ -46,7 +46,9 @@
     <ProjectReference Include="..\..\..\HelixToolkit.SharpDX.Assimp\HelixToolkit.SharpDX.Assimp.csproj" />
     <ProjectReference Include="..\..\..\HelixToolkit.WinUI.SharpDX\HelixToolkit.WinUI.SharpDX.csproj" />
   </ItemGroup>
-
+    <ItemGroup>
+        <Compile Include="..\..\GlobalUsing.cs"/>
+    </ItemGroup>
   <!-- 
     Defining the "Msix" ProjectCapability here allows the Single-project MSIX Packaging
     Tools extension to be activated for this project even if the Windows App SDK Nuget

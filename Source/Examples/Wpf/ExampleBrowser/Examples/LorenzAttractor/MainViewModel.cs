@@ -87,15 +87,15 @@ public sealed partial class MainViewModel : ObservableObject
         // create the WPF3D model
         var m = new Model3DGroup();
         var gm = new MeshBuilder();
-        gm.AddTube(path.Select(t => t.ToVector()).ToList(), 0.8f, 10, false);
+        gm.AddTube(path.Select(t => t.ToVector3()).ToList(), 0.8f, 10, false);
         if (DirectionArrows)
         {
             // sphere at the initial point
-            gm.AddSphere(path[0].ToVector(), 1);
+            gm.AddSphere(path[0].ToVector3(), 1);
             // arrow heads every 100 point
             for (int i = 100; i + 1 < path.Count; i += 100)
             {
-                gm.AddArrow(path[i].ToVector(), path[i + 1].ToVector(), 0.8f);
+                gm.AddArrow(path[i].ToVector3(), path[i + 1].ToVector3(), 0.8f);
             }
             // arrow head at the end
             Point3D p0 = path[^2];
@@ -103,7 +103,7 @@ public sealed partial class MainViewModel : ObservableObject
             var d = new Vector3D(p1.X - p0.X, p1.Y - p0.Y, p1.Z - p0.Z);
             d.Normalize();
             Point3D p2 = p1 + d * 2;
-            gm.AddArrow(p1.ToVector(), p2.ToVector(), 0.8f);
+            gm.AddArrow(p1.ToVector3(), p2.ToVector3(), 0.8f);
         }
 
         m.Children.Add(new GeometryModel3D(gm.ToMesh().ToMeshGeometry3D(), Materials.Gold));

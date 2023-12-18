@@ -16,7 +16,7 @@ using System.Windows.Threading;
 using Color = System.Windows.Media.Color;
 using Colors = System.Windows.Media.Colors;
 using Point3D = System.Windows.Media.Media3D.Point3D;
-using Vector3 = SharpDX.Vector3;
+
 using Vector3D = System.Windows.Media.Media3D.Vector3D;
 
 namespace OctreeDemo;
@@ -154,10 +154,10 @@ public partial class MainViewModel : DemoCore.BaseViewModel
     {
         Material = PhongMaterials.White;
         var b2 = new MeshBuilder(true, true, true);
-        b2.AddSphere(new Vector3(15f, 0f, 0f).ToVector(), 4, 64, 64);
-        b2.AddSphere(new Vector3(25f, 0f, 0f).ToVector(), 2, 32, 32);
-        b2.AddTube(new[] { new Vector3(10f, 5f, 0f).ToVector(), new Vector3(10f, 7f, 0f).ToVector() }, 2, 12, false, true, true);
-        DefaultModel = b2.ToMesh().ToMeshGeometry3D();
+        b2.AddSphere(new Vector3(15f, 0f, 0f), 4, 64, 64);
+        b2.AddSphere(new Vector3(25f, 0f, 0f), 2, 32, 32);
+        b2.AddTube(new[] { new Vector3(10f, 5f, 0f), new Vector3(10f, 7f, 0f) }, 2, 12, false, true, true);
+        DefaultModel = b2.ToMeshGeometry3D();
         DefaultModel.OctreeParameter.RecordHitPathBoundingBoxes = true;
 
         PointsModel = new PointGeometry3D();

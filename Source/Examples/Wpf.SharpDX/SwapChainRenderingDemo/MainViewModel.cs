@@ -1,26 +1,22 @@
-﻿using Media3D = System.Windows.Media.Media3D;
-using Point3D = System.Windows.Media.Media3D.Point3D;
-using Vector3D = System.Windows.Media.Media3D.Vector3D;
-using Transform3D = System.Windows.Media.Media3D.Transform3D;
-using Color = System.Windows.Media.Color;
-using Plane = SharpDX.Plane;
-using Vector3 = SharpDX.Vector3;
-using Colors = System.Windows.Media.Colors;
-using Color4 = SharpDX.Color4;
-using TranslateTransform3D = System.Windows.Media.Media3D.TranslateTransform3D;
-using CommunityToolkit.Mvvm.ComponentModel;
-using HelixToolkit.Wpf.SharpDX;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using HelixToolkit.SharpDX;
+using HelixToolkit.SharpDX.Model;
+using HelixToolkit.Wpf.SharpDX;
 using SharpDX.Direct3D11;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 using System.Threading;
-using HelixToolkit;
 using System.Threading.Tasks;
 using System.Windows.Media.Animation;
-using System;
-using HelixToolkit.SharpDX.Model;
-using System.Collections.Generic;
-using System.Linq;
-using System.Diagnostics;
+using Color = System.Windows.Media.Color;
+using Colors = System.Windows.Media.Colors;
+using Media3D = System.Windows.Media.Media3D;
+using Point3D = System.Windows.Media.Media3D.Point3D;
+using Transform3D = System.Windows.Media.Media3D.Transform3D;
+using TranslateTransform3D = System.Windows.Media.Media3D.TranslateTransform3D;
+using Vector3D = System.Windows.Media.Media3D.Vector3D;
 
 namespace SwapChainRenderingDemo;
 
@@ -261,8 +257,8 @@ public partial class MainViewModel : DemoCore.BaseViewModel
         // ----------------------------------------------
         // light model3d
         var sphere = new MeshBuilder();
-        sphere.AddSphere(new Vector3(0, 0, 0).ToVector(), 4);
-        Sphere = sphere.ToMesh().ToMeshGeometry3D();
+        sphere.AddSphere(new Vector3(0, 0, 0), 4);
+        Sphere = sphere.ToMeshGeometry3D();
         this.LightModelMaterial = new PhongMaterial
         {
             AmbientColor = Colors.Gray.ToColor4(),

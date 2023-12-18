@@ -319,14 +319,14 @@ public class GridLinesVisual3D : MeshElement3D
     private void AddLineX(MeshBuilder mesh, double x, double minY, double maxY, double thickness)
     {
         int i0 = mesh.Positions.Count;
-        mesh.Positions.Add(this.GetPoint(x - (thickness / 2), minY).ToVector());
-        mesh.Positions.Add(this.GetPoint(x - (thickness / 2), maxY).ToVector());
-        mesh.Positions.Add(this.GetPoint(x + (thickness / 2), maxY).ToVector());
-        mesh.Positions.Add(this.GetPoint(x + (thickness / 2), minY).ToVector());
-        mesh.Normals!.Add(this.Normal.ToVector());
-        mesh.Normals!.Add(this.Normal.ToVector());
-        mesh.Normals!.Add(this.Normal.ToVector());
-        mesh.Normals!.Add(this.Normal.ToVector());
+        mesh.Positions.Add(this.GetPoint(x - (thickness / 2), minY).ToVector3());
+        mesh.Positions.Add(this.GetPoint(x - (thickness / 2), maxY).ToVector3());
+        mesh.Positions.Add(this.GetPoint(x + (thickness / 2), maxY).ToVector3());
+        mesh.Positions.Add(this.GetPoint(x + (thickness / 2), minY).ToVector3());
+        mesh.Normals!.Add(this.Normal.ToVector3());
+        mesh.Normals!.Add(this.Normal.ToVector3());
+        mesh.Normals!.Add(this.Normal.ToVector3());
+        mesh.Normals!.Add(this.Normal.ToVector3());
         mesh.TriangleIndices.Add(i0);
         mesh.TriangleIndices.Add(i0 + 1);
         mesh.TriangleIndices.Add(i0 + 2);
@@ -356,14 +356,14 @@ public class GridLinesVisual3D : MeshElement3D
     private void AddLineY(MeshBuilder mesh, double y, double minX, double maxX, double thickness)
     {
         int i0 = mesh.Positions.Count;
-        mesh.Positions.Add(this.GetPoint(minX, y + (thickness / 2)).ToVector());
-        mesh.Positions.Add(this.GetPoint(maxX, y + (thickness / 2)).ToVector());
-        mesh.Positions.Add(this.GetPoint(maxX, y - (thickness / 2)).ToVector());
-        mesh.Positions.Add(this.GetPoint(minX, y - (thickness / 2)).ToVector());
-        mesh.Normals!.Add(this.Normal.ToVector());
-        mesh.Normals!.Add(this.Normal.ToVector());
-        mesh.Normals!.Add(this.Normal.ToVector());
-        mesh.Normals!.Add(this.Normal.ToVector());
+        mesh.Positions.Add(this.GetPoint(minX, y + (thickness / 2)).ToVector3());
+        mesh.Positions.Add(this.GetPoint(maxX, y + (thickness / 2)).ToVector3());
+        mesh.Positions.Add(this.GetPoint(maxX, y - (thickness / 2)).ToVector3());
+        mesh.Positions.Add(this.GetPoint(minX, y - (thickness / 2)).ToVector3());
+        mesh.Normals!.Add(this.Normal.ToVector3());
+        mesh.Normals!.Add(this.Normal.ToVector3());
+        mesh.Normals!.Add(this.Normal.ToVector3());
+        mesh.Normals!.Add(this.Normal.ToVector3());
         mesh.TriangleIndices.Add(i0);
         mesh.TriangleIndices.Add(i0 + 1);
         mesh.TriangleIndices.Add(i0 + 2);

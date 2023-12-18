@@ -3,6 +3,7 @@ using HelixToolkit.Wpf;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Media3D;
+using System.Numerics;
 
 namespace Export;
 
@@ -145,7 +146,7 @@ public sealed class StickFigure : ModelVisual3D
         var model = new GeometryModel3D();
         model.SetValue(FrameworkElement.NameProperty, "box");
         var mb = new MeshBuilder(false, false);
-        mb.AddBox(new Point3D(0, 0, height * 0.5).ToVector(), (float)width, (float)length, (float)height);
+        mb.AddBox(new Vector3(0, 0, (float)height * 0.5f), (float)width, (float)length, (float)height);
         model.Geometry = mb.ToMesh().ToMeshGeometry3D();
         model.Material = material;
         return model;

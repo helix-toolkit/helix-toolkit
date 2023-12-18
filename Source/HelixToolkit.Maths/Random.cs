@@ -11,7 +11,10 @@ namespace HelixToolkit.Maths
         {
             return MathUtil.Lerp(min, max, (float)random.NextDouble());
         }
-
+        public static double NextDouble(this Random random, float min, float max)
+        {
+            return MathUtil.Lerp(min, max, random.NextDouble());
+        }
         public static Vector3 NextVector3(this Random random)
         {
             return Vector3.Normalize(new Vector3(random.NextFloat(-1, 1), random.NextFloat(-1, 1), random.NextFloat(-1, 1)));

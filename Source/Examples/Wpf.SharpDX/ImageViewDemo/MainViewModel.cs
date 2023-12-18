@@ -69,8 +69,8 @@ public partial class MainViewModel : DemoCore.BaseViewModel
 
         // plane
         var b2 = new MeshBuilder();
-        b2.AddBox(new Vector3(0, 0, 0).ToVector(), 10, 10, 0, BoxFaces.PositiveZ);
-        this.Plane = b2.ToMesh().ToMeshGeometry3D();
+        b2.AddBox(new Vector3(0, 0, 0), 10, 10, 0, BoxFaces.PositiveZ);
+        this.Plane = b2.ToMeshGeometry3D();
         this.PlaneMaterial = PhongMaterials.Blue;
         this.PlaneTransform = new Media3D.TranslateTransform3D(-0, -0, -0);
         //this.PlaneMaterial.ReflectiveColor = Color.Black;

@@ -1,15 +1,10 @@
-﻿using HelixToolkit;
-using HelixToolkit.Maths;
-using HelixToolkit.SharpDX;
+﻿using HelixToolkit.SharpDX;
 using HelixToolkit.SharpDX.Cameras;
 using HelixToolkit.SharpDX.Model;
 using HelixToolkit.SharpDX.Model.Scene;
-using SharpDX;
 using System;
 using System.Diagnostics;
-using System.Numerics;
 using System.Windows.Media.Imaging;
-using Matrix = System.Numerics.Matrix4x4;
 
 namespace OffScreenRenderingDemo;
 

@@ -2,11 +2,8 @@
 The MIT License (MIT)
 Copyright (c) 2022 Helix Toolkit contributors
 */
-using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
-using System.Reflection;
 using System.Runtime.CompilerServices;
 
 namespace HelixToolkit.Maths
@@ -37,7 +34,11 @@ namespace HelixToolkit.Maths
                 var field = fields[i];
                 if (field.FieldType == typeof(Color))
                 {
-                    hash.Add(field.Name, field.GetValue(field));
+                    var color = field.GetValue(field);
+                    if (color != null)
+                    {
+                        hash.Add(field.Name, color);
+                    }               
                 }
             }
         }
@@ -66,6 +67,10 @@ namespace HelixToolkit.Maths
                     var tryMappingToKnownColor = true;
 
                     var intConverter = TypeDescriptor.GetConverter(typeof(int));
+                    if (intConverter == null)
+                    {
+                        return Color.Transparent;
+                    }
 
                     // If the value is a 6 digit hex number only, then
                     // we want to treat the Alpha as 255, not 0
@@ -86,7 +91,12 @@ namespace HelixToolkit.Maths
                                  (text.Length == 8 && (text.StartsWith("&h") || text.StartsWith("&H"))))
                         {
                             // Note: ConvertFromString will raise exception if value cannot be converted.
-                            obj = FromArgb(unchecked((int)(0xFF000000 | (uint)(int)intConverter.ConvertFromString(text))));
+                            var intVal = intConverter.ConvertFromString(text);
+                            if (intVal == null)
+                            {
+                                return Color.Transparent;
+                            }
+                            obj = FromArgb(unchecked((int)(0xFF000000 | (uint)intVal)));
                         }
                     }
 
@@ -98,7 +108,13 @@ namespace HelixToolkit.Maths
                         var values = new int[tokens.Length];
                         for (var i = 0; i < values.Length; i++)
                         {
-                            values[i] = unchecked((int)intConverter.ConvertFromString(tokens[i]));
+                            var intVal = intConverter.ConvertFromString(tokens[i]);
+                            if (intVal == null)
+                            {
+                                values[i] = 0;
+                                continue;
+                            }
+                            values[i] = unchecked((int)intVal);
                         }
 
                         // We should now have a number of parsed integer values.
@@ -217,7 +233,7 @@ namespace HelixToolkit.Maths
             return abPacked;
         }
 
-        internal static object GetNamedColor(string name)
+        internal static object? GetNamedColor(string name)
         {
             colors_.TryGetValue(name, out var color);
             return color;

@@ -1,5 +1,6 @@
 ﻿using System.Windows.Media.Media3D;
 using System.Windows;
+using System.Numerics;
 
 namespace HelixToolkit.Wpf;
 
@@ -156,24 +157,24 @@ public class BoxVisual3D : MeshElement3D
     {
         var b = new MeshBuilder(false, true);
         b.AddCubeFace(
-            this.Center.ToVector(), new Vector3D(-1, 0, 0).ToVector(), new Vector3D(0, 0, 1).ToVector(), (float)this.Length, (float)this.Width, (float)this.Height);
+            this.Center.ToVector3(), new Vector3(-1, 0, 0), new Vector3(0, 0, 1), (float)this.Length, (float)this.Width, (float)this.Height);
         b.AddCubeFace(
-            this.Center.ToVector(), new Vector3D(1, 0, 0).ToVector(), new Vector3D(0, 0, -1).ToVector(), (float)this.Length, (float)this.Width, (float)this.Height);
+            this.Center.ToVector3(), new Vector3(1, 0, 0), new Vector3(0, 0, -1), (float)this.Length, (float)this.Width, (float)this.Height);
         b.AddCubeFace(
-            this.Center.ToVector(), new Vector3D(0, -1, 0).ToVector(), new Vector3D(0, 0, 1).ToVector(), (float)this.Width, (float)this.Length, (float)this.Height);
+            this.Center.ToVector3(), new Vector3(0, -1, 0), new Vector3(0, 0, 1), (float)this.Width, (float)this.Length, (float)this.Height);
         b.AddCubeFace(
-            this.Center.ToVector(), new Vector3D(0, 1, 0).ToVector(), new Vector3D(0, 0, -1).ToVector(), (float)this.Width, (float)this.Length, (float)this.Height);
+            this.Center.ToVector3(), new Vector3(0, 1, 0), new Vector3(0, 0, -1), (float)this.Width, (float)this.Length, (float)this.Height);
 
         if (this.TopFace)
         {
             b.AddCubeFace(
-                this.Center.ToVector(), new Vector3D(0, 0, 1).ToVector(), new Vector3D(0, -1, 0).ToVector(), (float)this.Height, (float)this.Length, (float)this.Width);
+                this.Center.ToVector3(), new Vector3(0, 0, 1), new Vector3(0, -1, 0), (float)this.Height, (float)this.Length, (float)this.Width);
         }
 
         if (this.BottomFace)
         {
             b.AddCubeFace(
-                this.Center.ToVector(), new Vector3D(0, 0, -1).ToVector(), new Vector3D(0, 1, 0).ToVector(), (float)this.Height, (float)this.Length, (float)this.Width);
+                this.Center.ToVector3(), new Vector3(0, 0, -1), new Vector3(0, 1, 0), (float)this.Height, (float)this.Length, (float)this.Width);
         }
 
         return b.ToMesh().ToMeshGeometry3D();

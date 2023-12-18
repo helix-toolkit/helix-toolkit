@@ -339,7 +339,7 @@ public class ShadowMapNode : SceneNode
         points[5] = new Vector3(box.Maximum.X, box.Minimum.Y, box.Minimum.Z);
         points[6] = new Vector3(box.Minimum.X, box.Maximum.Y, box.Minimum.Z);
         points[7] = new Vector3(box.Maximum.X, box.Minimum.Y, box.Maximum.Z);
-        var plane = PlaneHelper.GetPlane(center, lookDir);
+        var plane = PlaneHelper.Create(center, lookDir);
         var farthest = Vector3.Zero;
         var farestDist = 0f;
 

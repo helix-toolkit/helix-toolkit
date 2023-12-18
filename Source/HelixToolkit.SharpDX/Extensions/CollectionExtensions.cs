@@ -111,4 +111,16 @@ public static class CollectionExtensions
 
         return default;
     }
+
+    public static MeshGeometry3D ToMeshGeometry3D(this Geometry.MeshGeometry3D mesh)
+    {
+        return new MeshGeometry3D()
+        {
+            Positions = mesh.Positions,
+            Normals = mesh.Normals,
+            TextureCoordinates = mesh.TextureCoordinates,
+            Tangents = mesh.Tangents,
+            BiTangents = mesh.BiTangents
+        };
+    }
 }

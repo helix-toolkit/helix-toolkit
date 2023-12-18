@@ -44,12 +44,12 @@ namespace HelixToolkit.Maths
     public struct BoundingFrustum : IEquatable<BoundingFrustum>
     {
         private Matrix pMatrix_;
-        private Plane  pNear_;
-        private Plane  pFar_;
-        private Plane  pLeft_;
-        private Plane  pRight_;
-        private Plane  pTop_;
-        private Plane  pBottom_;
+        private Plane pNear_;
+        private Plane pFar_;
+        private Plane pLeft_;
+        private Plane pRight_;
+        private Plane pTop_;
+        private Plane pBottom_;
 
         /// <summary>
         /// Gets or sets the Matrix that describes this bounding frustum.
@@ -175,15 +175,9 @@ namespace HelixToolkit.Maths
         /// <returns>
         ///   <c>true</c> if the specified <see cref="System.Object"/> is equal to this instance; otherwise, <c>false</c>.
         /// </returns>
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
-            if(!(obj is BoundingFrustum))
-            {
-                return false;
-            }
-
-            var strongValue = (BoundingFrustum)obj;
-            return Equals(ref strongValue);
+            return obj is BoundingFrustum f ? Equals(ref f) : false;
         }
 
         /// <summary>
@@ -329,13 +323,13 @@ namespace HelixToolkit.Maths
 
             var result = new BoundingFrustum
             {
-                pNear_ = PlaneHelper.GetPlane(Near1, Near2, Near3),
-                pFar_ = PlaneHelper.GetPlane(Far3, Far2, Far1),
-                pLeft_ = PlaneHelper.GetPlane(Near4, Near3, Far3),
-                pRight_ = PlaneHelper.GetPlane(Far1, Far2, Near2),
-                pTop_ = PlaneHelper.GetPlane(Near2, Far2, Far3),
-                pBottom_ = PlaneHelper.GetPlane(Far4, Far1, Near1),
-                pMatrix_ = MatrixHelper.LookAtLH(cameraPos, cameraPos + lookDir * 10, upDir) 
+                pNear_ = PlaneHelper.Create(Near1, Near2, Near3),
+                pFar_ = PlaneHelper.Create(Far3, Far2, Far1),
+                pLeft_ = PlaneHelper.Create(Near4, Near3, Far3),
+                pRight_ = PlaneHelper.Create(Far1, Far2, Near2),
+                pTop_ = PlaneHelper.Create(Near2, Far2, Far3),
+                pBottom_ = PlaneHelper.Create(Far4, Far1, Near1),
+                pMatrix_ = MatrixHelper.LookAtLH(cameraPos, cameraPos + lookDir * 10, upDir)
                 * MatrixHelper.PerspectiveFovLH(fov, aspect, znear, zfar)
             };
             //result.pNear.Normalize();
@@ -387,14 +381,14 @@ namespace HelixToolkit.Maths
         /// <returns>The 8 corners of the frustum</returns>
         public void GetCorners(Vector3[] corners)
         {
-            corners[0] = Get3PlanesInterPoint(ref pNear_, ref  pBottom_, ref  pRight_);    //Near1
-            corners[1] = Get3PlanesInterPoint(ref pNear_, ref  pTop_, ref  pRight_);       //Near2
-            corners[2] = Get3PlanesInterPoint(ref pNear_, ref  pTop_, ref  pLeft_);        //Near3
-            corners[3] = Get3PlanesInterPoint(ref pNear_, ref  pBottom_, ref  pLeft_);     //Near3
-            corners[4] = Get3PlanesInterPoint(ref pFar_, ref  pBottom_, ref  pRight_);    //Far1
-            corners[5] = Get3PlanesInterPoint(ref pFar_, ref  pTop_, ref  pRight_);       //Far2
-            corners[6] = Get3PlanesInterPoint(ref pFar_, ref  pTop_, ref  pLeft_);        //Far3
-            corners[7] = Get3PlanesInterPoint(ref pFar_, ref  pBottom_, ref  pLeft_);     //Far3
+            corners[0] = Get3PlanesInterPoint(ref pNear_, ref pBottom_, ref pRight_);    //Near1
+            corners[1] = Get3PlanesInterPoint(ref pNear_, ref pTop_, ref pRight_);       //Near2
+            corners[2] = Get3PlanesInterPoint(ref pNear_, ref pTop_, ref pLeft_);        //Near3
+            corners[3] = Get3PlanesInterPoint(ref pNear_, ref pBottom_, ref pLeft_);     //Near3
+            corners[4] = Get3PlanesInterPoint(ref pFar_, ref pBottom_, ref pRight_);    //Far1
+            corners[5] = Get3PlanesInterPoint(ref pFar_, ref pTop_, ref pRight_);       //Far2
+            corners[6] = Get3PlanesInterPoint(ref pFar_, ref pTop_, ref pLeft_);        //Far3
+            corners[7] = Get3PlanesInterPoint(ref pFar_, ref pBottom_, ref pLeft_);     //Far3
         }
 
         /// <summary>

@@ -2,6 +2,7 @@
 using HelixToolkit;
 using HelixToolkit.Wpf;
 using System.Collections.Generic;
+using System.Numerics;
 using System.Windows.Media;
 using System.Windows.Media.Media3D;
 using System.Xml;
@@ -108,7 +109,7 @@ public sealed partial class MainViewModel : ObservableObject
         const double size = 0.98;
         var m = new GeometryModel3D();
         var mb = new MeshBuilder();
-        mb.AddBox(new Point3D(0, 0, 0).ToVector(), (float)size, (float)size, (float)size);
+        mb.AddBox(new Vector3(0, 0, 0), (float)size, (float)size, (float)size);
         m.Geometry = mb.ToMesh().ToMeshGeometry3D();
         m.Material = MaterialHelper.CreateMaterial(v.Colour);
         m.Transform = new TranslateTransform3D(v.Position.X, v.Position.Y, v.Position.Z);

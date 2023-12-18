@@ -1,13 +1,9 @@
-﻿using HelixToolkit.SharpDX.Utilities;
-using SharpDX;
-using System.ComponentModel;
-using System.Globalization;
+﻿using System.Globalization;
 using System.Text;
 
-namespace HelixToolkit.SharpDX;
+namespace HelixToolkit;
 
 [Serializable]
-[TypeConverter(typeof(Vector3CollectionConverter))]
 public sealed class Vector3Collection : FastList<Vector3>
 {
     public Vector3Collection()

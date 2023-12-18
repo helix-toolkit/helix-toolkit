@@ -1,19 +1,15 @@
-﻿using Media3D = System.Windows.Media.Media3D;
-using Point3D = System.Windows.Media.Media3D.Point3D;
-using Vector3D = System.Windows.Media.Media3D.Vector3D;
-using Transform3D = System.Windows.Media.Media3D.Transform3D;
-using Color = System.Windows.Media.Color;
-using Plane = SharpDX.Plane;
-using Vector3 = SharpDX.Vector3;
-using Colors = System.Windows.Media.Colors;
-using Color4 = SharpDX.Color4;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using HelixToolkit;
 using HelixToolkit.SharpDX;
 using HelixToolkit.Wpf.SharpDX;
-using System.Collections.Generic;
-using CommunityToolkit.Mvvm.ComponentModel;
-using HelixToolkit;
 using System;
-using SharpDX;
+using System.Collections.Generic;
+using Color = System.Windows.Media.Color;
+using Colors = System.Windows.Media.Colors;
+using Media3D = System.Windows.Media.Media3D;
+using Point3D = System.Windows.Media.Media3D.Point3D;
+using Transform3D = System.Windows.Media.Media3D.Transform3D;
+using Vector3D = System.Windows.Media.Media3D.Vector3D;
 
 namespace MaterialDemo;
 
@@ -92,8 +88,8 @@ public partial class PBRViewModel : DemoCore.BaseViewModel
         };
 
         var builder = new MeshBuilder();
-        builder.AddSphere(Vector3.Zero.ToVector(), 2);
-        SphereModel = builder.ToMesh().ToMeshGeometry3D();
+        builder.AddSphere(Vector3.Zero, 2);
+        SphereModel = builder.ToMeshGeometry3D();
 
         var normalMap = TextureModel.Create(new System.Uri("TextureNoise1_dot3.dds", System.UriKind.RelativeOrAbsolute).ToString());
 
@@ -123,8 +119,8 @@ public partial class PBRViewModel : DemoCore.BaseViewModel
             }
         }
         builder = new MeshBuilder();
-        builder.AddSphere(Vector3.Zero.ToVector(), 8, 12, 12);
-        Model = builder.ToMesh().ToMeshGeometry3D();
+        builder.AddSphere(Vector3.Zero, 8, 12, 12);
+        Model = builder.ToMeshGeometry3D();
         Material = new PBRMaterial()
         {
             AlbedoColor = albedoColor.ToColor4(),
@@ -139,11 +135,11 @@ public partial class PBRViewModel : DemoCore.BaseViewModel
             MaxDistanceTessellationFactor = 2,
             MinDistanceTessellationFactor = 4
         };
-        ModelTransform = new Media3D.MatrixTransform3D(Matrix.Translation(0, 30, 0).ToMatrix3D());
+        ModelTransform = new Media3D.MatrixTransform3D(Matrix.CreateTranslation(0, 30, 0).ToMatrix3D());
 
         builder = new MeshBuilder();
-        builder.AddBox(Vector3.Zero.ToVector(), 100, 0.5f, 100);
-        var floorGeo = builder.ToMesh().ToMeshGeometry3D();
+        builder.AddBox(Vector3.Zero, 100, 0.5f, 100);
+        var floorGeo = builder.ToMeshGeometry3D();
         if (floorGeo.TextureCoordinates is not null)
         {
             for (int i = 0; i < floorGeo.TextureCoordinates.Count; ++i)
@@ -165,6 +161,6 @@ public partial class PBRViewModel : DemoCore.BaseViewModel
             RenderShadowMap = true,
             EnableAutoTangent = true,
         };
-        FloorModelTransform = new Media3D.MatrixTransform3D(Matrix.Translation(0, -5, 0).ToMatrix3D());
+        FloorModelTransform = new Media3D.MatrixTransform3D(Matrix.CreateTranslation(0, -5, 0).ToMatrix3D());
     }
 }

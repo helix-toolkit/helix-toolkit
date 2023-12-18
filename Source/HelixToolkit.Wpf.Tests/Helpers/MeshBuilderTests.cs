@@ -1,7 +1,6 @@
 ﻿using NUnit.Framework;
 using System.Diagnostics.CodeAnalysis;
-using System.Windows;
-using System.Windows.Media.Media3D;
+using System.Numerics;
 
 namespace HelixToolkit.Wpf.Tests.Helpers;
 
@@ -21,17 +20,17 @@ public class MeshBuilderTests
     public void AddTriangle_Normals()
     {
         var mb = new MeshBuilder();
-        var p0 = new Point3D(0, 0, 0);
-        var p1 = new Point3D(1, 0, 0);
-        var p2 = new Point3D(1, 1, 0);
-        mb.AddTriangle(p0.ToVector(), p1.ToVector(), p2.ToVector());
+        var p0 = new Vector3(0, 0, 0);
+        var p1 = new Vector3(1, 0, 0);
+        var p2 = new Vector3(1, 1, 0);
+        mb.AddTriangle(p0, p1, p2);
 
         Assert.That(mb.HasNormals);
         Assert.That(mb.Normals, Has.Count.EqualTo(3));
 
-        foreach (Point3D normal in mb.Normals.Select(t => t.ToWndPoint()))
+        foreach (var normal in mb.Normals)
         {
-            Assert.That(normal, Is.EqualTo(new Point3D(0, 0, 1)));
+            Assert.That(normal, Is.EqualTo(new Vector3(0, 0, 1)));
         }
     }
 
@@ -39,11 +38,11 @@ public class MeshBuilderTests
     public void AddQuad_Normals()
     {
         var mb = new MeshBuilder();
-        var p0 = new Point3D(0, 0, 0);
-        var p1 = new Point3D(1, 0, 0);
-        var p2 = new Point3D(1, 1, 0);
-        var p3 = new Point3D(0, 1, 0);
-        mb.AddQuad(p0.ToVector(), p1.ToVector(), p2.ToVector(), p3.ToVector());
+        var p0 = new Vector3(0, 0, 0);
+        var p1 = new Vector3(1, 0, 0);
+        var p2 = new Vector3(1, 1, 0);
+        var p3 = new Vector3(0, 1, 0);
+        mb.AddQuad(p0, p1, p2, p3);
 
         Assert.Multiple(() =>
         {
@@ -51,9 +50,9 @@ public class MeshBuilderTests
             Assert.That(mb.Normals, Is.Not.Null);
             Assert.AreEqual(4, mb.Normals!.Count);
 
-            foreach (Point3D normal in mb.Normals.Select(t => t.ToWndPoint()))
+            foreach (var normal in mb.Normals)
             {
-                Assert.AreEqual(new Point3D(0, 0, 1), normal);
+                Assert.AreEqual(new Vector3(0, 0, 1), normal);
             }
         });
     }
@@ -64,22 +63,22 @@ public class MeshBuilderTests
         var meshBuilder = new MeshBuilder(false, false);
         Assert.AreEqual(0, meshBuilder.Positions.Count);
         Assert.AreEqual(0, meshBuilder.TriangleIndices.Count);
-        var p = new List<Point>
+        var p = new List<Vector2>
                 {
-                    new Point(0, 0 ),
-                    new Point(1, 1 ),
+                    new(0, 0),
+                    new(1, 1),
                 };
 
-        meshBuilder.AddPolygon(p.Select(t => t.ToVector()).ToList(), new Vector3D(0, 1, 0).ToVector(), new Vector3D(1, 0, 0).ToVector(), new Point3D(0, 0, 0).ToVector());
+        meshBuilder.AddPolygon(p, new Vector3(0, 1, 0), new Vector3(1, 0, 0), new Vector3(0, 0, 0));
         Assert.AreEqual(0, meshBuilder.Positions.Count);
         Assert.AreEqual(0, meshBuilder.TriangleIndices.Count);
 
-        var p3 = new List<Point3D>
+        var p3 = new List<Vector3>
                 {
-                    new Point3D(0, 0, 0),
-                    new Point3D(1, 1, 0),
+                    new(0, 0, 0),
+                    new(1, 1, 0),
                 };
-        meshBuilder.AddPolygon(p3.Select(t => t.ToVector()).ToList());
+        meshBuilder.AddPolygon(p3);
         Assert.AreEqual(0, meshBuilder.Positions.Count);
         Assert.AreEqual(0, meshBuilder.TriangleIndices.Count);
     }
@@ -90,24 +89,24 @@ public class MeshBuilderTests
         var meshBuilder = new MeshBuilder(false, false);
         Assert.AreEqual(0, meshBuilder.Positions.Count);
         Assert.AreEqual(0, meshBuilder.TriangleIndices.Count);
-        var p = new List<Point>
+        var p = new List<Vector2>
                 {
-                    new Point(0, 0 ),
-                    new Point(1, 1 ),
-                    new Point(2, 2 ),
+                    new(0, 0),
+                    new(1, 1),
+                    new(2, 2),
                 };
 
-        meshBuilder.AddPolygon(p.Select(t => t.ToVector()).ToList(), new Vector3D(0, 1, 0).ToVector(), new Vector3D(1, 0, 0).ToVector(), new Point3D(0, 0, 0).ToVector());
+        meshBuilder.AddPolygon(p, new Vector3(0, 1, 0), new Vector3(1, 0, 0), new Vector3(0, 0, 0));
         Assert.AreEqual(3, meshBuilder.Positions.Count);
         Assert.AreEqual(3, meshBuilder.TriangleIndices.Count);
 
-        var p3 = new List<Point3D>
+        var p3 = new List<Vector3>
                 {
-                    new Point3D(0, 0, 0),
-                    new Point3D(1, 1, 0),
-                    new Point3D(2, 2, 0),
+                    new(0, 0, 0),
+                    new(1, 1, 0),
+                    new(2, 2, 0),
                 };
-        meshBuilder.AddPolygon(p3.Select(t => t.ToVector()).ToList());
+        meshBuilder.AddPolygon(p3);
         Assert.AreEqual(6, meshBuilder.Positions.Count);
         Assert.AreEqual(6, meshBuilder.TriangleIndices.Count);
     }
