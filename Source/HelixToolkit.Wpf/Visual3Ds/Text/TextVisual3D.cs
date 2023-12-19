@@ -83,7 +83,7 @@ public class TextVisual3D : ModelVisual3D
     /// Identifies the <see cref="Height"/> dependency property.
     /// </summary>
     public static readonly DependencyProperty HeightProperty = DependencyProperty.Register(
-        "Height", typeof(double), typeof(TextVisual3D), new UIPropertyMetadata(11.0, VisualChanged));
+        "Height", typeof(double), typeof(TextVisual3D), new UIPropertyMetadata(1.0, VisualChanged));
 
     /// <summary>
     /// Identifies the <see cref="HorizontalAlignment"/> dependency property.
@@ -149,6 +149,16 @@ public class TextVisual3D : ModelVisual3D
             typeof(VerticalAlignment),
             typeof(TextVisual3D),
             new UIPropertyMetadata(VerticalAlignment.Center, VisualChanged));
+
+    /// <summary>
+    /// Identifies the <see cref="Angle"/> dependency property.
+    /// </summary>        
+    public static readonly DependencyProperty AngleProperty =
+        DependencyProperty.Register(
+            "AngleProperty",
+            typeof(double),
+            typeof(TextVisual3D),
+            new UIPropertyMetadata(0.0, VisualChanged));
 
     /// <summary>
     /// Gets or sets the background brush.
@@ -415,6 +425,27 @@ public class TextVisual3D : ModelVisual3D
     }
 
     /// <summary>
+    /// The rotation angle of text clockwise, in degrees.
+    /// </summary>
+    public double Angle
+    {
+        get
+        {
+            return (double)this.GetValue(AngleProperty);
+        }
+        set
+        {
+            if (value != 0 && rotateTransform is null)
+            {
+                rotateTransform = new RotateTransform();
+            }
+            this.SetValue(AngleProperty, value);
+        }
+    }
+
+    private RotateTransform? rotateTransform = null;
+
+    /// <summary>
     /// The visual changed.
     /// </summary>
     /// <param name="d">
@@ -466,8 +497,18 @@ public class TextVisual3D : ModelVisual3D
                             }
                           : textBlock;
 
+        // Only prevent assign when angle == 0, it is equal origin value 
+        // https://stackoverflow.com/questions/10329298/performance-impact-of-applying-either-layouttransform-vs-rendertransform
+        if (Angle != 0 || (rotateTransform != null && rotateTransform.Angle != Angle))
+        {
+            rotateTransform ??= new();
+            rotateTransform.Angle = Angle;
+            element.LayoutTransform = rotateTransform;
+        }
+
         element.Measure(new Size(1000, 1000));
         element.Arrange(new Rect(element.DesiredSize));
+        element.RenderSize = element.DesiredSize;
 
         Material material;
         if (this.FontSize > 0)
