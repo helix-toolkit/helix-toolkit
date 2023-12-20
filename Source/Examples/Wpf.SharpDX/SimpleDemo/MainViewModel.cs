@@ -1,20 +1,19 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using HelixToolkit;
+using HelixToolkit.Maths;
 using HelixToolkit.SharpDX;
 using HelixToolkit.Wpf.SharpDX;
-using SharpDX;
 using System;
 using System.IO;
 using System.Linq;
+using System.Numerics;
 using System.Windows.Media.Imaging;
 using Color = System.Windows.Media.Color;
-using Color4 = SharpDX.Color4;
 using Colors = System.Windows.Media.Colors;
 using Media3D = System.Windows.Media.Media3D;
 using Point3D = System.Windows.Media.Media3D.Point3D;
 using Transform3D = System.Windows.Media.Media3D.Transform3D;
-using Vector3 = SharpDX.Vector3;
 using Vector3D = System.Windows.Media.Media3D.Vector3D;
 
 namespace SimpleDemo;
@@ -120,10 +119,10 @@ public partial class MainViewModel : DemoCore.BaseViewModel
 
         // scene model3d
         var b1 = new MeshBuilder();
-        b1.AddSphere(new Vector3(0, 0, 0).ToVector(), 0.5f);
-        b1.AddBox(new Vector3(0, 0, 0).ToVector(), 1, 0.5f, 2, BoxFaces.All);
+        b1.AddSphere(new Vector3(0, 0, 0), 0.5f);
+        b1.AddBox(new Vector3(0, 0, 0), 1, 0.5f, 2, BoxFaces.All);
 
-        var meshGeometry = b1.ToMesh().ToMeshGeometry3D();
+        var meshGeometry = b1.ToMeshGeometry3D();
         meshGeometry.Colors = meshGeometry.TextureCoordinates is null ? null : new Color4Collection(meshGeometry.TextureCoordinates.Select(x => x.ToColor4()));
         Model = meshGeometry;
 
@@ -135,7 +134,7 @@ public partial class MainViewModel : DemoCore.BaseViewModel
         var textBuilder = new MeshBuilder();
         textBuilder.ExtrudeText("HelixToolkit.SharpDX", "Arial", System.Windows.FontStyles.Normal, System.Windows.FontWeights.Bold,
             14, new Vector3(1, 0, 0), new Vector3(0, 0, 0), new Vector3(0, 0, 1));
-        TextModel = textBuilder.ToMesh().ToMeshGeometry3D();
+        TextModel = textBuilder.ToMeshGeometry3D();
 
         // model trafos
         Model1Transform = new Media3D.TranslateTransform3D(0, 0, 0);
@@ -242,8 +241,8 @@ public partial class MainViewModel : DemoCore.BaseViewModel
             BitmapExtensions.CreateLinearGradientBitmapStream(EffectsManager, 128, 128, Direct2DImageFormat.Bmp,
             new Vector2(0, 0), new Vector2(0, 128), new SharpDX.Direct2D1.GradientStop[]
             {
-                    new(){ Color = Colors.White.ToColor4(), Position = 0f },
-                    new(){ Color = Colors.DarkGray.ToColor4(), Position = 1f }
+                    new(){ Color = Colors.White.ToRawColor4(), Position = 0f },
+                    new(){ Color = Colors.DarkGray.ToRawColor4(), Position = 1f }
             });
     }
 

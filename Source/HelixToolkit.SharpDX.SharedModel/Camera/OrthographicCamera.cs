@@ -120,7 +120,7 @@ public class OrthographicCamera : ProjectionCamera, IOrthographicCameraModel
         var target = Target.ToVector3();
         var dist = dir.Length();
         var newDist = dist * ratio;
-        dir.Normalize();
+        dir = Vector3.Normalize(dir);
         var position = (target - dir * (float)newDist);
         var lookDir = dir * (float)newDist;
         Position = position.ToPoint3D();

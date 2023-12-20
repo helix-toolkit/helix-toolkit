@@ -1,5 +1,6 @@
 ﻿using SharpDX.Direct2D1;
 using SharpDX;
+using SharpDX.Mathematics.Interop;
 
 namespace HelixToolkit.SharpDX.Utilities.ImagePacker;
 
@@ -18,14 +19,14 @@ public sealed class TextInfoExtPacker : SpritePackerBase<TextInfoExt, TextLayout
         {
             var location = ImagePlacement[text.Key];
             var t = text.Value;
-            using (var brush = new SolidColorBrush(target, t.Background))
-                target.FillRectangle(location, brush);
-            using (var brush = new SolidColorBrush(target, t.Foreground))
-                target.DrawTextLayout(new Vector2(location.Left + text.Value.Padding.X, location.Top + text.Value.Padding.Y),
+            using (var brush = new SolidColorBrush(target, t.Background.ToStruct<Color4, RawColor4>()))
+                target.FillRectangle(location.ToStruct<RectangleF, RawRectangleF>(), brush);
+            using (var brush = new SolidColorBrush(target, t.Foreground.ToStruct<Color4, RawColor4>()))
+                target.DrawTextLayout(new RawVector2(location.Left + text.Value.Padding.X, location.Top + text.Value.Padding.Y),
                     t.TextLayout, brush, DrawTextOptions.None);
         }
     }
-
+    
     protected override KeyValuePair<int, TextLayoutInfo>[] GetArray(IEnumerable<TextInfoExt> items)
     {
         return items.Select((x, i) =>

@@ -17,43 +17,43 @@ public static class Converter
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static System.Windows.Media.Media3D.Point3D ToWndPoint(this System.Numerics.Vector3 vector)
+    public static System.Windows.Media.Media3D.Point3D ToWndPoint3D(this System.Numerics.Vector3 vector)
     {
         return new System.Windows.Media.Media3D.Point3D(vector.X, vector.Y, vector.Z);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static System.Numerics.Vector3 ToVector(this System.Windows.Media.Media3D.Point3D vector)
+    public static System.Numerics.Vector3 ToVector3(this System.Windows.Media.Media3D.Point3D vector)
     {
         return new System.Numerics.Vector3((float)vector.X, (float)vector.Y, (float)vector.Z);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static System.Windows.Media.Media3D.Vector3D ToWndVector(this System.Numerics.Vector3 vector)
+    public static System.Windows.Media.Media3D.Vector3D ToWndVector3D(this System.Numerics.Vector3 vector)
     {
         return new System.Windows.Media.Media3D.Vector3D(vector.X, vector.Y, vector.Z);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static System.Numerics.Vector3 ToVector(this System.Windows.Media.Media3D.Vector3D vector)
+    public static System.Numerics.Vector3 ToVector3(this System.Windows.Media.Media3D.Vector3D vector)
     {
         return new System.Numerics.Vector3((float)vector.X, (float)vector.Y, (float)vector.Z);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static System.Windows.Media.Media3D.Point4D ToWnPoint(this System.Numerics.Vector4 vector)
+    public static System.Windows.Media.Media3D.Point4D ToWnPoint4D(this System.Numerics.Vector4 vector)
     {
         return new System.Windows.Media.Media3D.Point4D(vector.X, vector.Y, vector.Z, vector.W);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static System.Numerics.Vector4 ToVector(this System.Windows.Media.Media3D.Point4D vector)
+    public static System.Numerics.Vector4 ToVector4(this System.Windows.Media.Media3D.Point4D vector)
     {
         return new System.Numerics.Vector4((float)vector.X, (float)vector.Y, (float)vector.Z, (float)vector.W);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static System.Windows.Media.Media3D.Matrix3D ToWndMatrix(this System.Numerics.Matrix4x4 matrix)
+    public static System.Windows.Media.Media3D.Matrix3D ToWndMatrix3D(this System.Numerics.Matrix4x4 matrix)
     {
         return new System.Windows.Media.Media3D.Matrix3D(
             matrix.M11, matrix.M12, matrix.M13, matrix.M14,
@@ -73,25 +73,25 @@ public static class Converter
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static System.Windows.Media.Media3D.Point3D ToWndPoint(this System.Windows.Media.Media3D.Vector3D vector)
+    public static System.Windows.Media.Media3D.Point3D ToWndPoint3D(this System.Windows.Media.Media3D.Vector3D vector)
     {
         return new System.Windows.Media.Media3D.Point3D(vector.X, vector.Y, vector.Z);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static System.Windows.Media.Media3D.Vector3D ToWndVector(this System.Windows.Media.Media3D.Point3D vector)
+    public static System.Windows.Media.Media3D.Vector3D ToWndVector3D(this System.Windows.Media.Media3D.Point3D vector)
     {
         return new System.Windows.Media.Media3D.Vector3D(vector.X, vector.Y, vector.Z);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static System.Windows.Media.Media3D.Rect3D ToWnRect(this HelixToolkit.Geometry.Rect3D rect)
+    public static System.Windows.Media.Media3D.Rect3D ToWnRect3D(this HelixToolkit.Geometry.Rect3D rect)
     {
         return new System.Windows.Media.Media3D.Rect3D(rect.X, rect.Y, rect.Z, rect.SizeX, rect.SizeY, rect.SizeZ);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static HelixToolkit.Geometry.Rect3D ToRect(this System.Windows.Media.Media3D.Rect3D rect)
+    public static HelixToolkit.Geometry.Rect3D ToRect3D(this System.Windows.Media.Media3D.Rect3D rect)
     {
         return new HelixToolkit.Geometry.Rect3D((float)rect.X, (float)rect.Y, (float)rect.Z, (float)rect.SizeX, (float)rect.SizeY, (float)rect.SizeZ);
     }
@@ -103,17 +103,17 @@ public static class Converter
             return null;
         }
 
-        return new System.Windows.Media.Media3D.Vector3DCollection(collection.Select(v => v.ToWndVector()));
+        return new System.Windows.Media.Media3D.Vector3DCollection(collection.Select(v => v.ToWndVector3D()));
     }
 
-    public static IList<System.Numerics.Vector3>? ToCollection(this System.Windows.Media.Media3D.Vector3DCollection? collection)
+    public static Vector3Collection? ToCollection(this System.Windows.Media.Media3D.Vector3DCollection? collection)
     {
         if (collection is null)
         {
             return null;
         }
 
-        return collection.Select(t => t.ToVector()).ToList();
+        return new Vector3Collection(collection.Select(t => t.ToVector3()));
     }
 
     public static System.Windows.Media.Media3D.Point3DCollection? ToPoint3DCollection(IList<System.Numerics.Vector3>? collection)
@@ -123,17 +123,17 @@ public static class Converter
             return null;
         }
 
-        return new System.Windows.Media.Media3D.Point3DCollection(collection.Select(v => v.ToWndPoint()));
+        return new System.Windows.Media.Media3D.Point3DCollection(collection.Select(v => v.ToWndPoint3D()));
     }
 
-    public static IList<System.Numerics.Vector3>? ToCollection(this System.Windows.Media.Media3D.Point3DCollection? collection)
+    public static Vector3Collection? ToCollection(this System.Windows.Media.Media3D.Point3DCollection? collection)
     {
         if (collection is null)
         {
             return null;
         }
 
-        return collection.Select(t => t.ToVector()).ToList();
+        return new Vector3Collection(collection.Select(t => t.ToVector3()));
     }
 
     public static System.Windows.Media.PointCollection? ToPointCollection(IList<System.Numerics.Vector2>? collection)
@@ -146,14 +146,14 @@ public static class Converter
         return new System.Windows.Media.PointCollection(collection.Select(v => v.ToWndPoint()));
     }
 
-    public static IList<System.Numerics.Vector2>? ToCollection(this System.Windows.Media.PointCollection? collection)
+    public static Vector2Collection? ToCollection(this System.Windows.Media.PointCollection? collection)
     {
         if (collection is null)
         {
             return null;
         }
 
-        return collection.Select(t => t.ToVector()).ToList();
+        return new Vector2Collection(collection.Select(t => t.ToVector()));
     }
 
     public static System.Windows.Media.Int32Collection? ToInt32Collection(IList<int>? collection)
@@ -166,14 +166,14 @@ public static class Converter
         return new System.Windows.Media.Int32Collection(collection);
     }
 
-    public static IList<int>? ToCollection(this System.Windows.Media.Int32Collection? collection)
+    public static IntCollection? ToCollection(this System.Windows.Media.Int32Collection? collection)
     {
         if (collection is null)
         {
             return null;
         }
 
-        return collection.ToList();
+        return new IntCollection(collection);
     }
 
     public static IList<float>? ToFloatCollection(this System.Windows.Media.DoubleCollection collection)
@@ -196,7 +196,7 @@ public static class Converter
         return new System.Windows.Media.DoubleCollection(collection.Select(t => (double)t));
     }
 
-    public static System.Windows.Media.Media3D.MeshGeometry3D ToMeshGeometry3D(this HelixToolkit.Geometry.MeshGeometry3D mesh, bool freeze = false)
+    public static System.Windows.Media.Media3D.MeshGeometry3D ToMeshGeometry3D(this Geometry.MeshGeometry3D mesh, bool freeze = false)
     {
         var mg = new System.Windows.Media.Media3D.MeshGeometry3D()
         {
@@ -214,14 +214,14 @@ public static class Converter
         return mg;
     }
 
-    public static HelixToolkit.Geometry.MeshGeometry3D ToWndMeshGeometry3D(this System.Windows.Media.Media3D.MeshGeometry3D mesh)
+    public static Geometry.MeshGeometry3D ToWndMeshGeometry3D(this System.Windows.Media.Media3D.MeshGeometry3D mesh)
     {
-        return new HelixToolkit.Geometry.MeshGeometry3D()
+        return new Geometry.MeshGeometry3D()
         {
             Normals = mesh.Normals?.ToCollection(),
-            Positions = mesh.Positions?.ToCollection() ?? new List<System.Numerics.Vector3>(),
+            Positions = mesh.Positions?.ToCollection() ?? new Vector3Collection(),
             TextureCoordinates = mesh.TextureCoordinates?.ToCollection(),
-            TriangleIndices = mesh.TriangleIndices
+            TriangleIndices = mesh.TriangleIndices.ToCollection() ?? new IntCollection()
         };
     }
 }

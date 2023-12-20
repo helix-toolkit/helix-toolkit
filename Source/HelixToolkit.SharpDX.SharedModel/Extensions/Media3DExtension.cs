@@ -1,4 +1,5 @@
 ﻿using SharpDX;
+using SharpDX.Mathematics.Interop;
 using System.Runtime.CompilerServices;
 
 #if WINUI
@@ -26,17 +27,31 @@ public static class Media3DExtension
     {
         return new Vector3((float)vector.X, (float)vector.Y, (float)vector.Z);
     }
-
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Vector4 ToVector4(this Vector3D vector, float w = 1f)
+    public static RawVector3 ToRawVector3(this Vector3 vector)
+    {
+        return new RawVector3((float)vector.X, (float)vector.Y, (float)vector.Z);
+    }
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static Vector4 ToVector4(this Vector3 vector, float w = 1f)
     {
         return new Vector4((float)vector.X, (float)vector.Y, (float)vector.Z, w);
     }
-
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static RawVector4 ToRawVector4(this Vector3 vector, float w = 1f)
+    {
+        return new RawVector4((float)vector.X, (float)vector.Y, (float)vector.Z, w);
+    }
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Vector2 ToVector2(this Point vector)
     {
         return new Vector2((float)vector.X, (float)vector.Y);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static RawVector2 ToRawVector2(this Point vector)
+    {
+        return new RawVector2((float)vector.X, (float)vector.Y);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -52,6 +67,12 @@ public static class Media3DExtension
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static RawColor4 ToRawColor4(this UIColor color)
+    {
+        return new RawColor4(color.R / 255f, color.G / 255f, color.B / 255f, color.A / 255f);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static UIColor ToColor(this Color4 color)
     {
         return UIColor.FromArgb((byte)(color.Alpha * 255), (byte)(color.Red * 255), (byte)(color.Green * 255), (byte)(color.Blue * 255));
@@ -63,6 +84,12 @@ public static class Media3DExtension
     public static Vector3 ToVector3(this Point3D point)
     {
         return new Vector3((float)point.X, (float)point.Y, (float)point.Z);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static Vector2 ToVector2(this Vector v)
+    {
+        return new Vector2((float)v.X, (float)v.Y);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

@@ -1,4 +1,5 @@
 ﻿using SharpDX;
+using SharpDX.Mathematics.Interop;
 using D2D = SharpDX.Direct2D1;
 
 namespace HelixToolkit.SharpDX.Core2D;
@@ -34,9 +35,9 @@ public class BezierSegment : Segment
     {
         sink.AddBezier(new D2D.BezierSegment()
         {
-            Point1 = P1,
-            Point2 = P2,
-            Point3 = P3
+            Point1 = P1.ToStruct<Vector2, RawVector2>(),
+            Point2 = P2.ToStruct<Vector2, RawVector2>(),
+            Point3 = P3.ToStruct<Vector2, RawVector2>()
         });
     }
 }

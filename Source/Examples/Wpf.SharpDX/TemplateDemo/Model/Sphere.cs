@@ -11,8 +11,8 @@ public class Sphere : Shape
     static Sphere()
     {
         var b1 = new MeshBuilder();
-        b1.AddSphere(new Vector3(0, 0, 0).ToVector(), 0.5f);
-        geometry = b1.ToMesh().ToMeshGeometry3D();
+        b1.AddSphere(new Vector3(0, 0, 0), 0.5f);
+        geometry = b1.ToMeshGeometry3D();
     }
 
     protected override Geometry3D GetGeometry()

@@ -42,9 +42,9 @@ public partial class ViewModel3D : ObservableObject
     public ViewModel3D()
     {
         var builder = new MeshBuilder(true, true, true);
-        builder.AddBox(new Vector3(0, 2.5f, 0).ToVector(), 5, 5, 5);
-        builder.AddBox(new Vector3(0, 0, 0).ToVector(), 10, 0.1f, 10);
-        Model = builder.ToMesh().ToMeshGeometry3D();
+        builder.AddBox(new Vector3(0, 2.5f, 0), 5, 5, 5);
+        builder.AddBox(new Vector3(0, 0, 0), 10, 0.1f, 10);
+        Model = builder.ToMeshGeometry3D();
         var diffuseMap = TextureModel.Create(new System.Uri(Texture, System.UriKind.RelativeOrAbsolute).ToString());
         var normalMap = TextureModel.Create(new System.Uri(NormalTexture, System.UriKind.RelativeOrAbsolute).ToString());
         ModelMaterial.DiffuseMap = diffuseMap;

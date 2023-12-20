@@ -1,6 +1,7 @@
 ﻿using HelixToolkit.SharpDX.Model.Scene;
 using NUnit.Framework;
-using SharpDX;
+using System.Numerics;
+using HelixToolkit.Maths;
 
 namespace HelixToolkit.SharpDX.Tests;
 
@@ -11,10 +12,10 @@ public class SceneNodeTests
     private static SceneNode GetNode()
     {
         var meshBuilder = new MeshBuilder();
-        meshBuilder.AddBox(new Vector3(0f).ToVector(), 1, 1, 1);
+        meshBuilder.AddBox(new Vector3(0f), 1, 1, 1);
         return new MeshNode()
         {
-            Geometry = meshBuilder.ToMesh().ToMeshGeometry3D(),
+            Geometry = meshBuilder.ToMeshGeometry3D(),
         };
     }
 

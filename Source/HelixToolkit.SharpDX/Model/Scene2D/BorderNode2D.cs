@@ -237,15 +237,15 @@ public class BorderNode2D : ContentNode2D
         }
     }
 
-    protected override Size2F MeasureOverride(Size2F availableSize)
+    protected override Vector2 MeasureOverride(Vector2 availableSize)
     {
         if (Content != null)
         {
-            var margin = new Size2F((BorderThickness.Left / 2 + Padding.Left + BorderThickness.Right / 2 + Padding.Right),
+            var margin = new Vector2((BorderThickness.Left / 2 + Padding.Left + BorderThickness.Right / 2 + Padding.Right),
                 (BorderThickness.Top / 2 + Padding.Top + BorderThickness.Bottom / 2 + Padding.Bottom));
-            margin.Width *= DpiScale;
-            margin.Height *= DpiScale;
-            var childAvail = new Size2F(Math.Max(0, availableSize.Width - margin.Width), Math.Max(0, availableSize.Height - margin.Height));
+            margin.X *= DpiScale;
+            margin.Y *= DpiScale;
+            var childAvail = new Vector2(Math.Max(0, availableSize.X - margin.X), Math.Max(0, availableSize.Y - margin.Y));
 
             var size = base.MeasureOverride(childAvail);
             if (Width != float.PositiveInfinity && Height != float.PositiveInfinity)
@@ -256,21 +256,21 @@ public class BorderNode2D : ContentNode2D
             {
                 if (Width != float.PositiveInfinity)
                 {
-                    size.Width = Width * DpiScale;
+                    size.X = Width * DpiScale;
                 }
                 if (Height != float.PositiveInfinity)
                 {
-                    size.Height = Height * DpiScale;
+                    size.Y = Height * DpiScale;
                 }
                 return size;
             }
         }
         else
         {
-            var size = new Size2F((float)(BorderThickness.Left / 2 + Padding.Left + BorderThickness.Right / 2 + Padding.Right + MarginWidthHeight.X + Width == float.PositiveInfinity ? 0 : Width),
+            var size = new Vector2((float)(BorderThickness.Left / 2 + Padding.Left + BorderThickness.Right / 2 + Padding.Right + MarginWidthHeight.X + Width == float.PositiveInfinity ? 0 : Width),
                 (float)(BorderThickness.Top / 2 + Padding.Top + BorderThickness.Bottom / 2 + Padding.Bottom + MarginWidthHeight.Y) + Height == float.PositiveInfinity ? 0 : Height);
-            size.Width *= DpiScale;
-            size.Height *= DpiScale;
+            size.X *= DpiScale;
+            size.Y *= DpiScale;
             return size;
         }
     }

@@ -196,7 +196,7 @@ namespace HelixToolkit.SharpDX.Controls
         /// </summary>
         public float ZoomSensitivity = 1.0f;
 
-        private static readonly Point PointZero = new Point(0, 0);
+        private static readonly Vector2 PointZero = new Vector2(0, 0);
 
         private static readonly Vector3 Vector3DZero = new Vector3();
 
@@ -1082,8 +1082,7 @@ namespace HelixToolkit.SharpDX.Controls
 
                 pcamera.FieldOfView = fov;
                 float d2 = r / (float)Math.Tan(0.5f * fov / 180 * Math.PI);
-                var newLookDirection = pcamera.LookDirection;
-                newLookDirection.Normalize();
+                var newLookDirection = Vector3.Normalize(pcamera.LookDirection);
                 newLookDirection *= (float)d2;
                 var target = pcamera.Position + pcamera.LookDirection;
                 pcamera.Position = target - newLookDirection;

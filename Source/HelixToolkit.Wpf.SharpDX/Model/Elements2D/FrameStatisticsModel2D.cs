@@ -31,7 +31,7 @@ public class FrameStatisticsModel2D : Element2D
 
     public static readonly DependencyProperty BackgroundProperty
         = DependencyProperty.Register("Background", typeof(Brush), typeof(FrameStatisticsModel2D),
-            new PropertyMetadata(new SolidColorBrush(Color.FromArgb(64, 32, 32, 32)), (d, e) =>
+            new PropertyMetadata(new SolidColorBrush(System.Windows.Media.Color.FromArgb(64, 32, 32, 32)), (d, e) =>
             {
                 if (d is FrameStatisticsModel2D model)
                 {

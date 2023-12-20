@@ -51,7 +51,7 @@ public static class CollectionExtensions
         }
         else if (list is FastList<T> f)
         {
-            array = f.Items;
+            array = f.GetInternalArray();
         }
         else if (list is List<T> l)
         {
@@ -84,7 +84,7 @@ public static class CollectionExtensions
         }
         else if (list is FastList<T> f)
         {
-            array = f.Items;
+            array = f.GetInternalArray();
         }
         else
         {
@@ -110,5 +110,17 @@ public static class CollectionExtensions
         }
 
         return default;
+    }
+
+    public static MeshGeometry3D ToMeshGeometry3D(this Geometry.MeshGeometry3D mesh)
+    {
+        return new MeshGeometry3D()
+        {
+            Positions = mesh.Positions,
+            Normals = mesh.Normals,
+            TextureCoordinates = mesh.TextureCoordinates,
+            Tangents = mesh.Tangents,
+            BiTangents = mesh.BiTangents
+        };
     }
 }

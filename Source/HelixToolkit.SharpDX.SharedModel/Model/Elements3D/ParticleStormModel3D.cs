@@ -93,7 +93,7 @@ public class ParticleStormModel3D : Element3D
 
 #if WINUI
     public static readonly DependencyProperty ParticleBoundsProperty = DependencyProperty.Register("ParticleBounds", typeof(BoundingBox), typeof(ParticleStormModel3D),
-        new PropertyMetadata(new BoundingBox(new Vector3D(-50, -50, -50), new Vector3D(50, 50, 50)),
+        new PropertyMetadata(new BoundingBox(new Vector3(-50, -50, -50), new Vector3(50, 50, 50)),
         (d, e) =>
         {
             if (d is Element3DCore { SceneNode: ParticleStormNode node })

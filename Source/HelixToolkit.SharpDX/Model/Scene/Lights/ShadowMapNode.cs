@@ -339,13 +339,13 @@ public class ShadowMapNode : SceneNode
         points[5] = new Vector3(box.Maximum.X, box.Minimum.Y, box.Minimum.Z);
         points[6] = new Vector3(box.Minimum.X, box.Maximum.Y, box.Minimum.Z);
         points[7] = new Vector3(box.Maximum.X, box.Minimum.Y, box.Maximum.Z);
-        var plane = new Plane(center, lookDir);
+        var plane = PlaneHelper.Create(center, lookDir);
         var farthest = Vector3.Zero;
         var farestDist = 0f;
 
         for (var i = 0; i < 8; ++i)
         {
-            Vector3.Dot(ref plane.Normal, ref points[i], out var dot);
+            var dot = Vector3.Dot(plane.Normal, points[i]);
             dot += plane.D;
             if (dot > 0)
             {
@@ -427,7 +427,7 @@ public class ShadowMapNode : SceneNode
 
                     if (splight is not null)
                     {
-                        persCamera.Position = (splight.Position + splight.ModelMatrix.Row4.ToVector3());
+                        persCamera.Position = (splight.Position + splight.ModelMatrix.Row4().ToVector3());
                         var look = Vector3.TransformNormal(splight.Direction, splight.ModelMatrix);
                         persCamera.LookDirection = look;
                         persCamera.FarPlaneDistance = (float)splight.Range;

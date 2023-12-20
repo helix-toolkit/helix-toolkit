@@ -1,5 +1,5 @@
 ﻿using System.Windows.Input;
-using Vector3 = SharpDX.Vector3;
+
 
 namespace HelixToolkit.Wpf.SharpDX;
 

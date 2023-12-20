@@ -249,8 +249,8 @@ public class CuttingPlaneGroup : RenderingModelVisual3D
     /// <returns>The intersected geometry.</returns>
     private MeshGeometry3D Intersect(MeshGeometry3D source, GeneralTransform3D inverseTransform, Plane3D plane, bool complement)
     {
-        var p = inverseTransform.Transform(plane.Position.ToWndPoint());
-        var p2 = inverseTransform.Transform((plane.Position + plane.Normal).ToWndPoint());
+        var p = inverseTransform.Transform(plane.Position);
+        var p2 = inverseTransform.Transform((plane.Position + plane.Normal));
         var n = p2 - p;
 
         if (complement)
@@ -258,7 +258,7 @@ public class CuttingPlaneGroup : RenderingModelVisual3D
             n *= -1;
         }
 
-        return MeshGeometryHelper.Cut(source.ToWndMeshGeometry3D(), p.ToVector(), n.ToVector()).ToMeshGeometry3D();
+        return MeshGeometryHelper.Cut(source.ToWndMeshGeometry3D(), p.ToVector3(), n.ToVector3()).ToMeshGeometry3D();
     }
     /// <summary>
     /// Update the cutting planes to the model.

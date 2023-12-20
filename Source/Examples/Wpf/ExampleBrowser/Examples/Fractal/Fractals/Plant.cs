@@ -91,7 +91,7 @@ public sealed class Plant : FractalBase
         double h = isStem ? 2.5 : 2;
         double r = (Level + 1 - p) * 0.1;
 
-        mesh.AddCone(p0.ToVector(), direction.ToVector(), (float)r, (float)(r * 0.8), (float)h, false, false, 12);
+        mesh.AddCone(p0.ToVector3(), direction.ToVector3(), (float)r, (float)(r * 0.8), (float)h, false, false, 12);
         var p1 = p0 + direction * h;
 
         if (p == Level)

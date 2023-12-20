@@ -78,7 +78,7 @@ public class BillboardImage3D : BillboardBase
     {
         GetQuadOffset(info.Width, info.Height, info.HorizontalAlignment, info.VerticalAlignment, out var tl, out var br);
 
-        var transform = info.Angle != 0 ? Matrix3x2.Rotation(info.Angle) : Matrix3x2.Identity;
+        var transform = info.Angle != 0 ? Matrix3x2.CreateRotation(info.Angle) : Matrix3x2.Identity;
         var offTL = tl * info.Scale;
         var offBR = br * info.Scale;
         var offTR = new Vector2(offBR.X, offTL.Y);
@@ -90,10 +90,10 @@ public class BillboardImage3D : BillboardBase
             Background = maskColor,
             TexTL = info.UV_TopLeft,
             TexBR = info.UV_BottomRight,
-            OffTL = Matrix3x2.TransformPoint(transform, offTL) + info.Offset,
-            OffBL = Matrix3x2.TransformPoint(transform, offBL) + info.Offset,
-            OffBR = Matrix3x2.TransformPoint(transform, offBR) + info.Offset,
-            OffTR = Matrix3x2.TransformPoint(transform, offTR) + info.Offset
+            OffTL = Matrix3x2Helper.TransformPoint(transform, offTL) + info.Offset,
+            OffBL = Matrix3x2Helper.TransformPoint(transform, offBL) + info.Offset,
+            OffBR = Matrix3x2Helper.TransformPoint(transform, offBR) + info.Offset,
+            OffTR = Matrix3x2Helper.TransformPoint(transform, offTR) + info.Offset
         });
     }
 

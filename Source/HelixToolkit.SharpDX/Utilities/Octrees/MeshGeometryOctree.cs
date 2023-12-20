@@ -181,15 +181,14 @@ public class MeshGeometryOctree
                         result.IsValid = true;
                         result.ModelHit = model;
                         // transform hit-info to world space now:
-                        var pointWorld = Vector3.TransformCoordinate(rayModel.Position + (rayModel.Direction * d), modelMatrix);
+                        var pointWorld = Vector3Helper.TransformCoordinate(rayModel.Position + (rayModel.Direction * d), modelMatrix);
                         result.PointHit = pointWorld;
                         result.Distance = (rayWS.Position - pointWorld).Length();
 
-                        var p0 = Vector3.TransformCoordinate(v0, modelMatrix);
-                        var p1 = Vector3.TransformCoordinate(v1, modelMatrix);
-                        var p2 = Vector3.TransformCoordinate(v2, modelMatrix);
-                        var n = Vector3.Cross(p1 - p0, p2 - p0);
-                        n.Normalize();
+                        var p0 = Vector3Helper.TransformCoordinate(v0, modelMatrix);
+                        var p1 = Vector3Helper.TransformCoordinate(v1, modelMatrix);
+                        var p2 = Vector3Helper.TransformCoordinate(v2, modelMatrix);
+                        var n = Vector3.Normalize(Vector3.Cross(p1 - p0, p2 - p0));
                         // transform hit-info to world space now:
                         result.NormalAtHit = n;// Vector3.TransformNormal(n, m).ToVector3D();
                         result.TriangleIndices = new Tuple<int, int, int>(t1, t2, t3);
@@ -222,14 +221,14 @@ public class MeshGeometryOctree
         return isHit;
     }
     /// <summary>
-    /// <see cref="DynamicOctreeBase{T}.FindNearestPointBySphereExcludeChild(HitTestContext, ref global::SharpDX.BoundingSphere, ref List{HitTestResult}, ref bool)"/>
+    /// <see cref="DynamicOctreeBase{T}.FindNearestPointBySphereExcludeChild(HitTestContext, ref BoundingSphere, ref List{HitTestResult}, ref bool)"/>
     /// </summary>
     /// <param name="context"></param>
     /// <param name="sphere"></param>
     /// <param name="result"></param>
     /// <param name="isIntersect"></param>
     /// <returns></returns>
-    public override bool FindNearestPointBySphereExcludeChild(HitTestContext? context, ref global::SharpDX.BoundingSphere sphere,
+    public override bool FindNearestPointBySphereExcludeChild(HitTestContext? context, ref BoundingSphere sphere,
         ref List<HitTestResult> result, ref bool isIntersect)
     {
         var isHit = false;

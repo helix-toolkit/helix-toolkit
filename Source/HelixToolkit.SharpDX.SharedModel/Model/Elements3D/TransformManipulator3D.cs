@@ -27,20 +27,20 @@ public class TransformManipulator3D : GroupElement3D
     {
         var bd = new MeshBuilder();
         var arrowLength = 1.5f;
-        bd.AddArrow((Vector3.UnitX * arrowLength).ToVector(), new Vector3(1.2f * arrowLength, 0, 0).ToVector(), 0.08f, 4, 12);
-        bd.AddCylinder(Vector3.Zero.ToVector(), (Vector3.UnitX * arrowLength).ToVector(), 0.04f, 12);
-        TranslationXGeometry = bd.ToMesh().ToMeshGeometry3D();
+        bd.AddArrow((Vector3.UnitX * arrowLength), new Vector3(1.2f * arrowLength, 0, 0), 0.08f, 4, 12);
+        bd.AddCylinder(Vector3.Zero, (Vector3.UnitX * arrowLength), 0.04f, 12);
+        TranslationXGeometry = bd.ToMeshGeometry3D();
 
         bd = new MeshBuilder();
         var circle = MeshBuilder.GetCircle(32, true);
-        var path = circle.Select(x => new Vector3(0, x.X, x.Y).ToVector()).ToArray();
+        var path = circle.Select(x => new Vector3(0, x.X, x.Y)).ToArray();
         bd.AddTube(path, 0.06f, 8, true);
-        RotationXGeometry = bd.ToMesh().ToMeshGeometry3D();
+        RotationXGeometry = bd.ToMeshGeometry3D();
 
         bd = new MeshBuilder();
-        bd.AddBox((Vector3.UnitX * 0.8f).ToVector(), 0.15f, 0.15f, 0.15f);
-        bd.AddCylinder(Vector3.Zero.ToVector(), (Vector3.UnitX * 0.8f).ToVector(), 0.02f, 4);
-        ScalingGeometry = bd.ToMesh().ToMeshGeometry3D();
+        bd.AddBox((Vector3.UnitX * 0.8f), 0.15f, 0.15f, 0.15f);
+        bd.AddCylinder(Vector3.Zero, (Vector3.UnitX * 0.8f), 0.02f, 4);
+        ScalingGeometry = bd.ToMeshGeometry3D();
 
         TranslationXGeometry.OctreeParameter.MinimumOctantSize = 0.01f;
         TranslationXGeometry.UpdateOctree();
@@ -433,8 +433,8 @@ public class TransformManipulator3D : GroupElement3D
 
     public TransformManipulator3D()
     {
-        var rotationYMatrix = Matrix.RotationZ((float)Math.PI / 2);
-        var rotationZMatrix = Matrix.RotationY(-(float)Math.PI / 2);
+        var rotationYMatrix = Matrix.CreateRotationZ((float)Math.PI / 2);
+        var rotationZMatrix = Matrix.CreateRotationY(-(float)Math.PI / 2);
         ctrlGroup = new GroupModel3D();
         #region Translation Models
         translationX = new MeshGeometryModel3D() { Geometry = TranslationXGeometry, Material = DiffuseMaterials.Red, CullMode = CullMode.Back, PostEffects = "ManipulatorXRayGrid" };
@@ -761,13 +761,13 @@ public class TransformManipulator3D : GroupElement3D
             switch (manipulationType)
             {
                 case ManipulationType.RotationX:
-                    rotationMatrix *= Matrix.RotationX(theta);
+                    rotationMatrix *= Matrix.CreateRotationX(theta);
                     break;
                 case ManipulationType.RotationY:
-                    rotationMatrix *= Matrix.RotationY(theta);
+                    rotationMatrix *= Matrix.CreateRotationY(theta);
                     break;
                 case ManipulationType.RotationZ:
-                    rotationMatrix *= Matrix.RotationZ(theta);
+                    rotationMatrix *= Matrix.CreateRotationZ(theta);
                     break;
             }
             OnUpdateTargetMatrix();
@@ -919,17 +919,17 @@ public class TransformManipulator3D : GroupElement3D
     private void SceneNode_OnTransformChanged(object? sender, TransformArgs e)
     {
         var m = e.Transform;
-        m.Decompose(out var scale, out var rotation, out var translation);
-        scaleMatrix = Matrix.Scaling(scale);
-        rotationMatrix = Matrix.RotationQuaternion(rotation);
+        Matrix.Decompose(m, out var scale, out var rotation, out var translation);
+        scaleMatrix = Matrix.CreateScale(scale);
+        rotationMatrix = rotation.ToMatrix();
         if (centerOffset != Vector3.Zero)
         {
-            var org = Matrix.Translation(-centerOffset) * scaleMatrix * rotationMatrix * Matrix.Translation(centerOffset);
-            translationVector = translation - org.TranslationVector;
+            var org = Matrix.CreateTranslation(-centerOffset) * scaleMatrix * rotationMatrix * Matrix.CreateTranslation(centerOffset);
+            translationVector = translation - org.Translation;
         }
         else
         {
-            translationVector = m.TranslationVector;
+            translationVector = m.Translation;
         }
         OnUpdateSelfTransform();
         //OnUpdateTargetMatrix();
@@ -941,7 +941,7 @@ public class TransformManipulator3D : GroupElement3D
         {
             return;
         }
-        targetMatrix = Matrix.Translation(-centerOffset) * scaleMatrix * rotationMatrix * Matrix.Translation(centerOffset) * Matrix.Translation(translationVector);
+        targetMatrix = Matrix.CreateTranslation(-centerOffset) * scaleMatrix * rotationMatrix * Matrix.CreateTranslation(centerOffset) * Matrix.CreateTranslation(translationVector);
 #if WINUI
         target.HxTransform3D = targetMatrix;
 #else
@@ -951,7 +951,7 @@ public class TransformManipulator3D : GroupElement3D
 
     private void OnUpdateSelfTransform()
     {
-        var m = Matrix.Translation(centerOffset + translationVector);
+        var m = Matrix.CreateTranslation(centerOffset + translationVector);
         m.M11 = m.M22 = m.M33 = (float)sizeScale;
 #if WINUI
         ctrlGroup.HxTransform3D = m;

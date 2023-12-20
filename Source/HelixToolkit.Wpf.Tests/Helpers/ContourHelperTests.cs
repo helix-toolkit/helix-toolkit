@@ -81,10 +81,10 @@ public class ContourHelperTests
 
     private void Contour(MeshGeometry3D mesh)
     {
-        var ch = new ContourHelper(origin.ToVector(), normal.ToVector(), mesh.ToWndMeshGeometry3D());
+        var ch = new ContourHelper(origin.ToVector3(), normal.ToVector3(), mesh.ToWndMeshGeometry3D());
         ch.ContourFacet(0, 1, 2, out var newPositions, out var newNormals, out var newTextureCoordinates, out var triangleIndices);
-        this.newPositions = newPositions is null ? Array.Empty<Point3D>() : Array.ConvertAll(newPositions, t => t.ToWndPoint());
-        this.newNormals = newNormals is null ? Array.Empty<Vector3D>() : Array.ConvertAll(newNormals, t => t.ToWndVector());
+        this.newPositions = newPositions is null ? Array.Empty<Point3D>() : Array.ConvertAll(newPositions, t => t.ToWndPoint3D());
+        this.newNormals = newNormals is null ? Array.Empty<Vector3D>() : Array.ConvertAll(newNormals, t => t.ToWndVector3D());
         this.newTextureCoordinates = newTextureCoordinates is null ? Array.Empty<Point>() : Array.ConvertAll(newTextureCoordinates, t => t.ToWndPoint());
         this.triangleIndices = triangleIndices ?? Array.Empty<int>();
     }
@@ -92,7 +92,7 @@ public class ContourHelperTests
     private static MeshGeometry3D MeshFromTriangle(Point3D p1, Point3D p2, Point3D p3)
     {
         var mb = new MeshBuilder(false, false);
-        mb.AddTriangle(p1.ToVector(), p2.ToVector(), p3.ToVector());
+        mb.AddTriangle(p1.ToVector3(), p2.ToVector3(), p3.ToVector3());
         return mb.ToMesh().ToMeshGeometry3D();
     }
 }

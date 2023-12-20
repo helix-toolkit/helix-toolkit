@@ -56,7 +56,7 @@ public static class Noise2d
                 gradient = new Vector2((float)(_random.NextDouble() * 2 - 1), (float)(_random.NextDouble() * 2 - 1));
 #endif
             }
-            while (SharedFunctions.LengthSquared(ref gradient) >= 1);
+            while (gradient.LengthSquared() >= 1);
 
             gradient = Vector2.Normalize(gradient);
 
@@ -103,7 +103,7 @@ public static class Noise2d
 
             var grad = _gradients[index % _gradients.Length];
 
-            total += Q(uv.X, uv.Y) * SharedFunctions.DotProduct(ref grad, ref uv);
+            total += Q(uv.X, uv.Y) * Vector2.Dot(grad, uv);
         }
 
         return Math.Max(Math.Min(total, 1f), -1f);

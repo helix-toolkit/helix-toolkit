@@ -26,8 +26,8 @@ public class MainViewModel : DemoCore.BaseViewModel
         };
 
         var builder = new MeshBuilder();
-        builder.AddSphere(Vector3.Zero.ToVector());
-        Sphere = builder.ToMesh().ToMeshGeometry3D();
+        builder.AddSphere(Vector3.Zero);
+        Sphere = builder.ToMeshGeometry3D();
 
         CreateGenericPhongMaterial();
         InitializeScene();

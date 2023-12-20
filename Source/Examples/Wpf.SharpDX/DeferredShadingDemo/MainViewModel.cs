@@ -189,8 +189,8 @@ public partial class MainViewModel : DemoCore.BaseViewModel
 
         // floor plane
         var meshBuilder = new MeshBuilder();
-        meshBuilder.AddBox(new Vector3(0, 0, 0).ToVector(), 100, 0.0f, 100, BoxFaces.PositiveY);
-        this.Plane = meshBuilder.ToMesh().ToMeshGeometry3D();
+        meshBuilder.AddBox(new Vector3(0, 0, 0), 100, 0.0f, 100, BoxFaces.PositiveY);
+        this.Plane = meshBuilder.ToMeshGeometry3D();
         this.PlaneTransform = new TranslateTransform3D(0, -1.05, 0);
 
         // model materials

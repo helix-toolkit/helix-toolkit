@@ -103,8 +103,8 @@ public class MeshNormalsVisual3D : ModelVisual3D
         for (int i = 0; i < this.Mesh.Positions.Count; i++)
         {
             builder.AddArrow(
-                this.Mesh.Positions[i].ToVector(),
-                (this.Mesh.Positions[i] + this.Mesh.Normals[i]).ToVector(),
+                this.Mesh.Positions[i].ToVector3(),
+                (this.Mesh.Positions[i].ToVector3() + this.Mesh.Normals[i].ToVector3()),
                 (float)this.Diameter,
                 3,
                 10);

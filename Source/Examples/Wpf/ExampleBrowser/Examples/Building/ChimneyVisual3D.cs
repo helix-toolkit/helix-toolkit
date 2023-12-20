@@ -1,6 +1,7 @@
 ﻿using HelixToolkit;
 using HelixToolkit.Wpf;
 using PropertyTools.DataAnnotations;
+using System.Numerics;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Media3D;
@@ -93,7 +94,7 @@ public sealed class ChimneyVisual3D : UIElement3D
             var d0 = (this.BaseDiameter * (1 - f0)) + (this.TopDiameter * f0);
             var d1 = (this.BaseDiameter * (1 - f1)) + (this.TopDiameter * f1);
             var builder = (this.Bands - i) % 2 == 1 ? redbuilder : whitebuilder;
-            builder.AddCone((this.Position + new Vector3D(0, 0, y0)).ToVector(), new Vector3D(0, 0, 1).ToVector(), (float)(d0 / 2), (float)(d1 / 2), (float)(y1 - y0), i == 0, i == this.Bands - 1, 20);
+            builder.AddCone((this.Position.ToVector3() + new Vector3(0, 0, (float)y0)), new Vector3(0, 0, 1), (float)(d0 / 2), (float)(d1 / 2), (float)(y1 - y0), i == 0, i == this.Bands - 1, 20);
         }
 
         this.TopPosition = this.Position + new Vector3D(0, 0, this.Height);

@@ -85,14 +85,14 @@ public class RelativePositionCanvas2D : Panel2D
         /// </summary>
         /// <param name="availableSize">Size of the available.</param>
         /// <returns></returns>
-        protected override Size2F MeasureOverride(Size2F availableSize)
+        protected override Vector2 MeasureOverride(Vector2 availableSize)
         {
-            var childConstraint = new Size2F(float.PositiveInfinity, float.PositiveInfinity);
+            var childConstraint = new Vector2(float.PositiveInfinity, float.PositiveInfinity);
             foreach (var child in Items)
             {
                 child.Measure(childConstraint);
             }
-            return new Size2F();
+            return new Vector2();
         }
 
         /// <summary>

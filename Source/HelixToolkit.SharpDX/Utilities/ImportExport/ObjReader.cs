@@ -1,19 +1,8 @@
-﻿using FileFormatException = System.Exception;
-using PhongMaterial = HelixToolkit.SharpDX.Model.PhongMaterialCore;
-using Color = global::SharpDX.Color4;
-using Int32Collection = System.Collections.Generic.List<int>;
-using Object3DGroup = System.Collections.Generic.List<HelixToolkit.SharpDX.Object3D>;
-using Plane3D = global::SharpDX.Plane;
-using Point = global::SharpDX.Vector2;
-using Point3D = global::SharpDX.Vector3;
-using Point3DCollection = System.Collections.Generic.List<global::SharpDX.Vector3>;
-using PointCollection = System.Collections.Generic.List<global::SharpDX.Vector2>;
-using Ray3D = global::SharpDX.Ray;
-using Vector3D = global::SharpDX.Vector3;
-using SharpDX;
-using System.IO.Compression;
+﻿using HelixToolkit.SharpDX.Model;
 using System.Globalization;
-using HelixToolkit.SharpDX.Model;
+using System.IO.Compression;
+using FileFormatException = System.Exception;
+using Object3DGroup = System.Collections.Generic.List<HelixToolkit.SharpDX.Object3D>;
 
 namespace HelixToolkit.SharpDX;
 
@@ -41,7 +30,7 @@ public class ObjReader : IModelReader
         this.IsSmoothingDefault = true;
         this.SkipTransparencyValues = true;
 
-        this.DefaultColor = global::SharpDX.Color.Gold;
+        this.DefaultColor = Color.Gold;
 
         this.Points = new List<Point3D>();
         this.Colors = new List<Color4>();
@@ -669,7 +658,7 @@ public class ObjReader : IModelReader
             if (addVertex)
             {
                 // add vertex
-                positions.Add(this.Points[vi - 1].ToVector());
+                positions.Add(this.Points[vi - 1]);
                 if (Colors.Count == Points.Count)
                 {
                     colors.Add(this.Colors[vi - 1]);
@@ -677,13 +666,13 @@ public class ObjReader : IModelReader
                 // add texture coordinate (if enabled)
                 if (builder.HasTexCoords)
                 {
-                    textureCoordinates?.Add(this.TextureCoordinates[vti - 1].ToVector());
+                    textureCoordinates?.Add(this.TextureCoordinates[vti - 1]);
                 }
 
                 // add normal (if enabled)
                 if (builder.HasNormals)
                 {
-                    normals?.Add(this.Normals[vni - 1].ToVector());
+                    normals?.Add(this.Normals[vni - 1]);
                 }
             }
         }
@@ -1089,7 +1078,7 @@ public class ObjReader : IModelReader
             for (var i = 0; i < this.meshBuilders.Count; i++)
             {
                 this.meshBuilders[i].ComputeNormalsAndTangents(info.Faces, true);
-                var mesh = this.meshBuilders[i].ToMesh().ToMeshGeometry3D();
+                var mesh = this.meshBuilders[i].ToMeshGeometry3D();
                 mesh.Colors = this.vertexColors[i];
                 yield return new Object3D
                 {
@@ -1288,7 +1277,7 @@ public class ObjReader : IModelReader
                 AmbientColor = this.Ambient,
                 //AmbientMap = this.AmbientMap,
 
-                DiffuseColor = new Color4(this.Diffuse.Red, this.Diffuse.Green, this.Diffuse.Blue, (float)Dissolved),
+                DiffuseColor = new Color4(this.Diffuse.R, this.Diffuse.G, this.Diffuse.B, (float)Dissolved),
                 DiffuseMap = diffuseMapMS,
 
                 SpecularColor = this.Specular,

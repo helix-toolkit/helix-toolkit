@@ -60,14 +60,14 @@ public class PointGeometry3D : Geometry3D
 
             foreach (var point in Positions)
             {
-                var p0 = Vector3.TransformCoordinate(point, smvpm);
+                var p0 = Vector3Helper.TransformCoordinate(point, smvpm);
                 var pv = p0 - clickPoint;
                 var dist = pv.Length() / context.RenderMatrices?.DpiScale ?? 1.0f;
                 if (dist < lastDist && dist <= maxDist)
                 {
                     lastDist = dist;
                     var lp0 = point;
-                    Vector3.TransformCoordinate(ref lp0, ref modelMatrix, out var pvv);
+                    Vector3Helper.TransformCoordinate(ref lp0, ref modelMatrix, out var pvv);
                     result.Distance = (context.RayWS.Position - pvv).Length();
                     result.PointHit = pvv;
                     result.ModelHit = originalSource;

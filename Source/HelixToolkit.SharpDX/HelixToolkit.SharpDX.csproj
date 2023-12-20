@@ -47,7 +47,6 @@
     <PackageReference Include="SharpDX.Direct2D1" Version="4.2.0" />
     <PackageReference Include="SharpDX.Direct3D11" Version="4.2.0" />
     <PackageReference Include="SharpDX.DXGI" Version="4.2.0" />
-    <PackageReference Include="SharpDX.Mathematics" Version="4.2.0" />
     <PackageReference Condition="'$(CI)' == 'True'" Include="Microsoft.SourceLink.GitHub" Version="1.1.1">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -55,6 +54,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\HelixToolkit.Geometry\HelixToolkit.Geometry.csproj" />
+    <ProjectReference Include="..\HelixToolkit.Maths\HelixToolkit.Maths.csproj" />
     <ProjectReference Include="..\HelixToolkit\HelixToolkit.csproj" />
   </ItemGroup>
 

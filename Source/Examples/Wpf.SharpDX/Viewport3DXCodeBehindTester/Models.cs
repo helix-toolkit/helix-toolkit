@@ -1,8 +1,6 @@
-﻿using HelixToolkit;
-using HelixToolkit.SharpDX;
+﻿using HelixToolkit.SharpDX;
 using HelixToolkit.SharpDX.Model.Scene;
 using HelixToolkit.Wpf.SharpDX;
-using SharpDX;
 using System;
 using System.Collections.Generic;
 
@@ -17,16 +15,16 @@ public class Models
     public Models()
     {
         var builder = new MeshBuilder();
-        builder.AddSphere(Vector3.Zero.ToVector(), 1);
-        models.Add(builder.ToMesh().ToMeshGeometry3D());
+        builder.AddSphere(Vector3.Zero, 1);
+        models.Add(builder.ToMeshGeometry3D());
 
         builder = new MeshBuilder();
-        builder.AddBox(Vector3.Zero.ToVector(), 1, 1, 1);
-        models.Add(builder.ToMesh().ToMeshGeometry3D());
+        builder.AddBox(Vector3.Zero, 1, 1, 1);
+        models.Add(builder.ToMeshGeometry3D());
 
         builder = new MeshBuilder();
-        builder.AddDodecahedron(Vector3.Zero.ToVector(), new Vector3(1, 0, 0).ToVector(), new Vector3(0, 1, 0).ToVector(), 1);
-        models.Add(builder.ToMesh().ToMeshGeometry3D());
+        builder.AddDodecahedron(Vector3.Zero, new Vector3(1, 0, 0), new Vector3(0, 1, 0), 1);
+        models.Add(builder.ToMeshGeometry3D());
     }
 
     public MeshGeometryModel3D GetModelRandom()
@@ -60,8 +58,8 @@ public class Models
             Geometry = models[idx],
             CullMode = SharpDX.Direct3D11.CullMode.Back
         };
-        var scale = Matrix.Scaling((float)rnd.NextDouble(1, 5), (float)rnd.NextDouble(1, 5), (float)rnd.NextDouble(1, 5));
-        var translate = Matrix.Translation((float)rnd.NextDouble(-20, 20), (float)rnd.NextDouble(-20, 20), (float)rnd.NextDouble(-20, 20));
+        var scale = Matrix.CreateScale((float)rnd.NextDouble(1, 5), (float)rnd.NextDouble(1, 5), (float)rnd.NextDouble(1, 5));
+        var translate = Matrix.CreateTranslation((float)rnd.NextDouble(-20, 20), (float)rnd.NextDouble(-20, 20), (float)rnd.NextDouble(-20, 20));
         model.ModelMatrix = scale * translate;
         var material = materials[rnd.Next(0, materials.Count - 1)];
         model.Material = material;

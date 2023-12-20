@@ -26,5 +26,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\..\HelixToolkit.Wpf.SharpDX\HelixToolkit.Wpf.SharpDX.csproj" />
   </ItemGroup>
-
+    <ItemGroup>
+        <Compile Include="..\..\GlobalUsing.cs"/>
+    </ItemGroup>
 </Project>

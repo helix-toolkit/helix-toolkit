@@ -53,7 +53,7 @@ public sealed class MainViewModel
         //it's up to the user how to map 2D points to 3D, in this case we simply add a z-coordinate to the points:
         IEnumerable<Point3D> triangleInXYPlane = triangleInPositiveOrientation.Select(p => new Point3D(p.X, p.Y, 0));
         foreach (Point3D point in triangleInXYPlane)
-            meshBuilder.Positions.Add(point.ToVector());
+            meshBuilder.Positions.Add(point.ToVector3());
 
         List<int>? indices = SweepLinePolygonTriangulator.Triangulate(triangleInPositiveOrientation.Select(t => t.ToVector()).ToList());
 
@@ -74,7 +74,7 @@ public sealed class MainViewModel
             };
         triangleInXYPlane = triangleInPositiveOrientation.Select(p => new Point3D(p.X, p.Y, 1));
         foreach (Point3D point in triangleInXYPlane)
-            meshBuilder.Positions.Add(point.ToVector());
+            meshBuilder.Positions.Add(point.ToVector3());
 
         indices = SweepLinePolygonTriangulator.Triangulate(triangleInNegativeOrientation.Select(t => t.ToVector()).ToList());
 

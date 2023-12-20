@@ -180,7 +180,7 @@ namespace HelixToolkit.SharpDX.Model
                 return;
             }
           
-            ProjectionMatrix = Matrix.OrthoOffCenterRH(
+            ProjectionMatrix = MatrixHelper.OrthoOffCenterRH(
                 0f,
                 io.DisplaySize.X / context.DpiScale,
                 io.DisplaySize.Y / context.DpiScale,

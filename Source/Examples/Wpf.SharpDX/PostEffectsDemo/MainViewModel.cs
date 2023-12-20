@@ -1,14 +1,12 @@
-﻿using HelixToolkit;
-using HelixToolkit.SharpDX;
+﻿using HelixToolkit.SharpDX;
 using HelixToolkit.Wpf.SharpDX;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Color4 = SharpDX.Color4;
 using Media3D = System.Windows.Media.Media3D;
 using Point3D = System.Windows.Media.Media3D.Point3D;
 using Transform3D = System.Windows.Media.Media3D.Transform3D;
-using Vector3 = SharpDX.Vector3;
+
 using Vector3D = System.Windows.Media.Media3D.Vector3D;
 
 namespace PostEffectsDemo;
@@ -57,12 +55,12 @@ public class MainViewModel : DemoCore.BaseViewModel
         Model2Transform = new Media3D.TranslateTransform3D(new Vector3D(-5, 0, 0));
 
         var builder = new MeshBuilder();
-        builder.AddBox(new Vector3(0, 0, -5).ToVector(), 15, 15, 0.2f);
-        FloorModel = builder.ToMesh().ToMeshGeometry3D();
+        builder.AddBox(new Vector3(0, 0, -5), 15, 15, 0.2f);
+        FloorModel = builder.ToMeshGeometry3D();
 
         builder = new MeshBuilder();
-        builder.AddSphere(new Vector3(0, 0, 0).ToVector(), 1);
-        MeshModel3 = builder.ToMesh().ToMeshGeometry3D();
+        builder.AddSphere(new Vector3(0, 0, 0), 1);
+        MeshModel3 = builder.ToMeshGeometry3D();
 
         var lineBuilder = new LineBuilder();
         lineBuilder.AddLine(Vector3.Zero, Vector3.UnitX * 5);

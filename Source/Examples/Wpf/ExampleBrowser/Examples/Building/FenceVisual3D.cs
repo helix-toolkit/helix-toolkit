@@ -7,6 +7,7 @@ using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Media3D;
 using BrowsableAttribute = System.ComponentModel.BrowsableAttribute;
+using System.Numerics;
 
 namespace Building;
 
@@ -104,7 +105,7 @@ public sealed class FenceVisual3D : UIElement3D
         foreach (var p1 in DistributePoles(this.Positions, (float)this.PoleDistance))
         {
             var p2 = p1 + new Vector3D(0, 0, this.Height);
-            builder.AddCylinder(p1.ToVector(), p2.ToVector(), (float)this.Diameter, 36);
+            builder.AddCylinder(p1.ToVector3(), p2.ToVector3(), (float)this.Diameter, 36);
         }
 
         this.postsModel.Geometry = builder.ToMesh().ToMeshGeometry3D();
@@ -120,14 +121,14 @@ public sealed class FenceVisual3D : UIElement3D
             var h = this.Height / this.MeshSize;
             var dw = p0.DistanceTo(p1) / this.MeshSize;
             fenceBuilder.AddQuad(
-                p0.ToVector(),
-                p1.ToVector(),
-                p2.ToVector(),
-                p3.ToVector(),
-                new Point(w0, h).ToVector(),
-                new Point(w0 + dw, h).ToVector(),
-                new Point(w0 + dw, 0).ToVector(),
-                new Point(w0, 0).ToVector());
+                p0.ToVector3(),
+                p1.ToVector3(),
+                p2.ToVector3(),
+                p3.ToVector3(),
+                new Vector2((float)w0, (float)h),
+                new Vector2((float)(w0 + dw), (float)h),
+                new Vector2((float)(w0 + dw), 0),
+                new Vector2((float)w0, 0));
             w0 += dw;
         }
 

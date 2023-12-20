@@ -1,6 +1,6 @@
 ﻿using HelixToolkit.SharpDX;
 using NUnit.Framework;
-using SharpDX;
+using System.Numerics;
 using System.IO;
 using System.Windows.Media.Media3D;
 
@@ -13,8 +13,8 @@ public class ObjExporterTests
     public void SharpDX_Export_Triangle_Valid()
     {
         var b1 = new MeshBuilder();
-        b1.AddTriangle(new Vector3(0, 0, 0).ToVector(), new Vector3(0, 0, 1).ToVector(), new Vector3(0, 1, 0).ToVector());
-        var meshGeometry = b1.ToMesh().ToMeshGeometry3D();
+        b1.AddTriangle(new Vector3(0, 0, 0), new Vector3(0, 0, 1), new Vector3(0, 1, 0));
+        var meshGeometry = b1.ToMeshGeometry3D();
 
         var mesh = new MeshGeometryModel3D
         {

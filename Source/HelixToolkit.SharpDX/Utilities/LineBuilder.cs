@@ -1,9 +1,4 @@
-﻿using Vector3D = global::SharpDX.Vector3;
-using Vector3 = global::SharpDX.Vector3;
-using Point3D = global::SharpDX.Vector3;
-using SharpDX;
-
-namespace HelixToolkit.SharpDX;
+﻿namespace HelixToolkit.SharpDX;
 
 public class LineBuilder
 {
@@ -152,7 +147,7 @@ public class LineBuilder
         {
             throw new ArgumentNullException("too few segments, at least 3");
         }
-        normal.Normalize();
+        normal = Vector3.Normalize(normal);
         var sectionAngle = (float)(2.0 * Math.PI / segments);
         var start = new Vector3(radius, 0.0f, 0.0f);
         var current = new Vector3(radius, 0.0f, 0.0f);
@@ -174,16 +169,16 @@ public class LineBuilder
         lineListIndices.Add(currIndex);
         lineListIndices.Add(posStart);
         var axis = Vector3.Cross(Vector3.UnitY, normal);
-        var transform = Matrix.Translation(position);
+        var transform = MatrixHelper.Translation(position);
         if (axis.LengthSquared() > 1e-6)
         {
-            axis.Normalize();
-            transform = Matrix.RotationAxis(axis, (float)Math.Acos(Vector3.Dot(Vector3.UnitY, normal))) * transform;
+            axis = Vector3.Normalize(axis);
+            transform = MatrixHelper.RotationAxis(axis, (float)Math.Acos(Vector3.Dot(Vector3.UnitY, normal))) * transform;
         }
 
         for (var i = posStart; i < positions.Count; ++i)
         {
-            positions[i] = Vector3.TransformCoordinate(positions[i], transform);
+            positions[i] = Vector3Helper.TransformCoordinate(positions[i], transform);
         }
     }
 
@@ -297,7 +292,7 @@ public class LineBuilder
     /// <returns></returns>
     public static LineGeometry3D GenerateBoundingBox(Vector3[] points)
     {
-        var bb = global::SharpDX.BoundingBox.FromPoints(points);
+        var bb = BoundingBox.FromPoints(points);
         return GenerateBoundingBox(bb);
     }
 
@@ -306,7 +301,7 @@ public class LineBuilder
     /// </summary>
     /// <param name="bb">The bounding-box</param>
     /// <returns></returns>
-    public static LineGeometry3D GenerateBoundingBox(global::SharpDX.BoundingBox bb)
+    public static LineGeometry3D GenerateBoundingBox(BoundingBox bb)
     {
         var cc = bb.GetCorners();
         var ll = new LineBuilder();
@@ -351,7 +346,7 @@ public class LineBuilder
     public static LineGeometry3D GenerateCircile(Plane plane, float radius, int segments)
     {
         var bd = new LineBuilder();
-        bd.AddCircle(plane.D + plane.Normal, plane.Normal, radius, segments);
+        bd.AddCircle(plane.Normal * plane.D, plane.Normal, radius, segments);
         return bd.ToLineGeometry3D();
     }
 

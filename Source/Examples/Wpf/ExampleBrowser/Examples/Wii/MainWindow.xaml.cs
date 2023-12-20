@@ -120,10 +120,10 @@ public class ExplodingMesh
         var r = new Random();
         for (int i = 0; i < mesh.Positions.Count; i++)
         {
-            var delta = mesh.Positions[i].ToWndPoint() - center;
+            var delta = mesh.Positions[i].ToWndPoint3D() - center;
             delta.Normalize();
-            integrator.Positions[i] = mesh.Positions[i].ToWndPoint() + delta * (1 + r.NextDouble() * 2);
-            integrator.Positions0[i] = mesh.Positions[i].ToWndPoint();
+            integrator.Positions[i] = mesh.Positions[i].ToWndPoint3D() + delta * (1 + r.NextDouble() * 2);
+            integrator.Positions0[i] = mesh.Positions[i].ToWndPoint3D();
             integrator.Accelerations[i] = new Vector3D(0, 0, -1000);
             integrator.InverseMass[i] = 0.01;
         }

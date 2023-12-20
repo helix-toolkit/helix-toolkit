@@ -1,5 +1,6 @@
 ﻿using SharpDX;
 using SharpDX.DirectWrite;
+using SharpDX.Mathematics.Interop;
 using D2D = SharpDX.Direct2D1;
 
 namespace HelixToolkit.SharpDX.Core2D;
@@ -252,9 +253,9 @@ public class TextRenderCore2D : RenderCore2DBase
     {
         if (Background != null)
         {
-            context.DeviceContext.FillRectangle(LayoutBound, Background);
+            context.DeviceContext.FillRectangle(LayoutBound.ToStruct<RectangleF, RawRectangleF>(), Background);
         }
         UpdateTextLayout();
-        context.DeviceContext.DrawTextLayout(new Vector2(LayoutBound.Left, LayoutBound.Top), textLayout, Foreground, DrawingOptions);
+        context.DeviceContext.DrawTextLayout(new RawVector2(LayoutBound.Left, LayoutBound.Top), textLayout, Foreground, DrawingOptions);
     }
 }

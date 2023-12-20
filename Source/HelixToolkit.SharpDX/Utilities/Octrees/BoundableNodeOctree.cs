@@ -51,7 +51,7 @@ public class BoundableNodeOctree : DynamicOctreeBase<SceneNode>
             return false;
         }
         var isHit = false;
-        //var bound = Bound.Transform(modelMatrix);// BoundingBox.FromPoints(Bound.GetCorners().Select(x => Vector3.TransformCoordinate(x, modelMatrix)).ToArray());
+        //var bound = Bound.Transform(modelMatrix);// BoundingBox.FromPoints(Bound.GetCorners().Select(x => Vector3Helper.TransformCoordinate(x, modelMatrix)).ToArray());
         var bound = Bound;
         var tempHits = new List<HitTestResult>();
         var rayWS = context.RayWS;
@@ -306,7 +306,7 @@ public class BoundableNodeOctree : DynamicOctreeBase<SceneNode>
         }
     }
 
-    public override bool FindNearestPointBySphereExcludeChild(HitTestContext? context, ref global::SharpDX.BoundingSphere sphere, ref List<HitTestResult> points, ref bool isIntersect)
+    public override bool FindNearestPointBySphereExcludeChild(HitTestContext? context, ref BoundingSphere sphere, ref List<HitTestResult> points, ref bool isIntersect)
     {
         throw new NotImplementedException();
     }

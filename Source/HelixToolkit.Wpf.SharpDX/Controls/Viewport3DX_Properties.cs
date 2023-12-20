@@ -209,7 +209,7 @@ public partial class Viewport3DX
     /// </summary>
     public static readonly DependencyProperty CoordinateSystemLabelForegroundProperty = DependencyProperty.Register(
             "CoordinateSystemLabelForeground",
-            typeof(Color),
+            typeof(System.Windows.Media.Color),
             typeof(Viewport3DX),
             new PropertyMetadata(Colors.DarkGray));
 
@@ -242,19 +242,19 @@ public partial class Viewport3DX
     /// The coordinate system color X property
     /// </summary>
     public static readonly DependencyProperty CoordinateSystemAxisXColorProperty = DependencyProperty.Register(
-            "CoordinateSystemAxisXColor", typeof(Color), typeof(Viewport3DX), new PropertyMetadata(Colors.Red));
+            "CoordinateSystemAxisXColor", typeof(System.Windows.Media.Color), typeof(Viewport3DX), new PropertyMetadata(Colors.Red));
 
     /// <summary>
     /// The coordinate system Color Y property
     /// </summary>
     public static readonly DependencyProperty CoordinateSystemAxisYColorProperty = DependencyProperty.Register(
-            "CoordinateSystemAxisYColor", typeof(Color), typeof(Viewport3DX), new PropertyMetadata(Colors.Green));
+            "CoordinateSystemAxisYColor", typeof(System.Windows.Media.Color), typeof(Viewport3DX), new PropertyMetadata(Colors.Green));
 
     /// <summary>
     /// The coordinate system Color Z property
     /// </summary>
     public static readonly DependencyProperty CoordinateSystemAxisZColorProperty = DependencyProperty.Register(
-            "CoordinateSystemAxisZColor", typeof(Color), typeof(Viewport3DX), new PropertyMetadata(Colors.Blue));
+            "CoordinateSystemAxisZColor", typeof(System.Windows.Media.Color), typeof(Viewport3DX), new PropertyMetadata(Colors.Blue));
 
     /// <summary>
     /// The coordinate system vertical position property. Relative to viewport center.
@@ -393,7 +393,7 @@ public partial class Viewport3DX
         "InfoBackground",
         typeof(Brush),
         typeof(Viewport3DX),
-        new PropertyMetadata(new SolidColorBrush(Color.FromArgb(0x80, 0x8f, 0x8f, 0x8f))));
+        new PropertyMetadata(new SolidColorBrush(System.Windows.Media.Color.FromArgb(0x80, 0x8f, 0x8f, 0x8f))));
 
     /// <summary>
     /// The info foreground property.
@@ -939,7 +939,7 @@ public partial class Viewport3DX
 
             var allowX = viewport.cameraController.AllowRotateXY.X;
             float allowY = (bool)e.NewValue ? 1 : 0;
-            viewport.CameraController.AllowRotateXY = new global::SharpDX.Vector2(allowX, allowY);
+            viewport.CameraController.AllowRotateXY = new Vector2(allowX, allowY);
         }));
 
     // Using a DependencyProperty as the backing store for AllowLeftRightRotation.  This enables animation, styling, binding, etc...
@@ -953,7 +953,7 @@ public partial class Viewport3DX
 
             float allowX = (bool)e.NewValue ? 1 : 0;
             var allowY = viewport.cameraController.AllowRotateXY.Y;
-            viewport.CameraController.AllowRotateXY = new global::SharpDX.Vector2(allowX, allowY);
+            viewport.CameraController.AllowRotateXY = new Vector2(allowX, allowY);
         }));
 
 
@@ -1773,11 +1773,11 @@ public partial class Viewport3DX
     /// <value>
     /// The color of the coordinate system label.
     /// </value>
-    public Color CoordinateSystemLabelForeground
+    public System.Windows.Media.Color CoordinateSystemLabelForeground
     {
         get
         {
-            return (Color)this.GetValue(CoordinateSystemLabelForegroundProperty);
+            return (System.Windows.Media.Color)this.GetValue(CoordinateSystemLabelForegroundProperty);
         }
 
         set
@@ -1848,11 +1848,11 @@ public partial class Viewport3DX
     /// <value>
     /// The coordinate system color X.
     /// </value>
-    public Color CoordinateSystemAxisXColor
+    public System.Windows.Media.Color CoordinateSystemAxisXColor
     {
         get
         {
-            return (Color)this.GetValue(CoordinateSystemAxisXColorProperty);
+            return (System.Windows.Media.Color)this.GetValue(CoordinateSystemAxisXColorProperty);
         }
 
         set
@@ -1867,11 +1867,11 @@ public partial class Viewport3DX
     /// <value>
     /// The coordinate system color T.
     /// </value>
-    public Color CoordinateSystemAxisYColor
+    public System.Windows.Media.Color CoordinateSystemAxisYColor
     {
         get
         {
-            return (Color)this.GetValue(CoordinateSystemAxisYColorProperty);
+            return (System.Windows.Media.Color)this.GetValue(CoordinateSystemAxisYColorProperty);
         }
 
         set
@@ -1886,11 +1886,11 @@ public partial class Viewport3DX
     /// <value>
     /// The coordinate system color Z.
     /// </value>
-    public Color CoordinateSystemAxisZColor
+    public System.Windows.Media.Color CoordinateSystemAxisZColor
     {
         get
         {
-            return (Color)this.GetValue(CoordinateSystemAxisZColorProperty);
+            return (System.Windows.Media.Color)this.GetValue(CoordinateSystemAxisZColorProperty);
         }
 
         set
@@ -1934,49 +1934,6 @@ public partial class Viewport3DX
         set
         {
             this.SetValue(CoordinateSystemSizeProperty, value);
-        }
-    }
-
-    /// <summary>
-    /// Gets or sets a value indicating whether calculation of the <see cref="CurrentPosition"/> property is enabled.
-    /// </summary>
-    /// <value>
-    /// <c>true</c> if calculation is enabled; otherwise, <c>false</c> .
-    /// </value>
-    [Obsolete("EnableCurrentPosition is now obsolete, please use EnableCursorPosition instead", false)]
-    public bool EnableCurrentPosition
-    {
-        get
-        {
-            return (bool)this.GetValue(EnableCurrentPositionProperty);
-        }
-
-        set
-        {
-            this.SetValue(EnableCurrentPositionProperty, value);
-        }
-    }
-
-    /// <summary>
-    /// Gets or sets the current position.
-    /// </summary>
-    /// <value>
-    /// The current position.
-    /// </value>
-    /// <remarks>
-    /// The <see cref="EnableCurrentPosition"/> property must be set to true to enable updating of this property.
-    /// </remarks>
-    [Obsolete("CurrentPosition is now obsolete, please use CursorPosition instead", false)]
-    public Point3D CurrentPosition
-    {
-        get
-        {
-            return (Point3D)this.GetValue(CurrentPositionProperty);
-        }
-
-        set
-        {
-            this.SetValue(CurrentPositionProperty, value);
         }
     }
 

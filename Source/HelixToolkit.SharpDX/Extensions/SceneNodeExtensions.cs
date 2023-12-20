@@ -61,8 +61,9 @@ public static class SceneNodeExtensions
                     && geoNode.Geometry.Positions != null
                     && geoNode.Geometry.Positions.Count > 0)
                 {
-                    var c = geoNode.Geometry.Positions.ToCollection()!.GetCentroid().ToDxVector();
-                    c = Vector3.Transform(c, geoNode.TotalModelMatrix).ToVector3();
+                    var c = geoNode.Geometry.Positions!.GetCentroid();
+                    var modelMatrix = geoNode.TotalModelMatrix;
+                    c = Vector4Helper.Transform(c.ToVector4(), ref modelMatrix).ToVector3();
                     ++count;
                     if (result.HasValue)
                     {

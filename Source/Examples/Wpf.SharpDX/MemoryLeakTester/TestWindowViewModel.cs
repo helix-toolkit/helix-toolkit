@@ -18,7 +18,7 @@ public partial class TestWindowViewModel : DemoCore.BaseViewModel
         EffectsManager = new DefaultEffectsManager();
 
         var builder = new MeshBuilder();
-        builder.AddBox(new Vector3().ToVector(), 2, 2, 2);
-        Mesh = builder.ToMesh().ToMeshGeometry3D();
+        builder.AddBox(new Vector3(), 2, 2, 2);
+        Mesh = builder.ToMeshGeometry3D();
     }
 }

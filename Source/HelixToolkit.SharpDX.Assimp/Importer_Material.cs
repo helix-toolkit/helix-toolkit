@@ -22,12 +22,12 @@ public partial class Importer
     {
         var phong = new PhongMaterialCore
         {
-            AmbientColor = (material.HasColorAmbient && !configuration.IgnoreAmbientColor) ? material.ColorAmbient.ToSharpDXColor4() : Color.Black,
-            DiffuseColor = material.HasColorDiffuse ? material.ColorDiffuse.ToSharpDXColor4() : Color.White,
-            SpecularColor = material.HasColorSpecular ? material.ColorSpecular.ToSharpDXColor4() : Color.Black,
-            EmissiveColor = (material.HasColorEmissive && !configuration.IgnoreEmissiveColor) ? material.ColorEmissive.ToSharpDXColor4() : Color.Black,
+            AmbientColor = (material.HasColorAmbient && !configuration.IgnoreAmbientColor) ? material.ColorAmbient.ToColor4() : Color.Black,
+            DiffuseColor = material.HasColorDiffuse ? material.ColorDiffuse.ToColor4() : Color.White,
+            SpecularColor = material.HasColorSpecular ? material.ColorSpecular.ToColor4() : Color.Black,
+            EmissiveColor = (material.HasColorEmissive && !configuration.IgnoreEmissiveColor) ? material.ColorEmissive.ToColor4() : Color.Black,
             ReflectiveColor = material.HasColorReflective
-                ? material.ColorReflective.ToSharpDXColor4()
+                ? material.ColorReflective.ToColor4()
                 : Color.Black,
             SpecularShininess = material.Shininess
         };
@@ -100,15 +100,15 @@ public partial class Importer
     {
         var pbr = new PBRMaterialCore
         {
-            AlbedoColor = material.HasColorDiffuse ? material.ColorDiffuse.ToSharpDXColor4() : Color.Black,
+            AlbedoColor = material.HasColorDiffuse ? material.ColorDiffuse.ToColor4() : Color.Black,
             EmissiveColor = material.HasColorEmissive && !Configuration.IgnoreEmissiveColor
-                ? material.ColorEmissive.ToSharpDXColor4()
+                ? material.ColorEmissive.ToColor4()
                 : Color.Black,
         };
         if (material.HasNonTextureProperty(GLTFMatKeys.AI_MATKEY_GLTF_BASECOLOR_FACTOR))
         {
             pbr.AlbedoColor = material.GetNonTextureProperty(GLTFMatKeys.AI_MATKEY_GLTF_BASECOLOR_FACTOR)
-               .GetColor4DValue().ToSharpDXColor4();
+               .GetColor4DValue().ToColor4();
         }
         if (material.HasNonTextureProperty(GLTFMatKeys.AI_MATKEY_GLTF_METALLIC_FACTOR))
         {
@@ -284,7 +284,7 @@ public partial class Importer
                 case ShadingMode.Gouraud:
                     var diffuse = new DiffuseMaterialCore
                     {
-                        DiffuseColor = material.ColorDiffuse.ToSharpDXColor4()
+                        DiffuseColor = material.ColorDiffuse.ToColor4()
                     };
                     if (material.HasOpacity)
                     {

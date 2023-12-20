@@ -1,6 +1,7 @@
-﻿using HelixToolkit.SharpDX;
+﻿using HelixToolkit.Maths;
+using HelixToolkit.SharpDX;
 using NUnit.Framework;
-using SharpDX;
+using System.Numerics;
 using System.Reflection;
 
 namespace HelixToolkit.Wpf.SharpDX.Tests.Elements3D;
@@ -14,10 +15,10 @@ class CrossSectionMeshGeometryModel3DTests
     private CrossSectionMeshGeometryModel3D GetGeometryModel3D()
     {
         var meshBuilder = new MeshBuilder();
-        meshBuilder.AddBox(new Vector3(0f).ToVector(), 1, 1, 1);
+        meshBuilder.AddBox(new Vector3(0f), 1, 1, 1);
         return new CrossSectionMeshGeometryModel3D()
         {
-            Geometry = meshBuilder.ToMesh().ToMeshGeometry3D(),
+            Geometry = meshBuilder.ToMeshGeometry3D(),
         };
     }
 
@@ -36,7 +37,7 @@ class CrossSectionMeshGeometryModel3DTests
     [TestCaseSource(nameof(GetPlanes))]
     public void HitTestShouldReturnOnePointOnBackOfCubeWithCuttingPlaneInXZero(Action<CrossSectionMeshGeometryModel3D, Plane> setupPlane)
     {
-        var plane = new Plane(new Vector3(0f), new Vector3(-1, 0, 0));
+        var plane = PlaneHelper.Create(new Vector3(0f), new Vector3(-1, 0, 0));
         var geometryModel3D = GetGeometryModel3D();
         setupPlane(geometryModel3D, plane);
         var ray = new Ray(new Vector3(2f, 0f, 0f), new Vector3(-1, 0, 0));

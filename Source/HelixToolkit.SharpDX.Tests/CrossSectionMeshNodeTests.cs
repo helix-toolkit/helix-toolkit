@@ -1,7 +1,8 @@
 ﻿using HelixToolkit.SharpDX.Model.Scene;
 using NUnit.Framework;
-using SharpDX;
+using System.Numerics;
 using System.Reflection;
+using HelixToolkit.Maths;
 
 namespace HelixToolkit.SharpDX.Tests;
 
@@ -20,10 +21,10 @@ public class CrossSectionMeshNodeTests
     private static CrossSectionMeshNode GetNode()
     {
         var meshBuilder = new MeshBuilder();
-        meshBuilder.AddBox(new Vector3(0f).ToVector(), 1, 1, 1);
+        meshBuilder.AddBox(new Vector3(0f), 1, 1, 1);
         return new CrossSectionMeshNode()
         {
-            Geometry = meshBuilder.ToMesh().ToMeshGeometry3D(),
+            Geometry = meshBuilder.ToMeshGeometry3D(),
         };
     }
 
@@ -41,7 +42,7 @@ public class CrossSectionMeshNodeTests
     [TestCaseSource(nameof(GetPlanes))]
     public void HitTestShouldReturnOnePointOnBackOfCubeWithCuttingPlaneInXZero(Action<CrossSectionMeshNode, Plane> setupPlane)
     {
-        var plane = new Plane(new Vector3(0f), new Vector3(-1, 0, 0));
+        var plane = PlaneHelper.Create(new Vector3(0f), new Vector3(-1, 0, 0));
         var node = CrossSectionMeshNodeTests.GetNode();
         setupPlane(node, plane);
         var ray = new Ray(new Vector3(2f, 0f, 0f), new Vector3(-1, 0, 0));

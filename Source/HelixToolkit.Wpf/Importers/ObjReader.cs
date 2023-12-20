@@ -610,7 +610,7 @@ public sealed class ObjReader : ModelReader
             if (addVertex)
             {
                 // add vertex
-                positions.Add(this.Points[vi - 1].ToVector());
+                positions.Add(this.Points[vi - 1].ToVector3());
 
                 // add texture coordinate (if enabled)
                 if (builder.CreateTextureCoordinates)
@@ -621,7 +621,7 @@ public sealed class ObjReader : ModelReader
                 // add normal (if enabled)
                 if (builder.CreateNormals)
                 {
-                    normals!.Add(this.Normals[vni - 1].ToVector());
+                    normals!.Add(this.Normals[vni - 1].ToVector3());
                 }
             }
         }

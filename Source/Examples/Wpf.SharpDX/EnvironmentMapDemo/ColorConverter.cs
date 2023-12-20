@@ -8,7 +8,7 @@ public class ColorConverter : IValueConverter
 {
     public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
     {
-        var c = (global::SharpDX.Color4)value;
+        var c = (Color4)value;
         return c.ToColor();
     }
 

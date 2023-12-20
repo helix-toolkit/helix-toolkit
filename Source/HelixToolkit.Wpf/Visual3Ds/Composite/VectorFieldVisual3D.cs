@@ -1,6 +1,7 @@
 ﻿using System.Windows.Media.Media3D;
 using System.Windows.Media;
 using System.Windows;
+using System.Numerics;
 
 namespace HelixToolkit.Wpf;
 
@@ -171,7 +172,7 @@ public class VectorFieldVisual3D : ModelVisual3D
         var pc = new PointCollection { new Point(-l, r), new Point(-l, r * 2), new Point(0, 0) };
 
         var headBuilder = new MeshBuilder(false, false);
-        headBuilder.AddRevolvedGeometry(pc.ToCollection()!, null, new Point3D(0, 0, 0).ToVector(), new Vector3D(0, 0, 1).ToVector(), this.ThetaDiv);
+        headBuilder.AddRevolvedGeometry(pc.ToCollection()!, null, new Vector3(0, 0, 0), new Vector3(0, 0, 1), this.ThetaDiv);
         this.head = headBuilder.ToMesh().ToMeshGeometry3D();
         this.head.Freeze();
 
@@ -179,7 +180,7 @@ public class VectorFieldVisual3D : ModelVisual3D
         pc = new PointCollection { new Point(0, 0), new Point(0, r), new Point(1, r) };
 
         var bodyBuilder = new MeshBuilder(false, false);
-        bodyBuilder.AddRevolvedGeometry(pc.ToCollection()!, null, new Point3D(0, 0, 0).ToVector(), new Vector3D(0, 0, 1).ToVector(), this.ThetaDiv);
+        bodyBuilder.AddRevolvedGeometry(pc.ToCollection()!, null, new Vector3(0, 0, 0), new Vector3(0, 0, 1), this.ThetaDiv);
         this.body = bodyBuilder.ToMesh().ToMeshGeometry3D();
         this.body.Freeze();
     }

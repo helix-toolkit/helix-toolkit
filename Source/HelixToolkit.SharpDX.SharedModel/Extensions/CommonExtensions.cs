@@ -1,4 +1,6 @@
 ﻿using D2D = SharpDX.Direct2D1;
+using SharpDX.Mathematics.Interop;
+
 
 #if WINUI
 using Media = Microsoft.UI.Xaml.Media;
@@ -199,16 +201,16 @@ public static class CommonExtensions
     {
         if (brush is Media.SolidColorBrush solid)
         {
-            return new global::SharpDX.Direct2D1.SolidColorBrush(target, solid.Color.ToColor4());
+            return new global::SharpDX.Direct2D1.SolidColorBrush(target, solid.Color.ToColor4().ToStruct<Color4, RawColor4>());
         }
         else if (brush is Media.LinearGradientBrush linear)
         {
             return new D2D.LinearGradientBrush(target,
-                new D2D.LinearGradientBrushProperties() { StartPoint = linear.StartPoint.ToVector2(), EndPoint = linear.EndPoint.ToVector2() },
+                new D2D.LinearGradientBrushProperties() { StartPoint = linear.StartPoint.ToRawVector2(), EndPoint = linear.EndPoint.ToRawVector2() },
                 new D2D.GradientStopCollection
                 (
                     target,
-                    linear.GradientStops.Select(x => new D2D.GradientStop() { Color = x.Color.ToColor4(), Position = (float)x.Offset }).ToArray(),
+                    linear.GradientStops.Select(x => new D2D.GradientStop() { Color = x.Color.ToRawColor4(), Position = (float)x.Offset }).ToArray(),
                     linear.ColorInterpolationMode.ToD2DColorInterpolationMode(),
                     linear.SpreadMethod.ToD2DExtendMode()
                 )
@@ -220,15 +222,15 @@ public static class CommonExtensions
             return new D2D.RadialGradientBrush(target,
                 new D2D.RadialGradientBrushProperties()
                 {
-                    Center = radial.Center.ToVector2(),
-                    GradientOriginOffset = radial.GradientOrigin.ToVector2(),
+                    Center = radial.Center.ToRawVector2(),
+                    GradientOriginOffset = radial.GradientOrigin.ToRawVector2(),
                     RadiusX = (float)radial.RadiusX,
                     RadiusY = (float)radial.RadiusY
                 },
                 new D2D.GradientStopCollection
                 (
                     target,
-                    radial.GradientStops.Select(x => new D2D.GradientStop() { Color = x.Color.ToColor4(), Position = (float)x.Offset }).ToArray(),
+                    radial.GradientStops.Select(x => new D2D.GradientStop() { Color = x.Color.ToRawColor4(), Position = (float)x.Offset }).ToArray(),
                     radial.ColorInterpolationMode.ToD2DColorInterpolationMode(),
                     radial.SpreadMethod.ToD2DExtendMode()
                 ));

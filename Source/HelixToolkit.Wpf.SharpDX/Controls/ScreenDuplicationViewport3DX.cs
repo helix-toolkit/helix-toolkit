@@ -1,4 +1,5 @@
-﻿using HelixToolkit.SharpDX;
+﻿using HelixToolkit.Maths;
+using HelixToolkit.SharpDX;
 using HelixToolkit.SharpDX.Cameras;
 using HelixToolkit.SharpDX.Model.Scene;
 using HelixToolkit.SharpDX.Model.Scene2D;
@@ -117,25 +118,25 @@ public class ScreenDuplicationViewport3DX : ItemsControl, IViewport3DX
     /// Background Color property.this.RenderHost
     /// </summary>
     public static readonly DependencyProperty BackgroundColorProperty = DependencyProperty.Register(
-        "BackgroundColor", typeof(Color), typeof(ScreenDuplicationViewport3DX),
+        "BackgroundColor", typeof(System.Windows.Media.Color), typeof(ScreenDuplicationViewport3DX),
         new PropertyMetadata(Colors.White, (s, e) =>
         {
             var host = ((ScreenDuplicationViewport3DX)s).renderHostInternal;
 
             if (host is not null)
             {
-                host.ClearColor = ((Color)e.NewValue).ToColor4();
+                host.ClearColor = ((System.Windows.Media.Color)e.NewValue).ToColor4();
             }
         }));
 
     /// <summary>
     /// Background Color
     /// </summary>
-    public Color BackgroundColor
+    public System.Windows.Media.Color BackgroundColor
     {
         get
         {
-            return (Color)this.GetValue(BackgroundColorProperty);
+            return (System.Windows.Media.Color)this.GetValue(BackgroundColorProperty);
         }
         set
         {
@@ -146,7 +147,7 @@ public class ScreenDuplicationViewport3DX : ItemsControl, IViewport3DX
 
     public CameraCore CameraCore { get; } = new PerspectiveCameraCore();
 
-    public global::SharpDX.Matrix WorldMatrix { get; } = global::SharpDX.Matrix.Identity;
+    public Matrix WorldMatrix { get; } = Matrix.Identity;
 
     public IEnumerable<SceneNode> Renderables
     {
@@ -190,13 +191,10 @@ public class ScreenDuplicationViewport3DX : ItemsControl, IViewport3DX
         }
     }
 
-    public global::SharpDX.Rectangle ViewportRectangle
+    public Rectangle ViewportRectangle
     {
-        get
-        {
-            return new global::SharpDX.Rectangle();
-        }
-    }
+        get;
+    } = new Rectangle();
 
     private IRenderHost? renderHostInternal;
 

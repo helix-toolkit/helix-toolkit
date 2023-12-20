@@ -929,9 +929,8 @@ public partial class Viewport3DX
             {
                 float allowX = viewport.cameraController.AllowRotateXY.X;
                 float allowY = (bool)e.NewValue ? 1 : 0;
-                viewport.CameraController.AllowRotateXY = new global::SharpDX.Vector2(allowX, allowY);
+                viewport.CameraController.AllowRotateXY = new Vector2(allowX, allowY);
             }
-
         }));
 
     /// <summary>
@@ -955,7 +954,7 @@ public partial class Viewport3DX
             {
                 float allowX = (bool)e.NewValue ? 1 : 0;
                 float allowY = viewport.cameraController.AllowRotateXY.Y;
-                viewport.CameraController.AllowRotateXY = new global::SharpDX.Vector2(allowX, allowY);
+                viewport.CameraController.AllowRotateXY = new Vector2(allowX, allowY);
             }
         }));
 

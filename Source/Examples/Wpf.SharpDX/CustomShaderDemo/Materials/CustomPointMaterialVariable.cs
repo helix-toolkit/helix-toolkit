@@ -3,7 +3,7 @@ using HelixToolkit.SharpDX.Core.Components;
 using HelixToolkit.SharpDX.Model;
 using HelixToolkit.SharpDX.Render;
 using HelixToolkit.SharpDX.Shaders;
-using SharpDX;
+using System.Numerics;
 using System.Runtime.InteropServices;
 
 namespace CustomShaderDemo.Materials;

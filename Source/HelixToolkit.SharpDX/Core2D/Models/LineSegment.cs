@@ -1,4 +1,5 @@
 ﻿using SharpDX;
+using SharpDX.Mathematics.Interop;
 using D2D = SharpDX.Direct2D1;
 
 namespace HelixToolkit.SharpDX.Core2D;
@@ -16,6 +17,6 @@ public class LineSegment : Segment
 
     public override void Create(D2D.GeometrySink sink)
     {
-        sink.AddLine(Point);
+        sink.AddLine(Point.ToStruct<Vector2, RawVector2>());
     }
 }

@@ -12,7 +12,7 @@ using Colors = System.Windows.Media.Colors;
 using Media3D = System.Windows.Media.Media3D;
 using Point3D = System.Windows.Media.Media3D.Point3D;
 using Transform3D = System.Windows.Media.Media3D.Transform3D;
-using Vector3 = SharpDX.Vector3;
+
 using Vector3D = System.Windows.Media.Media3D.Vector3D;
 
 namespace MouseDragDemo;
@@ -63,15 +63,15 @@ public partial class MainViewModel : DemoCore.BaseViewModel
 
         // scene model3d
         var b1 = new MeshBuilder();
-        b1.AddSphere(new Vector3(0, 0, 0).ToVector(), 0.65f);
-        b1.AddBox(new Vector3(0, 0, 0).ToVector(), 1, 1, 1);
-        var meshGeometry = b1.ToMesh().ToMeshGeometry3D();
+        b1.AddSphere(new Vector3(0, 0, 0), 0.65f);
+        b1.AddBox(new Vector3(0, 0, 0), 1, 1, 1);
+        var meshGeometry = b1.ToMeshGeometry3D();
         meshGeometry.Colors = meshGeometry.TextureCoordinates is null ? new() : new Color4Collection(meshGeometry.TextureCoordinates.Select(x => x.ToColor4()));
         this.MeshGeometry = meshGeometry;
         this.Model1Instances = new List<Matrix>();
         for (int i = 0; i < 5; i++)
         {
-            this.Model1Instances.Add(Matrix.Translation(0, i, 0));
+            this.Model1Instances.Add(Matrix.CreateTranslation(0, i, 0));
         }
 
         // lines model3d
@@ -138,9 +138,9 @@ public partial class MainViewModel : DemoCore.BaseViewModel
                 Material = this.GreenMaterial,
                 Transform = this.Model2Transform,
                 Instances = new List<Matrix> {
-                        Matrix.Translation(-1,0,0), Matrix.Translation(+1,0,0),
-                        Matrix.Translation(0,-1,0), Matrix.Translation(0,+1,0),
-                        Matrix.Translation(0,0,-1), Matrix.Translation(0,0,+1),
+                        Matrix.CreateTranslation(-1,0,0), Matrix.CreateTranslation(+1,0,0),
+                        Matrix.CreateTranslation(0,-1,0), Matrix.CreateTranslation(0,+1,0),
+                        Matrix.CreateTranslation(0,0,-1), Matrix.CreateTranslation(0,0,+1),
                 },
             });
 

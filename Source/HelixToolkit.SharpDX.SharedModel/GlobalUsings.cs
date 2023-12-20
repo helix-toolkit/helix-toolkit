@@ -1,14 +1,21 @@
-﻿#if WINUI
+﻿global using Vector3 = System.Numerics.Vector3;
+global using Vector2 = System.Numerics.Vector2;
+global using Vector4 = System.Numerics.Vector4;
+global using Matrix = System.Numerics.Matrix4x4;
+global using Matrix3x2 = System.Numerics.Matrix3x2;
+global using Plane = System.Numerics.Plane;
+global using Quaternion = System.Numerics.Quaternion;
+global using HelixToolkit.Maths;
+#if WINUI
 global using Microsoft.UI.Text;
 global using Microsoft.UI.Xaml;
 global using Microsoft.UI.Xaml.Controls;
 global using Microsoft.UI.Xaml.Input;
 global using Windows.Foundation;
 global using Windows.UI.Text;
-global using Vector3D = SharpDX.Vector3;
-global using Point3D = SharpDX.Vector3;
-global using Size3D = SharpDX.Vector3;
-global using Quaternion = SharpDX.Quaternion;
+global using Vector3D = System.Numerics.Vector3;
+global using Point3D = System.Numerics.Vector3;
+global using Size3D = System.Numerics.Vector3;
 global using Point = Windows.Foundation.Point;
 global using UIColor = Windows.UI.Color;
 global using UIColors = Microsoft.UI.Colors;
@@ -23,9 +30,9 @@ global using DependencyProperty = System.Windows.DependencyProperty;
 global using PropertyMetadata = System.Windows.PropertyMetadata;
 global using ItemsControl = System.Windows.Controls.ItemsControl;
 global using Vector3D = System.Windows.Media.Media3D.Vector3D;
+global using Vector = System.Windows.Vector;
 global using Point3D = System.Windows.Media.Media3D.Point3D;
 global using Size3D = System.Windows.Media.Media3D.Size3D;
-global using Quaternion = SharpDX.Quaternion;
 global using Matrix3D = System.Windows.Media.Media3D.Matrix3D;
 global using Transform3D = System.Windows.Media.Media3D.Transform3D;
 global using Transform3DGroup = System.Windows.Media.Media3D.Transform3DGroup;

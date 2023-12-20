@@ -1,11 +1,8 @@
-﻿using Mesh3DGroup = System.Collections.Generic.List<HelixToolkit.SharpDX.Object3D>;
-using Point3D = global::SharpDX.Vector3;
-using Vector3D = SharpDX.Vector3;
-using FileFormatException = System.Exception;
-using System.Text.RegularExpressions;
-using SharpDX;
-using HelixToolkit.SharpDX.Model;
+﻿using HelixToolkit.SharpDX.Model;
 using System.Globalization;
+using System.Text.RegularExpressions;
+using FileFormatException = System.Exception;
+using Mesh3DGroup = System.Collections.Generic.List<HelixToolkit.SharpDX.Object3D>;
 
 namespace HelixToolkit.SharpDX;
 
@@ -114,7 +111,7 @@ public class StLReader : ModelReader
         {
             var gm = new Object3D
             {
-                Geometry = mesh.ToMesh().ToMeshGeometry3D(),
+                Geometry = mesh.ToMeshGeometry3D(),
                 Material = this.Materials[i]
             };
             modelGroup.Add(gm);
@@ -331,7 +328,7 @@ public class StLReader : ModelReader
             this.Meshes.Add(new MeshBuilder(true, true));
         }
 
-        this.Meshes[this.index].AddPolygon(points.Select(t => t.ToVector()).ToList());
+        this.Meshes[this.index].AddPolygon(points.ToList());
 
         // todo: add normals
     }
@@ -418,7 +415,7 @@ public class StLReader : ModelReader
             this.Meshes.Add(new MeshBuilder(true, true));
         }
 
-        this.Meshes[this.index].AddTriangle(v1.ToVector(), v2.ToVector(), v3.ToVector());
+        this.Meshes[this.index].AddTriangle(v1, v2, v3);
 
         // todo: add normal
     }

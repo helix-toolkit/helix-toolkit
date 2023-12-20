@@ -14,6 +14,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Media.Media3D;
 using System.Windows.Shapes;
+using System.Numerics;
 
 namespace UIElement;
 
@@ -31,7 +32,7 @@ public partial class MainWindow : Window
         var element = new ModelUIElement3D();
         var geometry = new GeometryModel3D();
         var meshBuilder = new MeshBuilder();
-        meshBuilder.AddSphere(new Point3D(0, 0, 0).ToVector(), 2, 100, 50);
+        meshBuilder.AddSphere(new Vector3(0, 0, 0), 2, 100, 50);
         geometry.Geometry = meshBuilder.ToMesh().ToMeshGeometry3D();
         geometry.Material = Materials.Green;
         element.Model = geometry;

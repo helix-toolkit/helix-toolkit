@@ -1,9 +1,6 @@
 ﻿using HelixToolkit.SharpDX.Model;
-using SharpDX;
 using System.Globalization;
 using Object3DGroup = System.Collections.Generic.List<HelixToolkit.SharpDX.Object3D>;
-using Point = global::SharpDX.Vector2;
-using Point3D = global::SharpDX.Vector3;
 
 namespace HelixToolkit.SharpDX;
 
@@ -96,7 +93,7 @@ public class OffReader : IModelReader
         var mb = new MeshBuilder(info.Normals, info.Tangents);
         foreach (var p in this.Vertices)
         {
-            mb.Positions.Add(p.ToVector());
+            mb.Positions.Add(p);
         }
 
         foreach (var face in this.Faces)
@@ -104,7 +101,7 @@ public class OffReader : IModelReader
             mb.AddTriangleFan(face);
         }
         mb.ComputeNormalsAndTangents(info.Faces);
-        return mb.ToMesh().ToMeshGeometry3D();
+        return mb.ToMeshGeometry3D();
     }
 
     /// <summary>

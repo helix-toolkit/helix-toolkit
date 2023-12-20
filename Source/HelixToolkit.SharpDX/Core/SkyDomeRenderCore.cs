@@ -18,8 +18,8 @@ public class SkyDomeRenderCore : GeometryRenderCore, ISkyboxRenderParams
     static SkyDomeRenderCore()
     {
         var builder = new MeshBuilder(false, false);
-        builder.AddSphere(Vector3.Zero.ToVector(), 1);
-        SphereMesh = builder.ToMesh().ToMeshGeometry3D();
+        builder.AddSphere(Vector3.Zero, 1);
+        SphereMesh = builder.ToMeshGeometry3D();
     }
     #endregion
 
@@ -204,7 +204,7 @@ public class SkyDomeRenderCore : GeometryRenderCore, ISkyboxRenderParams
     /// </summary>
     private sealed class SkyDomeBufferModel : MeshGeometryBufferModel<Vector3>
     {
-        public SkyDomeBufferModel() : base(Vector3.SizeInBytes)
+        public SkyDomeBufferModel() : base(NativeHelper.SizeOf<Vector3>())
         {
             Topology = PrimitiveTopology.TriangleList;
         }

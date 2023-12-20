@@ -133,14 +133,14 @@ public partial class MainViewModel : DemoCore.BaseViewModel
 
         // scene model3d
         var b1 = new MeshBuilder();
-        b1.AddSphere(new Vector3(0, 0, 0).ToVector(), 0.5f);
-        b1.AddBox(new Vector3(0, 0, 0).ToVector(), 1, 0.25f, 2, BoxFaces.All);
-        Model = b1.ToMesh().ToMeshGeometry3D();
-        Instances = new[] { Matrix.Translation(0, 0, -1.5f), Matrix.Translation(0, 0, 1.5f) };
+        b1.AddSphere(new Vector3(0, 0, 0), 0.5f);
+        b1.AddBox(new Vector3(0, 0, 0), 1, 0.25f, 2, BoxFaces.All);
+        Model = b1.ToMeshGeometry3D();
+        Instances = new[] { Matrix.CreateTranslation(0, 0, -1.5f), Matrix.CreateTranslation(0, 0, 1.5f) };
 
         var b2 = new MeshBuilder();
-        b2.AddBox(new Vector3(0, 0, 0).ToVector(), 10, 0, 10, BoxFaces.PositiveY);
-        Plane = b2.ToMesh().ToMeshGeometry3D();
+        b2.AddBox(new Vector3(0, 0, 0), 10, 0, 10, BoxFaces.PositiveY);
+        Plane = b2.ToMeshGeometry3D();
         PlaneTransform = new Media3D.TranslateTransform3D(-0, -2, -0);
         GrayMaterial = PhongMaterials.Indigo;
 
@@ -158,9 +158,9 @@ public partial class MainViewModel : DemoCore.BaseViewModel
         BlueMaterial = PhongMaterials.Blue;
         GrayMaterial.RenderShadowMap = RedMaterial.RenderShadowMap = GreenMaterial.RenderShadowMap = BlueMaterial.RenderShadowMap = true;
         //var b3 = new MeshBuilder();
-        //b3.AddBox(new Vector3().ToVector(), 0.3f, 0.3f, 0.3f, BoxFaces.All);
-        //b3.AddCone(new Vector3(0, 0.3f, 0).ToVector(), new Vector3(0, 0f, 0).ToVector(), 0.2f, true, 24);
-        //LightCameraModel = b3.ToMesh().ToMeshGeometry3D();
+        //b3.AddBox(new Vector3(), 0.3f, 0.3f, 0.3f, BoxFaces.All);
+        //b3.AddCone(new Vector3(0, 0.3f, 0), new Vector3(0, 0f, 0), 0.2f, true, 24);
+        //LightCameraModel = b3.ToMeshGeometry3D();
         //LightCameraTransform.Children.Add(new Media3D.RotateTransform3D(new Media3D.AxisAngleRotation3D(new Vector3D(1, 0, 0), -135)));
         //LightCameraTransform.Children.Add(new Media3D.TranslateTransform3D(0, 3, 3));
         //UpdateCamera();

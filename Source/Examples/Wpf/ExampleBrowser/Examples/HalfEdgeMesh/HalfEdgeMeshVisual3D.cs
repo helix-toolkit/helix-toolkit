@@ -413,7 +413,7 @@ public class HalfEdgeMeshVisual3D : ModelVisual3D
             foreach (var vertex in this.Mesh.Vertices)
             {
                 var gm = new MeshBuilder(false, false);
-                gm.AddSubdivisionSphere(vertex.Position.ToVector(), (float)this.VertexRadius, 4);
+                gm.AddSubdivisionSphere(vertex.Position.ToVector3(), (float)this.VertexRadius, 4);
                 var vertexElement = new ModelUIElement3D
                 {
                     Model = new GeometryModel3D(gm.ToMesh().ToMeshGeometry3D(), this.VertexMaterial)
@@ -444,7 +444,7 @@ public class HalfEdgeMeshVisual3D : ModelVisual3D
                 }
 
                 var gm = new MeshBuilder(false, false);
-                gm.AddTriangleFan(faceVertices.Select(t => t.ToVector()).ToList());
+                gm.AddTriangleFan(faceVertices.Select(t => t.ToVector3()).ToList());
                 var faceElement = new ModelUIElement3D
                 {
                     Model =
@@ -471,7 +471,7 @@ public class HalfEdgeMeshVisual3D : ModelVisual3D
                 start += (center - start) * this.ShrinkFactor;
                 end += (center - end) * this.ShrinkFactor;
                 var gm = new MeshBuilder(false, false);
-                gm.AddArrow(start.ToVector(), end.ToVector(), (float)this.EdgeDiameter);
+                gm.AddArrow(start.ToVector3(), end.ToVector3(), (float)this.EdgeDiameter);
                 var edgeElement = new ModelUIElement3D
                 {
                     Model = new GeometryModel3D(gm.ToMesh().ToMeshGeometry3D(), this.EdgeMaterial)

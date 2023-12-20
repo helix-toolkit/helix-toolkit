@@ -537,7 +537,6 @@ public class ViewCubeVisual3D : ModelVisual3D
                 _ => Brushes.White,
             };
         }
-
     }
     string GetCubeFaceName(CubeFaces cubeFace)
     {
@@ -715,7 +714,7 @@ public class ViewCubeVisual3D : ModelVisual3D
         Material material = CreateTextMaterial(background, text);
         double a = this.Size;
         var builder = new MeshBuilder(false, true);
-        builder.AddCubeFace(this.Center.ToVector(), normal.ToVector(), up.ToVector(), (float)a, (float)a, (float)a);
+        builder.AddCubeFace(this.Center.ToVector3(), normal.ToVector3(), up.ToVector3(), (float)a, (float)a, (float)a);
         MeshGeometry3D geometry = builder.ToMesh().ToMeshGeometry3D();
         geometry.Freeze();
         var model = new GeometryModel3D { Geometry = geometry, Material = material };
@@ -727,7 +726,7 @@ public class ViewCubeVisual3D : ModelVisual3D
     private void AddCubeEdge(ModelUIElement3D element, Point3D center, double x, double y, double z, Vector3D faceNormal)
     {
         var builder = new MeshBuilder(false, true);
-        builder.AddBox(center.ToVector(), _frontVector.ToVector(), _leftVector.ToVector(), (float)x, (float)y, (float)z);
+        builder.AddBox(center.ToVector3(), _frontVector.ToVector3(), _leftVector.ToVector3(), (float)x, (float)y, (float)z);
         var geometry = builder.ToMesh().ToMeshGeometry3D();
         geometry.Freeze();
         var model = new GeometryModel3D { Geometry = geometry, Material = MaterialHelper.CreateMaterial(_edgeBrush) };
@@ -741,7 +740,7 @@ public class ViewCubeVisual3D : ModelVisual3D
     {
 
         var builder = new MeshBuilder(false, true);
-        builder.AddBox(center.ToVector(), _frontVector.ToVector(), _leftVector.ToVector(), (float)sideLength, (float)sideLength, (float)sideLength);
+        builder.AddBox(center.ToVector3(), _frontVector.ToVector3(), _leftVector.ToVector3(), (float)sideLength, (float)sideLength, (float)sideLength);
         var geometry = builder.ToMesh().ToMeshGeometry3D();
         geometry.Freeze();
         var model = new GeometryModel3D { Geometry = geometry, Material = MaterialHelper.CreateMaterial(_cornerBrush) };

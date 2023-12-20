@@ -90,7 +90,7 @@ internal abstract class MouseGestureHandler
     /// Gets the model up direction.
     /// </summary>
     /// <value>The model up direction.</value>
-    protected Vector3D ModelUpDirection
+    protected Vector3 ModelUpDirection
     {
         get
         {
@@ -249,12 +249,12 @@ internal abstract class MouseGestureHandler
     /// <returns>
     /// A 3D point.
     /// </returns>
-    public Point3D? UnProject(Point p, Point3D position, Vector3D normal)
+    public Point3D? UnProject(Point p, Point3D position, Vector3 normal)
     {
         return UnProject(p.ToVector2(), position, normal);
     }
 
-    public Point3D? UnProject(Vector2 p, Point3D position, Vector3D normal)
+    public Point3D? UnProject(Vector2 p, Point3D position, Vector3 normal)
     {
         var ray = this.GetRay(p);
 

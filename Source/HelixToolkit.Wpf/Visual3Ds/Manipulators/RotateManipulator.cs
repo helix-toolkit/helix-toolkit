@@ -143,7 +143,7 @@ public class RotateManipulator : Manipulator
         d.Normalize();
         var p1 = p0 - (d * this.Length * 0.5);
         var p2 = p0 + (d * this.Length * 0.5);
-        mb.AddPipe(p1.ToVector(), p2.ToVector(), (float)this.InnerDiameter, (float)this.Diameter, 60);
+        mb.AddPipe(p1.ToVector3(), p2.ToVector3(), (float)this.InnerDiameter, (float)this.Diameter, 60);
         this.Model.Geometry = mb.ToMesh().ToMeshGeometry3D();
     }
 

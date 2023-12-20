@@ -128,7 +128,7 @@ public class StaticPointGeometryOctree : StaticOctree<int>
             for (var i = octant.Start; i < octant.End; ++i)
             {
                 var v0 = Positions![Objects![i]];
-                var p0 = Vector3.TransformCoordinate(v0, smvpm);
+                var p0 = Vector3Helper.TransformCoordinate(v0, smvpm);
                 var pv = p0 - clickPoint;
                 var d = pv.Length() / context.RenderMatrices?.DpiScale ?? 1.0f;
                 if (returnMultiple)
@@ -140,7 +140,7 @@ public class StaticPointGeometryOctree : StaticOctree<int>
                     dist = d;
                     result.IsValid = true;
                     result.ModelHit = model;
-                    var px = Vector3.TransformCoordinate(v0, modelMatrix);
+                    var px = Vector3Helper.TransformCoordinate(v0, modelMatrix);
                     result.PointHit = px;
                     result.Distance = (rayWS.Position - px).Length();
                     result.Tag = Objects[i];

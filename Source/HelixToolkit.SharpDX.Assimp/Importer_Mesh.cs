@@ -44,9 +44,9 @@ public partial class Importer
                         mn.Bones = mesh.AssimpMesh.Bones.Select(x => new HxAnimations.Bone()
                         {
                             Name = x.Name,
-                            BindPose = x.OffsetMatrix.ToSharpDXMatrix(configuration.IsSourceMatrixColumnMajor).Inverted(),
+                            BindPose = x.OffsetMatrix.ToHxMatrix(configuration.IsSourceMatrixColumnMajor).Inverted(),
                             BoneLocalTransform = Matrix.Identity,
-                            InvBindPose = x.OffsetMatrix.ToSharpDXMatrix(configuration.IsSourceMatrixColumnMajor),//Documented at https://github.com/assimp/assimp/pull/1803
+                            InvBindPose = x.OffsetMatrix.ToHxMatrix(configuration.IsSourceMatrixColumnMajor),//Documented at https://github.com/assimp/assimp/pull/1803
                         }).ToArray();
                     else
                     {
@@ -66,9 +66,9 @@ public partial class Importer
                             mtv.AddRange(new MorphTargetVertex[mesh.AssimpMesh.VertexCount].Select((x, i) =>
                             new MorphTargetVertex()
                             {
-                                deltaPosition = (att.Vertices[i] - mesh.AssimpMesh.Vertices[i]).ToSharpDXVector3(),
-                                deltaNormal = att.HasNormals ? (att.Normals[i] - mesh.AssimpMesh.Normals[i]).ToSharpDXVector3() : Vector3.Zero,
-                                deltaTangent = att.HasTangentBasis ? (att.Tangents[i] - mesh.AssimpMesh.Tangents[i]).ToSharpDXVector3() : Vector3.Zero
+                                deltaPosition = (att.Vertices[i] - mesh.AssimpMesh.Vertices[i]).ToVector3(),
+                                deltaNormal = att.HasNormals ? (att.Normals[i] - mesh.AssimpMesh.Normals[i]).ToVector3() : Vector3.Zero,
+                                deltaTangent = att.HasTangentBasis ? (att.Tangents[i] - mesh.AssimpMesh.Tangents[i]).ToVector3() : Vector3.Zero
                             }));
                         }
 
@@ -128,9 +128,9 @@ public partial class Importer
     /// <returns></returns>
     protected virtual MeshGeometry3D OnCreateHelixMesh(Mesh mesh)
     {
-        var hVertices = new Vector3Collection(mesh.Vertices.Select(x => x.ToSharpDXVector3()));
+        var hVertices = new Vector3Collection(mesh.Vertices.Select(x => x.ToVector3()));
         var builder = new MeshBuilder(false, false);
-        builder.Positions.AddRange(hVertices.ToCollection()!);
+        builder.Positions.AddRange(hVertices!);
         for (var i = 0; i < mesh.FaceCount; ++i)
         {
             if (!mesh.Faces[i].HasIndices)
@@ -144,14 +144,14 @@ public partial class Importer
                 builder.AddTriangleFan(mesh.Faces[i].Indices);
             }
         }
-        var hMesh = new MeshGeometry3D { Positions = hVertices, Indices = Converter.ToInt32Collection(builder.TriangleIndices) };
+        var hMesh = new MeshGeometry3D { Positions = hVertices, Indices = new IntCollection(builder.TriangleIndices) };
         if (mesh.HasNormals && mesh.Normals.Count == hMesh.Positions.Count)
         {
-            hMesh.Normals = new Vector3Collection(mesh.Normals.Select(x => Vector3.Normalize(x.ToSharpDXVector3())));
+            hMesh.Normals = new Vector3Collection(mesh.Normals.Select(x => Vector3.Normalize(x.ToVector3())));
         }
         else
         {
-            hMesh.Normals = Converter.ToVector3Collection(MeshGeometryHelper.CalculateNormals(hMesh.ToWndMeshGeometry3D()));
+            hMesh.UpdateNormals();
         }
         if (mesh.HasVertexColors(0))
         {
@@ -161,20 +161,20 @@ public partial class Importer
         if (mesh.HasTextureCoords(0))
         {
             hMesh.TextureCoordinates =
-               new Vector2Collection(mesh.TextureCoordinateChannels[0].Select(x => x.ToSharpDXVector2()));
+               new Vector2Collection(mesh.TextureCoordinateChannels[0].Select(x => x.ToVector2()));
         }
         if (mesh.HasTangentBasis && mesh.Tangents.Count == hMesh.Positions.Count && mesh.BiTangents.Count == hMesh.Positions.Count)
         {
-            hMesh.Tangents = new Vector3Collection(mesh.Tangents.Select(x => x.ToSharpDXVector3()));
-            hMesh.BiTangents = new Vector3Collection(mesh.BiTangents.Select(x => x.ToSharpDXVector3()));
+            hMesh.Tangents = new Vector3Collection(mesh.Tangents.Select(x => x.ToVector3()));
+            hMesh.BiTangents = new Vector3Collection(mesh.BiTangents.Select(x => x.ToVector3()));
         }
         else
         {
-            builder.Normals = hMesh.Normals.ToCollection()?.ToList();
-            builder.TextureCoordinates = hMesh.TextureCoordinates.ToCollection()?.ToList();
+            builder.Normals = hMesh.Normals;
+            builder.TextureCoordinates = hMesh.TextureCoordinates;
             builder.ComputeTangents(MeshFaces.Default);
-            hMesh.Tangents = Converter.ToVector3Collection(builder.Tangents);
-            hMesh.BiTangents = Converter.ToVector3Collection(builder.BiTangents);
+            hMesh.Tangents = new Vector3Collection(builder.Tangents!);
+            hMesh.BiTangents = new Vector3Collection(builder.BiTangents!);
         }
 
         hMesh.UpdateBounds();
@@ -250,11 +250,11 @@ public partial class Importer
     /// <returns></returns>
     protected virtual PointGeometry3D OnCreateHelixPoint(Mesh mesh)
     {
-        var hVertices = new Vector3Collection(mesh.Vertices.Select(x => x.ToSharpDXVector3()));
+        var hVertices = new Vector3Collection(mesh.Vertices.Select(x => x.ToVector3()));
         var hMesh = new PointGeometry3D { Positions = hVertices };
         if (mesh.HasVertexColors(0))
         {
-            hMesh.Colors = new Color4Collection(mesh.VertexColorChannels[0].Select(x => x.ToSharpDXColor4()));
+            hMesh.Colors = new Color4Collection(mesh.VertexColorChannels[0].Select(x => x.ToColor4()));
         }
         return hMesh;
     }
@@ -266,7 +266,7 @@ public partial class Importer
     /// <returns></returns>
     protected virtual LineGeometry3D OnCreateHelixLine(Mesh mesh)
     {
-        var hVertices = new Vector3Collection(mesh.Vertices.Select(x => x.ToSharpDXVector3()));
+        var hVertices = new Vector3Collection(mesh.Vertices.Select(x => x.ToVector3()));
         var hIndices = new IntCollection(mesh.Faces.SelectMany(x => x.Indices));
         var hMesh = new LineGeometry3D { Positions = hVertices, Indices = hIndices };
         if (mesh.HasVertexColors(0))

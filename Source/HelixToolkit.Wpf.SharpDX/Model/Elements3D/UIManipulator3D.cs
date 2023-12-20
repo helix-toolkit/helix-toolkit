@@ -304,7 +304,7 @@ public abstract class UIManipulator3D : MeshGeometryModel3D
     protected Vector3 ToWorldPos(Vector3 vec)
     {
         //var m = this.Transform.Value.ToMatrix();
-        return Vector3.TransformCoordinate(vec, this.TotalModelMatrix);
+        return Vector3Helper.TransformCoordinate(vec, this.TotalModelMatrix);
     }
 
     /// <summary>
@@ -326,7 +326,7 @@ public abstract class UIManipulator3D : MeshGeometryModel3D
     protected Vector3 ToModelPos(Vector3 vec)
     {
         //var m = this.Transform.Value.ToMatrix();
-        return Vector3.TransformCoordinate(vec, this.TotalModelMatrix.PsudoInvert());
+        return Vector3Helper.TransformCoordinate(vec, this.TotalModelMatrix.PsudoInvert());
     }
 
     /// <summary>
@@ -336,7 +336,10 @@ public abstract class UIManipulator3D : MeshGeometryModel3D
     /// <returns></returns>
     protected Vector3 ToModelVec(Vector3 vec)
     {
-        //var m = this.Transform.Value.ToMatrix();
-        return Vector3.TransformNormal(vec, Matrix.Invert(this.TotalModelMatrix.PsudoInvert()));
+        if (Matrix.Invert(this.TotalModelMatrix.PsudoInvert(), out var inv))
+        {
+            return Vector3.TransformNormal(vec, inv);
+        }
+        return default;
     }
 }

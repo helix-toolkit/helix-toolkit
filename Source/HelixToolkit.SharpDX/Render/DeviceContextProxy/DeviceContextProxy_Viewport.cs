@@ -1,4 +1,5 @@
 ﻿using SharpDX;
+using SharpDX.Mathematics.Interop;
 using System.Runtime.CompilerServices;
 using Device = SharpDX.Direct3D11.Device1;
 using DeviceContext = SharpDX.Direct3D11.DeviceContext1;
@@ -89,7 +90,7 @@ public partial class DeviceContextProxy
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public void SetViewport(Viewport viewport)
     {
-        deviceContext?.Rasterizer.SetViewport(viewport);
+        deviceContext?.Rasterizer.SetViewport(viewport.ToViewportF().ToStruct<ViewportF, RawViewportF>());
     }
     /// <summary>
     /// Binds a single viewport to the rasterizer stage.
@@ -104,7 +105,7 @@ public partial class DeviceContextProxy
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public void SetViewport(ref Viewport viewport)
     {
-        deviceContext?.Rasterizer.SetViewport(viewport);
+        deviceContext?.Rasterizer.SetViewport(viewport.ToViewportF().ToStruct<ViewportF, RawViewportF>());
     }
 
     /// <summary>
@@ -120,7 +121,7 @@ public partial class DeviceContextProxy
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public void SetViewport(ref ViewportF viewport)
     {
-        deviceContext?.Rasterizer.SetViewport(viewport);
+        deviceContext?.Rasterizer.SetViewport(viewport.ToStruct<ViewportF, RawViewportF>());
     }
     #endregion Viewport and Scissors
 }

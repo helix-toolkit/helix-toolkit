@@ -121,10 +121,10 @@ public sealed partial class MainViewModel : ObservableObject
         int n = themaze.GetUpperBound(1) + 1;
         var builder = new MeshBuilder();
         builder.AddQuad(
-            this.GetPosition(-1 - padding, -1 - padding, z).ToVector(),
-            this.GetPosition(m + padding, -1 - padding, z).ToVector(),
-            this.GetPosition(m + padding, n + padding, z).ToVector(),
-            this.GetPosition(-1 - padding, n + padding, z).ToVector());
+            this.GetPosition(-1 - padding, -1 - padding, z).ToVector3(),
+            this.GetPosition(m + padding, -1 - padding, z).ToVector3(),
+            this.GetPosition(m + padding, n + padding, z).ToVector3(),
+            this.GetPosition(-1 - padding, n + padding, z).ToVector3());
         return builder.ToMesh().ToMeshGeometry3D();
     }
 
@@ -179,7 +179,7 @@ public sealed partial class MainViewModel : ObservableObject
             {
                 if (themaze[i, j])
                 {
-                    builder.AddBox(this.GetPosition(i, j, height * 0.5).ToVector(), (float)size, (float)size, (float)height);
+                    builder.AddBox(this.GetPosition(i, j, height * 0.5).ToVector3(), (float)size, (float)size, (float)height);
                 }
             }
         }
@@ -202,7 +202,7 @@ public sealed partial class MainViewModel : ObservableObject
         {
             var path = solution.Select(cell => this.GetPosition(cell, height)).ToList();
             var spline = CanonicalSplineHelper.CreateSpline(path, 0.7, null, false, 0.05);
-            builder.AddTube(spline.Select(t => t.ToVector()).ToList(), (float)diameter, 13, false);
+            builder.AddTube(spline.Select(t => t.ToVector3()).ToList(), (float)diameter, 13, false);
         }
 
         return builder.ToMesh().ToMeshGeometry3D();

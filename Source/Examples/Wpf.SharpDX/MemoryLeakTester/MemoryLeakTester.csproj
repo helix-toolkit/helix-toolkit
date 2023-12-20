@@ -41,5 +41,7 @@
     <ProjectReference Include="..\SimpleDemo\SimpleDemo.csproj" />
     <ProjectReference Include="..\TessellationDemo\TessellationDemo.csproj" />
   </ItemGroup>
-
+    <ItemGroup>
+        <Compile Include="..\..\GlobalUsing.cs"/>
+    </ItemGroup>
 </Project>

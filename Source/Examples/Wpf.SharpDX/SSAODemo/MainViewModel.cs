@@ -39,14 +39,14 @@ public partial class MainViewModel : DemoCore.BaseViewModel
         };
 
         var builder = new MeshBuilder();
-        builder.AddBox(new Vector3(0, -0.1f, 0).ToVector(), 20, 0.1f, 20);
-        builder.AddBox(new Vector3(-7, 2.5f, 0).ToVector(), 5, 5, 5);
-        builder.AddBox(new Vector3(-5, 2.5f, -5).ToVector(), 5, 5, 5);
-        FloorModel = builder.ToMesh().ToMeshGeometry3D();
+        builder.AddBox(new Vector3(0, -0.1f, 0), 20, 0.1f, 20);
+        builder.AddBox(new Vector3(-7, 2.5f, 0), 5, 5, 5);
+        builder.AddBox(new Vector3(-5, 2.5f, -5), 5, 5, 5);
+        FloorModel = builder.ToMeshGeometry3D();
 
         builder = new MeshBuilder();
-        builder.AddSphere(Vector3.Zero.ToVector(), 1);
-        SphereModel = builder.ToMesh().ToMeshGeometry3D();
+        builder.AddSphere(Vector3.Zero, 1);
+        SphereModel = builder.ToMeshGeometry3D();
 
         var reader = new ObjReader();
 
@@ -60,18 +60,18 @@ public partial class MainViewModel : DemoCore.BaseViewModel
         SphereMaterial.AmbientColor = SphereMaterial.DiffuseColor * 0.5f;
         SphereInstances = new Matrix[4]
         {
-                Matrix.Translation(-2.5f, 1, 0),
-                Matrix.Translation(2.5f, 1, 0),
-                Matrix.Translation(0, 1, -2.5f),
-                Matrix.Translation(0, 1, 2.5f)
+                Matrix.CreateTranslation(-2.5f, 1, 0),
+                Matrix.CreateTranslation(2.5f, 1, 0),
+                Matrix.CreateTranslation(0, 1, -2.5f),
+                Matrix.CreateTranslation(0, 1, 2.5f)
         };
 
         BunnyInstances = new Matrix[4]
         {
-                Matrix.Translation(0f, -0.8f, 0),
-                Matrix.Translation(6f, -0.8f, 0),
-                Matrix.Translation(0, -0.8f, -4f),
-                Matrix.Translation(0, -0.8f, 4f)
+                Matrix.CreateTranslation(0f, -0.8f, 0),
+                Matrix.CreateTranslation(6f, -0.8f, 0),
+                Matrix.CreateTranslation(0, -0.8f, -4f),
+                Matrix.CreateTranslation(0, -0.8f, 4f)
         };
     }
 }

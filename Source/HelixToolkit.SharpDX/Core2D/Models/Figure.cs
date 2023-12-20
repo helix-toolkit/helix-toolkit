@@ -1,4 +1,5 @@
 ﻿using SharpDX;
+using SharpDX.Mathematics.Interop;
 using D2D = SharpDX.Direct2D1;
 
 namespace HelixToolkit.SharpDX.Core2D;
@@ -74,7 +75,7 @@ public class Figure
     /// <param name="sink">The sink.</param>
     public void Create(D2D.GeometrySink sink)
     {
-        sink.BeginFigure(StartPoint, Filled ? D2D.FigureBegin.Filled : D2D.FigureBegin.Hollow);
+        sink.BeginFigure(StartPoint.ToStruct<Vector2, RawVector2>(), Filled ? D2D.FigureBegin.Filled : D2D.FigureBegin.Hollow);
         for (var i = 0; i < Segments.Count; ++i)
         {
             var flag = D2D.PathSegment.None;

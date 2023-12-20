@@ -160,7 +160,7 @@ public class NodeAnimationUpdater : IAnimationUpdater
         {
             var n = NodeCollection[i];
             var count = n.KeyFrames.Count; // Make sure to use this count
-            var frames = n.KeyFrames.Items;
+            var frames = n.KeyFrames.GetInternalArray();
             var idx = AnimationUtils.FindKeyFrame(timeElapsed, frames);
             if (idx < 0)
             {
@@ -175,9 +175,9 @@ public class NodeAnimationUpdater : IAnimationUpdater
             Debug.Assert(currFrame.Time <= timeElapsed);
             if (count == 1 || idx == frames.Length - 1)
             {
-                n.Node.ModelMatrix = Matrix.Scaling(currFrame.Scale) *
-                        Matrix.RotationQuaternion(currFrame.Rotation) *
-                        Matrix.Translation(currFrame.Translation);
+                n.Node.ModelMatrix = MatrixHelper.Scaling(currFrame.Scale) *
+                        currFrame.Rotation.ToMatrix() *
+                        MatrixHelper.Translation(currFrame.Translation);
                 continue;
             }
             ref var nextFrame = ref frames[idx + 1];
@@ -185,9 +185,9 @@ public class NodeAnimationUpdater : IAnimationUpdater
             var diff = timeElapsed - currFrame.Time;
             var length = nextFrame.Time - currFrame.Time;
             var amount = diff / length;
-            var transform = Matrix.Scaling(Vector3.Lerp(currFrame.Scale, nextFrame.Scale, amount)) *
-                        Matrix.RotationQuaternion(Quaternion.Slerp(currFrame.Rotation, nextFrame.Rotation, amount)) *
-                        Matrix.Translation(Vector3.Lerp(currFrame.Translation, nextFrame.Translation, amount));
+            var transform = MatrixHelper.Scaling(Vector3.Lerp(currFrame.Scale, nextFrame.Scale, amount)) *
+                        Quaternion.Slerp(currFrame.Rotation, nextFrame.Rotation, amount).ToMatrix() *
+                        MatrixHelper.Translation(Vector3.Lerp(currFrame.Translation, nextFrame.Translation, amount));
             n.Node.ModelMatrix = transform;
         }
         changed = true;

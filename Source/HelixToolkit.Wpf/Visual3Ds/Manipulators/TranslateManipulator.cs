@@ -96,7 +96,7 @@ public class TranslateManipulator : Manipulator
         var d = this.Direction;
         d.Normalize();
         var p1 = p0 + (d * this.Length);
-        mb.AddArrow(p0.ToVector(), p1.ToVector(), (float)this.Diameter);
+        mb.AddArrow(p0.ToVector3(), p1.ToVector3(), (float)this.Diameter);
         this.Model.Geometry = mb.ToMesh().ToMeshGeometry3D();
     }
 

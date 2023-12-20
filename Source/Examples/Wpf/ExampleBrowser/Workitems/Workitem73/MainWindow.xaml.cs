@@ -42,7 +42,7 @@ public partial class MainWindow : Window
     {
         var mb = new MeshBuilder();
 
-        mb.AddTube(path.Select(t => t.ToVector()).ToList(), 0.1f, 3, false);
+        mb.AddTube(path.Select(t => t.ToVector3()).ToList(), 0.1f, 3, false);
 
         // create a model
         var geom = new GeometryModel3D

@@ -3,6 +3,7 @@ using HelixToolkit.SharpDX.Utilities;
 using Microsoft.Extensions.Logging;
 using SharpDX;
 using SharpDX.Direct2D1;
+using SharpDX.Mathematics.Interop;
 
 namespace HelixToolkit.SharpDX.Model.Scene2D;
 
@@ -467,15 +468,15 @@ public abstract partial class SceneNode2D : DisposeObject, IHitable2D
         }
         if (IsTransformDirty)
         {
-            RelativeMatrix = Matrix3x2.Translation(-RenderSize * RenderTransformOrigin)
-                * ModelMatrix * Matrix3x2.Translation(RenderSize * RenderTransformOrigin)
+            RelativeMatrix = Matrix3x2Helper.Translation(-RenderSize * RenderTransformOrigin)
+                * ModelMatrix * Matrix3x2Helper.Translation(RenderSize * RenderTransformOrigin)
                 * LayoutTranslate;
             TotalModelMatrix = RelativeMatrix * ParentMatrix;
             IsTransformDirty = false;
             InvalidateVisual();
         }
 
-        LayoutBoundWithTransform = LayoutBound.Translate(TotalModelMatrix.TranslationVector);
+        LayoutBoundWithTransform = LayoutBound.Translate(TotalModelMatrix.Translation);
 
 #if DISABLEBITMAPCACHE
                 IsBitmapCacheValid = false;
@@ -493,7 +494,7 @@ public abstract partial class SceneNode2D : DisposeObject, IHitable2D
                         }
 #endif
                 context.PushRenderTarget(bitmapCache!, true);
-                context.DeviceContext.Transform = Matrix3x2.Identity;
+                context.DeviceContext.Transform = NativeHelper.ToStruct<Matrix3x2, RawMatrix3x2>(Matrix3x2.Identity);
                 context.PushRelativeTransform(Matrix3x2.Identity);
                 RenderCore.Transform = context.RelativeTransform;
                 OnRender(context);
@@ -503,8 +504,8 @@ public abstract partial class SceneNode2D : DisposeObject, IHitable2D
             }
             if (context.HasTarget)
             {
-                context.DeviceContext.Transform = context.RelativeTransform * RelativeMatrix;
-                context.DeviceContext.DrawImage(bitmapCache!, new Vector2(0, 0), LayoutClipBound,
+                context.DeviceContext.Transform = NativeHelper.ToStruct<Matrix3x2, RawMatrix3x2>(context.RelativeTransform * RelativeMatrix);
+                context.DeviceContext.DrawImage(bitmapCache!, new RawVector2(0, 0), NativeHelper.ToStruct<RectangleF, RawRectangleF>(LayoutClipBound),
                     InterpolationMode.Linear, global::SharpDX.Direct2D1.CompositeMode.SourceOver);
             }
         }
@@ -526,8 +527,8 @@ public abstract partial class SceneNode2D : DisposeObject, IHitable2D
     {
         if (IsRenderable && EnableBitmapCache && IsBitmapCacheValid && !IsVisualDirty && context.HasTarget)
         {
-            context.DeviceContext.Transform = RelativeMatrix;
-            context.DeviceContext.DrawImage(bitmapCache!, new Vector2(0, 0), new RectangleF(0, 0, RenderSize.X, RenderSize.Y),
+            context.DeviceContext.Transform = NativeHelper.ToStruct<Matrix3x2, RawMatrix3x2>(RelativeMatrix);
+            context.DeviceContext.DrawImage(bitmapCache!, new RawVector2(0, 0), new RawRectangleF(0, 0, RenderSize.X, RenderSize.Y),
                 InterpolationMode.Linear, global::SharpDX.Direct2D1.CompositeMode.SourceOver);
         }
         else

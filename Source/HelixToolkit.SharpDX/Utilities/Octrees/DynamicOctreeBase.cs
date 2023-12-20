@@ -608,12 +608,12 @@ public abstract class DynamicOctreeBase<T> : IDynamicOctree
         var isHit = false;
         modelHits.Clear();
         var modelInv = modelMatrix.Inverted();
-        if (modelInv == Matrix.Zero)
+        if (modelInv == MatrixHelper.Zero)
         {
             return false;
         }//Cannot be inverted
         var rayWS = context.RayWS;
-        var rayModel = new Ray(Vector3.TransformCoordinate(rayWS.Position, modelInv), Vector3.Normalize(Vector3.TransformNormal(rayWS.Direction, modelInv)));
+        var rayModel = new Ray(Vector3Helper.TransformCoordinate(rayWS.Position, modelInv), Vector3.Normalize(Vector3.TransformNormal(rayWS.Direction, modelInv)));
         var treeArray = SelfArray;
         var i = -1;
         while (true)
@@ -687,7 +687,7 @@ public abstract class DynamicOctreeBase<T> : IDynamicOctree
     /// <param name="sphere"></param>
     /// <param name="points"></param>
     /// <returns></returns>
-    public virtual bool FindNearestPointBySphere(HitTestContext? context, ref global::SharpDX.BoundingSphere sphere, ref List<HitTestResult> points)
+    public virtual bool FindNearestPointBySphere(HitTestContext? context, ref BoundingSphere sphere, ref List<HitTestResult> points)
     {
         if (points == null)
         {
@@ -740,7 +740,7 @@ public abstract class DynamicOctreeBase<T> : IDynamicOctree
         results ??= new List<HitTestResult>();
         var hitStack = stack;
 
-        var sphere = new global::SharpDX.BoundingSphere(point, float.MaxValue);
+        var sphere = new BoundingSphere(point, float.MaxValue);
         var isIntersect = false;
         var isHit = false;
         heuristicSearchFactor = Math.Min(1.0f, Math.Max(0.1f, heuristicSearchFactor));
@@ -789,7 +789,7 @@ public abstract class DynamicOctreeBase<T> : IDynamicOctree
     /// <param name="points"></param>
     /// <param name="isIntersect"></param>
     /// <returns></returns>
-    public abstract bool FindNearestPointBySphereExcludeChild(HitTestContext? context, ref global::SharpDX.BoundingSphere sphere,
+    public abstract bool FindNearestPointBySphereExcludeChild(HitTestContext? context, ref BoundingSphere sphere,
         ref List<HitTestResult> points, ref bool isIntersect);
     /// <summary>
     /// <see cref="DynamicOctreeBase{T}.Add(T)"/>
@@ -1331,7 +1331,7 @@ public abstract class DynamicOctreeBase<T> : IDynamicOctree
     /// <returns></returns>
     public bool FindNearestPointByPointAndSearchRadius(HitTestContext? context, ref Vector3 point, float radius, ref List<HitTestResult> result)
     {
-        var sphere = new global::SharpDX.BoundingSphere(point, radius);
+        var sphere = new BoundingSphere(point, radius);
         return FindNearestPointBySphere(context, ref sphere, ref result);
     }
 

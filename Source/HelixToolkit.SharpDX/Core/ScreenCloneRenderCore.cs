@@ -540,8 +540,8 @@ public class ScreenCloneRenderCore : RenderCore, IScreenClone
 
             var width = 0;
             var height = 0;
-            var left = pointer.Position.X;
-            var top = pointer.Position.Y;
+            var left = (int)pointer.Position.X;
+            var top = (int)pointer.Position.Y;
 
             switch (pointer.ShapeInfo.Type)
             {
@@ -638,11 +638,11 @@ public class ScreenCloneRenderCore : RenderCore, IScreenClone
             var givenTop = info.Position.Y;
             if (givenLeft < 0)
             {
-                width = givenLeft + info.ShapeInfo.Width;
+                width = (int)givenLeft + info.ShapeInfo.Width;
             }
             else if (givenLeft + info.ShapeInfo.Width > deskWidth)
             {
-                width = deskWidth - givenLeft;
+                width = deskWidth - (int)givenLeft;
             }
             else
             {
@@ -656,11 +656,11 @@ public class ScreenCloneRenderCore : RenderCore, IScreenClone
 
             if (givenTop < 0)
             {
-                height = givenTop + info.ShapeInfo.Height;
+                height = (int)givenTop + info.ShapeInfo.Height;
             }
             else if (givenTop + info.ShapeInfo.Height > deskHeight)
             {
-                height = deskHeight - givenTop;
+                height = deskHeight - (int)givenTop;
             }
             else
             {
@@ -672,8 +672,8 @@ public class ScreenCloneRenderCore : RenderCore, IScreenClone
                 info.ShapeInfo.Height *= 2;
             }
 
-            left = givenLeft < 0 ? 0 : givenLeft;
-            top = givenTop < 0 ? 0 : givenTop;
+            left = givenLeft < 0 ? 0 : (int)givenLeft;
+            top = givenTop < 0 ? 0 : (int)givenTop;
             stageTextureDesc.Width = width;
             stageTextureDesc.Height = height;
             if (initBuffer.Length != width * height * BPP)

@@ -47,7 +47,7 @@ public sealed class PanelModelBuilder
         foreach (var p in Panels)
         {
             p.TriangleIndex = tm.Positions.Count;
-            tm.AddTriangleFan(p.Points.Select(t => t.ToVector()).ToList());
+            tm.AddTriangleFan(p.Points.Select(t => t.ToVector3()).ToList());
             for (int i = 0; i < p.Points.Length - 2; i++)
                 TriangleIndexToPanelIndex.Add(panelIndex);
             panelIndex++;
@@ -72,7 +72,7 @@ public sealed class PanelModelBuilder
         {
             for (int i = 0; i < p.Points.Length; i += 1)
             {
-                em.AddCylinder(p.Points[i].ToVector(), p.Points[(i + 1) % p.Points.Length].ToVector(), 0.05f, 10);
+                em.AddCylinder(p.Points[i].ToVector3(), p.Points[(i + 1) % p.Points.Length].ToVector3(), 0.05f, 10);
             }
         }
         m.Children.Add(new GeometryModel3D(em.ToMesh().ToMeshGeometry3D(), Materials.Gray));

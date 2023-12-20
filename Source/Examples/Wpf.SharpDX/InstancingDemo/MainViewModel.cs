@@ -2,18 +2,15 @@
 using HelixToolkit;
 using HelixToolkit.SharpDX;
 using HelixToolkit.Wpf.SharpDX;
-using SharpDX;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Threading;
 using Color = System.Windows.Media.Color;
-using Color4 = SharpDX.Color4;
 using Colors = System.Windows.Media.Colors;
 using Media3D = System.Windows.Media.Media3D;
 using Point3D = System.Windows.Media.Media3D.Point3D;
 using Transform3D = System.Windows.Media.Media3D.Transform3D;
-using Vector3 = SharpDX.Vector3;
 using Vector3D = System.Windows.Media.Media3D.Vector3D;
 
 namespace InstancingDemo;
@@ -100,8 +97,8 @@ public partial class MainViewModel : DemoCore.BaseViewModel
 
         // scene model3d
         var b1 = new MeshBuilder(true, true, true);
-        b1.AddBox(new Vector3(0, 0, 0).ToVector(), 1, 1, 1, BoxFaces.All);
-        Model = b1.ToMesh().ToMeshGeometry3D();
+        b1.AddBox(new Vector3(0, 0, 0), 1, 1, 1, BoxFaces.All);
+        Model = b1.ToMeshGeometry3D();
         if (Model.TextureCoordinates is not null)
         {
             for (int i = 0; i < Model.TextureCoordinates.Count; ++i)
@@ -180,8 +177,8 @@ public partial class MainViewModel : DemoCore.BaseViewModel
         {
             for (int j = -numInstances - (int)aniX; j < numInstances + aniX; j++)
             {
-                var matrix = Matrix.RotationAxis(new Vector3(0, 1, 0), aniX * Math.Sign(j))
-                    * Matrix.Translation(new Vector3(i * 1.2f + Math.Sign(i), j * 1.2f + Math.Sign(j), i * j / 2.0f));
+                var matrix = Matrix.CreateFromAxisAngle(new Vector3(0, 1, 0), aniX * Math.Sign(j))
+                    * Matrix.CreateTranslation(new Vector3(i * 1.2f + Math.Sign(i), j * 1.2f + Math.Sign(j), i * j / 2.0f));
                 var color = new Color4(1, 1, 1, 1);//new Color4((float)Math.Abs(i) / num, (float)Math.Abs(j) / num, (float)Math.Abs(i + j) / (2 * num), 1);
                                                    //  var emissiveColor = new Color4( rnd.NextFloat(0,1) , rnd.NextFloat(0, 1), rnd.NextFloat(0, 1), rnd.NextFloat(0, 0.2f));
                 var k = Math.Abs(i + j) % 4;
@@ -222,8 +219,8 @@ public partial class MainViewModel : DemoCore.BaseViewModel
                 });
 
                 billboardinstancesList.Add(
-                    Matrix.Scaling(rnd.NextFloat(0.5f, 4f), rnd.NextFloat(0.5f, 3f), rnd.NextFloat(0.5f, 3f))
-                    * Matrix.Translation(new Vector3(rnd.NextFloat(0, 100), rnd.NextFloat(0, 100), rnd.NextFloat(-50, 50))));
+                    Matrix.CreateScale(rnd.NextFloat(0.5f, 4f), rnd.NextFloat(0.5f, 3f), rnd.NextFloat(0.5f, 3f))
+                    * Matrix.CreateTranslation(new Vector3(rnd.NextFloat(0, 100), rnd.NextFloat(0, 100), rnd.NextFloat(-50, 50))));
             }
             BillboardInstanceParams = billboardParamsList.ToArray();
             BillboardInstances = billboardinstancesList.ToArray();

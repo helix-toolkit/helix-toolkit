@@ -360,7 +360,7 @@ public class BillboardSingleText3D : BillboardBase
 
         var uv_tl = new Vector2(0, 0);
         var uv_br = new Vector2(1, 1);
-        var transform = info.Angle != 0 ? Matrix3x2.Rotation(info.Angle) : Matrix3x2.Identity;
+        var transform = info.Angle != 0 ? Matrix3x2.CreateRotation(info.Angle) : Matrix3x2.Identity;
         var offTL = tl * info.Scale;
         var offBR = br * info.Scale;
         var offTR = new Vector2(offBR.X, offTL.Y);
@@ -372,10 +372,10 @@ public class BillboardSingleText3D : BillboardBase
             Background = BackgroundColor,
             TexTL = uv_tl,
             TexBR = uv_br,
-            OffTL = Matrix3x2.TransformPoint(transform, offTL) + Offset,
-            OffBL = Matrix3x2.TransformPoint(transform, offBL) + Offset,
-            OffBR = Matrix3x2.TransformPoint(transform, offBR) + Offset,
-            OffTR = Matrix3x2.TransformPoint(transform, offTR) + Offset
+            OffTL = Matrix3x2Helper.TransformPoint(transform, offTL) + Offset,
+            OffBL = Matrix3x2Helper.TransformPoint(transform, offBL) + Offset,
+            OffBR = Matrix3x2Helper.TransformPoint(transform, offBR) + Offset,
+            OffTR = Matrix3x2Helper.TransformPoint(transform, offTR) + Offset
         });
     }
 

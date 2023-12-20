@@ -1,52 +1,105 @@
-﻿using System.Globalization;
+﻿using System.Windows.Media.Media3D;
 
-namespace HelixToolkit.Wpf.Geometry;
+namespace HelixToolkit.Wpf;
 
 /// <summary>
 /// Represents a plane in three-dimensional space.
 /// </summary>
-public sealed class Plane3D : HelixToolkit.Plane3D
+public class Plane3D
 {
-
-    public new string Normal
+    /// <summary>
+    /// Initializes a new instance of the <see cref = "Plane3D" /> class.
+    /// </summary>
+    public Plane3D()
     {
-        get
-        {
-            return Vector3ToString(base.Normal);
-        }
-
-        set
-        {
-            base.Normal = StringToVector3(value);
-        }
     }
 
-    public new string Position
+    /// <summary>
+    /// Initializes a new instance of the <see cref="Plane3D"/> class.
+    /// </summary>
+    /// <param name="position">
+    /// The p0.
+    /// </param>
+    /// <param name="normal">
+    /// The n.
+    /// </param>
+    public Plane3D(Point3D position, Vector3D normal)
     {
-        get
-        {
-            return Vector3ToString(base.Position);
-        }
-
-        set
-        {
-            base.Position = StringToVector3(value);
-        }
+        this.Position = position;
+        this.Normal = normal;
+        this.Normal.Normalize();
     }
 
-    private static string Vector3ToString(System.Numerics.Vector3 v)
+    /// <summary>
+    /// Gets or sets the normal.
+    /// </summary>
+    /// <value>The normal.</value>
+    public Vector3D Normal { get; set; } = default;
+
+    /// <summary>
+    /// Gets or sets the position.
+    /// </summary>
+    /// <value>The position.</value>
+    public Point3D Position { get; set; } = default;
+
+    /// <summary>
+    /// Finds the intersection between the plane and a line.
+    /// </summary>
+    /// <param name="la">
+    /// The first point defining the line.
+    /// </param>
+    /// <param name="lb">
+    /// The second point defining the line.
+    /// </param>
+    /// <returns>
+    /// The intersection point.
+    /// </returns>
+    public Vector3D? LineIntersection(Vector3D la, Vector3D lb)
     {
-        return v.X.ToString(CultureInfo.InvariantCulture) + "," + v.Y.ToString(CultureInfo.InvariantCulture) + "," + v.Z.ToString(CultureInfo.InvariantCulture);
+        // http://en.wikipedia.org/wiki/Line-plane_intersection
+        var l = lb - la;
+        var a = Vector3D.DotProduct(this.Position.ToVector3D() - la, this.Normal);
+        var b = Vector3D.DotProduct(l, this.Normal);
+
+        if (a == 0 && b == 0)
+        {
+            return null;
+        }
+
+        if (b == 0)
+        {
+            return null;
+        }
+
+        return la + ((a / b) * l);
     }
 
-    private static System.Numerics.Vector3 StringToVector3(string str)
+    /// <summary>
+    /// Calculates the distance from a point to a plane.
+    /// </summary>
+    /// <param name="point">The point used to calculate distance</param>
+    /// <returns>
+    /// The distance from given point to the given plane<br/>
+    /// Equal zero: Point on the plane<br/>
+    /// Greater than zero: The point is on the same side of the plane's normal vector<br/>
+    /// Less than zero: The point is on the opposite side of the plane's normal vector<br/>
+    /// </returns>
+    public double DistanceTo(Vector3D point)
     {
-        string[] parts = str.Split(',');
+        var planeToPoint = point - Position.ToVector3D();
+        return Vector3D.DotProduct(planeToPoint, Normal);
+    }
 
-        float x = float.Parse(parts[0], CultureInfo.InvariantCulture);
-        float y = float.Parse(parts[1], CultureInfo.InvariantCulture);
-        float z = float.Parse(parts[2], CultureInfo.InvariantCulture);
-
-        return new System.Numerics.Vector3(x, y, z);
+    /// <summary>
+    /// Calculates the projection of a point onto a plane.
+    /// </summary>
+    /// <param name="point">The point used to calculate projection</param>
+    /// <returns>
+    /// The projection of a given point on a given plane.
+    /// </returns>
+    public Vector3D Project(Vector3D point)
+    {
+        var distance = DistanceTo(point);
+        return point - distance * Normal;
     }
 }

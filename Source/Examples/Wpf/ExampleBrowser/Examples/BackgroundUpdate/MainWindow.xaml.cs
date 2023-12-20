@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -141,7 +142,7 @@ public partial class MainWindow : Window
                 {
                     for (int k = 1; k <= n; k++)
                     {
-                        b.AddBox(new Point3D(i, j, k).ToVector(), 0.8f, 0.8f, 0.8f);
+                        b.AddBox(new Vector3(i, j, k), 0.8f, 0.8f, 0.8f);
                     }
                 }
 
@@ -179,7 +180,7 @@ public partial class MainWindow : Window
                 {
                     for (int k = 1; k <= n; k++)
                     {
-                        b.AddBox(new Point3D(i, j, -k).ToVector(), 0.8f, 0.8f, 0.8f);
+                        b.AddBox(new Vector3(i, j, -k), 0.8f, 0.8f, 0.8f);
                     }
                 }
 
@@ -223,7 +224,7 @@ public partial class MainWindow : Window
                 {
                     for (int k = 1; k <= n; k++)
                     {
-                        b.AddBox(new Point3D(-i, j, -k).ToVector(), 0.8f, 0.8f, 0.8f);
+                        b.AddBox(new Vector3(-i, j, -k), 0.8f, 0.8f, 0.8f);
                     }
                 }
 

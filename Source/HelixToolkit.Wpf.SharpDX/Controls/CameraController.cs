@@ -1,6 +1,4 @@
 ﻿using HelixToolkit.SharpDX.Utilities;
-using Vector3 = global::SharpDX.Vector3;
-using Vector2 = global::SharpDX.Vector2;
 using System.Windows.Input;
 using HelixToolkit.SharpDX;
 using HelixToolkit.SharpDX.Cameras;

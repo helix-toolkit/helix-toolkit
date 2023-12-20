@@ -169,7 +169,7 @@ public class TubeVisual3D : ExtrudedVisual3D
             this.TextureCoordinates?.ToFloatCollection(),
             this.Diameters.ToFloatCollection(),
             this.Section.ToCollection(),
-            sectionXAxis.ToVector(),
+            sectionXAxis.ToVector3(),
             this.IsPathClosed,
             this.IsSectionClosed, this.AddCaps, this.AddCaps);
 

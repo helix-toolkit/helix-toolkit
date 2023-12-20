@@ -45,8 +45,8 @@ public class OrthographicCameraCore : ProjectionCameraCore
     public override Matrix CreateProjectionMatrix(float aspectRatio, float nearPlane, float farPlane)
     {
         return this.CreateLeftHandSystem ?
-            Matrix.OrthoLH(this.Width, (float)(this.Width / aspectRatio), nearPlane, Math.Min(1e15f, farPlane))
-            : Matrix.OrthoRH(this.Width, (float)(this.Width / aspectRatio), nearPlane, Math.Min(1e15f, farPlane));
+            MatrixHelper.OrthoLH(this.Width, (float)(this.Width / aspectRatio), nearPlane, Math.Min(1e15f, farPlane))
+            : MatrixHelper.OrthoRH(this.Width, (float)(this.Width / aspectRatio), nearPlane, Math.Min(1e15f, farPlane));
     }
 
 
@@ -108,7 +108,7 @@ public class OrthographicCameraCore : ProjectionCameraCore
         var target = Target;
         var dist = dir.Length();
         var newDist = dist * ratio;
-        dir.Normalize();
+        dir = Vector3.Normalize(dir);
         var position = (target - dir * (float)newDist);
         var lookDir = dir * (float)newDist;
         Position = position;

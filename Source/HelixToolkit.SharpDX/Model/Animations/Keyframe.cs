@@ -11,6 +11,6 @@ public struct Keyframe : IKeyFrame
     public int BoneIndex;// Used only for array based bones
     public Matrix ToTransformMatrix()
     {
-        return Matrix.Scaling(Scale) * Matrix.RotationQuaternion(Rotation) * Matrix.Translation(Translation);
+        return MatrixHelper.Scaling(Scale) * Rotation.ToMatrix() * MatrixHelper.Translation(Translation);
     }
 }

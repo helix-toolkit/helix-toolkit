@@ -1,6 +1,4 @@
-﻿using Vector3 = SharpDX.Vector3;
-using Vector2 = SharpDX.Vector2;
-using System.Windows.Input;
+﻿using System.Windows.Input;
 
 namespace HelixToolkit.Wpf.SharpDX;
 

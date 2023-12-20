@@ -10,7 +10,6 @@ using Colors = System.Windows.Media.Colors;
 using Point3D = System.Windows.Media.Media3D.Point3D;
 using Transform3D = System.Windows.Media.Media3D.Transform3D;
 using TranslateTransform3D = System.Windows.Media.Media3D.TranslateTransform3D;
-using Vector3 = SharpDX.Vector3;
 using Vector3D = System.Windows.Media.Media3D.Vector3D;
 
 namespace ManipulatorDemo;
@@ -95,9 +94,9 @@ public partial class MainViewModel : DemoCore.BaseViewModel
 
         // scene model3d
         var b1 = new MeshBuilder();
-        b1.AddSphere(new Vector3(0, 0, 0).ToVector(), 0.5f);
-        b1.AddBox(new Vector3(0, 0, 0).ToVector(), 1, 0.5f, 1.5f, BoxFaces.All);
-        this.Model = b1.ToMesh().ToMeshGeometry3D();
+        b1.AddSphere(new Vector3(0, 0, 0), 0.5f);
+        b1.AddBox(new Vector3(0, 0, 0), 1, 0.5f, 1.5f, BoxFaces.All);
+        this.Model = b1.ToMeshGeometry3D();
         var m1 = MainViewModel.Load3ds("suzanne.3ds");
         this.Model2 = m1[0].Geometry as MeshGeometry3D;
         //Manully set an offset for test

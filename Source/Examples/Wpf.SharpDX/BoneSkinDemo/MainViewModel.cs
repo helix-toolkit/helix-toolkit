@@ -4,6 +4,7 @@ Model: Character. Source : https://github.com/spazzarama/Direct3D-Rendering-Cook
 */
 
 using CommunityToolkit.Mvvm.ComponentModel;
+using HelixToolkit.Maths;
 using HelixToolkit.SharpDX;
 using HelixToolkit.SharpDX.Animations;
 using HelixToolkit.SharpDX.Assimp;
@@ -13,9 +14,9 @@ using HelixToolkit.Wpf.SharpDX.Controls;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Numerics;
 using System.Threading;
 using Media3D = System.Windows.Media.Media3D;
-using Vector3 = global::SharpDX.Vector3;
 
 namespace BoneSkinDemo;
 
@@ -174,7 +175,7 @@ public partial class MainViewModel : DemoCore.BaseViewModel
                 if (!m.IsSkeletonNode)
                 {
                     m.IsThrowingShadow = true;
-                    m.WireframeColor = new SharpDX.Color4(0, 0, 1, 1);
+                    m.WireframeColor = new Color4(0, 0, 1, 1);
                     boneSkinNodes.Add(m);
                     m.MouseDown += HandleMouseDown;
                 }

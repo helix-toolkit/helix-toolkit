@@ -1,13 +1,10 @@
 ﻿using DependencyPropertyGenerator;
-using HelixToolkit;
 using HelixToolkit.SharpDX;
 using HelixToolkit.SharpDX.Cameras;
 using HelixToolkit.Wpf.SharpDX;
-using SharpDX;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
-using Matrix = SharpDX.Matrix;
 using MatrixTransform3D = System.Windows.Media.Media3D.MatrixTransform3D;
 
 namespace MouseDragDemo;
@@ -46,20 +43,20 @@ public sealed partial class InteractionHandle3D : GroupModel3D, IHitable, ISelec
     static InteractionHandle3D()
     {
         var b1 = new MeshBuilder();
-        b1.AddSphere(new Vector3(0.0f, 0.0f, 0).ToVector(), 0.135f);
-        NodeGeometry = b1.ToMesh().ToMeshGeometry3D();
+        b1.AddSphere(new Vector3(0.0f, 0.0f, 0), 0.135f);
+        NodeGeometry = b1.ToMeshGeometry3D();
 
         var b2 = new MeshBuilder();
-        b2.AddCylinder(new Vector3(0, 0, 0).ToVector(), new Vector3(1, 0, 0).ToVector(), 0.05f, 32, true, true);
-        EdgeHGeometry = b2.ToMesh().ToMeshGeometry3D();
+        b2.AddCylinder(new Vector3(0, 0, 0), new Vector3(1, 0, 0), 0.05f, 32, true, true);
+        EdgeHGeometry = b2.ToMeshGeometry3D();
 
         var b3 = new MeshBuilder();
-        b3.AddCylinder(new Vector3(0, 0, 0).ToVector(), new Vector3(0, 1, 0).ToVector(), 0.05f, 32, true, true);
-        EdgeVGeometry = b3.ToMesh().ToMeshGeometry3D();
+        b3.AddCylinder(new Vector3(0, 0, 0), new Vector3(0, 1, 0), 0.05f, 32, true, true);
+        EdgeVGeometry = b3.ToMeshGeometry3D();
 
         var b4 = new MeshBuilder();
-        b4.AddBox(new Vector3(0, 0, 0).ToVector(), 0.175f, 0.175f, 0.175f);
-        BoxGeometry = b4.ToMesh().ToMeshGeometry3D();
+        b4.AddBox(new Vector3(0, 0, 0), 0.175f, 0.175f, 0.175f);
+        BoxGeometry = b4.ToMeshGeometry3D();
     }
 
     /// <summary>
@@ -74,14 +71,14 @@ public sealed partial class InteractionHandle3D : GroupModel3D, IHitable, ISelec
 
         for (int i = 0; i < 4; i++)
         {
-            var translate = Matrix3DExtensions.Translate3D(positions[i].ToVector3D());
+            var translate = Matrix.CreateTranslation(positions[i]);
             this.cornerHandles[i] = new DraggableGeometryModel3D()
             {
                 DragZ = false,
                 Visibility = Visibility.Visible,
                 Material = this.Material,
                 Geometry = NodeGeometry,
-                Transform = new MatrixTransform3D(translate),
+                Transform = new MatrixTransform3D(translate.ToMatrix3D()),
             };
             this.cornerHandles[i].MouseMove3D += OnNodeMouse3DMove;
             this.cornerHandles[i].MouseUp3D += OnNodeMouse3DUp;
@@ -92,14 +89,14 @@ public sealed partial class InteractionHandle3D : GroupModel3D, IHitable, ISelec
                 Geometry = (i % 2 == 0) ? EdgeHGeometry : EdgeVGeometry,
                 Material = this.Material,
                 Visibility = Visibility.Visible,
-                Transform = new MatrixTransform3D(translate),
+                Transform = new MatrixTransform3D(translate.ToMatrix3D()),
             };
             this.edgeHandles[i].MouseMove3D += OnEdgeMouse3DMove;
             this.edgeHandles[i].MouseUp3D += OnEdgeMouse3DUp;
             this.edgeHandles[i].MouseDown3D += OnEdgeMouse3DDown;
 
 
-            translate = Matrix3DExtensions.Translate3D(0.5 * (positions[i] + positions[(i + 1) % 4]).ToVector3D());
+            translate = Matrix.CreateTranslation(0.5f * (positions[i] + positions[(i + 1) % 4]));
             this.midpointHandles[i] = new DraggableGeometryModel3D()
             {
                 DragZ = false,
@@ -107,7 +104,7 @@ public sealed partial class InteractionHandle3D : GroupModel3D, IHitable, ISelec
                 DragY = (i % 2 == 0),
                 Material = this.Material,
                 Geometry = BoxGeometry,
-                Transform = new MatrixTransform3D(translate),
+                Transform = new MatrixTransform3D(translate.ToMatrix3D()),
             };
             this.midpointHandles[i].MouseMove3D += OnNodeMouse3DMove;
             this.midpointHandles[i].MouseUp3D += OnNodeMouse3DUp;
@@ -121,14 +118,14 @@ public sealed partial class InteractionHandle3D : GroupModel3D, IHitable, ISelec
         // 3 --- 2 
         // |     |
         // 0 --- 1
-        var m0 = Matrix.Scaling(+2, 1, 1) * Matrix.Translation(positions[0]);
+        var m0 = Matrix.CreateScale(+2, 1, 1) * Matrix.CreateTranslation(positions[0]);
         this.edgeHandles[0].Transform = new MatrixTransform3D(m0.ToMatrix3D());
-        var m2 = Matrix.Scaling(+2, 1, 1) * Matrix.Translation(positions[3]);
+        var m2 = Matrix.CreateScale(+2, 1, 1) * Matrix.CreateTranslation(positions[3]);
         this.edgeHandles[2].Transform = new MatrixTransform3D(m2.ToMatrix3D());
 
-        var m1 = Matrix.Scaling(1, +2, 1) * Matrix.Translation(positions[1]);
+        var m1 = Matrix.CreateScale(1, +2, 1) * Matrix.CreateTranslation(positions[1]);
         this.edgeHandles[1].Transform = new MatrixTransform3D(m1.ToMatrix3D());
-        var m3 = Matrix.Scaling(1, +2, 1) * Matrix.Translation(positions[0]);
+        var m3 = Matrix.CreateScale(1, +2, 1) * Matrix.CreateTranslation(positions[0]);
         this.edgeHandles[3].Transform = new MatrixTransform3D(m3.ToMatrix3D());
 
         this.dragTransform = new MatrixTransform3D(this.Transform.Value);
@@ -236,7 +233,7 @@ public sealed partial class InteractionHandle3D : GroupModel3D, IHitable, ISelec
     {
         var cornerTrafos = this.cornerHandles.Select(x => x.Transform as MatrixTransform3D).ToArray();
         var cornerMatrix = cornerTrafos.Select(x => x?.Value ?? System.Windows.Media.Media3D.Matrix3D.Identity).ToArray();
-        this.positions = cornerMatrix.Select(x => x.ToMatrix().TranslationVector).ToArray();
+        this.positions = cornerMatrix.Select(x => x.ToMatrix().Translation).ToArray();
 
         BoundingBox bb;
         if (sender == cornerHandles[0] || sender == cornerHandles[2])
@@ -259,7 +256,7 @@ public sealed partial class InteractionHandle3D : GroupModel3D, IHitable, ISelec
             {
                 Application.Current.MainWindow.Cursor = Cursors.SizeWE;
             }
-            positions = this.midpointHandles.Select(x => x.Transform.Value.ToMatrix().TranslationVector).ToArray();
+            positions = this.midpointHandles.Select(x => x.Transform.Value.ToMatrix().Translation).ToArray();
             bb = BoundingBox.FromPoints(positions);
         }
 
@@ -283,25 +280,25 @@ public sealed partial class InteractionHandle3D : GroupModel3D, IHitable, ISelec
                 var corner = cornerTrafos[i];
                 if (corner is not null)
                 {
-                    corner.Matrix = Matrix3DExtensions.Translate3D(positions[i].ToVector3D());
+                    corner.Matrix = Matrix.CreateTranslation(positions[i]).ToMatrix3D();
                 }
             }
 
-            var m = Matrix3DExtensions.Translate3D(0.5 * (positions[i] + positions[(i + 1) % 4]).ToVector3D());
-            ((MatrixTransform3D)this.midpointHandles[i].Transform).Matrix = m;
+            var m = Matrix.CreateTranslation(0.5f * (positions[i] + positions[(i + 1) % 4]));
+            ((MatrixTransform3D)this.midpointHandles[i].Transform).Matrix = m.ToMatrix3D();
         }
 
         // 3 --- 2 
         // |     |
         // 0 --- 1
-        var m0 = Matrix.Scaling(positions[1].X - positions[0].X, 1, 1) * Matrix.Translation(positions[0]);
+        var m0 = Matrix.CreateScale(positions[1].X - positions[0].X, 1, 1) * Matrix.CreateTranslation(positions[0]);
         ((MatrixTransform3D)this.edgeHandles[0].Transform).Matrix = (m0.ToMatrix3D());
-        var m2 = Matrix.Scaling(positions[1].X - positions[0].X, 1, 1) * Matrix.Translation(positions[3]);
+        var m2 = Matrix.CreateScale(positions[1].X - positions[0].X, 1, 1) * Matrix.CreateTranslation(positions[3]);
         ((MatrixTransform3D)this.edgeHandles[2].Transform).Matrix = (m2.ToMatrix3D());
 
-        var m1 = Matrix.Scaling(1, positions[2].Y - positions[1].Y, 1) * Matrix.Translation(positions[1]);
+        var m1 = Matrix.CreateScale(1, positions[2].Y - positions[1].Y, 1) * Matrix.CreateTranslation(positions[1]);
         ((MatrixTransform3D)this.edgeHandles[1].Transform).Matrix = (m1.ToMatrix3D());
-        var m3 = Matrix.Scaling(1, positions[2].Y - positions[1].Y, 1) * Matrix.Translation(positions[0]);
+        var m3 = Matrix.CreateScale(1, positions[2].Y - positions[1].Y, 1) * Matrix.CreateTranslation(positions[0]);
         ((MatrixTransform3D)this.edgeHandles[3].Transform).Matrix = (m3.ToMatrix3D());
     }
 

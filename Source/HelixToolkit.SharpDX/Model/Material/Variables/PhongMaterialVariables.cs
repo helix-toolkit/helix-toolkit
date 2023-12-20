@@ -207,8 +207,8 @@ public class PhongMaterialVariables : MaterialVariable
         AddPropertyBinding(nameof(PhongMaterialCore.UVTransform), () =>
         {
             Matrix m = material.UVTransform;
-            WriteValue(PhongPBRMaterialStruct.UVTransformR1Str, m.Column1);
-            WriteValue(PhongPBRMaterialStruct.UVTransformR2Str, m.Column2);
+            WriteValue(PhongPBRMaterialStruct.UVTransformR1Str, m.Column1());
+            WriteValue(PhongPBRMaterialStruct.UVTransformR2Str, m.Column2());
         });
         AddPropertyBinding(nameof(PhongMaterialCore.EnableAutoTangent), () => { WriteValue(PhongPBRMaterialStruct.EnableAutoTangent, material.EnableAutoTangent); });
         AddPropertyBinding(nameof(PhongMaterialCore.MaxTessellationDistance), () => { WriteValue(PhongPBRMaterialStruct.MaxTessDistanceStr, material.MaxTessellationDistance); });

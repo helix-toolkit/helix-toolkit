@@ -203,8 +203,8 @@ public class Trackball
         q *= delta;
 
         // Write the new orientation back to the Rotation3D
-        _rotation.Axis = q.Axis.ToVector3D();
-        _rotation.Angle = q.Angle;
+        _rotation.Axis = q.Axis().ToVector3D();
+        _rotation.Angle = q.Angle();
 
         _previousPosition3D = currentPosition3D;
     }

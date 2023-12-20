@@ -108,7 +108,7 @@ public static class VolumeDataHelper
 
         average /= (float)num;
         if (average.X != 0.0f && average.Y != 0.0f && average.Z != 0.0f)
-            average.Normalize();
+            average = Vector3.Normalize(average);
 
         return average;
     }

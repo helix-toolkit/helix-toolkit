@@ -224,7 +224,7 @@ public class PostEffectBloomCore : RenderCore, IPostEffectBloom
     {
         if (clear)
         {
-            context.ClearRenderTargetView(targetView, global::SharpDX.Color.Transparent);
+            context.ClearRenderTargetView(targetView, Maths.Color.Transparent);
         }
         context.SetRenderTargets(dsv, new RenderTargetView?[] { targetView });
         context.SetViewport(0, 0, width, height);

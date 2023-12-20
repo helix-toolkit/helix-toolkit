@@ -2,7 +2,6 @@
 using HelixToolkit;
 using HelixToolkit.SharpDX;
 using HelixToolkit.Wpf.SharpDX;
-using SharpDX;
 using SharpDX.Direct3D11;
 using System;
 using System.IO;
@@ -10,10 +9,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Threading;
 using Color = System.Windows.Media.Color;
-using Color4 = SharpDX.Color4;
 using Colors = System.Windows.Media.Colors;
 using Point3D = System.Windows.Media.Media3D.Point3D;
-using Vector3 = SharpDX.Vector3;
 using Vector3D = System.Windows.Media.Media3D.Vector3D;
 
 namespace DynamicTextureDemo;
@@ -110,8 +107,8 @@ public partial class MainViewModel : DemoCore.BaseViewModel
         this.AmbientLightColor = Colors.Black;
 
         var b2 = new MeshBuilder(true, true, true);
-        b2.AddSphere(new Vector3(0f, 0f, 0f).ToVector(), 4, 64, 64);
-        this.Model = b2.ToMesh().ToMeshGeometry3D();
+        b2.AddSphere(new Vector3(0f, 0f, 0f), 4, 64, 64);
+        this.Model = b2.ToMeshGeometry3D();
         Model.IsDynamic = true;
         this.InnerModel = new MeshGeometry3D()
         {

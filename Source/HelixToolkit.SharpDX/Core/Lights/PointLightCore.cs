@@ -85,7 +85,7 @@ public class PointLightCore : LightCoreBase
         }
 
         base.OnRender(lightScene, index);
-        lightScene.LightModels.Lights[index].LightPos = (position + ModelMatrix.Row4.ToVector3()).ToVector4();
+        lightScene.LightModels.Lights[index].LightPos = (position + ModelMatrix.Row4().ToVector3()).ToVector4();
         lightScene.LightModels.Lights[index].LightAtt = attenuation.ToVector4(range);
     }
 }

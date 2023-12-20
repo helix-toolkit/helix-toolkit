@@ -409,7 +409,7 @@ public class ScreenSpacedNode : GroupNode
             return false;
         }
 
-        var p = context.HitPointSP * context.RenderMatrices.DpiScale; //Vector3.TransformCoordinate(context.RayWS.Position, context.RenderMatrices.ScreenViewProjectionMatrix);
+        var p = context.HitPointSP * context.RenderMatrices.DpiScale; //Vector3Helper.TransformCoordinate(context.RayWS.Position, context.RenderMatrices.ScreenViewProjectionMatrix);
         screenSpacedContext.IsPerspective = screenSpaceCore.IsPerspective;
         var viewportSize = screenSpaceCore.Size * screenSpaceCore.SizeScale * context.RenderMatrices.DpiScale;
 
@@ -469,7 +469,7 @@ public class ScreenSpacedNode : GroupNode
             var p = context.HitPointSP * context.RenderMatrices.DpiScale;
             var viewportSize = screenSpaceCore.Size * screenSpaceCore.SizeScale * context.RenderMatrices.DpiScale;
 
-            var abs = Vector3.TransformCoordinate(AbsolutePosition3D, context.RenderMatrices.ScreenViewProjectionMatrix);
+            var abs = Vector3Helper.TransformCoordinate(AbsolutePosition3D, context.RenderMatrices.ScreenViewProjectionMatrix);
             var offx = (float)(abs.X - viewportSize / 2);
             var offy = (float)(abs.Y - viewportSize / 2);
 

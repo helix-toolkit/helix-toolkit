@@ -7,6 +7,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Media3D;
+using System.Numerics;
 using BrowsableAttribute = System.ComponentModel.BrowsableAttribute;
 
 namespace Building;
@@ -97,7 +98,7 @@ public sealed class SiloVisual3D : UIElement3D
             section.Add(new Point(x * this.DomeDiameter / 2, this.Height + (this.DomeHeight * (1 - y))));
         }
 
-        builder.AddSurfaceOfRevolution(new Point3D(0, 0, 0).ToVector(), new Vector3D(0, 0, 1).ToVector(), section.Select(t => t.ToVector()).ToList(), sectionIndices, 80);
+        builder.AddSurfaceOfRevolution(new Vector3(0, 0, 0), new Vector3(0, 0, 1), section.Select(t => t.ToVector()).ToList(), sectionIndices, 80);
         this.walls.Geometry = builder.ToMesh().ToMeshGeometry3D(true);
 
         var treadDepth = 0.3;
@@ -116,7 +117,7 @@ public sealed class SiloVisual3D : UIElement3D
             var x = new Vector3D(Math.Cos(theta), Math.Sin(theta), 0);
             var z = new Vector3D(0, 0, 1);
             var y = Vector3D.CrossProduct(z, x);
-            stairBuilder.AddBox(p.ToVector(), x.ToVector(), y.ToVector(), width, (float)treadDepth, (float)thickness);
+            stairBuilder.AddBox(p.ToVector3(), x.ToVector3(), y.ToVector3(), width, (float)treadDepth, (float)thickness);
             railBases.Add(new Point3D(Math.Cos(theta) * rp, Math.Sin(theta) * rp, (riseHeight * i) + thickness));
         }
 
@@ -153,13 +154,13 @@ public sealed class SiloVisual3D : UIElement3D
     {
         foreach (var point in bases)
         {
-            railingBuilder.AddCylinder(point.ToVector(), (point + new Vector3D(0, 0, height)).ToVector(), (float)diameter, 10);
+            railingBuilder.AddCylinder(point.ToVector3(), (point.ToVector3() + new Vector3(0, 0, (float)height)), (float)diameter, 10);
         }
 
         for (int i = 1; i <= railings; i++)
         {
             var h = height * i / railings;
-            var path = bases.Select(p => (p + new Vector3D(0, 0, h)).ToVector()).ToArray();
+            var path = bases.Select(p => (p.ToVector3() + new Vector3(0, 0, (float)h))).ToArray();
             railingBuilder.AddTube(path, (float)diameter, 10, false);
         }
     }

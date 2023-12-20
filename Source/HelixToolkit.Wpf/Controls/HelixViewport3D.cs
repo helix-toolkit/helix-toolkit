@@ -248,7 +248,7 @@ public class HelixViewport3D : ItemsControl, IHelixViewport3D
             typeof(Plane3D),
             typeof(HelixViewport3D),
             new FrameworkPropertyMetadata(
-                new Plane3D(new Point3D(0, 0, 0).ToVector(), new Vector3D(0, 0, 1).ToVector()), FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
+                new Plane3D(new Point3D(0, 0, 0), new Vector3D(0, 0, 1)), FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
 
     /// <summary>
     /// Identifies the <see cref="CursorRay"/> dependency property.
@@ -3686,9 +3686,9 @@ public class HelixViewport3D : ItemsControl, IHelixViewport3D
         if (this.CursorRay != null)
         {
             this.CursorOnConstructionPlanePosition = this.ConstructionPlane.LineIntersection(
-                this.CursorRay.Origin.ToVector(),
-                (this.CursorRay.Origin + this.CursorRay.Direction).ToVector())
-                ?.ToWndPoint();
+                this.CursorRay.Origin.ToVector3D(),
+                (this.CursorRay.Origin.ToVector3D() + this.CursorRay.Direction))
+                ?.ToWndPoint3D();
         }
         else
         {

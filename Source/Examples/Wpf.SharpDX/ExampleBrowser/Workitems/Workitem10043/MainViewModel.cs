@@ -1,7 +1,6 @@
 ﻿using HelixToolkit;
 using HelixToolkit.SharpDX;
 using HelixToolkit.Wpf.SharpDX;
-using SharpDX;
 using System.Linq;
 using Color = System.Windows.Media.Color;
 using Colors = System.Windows.Media.Colors;
@@ -20,7 +19,7 @@ public class MainViewModel : DemoCore.BaseViewModel
     public PhongMaterial RedMaterial { get; private set; }
     public PhongMaterial GreenMaterial { get; private set; }
     public PhongMaterial BlueMaterial { get; private set; }
-    public SharpDX.Color GridColor { get; private set; }
+    public HelixToolkit.Maths.Color GridColor { get; private set; }
 
     public Media3D.Transform3D Model1Transform { get; private set; }
     public Media3D.Transform3D Model2Transform { get; private set; }
@@ -48,15 +47,15 @@ public class MainViewModel : DemoCore.BaseViewModel
 
         // floor plane grid
         this.Grid = LineBuilder.GenerateGrid();
-        this.GridColor = SharpDX.Color.Black;
+        this.GridColor = HelixToolkit.Maths.Color.Black;
         this.GridTransform = new Media3D.TranslateTransform3D(-5, -1, -5);
 
         // scene model3d
         var b1 = new MeshBuilder();
-        b1.AddSphere(new Vector3(0, 0, 0).ToVector(), 0.5f);
-        b1.AddBox(new Vector3(0, 0, 0).ToVector(), 1, 0.5f, 2, BoxFaces.All);
+        b1.AddSphere(new Vector3(0, 0, 0), 0.5f);
+        b1.AddBox(new Vector3(0, 0, 0), 1, 0.5f, 2, BoxFaces.All);
 
-        var meshGeometry = b1.ToMesh().ToMeshGeometry3D();
+        var meshGeometry = b1.ToMeshGeometry3D();
         meshGeometry.Colors = meshGeometry.TextureCoordinates is null ? null : new Color4Collection(meshGeometry.TextureCoordinates.Select(x => x.ToColor4()));
         this.Model = meshGeometry;
 

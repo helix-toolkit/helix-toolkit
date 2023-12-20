@@ -6,12 +6,10 @@ using SharpDX;
 using System;
 using System.Windows.Media.Animation;
 using Color = System.Windows.Media.Color;
-using Color4 = SharpDX.Color4;
 using Colors = System.Windows.Media.Colors;
 using Media3D = System.Windows.Media.Media3D;
 using Point3D = System.Windows.Media.Media3D.Point3D;
 using Transform3D = System.Windows.Media.Media3D.Transform3D;
-using Vector3 = SharpDX.Vector3;
 using Vector3D = System.Windows.Media.Media3D.Vector3D;
 
 namespace LightingDemo;
@@ -293,8 +291,8 @@ public partial class MainViewModel : DemoCore.BaseViewModel
         // ----------------------------------------------
         // light model3d
         var sphere = new MeshBuilder();
-        sphere.AddSphere(new Vector3(0, 0, 0).ToVector(), 0.2f);
-        Sphere = sphere.ToMesh().ToMeshGeometry3D();
+        sphere.AddSphere(new Vector3(0, 0, 0), 0.2f);
+        Sphere = sphere.ToMeshGeometry3D();
         this.LightModelMaterial = new PhongMaterial
         {
             AmbientColor = Colors.Gray.ToColor4(),
@@ -306,14 +304,14 @@ public partial class MainViewModel : DemoCore.BaseViewModel
         // ----------------------------------------------
         // scene model3d
         var b1 = new MeshBuilder(true, true, true);
-        b1.AddSphere(new Vector3(0.25f, 0.25f, 0.25f).ToVector(), 0.75f, 24, 24);
-        b1.AddBox(-new Vector3(0.25f, 0.25f, 0.25f).ToVector(), 1, 1, 1, BoxFaces.All);
-        b1.AddBox(-new Vector3(5.0f, 0.0f, 0.0f).ToVector(), 1, 1, 1, BoxFaces.All);
-        b1.AddSphere(new Vector3(5f, 0f, 0f).ToVector(), 0.75f, 24, 24);
-        b1.AddCylinder(new Vector3(0f, -3f, -5f).ToVector(), new Vector3(0f, 3f, -5f).ToVector(), 1.2f, 24);
-        b1.AddSphere(new Vector3(-5.0f, -5.0f, 5.0f).ToVector(), 4, 24, 64);
-        b1.AddCone(new Vector3(6f, -9f, -6f).ToVector(), new Vector3(6f, -1f, -6f).ToVector(), 4f, true, 64);
-        this.Model = b1.ToMesh().ToMeshGeometry3D();
+        b1.AddSphere(new Vector3(0.25f, 0.25f, 0.25f), 0.75f, 24, 24);
+        b1.AddBox(-new Vector3(0.25f, 0.25f, 0.25f), 1, 1, 1, BoxFaces.All);
+        b1.AddBox(-new Vector3(5.0f, 0.0f, 0.0f), 1, 1, 1, BoxFaces.All);
+        b1.AddSphere(new Vector3(5f, 0f, 0f), 0.75f, 24, 24);
+        b1.AddCylinder(new Vector3(0f, -3f, -5f), new Vector3(0f, 3f, -5f), 1.2f, 24);
+        b1.AddSphere(new Vector3(-5.0f, -5.0f, 5.0f), 4, 24, 64);
+        b1.AddCone(new Vector3(6f, -9f, -6f), new Vector3(6f, -1f, -6f), 4f, true, 64);
+        this.Model = b1.ToMeshGeometry3D();
         this.ModelTransform = new Media3D.TranslateTransform3D(0, 0, 0);
         this.ModelMaterial = PhongMaterials.Chrome;
 
@@ -323,10 +321,10 @@ public partial class MainViewModel : DemoCore.BaseViewModel
         // floor model3d
         var b2 = new MeshBuilder(true, true, true);
         //b2.AddRectangularMesh(BoxFaces.Left, 10, 10, 10, 10);
-        b2.AddBox(new Vector3(0.0f, -5.0f, 0.0f).ToVector(), 15, 1, 15, BoxFaces.All);
-        //b2.AddSphere(new Vector3(-5.0f, -5.0f, 5.0f).ToVector(), 4, 24, 64);
-        //b2.AddCone(new Vector3(6f, -9f, -6f).ToVector(), new Vector3(6f, -1f, -6f).ToVector(), 4f, true, 64);
-        this.Floor = b2.ToMesh().ToMeshGeometry3D();
+        b2.AddBox(new Vector3(0.0f, -5.0f, 0.0f), 15, 1, 15, BoxFaces.All);
+        //b2.AddSphere(new Vector3(-5.0f, -5.0f, 5.0f), 4, 24, 64);
+        //b2.AddCone(new Vector3(6f, -9f, -6f), new Vector3(6f, -1f, -6f), 4f, true, 64);
+        this.Floor = b2.ToMeshGeometry3D();
         this.FloorTransform = new Media3D.TranslateTransform3D(0, 0, 0);
         this.FloorMaterial = new PhongMaterial
         {
@@ -341,7 +339,7 @@ public partial class MainViewModel : DemoCore.BaseViewModel
         ModelMaterial.DiffuseMap = FloorMaterial.DiffuseMap;
 
         ReflectMaterial = PhongMaterials.PolishedSilver;
-        ReflectMaterial.ReflectiveColor = global::SharpDX.Color.Silver;
+        ReflectMaterial.ReflectiveColor = HelixToolkit.Maths.Color.Silver;
         ReflectMaterial.RenderEnvironmentMap = true;
         InitialObjectTransforms();
     }
@@ -350,8 +348,8 @@ public partial class MainViewModel : DemoCore.BaseViewModel
     {
         var b = new MeshBuilder(true);
         b.AddTorus(1, 0.5f);
-        b.AddTetrahedron(new Vector3().ToVector(), new Vector3(1, 0, 0).ToVector(), new Vector3(0, 1, 0).ToVector(), 1.1f);
-        FlyingObject = b.ToMesh().ToMeshGeometry3D();
+        b.AddTetrahedron(new Vector3(), new Vector3(1, 0, 0), new Vector3(0, 1, 0), 1.1f);
+        FlyingObject = b.ToMeshGeometry3D();
         var random = new Random();
         Object1Transform = CreateAnimatedTransform1(new Vector3D(random.NextDouble(-5, 5), random.NextDouble(-5, 5), random.NextDouble(-5, 5)),
             new Vector3D(random.NextDouble(-5, 5), random.NextDouble(-5, 5), random.NextDouble(-5, 5)), random.NextDouble(2, 10));

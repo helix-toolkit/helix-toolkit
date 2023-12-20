@@ -89,16 +89,16 @@ public class PresenterNode2D : SceneNode2D
         }
     }
 
-    protected override Size2F MeasureOverride(Size2F availableSize)
+    protected override Vector2 MeasureOverride(Vector2 availableSize)
     {
         if (content != null)
         {
             content.Measure(availableSize);
-            return new Size2F(content.DesiredSize.X, content.DesiredSize.Y);
+            return new Vector2(content.DesiredSize.X, content.DesiredSize.Y);
         }
         else
         {
-            return new Size2F();
+            return new Vector2();
         }
     }
 

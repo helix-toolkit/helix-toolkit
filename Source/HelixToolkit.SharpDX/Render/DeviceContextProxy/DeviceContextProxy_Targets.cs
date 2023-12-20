@@ -4,6 +4,7 @@ using System.Runtime.CompilerServices;
 using Device = SharpDX.Direct3D11.Device1;
 using DeviceContext = SharpDX.Direct3D11.DeviceContext1;
 using Buffer = SharpDX.Direct3D11.Buffer;
+using SharpDX.Mathematics.Interop;
 
 namespace HelixToolkit.SharpDX.Render;
 
@@ -250,7 +251,7 @@ public partial class DeviceContextProxy
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public void ClearRenderTargetView(RenderTargetView? renderTargetViewRef, Color4 colorRGBA)
     {
-        deviceContext?.ClearRenderTargetView(renderTargetViewRef, colorRGBA);
+        deviceContext?.ClearRenderTargetView(renderTargetViewRef, colorRGBA.ToStruct<Color4, RawColor4>());
     }
 
     /// <summary>
@@ -277,7 +278,7 @@ public partial class DeviceContextProxy
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public void ClearUnorderedAccessView(UnorderedAccessView? unorderedAccessViewRef, Int4 values)
     {
-        deviceContext?.ClearUnorderedAccessView(unorderedAccessViewRef, values);
+        deviceContext?.ClearUnorderedAccessView(unorderedAccessViewRef, values.ToStruct<Int4, RawInt4>());
     }
 
     /// <summary>
@@ -293,7 +294,7 @@ public partial class DeviceContextProxy
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public void ClearUnorderedAccessView(UnorderedAccessView? unorderedAccessViewRef, Vector4 values)
     {
-        deviceContext?.ClearUnorderedAccessView(unorderedAccessViewRef, values);
+        deviceContext?.ClearUnorderedAccessView(unorderedAccessViewRef, values.ToStruct<Vector4, RawVector4>());
     }
 
     /// <summary>
@@ -311,7 +312,7 @@ public partial class DeviceContextProxy
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public void ClearUnorderedAccessView(UnorderedAccessView? unorderedAccessViewRef, ref Int4 values)
     {
-        deviceContext?.ClearUnorderedAccessView(unorderedAccessViewRef, values);
+        deviceContext?.ClearUnorderedAccessView(unorderedAccessViewRef, values.ToStruct<Int4, RawInt4>());
     }
 
     /// <summary>
@@ -327,7 +328,7 @@ public partial class DeviceContextProxy
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public void ClearUnorderedAccessView(UnorderedAccessView? unorderedAccessViewRef, ref Vector4 values)
     {
-        deviceContext?.ClearUnorderedAccessView(unorderedAccessViewRef, values);
+        deviceContext?.ClearUnorderedAccessView(unorderedAccessViewRef, values.ToStruct<Vector4, RawVector4>());
     }
     #endregion Clear Targets
 

@@ -139,14 +139,14 @@ public class QuadVisual3D : MeshElement3D
     {
         var builder = new MeshBuilder(false, true);
         builder.AddQuad(
-            this.Point1.ToVector(),
-            this.Point2.ToVector(),
-            this.Point3.ToVector(),
-            this.Point4.ToVector(),
-            new Point(0, 1).ToVector(),
-            new Point(1, 1).ToVector(),
-            new Point(1, 0).ToVector(),
-            new Point(0, 0).ToVector());
+            this.Point1.ToVector3(),
+            this.Point2.ToVector3(),
+            this.Point3.ToVector3(),
+            this.Point4.ToVector3(),
+            new System.Numerics.Vector2(0, 1),
+            new System.Numerics.Vector2(1, 1),
+            new System.Numerics.Vector2(1, 0),
+            new System.Numerics.Vector2(0, 0));
         return builder.ToMesh().ToMeshGeometry3D();
     }
 }

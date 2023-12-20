@@ -1,9 +1,7 @@
 ﻿using DependencyPropertyGenerator;
-using HelixToolkit;
 using HelixToolkit.SharpDX;
 using HelixToolkit.SharpDX.Model.Scene;
 using HelixToolkit.Wpf.SharpDX;
-using SharpDX;
 using System;
 using System.Collections.Generic;
 using System.Windows;
@@ -12,7 +10,7 @@ using Point = System.Windows.Point;
 
 namespace CrossSectionDemo;
 
-[DependencyProperty<Plane>("CutPlane", DefaultValueExpression = "new SharpDX.Plane(new SharpDX.Vector3(0, 0, -1), 0)")]
+[DependencyProperty<Plane>("CutPlane", DefaultValueExpression = "new Plane(new Vector3(0, 0, -1), 0)")]
 [DependencyProperty<Vector3?>("ConstrainAxis", Description = "This is used to demonstrate the code to constraint the rotation against a fixed axis instead of a free gimble. If left null a free trakcball approach is used, otherwise the rotation is determined around the specified axis.")]
 [DependencyProperty<double>("SizeScale", DefaultValue = 1.0)]
 [DependencyProperty<double>("CornerScale", DefaultValue = 1.0)]
@@ -29,10 +27,10 @@ public partial class CrossSectionPlaneManipulator3D : GroupModel3D
         }
 
         var plane = newValue;
-        currentTranslation = Matrix.Translation(plane.Normal * plane.D);
+        currentTranslation = Matrix4x4.CreateTranslation(plane.Normal * plane.D);
         var v1 = plane.Normal.FindAnyPerpendicular();
         var v2 = Vector3.Cross(plane.Normal, v1);
-        currentRotation = new Matrix(v2.X, v2.Y, v2.Z, 0, v1.X, v1.Y, v1.Z, 0, -plane.Normal.X, -plane.Normal.Y, -plane.Normal.Z, 0, 0, 0, 0, 1);
+        currentRotation = new Matrix4x4(v2.X, v2.Y, v2.Z, 0, v1.X, v1.Y, v1.Z, 0, -plane.Normal.X, -plane.Normal.Y, -plane.Normal.Z, 0, 0, 0, 0, 1);
         UpdateTransform(false);
     }
 
@@ -92,14 +90,14 @@ public partial class CrossSectionPlaneManipulator3D : GroupModel3D
     static CrossSectionPlaneManipulator3D()
     {
         var b1 = new MeshBuilder();
-        b1.AddSphere(new Vector3().ToVector(), 0.125f, 12, 12);
-        b1.AddPyramid(new Vector3(0, 0, -0.15f).ToVector(), new Vector3(1, 0, 0).ToVector(), new Vector3(0, 0, -1).ToVector(), 0.125f, 0.25f);
-        NodeGeometry = b1.ToMesh().ToMeshGeometry3D();
+        b1.AddSphere(new Vector3(), 0.125f, 12, 12);
+        b1.AddPyramid(new Vector3(0, 0, -0.15f), new Vector3(1, 0, 0), new Vector3(0, 0, -1), 0.125f, 0.25f);
+        NodeGeometry = b1.ToMeshGeometry3D();
         NodeGeometry.OctreeParameter.MinimumOctantSize = 0.01f;
         NodeGeometry.UpdateOctree();
         var b2 = new MeshBuilder();
-        b2.AddCylinder(new Vector3(0, 0, 0).ToVector(), new Vector3(1, 0, 0).ToVector(), 0.05f, 12, true, true);
-        EdgeHGeometry = b2.ToMesh().ToMeshGeometry3D();
+        b2.AddCylinder(new Vector3(0, 0, 0), new Vector3(1, 0, 0), 0.05f, 12, true, true);
+        EdgeHGeometry = b2.ToMeshGeometry3D();
         EdgeHGeometry.OctreeParameter.MinimumOctantSize = 0.01f;
         EdgeHGeometry.UpdateOctree();
     }
@@ -147,17 +145,17 @@ public partial class CrossSectionPlaneManipulator3D : GroupModel3D
         // 0 --- 1
         edgeHandle.Instances = new Matrix[4]
         {
-                Matrix.Scaling(2 * sizeScale, edgeThicknessScale, edgeThicknessScale) * Matrix.Translation(positions[0] * sizeScale),
-                Matrix.Scaling(2 * sizeScale, edgeThicknessScale, edgeThicknessScale) * Matrix.Translation(positions[3] * sizeScale),
-                Matrix.Scaling(2 * sizeScale, edgeThicknessScale, edgeThicknessScale) * Matrix.RotationAxis(new Vector3(0, 0, 1), (float)(Math.PI / 2)) * Matrix.Translation(positions[1] * sizeScale),
-                Matrix.Scaling(2 * sizeScale, edgeThicknessScale, edgeThicknessScale) * Matrix.RotationAxis(new Vector3(0, 0, 1), (float)(Math.PI / 2)) * Matrix.Translation(positions[0] * sizeScale)
+                Matrix.CreateScale(2 * sizeScale, edgeThicknessScale, edgeThicknessScale) * Matrix.CreateTranslation(positions[0] * sizeScale),
+                Matrix.CreateScale(2 * sizeScale, edgeThicknessScale, edgeThicknessScale) * Matrix.CreateTranslation(positions[3] * sizeScale),
+                Matrix.CreateScale(2 * sizeScale, edgeThicknessScale, edgeThicknessScale) * Matrix.CreateFromAxisAngle(new Vector3(0, 0, 1), (float)(Math.PI / 2)) * Matrix.CreateTranslation(positions[1] * sizeScale),
+                Matrix.CreateScale(2 * sizeScale, edgeThicknessScale, edgeThicknessScale) * Matrix.CreateFromAxisAngle(new Vector3(0, 0, 1), (float)(Math.PI / 2)) * Matrix.CreateTranslation(positions[0] * sizeScale)
         };
         cornerHandle.Instances = new Matrix[4]
         {
-                Matrix.Scaling(cornerScale) * Matrix.Translation(positions[0] * sizeScale),
-                Matrix.Scaling(cornerScale) * Matrix.Translation(positions[1] * sizeScale),
-                Matrix.Scaling(cornerScale) * Matrix.Translation(positions[2] * sizeScale),
-                Matrix.Scaling(cornerScale) * Matrix.Translation(positions[3] * sizeScale),
+                Matrix.CreateScale(cornerScale) * Matrix.CreateTranslation(positions[0] * sizeScale),
+                Matrix.CreateScale(cornerScale) * Matrix.CreateTranslation(positions[1] * sizeScale),
+                Matrix.CreateScale(cornerScale) * Matrix.CreateTranslation(positions[2] * sizeScale),
+                Matrix.CreateScale(cornerScale) * Matrix.CreateTranslation(positions[3] * sizeScale),
         };
     }
 
@@ -215,7 +213,7 @@ public partial class CrossSectionPlaneManipulator3D : GroupModel3D
     {
         if (isCaptured && e is Mouse3DEventArgs arg && arg.Viewport == viewport)
         {
-            RotateTrackball(startPoint, arg.Position, currentTranslation.TranslationVector);
+            RotateTrackball(startPoint, arg.Position, currentTranslation.Translation);
             startPoint = arg.Position;
             arg.Handled = true;
         }
@@ -267,7 +265,7 @@ public partial class CrossSectionPlaneManipulator3D : GroupModel3D
                 newPos = new Vector3(newPos.X, startHitPoint.Y, newPos.Z); // trying to constraint elevation
                 var offset = newPos - startHitPoint;
                 startHitPoint = newPos;
-                currentTranslation.TranslationVector += offset;
+                currentTranslation.Translation += offset;
                 UpdateTransform();
                 arg.Handled = true;
             }
@@ -306,7 +304,7 @@ public partial class CrossSectionPlaneManipulator3D : GroupModel3D
                 );
 
             // can we project the constraintAxis onto the view?
-            var t3 = Vector3.TransformCoordinate(ConstrainAxis.Value, camera.CameraInternal.GetViewMatrix());
+            var t3 = Vector3Helper.TransformCoordinate(ConstrainAxis.Value, camera.CameraInternal.GetViewMatrix());
             var dir = new Vector2(t3.X, t3.Y); // axis of Constraint in view coordinates
 
             var pp1 = p1.ToVector2(); // computing distance perpendicular to axis in view coordinates
@@ -317,7 +315,7 @@ public partial class CrossSectionPlaneManipulator3D : GroupModel3D
 
             var angle = (r2.Length() - r1.Length()) / diag * 4;
             // Create the transform
-            currentRotation *= Matrix.RotationAxis(Vector3.Normalize(ConstrainAxis.Value), (float)(angle * this.RotationSensitivity * 5));
+            currentRotation *= Matrix.CreateFromAxisAngle(Vector3.Normalize(ConstrainAxis.Value), (float)(angle * this.RotationSensitivity * 5));
             UpdateTransform();
         }
         else
@@ -326,12 +324,9 @@ public partial class CrossSectionPlaneManipulator3D : GroupModel3D
             v2 = ProjectToTrackball(p2, viewport.ActualWidth, viewport.ActualHeight);
 
             // transform the trackball coordinates to view space
-            var viewZ = camera.CameraInternal.LookDirection;
-            var viewX = Vector3.Cross(camera.CameraInternal.UpDirection, viewZ);
-            var viewY = Vector3.Cross(viewX, viewZ);
-            viewX.Normalize();
-            viewY.Normalize();
-            viewZ.Normalize();
+            var viewZ = Vector3.Normalize(camera.CameraInternal.LookDirection);
+            var viewX = Vector3.Normalize(Vector3.Cross(camera.CameraInternal.UpDirection, viewZ));
+            var viewY = Vector3.Normalize(Vector3.Cross(viewX, viewZ));
             var u1 = (viewZ * v1.Z) + (viewX * v1.X) + (viewY * v1.Y);
             var u2 = (viewZ * v2.Z) + (viewX * v2.X) + (viewY * v2.Y);
 
@@ -351,7 +346,7 @@ public partial class CrossSectionPlaneManipulator3D : GroupModel3D
 
             var angle = u1.AngleBetween(u2);
             // Create the transform
-            currentRotation *= Matrix.RotationAxis(Vector3.Normalize(axis), (float)(angle * this.RotationSensitivity * 5));
+            currentRotation *= Matrix.CreateFromAxisAngle(Vector3.Normalize(axis), (float)(angle * this.RotationSensitivity * 5));
             UpdateTransform();
         }
     }
@@ -359,7 +354,7 @@ public partial class CrossSectionPlaneManipulator3D : GroupModel3D
     private void UpdateCutPlane()
     {
         var planeNormal = Vector3.TransformNormal(new Vector3(0, 0, -1), currentRotation);
-        CutPlane = new Plane(-currentTranslation.TranslationVector, planeNormal);
+        CutPlane = PlaneHelper.Create(-currentTranslation.Translation, planeNormal);
     }
 
     private void UpdateTransform(bool updateCutPlane = true)

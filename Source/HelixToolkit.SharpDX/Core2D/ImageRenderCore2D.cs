@@ -1,4 +1,5 @@
 ﻿using SharpDX;
+using SharpDX.Mathematics.Interop;
 using D2D = global::SharpDX.Direct2D1;
 
 namespace HelixToolkit.SharpDX.Core2D;
@@ -22,11 +23,11 @@ public class ImageRenderCore2D : RenderCore2DBase
                 RemoveAndDispose(ref old);
                 if (value != null)
                 {
-                    ImageSize = bitmap?.Size ?? Size2F.Empty;
+                    ImageSize = bitmap?.Size.ToVector2() ?? new();
                 }
                 else
                 {
-                    ImageSize = new Size2F();
+                    ImageSize = new();
                 }
             }
         }
@@ -41,7 +42,7 @@ public class ImageRenderCore2D : RenderCore2DBase
     /// <value>
     /// The size of the image.
     /// </value>
-    public Size2F ImageSize
+    public Vector2 ImageSize
     {
         private set; get;
     }
@@ -91,7 +92,7 @@ public class ImageRenderCore2D : RenderCore2DBase
 
     protected override void OnRender(RenderContext2D context)
     {
-        context.DeviceContext.DrawBitmap(Bitmap, LayoutBound, Opacity, InterpolationMode);
+        context.DeviceContext.DrawBitmap(Bitmap, LayoutBound.ToStruct<RectangleF, RawRectangleF>(), Opacity, InterpolationMode);
     }
 
     protected override void OnDetach()

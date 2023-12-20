@@ -1,9 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using HelixToolkit;
 using HelixToolkit.SharpDX;
 using HelixToolkit.Wpf.SharpDX;
-using SharpDX;
 using System;
 using System.Collections.Generic;
 using System.Threading;
@@ -129,13 +127,13 @@ public partial class MainViewModel : DemoCore.BaseViewModel
         {
             for (int j = 0; j < 10; ++j)
             {
-                builder.AddLine(new SharpDX.Vector3(-i * 5, 0, j * 5), new SharpDX.Vector3(i * 5, 0, j * 5));
-                builder.AddLine(new SharpDX.Vector3(-i * 5, 0, -j * 5), new SharpDX.Vector3(i * 5, 0, -j * 5));
-                builder.AddLine(new SharpDX.Vector3(i * 5, 0, -j * 5), new SharpDX.Vector3(i * 5, 0, j * 5));
-                builder.AddLine(new SharpDX.Vector3(-i * 5, 0, -j * 5), new SharpDX.Vector3(-i * 5, 0, j * 5));
-                builder.AddLine(new SharpDX.Vector3(-i * 5, j * 5, zOff), new SharpDX.Vector3(i * 5, j * 5, zOff));
-                builder.AddLine(new SharpDX.Vector3(i * 5, 0, zOff), new SharpDX.Vector3(i * 5, j * 5, zOff));
-                builder.AddLine(new SharpDX.Vector3(-i * 5, 0, zOff), new SharpDX.Vector3(-i * 5, j * 5, zOff));
+                builder.AddLine(new Vector3(-i * 5, 0, j * 5), new Vector3(i * 5, 0, j * 5));
+                builder.AddLine(new Vector3(-i * 5, 0, -j * 5), new Vector3(i * 5, 0, -j * 5));
+                builder.AddLine(new Vector3(i * 5, 0, -j * 5), new Vector3(i * 5, 0, j * 5));
+                builder.AddLine(new Vector3(-i * 5, 0, -j * 5), new Vector3(-i * 5, 0, j * 5));
+                builder.AddLine(new Vector3(-i * 5, j * 5, zOff), new Vector3(i * 5, j * 5, zOff));
+                builder.AddLine(new Vector3(i * 5, 0, zOff), new Vector3(i * 5, j * 5, zOff));
+                builder.AddLine(new Vector3(-i * 5, 0, zOff), new Vector3(-i * 5, j * 5, zOff));
             }
         }
         GridModel = builder.ToLineGeometry3D();
@@ -146,12 +144,12 @@ public partial class MainViewModel : DemoCore.BaseViewModel
     {
         PlaneGeometry = new ObservableElement3DCollection();
         var builder = new MeshBuilder(true);
-        builder.AddBox(new SharpDX.Vector3(0, 0, 0).ToVector(), 15, 15, 0.5f);
-        var mesh = builder.ToMesh().ToMeshGeometry3D();
+        builder.AddBox(new Vector3(0, 0, 0), 15, 15, 0.5f);
+        var mesh = builder.ToMeshGeometry3D();
 
         var material = new PhongMaterial
         {
-            DiffuseColor = new SharpDX.Color4(1, 0, 0, 0.5f)
+            DiffuseColor = new Color4(1, 0, 0, 0.5f)
         };
 
         var model = new MeshGeometryModel3D()
@@ -166,7 +164,7 @@ public partial class MainViewModel : DemoCore.BaseViewModel
 
         material = new PhongMaterial
         {
-            DiffuseColor = new SharpDX.Color4(0, 1, 0, 0.5f)
+            DiffuseColor = new Color4(0, 1, 0, 0.5f)
         };
 
         model = new MeshGeometryModel3D()
@@ -181,7 +179,7 @@ public partial class MainViewModel : DemoCore.BaseViewModel
 
         material = new PhongMaterial
         {
-            DiffuseColor = new SharpDX.Color4(0, 0, 1, 0.5f)
+            DiffuseColor = new Color4(0, 0, 1, 0.5f)
         };
 
         model = new MeshGeometryModel3D()

@@ -18,12 +18,12 @@ internal class RotateHandler : MouseGestureHandler
     /// <summary>
     /// The x rotation axis.
     /// </summary>
-    private Vector3D rotationAxisX;
+    private Vector3 rotationAxisX;
 
     /// <summary>
     /// The y rotation axis.
     /// </summary>
-    private Vector3D rotationAxisY;
+    private Vector3 rotationAxisY;
 
     /// <summary>
     /// The rotation point.
@@ -130,7 +130,7 @@ internal class RotateHandler : MouseGestureHandler
         p1 = Vector2.Multiply(p1, Controller.AllowRotateXY);
         var newPos = Camera.CameraInternal.Position;
         var newLook = Camera.CameraInternal.LookDirection;
-        var newUp = Vector3D.Normalize(Camera.CameraInternal.UpDirection);
+        var newUp = Vector3.Normalize(Camera.CameraInternal.UpDirection);
 
         switch (this.Controller.CameraRotationMode)
         {

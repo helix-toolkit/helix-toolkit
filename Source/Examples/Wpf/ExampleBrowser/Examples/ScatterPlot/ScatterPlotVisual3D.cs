@@ -7,6 +7,7 @@ using System.Windows;
 using System.Windows.Documents;
 using System.Windows.Media;
 using System.Windows.Media.Media3D;
+using System.Numerics;
 
 namespace ScatterPlot;
 
@@ -64,14 +65,14 @@ public sealed partial class ScatterPlotVisual3D : ModelVisual3D
         var oldTCCount = 0;
         for (var i = 0; i < Points.Length; ++i)
         {
-            scatterMeshBuilder.AddSphere(Points[i].ToVector(), (float)SphereSize, 4, 4);
+            scatterMeshBuilder.AddSphere(Points[i].ToVector3(), (float)SphereSize, 4, 4);
 
             var u = (Values[i] - minValue) / valueRange;
 
             var newTCCount = scatterMeshBuilder.TextureCoordinates!.Count;
             for (var j = oldTCCount; j < newTCCount; ++j)
             {
-                scatterMeshBuilder.TextureCoordinates[j] = new Point(u, u).ToVector();
+                scatterMeshBuilder.TextureCoordinates[j] = new Vector2((float)u, (float)u);
             }
             oldTCCount = newTCCount;
         }
@@ -129,7 +130,7 @@ public sealed partial class ScatterPlotVisual3D : ModelVisual3D
         }
 
         var bb = new Rect3D(minX, minY, minZ, maxX - minX, maxY - minY, maxZ - minZ);
-        axesMeshBuilder.AddBoundingBox(bb.ToRect(), (float)LineThickness);
+        axesMeshBuilder.AddBoundingBox(bb.ToRect3D(), (float)LineThickness);
 
         var axesModel = new GeometryModel3D(axesMeshBuilder.ToMesh().ToMeshGeometry3D(), Materials.Black);
 

@@ -193,12 +193,11 @@ public class CoordinateSystemNode : ScreenSpacedNode
     {
         var builder = new MeshBuilder(true, false, false);
 
-        builder.AddArrow(Vector3.Zero.ToVector(), new Vector3(arrowSize, 0, 0).ToVector(), arrowWidth, arrowHead, 8);
-        builder.AddArrow(Vector3.Zero.ToVector(), new Vector3(0, arrowSize, 0).ToVector(), arrowWidth, arrowHead, 8);
-        builder.AddArrow(Vector3.Zero.ToVector(), new Vector3(0, 0, arrowSize).ToVector(), arrowWidth, arrowHead, 8);
+        builder.AddArrow(Vector3.Zero, new Vector3(arrowSize, 0, 0), arrowWidth, arrowHead, 8);
+        builder.AddArrow(Vector3.Zero, new Vector3(0, arrowSize, 0), arrowWidth, arrowHead, 8);
+        builder.AddArrow(Vector3.Zero, new Vector3(0, 0, arrowSize), arrowWidth, arrowHead, 8);
 
-        var mesh = builder.ToMesh();
-        arrowMeshModel.Geometry = mesh.ToMeshGeometry3D();
+        arrowMeshModel.Geometry = builder.ToMeshGeometry3D();
         UpdateAxisColor(arrowMeshModel.Geometry, 0, AxisXColor, LabelX, LabelColor);
         UpdateAxisColor(arrowMeshModel.Geometry, 1, AxisYColor, LabelY, LabelColor);
         UpdateAxisColor(arrowMeshModel.Geometry, 2, AxisZColor, LabelZ, LabelColor);

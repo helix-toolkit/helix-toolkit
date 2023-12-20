@@ -32,5 +32,5 @@ public interface IBoneSkinPreComputehBufferModel
     /// <param name="context">The context.</param>
     /// <param name="array">The array.</param>
     /// <returns></returns>
-    int CopySkinnedToArray(DeviceContextProxy context, global::SharpDX.Vector3[] array);
+    int CopySkinnedToArray(DeviceContextProxy context, Vector3[] array);
 }

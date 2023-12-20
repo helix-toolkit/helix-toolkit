@@ -6,30 +6,6 @@ namespace HelixToolkit;
 public static class VectorExtensions
 {
     /// <summary>
-    /// Find a <see cref="Vector3"/> that is perpendicular to the given <see cref="Vector3"/>.
-    /// </summary>
-    /// <param name="n">
-    /// The input vector.
-    /// </param>
-    /// <returns>
-    /// A perpendicular vector.
-    /// </returns>
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Vector3 FindAnyPerpendicular(this Vector3 n)
-    {
-        n = Vector3.Normalize(n);
-        var u = Vector3.Cross(Vector3.UnitY, n);
-        if (u.LengthSquared() < 1e-3f)
-        {
-            u = Vector3.Cross(Vector3.UnitX, n);
-        }
-
-        u = Vector3.Normalize(u);
-
-        return u;
-    }
-
-    /// <summary>
     /// Determines whether the specified vector is undefined (NaN,NaN,NaN).
     /// </summary>
     /// <param name="v">The vector.</param>
@@ -73,5 +49,46 @@ public static class VectorExtensions
         float distance = DistanceToPlane(point, planePosition, planeNormal);
         planeNormal = Vector3.Normalize(planeNormal);
         return point - distance * planeNormal;
+    }
+
+    /// <summary>
+    /// Angles the between two vectors. Return Radians;
+    /// </summary>
+    /// <param name="vector1">The vector1.</param>
+    /// <param name="vector2">The vector2.</param>
+    /// <returns></returns>
+    public static float AngleBetween(this Vector3 vector1, Vector3 vector2)
+    {
+        vector1 = Vector3.Normalize(vector1);
+        vector2 = Vector3.Normalize(vector2);
+        var ratio = Vector3.Dot(vector1, vector2);
+        float theta;
+
+        if (ratio < 0)
+        {
+            theta = (float)(Math.PI - 2.0 * Math.Asin((-vector1 - vector2).Length() / 2.0));
+        }
+        else
+        {
+            theta = (float)(2.0 * Math.Asin((vector1 - vector2).Length() / 2.0));
+        }
+        return theta;
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static Vector3 Normalized(this Vector3 vector)
+    {
+        return Vector3.Normalize(vector);
+    }
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static Vector4 Normalized(this Vector4 vector)
+    {
+        return Vector4.Normalize(vector);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static Matrix4x4 Inverted(this Matrix4x4 m)
+    {
+        return !Matrix4x4.Invert(m, out var inv) ? new() : inv;
     }
 }

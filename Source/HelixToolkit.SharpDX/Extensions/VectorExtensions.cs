@@ -23,30 +23,6 @@ public static class VectorExtensions
         return new Vector3(vector.X, vector.Y, vector.Z);
     }
 
-    /// <summary>
-    /// Angles the between two vectors. Return Radians;
-    /// </summary>
-    /// <param name="vector1">The vector1.</param>
-    /// <param name="vector2">The vector2.</param>
-    /// <returns></returns>
-    public static float AngleBetween(this Vector3 vector1, Vector3 vector2)
-    {
-        vector1.Normalize();
-        vector2.Normalize();
-        var ratio = Vector3.Dot(vector1, vector2);
-        float theta;
-
-        if (ratio < 0)
-        {
-            theta = (float)(Math.PI - 2.0 * Math.Asin((-vector1 - vector2).Length() / 2.0));
-        }
-        else
-        {
-            theta = (float)(2.0 * Math.Asin((vector1 - vector2).Length() / 2.0));
-        }
-        return theta;
-    }
-
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Vector4 ToVector4(this Vector3 vector, float w = 1f)
     {
@@ -78,64 +54,10 @@ public static class VectorExtensions
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Vector3 Normalized(this Vector3 vector)
-    {
-        vector.Normalize();
-        return vector;
-    }
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Vector4 Normalized(this Vector4 vector)
-    {
-        vector.Normalize();
-        return vector;
-    }
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Color4 Normalized(this Color4 vector)
     {
         var v = vector.ToVector3();
-        v.Normalize();
-        return v.ToColor4();
-    }
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Matrix Inverted(this Matrix m)
-    {
-        m.Invert();
-        return m;
-    }
-
-    /// <summary>
-    /// Find a <see cref="Vector3"/> that is perpendicular to the given <see cref="Vector3"/>.
-    /// </summary>
-    /// <param name="n">
-    /// The input vector.
-    /// </param>
-    /// <returns>
-    /// A perpendicular vector.
-    /// </returns>
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Vector3 FindAnyPerpendicular(this Vector3 n)
-    {
-        n.Normalize();
-        var u = Vector3.Cross(new Vector3(0, 1, 0), n);
-        if (u.LengthSquared() < 1e-3)
-        {
-            u = Vector3.Cross(new Vector3(1, 0, 0), n);
-        }
-
-        return u.Normalized();
-    }
-
-    /// <summary>
-    /// Determines whether the specified vector is undefined (NaN,NaN,NaN).
-    /// </summary>
-    /// <param name="v">The vector.</param>
-    /// <returns>
-    /// <c>true</c> if the specified vector is undefined; otherwise, <c>false</c>.
-    /// </returns>
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool IsUndefined(this Vector3 v)
-    {
-        return float.IsNaN(v.X) || float.IsNaN(v.Y) || float.IsNaN(v.Z);
+        return v.Normalized().ToColor4();
     }
 }
 

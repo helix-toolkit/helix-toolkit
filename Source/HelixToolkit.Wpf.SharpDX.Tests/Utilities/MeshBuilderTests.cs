@@ -1,6 +1,5 @@
-﻿using HelixToolkit.SharpDX;
-using NUnit.Framework;
-using SharpDX;
+﻿using NUnit.Framework;
+using System.Numerics;
 
 namespace HelixToolkit.Wpf.SharpDX.Tests.Utilities;
 
@@ -13,9 +12,9 @@ class MeshBuilderTests
         var builder = new MeshBuilder(false);
         builder.AddPolygon(new List<System.Numerics.Vector3>
                 {
-                    new Vector3(0f, 0f, 0f).ToVector(),
-                    new Vector3(7f, 0f, 0f).ToVector(),
-                    new Vector3(7f, 0f, 7f).ToVector(),
+                    new Vector3(0f, 0f, 0f),
+                    new Vector3(7f, 0f, 0f),
+                    new Vector3(7f, 0f, 7f),
                 });
 
         Assert.Multiple(() =>
@@ -37,7 +36,7 @@ class MeshBuilderTests
         var p0 = new Vector3(0, 0, 0);
         var p1 = new Vector3(1, 0, 0);
         var p2 = new Vector3(1, 1, 0);
-        mb.AddTriangle(p0.ToVector(), p1.ToVector(), p2.ToVector());
+        mb.AddTriangle(p0, p1, p2);
 
         Assert.That(mb.HasNormals);
         Assert.AreEqual(3, mb.Normals!.Count);
@@ -56,7 +55,7 @@ class MeshBuilderTests
         var p1 = new Vector3(1, 0, 0);
         var p2 = new Vector3(1, 1, 0);
         var p3 = new Vector3(0, 1, 0);
-        mb.AddQuad(p0.ToVector(), p1.ToVector(), p2.ToVector(), p3.ToVector());
+        mb.AddQuad(p0, p1, p2, p3);
 
         Assert.That(mb.HasNormals);
         Assert.AreEqual(4, mb.Normals!.Count);

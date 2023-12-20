@@ -62,20 +62,20 @@ public class CameraModel3D : CompositeModel3D
     public CameraModel3D()
     {
         var b1 = new MeshBuilder();
-        b1.AddBox(new Vector3().ToVector(), 1f, 1f, 1.2f, BoxFaces.All);
+        b1.AddBox(Vector3.Zero, 1f, 1f, 1.2f, BoxFaces.All);
         var body = new MeshGeometryModel3D
         {
             CullMode = CullMode.Back,
-            Geometry = b1.ToMesh().ToMeshGeometry3D(),
+            Geometry = b1.ToMeshGeometry3D(),
             Material = new DiffuseMaterial() { DiffuseColor = Color.Gray }
         };
         this.Children.Add(body);
         b1 = new MeshBuilder();
-        b1.AddCone(new Vector3(0, 0, -1.2f).ToVector(), new Vector3(0, 0f, 0).ToVector(), 0.4f, true, 12);
+        b1.AddCone(new Vector3(0, 0, -1.2f), new Vector3(0, 0f, 0), 0.4f, true, 12);
         var lens = new MeshGeometryModel3D
         {
             CullMode = CullMode.Back,
-            Geometry = b1.ToMesh().ToMeshGeometry3D(),
+            Geometry = b1.ToMeshGeometry3D(),
             Material = new DiffuseMaterial() { DiffuseColor = Color.Yellow }
         };
         this.Children.Add(lens);

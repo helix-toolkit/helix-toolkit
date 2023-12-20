@@ -183,12 +183,8 @@ public static class CameraExtensions
                     ((float)zoomRectangle.Left + (float)zoomRectangle.Right) * 0.5f,
                     ((float)zoomRectangle.Top + (float)zoomRectangle.Bottom) * 0.5f), out var centerRay))
         {
-            var u = topLeftRay.Direction;
-            var v = topRightRay.Direction;
-            var w = centerRay.Direction;
-            u.Normalize();
-            v.Normalize();
-            w.Normalize();
+            var w = Vector3.Normalize(centerRay.Direction);
+
             if (camera is PerspectiveCamera perspectiveCamera)
             {
                 var distance = pcam.LookDirection.Length();
@@ -201,7 +197,7 @@ public static class CameraExtensions
                 LookAt(pcam, newTarget, newLookDirection, 200);
 
                 // option 2: change fov
-                // double newFieldOfView = Math.Acos(Vector3D.DotProduct(u, v));
+                // double newFieldOfView = Math.Acos(Vector3.DotProduct(u, v));
                 // var newTarget = camera.Position + distance * w;
                 // pcamera.FieldOfView = newFieldOfView * 180 / Math.PI;
                 // LookAt(camera, newTarget, distance * w, 0);
@@ -239,7 +235,7 @@ public static class CameraExtensions
     {
         var target = camera.Position + camera.LookDirection;
         var length = camera.LookDirection.Length();
-        newLookDir.Normalize();
+        newLookDir = Vector3.Normalize(newLookDir);
         LookAt(camera, target, newLookDir * length, newUpDirection, animationTime);
     }
 
@@ -397,7 +393,7 @@ public static class CameraExtensions
     /// The animation time.
     /// </param>
     public static void ZoomExtents(
-        this Camera camera, Viewport3DX viewport, global::SharpDX.BoundingBox bounds, double animationTime = 0)
+        this Camera camera, Viewport3DX viewport, BoundingBox bounds, double animationTime = 0)
     {
         var diagonal = bounds.Maximum - bounds.Minimum;
 
@@ -452,8 +448,7 @@ public static class CameraExtensions
             double distv = radius / Math.Tan(0.5 * vfov * Math.PI / 180);
 
             var dist = (float)Math.Max(disth, distv);
-            var dir = projectionCamera.LookDirection;
-            dir.Normalize();
+            var dir = Vector3.Normalize(projectionCamera.LookDirection);
             LookAt(projectionCamera, center, dir * dist, animationTime);
         }
         else if (camera is OrthographicCamera orth)

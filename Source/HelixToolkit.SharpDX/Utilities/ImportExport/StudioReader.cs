@@ -454,9 +454,25 @@ public class StudioReader : IModelReader
             }
         }
 
-        MeshBuilder.ComputeTangents(positions.ToCollection(), normals.ToCollection(), textureCoordinates.ToCollection(), triangleIndices, out var _tangents, out var _bitangents);
-        tangents = Converter.ToVector3Collection(_tangents)!;
-        bitangents = Converter.ToVector3Collection(_bitangents)!;
+        MeshBuilder.ComputeTangents(positions, normals, textureCoordinates, triangleIndices, out var tangents_, out var bitangents_);
+        tangents = new Vector3Collection();
+        bitangents = new Vector3Collection();
+        if (tangents_ is Vector3Collection t)
+        {
+            tangents = t;
+        }
+        else
+        {
+            tangents.AddRange(tangents_);
+        }
+        if (bitangents_ is Vector3Collection b)
+        {
+            bitangents = b;
+        }
+        else
+        {
+            bitangents.AddRange(bitangents_);
+        }
 
         var mesh = new MeshGeometry3D()
         {
@@ -507,12 +523,11 @@ public class StudioReader : IModelReader
 
             var p1 = v2 - v1;
             var p2 = v3 - v1;
-            var n = Vector3.Cross(p1, p2);
+            var n = Vector3.Normalize(Vector3.Cross(p1, p2));
             // angle
-            p1.Normalize();
-            p2.Normalize();
+            p1 = Vector3.Normalize(p1);
+            p2 = Vector3.Normalize(p2);
             var a = (float)Math.Acos(Vector3.Dot(p1, p2));
-            n.Normalize();
             normals[i1] += (a * n);
             normals[i2] += (a * n);
             normals[i3] += (a * n);
@@ -520,9 +535,7 @@ public class StudioReader : IModelReader
 
         for (var i = 0; i < normals.Count; i++)
         {
-            var n = normals[i];
-            n.Normalize();
-            normals[i] = n;
+            normals[i] = Vector3.Normalize(normals[i]);
         }
     }
 

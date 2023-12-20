@@ -1,9 +1,7 @@
-﻿using HelixToolkit;
-using HelixToolkit.SharpDX;
+﻿using HelixToolkit.SharpDX;
 using HelixToolkit.SharpDX.Cameras;
 using HelixToolkit.SharpDX.Model;
 using HelixToolkit.SharpDX.Model.Scene;
-using SharpDX;
 using System;
 using System.Diagnostics;
 using System.Windows.Media.Imaging;
@@ -81,8 +79,8 @@ internal class Renderer : IDisposable
     private void GenerateSomeMesh(GroupNode root)
     {
         var builder = new MeshBuilder();
-        builder.AddSphere(Vector3.Zero.ToVector(), 5);
-        var mesh = builder.ToMesh().ToMeshGeometry3D();
+        builder.AddSphere(Vector3.Zero, 5);
+        var mesh = builder.ToMeshGeometry3D();
         var numSphere = random.Next(50, 100);
 
         for (int i = 0; i < numSphere; ++i)
@@ -94,7 +92,7 @@ internal class Renderer : IDisposable
                 {
                     DiffuseColor = random.NextColor()
                 },
-                ModelMatrix = Matrix.Translation(random.NextVector3(new Vector3(-50, -50, -50), new Vector3(50, 50, 50)))
+                ModelMatrix = Matrix.CreateTranslation(random.NextVector3(new Vector3(-50, -50, -50), new Vector3(50, 50, 50)))
             };
 
             root.AddChildNode(meshNode);

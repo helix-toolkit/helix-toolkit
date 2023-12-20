@@ -30,7 +30,7 @@ public sealed class SierpinskiPyramid : FractalBase
 
         foreach (var center in centers)
         {
-            builder.AddPyramid(center.ToVector(), (float)l, (float)l, true);
+            builder.AddPyramid(center.ToVector3(), (float)l, (float)l, true);
         }
 
         var mv = new GeometryModel3D

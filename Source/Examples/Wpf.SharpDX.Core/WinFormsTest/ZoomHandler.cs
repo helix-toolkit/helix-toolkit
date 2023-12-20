@@ -232,7 +232,7 @@ namespace HelixToolkit.SharpDX.Controls
             {
                 if (delta > 0) //If Zoom out from very close distance, increase the initial relativePosition
                 {
-                    relativePosition.Normalize();
+                    relativePosition = Vector3.Normalize(relativePosition);
                     relativePosition /= 10;
                     zoomAround = relativePosition + this.Camera.Position;
                     relativeTarget = zoomAround - target;

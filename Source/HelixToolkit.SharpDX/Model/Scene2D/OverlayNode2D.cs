@@ -20,7 +20,7 @@ public class OverlayNode2D : PanelNode2D
         return false;
     }
 
-    protected override Size2F MeasureOverride(Size2F availableSize)
+    protected override Vector2 MeasureOverride(Vector2 availableSize)
     {
         foreach (var item in Items)
         {

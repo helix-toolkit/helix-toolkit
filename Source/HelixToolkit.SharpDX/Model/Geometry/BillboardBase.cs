@@ -144,7 +144,7 @@ public abstract class BillboardBase : Geometry3D, IBillboardText
         {
             var vert = BillboardVertices[i];
             var pos = vert.Position.ToVector3();
-            var c = Vector3.TransformCoordinate(pos, modelMatrix);
+            var c = Vector3Helper.TransformCoordinate(pos, modelMatrix);
             var dir = c - context.RayWS.Position;
             if (Vector3.Dot(dir, context.RayWS.Direction) < 0)
             {
@@ -226,7 +226,7 @@ public abstract class BillboardBase : Geometry3D, IBillboardText
         {
             var vert = BillboardVertices[i];
             var pos = vert.Position.ToVector3();
-            var c = Vector3.TransformCoordinate(pos, modelMatrix);
+            var c = Vector3Helper.TransformCoordinate(pos, modelMatrix);
             var dir = c - rayWS.Position;
             if (Vector3.Dot(dir, rayWS.Direction) < 0)
             {
@@ -393,7 +393,7 @@ public abstract class BillboardBase : Geometry3D, IBillboardText
     private static Quad GetHitTestQuad(ref Vector3 center, ref Vector2 TL, ref Vector2 TR, ref Vector2 BL, ref Vector2 BR,
         ref Matrix viewMatrix, ref Matrix viewMatrixInv)
     {
-        var vcenter = Vector3.TransformCoordinate(center, viewMatrix);
+        var vcenter = Vector3Helper.TransformCoordinate(center, viewMatrix);
         var vcX = vcenter.X;
         var vcY = vcenter.Y;
 
@@ -402,17 +402,17 @@ public abstract class BillboardBase : Geometry3D, IBillboardText
         var tr = new Vector3(vcX + TR.X, vcY + TR.Y, vcenter.Z);
         var tl = new Vector3(vcX + TL.X, vcY + TL.Y, vcenter.Z);
 
-        bl = Vector3.TransformCoordinate(bl, viewMatrixInv);
-        br = Vector3.TransformCoordinate(br, viewMatrixInv);
-        tr = Vector3.TransformCoordinate(tr, viewMatrixInv);
-        tl = Vector3.TransformCoordinate(tl, viewMatrixInv);
+        bl = Vector3Helper.TransformCoordinate(bl, viewMatrixInv);
+        br = Vector3Helper.TransformCoordinate(br, viewMatrixInv);
+        tr = Vector3Helper.TransformCoordinate(tr, viewMatrixInv);
+        tl = Vector3Helper.TransformCoordinate(tl, viewMatrixInv);
         return new Quad(ref tl, ref tr, ref bl, ref br);
     }
 
     private static Quad2D GetScreenQuad(ref Vector3 center, ref Vector2 TL, ref Vector2 TR, ref Vector2 BL, ref Vector2 BR,
         ref Matrix screenViewProjection, float scale)
     {
-        var vcenter = Vector3.TransformCoordinate(center, screenViewProjection);
+        var vcenter = Vector3Helper.TransformCoordinate(center, screenViewProjection);
         var p = new Vector2(vcenter.X, vcenter.Y);
         var tl = p + new Vector2(TL.X, -TL.Y) * scale;
         var tr = p + new Vector2(TR.X, -TR.Y) * scale;

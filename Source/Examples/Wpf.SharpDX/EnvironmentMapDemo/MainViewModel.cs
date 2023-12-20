@@ -72,9 +72,9 @@ public partial class MainViewModel : DemoCore.BaseViewModel
         this.ModelMaterial.ReflectiveColor = Color.Silver;
         this.ModelMaterial.RenderEnvironmentMap = true;
         var b1 = new MeshBuilder(true);
-        b1.AddSphere(new Vector3(0, 0, 0).ToVector(), 1.0f, 64, 64);
-        b1.AddBox(new Vector3(0, 0, 0).ToVector(), 1, 0.5f, 3, BoxFaces.All);
-        this.Model1 = b1.ToMesh().ToMeshGeometry3D();
+        b1.AddSphere(new Vector3(0, 0, 0), 1.0f, 64, 64);
+        b1.AddBox(new Vector3(0, 0, 0), 1, 0.5f, 3, BoxFaces.All);
+        this.Model1 = b1.ToMeshGeometry3D();
 
         EffectsManager = new DefaultEffectsManager();
 
@@ -82,15 +82,15 @@ public partial class MainViewModel : DemoCore.BaseViewModel
         int t = 5;
         for (int i = 0; i < 10; ++i)
         {
-            Instances1.Add(Matrix.Translation(new Vector3(t, t, (i - 5) * t)));
+            Instances1.Add(Matrix.CreateTranslation(new Vector3(t, t, (i - 5) * t)));
         }
         for (int i = 0; i < 10; ++i)
         {
-            Instances2.Add(Matrix.Translation(new Vector3(t, (i - 5) * t, t)));
+            Instances2.Add(Matrix.CreateTranslation(new Vector3(t, (i - 5) * t, t)));
         }
         for (int i = 0; i < 10; ++i)
         {
-            Instances3.Add(Matrix.Translation(new Vector3(-(i - 5) * t, t, (i - 5) * t)));
+            Instances3.Add(Matrix.CreateTranslation(new Vector3(-(i - 5) * t, t, (i - 5) * t)));
         }
         //int t = 5;
         //Instances.Add(Matrix.Translation(new Vector3(t, t, t)));

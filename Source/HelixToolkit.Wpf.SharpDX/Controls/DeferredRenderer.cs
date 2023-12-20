@@ -952,8 +952,8 @@ public class DeferredRenderer : IDisposable
     private void InitSphereBuffer()
     {
         var mesh = new MeshBuilder(true, false);
-        mesh.AddSphere(new Vector3(0, 0, 0).ToVector(), 1.0f);
-        MeshGeometry3D meshGeometry = mesh.ToMesh().ToMeshGeometry3D();
+        mesh.AddSphere(new Vector3(0, 0, 0), 1.0f);
+        MeshGeometry3D meshGeometry = mesh.ToMeshGeometry3D();
 
         var vertices = meshGeometry.Positions.Select(p => new Vector4(p, 1.0f)).ToArray();
 
@@ -973,8 +973,8 @@ public class DeferredRenderer : IDisposable
     private void InitConeBuffer()
     {
         MeshBuilder mesh = new MeshBuilder(true, false);
-        mesh.AddCone(new Vector3(1.0f, 0.0f, 0.0f).ToVector(), new Vector3(0.0f, 0.0f, 0.0f).ToVector(), 1.0f, true, 32);
-        MeshGeometry3D meshGeometry = mesh.ToMesh().ToMeshGeometry3D();
+        mesh.AddCone(new Vector3(1.0f, 0.0f, 0.0f), new Vector3(0.0f, 0.0f, 0.0f), 1.0f, true, 32);
+        MeshGeometry3D meshGeometry = mesh.ToMeshGeometry3D();
 
         var vertices = meshGeometry.Positions.Select(p => new Vector4(p, 1.0f)).ToArray();
 

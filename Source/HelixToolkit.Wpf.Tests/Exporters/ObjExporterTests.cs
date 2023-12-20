@@ -1,6 +1,7 @@
 ﻿using NUnit.Framework;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
+using System.Numerics;
 using System.Windows.Media.Media3D;
 
 namespace HelixToolkit.Wpf.Tests.Exporters;
@@ -120,7 +121,7 @@ public class ObjExporterTests : ExporterTests
     public void Wpf_Export_Triangle_Valid()
     {
         var b1 = new MeshBuilder();
-        b1.AddTriangle(new Point3D(0, 0, 0).ToVector(), new Point3D(0, 0, 1).ToVector(), new Point3D(0, 1, 0).ToVector());
+        b1.AddTriangle(new Vector3(0, 0, 0), new Vector3(0, 0, 1), new Vector3(0, 1, 0));
         var meshGeometry = b1.ToMesh().ToMeshGeometry3D();
 
         var mesh = new MeshGeometryVisual3D();

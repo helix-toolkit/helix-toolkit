@@ -1,5 +1,6 @@
 ﻿using HelixToolkit.SharpDX.Utilities;
 using SharpDX;
+using SharpDX.Direct2D1;
 using System.ComponentModel;
 using System.Runtime.Serialization;
 
@@ -193,6 +194,23 @@ public class MeshGeometry3D : Geometry3D
         }
     }
 
+    public void UpdateNormals()
+    {
+        if (Positions is null || Indices is null) return;
+        var normals = MeshGeometryHelper.CalculateNormals(Positions, Indices);
+        Normals ??= new Vector3Collection();
+        if (normals is Vector3Collection ns)
+        {
+            Normals = ns;
+        }
+        else
+        {
+            Normals.Clear();
+            Normals.AddRange(normals);
+        }
+    }
+
+
     /// <summary>
     /// Callers should set this property to true before calling HitTest if the callers need multiple hits throughout the geometry.
     /// This is useful when the geometry is cut by a plane.
@@ -223,12 +241,12 @@ public class MeshGeometry3D : Geometry3D
                 Distance = double.MaxValue
             };
             var modelInvert = modelMatrix.Inverted();
-            if (modelInvert == Matrix.Zero)//Check if model matrix can be inverted.
+            if (modelInvert == MatrixHelper.Zero)//Check if model matrix can be inverted.
             {
                 return false;
             }
             //transform ray into model coordinates
-            var rayModel = new Ray(Vector3.TransformCoordinate(context.RayWS.Position, modelInvert), Vector3.Normalize(Vector3.TransformNormal(context.RayWS.Direction, modelInvert)));
+            var rayModel = new Ray(Vector3Helper.TransformCoordinate(context.RayWS.Position, modelInvert), Vector3.Normalize(Vector3.TransformNormal(context.RayWS.Direction, modelInvert)));
 
             var b = this.Bound;
 
@@ -272,14 +290,13 @@ public class MeshGeometry3D : Geometry3D
                             result.IsValid = true;
                             result.ModelHit = originalSource;
                             // transform hit-info to world space now:
-                            var pointWorld = Vector3.TransformCoordinate(rayModel.Position + (rayModel.Direction * d), modelMatrix);
+                            var pointWorld = Vector3Helper.TransformCoordinate(rayModel.Position + (rayModel.Direction * d), modelMatrix);
                             result.PointHit = pointWorld;
                             result.Distance = (context.RayWS.Position - pointWorld).Length();
-                            var p0 = Vector3.TransformCoordinate(t.P0, modelMatrix);
-                            var p1 = Vector3.TransformCoordinate(t.P1, modelMatrix);
-                            var p2 = Vector3.TransformCoordinate(t.P2, modelMatrix);
-                            var n = Vector3.Cross(p1 - p0, p2 - p0);
-                            n.Normalize();
+                            var p0 = Vector3Helper.TransformCoordinate(t.P0, modelMatrix);
+                            var p1 = Vector3Helper.TransformCoordinate(t.P1, modelMatrix);
+                            var p2 = Vector3Helper.TransformCoordinate(t.P2, modelMatrix);
+                            var n = Vector3.Normalize(Vector3.Cross(p1 - p0, p2 - p0));
                             // transform hit-info to world space now:
                             result.NormalAtHit = n;// Vector3.TransformNormal(n, m).ToVector3D();
                             result.TriangleIndices = new System.Tuple<int, int, int>(Indices[index], Indices[index + 1], Indices[index + 2]);

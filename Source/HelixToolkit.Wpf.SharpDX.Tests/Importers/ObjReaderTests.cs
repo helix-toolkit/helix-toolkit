@@ -1,9 +1,9 @@
-﻿using HelixToolkit.SharpDX;
+﻿using HelixToolkit.Maths;
+using HelixToolkit.SharpDX;
 using HelixToolkit.SharpDX.Model;
-using HelixToolkit.Wpf.SharpDX.Tests.Elements3D;
 using NUnit.Framework;
-using SharpDX;
 using System.IO;
+using System.Numerics;
 using System.Text;
 
 namespace HelixToolkit.Wpf.SharpDX.Tests.Importers;
@@ -491,7 +491,7 @@ Kd 0 0 0
 ");
 
             var model = _objReader.Read(tempObj);
-            Assert.AreEqual(new Color4(1, 1, 1, 1), _objReader.Materials["TestMaterial"].Diffuse);
+            Assert.AreEqual(new Color4(1, 1, 1, 1), _objReader.Materials["TestMaterial"].Diffuse.ToColor4());
         }
         finally
         {

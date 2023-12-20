@@ -145,6 +145,7 @@ Copyright (c) 2018 Helix Toolkit contributors
 
 using HelixToolkit.SharpDX.Animations;
 using SharpDX;
+using System.Numerics;
 using System.Runtime.InteropServices;
 using PhongMaterial = HelixToolkit.SharpDX.Model.PhongMaterialCore;
 
@@ -219,12 +220,12 @@ public class CMOReader : IModelReader
                 EmissiveColor = reader.ReadStructure<Color4>()
             };
             var uvTransform = reader.ReadStructure<Matrix>();
-            if (uvTransform == Matrix.Zero)
+            if (uvTransform == MatrixHelper.Zero)
             {
                 uvTransform = Matrix.Identity;
             }
-            uvTransform.Decompose(out var s, out var r, out var tra);
-            material.UVTransform = new UVTransform(r.Angle, new Vector2(s.X, s.Y), new Vector2(tra.X, tra.Y));
+            Matrix4x4.Decompose(uvTransform, out var s, out var r, out var tra);
+            material.UVTransform = new UVTransform(r.Angle(), new Vector2(s.X, s.Y), new Vector2(tra.X, tra.Y));
             var pixelShaderName = reader.ReadCMO_wchar();//Not used
             var textures = new List<string>();
             for (var t = 0; t < MaxTextures; ++t)
@@ -337,7 +338,7 @@ public class CMOReader : IModelReader
                 for (var j = 0; j < keyframeCount; j++)
                 {
                     var keyframe = reader.ReadStructure<KeyframeCMO>();
-                    keyframe.Transform.Decompose(out var s, out var q, out var t);
+                    Matrix4x4.Decompose(keyframe.Transform, out var s, out var q, out var t);
                     animation.Keyframes.Add(new Keyframe() { Translation = t, Rotation = q, Scale = s, Time = keyframe.Time });
                 }
                 animationHierarchy.Animations.Add(animation.Name, animation);

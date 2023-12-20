@@ -285,7 +285,7 @@ public class MeshVisual3D : ModelVisual3D
             var gm = new MeshBuilder(false, false);
             foreach (var p in this.Mesh.Vertices)
             {
-                gm.AddSubdivisionSphere(p.ToVector(), (float)this.VertexRadius, this.VertexResolution);
+                gm.AddSubdivisionSphere(p.ToVector3(), (float)this.VertexRadius, this.VertexResolution);
 
                 // gm.AddBox(p, VertexRadius, VertexRadius, VertexRadius);
             }
@@ -305,7 +305,7 @@ public class MeshVisual3D : ModelVisual3D
                 {
                     var p0 = this.Mesh.Vertices[p[i]];
                     var p1 = this.Mesh.Vertices[p[(i + 1) % p.Length]];
-                    em.AddCylinder(p0.ToVector(), p1.ToVector(), (float)this.EdgeDiameter, 4);
+                    em.AddCylinder(p0.ToVector3(), p1.ToVector3(), (float)this.EdgeDiameter, 4);
                 }
             }
 

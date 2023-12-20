@@ -89,7 +89,7 @@ public class BoundingBoxVisual3D : ModelVisual3D
             return;
         }
         var meshBuilder = new MeshBuilder(false, false);
-        meshBuilder.AddBoundingBox(this.BoundingBox.ToRect(), (float)Diameter);
+        meshBuilder.AddBoundingBox(this.BoundingBox.ToRect3D(), (float)Diameter);
         GeometryModel3D geoBoundingBox = new GeometryModel3D(meshBuilder.ToMesh().ToMeshGeometry3D(), MaterialHelper.CreateMaterial(Fill));
         this.Content = geoBoundingBox;
     }
