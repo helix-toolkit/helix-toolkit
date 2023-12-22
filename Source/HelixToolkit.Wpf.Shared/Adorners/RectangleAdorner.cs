@@ -32,7 +32,7 @@ namespace HelixToolkit.Wpf
         /// <summary>
         /// The brush to color inside the rectangle
         /// </summary>
-        private Brush? fillBrush;
+        private Brush fillBrush;
 
         /// <summary>
         /// The pen 2.
@@ -118,7 +118,7 @@ namespace HelixToolkit.Wpf
             double thickness2,
             double crossHairSize,
             DashStyle dashStyle2,
-            Brush? fillBrush = null)
+            Brush fillBrush = null)
             : base(adornedElement)
         {
             if (adornedElement == null)

@@ -37,7 +37,7 @@ namespace HelixToolkit.Wpf
         /// <summary>
         /// The brush to color inside the rectangle
         /// </summary>
-        public Brush? FillRectangleBrush { get; set; }
+        public Brush FillRectangleBrush { get; set; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="RectangleSelectionCommand" /> class.
