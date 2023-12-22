@@ -30,7 +30,7 @@ namespace HelixToolkit.Wpf
         private readonly Pen pen;
 
         /// <summary>
-        /// The brush to color the inner rectangle
+        /// The brush to color inside the rectangle
         /// </summary>
         private Brush fillBrush;
 
@@ -105,7 +105,7 @@ namespace HelixToolkit.Wpf
         /// The dash style2.
         /// </param>
         /// <param name="fillBrush">
-        /// The brush to color the inner rectangle
+        /// The brush to color inside the rectangle
         /// </param>
         /// <exception cref="ArgumentNullException">
         /// </exception>
