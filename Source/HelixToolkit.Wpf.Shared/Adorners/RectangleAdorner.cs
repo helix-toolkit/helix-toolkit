@@ -30,9 +30,9 @@ namespace HelixToolkit.Wpf
         private readonly Pen pen;
 
         /// <summary>
-        /// The brush to color the inner rectangle
+        /// The brush to color inside the rectangle
         /// </summary>
-        private Brush fillBrush;
+        private Brush? fillBrush;
 
         /// <summary>
         /// The pen 2.
@@ -105,7 +105,7 @@ namespace HelixToolkit.Wpf
         /// The dash style2.
         /// </param>
         /// <param name="fillBrush">
-        /// The brush to color the inner rectangle
+        /// The brush to color inside the rectangle
         /// </param>
         /// <exception cref="ArgumentNullException">
         /// </exception>
@@ -118,7 +118,7 @@ namespace HelixToolkit.Wpf
             double thickness2,
             double crossHairSize,
             DashStyle dashStyle2,
-            Brush fillBrush = null)
+            Brush? fillBrush = null)
             : base(adornedElement)
         {
             if (adornedElement == null)
@@ -187,7 +187,7 @@ namespace HelixToolkit.Wpf
             guidelines.GuidelinesY.Add(my + halfPenWidth);
 
             dc.PushGuidelineSet(guidelines);*/
-            dc.DrawRectangle(fillBrush, this.pen, rect);
+            dc.DrawRectangle(this.fillBrush, this.pen, rect);
             dc.DrawRectangle(null, this.pen2, rect);
 
             if (this.crossHairSize > 0)
