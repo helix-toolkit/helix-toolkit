@@ -21,6 +21,11 @@ public sealed class RectangleAdorner : Adorner
     private readonly Pen? pen;
 
     /// <summary>
+    /// The brush to color the inner rectangle
+    /// </summary>
+    private readonly Brush? fillBrush;
+
+    /// <summary>
     /// The pen 2.
     /// </summary>
     private readonly Pen? pen2;
@@ -49,6 +54,8 @@ public sealed class RectangleAdorner : Adorner
     /// <param name="crossHairSize">
     /// Size of the cross hair.
     /// </param>
+    ///<exception cref="ArgumentNullException">
+    ///</exception>
     public RectangleAdorner(
         UIElement adornedElement,
         Rect rectangle,
@@ -57,7 +64,7 @@ public sealed class RectangleAdorner : Adorner
         double thickness1 = 1.0,
         double thickness2 = 1.0,
         double crossHairSize = 10)
-        : this(adornedElement, rectangle, color1, color2, thickness1, thickness2, crossHairSize, DashStyles.Dash)
+        : this(adornedElement, rectangle, color1, color2, thickness1, thickness2, crossHairSize, DashStyles.Dash, null)
     {
     }
 
@@ -88,6 +95,11 @@ public sealed class RectangleAdorner : Adorner
     /// <param name="dashStyle2">
     /// The dash style2.
     /// </param>
+    /// <param name="fillBrush">
+    /// The brush to color the inner rectangle
+    /// </param>
+    /// <exception cref="ArgumentNullException">
+    /// </exception>
     public RectangleAdorner(
         UIElement adornedElement,
         Rect rectangle,
@@ -96,7 +108,8 @@ public sealed class RectangleAdorner : Adorner
         double thickness1,
         double thickness2,
         double crossHairSize,
-        DashStyle dashStyle2)
+        DashStyle dashStyle2,
+        Brush? fillBrush = null)
         : base(adornedElement)
     {
         Guard.IsNotNull(adornedElement);
@@ -123,6 +136,7 @@ public sealed class RectangleAdorner : Adorner
         this.pen2 = new Pen(new SolidColorBrush(color2), thickness2 * dpiFactor);
         this.pen2.DashStyle = dashStyle2;
         this.crossHairSize = crossHairSize;
+        this.fillBrush = fillBrush;
     }
 
     /// <summary>
@@ -166,7 +180,7 @@ public sealed class RectangleAdorner : Adorner
         guidelines.GuidelinesY.Add(my + halfPenWidth);
 
         dc.PushGuidelineSet(guidelines);*/
-        dc.DrawRectangle(null, this.pen, rect);
+        dc.DrawRectangle(this.fillBrush, this.pen, rect);
         dc.DrawRectangle(null, this.pen2, rect);
 
         if (this.crossHairSize > 0)
