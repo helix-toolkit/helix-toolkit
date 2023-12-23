@@ -30,14 +30,14 @@ namespace HelixToolkit.Wpf
         private readonly Pen pen;
 
         /// <summary>
-        /// The brush to color the inner rectangle
-        /// </summary>
-        private Brush fillBrush;
-
-        /// <summary>
         /// The pen 2.
         /// </summary>
         private readonly Pen pen2;
+
+        /// <summary>
+        /// The brush to color inside the rectangle
+        /// </summary>
+        private readonly Brush fillBrush;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="RectangleAdorner"/> class.
@@ -105,7 +105,7 @@ namespace HelixToolkit.Wpf
         /// The dash style2.
         /// </param>
         /// <param name="fillBrush">
-        /// The brush to color the inner rectangle
+        /// The brush to color inside the rectangle
         /// </param>
         /// <exception cref="ArgumentNullException">
         /// </exception>
@@ -187,7 +187,7 @@ namespace HelixToolkit.Wpf
             guidelines.GuidelinesY.Add(my + halfPenWidth);
 
             dc.PushGuidelineSet(guidelines);*/
-            dc.DrawRectangle(fillBrush, this.pen, rect);
+            dc.DrawRectangle(this.fillBrush, this.pen, rect);
             dc.DrawRectangle(null, this.pen2, rect);
 
             if (this.crossHairSize > 0)
