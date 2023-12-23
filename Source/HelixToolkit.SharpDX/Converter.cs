@@ -14,6 +14,23 @@ public static class Converter
         return collection.ToList();
     }
 
+    public static float[]? ToFloatArray(this IList<double>? collection)
+    {
+        if (collection is null)
+        {
+            return null;
+        }
+
+        var result = new float[collection.Count];
+
+        for (int i = 0; i < collection.Count; i++)
+        {
+            result[i] = (float)collection[i];
+        }
+
+        return result;
+    }
+
     public static MeshGeometry3D ToMeshGeometry3D(this MeshGeometry3D mesh)
     {
         var mg = new MeshGeometry3D()
@@ -49,9 +66,9 @@ public static class Converter
         return new Geometry.MeshGeometry3D()
         {
             Normals = mesh.Normals,
-            Positions = mesh.Positions?? new(),
+            Positions = mesh.Positions ?? new(),
             TextureCoordinates = mesh.TextureCoordinates,
-            TriangleIndices = mesh.TriangleIndices?? new(),
+            TriangleIndices = mesh.TriangleIndices ?? new(),
             Tangents = mesh.Tangents,
             BiTangents = mesh.BiTangents
         };

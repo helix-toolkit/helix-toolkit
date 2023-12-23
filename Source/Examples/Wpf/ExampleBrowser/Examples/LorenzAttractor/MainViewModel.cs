@@ -87,7 +87,7 @@ public sealed partial class MainViewModel : ObservableObject
         // create the WPF3D model
         var m = new Model3DGroup();
         var gm = new MeshBuilder();
-        gm.AddTube(path.Select(t => t.ToVector3()).ToList(), 0.8f, 10, false);
+        gm.AddTube(path.ToVector3Collection()!, 0.8f, 10, false);
         if (DirectionArrows)
         {
             // sphere at the initial point

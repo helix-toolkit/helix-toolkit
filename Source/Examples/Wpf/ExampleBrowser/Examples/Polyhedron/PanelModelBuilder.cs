@@ -47,7 +47,7 @@ public sealed class PanelModelBuilder
         foreach (var p in Panels)
         {
             p.TriangleIndex = tm.Positions.Count;
-            tm.AddTriangleFan(p.Points.Select(t => t.ToVector3()).ToList());
+            tm.AddTriangleFan(p.Points.ToVector3Collection()!);
             for (int i = 0; i < p.Points.Length - 2; i++)
                 TriangleIndexToPanelIndex.Add(panelIndex);
             panelIndex++;

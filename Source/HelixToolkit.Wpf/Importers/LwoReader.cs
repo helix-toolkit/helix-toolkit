@@ -260,7 +260,7 @@ public sealed class LwoReader : ModelReader
             short surfaceIndex = this.ReadShortInt(reader);
             size -= (2 + nverts) * 2;
 
-            this.Meshes[surfaceIndex - 1].AddTriangleFan(pts.Select(t => t.ToVector3()).ToList());
+            this.Meshes[surfaceIndex - 1].AddTriangleFan(pts.ToVector3Collection()!);
         }
     }
 

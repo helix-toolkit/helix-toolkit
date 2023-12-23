@@ -98,7 +98,7 @@ public sealed class SiloVisual3D : UIElement3D
             section.Add(new Point(x * this.DomeDiameter / 2, this.Height + (this.DomeHeight * (1 - y))));
         }
 
-        builder.AddSurfaceOfRevolution(new Vector3(0, 0, 0), new Vector3(0, 0, 1), section.Select(t => t.ToVector()).ToList(), sectionIndices, 80);
+        builder.AddSurfaceOfRevolution(new Vector3(0, 0, 0), new Vector3(0, 0, 1), section.ToVector2Collection()!, sectionIndices, 80);
         this.walls.Geometry = builder.ToMesh().ToMeshGeometry3D(true);
 
         var treadDepth = 0.3;

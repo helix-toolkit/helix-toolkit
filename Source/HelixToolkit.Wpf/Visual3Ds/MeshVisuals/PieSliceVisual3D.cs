@@ -210,7 +210,7 @@ public class PieSliceVisual3D : MeshElement3D
         }
 
         var b = new MeshBuilder(false, false);
-        b.AddTriangleStrip(pts.Select(t => t.ToVector3()).ToList());
+        b.AddTriangleStrip(pts.ToVector3Collection()!);
         return b.ToMesh().ToMeshGeometry3D();
     }
 }

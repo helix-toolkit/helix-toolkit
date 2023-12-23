@@ -114,7 +114,7 @@ public sealed partial class SurfacePlotVisual3D : ModelVisual3D
             }
             path.Add(new Point3D(x, maxY, minZ));
 
-            axesMeshBuilder.AddTube(path.Select(t => t.ToVector3()).ToList(), (float)LineThickness, 9, false);
+            axesMeshBuilder.AddTube(path.ToVector3Collection()!, (float)LineThickness, 9, false);
             GeometryModel3D label = TextCreator.CreateTextLabelModel3D(x.ToString(), Brushes.Black, true, FontSize,
                                                                        new Point3D(x, minY - FontSize * 2.5, minZ),
                                                                        new Vector3D(1, 0, 0), new Vector3D(0, 1, 0));
@@ -139,7 +139,7 @@ public sealed partial class SurfacePlotVisual3D : ModelVisual3D
             }
             path.Add(new Point3D(maxX, y, minZ));
 
-            axesMeshBuilder.AddTube(path.Select(t => t.ToVector3()).ToList(), (float)LineThickness, 9, false);
+            axesMeshBuilder.AddTube(path.ToVector3Collection()!, (float)LineThickness, 9, false);
             GeometryModel3D label = TextCreator.CreateTextLabelModel3D(y.ToString(), Brushes.Black, true, FontSize,
                                                                        new Point3D(minX - FontSize * 3, y, minZ),
                                                                        new Vector3D(1, 0, 0), new Vector3D(0, 1, 0));
