@@ -30,14 +30,14 @@ namespace HelixToolkit.Wpf
         private readonly Pen pen;
 
         /// <summary>
-        /// The brush to color inside the rectangle
-        /// </summary>
-        private Brush fillBrush;
-
-        /// <summary>
         /// The pen 2.
         /// </summary>
         private readonly Pen pen2;
+
+        /// <summary>
+        /// The brush to color inside the rectangle
+        /// </summary>
+        private readonly Brush fillBrush;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="RectangleAdorner"/> class.

@@ -45,7 +45,7 @@ namespace HelixToolkit.Wpf
 
         /// <summary>
         /// Allow auto detect SelectionHitMode by mouse position<br/>
-        ///  Default value is true
+        /// Default value is true
         ///</summary>
         /// <remarks>
         /// If mouse dragged from left to right: SelectionHitMode = SelectionHitMode.Inside<br/>
