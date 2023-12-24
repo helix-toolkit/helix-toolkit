@@ -30,37 +30,33 @@ public static class Converter
 
         return result;
     }
-
-    public static MeshGeometry3D ToMeshGeometry3D(this MeshGeometry3D mesh)
-    {
-        var mg = new MeshGeometry3D()
-        {
-            Normals = mesh.Normals is not null ? new Vector3Collection(mesh.Normals) : null,
-            Positions = mesh.Positions is not null ? new Vector3Collection(mesh.Positions) : null,
-            TextureCoordinates = mesh.TextureCoordinates is not null ? new Vector2Collection(mesh.TextureCoordinates) : null,
-            TriangleIndices = mesh.TriangleIndices is not null ? new IntCollection(mesh.TriangleIndices) : null,
-            Tangents = mesh.Tangents is not null ? new Vector3Collection(mesh.Tangents) : null,
-            BiTangents = mesh.BiTangents is not null ? new Vector3Collection(mesh.BiTangents) : null
-        };
-
-        return mg;
-    }
-
+    /// <summary>
+    /// Converts the geometry to a <see cref="SharpDX.MeshGeometry3D"/>.
+    /// All internal mesh builder data are directly assigned to the <see cref="SharpDX.MeshGeometry3D"/> without copying.
+    /// User must call <see cref="MeshBuilder.Reset"/> to reset and reuse the mesh builder object to create new meshes.
+    /// </summary>
+    /// <param name="builder"></param>
+    /// <returns></returns>
     public static MeshGeometry3D ToMeshGeometry3D(this MeshBuilder builder)
     {
         var mg = new MeshGeometry3D()
         {
-            Normals = builder.Normals is not null ? new Vector3Collection(builder.Normals) : null,
-            Positions = builder.Positions is not null ? new Vector3Collection(builder.Positions) : null,
-            TextureCoordinates = builder.TextureCoordinates is not null ? new Vector2Collection(builder.TextureCoordinates) : null,
-            TriangleIndices = builder.TriangleIndices is not null ? new IntCollection(builder.TriangleIndices) : null,
-            Tangents = builder.Tangents is not null ? new Vector3Collection(builder.Tangents) : null,
-            BiTangents = builder.BiTangents is not null ? new Vector3Collection(builder.BiTangents) : null
+            Normals = builder.Normals,
+            Positions = builder.Positions,
+            TextureCoordinates = builder.TextureCoordinates,
+            TriangleIndices = builder.TriangleIndices,
+            Tangents = builder.Tangents,
+            BiTangents = builder.BiTangents
         };
 
         return mg;
     }
-
+    /// <summary>
+    /// Converts the <see cref="SharpDX.MeshGeometry3D"/> to a <see cref="Geometry.MeshGeometry3D"/>.
+    /// All internal mesh builder data are directly assigned to the <see cref="Geometry.MeshGeometry3D"/> without copying.
+    /// </summary>
+    /// <param name="mesh"></param>
+    /// <returns></returns>
     public static Geometry.MeshGeometry3D ToWndMeshGeometry3D(this MeshGeometry3D mesh)
     {
         return new Geometry.MeshGeometry3D()
@@ -69,6 +65,23 @@ public static class Converter
             Positions = mesh.Positions ?? new(),
             TextureCoordinates = mesh.TextureCoordinates,
             TriangleIndices = mesh.TriangleIndices ?? new(),
+            Tangents = mesh.Tangents,
+            BiTangents = mesh.BiTangents
+        };
+    }
+    /// <summary>
+    /// Converts the <see cref="Geometry.MeshGeometry3D"/> to a <see cref="SharpDX.MeshGeometry3D"/>.
+    /// All internal mesh builder data are directly assigned to the <see cref="SharpDX.MeshGeometry3D"/> without copying.
+    /// </summary>
+    /// <param name="mesh"></param>
+    /// <returns></returns>
+    public static MeshGeometry3D ToMeshGeometry3D(this Geometry.MeshGeometry3D mesh)
+    {
+        return new MeshGeometry3D()
+        {
+            Positions = mesh.Positions,
+            Normals = mesh.Normals,
+            TextureCoordinates = mesh.TextureCoordinates,
             Tangents = mesh.Tangents,
             BiTangents = mesh.BiTangents
         };
