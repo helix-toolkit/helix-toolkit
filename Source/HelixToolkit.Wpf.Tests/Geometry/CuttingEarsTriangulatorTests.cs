@@ -19,7 +19,7 @@ public class CuttingEarsTriangulatorTests
                                   new Point(-10.144, 2.84),
                                   new Point(-10.144, 0)
                               };
-        var result = CuttingEarsTriangulator.Triangulate(polygon.Select(t => t.ToVector()).ToList());
+        var result = CuttingEarsTriangulator.Triangulate(polygon.ToVector2Collection()!);
         Assert.That(result, Is.Not.Null);
         Assert.AreEqual(5 * 3, result.Count);
         Assert.AreEqual(new[] { 0, 1, 2, 3, 4, 5, 6, 0, 2, 3, 5, 6, 6, 2, 3 }, result);
@@ -39,7 +39,7 @@ public class CuttingEarsTriangulatorTests
                     new Point(-9.5599999999999987, 2.97),
                     new Point(-9.5599999999999987, 0)
                               };
-        var result = CuttingEarsTriangulator.Triangulate(polygon.Select(t => t.ToVector()).ToList());
+        var result = CuttingEarsTriangulator.Triangulate(polygon.ToVector2Collection()!);
         Assert.That(result, Is.Not.Null);
         Assert.AreEqual(6 * 3, result.Count);
         Assert.AreEqual(new[] { 0, 1, 2, 4, 5, 6, 0, 2, 3, 4, 6, 7, 7, 0, 3, 3, 4, 7 }, result);

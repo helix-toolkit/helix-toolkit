@@ -125,7 +125,7 @@ public abstract class ShapeModel2D : Element2D
             {
                 if (d is Element2DCore { SceneNode: ShapeNode2D node })
                 {
-                    node.StrokeDashArray = e.NewValue == null ? Array.Empty<float>() : (e.NewValue as DoubleCollection)?.Select(x => (float)x).ToArray() ?? Array.Empty<float>();
+                    node.StrokeDashArray = e.NewValue == null ? Array.Empty<float>() : (e.NewValue as DoubleCollection)?.ToFloatArray() ?? Array.Empty<float>();
                 }
             }));
 
@@ -295,7 +295,7 @@ public abstract class ShapeModel2D : Element2D
             return;
         }
 
-        c.StrokeDashArray = StrokeDashArray == null ? Array.Empty<float>() : StrokeDashArray.Select(x => (float)x).ToArray();
+        c.StrokeDashArray = StrokeDashArray == null ? Array.Empty<float>() : StrokeDashArray.ToFloatArray();
         c.StrokeDashCap = StrokeDashCap.ToD2DCapStyle();
         c.StrokeDashOffset = (float)StrokeDashOffset;
         c.StrokeEndLineCap = StrokeEndLineCap.ToD2DCapStyle();

@@ -64,9 +64,9 @@ public partial class MainWindow : Window
                 diam[j] = 0.075;
 
             mb.AddTube(
-                pts3d.Select(t => t.ToVector3()).ToList(),
-                vel.Select(t => (float)t).ToArray(),
-                diam.Select(t => (float)t).ToArray(),
+                pts3d.ToVector3Collection()!,
+                vel.ToFloatArray()!,
+                diam.ToFloatArray()!,
                 12,
                 false);
         }

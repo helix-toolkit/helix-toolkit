@@ -55,7 +55,7 @@ public sealed class MainViewModel
         foreach (Point3D point in triangleInXYPlane)
             meshBuilder.Positions.Add(point.ToVector3());
 
-        List<int>? indices = SweepLinePolygonTriangulator.Triangulate(triangleInPositiveOrientation.Select(t => t.ToVector()).ToList());
+        List<int>? indices = SweepLinePolygonTriangulator.Triangulate(triangleInPositiveOrientation.ToVector2Collection()!);
 
         if (indices is not null)
         {
@@ -76,7 +76,7 @@ public sealed class MainViewModel
         foreach (Point3D point in triangleInXYPlane)
             meshBuilder.Positions.Add(point.ToVector3());
 
-        indices = SweepLinePolygonTriangulator.Triangulate(triangleInNegativeOrientation.Select(t => t.ToVector()).ToList());
+        indices = SweepLinePolygonTriangulator.Triangulate(triangleInNegativeOrientation.ToVector2Collection()!);
 
         if (indices is not null)
         {

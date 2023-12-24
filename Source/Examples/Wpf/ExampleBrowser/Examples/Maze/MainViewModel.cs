@@ -202,7 +202,7 @@ public sealed partial class MainViewModel : ObservableObject
         {
             var path = solution.Select(cell => this.GetPosition(cell, height)).ToList();
             var spline = CanonicalSplineHelper.CreateSpline(path, 0.7, null, false, 0.05);
-            builder.AddTube(spline.Select(t => t.ToVector3()).ToList(), (float)diameter, 13, false);
+            builder.AddTube(spline.ToVector3Collection()!, (float)diameter, 13, false);
         }
 
         return builder.ToMesh().ToMeshGeometry3D();

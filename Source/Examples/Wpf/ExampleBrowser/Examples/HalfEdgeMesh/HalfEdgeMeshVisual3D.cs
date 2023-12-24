@@ -444,7 +444,7 @@ public class HalfEdgeMeshVisual3D : ModelVisual3D
                 }
 
                 var gm = new MeshBuilder(false, false);
-                gm.AddTriangleFan(faceVertices.Select(t => t.ToVector3()).ToList());
+                gm.AddTriangleFan(faceVertices.ToVector3Collection()!);
                 var faceElement = new ModelUIElement3D
                 {
                     Model =

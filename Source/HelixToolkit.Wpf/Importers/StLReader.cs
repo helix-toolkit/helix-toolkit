@@ -339,7 +339,7 @@ public sealed class StLReader : ModelReader
             this.Meshes.Add(new MeshBuilder(true, true));
         }
 
-        this.Meshes[this.index].AddPolygon(points.Select(t => t.ToVector3()).ToList());
+        this.Meshes[this.index].AddPolygon(points.ToVector3Collection()!);
 
         // todo: add normals
     }

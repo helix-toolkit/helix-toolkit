@@ -1,9 +1,44 @@
 ﻿using System.Runtime.CompilerServices;
+using System.Windows.Media;
 
 namespace HelixToolkit.Wpf;
 
 public static class Converter
 {
+    public static float[]? ToFloatArray(this double[]? array)
+    {
+        if (array is null)
+        {
+            return null;
+        }
+
+        var result = new float[array.Length];
+
+        for (int i = 0; i < array.Length; i++)
+        {
+            result[i] = (float)array[i];
+        }
+
+        return result;
+    }
+
+    public static double[]? ToDoubleArray(this float[]? array)
+    {
+        if (array is null)
+        {
+            return null;
+        }
+
+        var result = new double[array.Length];
+
+        for (int i = 0; i < array.Length; i++)
+        {
+            result[i] = array[i];
+        }
+
+        return result;
+    }
+
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static System.Windows.Point ToWndPoint(this System.Numerics.Vector2 vector)
     {
@@ -103,7 +138,14 @@ public static class Converter
             return null;
         }
 
-        return new System.Windows.Media.Media3D.Vector3DCollection(collection.Select(v => v.ToWndVector3D()));
+        var newCollection = new System.Windows.Media.Media3D.Vector3DCollection(collection.Count);
+
+        for (int i = 0; i < collection.Count; i++)
+        {
+            newCollection.Add(collection[i].ToWndVector3D());
+        }
+
+        return newCollection;
     }
 
     public static Vector3Collection? ToCollection(this System.Windows.Media.Media3D.Vector3DCollection? collection)
@@ -113,7 +155,31 @@ public static class Converter
             return null;
         }
 
-        return new Vector3Collection(collection.Select(t => t.ToVector3()));
+        var newCollection = new Vector3Collection(collection.Count);
+
+        for (int i = 0; i < collection.Count; i++)
+        {
+            newCollection.Add(collection[i].ToVector3());
+        }
+
+        return newCollection;
+    }
+
+    public static Vector3Collection? ToVector3Collection(this IList<System.Windows.Media.Media3D.Point3D>? collection)
+    {
+        if (collection is null)
+        {
+            return null;
+        }
+
+        var newCollection = new Vector3Collection(collection.Count);
+
+        for (int i = 0; i < collection.Count; i++)
+        {
+            newCollection.Add(collection[i].ToVector3());
+        }
+
+        return newCollection;
     }
 
     public static System.Windows.Media.Media3D.Point3DCollection? ToPoint3DCollection(IList<System.Numerics.Vector3>? collection)
@@ -123,7 +189,14 @@ public static class Converter
             return null;
         }
 
-        return new System.Windows.Media.Media3D.Point3DCollection(collection.Select(v => v.ToWndPoint3D()));
+        var newCollection = new System.Windows.Media.Media3D.Point3DCollection(collection.Count);
+
+        for (int i = 0; i < collection.Count; i++)
+        {
+            newCollection.Add(collection[i].ToWndPoint3D());
+        }
+
+        return newCollection;
     }
 
     public static Vector3Collection? ToCollection(this System.Windows.Media.Media3D.Point3DCollection? collection)
@@ -133,7 +206,31 @@ public static class Converter
             return null;
         }
 
-        return new Vector3Collection(collection.Select(t => t.ToVector3()));
+        var newCollection = new Vector3Collection(collection.Count);
+
+        for (int i = 0; i < collection.Count; i++)
+        {
+            newCollection.Add(collection[i].ToVector3());
+        }
+
+        return newCollection;
+    }
+
+    public static Vector2Collection? ToVector2Collection(this IList<System.Windows.Point>? collection)
+    {
+        if (collection is null)
+        {
+            return null;
+        }
+
+        var newCollection = new Vector2Collection(collection.Count);
+
+        for (int i = 0; i < collection.Count; i++)
+        {
+            newCollection.Add(collection[i].ToVector());
+        }
+
+        return newCollection;
     }
 
     public static System.Windows.Media.PointCollection? ToPointCollection(IList<System.Numerics.Vector2>? collection)
@@ -143,7 +240,14 @@ public static class Converter
             return null;
         }
 
-        return new System.Windows.Media.PointCollection(collection.Select(v => v.ToWndPoint()));
+        var newCollection = new System.Windows.Media.PointCollection(collection.Count);
+
+        for (int i = 0; i < collection.Count; i++)
+        {
+            newCollection.Add(collection[i].ToWndPoint());
+        }
+
+        return newCollection;
     }
 
     public static Vector2Collection? ToCollection(this System.Windows.Media.PointCollection? collection)
@@ -153,7 +257,14 @@ public static class Converter
             return null;
         }
 
-        return new Vector2Collection(collection.Select(t => t.ToVector()));
+        var newCollection = new Vector2Collection(collection.Count);
+
+        for (int i = 0; i < collection.Count; i++)
+        {
+            newCollection.Add(collection[i].ToVector());
+        }
+
+        return newCollection;
     }
 
     public static System.Windows.Media.Int32Collection? ToInt32Collection(IList<int>? collection)
@@ -183,7 +294,14 @@ public static class Converter
             return null;
         }
 
-        return collection.Select(t => (float)t).ToList();
+        var newCollection = new List<float>(collection.Count);
+
+        for (int i = 0; i < collection.Count; i++)
+        {
+            newCollection.Add((float)collection[i]);
+        }
+
+        return newCollection;
     }
 
     public static System.Windows.Media.DoubleCollection? ToDoubleCollection(IList<float>? collection)
@@ -193,7 +311,14 @@ public static class Converter
             return null;
         }
 
-        return new System.Windows.Media.DoubleCollection(collection.Select(t => (double)t));
+        var newCollection = new System.Windows.Media.DoubleCollection(collection.Count);
+
+        for (int i = 0; i < collection.Count; i++)
+        {
+            newCollection.Add((double)collection[i]);
+        }
+
+        return newCollection;
     }
 
     public static System.Windows.Media.Media3D.MeshGeometry3D ToMeshGeometry3D(this Geometry.MeshGeometry3D mesh, bool freeze = false)
