@@ -88,11 +88,11 @@ public sealed class MeshBuilder
     /// <summary>
     /// The positions.
     /// </summary>
-    public Vector3Collection Positions { get; set; }
+    public Vector3Collection Positions { get; set; } = new();
     /// <summary>
     /// The triangle indices.
     /// </summary>
-    public IntCollection TriangleIndices { get; set; }
+    public IntCollection TriangleIndices { get; set; } = new();
     /// <summary>
     /// The normal vectors.
     /// </summary>
@@ -197,8 +197,6 @@ public sealed class MeshBuilder
     /// </param>
     public MeshBuilder(bool generateNormals = true, bool generateTexCoords = true, bool tangentSpace = false)
     {
-        this.Positions = new();
-        this.TriangleIndices = new();
         if (generateNormals)
         {
             this.Normals = new();
@@ -4357,12 +4355,24 @@ public sealed class MeshBuilder
             this.Subdivide4();
         }
     }
+
+    public void Reset()
+    {
+        Positions = new();
+        Normals = null;
+        TextureCoordinates = null;
+        Tangents = null;
+        BiTangents = null;
+        TriangleIndices = new();
+    }
     #endregion Helper Functions
 
 
     #region Exporter Functions
     /// <summary>
-    /// Converts the geometry to a <see cref="MeshGeometry3D"/> .
+    /// Converts the geometry to a <see cref="MeshGeometry3D"/>.
+    /// All internal mesh builder data are directly assigned to the <see cref="MeshGeometry3D"/> without copying.
+    /// User must call <see cref="Reset"/> to reset and reuse the mesh builder object to create new meshes.
     /// </summary>
     /// <returns>
     /// A mesh geometry.
