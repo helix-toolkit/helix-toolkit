@@ -83,7 +83,8 @@ public static class Converter
             Normals = mesh.Normals,
             TextureCoordinates = mesh.TextureCoordinates,
             Tangents = mesh.Tangents,
-            BiTangents = mesh.BiTangents
+            BiTangents = mesh.BiTangents,
+            TriangleIndices= mesh.TriangleIndices
         };
     }
 }
