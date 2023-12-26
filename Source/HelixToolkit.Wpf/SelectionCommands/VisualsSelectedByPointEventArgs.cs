@@ -23,7 +23,7 @@ public class VisualsSelectedByPointEventArgs : VisualsSelectedEventArgs
     }
 
     /// <summary>
-    /// Gets the rectangle of selection.
+    /// Gets the position of selection.
     /// </summary>
     public Point Position { get; private set; }
 }
