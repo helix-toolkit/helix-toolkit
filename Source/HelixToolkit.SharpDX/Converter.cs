@@ -1,4 +1,6 @@
-﻿using System.Runtime.CompilerServices;
+﻿using CommunityToolkit.Diagnostics;
+using System.Diagnostics;
+using System.Runtime.CompilerServices;
 
 namespace HelixToolkit.SharpDX;
 
@@ -31,7 +33,7 @@ public static class Converter
         return result;
     }
     /// <summary>
-    /// Converts the geometry to a <see cref="SharpDX.MeshGeometry3D"/>.
+    /// Converts the geometry to a <see cref="SharpDX.MeshGeometry3D"/>. Equivalent to MeshBuilder.ToMesh().ToMeshGeometry3D().
     /// All internal mesh builder data are directly assigned to the <see cref="SharpDX.MeshGeometry3D"/> without copying.
     /// User must call <see cref="MeshBuilder.Reset"/> to reset and reuse the mesh builder object to create new meshes.
     /// </summary>
@@ -39,17 +41,7 @@ public static class Converter
     /// <returns></returns>
     public static MeshGeometry3D ToMeshGeometry3D(this MeshBuilder builder)
     {
-        var mg = new MeshGeometry3D()
-        {
-            Normals = builder.Normals,
-            Positions = builder.Positions,
-            TextureCoordinates = builder.TextureCoordinates,
-            TriangleIndices = builder.TriangleIndices,
-            Tangents = builder.Tangents,
-            BiTangents = builder.BiTangents
-        };
-
-        return mg;
+        return builder.ToMesh().ToMeshGeometry3D();
     }
     /// <summary>
     /// Converts the <see cref="SharpDX.MeshGeometry3D"/> to a <see cref="Geometry.MeshGeometry3D"/>.
