@@ -1,2 +1,15 @@
 next-version: 3.0.0
-branches: {}
+branches:
+  develop:
+    regex: ^develop
+    mode: ContinuousDeployment
+    tag: alpha
+    increment: Minor
+    prevent-increment-of-merged-branch-version: false
+    track-merge-target: true
+    source-branches: []
+    tracks-release-branches: true
+    is-release-branch: false
+    is-mainline: false
+    pre-release-weight: 0
+
