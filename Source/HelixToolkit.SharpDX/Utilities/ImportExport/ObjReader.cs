@@ -1272,12 +1272,14 @@ public class ObjReader : IModelReader
                 specularMapMS = new MemoryStream();
                 fs.CopyTo(specularMapMS);
             }
+            var diffuse = Diffuse.ToColor4();
+            diffuse.Alpha = (float)Dissolved;
             var mat = new PhongMaterialCore()
             {
                 AmbientColor = this.Ambient,
                 //AmbientMap = this.AmbientMap,
 
-                DiffuseColor = new Color4(this.Diffuse.R, this.Diffuse.G, this.Diffuse.B, (float)Dissolved),
+                DiffuseColor = diffuse,
                 DiffuseMap = diffuseMapMS,
 
                 SpecularColor = this.Specular,
@@ -1290,7 +1292,6 @@ public class ObjReader : IModelReader
                 //Illumination = this.Illumination,
 
             };
-
             //return mg.Children.Count != 1 ? mg : mg.Children[0];
             return mat;
         }
