@@ -50,7 +50,7 @@ public class FastList<T> : IList<T>, IReadOnlyList<T>, ICollection<T>, IEnumerab
             is2.CopyTo(Items, 0);
             _size = count;
         }
-        else
+        else if (collection is not null)
         {
             _size = 0;
             Items = new T[_defaultCapacity];

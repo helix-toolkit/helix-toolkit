@@ -173,8 +173,8 @@ public partial class Importer
             builder.Normals = hMesh.Normals;
             builder.TextureCoordinates = hMesh.TextureCoordinates;
             builder.ComputeTangents(MeshFaces.Default);
-            hMesh.Tangents = new Vector3Collection(builder.Tangents!);
-            hMesh.BiTangents = new Vector3Collection(builder.BiTangents!);
+            hMesh.Tangents = builder.Tangents;
+            hMesh.BiTangents = builder.BiTangents;
         }
 
         hMesh.UpdateBounds();
