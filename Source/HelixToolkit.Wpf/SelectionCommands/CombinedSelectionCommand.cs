@@ -31,13 +31,18 @@ public sealed class CombinedSelectionCommand : SelectionCommand
 
     /// <summary>
     /// Allow auto detect SelectionHitMode by mouse position<br/>
-    ///  Default value is true
-    ///</summary>
+    /// Default value is true
+    /// </summary>
     /// <remarks>
     /// If mouse dragged from left to right: SelectionHitMode = SelectionHitMode.Inside<br/>
     /// Other SelectionHitMode = SelectionHitMode.Touch<br/>
     /// </remarks>    
     public bool AllowAutoSetSelectionHitMode { get; set; } = true;
+
+    /// <summary>
+    /// The brush to color inside the rectangle.
+    /// </summary>
+    public Brush? FillRectangleBrush { get; set; }
 
     /// <summary>
     /// Initializes a new instance of the <see cref="RectangleSelectionCommand" /> class.
@@ -215,7 +220,7 @@ public sealed class CombinedSelectionCommand : SelectionCommand
 
         var adornerLayer = AdornerLayer.GetAdornerLayer(this.Viewport);
         if (adornerLayer == null) { return; }
-        this.rectangleAdorner = new RectangleAdorner(this.Viewport, this.selectionRect, Colors.LightGray, Colors.Black, 1, 1, 0, DashStyles.Dash);
+        this.rectangleAdorner = new RectangleAdorner(this.Viewport, this.selectionRect, Colors.LightGray, Colors.Black, 1, 1, 0, DashStyles.Dash, this.FillRectangleBrush);
         adornerLayer.Add(this.rectangleAdorner);
     }
 }
