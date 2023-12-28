@@ -100,7 +100,7 @@ public class MeshGeometry3D : Geometry3D
         }
         set
         {
-            Indices = value is null ? null : new IntCollection(value);
+            Indices = value;
         }
     }
 

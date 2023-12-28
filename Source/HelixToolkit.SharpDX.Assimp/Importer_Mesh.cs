@@ -126,7 +126,7 @@ public partial class Importer
     /// </summary>
     /// <param name="mesh">The mesh.</param>
     /// <returns></returns>
-    protected virtual MeshGeometry3D OnCreateHelixMesh(Mesh mesh)
+    protected virtual MeshGeometry3D? OnCreateHelixMesh(Mesh mesh)
     {
         var hVertices = new Vector3Collection(mesh.Vertices.Select(x => x.ToVector3()));
         var builder = new MeshBuilder(false, false);
@@ -143,6 +143,11 @@ public partial class Importer
             {
                 builder.AddTriangleFan(mesh.Faces[i].Indices);
             }
+        }
+        if (builder.TriangleIndices.Count == 0)
+        {
+            logger.LogError("Failed to convert assimp mesh {0}.", mesh.Name);
+            return null;
         }
         var hMesh = new MeshGeometry3D { Positions = hVertices, Indices = new IntCollection(builder.TriangleIndices) };
         if (mesh.HasNormals && mesh.Normals.Count == hMesh.Positions.Count)
@@ -173,8 +178,8 @@ public partial class Importer
             builder.Normals = hMesh.Normals;
             builder.TextureCoordinates = hMesh.TextureCoordinates;
             builder.ComputeTangents(MeshFaces.Default);
-            hMesh.Tangents = new Vector3Collection(builder.Tangents!);
-            hMesh.BiTangents = new Vector3Collection(builder.BiTangents!);
+            hMesh.Tangents = builder.Tangents;
+            hMesh.BiTangents = builder.BiTangents;
         }
 
         hMesh.UpdateBounds();
@@ -189,9 +194,13 @@ public partial class Importer
     /// </summary>
     /// <param name="mesh">The mesh.</param>
     /// <returns></returns>
-    protected virtual BoneSkinnedMeshGeometry3D OnCreateHelixMeshWithBones(Mesh mesh)
+    protected virtual BoneSkinnedMeshGeometry3D? OnCreateHelixMeshWithBones(Mesh mesh)
     {
         var m = OnCreateHelixMesh(mesh);
+        if (m == null)
+        {
+            return null;
+        }
         var vertBoneIds = new FastList<BoneIds>(Enumerable.Repeat(new BoneIds(), m.Positions?.Count ?? 0));
         var vertBoneInternal = vertBoneIds.GetInternalArray();
         var accumArray = new int[m.Positions?.Count ?? 0];
@@ -338,7 +347,7 @@ public partial class Importer
         /// <param name="assimpMesh">The assimp mesh.</param>
         /// <param name="mesh">The mesh.</param>
         /// <param name="materialIndex">Index of the material.</param>
-        public MeshInfo(PrimitiveType type, Mesh assimpMesh, Geometry3D mesh, int materialIndex)
+        public MeshInfo(PrimitiveType type, Mesh assimpMesh, Geometry3D? mesh, int materialIndex)
         {
             Type = type;
             Mesh = mesh;
