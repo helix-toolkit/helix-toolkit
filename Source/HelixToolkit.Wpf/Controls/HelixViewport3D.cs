@@ -3352,78 +3352,57 @@ public class HelixViewport3D : ItemsControl, IHelixViewport3D
     /// </exception>
     public override void OnApplyTemplate()
     {
-        this.adornerLayer ??= this.Template.FindName(PartAdornerLayer, this) as AdornerDecorator;
-
         if (this.Template.FindName(PartViewportGrid, this) is not Grid grid)
         {
             throw new HelixToolkitException("{0} is missing from the template.", PartViewportGrid);
         }
-
         grid.Children.Add(this.viewport);
 
-        if (this.adornerLayer == null)
+        this.adornerLayer ??= this.Template.FindName(PartAdornerLayer, this) as AdornerDecorator;
+        if (this.adornerLayer is null)
         {
             throw new HelixToolkitException("{0} is missing from the template.", PartAdornerLayer);
         }
 
-        if (this.cameraController == null)
-        {
-            this.cameraController = this.Template.FindName(PartCameraController, this) as CameraController;
-            if (this.cameraController != null)
-            {
-                this.cameraController.Viewport = this.Viewport;
-                this.cameraController.LimitFPS = this.limitFPS;
-                this.cameraController.LookAtChanged += (s, e) => this.OnLookAtChanged();
-                this.cameraController.ZoomedByRectangle += (s, e) => this.OnZoomedByRectangle();
-            }
-        }
-
-        if (this.cameraController == null)
+        this.cameraController ??= this.Template.FindName(PartCameraController, this) as CameraController;
+        if (this.cameraController is null)
         {
             throw new HelixToolkitException("{0} is missing from the template.", PartCameraController);
         }
+        this.cameraController.Viewport = this.Viewport;
+        this.cameraController.LimitFPS = this.limitFPS;
+        this.cameraController.LookAtChanged += (s, e) => this.OnLookAtChanged();
+        this.cameraController.ZoomedByRectangle += (s, e) => this.OnZoomedByRectangle();
 
-        if (this.coordinateView == null)
-        {
-            this.coordinateView = this.Template.FindName(PartCoordinateView, this) as Viewport3D;
-
-            this.coordinateSystemLights = new Model3DGroup();
-
-            // coordinateSystemLights.Children.Add(new DirectionalLight(Colors.White, new Vector3D(1, 1, 1)));
-            // coordinateSystemLights.Children.Add(new AmbientLight(Colors.DarkGray));
-            this.coordinateSystemLights.Children.Add(new AmbientLight(Colors.LightGray));
-
-            if (this.coordinateView != null)
-            {
-                this.coordinateView.Camera = new PerspectiveCamera();
-                this.coordinateView.Children.Add(new ModelVisual3D { Content = this.coordinateSystemLights });
-            }
-        }
-
-        if (this.coordinateView == null)
+        this.coordinateView ??= this.Template.FindName(PartCoordinateView, this) as Viewport3D;
+        if (this.coordinateView is null)
         {
             throw new HelixToolkitException("{0} is missing from the template.", PartCoordinateView);
         }
+        this.coordinateSystemLights = new Model3DGroup();
+        // coordinateSystemLights.Children.Add(new DirectionalLight(Colors.White, new Vector3D(1, 1, 1)));
+        // coordinateSystemLights.Children.Add(new AmbientLight(Colors.DarkGray));
+        this.coordinateSystemLights.Children.Add(new AmbientLight(Colors.LightGray));
 
-        if (this.viewCubeViewport == null)
+        this.coordinateView.Camera = new PerspectiveCamera();
+        this.coordinateView.Children.Add(new ModelVisual3D { Content = this.coordinateSystemLights });
+
+        this.viewCubeViewport ??= this.Template.FindName(PartViewCubeViewport, this) as Viewport3D;
+        if (this.viewCubeViewport is not null)
         {
-            this.viewCubeViewport = this.Template.FindName(PartViewCubeViewport, this) as Viewport3D;
-
             this.viewCubeLights = new Model3DGroup();
             this.viewCubeLights.Children.Add(new AmbientLight(Colors.White));
-            if (this.viewCubeViewport != null)
-            {
-                this.viewCubeViewport.Camera = new PerspectiveCamera();
-                this.viewCubeViewport.Children.Add(new ModelVisual3D { Content = this.viewCubeLights });
-                this.viewCubeViewport.MouseEnter += this.ViewCubeViewportMouseEnter;
-                this.viewCubeViewport.MouseLeave += this.ViewCubeViewportMouseLeave;
-            }
 
-            this.viewCube = this.Template.FindName(PartViewCube, this) as ViewCubeVisual3D;
-            if (this.viewCube != null)
-            {
-                this.viewCube.Viewport = this.Viewport;
-            }
+            this.viewCubeViewport.Camera = new PerspectiveCamera();
+            this.viewCubeViewport.Children.Add(new ModelVisual3D { Content = this.viewCubeLights });
+            this.viewCubeViewport.MouseEnter += this.ViewCubeViewportMouseEnter;
+            this.viewCubeViewport.MouseLeave += this.ViewCubeViewportMouseLeave;
+        }
+
+        this.viewCube ??= this.Template.FindName(PartViewCube, this) as ViewCubeVisual3D;
+        if (this.viewCube is not null)
+        {
+            this.viewCube.Viewport = this.Viewport;
         }
 
         // update the coordinateview camera
@@ -3522,26 +3501,26 @@ public class HelixViewport3D : ItemsControl, IHelixViewport3D
     protected virtual void OnCameraChanged()
     {
         // update the camera of the coordinate system
-        if (this.coordinateView != null)
+        if (this.coordinateView is not null)
         {
             this.Camera?.CopyDirectionOnly(this.coordinateView.Camera as PerspectiveCamera, 30);
         }
 
         // update the camera of the view cube
-        if (this.viewCubeViewport != null)
+        if (this.viewCubeViewport is not null)
         {
             this.Camera?.CopyDirectionOnly(this.viewCubeViewport.Camera as PerspectiveCamera, 20);
         }
 
         // update the headlight and coordinate system light
-        if (this.Camera != null)
+        if (this.Camera is not null)
         {
-            if (this.headLight != null)
+            if (this.headLight is not null)
             {
                 this.headLight.Direction = this.Camera.LookDirection;
             }
 
-            if (this.coordinateSystemLights != null)
+            if (this.coordinateSystemLights is not null)
             {
                 if (this.coordinateSystemLights.Children[0] is DirectionalLight cshl)
                 {
@@ -3566,7 +3545,7 @@ public class HelixViewport3D : ItemsControl, IHelixViewport3D
     /// </summary>
     protected void OnHeadlightChanged()
     {
-        if (this.lights == null)
+        if (this.lights is null)
         {
             return;
         }
@@ -3717,14 +3696,15 @@ public class HelixViewport3D : ItemsControl, IHelixViewport3D
     /// <param name="newValue">The items to add.</param>
     private void AddItems(IEnumerable newValue)
     {
-        if (newValue != null)
+        if (newValue is null)
         {
-            foreach (var element in newValue)
+            return;
+        }
+        foreach (var element in newValue)
+        {
+            if (element is Visual3D visual)
             {
-                if (element is Visual3D visual)
-                {
-                    this.Children.Add(visual);
-                }
+                this.Children.Add(visual);
             }
         }
     }
@@ -3832,7 +3812,7 @@ public class HelixViewport3D : ItemsControl, IHelixViewport3D
 
         if (!this.hasBeenLoadedBefore)
         {
-            if (this.DefaultCamera != null)
+            if (this.DefaultCamera is not null)
             {
                 this.DefaultCamera.CopyTo(this.perspectiveCamera);
                 this.DefaultCamera.CopyTo(this.orthographicCamera);
@@ -3914,16 +3894,18 @@ public class HelixViewport3D : ItemsControl, IHelixViewport3D
     /// </param>
     private void RemoveItems(IEnumerable oldValue)
     {
-        if (oldValue != null)
+        if (oldValue is null)
         {
-            foreach (var element in oldValue)
+            return;
+        }
+        foreach (var element in oldValue)
+        {
+            if (element is Visual3D visual)
             {
-                if (element is Visual3D visual)
-                {
-                    this.Children.Remove(visual);
-                }
+                this.Children.Remove(visual);
             }
         }
+
     }
 
     /// <summary>
