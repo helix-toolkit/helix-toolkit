@@ -94,7 +94,7 @@ public class Teapot : MeshElement3D
         var name = System.Reflection.Assembly.GetExecutingAssembly().ManifestModule.Name;
         name = name[..name.IndexOf(".dll")];
 
-        var component = Application.LoadComponent(new Uri($"{name};component/SharedResources/TeapotGeometry.xaml", UriKind.Relative));
+        var component = Application.LoadComponent(new Uri($"{name};component/Resources/TeapotGeometry.xaml", UriKind.Relative));
 
         if (component is not ResourceDictionary rd)
         {
