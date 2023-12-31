@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Controls;
+using System.Windows.Media;
 using System.Windows.Media.Media3D;
 
 namespace Selection;
@@ -18,6 +19,8 @@ public sealed partial class MainWindowViewModel : ObservableObject
         this.PointSelectionCommand = new PointSelectionCommand(viewport, this.HandleSelectionModelsEvent, this.HandleSelectionVisualsEvent);
         this.RectangleSelectionCommand = new RectangleSelectionCommand(viewport, this.HandleSelectionModelsEvent, this.HandleSelectionVisualsEvent);
         this.CombinedSelectionCommand = new CombinedSelectionCommand(viewport, this.HandleSelectionModelsEvent, this.HandleSelectionVisualsEvent);
+
+        this.CombinedSelectionCommand.FillRectangleBrush = new SolidColorBrush(Colors.Green) { Opacity = 0.5 };
     }
 
     [ObservableProperty]
