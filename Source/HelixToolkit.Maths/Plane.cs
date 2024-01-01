@@ -359,18 +359,18 @@ namespace HelixToolkit.Maths
             intersection = (p0 + u * (p1 - p0));
             return true;
         }
-        /// <summary>
-        /// Check if a line intersects with plane
-        /// </summary>
-        /// <param name="p"></param>
-        /// <param name="p0"></param>
-        /// <param name="p1"></param>
-        /// <param name="intersection"></param>
-        /// <returns></returns>
-        public static bool IntersectsLine(this Plane p, Vector3 p0, Vector3 p1, out Vector3 intersection)
-        {
-            return IntersectsLine(p, ref p0, ref p1, out intersection);
-        }
+        ///// <summary>
+        ///// Check if a line intersects with plane
+        ///// </summary>
+        ///// <param name="p"></param>
+        ///// <param name="p0"></param>
+        ///// <param name="p1"></param>
+        ///// <param name="intersection"></param>
+        ///// <returns></returns>
+        //public static bool IntersectsLine(this Plane p, Vector3 p0, Vector3 p1, out Vector3 intersection)
+        //{
+        //    return IntersectsLine(p, ref p0, ref p1, out intersection);
+        //}
         /// <summary>
         /// Builds a matrix that can be used to reflect vectors about a plane.
         /// </summary>
