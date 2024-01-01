@@ -8,7 +8,7 @@ using System.Windows;
 namespace HelixToolkit.Wpf;
 
 /// <summary>
-/// A billboard text visual element.
+/// A visual element that contains a text billboard.
 /// </summary>
 public class BillboardTextVisual3D : BillboardVisual3D, IBoundsIgnoredVisual3D
 {
