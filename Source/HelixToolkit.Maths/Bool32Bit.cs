@@ -1,6 +1,4 @@
-﻿using System.Runtime.InteropServices;
-
-namespace HelixToolkit.Maths
+﻿namespace HelixToolkit.Maths
 {
     /// <summary>
     /// Represents a bool value with size of 32 bits (4 bytes).
@@ -8,20 +6,26 @@ namespace HelixToolkit.Maths
     [StructLayout(LayoutKind.Sequential, Pack = 4)]
     public struct Bool32Bit : IEquatable<Bool32Bit>, IFormattable
     {
-        public uint Value;
+        internal uint v;
+        public bool V
+        { 
+            readonly get => v != 0;
+            set => v = value ? 1u : 0;
+        }
+
         public Bool32Bit(bool value)
         {
-            Value = value ? 1u : 0;
+            v = value ? 1u : 0;
         }
 
-        public bool Equals(Bool32Bit other)
+        public readonly bool Equals(Bool32Bit other)
         {
-            return Value == other.Value;
+            return v == other.v;
         }
 
-        public string ToString(string? format, IFormatProvider? formatProvider)
+        public readonly string ToString(string? format, IFormatProvider? formatProvider)
         {
-            return Value.ToString(format, formatProvider);
+            return v.ToString(format, formatProvider);
         }
 
         public static implicit operator Bool32Bit(bool value)
@@ -31,10 +35,10 @@ namespace HelixToolkit.Maths
 
         public static implicit operator bool(Bool32Bit value)
         {
-            return value.Value != 0;
+            return value.v != 0;
         }
 
-        public override bool Equals(object? obj)
+        public override readonly bool Equals(object? obj)
         {
             return obj is Bool32Bit bit && Equals(bit);
         }
@@ -49,9 +53,9 @@ namespace HelixToolkit.Maths
             return !(left == right);
         }
 
-        public override int GetHashCode()
+        public override readonly int GetHashCode()
         {
-            return Value.GetHashCode();
+            return v.GetHashCode();
         }
     }
 }

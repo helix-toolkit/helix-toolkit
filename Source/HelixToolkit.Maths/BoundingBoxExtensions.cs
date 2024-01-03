@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Numerics;
-
-namespace HelixToolkit.Maths
+﻿namespace HelixToolkit.Maths
 {
     /// <summary>
     /// 
@@ -19,15 +16,15 @@ namespace HelixToolkit.Maths
             {
                 return new BoundingBox();
             }
-            var min = new Vector3(float.MaxValue);
-            var max = new Vector3(float.MinValue);
+            Vector3 min = new(float.MaxValue);
+            Vector3 max = new(float.MinValue);
 
-            foreach (var point in points)
+            foreach (Vector3 point in points)
             {
                 min = min.Min(point);
                 max = max.Max(point);
             }
-            var diff = max - min;
+            Vector3 diff = max - min;
             return diff.AnySmallerOrEqual(0.0001f)
                 ? new BoundingBox(min - new Vector3(0.1f), max + new Vector3(0.1f))
                 : new BoundingBox(min, max);
@@ -42,8 +39,8 @@ namespace HelixToolkit.Maths
         public static BoundingBox Transform(this BoundingBox box, Matrix4x4 transform)
         {
             /////////////////Row 4/////////////////
-            var min = transform.Row4().ToVector3();
-            var max = transform.Row4().ToVector3();
+            Vector3 min = transform.Translation;
+            Vector3 max = transform.Translation;
             /////////////////Row 1/////////////////
             if (transform.M11 > 0f)
             {

@@ -29,13 +29,6 @@ The MIT License (MIT)
 Copyright (c) 2007-2011 SlimDX Group
 The MIT License (MIT)
 */
-using System;
-using System.Drawing;
-using System.Globalization;
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
-using Vector2 = System.Numerics.Vector2;
-
 namespace HelixToolkit.Maths
 {
     /// <summary>
@@ -68,7 +61,7 @@ namespace HelixToolkit.Maths
         /// <summary>
         /// An empty rectangle.
         /// </summary>
-        public static readonly RectangleF Empty = new RectangleF();
+        public static readonly RectangleF Empty = new();
 
         /// <summary>
         /// An infinite rectangle. See remarks.
@@ -78,7 +71,7 @@ namespace HelixToolkit.Maths
         /// Any properties that involve computations, like <see cref="Center"/>, <see cref="Width"/> or <see cref="Height"/>
         /// may return incorrect results - <see cref="float.NaN"/>.
         /// </remarks>
-        public static readonly RectangleF Infinite = new RectangleF
+        public static readonly RectangleF Infinite = new()
         {
             Left = float.NegativeInfinity,
             Top = float.NegativeInfinity,
@@ -107,7 +100,7 @@ namespace HelixToolkit.Maths
         /// <value>The X position.</value>
         public float X
         {
-            get
+            readonly get
             {
                 return Left;
             }
@@ -124,7 +117,7 @@ namespace HelixToolkit.Maths
         /// <value>The Y position.</value>
         public float Y
         {
-            get
+            readonly get
             {
                 return Top;
             }
@@ -141,7 +134,7 @@ namespace HelixToolkit.Maths
         /// <value>The width.</value>
         public float Width
         {
-            get { return Right - Left; }
+            readonly get { return Right - Left; }
             set { Right = Left + value; }
         }
 
@@ -151,7 +144,7 @@ namespace HelixToolkit.Maths
         /// <value>The height.</value>
         public float Height
         {
-            get { return Bottom - Top; }
+            readonly get { return Bottom - Top; }
             set { Bottom = Top + value; }
         }
 
@@ -163,7 +156,7 @@ namespace HelixToolkit.Maths
         /// </value>
         public Vector2 Location
         {
-            get
+            readonly get
             {
                 return new Vector2(X, Y);
             }
@@ -180,7 +173,7 @@ namespace HelixToolkit.Maths
         /// <value>
         /// The center.
         /// </value>
-        public Vector2 Center
+        public readonly Vector2 Center
         {
             get
             {
@@ -194,7 +187,7 @@ namespace HelixToolkit.Maths
         /// <value>
         ///   <c>true</c> if [is empty]; otherwise, <c>false</c>.
         /// </value>
-        public bool IsEmpty
+        public readonly bool IsEmpty
         {
             get
             {
@@ -206,29 +199,29 @@ namespace HelixToolkit.Maths
         /// Gets the position of the top-left corner of the rectangle.
         /// </summary>
         /// <value>The top-left corner of the rectangle.</value>
-        public Vector2 TopLeft { get { return new Vector2(Left, Top); } }
+        public readonly Vector2 TopLeft { get { return new Vector2(Left, Top); } }
 
         /// <summary>
         /// Gets the position of the top-right corner of the rectangle.
         /// </summary>
         /// <value>The top-right corner of the rectangle.</value>
-        public Vector2 TopRight { get { return new Vector2(Right, Top); } }
+        public readonly Vector2 TopRight { get { return new Vector2(Right, Top); } }
 
         /// <summary>
         /// Gets the position of the bottom-left corner of the rectangle.
         /// </summary>
         /// <value>The bottom-left corner of the rectangle.</value>
-        public Vector2 BottomLeft { get { return new Vector2(Left, Bottom); } }
+        public readonly Vector2 BottomLeft { get { return new Vector2(Left, Bottom); } }
 
         /// <summary>
         /// Gets the position of the bottom-right corner of the rectangle.
         /// </summary>
         /// <value>The bottom-right corner of the rectangle.</value>
-        public Vector2 BottomRight { get { return new Vector2(Right, Bottom); } }
+        public readonly Vector2 BottomRight { get { return new Vector2(Right, Bottom); } }
 
-        public Vector2 Size()
+        public readonly Vector2 Size()
         {
-            var size = TopLeft - BottomRight;
+            Vector2 size = TopLeft - BottomRight;
             return new Vector2(Math.Abs(size.X), Math.Abs(size.Y));
         }
 
@@ -262,14 +255,14 @@ namespace HelixToolkit.Maths
         /// <summary>Determines whether this rectangle contains a specified Point.</summary>
         /// <param name="value">The Point to evaluate.</param>
         /// <param name="result">[OutAttribute] true if the specified Point is contained within this rectangle; false otherwise.</param>
-        public void Contains(ref Vector2 value, out bool result)
+        public readonly void Contains(ref Vector2 value, out bool result)
         {
-            result = (value.X >= Left && value.X <= Right && value.Y >= Top && value.Y <= Bottom);
+            result = value.X >= Left && value.X <= Right && value.Y >= Top && value.Y <= Bottom;
         }
 
         /// <summary>Determines whether this rectangle entirely contains a specified rectangle.</summary>
         /// <param name="value">The rectangle to evaluate.</param>
-        public bool Contains(Rectangle value)
+        public readonly bool Contains(Rectangle value)
         {
             return (X <= value.X) && (value.Right <= Right) && (Y <= value.Y) && (value.Bottom <= Bottom);
         }
@@ -277,7 +270,7 @@ namespace HelixToolkit.Maths
         /// <summary>Determines whether this rectangle entirely contains a specified rectangle.</summary>
         /// <param name="value">The rectangle to evaluate.</param>
         /// <param name="result">[OutAttribute] On exit, is true if this rectangle entirely contains the specified rectangle, or false if not.</param>
-        public void Contains(ref RectangleF value, out bool result)
+        public readonly void Contains(ref RectangleF value, out bool result)
         {
             result = (X <= value.X) && (value.Right <= Right) && (Y <= value.Y) && (value.Bottom <= Bottom);
         }
@@ -288,9 +281,9 @@ namespace HelixToolkit.Maths
         /// <param name="x">X point coordinate.</param>
         /// <param name="y">Y point coordinate.</param>
         /// <returns><c>true</c> if point is inside <see cref="RectangleF"/>, otherwise <c>false</c>.</returns>
-        public bool Contains(float x, float y)
+        public readonly bool Contains(float x, float y)
         {
-            return (x >= Left && x <= Right && y >= Top && y <= Bottom);
+            return x >= Left && x <= Right && y >= Top && y <= Bottom;
         }
 
         /// <summary>
@@ -298,17 +291,16 @@ namespace HelixToolkit.Maths
         /// </summary>
         /// <param name="vector2D">Coordinate <see cref="Vector2"/>.</param>
         /// <returns><c>true</c> if <see cref="Vector2"/> is inside <see cref="RectangleF"/>, otherwise <c>false</c>.</returns>
-        public bool Contains(Vector2 vector2D)
+        public readonly bool Contains(Vector2 vector2D)
         {
             return Contains(vector2D.X, vector2D.Y);
         }
 
         /// <summary>Determines whether a specified rectangle intersects with this rectangle.</summary>
         /// <param name="value">The rectangle to evaluate.</param>
-        public bool Intersects(RectangleF value)
+        public readonly bool Intersects(RectangleF value)
         {
-            bool result;
-            Intersects(ref value, out result);
+            Intersects(ref value, out bool result);
             return result;
         }
 
@@ -317,7 +309,7 @@ namespace HelixToolkit.Maths
         /// </summary>
         /// <param name="value">The rectangle to evaluate</param>
         /// <param name="result">[OutAttribute] true if the specified rectangle intersects with this one; false otherwise.</param>
-        public void Intersects(ref RectangleF value, out bool result)
+        public readonly void Intersects(ref RectangleF value, out bool result)
         {
             result = (value.X < Right) && (X < value.Right) && (value.Y < Bottom) && (Y < value.Bottom);
         }
@@ -330,8 +322,7 @@ namespace HelixToolkit.Maths
         /// <returns>The intersection rectangle.</returns>
         public static RectangleF Intersect(RectangleF value1, RectangleF value2)
         {
-            RectangleF result;
-            Intersect(ref value1, ref value2, out result);
+            Intersect(ref value1, ref value2, out RectangleF result);
             return result;
         }
 
@@ -341,18 +332,11 @@ namespace HelixToolkit.Maths
         /// <param name="result">[OutAttribute] The area where the two first parameters overlap.</param>
         public static void Intersect(ref RectangleF value1, ref RectangleF value2, out RectangleF result)
         {
-            var newLeft = (value1.X > value2.X) ? value1.X : value2.X;
-            var newTop = (value1.Y > value2.Y) ? value1.Y : value2.Y;
-            var newRight = (value1.Right < value2.Right) ? value1.Right : value2.Right;
-            var newBottom = (value1.Bottom < value2.Bottom) ? value1.Bottom : value2.Bottom;
-            if ((newRight > newLeft) && (newBottom > newTop))
-            {
-                result = new RectangleF(newLeft, newTop, newRight - newLeft, newBottom - newTop);
-            }
-            else
-            {
-                result = Empty;
-            }
+            float newLeft = (value1.X > value2.X) ? value1.X : value2.X;
+            float newTop = (value1.Y > value2.Y) ? value1.Y : value2.Y;
+            float newRight = (value1.Right < value2.Right) ? value1.Right : value2.Right;
+            float newBottom = (value1.Bottom < value2.Bottom) ? value1.Bottom : value2.Bottom;
+            result = (newRight > newLeft) && (newBottom > newTop) ? new RectangleF(newLeft, newTop, newRight - newLeft, newBottom - newTop) : Empty;
         }
 
         /// <summary>
@@ -363,8 +347,7 @@ namespace HelixToolkit.Maths
         /// <returns>The union rectangle.</returns>
         public static RectangleF Union(RectangleF value1, RectangleF value2)
         {
-            RectangleF result;
-            Union(ref value1, ref value2, out result);
+            Union(ref value1, ref value2, out RectangleF result);
             return result;
         }
 
@@ -376,10 +359,10 @@ namespace HelixToolkit.Maths
         /// <param name="result">[OutAttribute] The rectangle that must be the union of the first two rectangles.</param>
         public static void Union(ref RectangleF value1, ref RectangleF value2, out RectangleF result)
         {
-            var left = Math.Min(value1.Left, value2.Left);
-            var right = Math.Max(value1.Right, value2.Right);
-            var top = Math.Min(value1.Top, value2.Top);
-            var bottom = Math.Max(value1.Bottom, value2.Bottom);
+            float left = Math.Min(value1.Left, value2.Left);
+            float right = Math.Max(value1.Right, value2.Right);
+            float top = Math.Min(value1.Top, value2.Top);
+            float bottom = Math.Max(value1.Bottom, value2.Bottom);
             result = new RectangleF(left, top, right - left, bottom - top);
         }
 
@@ -390,7 +373,7 @@ namespace HelixToolkit.Maths
         /// <returns>
         /// 	<c>true</c> if the specified <see cref="System.Object"/> is equal to this instance; otherwise, <c>false</c>.
         /// </returns>
-        public override bool Equals(object? obj)
+        public override readonly bool Equals(object? obj)
         {
             return obj is RectangleF rect && Equals(ref rect);
         }
@@ -402,7 +385,7 @@ namespace HelixToolkit.Maths
         /// <returns>
         /// <c>true</c> if the specified <see cref="RectangleF"/> is equal to this instance; otherwise, <c>false</c>.
         /// </returns>
-        public bool Equals(ref RectangleF other)
+        public readonly bool Equals(ref RectangleF other)
         {
             return MathUtil.NearEqual(other.Left, Left) &&
                    MathUtil.NearEqual(other.Right, Right) &&
@@ -418,7 +401,7 @@ namespace HelixToolkit.Maths
         /// <c>true</c> if the specified <see cref="RectangleF"/> is equal to this instance; otherwise, <c>false</c>.
         /// </returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)] // MethodImplOptions.AggressiveInlining
-        public bool Equals(RectangleF other)
+        public readonly bool Equals(RectangleF other)
         {
             return Equals(ref other);
         }
@@ -429,11 +412,11 @@ namespace HelixToolkit.Maths
         /// <returns>
         /// A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.
         /// </returns>
-        public override int GetHashCode()
+        public override readonly int GetHashCode()
         {
             unchecked
             {
-                var result = Left.GetHashCode();
+                int result = Left.GetHashCode();
                 result = (result * 397) ^ Top.GetHashCode();
                 result = (result * 397) ^ Right.GetHashCode();
                 result = (result * 397) ^ Bottom.GetHashCode();
@@ -441,7 +424,7 @@ namespace HelixToolkit.Maths
             }
         }
 
-        public override string ToString()
+        public override readonly string ToString()
         {
             return string.Format(CultureInfo.InvariantCulture, "X:{0} Y:{1} Width:{2} Height:{3}", X, Y, Width, Height);
         }

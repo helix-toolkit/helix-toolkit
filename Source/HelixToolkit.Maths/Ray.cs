@@ -29,12 +29,6 @@ The MIT License (MIT)
 Copyright (c) 2007-2011 SlimDX Group
 The MIT License (MIT)
 */
-using System.Globalization;
-using System.Numerics;
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
-using Matrix = System.Numerics.Matrix4x4;
-
 namespace HelixToolkit.Maths
 {
     /// <summary>
@@ -81,7 +75,7 @@ namespace HelixToolkit.Maths
         /// <returns>Whether the two objects intersected.</returns>
         public bool Intersects(ref Ray ray)
         {
-            return Collision.RayIntersectsRay(ref this, ref ray, out var point);
+            return Collision.RayIntersectsRay(ref this, ref ray, out _);
         }
 
         /// <summary>
@@ -103,7 +97,7 @@ namespace HelixToolkit.Maths
         /// <returns>Whether the two objects intersected.</returns>
         public bool Intersects(ref Plane plane)
         {
-            return Collision.RayIntersectsPlane(ref this, ref plane, out float distance);
+            return Collision.RayIntersectsPlane(ref this, ref plane, out float _);
         }
 
         /// <summary>
@@ -139,7 +133,7 @@ namespace HelixToolkit.Maths
         /// <returns>Whether the two objects intersected.</returns>
         public bool Intersects(ref Vector3 vertex1, ref Vector3 vertex2, ref Vector3 vertex3)
         {
-            return Collision.RayIntersectsTriangle(ref this, ref vertex1, ref vertex2, ref vertex3, out float distance);
+            return Collision.RayIntersectsTriangle(ref this, ref vertex1, ref vertex2, ref vertex3, out float _);
         }
 
         /// <summary>
@@ -177,7 +171,7 @@ namespace HelixToolkit.Maths
         /// <returns>Whether the two objects intersected.</returns>
         public bool Intersects(ref BoundingBox box)
         {
-            return Collision.RayIntersectsBox(ref this, ref box, out float distance);
+            return Collision.RayIntersectsBox(ref this, ref box, out float _);
         }
 
         /// <summary>
@@ -221,7 +215,7 @@ namespace HelixToolkit.Maths
         /// <returns>Whether the two objects intersected.</returns>
         public bool Intersects(ref BoundingSphere sphere)
         {
-            return Collision.RayIntersectsSphere(ref this, ref sphere, out float distance);
+            return Collision.RayIntersectsSphere(ref this, ref sphere, out float _);
         }
 
         /// <summary>
@@ -266,7 +260,7 @@ namespace HelixToolkit.Maths
         /// <returns></returns>
         public bool PlaneIntersection(Vector3 planePosition, Vector3 planeNormal, out Vector3 intersect)
         {
-            var plane = PlaneHelper.Create(planePosition, planeNormal);
+            Plane plane = PlaneHelper.Create(planePosition, planeNormal);
             return Collision.RayIntersectsPlane(ref this, ref plane, out intersect);
         }
         /// <summary>
@@ -279,15 +273,15 @@ namespace HelixToolkit.Maths
         /// <returns>Resulting <see cref="Ray"/>.</returns>
         public static Ray GetPickRay(int x, int y, ViewportF viewport, Matrix worldViewProjection)
         {
-            var nearPoint = new Vector3(x, y, 0);
-            var farPoint = new Vector3(x, y, 1);
+            Vector3 nearPoint = new(x, y, 0);
+            Vector3 farPoint = new(x, y, 1);
 
             nearPoint = Vector3Helper.Unproject(nearPoint, viewport.X, viewport.Y, viewport.Width, viewport.Height, viewport.MinDepth,
                                         viewport.MaxDepth, worldViewProjection);
             farPoint = Vector3Helper.Unproject(farPoint, viewport.X, viewport.Y, viewport.Width, viewport.Height, viewport.MinDepth,
                                         viewport.MaxDepth, worldViewProjection);
 
-            var direction = Vector3.Normalize(farPoint - nearPoint);
+            Vector3 direction = Vector3.Normalize(farPoint - nearPoint);
 
             return new Ray(nearPoint, direction);
         }
@@ -322,7 +316,7 @@ namespace HelixToolkit.Maths
         /// <returns>
         /// A <see cref="System.String"/> that represents this instance.
         /// </returns>
-        public override string ToString()
+        public override readonly string ToString()
         {
             return string.Format(CultureInfo.CurrentCulture, "Position:{0} Direction:{1}", Position.ToString(), Direction.ToString());
         }
@@ -334,7 +328,7 @@ namespace HelixToolkit.Maths
         /// <returns>
         /// A <see cref="System.String"/> that represents this instance.
         /// </returns>
-        public string ToString(string format)
+        public readonly string ToString(string format)
         {
             return string.Format(CultureInfo.CurrentCulture, "Position:{0} Direction:{1}", Position.ToString(format, CultureInfo.CurrentCulture),
                 Direction.ToString(format, CultureInfo.CurrentCulture));
@@ -347,7 +341,7 @@ namespace HelixToolkit.Maths
         /// <returns>
         /// A <see cref="System.String"/> that represents this instance.
         /// </returns>
-        public string ToString(IFormatProvider formatProvider)
+        public readonly string ToString(IFormatProvider formatProvider)
         {
             return string.Format(formatProvider, "Position:{0} Direction:{1}", Position.ToString(), Direction.ToString());
         }
@@ -360,7 +354,7 @@ namespace HelixToolkit.Maths
         /// <returns>
         /// A <see cref="System.String"/> that represents this instance.
         /// </returns>
-        public string ToString(string? format, IFormatProvider? formatProvider)
+        public readonly string ToString(string? format, IFormatProvider? formatProvider)
         {
             return string.Format(formatProvider, "Position:{0} Direction:{1}", Position.ToString(format, formatProvider),
                 Direction.ToString(format, formatProvider));
@@ -372,7 +366,7 @@ namespace HelixToolkit.Maths
         /// <returns>
         /// A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table. 
         /// </returns>
-        public override int GetHashCode()
+        public override readonly int GetHashCode()
         {
             unchecked
             {
@@ -388,7 +382,7 @@ namespace HelixToolkit.Maths
         /// <c>true</c> if the specified <see cref="Vector4"/> is equal to this instance; otherwise, <c>false</c>.
         /// </returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)] // MethodImplOptions.AggressiveInlining
-        public bool Equals(ref Ray value)
+        public readonly bool Equals(ref Ray value)
         {
             return Position == value.Position && Direction == value.Direction;
         }
@@ -401,7 +395,7 @@ namespace HelixToolkit.Maths
         /// <c>true</c> if the specified <see cref="Vector4"/> is equal to this instance; otherwise, <c>false</c>.
         /// </returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)] // MethodImplOptions.AggressiveInlining
-        public bool Equals(Ray value)
+        public readonly bool Equals(Ray value)
         {
             return Equals(ref value);
         }
@@ -413,7 +407,7 @@ namespace HelixToolkit.Maths
         /// <returns>
         /// <c>true</c> if the specified <see cref="System.Object"/> is equal to this instance; otherwise, <c>false</c>.
         /// </returns>
-        public override bool Equals(object? obj)
+        public override readonly bool Equals(object? obj)
         {
             return obj is Ray ray && Equals(ref ray);
         }

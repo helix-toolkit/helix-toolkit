@@ -29,13 +29,6 @@ The MIT License (MIT)
 Copyright (c) 2007-2011 SlimDX Group
 The MIT License (MIT)
 */
-using System;
-using System.Globalization;
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
-using System.Numerics;
-using Matrix = System.Numerics.Matrix4x4;
-
 namespace HelixToolkit.Maths
 {
     /// <summary>
@@ -51,67 +44,67 @@ namespace HelixToolkit.Maths
         /// <summary>
         /// A <see cref="Vector3"/> with all of its components set to zero.
         /// </summary>
-        public static readonly Vector3 Zero = new Vector3();
+        public static readonly Vector3 Zero = new();
 
         /// <summary>
         /// The X unit <see cref="Vector3"/> (1, 0, 0).
         /// </summary>
-        public static readonly Vector3 UnitX = new Vector3(1.0f, 0.0f, 0.0f);
+        public static readonly Vector3 UnitX = new(1.0f, 0.0f, 0.0f);
 
         /// <summary>
         /// The Y unit <see cref="Vector3"/> (0, 1, 0).
         /// </summary>
-        public static readonly Vector3 UnitY = new Vector3(0.0f, 1.0f, 0.0f);
+        public static readonly Vector3 UnitY = new(0.0f, 1.0f, 0.0f);
 
         /// <summary>
         /// The Z unit <see cref="Vector3"/> (0, 0, 1).
         /// </summary>
-        public static readonly Vector3 UnitZ = new Vector3(0.0f, 0.0f, 1.0f);
+        public static readonly Vector3 UnitZ = new(0.0f, 0.0f, 1.0f);
 
         /// <summary>
         /// A <see cref="Vector3"/> with all of its components set to one.
         /// </summary>
-        public static readonly Vector3 One = new Vector3(1.0f, 1.0f, 1.0f);
+        public static readonly Vector3 One = new(1.0f, 1.0f, 1.0f);
 
         /// <summary>
         /// A unit <see cref="Vector3"/> designating up (0, 1, 0).
         /// </summary>
-        public static readonly Vector3 Up = new Vector3(0.0f, 1.0f, 0.0f);
+        public static readonly Vector3 Up = new(0.0f, 1.0f, 0.0f);
 
         /// <summary>
         /// A unit <see cref="Vector3"/> designating down (0, -1, 0).
         /// </summary>
-        public static readonly Vector3 Down = new Vector3(0.0f, -1.0f, 0.0f);
+        public static readonly Vector3 Down = new(0.0f, -1.0f, 0.0f);
 
         /// <summary>
         /// A unit <see cref="Vector3"/> designating left (-1, 0, 0).
         /// </summary>
-        public static readonly Vector3 Left = new Vector3(-1.0f, 0.0f, 0.0f);
+        public static readonly Vector3 Left = new(-1.0f, 0.0f, 0.0f);
 
         /// <summary>
         /// A unit <see cref="Vector3"/> designating right (1, 0, 0).
         /// </summary>
-        public static readonly Vector3 Right = new Vector3(1.0f, 0.0f, 0.0f);
+        public static readonly Vector3 Right = new(1.0f, 0.0f, 0.0f);
 
         /// <summary>
         /// A unit <see cref="Vector3"/> designating forward in a right-handed coordinate system (0, 0, -1).
         /// </summary>
-        public static readonly Vector3 ForwardRH = new Vector3(0.0f, 0.0f, -1.0f);
+        public static readonly Vector3 ForwardRH = new(0.0f, 0.0f, -1.0f);
 
         /// <summary>
         /// A unit <see cref="Vector3"/> designating forward in a left-handed coordinate system (0, 0, 1).
         /// </summary>
-        public static readonly Vector3 ForwardLH = new Vector3(0.0f, 0.0f, 1.0f);
+        public static readonly Vector3 ForwardLH = new(0.0f, 0.0f, 1.0f);
 
         /// <summary>
         /// A unit <see cref="Vector3"/> designating backward in a right-handed coordinate system (0, 0, 1).
         /// </summary>
-        public static readonly Vector3 BackwardRH = new Vector3(0.0f, 0.0f, 1.0f);
+        public static readonly Vector3 BackwardRH = new(0.0f, 0.0f, 1.0f);
 
         /// <summary>
         /// A unit <see cref="Vector3"/> designating backward in a left-handed coordinate system (0, 0, -1).
         /// </summary>
-        public static readonly Vector3 BackwardLH = new Vector3(0.0f, 0.0f, -1.0f);
+        public static readonly Vector3 BackwardLH = new(0.0f, 0.0f, -1.0f);
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector3 Min(this Vector3 v1, ref Vector3 v2)
         {
@@ -165,14 +158,13 @@ namespace HelixToolkit.Maths
         /// <exception cref="System.ArgumentOutOfRangeException">Thrown when the <paramref name="index"/> is out of the range [0, 2].</exception>
         public static float Get(this Vector3 v, int index)
         {
-                switch (index)
-                {
-                    case 0: return v.X;
-                    case 1: return v.Y;
-                    case 2: return v.Z;
-                }
-
-                throw new ArgumentOutOfRangeException("index", "Indices for Vector3 run from 0 to 2, inclusive.");
+            return index switch
+            {
+                0 => v.X,
+                1 => v.Y,
+                2 => v.Z,
+                _ => throw new ArgumentOutOfRangeException(nameof(index), "Indices for Vector3 run from 0 to 2, inclusive."),
+            };
         }
 
         public static void Set(ref Vector3 v, int index, float value)
@@ -182,7 +174,7 @@ namespace HelixToolkit.Maths
                     case 0: v.X = value; break;
                     case 1: v.Y = value; break;
                     case 2: v.Z = value; break;
-                    default: throw new ArgumentOutOfRangeException("index", "Indices for Vector3 run from 0 to 2, inclusive.");
+                    default: throw new ArgumentOutOfRangeException(nameof(index), "Indices for Vector3 run from 0 to 2, inclusive.");
                 }
         }
 
@@ -223,7 +215,7 @@ namespace HelixToolkit.Maths
         /// <returns>A new <see cref="Vector3"/> containing the 3D Cartesian coordinates of the specified point.</returns>
         public static Vector3 Barycentric(Vector3 value1, Vector3 value2, Vector3 value3, float amount1, float amount2)
         {
-            Barycentric(ref value1, ref value2, ref value3, amount1, amount2, out var result);
+            Barycentric(ref value1, ref value2, ref value3, amount1, amount2, out Vector3 result);
             return result;
         }
 
@@ -275,7 +267,7 @@ namespace HelixToolkit.Maths
         /// <returns>The cubic interpolation of the two vectors.</returns>
         public static Vector3 SmoothStep(Vector3 start, Vector3 end, float amount)
         {
-            SmoothStep(ref start, ref end, amount, out var result);
+            SmoothStep(ref start, ref end, amount, out Vector3 result);
             return result;
         }
 
@@ -290,12 +282,12 @@ namespace HelixToolkit.Maths
         /// <param name="result">When the method completes, contains the result of the Hermite spline interpolation.</param>
         public static void Hermite(ref Vector3 value1, ref Vector3 tangent1, ref Vector3 value2, ref Vector3 tangent2, float amount, out Vector3 result)
         {
-            var squared = amount * amount;
-            var cubed = amount * squared;
-            var part1 = ((2.0f * cubed) - (3.0f * squared)) + 1.0f;
-            var part2 = (-2.0f * cubed) + (3.0f * squared);
-            var part3 = (cubed - (2.0f * squared)) + amount;
-            var part4 = cubed - squared;
+            float squared = amount * amount;
+            float cubed = amount * squared;
+            float part1 = (2.0f * cubed) - (3.0f * squared) + 1.0f;
+            float part2 = (-2.0f * cubed) + (3.0f * squared);
+            float part3 = cubed - (2.0f * squared) + amount;
+            float part4 = cubed - squared;
 
             result = value1 * part1 + value2 * part2 + tangent1 * part3 + tangent2 * part4;
 
@@ -315,7 +307,7 @@ namespace HelixToolkit.Maths
         /// <returns>The result of the Hermite spline interpolation.</returns>
         public static Vector3 Hermite(Vector3 value1, Vector3 tangent1, Vector3 value2, Vector3 tangent2, float amount)
         {
-            Hermite(ref value1, ref tangent1, ref value2, ref tangent2, amount, out var result);
+            Hermite(ref value1, ref tangent1, ref value2, ref tangent2, amount, out Vector3 result);
             return result;
         }
 
@@ -330,12 +322,12 @@ namespace HelixToolkit.Maths
         /// <param name="result">When the method completes, contains the result of the Catmull-Rom interpolation.</param>
         public static void CatmullRom(ref Vector3 value1, ref Vector3 value2, ref Vector3 value3, ref Vector3 value4, float amount, out Vector3 result)
         {
-            var squared = amount * amount;
-            var cubed = amount * squared;
+            float squared = amount * amount;
+            float cubed = amount * squared;
 
-            result = 0.5f * ((((2f * value2) + ((-value1 + value3) * amount)) +
-                (((((2f * value1) - (5f * value2)) + (4 * value3)) - value4) * squared)) +
-                ((((-value1 + (3f * value2)) - (3f * value3)) + value4) * cubed));
+            result = 0.5f * ((2f * value2) + ((-value1 + value3) * amount) +
+                (((2f * value1) - (5f * value2) + (4 * value3) - value4) * squared) +
+                ((-value1 + (3f * value2) - (3f * value3) + value4) * cubed));
 
             //result.X = 0.5f * ((((2.0f * value2.X) + ((-value1.X + value3.X) * amount)) +
             //(((((2.0f * value1.X) - (5.0f * value2.X)) + (4.0f * value3.X)) - value4.X) * squared)) +
@@ -361,7 +353,7 @@ namespace HelixToolkit.Maths
         /// <returns>A vector that is the result of the Catmull-Rom interpolation.</returns>
         public static Vector3 CatmullRom(Vector3 value1, Vector3 value2, Vector3 value3, Vector3 value4, float amount)
         {
-            CatmullRom(ref value1, ref value2, ref value3, ref value4, amount, out var result);
+            CatmullRom(ref value1, ref value2, ref value3, ref value4, amount, out Vector3 result);
             return result;
         }
 
@@ -379,7 +371,7 @@ namespace HelixToolkit.Maths
         /// <param name="result">When the method completes, contains the vector in screen space.</param>
         public static void Project(ref Vector3 vector, float x, float y, float width, float height, float minZ, float maxZ, ref Matrix worldViewProjection, out Vector3 result)
         {
-            TransformCoordinate(ref vector, ref worldViewProjection, out var v);
+            TransformCoordinate(ref vector, ref worldViewProjection, out Vector3 v);
 
             result = new Vector3(((1.0f + v.X) * 0.5f * width) + x, ((1.0f - v.Y) * 0.5f * height) + y, (v.Z * (maxZ - minZ)) + minZ);
         }
@@ -398,7 +390,7 @@ namespace HelixToolkit.Maths
         /// <returns>The vector in screen space.</returns>
         public static Vector3 Project(Vector3 vector, float x, float y, float width, float height, float minZ, float maxZ, Matrix worldViewProjection)
         {
-            Project(ref vector, x, y, width, height, minZ, maxZ, ref worldViewProjection, out var result);
+            Project(ref vector, x, y, width, height, minZ, maxZ, ref worldViewProjection, out Vector3 result);
             return result;
         }
 
@@ -416,11 +408,11 @@ namespace HelixToolkit.Maths
         /// <param name="result">When the method completes, contains the vector in object space.</param>
         public static void Unproject(ref Vector3 vector, float x, float y, float width, float height, float minZ, float maxZ, ref Matrix worldViewProjection, out Vector3 result)
         {
-            var v = new Vector3();
-            Matrix.Invert(worldViewProjection, out var matrix);
+            Vector3 v = new();
+            Matrix.Invert(worldViewProjection, out Matrix matrix);
 
-            v.X = (((vector.X - x) / width) * 2.0f) - 1.0f;
-            v.Y = -((((vector.Y - y) / height) * 2.0f) - 1.0f);
+            v.X = ((vector.X - x) / width * 2.0f) - 1.0f;
+            v.Y = -(((vector.Y - y) / height * 2.0f) - 1.0f);
             v.Z = (vector.Z - minZ) / (maxZ - minZ);
 
             TransformCoordinate(ref v, ref matrix, out result);
@@ -440,7 +432,7 @@ namespace HelixToolkit.Maths
         /// <returns>The vector in object space.</returns>
         public static Vector3 Unproject(Vector3 vector, float x, float y, float width, float height, float minZ, float maxZ, Matrix worldViewProjection)
         {
-            Unproject(ref vector, x, y, width, height, minZ, maxZ, ref worldViewProjection, out var result);
+            Unproject(ref vector, x, y, width, height, minZ, maxZ, ref worldViewProjection, out Vector3 result);
             return result;
         }
 
@@ -472,26 +464,26 @@ namespace HelixToolkit.Maths
 
             if (source == null)
             {
-                throw new ArgumentNullException("source");
+                throw new ArgumentNullException(nameof(source));
             }
 
             if (destination == null)
             {
-                throw new ArgumentNullException("destination");
+                throw new ArgumentNullException(nameof(destination));
             }
 
             if (destination.Length < source.Length)
             {
-                throw new ArgumentOutOfRangeException("destination", "The destination array must be of same length or larger length than the source array.");
+                throw new ArgumentOutOfRangeException(nameof(destination), "The destination array must be of same length or larger length than the source array.");
             }
 
-            for (var i = 0; i < source.Length; ++i)
+            for (int i = 0; i < source.Length; ++i)
             {
-                var newvector = source[i];
+                Vector3 newvector = source[i];
 
-                for (var r = 0; r < i; ++r)
+                for (int r = 0; r < i; ++r)
                 {
-                    newvector -= (Vector3.Dot(destination[r], newvector) / Vector3.Dot(destination[r], destination[r])) * destination[r];
+                    newvector -= Vector3.Dot(destination[r], newvector) / Vector3.Dot(destination[r], destination[r]) * destination[r];
                 }
 
                 destination[i] = newvector;
@@ -527,24 +519,24 @@ namespace HelixToolkit.Maths
 
             if (source == null)
             {
-                throw new ArgumentNullException("source");
+                throw new ArgumentNullException(nameof(source));
             }
 
             if (destination == null)
             {
-                throw new ArgumentNullException("destination");
+                throw new ArgumentNullException(nameof(destination));
             }
 
             if (destination.Length < source.Length)
             {
-                throw new ArgumentOutOfRangeException("destination", "The destination array must be of same length or larger length than the source array.");
+                throw new ArgumentOutOfRangeException(nameof(destination), "The destination array must be of same length or larger length than the source array.");
             }
 
-            for (var i = 0; i < source.Length; ++i)
+            for (int i = 0; i < source.Length; ++i)
             {
-                var newvector = source[i];
+                Vector3 newvector = source[i];
 
-                for (var r = 0; r < i; ++r)
+                for (int r = 0; r < i; ++r)
                 {
                     newvector -= Vector3.Dot(destination[r], newvector) * destination[r];
                 }
@@ -566,20 +558,20 @@ namespace HelixToolkit.Maths
         {
             if (source == null)
             {
-                throw new ArgumentNullException("source");
+                throw new ArgumentNullException(nameof(source));
             }
 
             if (destination == null)
             {
-                throw new ArgumentNullException("destination");
+                throw new ArgumentNullException(nameof(destination));
             }
 
             if (destination.Length < source.Length)
             {
-                throw new ArgumentOutOfRangeException("destination", "The destination array must be of same length or larger length than the source array.");
+                throw new ArgumentOutOfRangeException(nameof(destination), "The destination array must be of same length or larger length than the source array.");
             }
 
-            for (var i=0; i < source.Length; ++i)
+            for (int i =0; i < source.Length; ++i)
             {
                 destination[i] = Vector3.Transform(source[i], rotation);
             }
@@ -637,7 +629,7 @@ namespace HelixToolkit.Maths
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector3 Transform(Vector3 vector, Matrix3x3 transform)
         {
-            Transform(ref vector, ref transform, out var result);
+            Transform(ref vector, ref transform, out Vector3 result);
             return result;
         }
         /// <summary>
@@ -649,7 +641,7 @@ namespace HelixToolkit.Maths
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector3 Transform(Vector3 vector, ref Matrix3x3 transform)
         {
-            Transform(ref vector, ref transform, out var result);
+            Transform(ref vector, ref transform, out Vector3 result);
             return result;
         }
         /// <summary>
@@ -676,20 +668,20 @@ namespace HelixToolkit.Maths
         {
             if (source == null)
             {
-                throw new ArgumentNullException("source");
+                throw new ArgumentNullException(nameof(source));
             }
 
             if (destination == null)
             {
-                throw new ArgumentNullException("destination");
+                throw new ArgumentNullException(nameof(destination));
             }
 
             if (destination.Length < source.Length)
             {
-                throw new ArgumentOutOfRangeException("destination", "The destination array must be of same length or larger length than the source array.");
+                throw new ArgumentOutOfRangeException(nameof(destination), "The destination array must be of same length or larger length than the source array.");
             }
 
-            for (var i = 0; i < source.Length; ++i)
+            for (int i = 0; i < source.Length; ++i)
             {
                 Transform(ref source[i], ref transform, out destination[i]);
             }
@@ -711,7 +703,7 @@ namespace HelixToolkit.Maths
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void TransformCoordinate(ref Vector3 coordinate, ref Matrix transform, out Vector3 result)
         {
-            var v = Vector4.Transform(new Vector4(coordinate, 1), transform);
+            Vector4 v = Vector4.Transform(new Vector4(coordinate, 1), transform);
             v /= v.W;
             result = new Vector3(v.X, v.Y, v.Z);
 
@@ -740,7 +732,7 @@ namespace HelixToolkit.Maths
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector3 TransformCoordinate(this Vector3 coordinate, Matrix transform)
         {
-            var v = Vector4.Transform(new Vector4(coordinate, 1), transform);
+            Vector4 v = Vector4.Transform(new Vector4(coordinate, 1), transform);
             v /= v.W;
             return new Vector3(v.X, v.Y, v.Z);
         }
@@ -760,7 +752,7 @@ namespace HelixToolkit.Maths
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector3 TransformCoordinate(this Vector3 coordinate, ref Matrix transform)
         {
-            var v = Vector4.Transform(new Vector4(coordinate, 1), transform);
+            Vector4 v = Vector4.Transform(new Vector4(coordinate, 1), transform);
             v /= v.W;
             return new Vector3(v.X, v.Y, v.Z);
         }
@@ -784,20 +776,20 @@ namespace HelixToolkit.Maths
         {
             if (source == null)
             {
-                throw new ArgumentNullException("source");
+                throw new ArgumentNullException(nameof(source));
             }
 
             if (destination == null)
             {
-                throw new ArgumentNullException("destination");
+                throw new ArgumentNullException(nameof(destination));
             }
 
             if (destination.Length < source.Length)
             {
-                throw new ArgumentOutOfRangeException("destination", "The destination array must be of same length or larger length than the source array.");
+                throw new ArgumentOutOfRangeException(nameof(destination), "The destination array must be of same length or larger length than the source array.");
             }
 
-            for (var i = 0; i < source.Length; ++i)
+            for (int i = 0; i < source.Length; ++i)
             {
                 TransformCoordinate(ref source[i], ref transform, out destination[i]);
             }
@@ -856,20 +848,20 @@ namespace HelixToolkit.Maths
         {
             if (source == null)
             {
-                throw new ArgumentNullException("source");
+                throw new ArgumentNullException(nameof(source));
             }
 
             if (destination == null)
             {
-                throw new ArgumentNullException("destination");
+                throw new ArgumentNullException(nameof(destination));
             }
 
             if (destination.Length < source.Length)
             {
-                throw new ArgumentOutOfRangeException("destination", "The destination array must be of same length or larger length than the source array.");
+                throw new ArgumentOutOfRangeException(nameof(destination), "The destination array must be of same length or larger length than the source array.");
             }
 
-            for (var i = 0; i < source.Length; ++i)
+            for (int i = 0; i < source.Length; ++i)
             {
                 TransformNormal(ref source[i], ref transform, out destination[i]);
             }
@@ -907,8 +899,8 @@ namespace HelixToolkit.Maths
 
         public static Vector3 FindAnyPerpendicular(this Vector3 value)
         {
-            var n = Vector3.Normalize(value);
-            var u = Vector3.Cross(new Vector3(0, 1, 0), n);
+            Vector3 n = Vector3.Normalize(value);
+            Vector3 u = Vector3.Cross(new Vector3(0, 1, 0), n);
             if (u.LengthSquared() < 1e-3)
             {
                 u = Vector3.Cross(new Vector3(1, 0, 0), n);
@@ -919,17 +911,17 @@ namespace HelixToolkit.Maths
 
         public static void Clamp(ref Vector3 value, ref Vector3 min, ref Vector3 max, out Vector3 result)
         {
-            var x = Math.Max(min.X, Math.Min(value.X, max.X));
-            var y = Math.Max(min.Y, Math.Min(value.Y, max.Y));
-            var z = Math.Max(min.Z, Math.Min(value.Z, max.Z));
+            float x = Math.Max(min.X, Math.Min(value.X, max.X));
+            float y = Math.Max(min.Y, Math.Min(value.Y, max.Y));
+            float z = Math.Max(min.Z, Math.Min(value.Z, max.Z));
             result = new Vector3(x, y, z);
         }
 
         public static Vector3 Clamp(this Vector3 value, Vector3 min, Vector3 max)
         {
-            var x = Math.Max(min.X, Math.Min(value.X, max.X));
-            var y = Math.Max(min.Y, Math.Min(value.Y, max.Y));
-            var z = Math.Max(min.Z, Math.Min(value.Z, max.Z));
+            float x = Math.Max(min.X, Math.Min(value.X, max.X));
+            float y = Math.Max(min.Y, Math.Min(value.Y, max.Y));
+            float z = Math.Max(min.Z, Math.Min(value.Z, max.Z));
             return new Vector3(x, y, z);
         }
     }

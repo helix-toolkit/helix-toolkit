@@ -3,8 +3,6 @@ The MIT License (MIT)
 Copyright (c) 2022 Helix Toolkit contributors
 */
 using System.ComponentModel;
-using System.Globalization;
-using System.Runtime.CompilerServices;
 
 namespace HelixToolkit.Maths
 {
@@ -150,7 +148,7 @@ namespace HelixToolkit.Maths
                         //
                         var targetARGB = ((Color)obj).ToArgb();
 
-                        foreach (Color c in colors_.Values)
+                        foreach (Color c in colors_.Values.Select(v => (Color)v))
                         {
                             if (c.ToArgb() == targetARGB)
                             {

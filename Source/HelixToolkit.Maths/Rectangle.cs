@@ -29,10 +29,6 @@ The MIT License (MIT)
 Copyright (c) 2007-2011 SlimDX Group
 The MIT License (MIT)
 */
-using System.Globalization;
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
-
 
 namespace HelixToolkit.Maths
 {
@@ -66,7 +62,7 @@ namespace HelixToolkit.Maths
         /// <summary>
         /// An empty rectangle.
         /// </summary>
-        public static readonly Rectangle Empty = new Rectangle();
+        public static readonly Rectangle Empty = new();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Rectangle"/> struct.
@@ -89,7 +85,7 @@ namespace HelixToolkit.Maths
         /// <value>The X position.</value>
         public int X
         {
-            get
+            readonly get
             {
                 return Left;
             }
@@ -106,7 +102,7 @@ namespace HelixToolkit.Maths
         /// <value>The Y position.</value>
         public int Y
         {
-            get
+            readonly get
             {
                 return Top;
             }
@@ -123,7 +119,7 @@ namespace HelixToolkit.Maths
         /// <value>The width.</value>
         public int Width
         {
-            get { return Right - Left; }
+            readonly get { return Right - Left; }
             set { Right = Left + value; }
         }
 
@@ -133,7 +129,7 @@ namespace HelixToolkit.Maths
         /// <value>The height.</value>
         public int Height
         {
-            get { return Bottom - Top; }
+            readonly get { return Bottom - Top; }
             set { Bottom = Top + value; }
         }
 
@@ -144,7 +140,7 @@ namespace HelixToolkit.Maths
         /// <value>
         ///   <c>true</c> if [is empty]; otherwise, <c>false</c>.
         /// </value>
-        public bool IsEmpty
+        public readonly bool IsEmpty
         {
             get
             {
@@ -257,7 +253,7 @@ namespace HelixToolkit.Maths
         /// <summary>Determines whether this rectangle contains a specified point represented by its x- and y-coordinates.</summary>
         /// <param name="x">The x-coordinate of the specified point.</param>
         /// <param name="y">The y-coordinate of the specified point.</param>
-        public bool Contains(int x, int y)
+        public readonly bool Contains(int x, int y)
         {
             return (X <= x) && (x < Right) && (Y <= y) && (y < Bottom);
         }
@@ -281,17 +277,16 @@ namespace HelixToolkit.Maths
 
         /// <summary>Determines whether this rectangle entirely contains a specified rectangle.</summary>
         /// <param name="value">The rectangle to evaluate.</param>
-        public bool Contains(Rectangle value)
+        public readonly bool Contains(Rectangle value)
         {
-            bool result;
-            Contains(ref value, out result);
+            Contains(ref value, out bool result);
             return result;
         }
 
         /// <summary>Determines whether this rectangle entirely contains a specified rectangle.</summary>
         /// <param name="value">The rectangle to evaluate.</param>
         /// <param name="result">[OutAttribute] On exit, is true if this rectangle entirely contains the specified rectangle, or false if not.</param>
-        public void Contains(ref Rectangle value, out bool result)
+        public readonly void Contains(ref Rectangle value, out bool result)
         {
             result = (X <= value.X) && (value.Right <= Right) && (Y <= value.Y) && (value.Bottom <= Bottom);
         }
@@ -302,9 +297,9 @@ namespace HelixToolkit.Maths
         /// <param name="x">X point coordinate.</param>
         /// <param name="y">Y point coordinate.</param>
         /// <returns><c>true</c> if point is inside <see cref="Rectangle"/>, otherwise <c>false</c>.</returns>
-        public bool Contains(float x, float y)
+        public readonly bool Contains(float x, float y)
         {
-            return (x >= Left && x <= Right && y >= Top && y <= Bottom);
+            return x >= Left && x <= Right && y >= Top && y <= Bottom;
         }
 
         ///// <summary>
@@ -319,10 +314,9 @@ namespace HelixToolkit.Maths
 
         /// <summary>Determines whether a specified rectangle intersects with this rectangle.</summary>
         /// <param name="value">The rectangle to evaluate.</param>
-        public bool Intersects(Rectangle value)
+        public readonly bool Intersects(Rectangle value)
         {
-            bool result;
-            Intersects(ref value, out result);
+            Intersects(ref value, out bool result);
             return result;
         }
 
@@ -331,7 +325,7 @@ namespace HelixToolkit.Maths
         /// </summary>
         /// <param name="value">The rectangle to evaluate</param>
         /// <param name="result">[OutAttribute] true if the specified rectangle intersects with this one; false otherwise.</param>
-        public void Intersects(ref Rectangle value, out bool result)
+        public readonly void Intersects(ref Rectangle value, out bool result)
         {
             result = (value.X < Right) && (X < value.Right) && (value.Y < Bottom) && (Y < value.Bottom);
         }
@@ -344,8 +338,7 @@ namespace HelixToolkit.Maths
         /// <returns>The intersection rectangle.</returns>
         public static Rectangle Intersect(Rectangle value1, Rectangle value2)
         {
-            Rectangle result;
-            Intersect(ref value1, ref value2, out result);
+            Intersect(ref value1, ref value2, out Rectangle result);
             return result;
         }
 
@@ -355,18 +348,11 @@ namespace HelixToolkit.Maths
         /// <param name="result">[OutAttribute] The area where the two first parameters overlap.</param>
         public static void Intersect(ref Rectangle value1, ref Rectangle value2, out Rectangle result)
         {
-            var newLeft = (value1.X > value2.X) ? value1.X : value2.X;
-            var newTop = (value1.Y > value2.Y) ? value1.Y : value2.Y;
-            var newRight = (value1.Right < value2.Right) ? value1.Right : value2.Right;
-            var newBottom = (value1.Bottom < value2.Bottom) ? value1.Bottom : value2.Bottom;
-            if ((newRight > newLeft) && (newBottom > newTop))
-            {
-                result = new Rectangle(newLeft, newTop, newRight - newLeft, newBottom - newTop);
-            }
-            else
-            {
-                result = Empty;
-            }
+            int newLeft = (value1.X > value2.X) ? value1.X : value2.X;
+            int newTop = (value1.Y > value2.Y) ? value1.Y : value2.Y;
+            int newRight = (value1.Right < value2.Right) ? value1.Right : value2.Right;
+            int newBottom = (value1.Bottom < value2.Bottom) ? value1.Bottom : value2.Bottom;
+            result = (newRight > newLeft) && (newBottom > newTop) ? new Rectangle(newLeft, newTop, newRight - newLeft, newBottom - newTop) : Empty;
         }
 
         /// <summary>
@@ -377,8 +363,7 @@ namespace HelixToolkit.Maths
         /// <returns>The union rectangle.</returns>
         public static Rectangle Union(Rectangle value1, Rectangle value2)
         {
-            Rectangle result;
-            Union(ref value1, ref value2, out result);
+            Union(ref value1, ref value2, out Rectangle result);
             return result;
         }
 
@@ -390,10 +375,10 @@ namespace HelixToolkit.Maths
         /// <param name="result">[OutAttribute] The rectangle that must be the union of the first two rectangles.</param>
         public static void Union(ref Rectangle value1, ref Rectangle value2, out Rectangle result)
         {
-            var left = Math.Min(value1.Left, value2.Left);
-            var right = Math.Max(value1.Right, value2.Right);
-            var top = Math.Min(value1.Top, value2.Top);
-            var bottom = Math.Max(value1.Bottom, value2.Bottom);
+            int left = Math.Min(value1.Left, value2.Left);
+            int right = Math.Max(value1.Right, value2.Right);
+            int top = Math.Min(value1.Top, value2.Top);
+            int bottom = Math.Max(value1.Bottom, value2.Bottom);
             result = new Rectangle(left, top, right - left, bottom - top);
         }
 
@@ -404,7 +389,7 @@ namespace HelixToolkit.Maths
         /// <returns>
         /// <c>true</c> if the specified <see cref="System.Object"/> is equal to this instance; otherwise, <c>false</c>.
         /// </returns>
-        public override bool Equals(object? obj)
+        public override readonly bool Equals(object? obj)
         {
             return obj is Rectangle rect && Equals(ref rect);
         }
@@ -417,7 +402,7 @@ namespace HelixToolkit.Maths
         /// <c>true</c> if the specified <see cref="Rectangle"/> is equal to this instance; otherwise, <c>false</c>.
         /// </returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)] // MethodImplOptions.AggressiveInlining
-        public bool Equals(ref Rectangle other)
+        public readonly bool Equals(ref Rectangle other)
         {
             return other.Left == Left && other.Top == Top && other.Right == Right && other.Bottom == Bottom;
         }
@@ -430,7 +415,7 @@ namespace HelixToolkit.Maths
         /// <c>true</c> if the specified <see cref="Rectangle"/> is equal to this instance; otherwise, <c>false</c>.
         /// </returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)] // MethodImplOptions.AggressiveInlining
-        public bool Equals(Rectangle other)
+        public readonly bool Equals(Rectangle other)
         {
             return Equals(ref other);
         }
@@ -440,11 +425,11 @@ namespace HelixToolkit.Maths
         /// <returns>
         /// A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.
         /// </returns>
-        public override int GetHashCode()
+        public override readonly int GetHashCode()
         {
             unchecked
             {
-                var result = Left;
+                int result = Left;
                 result = (result * 397) ^ Top;
                 result = (result * 397) ^ Right;
                 result = (result * 397) ^ Bottom;
@@ -487,15 +472,15 @@ namespace HelixToolkit.Maths
         //    return new RectangleF(value.X, value.Y, value.Width, value.Height);
         //}
 
-        public override string ToString()
+        public override readonly string ToString()
         {
             return string.Format(CultureInfo.InvariantCulture, "X:{0} Y:{1} Width:{2} Height:{3}", X, Y, Width, Height);
         }
 
         internal void MakeXYAndWidthHeight()
         {
-            Right = (Right - Left);
-            Bottom = (Bottom - Top);
+            Right -= Left;
+            Bottom -= Top;
         }
     }
 }

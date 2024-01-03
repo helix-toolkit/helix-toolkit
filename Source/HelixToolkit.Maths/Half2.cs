@@ -29,11 +29,6 @@ The MIT License (MIT)
 Copyright (c) 2007-2011 SlimDX Group
 The MIT License (MIT)
 */
-using System;
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
-using System.Numerics;
-using Matrix = System.Numerics.Matrix4x4;
 namespace HelixToolkit.Maths
 {
     /// <summary>
@@ -157,7 +152,7 @@ namespace HelixToolkit.Maths
         /// Returns the hash code for this instance.
         /// </summary>
         /// <returns>A 32-bit signed integer hash code.</returns>
-        public override int GetHashCode()
+        public override readonly int GetHashCode()
         {
             unchecked
             {
@@ -176,7 +171,7 @@ namespace HelixToolkit.Maths
         [MethodImpl(MethodImplOptions.AggressiveInlining)] // MethodImplOptions.AggressiveInlining
         public static bool Equals(ref Half2 value1, ref Half2 value2)
         {
-            return ((value1.X == value2.X) && (value1.Y == value2.Y));
+            return (value1.X == value2.X) && (value1.Y == value2.Y);
         }
 
         /// <summary>
@@ -185,9 +180,9 @@ namespace HelixToolkit.Maths
         /// <param name="other">Object to make the comparison with.</param>
         /// <returns>
         /// <c>true</c> if the current instance is equal to the specified object; <c>false</c> otherwise.</returns>
-        public bool Equals(Half2 other)
+        public readonly bool Equals(Half2 other)
         {
-            return ((this.X == other.X) && (this.Y == other.Y));
+            return (this.X == other.X) && (this.Y == other.Y);
         }
 
         /// <summary>
@@ -196,7 +191,7 @@ namespace HelixToolkit.Maths
         /// <param name="obj">Object to make the comparison with.</param>
         /// <returns>
         /// <c>true</c> if the current instance is equal to the specified object; <c>false</c> otherwise.</returns>
-        public override bool Equals(object? obj)
+        public override readonly bool Equals(object? obj)
         {
             return obj is Half2 half && Equals(half);
         }

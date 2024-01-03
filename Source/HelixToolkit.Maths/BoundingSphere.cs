@@ -29,13 +29,6 @@ The MIT License (MIT)
 Copyright (c) 2007-2011 SlimDX Group
 The MIT License (MIT)
 */
-using System;
-using System.Globalization;
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
-using System.Numerics;
-using Matrix = System.Numerics.Matrix4x4;
-
 namespace HelixToolkit.Maths
 {
     /// <summary>
@@ -44,7 +37,7 @@ namespace HelixToolkit.Maths
     [StructLayout(LayoutKind.Sequential, Pack = 4)]
     public struct BoundingSphere : IEquatable<BoundingSphere>, IFormattable
     {
-        public static readonly BoundingSphere Empty = new BoundingSphere();
+        public static readonly BoundingSphere Empty = new();
         /// <summary>
         /// The center of the sphere in three dimensional space.
         /// </summary>
@@ -73,8 +66,7 @@ namespace HelixToolkit.Maths
         /// <returns>Whether the two objects intersected.</returns>
         public bool Intersects(ref Ray ray)
         {
-            float distance;
-            return Collision.RayIntersectsSphere(ref ray, ref this, out distance);
+            return Collision.RayIntersectsSphere(ref ray, ref this, out float _);
         }
 
         /// <summary>
@@ -222,26 +214,26 @@ namespace HelixToolkit.Maths
         {
             if (points == null)
             {
-                throw new ArgumentNullException("points");
+                throw new ArgumentNullException(nameof(points));
             }
 
             // Check that start is in the correct range
             if (start < 0 || start >= points.Length)
             {
-                throw new ArgumentOutOfRangeException("start", start, string.Format("Must be in the range [0, {0}]", points.Length - 1));
+                throw new ArgumentOutOfRangeException(nameof(start), start, string.Format("Must be in the range [0, {0}]", points.Length - 1));
             }
 
             // Check that count is in the correct range
             if (count < 0 || (start + count) > points.Length)
             {
-                throw new ArgumentOutOfRangeException("count", count, string.Format("Must be in the range <= {0}", points.Length));
+                throw new ArgumentOutOfRangeException(nameof(count), count, string.Format("Must be in the range <= {0}", points.Length));
             }
 
-            var upperEnd = start + count;
+            int upperEnd = start + count;
 
             //Find the center of all points.
-            var center = Vector3.Zero;
-            for (var i = start; i < upperEnd; ++i)
+            Vector3 center = Vector3.Zero;
+            for (int i = start; i < upperEnd; ++i)
             {
                 center += points[i];
             }
@@ -250,12 +242,12 @@ namespace HelixToolkit.Maths
             center /= (float)count;
 
             //Find the radius of the sphere
-            var radius = 0f;
-            for (var i = start; i < upperEnd; ++i)
+            float radius = 0f;
+            for (int i = start; i < upperEnd; ++i)
             {
                 //We are doing a relative distance comparison to find the maximum distance
                 //from the center of our sphere.
-                var distance = Vector3.DistanceSquared(center, points[i]);
+                float distance = Vector3.DistanceSquared(center, points[i]);
                 
 
                 if (distance > radius)
@@ -281,7 +273,7 @@ namespace HelixToolkit.Maths
         {
             if (points == null)
             {
-                throw new ArgumentNullException("points");
+                throw new ArgumentNullException(nameof(points));
             }
 
             FromPoints(points, 0, points.Length, out result);
@@ -294,8 +286,7 @@ namespace HelixToolkit.Maths
         /// <returns>The newly constructed bounding sphere.</returns>
         public static BoundingSphere FromPoints(Vector3[] points)
         {
-            BoundingSphere result;
-            FromPoints(points, out result);
+            FromPoints(points, out BoundingSphere result);
             return result;
         }
 
@@ -317,8 +308,7 @@ namespace HelixToolkit.Maths
         /// <returns>The newly constructed bounding sphere.</returns>
         public static BoundingSphere FromBox(BoundingBox box)
         {
-            BoundingSphere result;
-            FromBox(ref box, out result);
+            FromBox(ref box, out BoundingSphere result);
             return result;
         }
 
@@ -330,11 +320,11 @@ namespace HelixToolkit.Maths
         /// <param name="result">When the method completes, contains the newly constructed bounding sphere.</param>
         public static void Merge(ref BoundingSphere value1, ref BoundingSphere value2, out BoundingSphere result)
         {
-            var difference = value2.Center - value1.Center;
+            Vector3 difference = value2.Center - value1.Center;
 
-            var length = difference.Length();
-            var radius = value1.Radius;
-            var radius2 = value2.Radius;
+            float length = difference.Length();
+            float radius = value1.Radius;
+            float radius2 = value2.Radius;
 
             if (radius + radius2 >= length)
             {
@@ -351,9 +341,9 @@ namespace HelixToolkit.Maths
                 }
             }
 
-            var vector = difference * (1.0f / length);
-            var min = Math.Min(-radius, length - radius2);
-            var max = (Math.Max(radius, length + radius2) - min) * 0.5f;
+            Vector3 vector = difference * (1.0f / length);
+            float min = Math.Min(-radius, length - radius2);
+            float max = (Math.Max(radius, length + radius2) - min) * 0.5f;
 
             result.Center = value1.Center + vector * (max + min);
             result.Radius = max;
@@ -367,8 +357,7 @@ namespace HelixToolkit.Maths
         /// <returns>The newly constructed bounding sphere.</returns>
         public static BoundingSphere Merge(BoundingSphere value1, BoundingSphere value2)
         {
-            BoundingSphere result;
-            Merge(ref value1, ref value2, out result);
+            Merge(ref value1, ref value2, out BoundingSphere result);
             return result;
         }
 
@@ -402,7 +391,7 @@ namespace HelixToolkit.Maths
         /// <returns>
         /// A <see cref="System.String"/> that represents this instance.
         /// </returns>
-        public override string ToString()
+        public override readonly string ToString()
         {
             return string.Format(CultureInfo.CurrentCulture, "Center:{0} Radius:{1}", Center.ToString(), Radius.ToString());
         }
@@ -414,7 +403,7 @@ namespace HelixToolkit.Maths
         /// <returns>
         /// A <see cref="System.String"/> that represents this instance.
         /// </returns>
-        public string ToString(string format)
+        public readonly string ToString(string format)
         {
             return format == null
                 ? ToString()
@@ -429,7 +418,7 @@ namespace HelixToolkit.Maths
         /// <returns>
         /// A <see cref="System.String"/> that represents this instance.
         /// </returns>
-        public string ToString(IFormatProvider formatProvider)
+        public readonly string ToString(IFormatProvider formatProvider)
         {
             return string.Format(formatProvider, "Center:{0} Radius:{1}", Center.ToString(), Radius.ToString());
         }
@@ -442,7 +431,7 @@ namespace HelixToolkit.Maths
         /// <returns>
         /// A <see cref="System.String"/> that represents this instance.
         /// </returns>
-        public string ToString(string? format, IFormatProvider? formatProvider)
+        public readonly string ToString(string? format, IFormatProvider? formatProvider)
         {
             return format == null && formatProvider == null
                 ? string.Empty
@@ -458,7 +447,7 @@ namespace HelixToolkit.Maths
         /// <returns>
         /// A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table. 
         /// </returns>
-        public override int GetHashCode()
+        public override readonly int GetHashCode()
         {
             unchecked
             {
@@ -474,7 +463,7 @@ namespace HelixToolkit.Maths
         /// <c>true</c> if the specified <see cref="Vector4"/> is equal to this instance; otherwise, <c>false</c>.
         /// </returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)] // MethodImplOptions.AggressiveInlining
-        public bool Equals(ref BoundingSphere value)
+        public readonly bool Equals(ref BoundingSphere value)
         {
             return Center == value.Center && Radius == value.Radius;
         }
@@ -487,7 +476,7 @@ namespace HelixToolkit.Maths
         /// <c>true</c> if the specified <see cref="Vector4"/> is equal to this instance; otherwise, <c>false</c>.
         /// </returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)] // MethodImplOptions.AggressiveInlining
-        public bool Equals(BoundingSphere value)
+        public readonly bool Equals(BoundingSphere value)
         {
             return Equals(ref value);
         }
@@ -499,7 +488,7 @@ namespace HelixToolkit.Maths
         /// <returns>
         /// <c>true</c> if the specified <see cref="System.Object"/> is equal to this instance; otherwise, <c>false</c>.
         /// </returns>
-        public override bool Equals(object? obj)
+        public override readonly bool Equals(object? obj)
         {
             return obj is BoundingSphere b && Equals(ref b);
         }

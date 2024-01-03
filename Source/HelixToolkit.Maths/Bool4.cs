@@ -48,32 +48,32 @@ namespace HelixToolkit.Maths
         /// <summary>
         /// A <see cref = "Bool4" /> with all of its components set to false.
         /// </summary>
-        public static readonly Bool4 False = new Bool4();
+        public static readonly Bool4 False = new();
 
         /// <summary>
         /// The X unit <see cref = "Bool4" /> (true, 0, 0, 0).
         /// </summary>
-        public static readonly Bool4 UnitX = new Bool4(true, false, false, false);
+        public static readonly Bool4 UnitX = new(true, false, false, false);
 
         /// <summary>
         /// The Y unit <see cref = "Bool4" /> (0, true, 0, 0).
         /// </summary>
-        public static readonly Bool4 UnitY = new Bool4(false, true, false, false);
+        public static readonly Bool4 UnitY = new(false, true, false, false);
 
         /// <summary>
         /// The Z unit <see cref = "Bool4" /> (0, 0, true, 0).
         /// </summary>
-        public static readonly Bool4 UnitZ = new Bool4(false, false, true, false);
+        public static readonly Bool4 UnitZ = new(false, false, true, false);
 
         /// <summary>
         /// The W unit <see cref = "Bool4" /> (0, 0, 0, true).
         /// </summary>
-        public static readonly Bool4 UnitW = new Bool4(false, false, false, true);
+        public static readonly Bool4 UnitW = new(false, false, false, true);
 
         /// <summary>
         /// A <see cref = "Bool4" /> with all of its components set to true.
         /// </summary>
-        public static readonly Bool4 One = new Bool4(true, true, true, true);
+        public static readonly Bool4 One = new(true, true, true, true);
 
         /// <summary>
         /// The X component of the vector.
@@ -100,7 +100,7 @@ namespace HelixToolkit.Maths
         /// </summary>
         public bool X
         {
-            get
+            readonly get
             {
                 return iX != 0;
             }
@@ -115,7 +115,7 @@ namespace HelixToolkit.Maths
         /// </summary>
         public bool Y
         {
-            get
+            readonly get
             {
                 return iY != 0;
             }
@@ -130,7 +130,7 @@ namespace HelixToolkit.Maths
         /// </summary>
         public bool Z
         {
-            get
+            readonly get
             {
                 return iZ != 0;
             }
@@ -145,7 +145,7 @@ namespace HelixToolkit.Maths
         /// </summary>
         public bool W
         {
-            get
+            readonly get
             {
                 return iW != 0;
             }
@@ -193,12 +193,12 @@ namespace HelixToolkit.Maths
         {
             if (values == null)
             {
-                throw new ArgumentNullException("values");
+                throw new ArgumentNullException(nameof(values));
             }
             if (values.Length != 4)
             {
                 throw new ArgumentOutOfRangeException(
-                   "values",
+                   nameof(values),
                    "There must be four and only four input values for Bool4.");
             }
             iX = values[0] ? 1 : 0;
@@ -216,21 +216,16 @@ namespace HelixToolkit.Maths
         /// <exception cref = "System.ArgumentOutOfRangeException">Thrown when the <paramref name = "index" /> is out of the range [0, 3].</exception>
         public bool this[int index]
         {
-            get
+            readonly get
             {
-                switch (index)
+                return index switch
                 {
-                    case 0:
-                        return X;
-                    case 1:
-                        return Y;
-                    case 2:
-                        return Z;
-                    case 3:
-                        return W;
-                }
-
-                throw new ArgumentOutOfRangeException("index", "Indices for Bool4 run from 0 to 3, inclusive.");
+                    0 => X,
+                    1 => Y,
+                    2 => Z,
+                    3 => W,
+                    _ => throw new ArgumentOutOfRangeException(nameof(index), "Indices for Bool4 run from 0 to 3, inclusive."),
+                };
             }
 
             set
@@ -250,7 +245,7 @@ namespace HelixToolkit.Maths
                         W = value;
                         break;
                     default:
-                        throw new ArgumentOutOfRangeException("index", "Indices for Bool4 run from 0 to 3, inclusive.");
+                        throw new ArgumentOutOfRangeException(nameof(index), "Indices for Bool4 run from 0 to 3, inclusive.");
                 }
             }
         }
@@ -259,7 +254,7 @@ namespace HelixToolkit.Maths
         /// Creates an array containing the elements of the vector.
         /// </summary>
         /// <returns>A four-element array containing the components of the vector.</returns>
-        public bool[] ToArray()
+        public readonly bool[] ToArray()
         {
             return new bool[] {X, Y, Z, W};
         }
@@ -294,12 +289,12 @@ namespace HelixToolkit.Maths
         /// <returns>
         /// A <see cref = "System.String" /> that represents this instance.
         /// </returns>
-        public override string ToString()
+        public override readonly string ToString()
         {
             return string.Format(CultureInfo.CurrentCulture, "X:{0} Y:{1} Z:{2} W:{3}", X, Y, Z, W);
         }
 
-        public string ToString(IFormatProvider formatProvider)
+        public readonly string ToString(IFormatProvider formatProvider)
         {
             return string.Format(formatProvider, "[X:{0} Y:{1} Z:{2} W:{3}]",
                 X.ToString(formatProvider), Y.ToString(formatProvider), Z.ToString(formatProvider), W.ToString(formatProvider));
@@ -312,7 +307,7 @@ namespace HelixToolkit.Maths
         /// <returns>
         /// A <see cref="System.String"/> that represents this instance.
         /// </returns>
-        public string ToString(string? format, IFormatProvider? formatProvider)
+        public readonly string ToString(string? format, IFormatProvider? formatProvider)
         {
             return format == null && formatProvider == null 
                 ? string.Empty 
@@ -327,11 +322,11 @@ namespace HelixToolkit.Maths
         /// <returns>
         /// A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table. 
         /// </returns>
-        public override int GetHashCode()
+        public override readonly int GetHashCode()
         {
             unchecked
             {
-                var hashCode = iX;
+                int hashCode = iX;
                 hashCode = (hashCode * 397) ^ iY;
                 hashCode = (hashCode * 397) ^ iZ;
                 hashCode = (hashCode * 397) ^ iW;
@@ -347,7 +342,7 @@ namespace HelixToolkit.Maths
         /// <c>true</c> if the specified <see cref = "Bool4" /> is equal to this instance; otherwise, <c>false</c>.
         /// </returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)] // MethodImplOptions.AggressiveInlining
-        public bool Equals(ref Bool4 other)
+        public readonly bool Equals(ref Bool4 other)
         {
             return other.X == X && other.Y == Y && other.Z == Z && other.W == W;
         }
@@ -360,7 +355,7 @@ namespace HelixToolkit.Maths
         /// <c>true</c> if the specified <see cref = "Bool4" /> is equal to this instance; otherwise, <c>false</c>.
         /// </returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)] // MethodImplOptions.AggressiveInlining
-        public bool Equals(Bool4 other)
+        public readonly bool Equals(Bool4 other)
         {
             return Equals(ref other);
         }
@@ -372,7 +367,7 @@ namespace HelixToolkit.Maths
         /// <returns>
         /// <c>true</c> if the specified <see cref = "System.Object" /> is equal to this instance; otherwise, <c>false</c>.
         /// </returns>
-        public override bool Equals(object? obj)
+        public override readonly bool Equals(object? obj)
         {
             return obj is Bool4 b && Equals(ref b);
         }

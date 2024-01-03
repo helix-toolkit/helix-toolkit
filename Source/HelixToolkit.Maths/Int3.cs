@@ -29,10 +29,6 @@ The MIT License (MIT)
 Copyright (c) 2007-2011 SlimDX Group
 The MIT License (MIT)
 */
-using System.Globalization;
-using System.Numerics;
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
 namespace HelixToolkit.Maths
 {
     /// <summary>
@@ -49,27 +45,27 @@ namespace HelixToolkit.Maths
         /// <summary>
         /// A <see cref = "Int3" /> with all of its components set to zero.
         /// </summary>
-        public static readonly Int3 Zero = new Int3();
+        public static readonly Int3 Zero = new();
 
         /// <summary>
         /// The X unit <see cref = "Int3" /> (1, 0, 0).
         /// </summary>
-        public static readonly Int3 UnitX = new Int3(1, 0, 0);
+        public static readonly Int3 UnitX = new(1, 0, 0);
 
         /// <summary>
         /// The Y unit <see cref = "Int3" /> (0, 1, 0).
         /// </summary>
-        public static readonly Int3 UnitY = new Int3(0, 1, 0);
+        public static readonly Int3 UnitY = new(0, 1, 0);
 
         /// <summary>
         /// The Z unit <see cref = "Int3" /> (0, 0, 1).
         /// </summary>
-        public static readonly Int3 UnitZ = new Int3(0, 0, 1);
+        public static readonly Int3 UnitZ = new(0, 0, 1);
 
         /// <summary>
         /// A <see cref = "Int3" /> with all of its components set to one.
         /// </summary>
-        public static readonly Int3 One = new Int3(1, 1, 1);
+        public static readonly Int3 One = new(1, 1, 1);
 
         /// <summary>
         /// The X component of the vector.
@@ -121,12 +117,12 @@ namespace HelixToolkit.Maths
         {
             if (values == null)
             {
-                throw new ArgumentNullException("values");
+                throw new ArgumentNullException(nameof(values));
             }
 
             if (values.Length != 3)
             {
-                throw new ArgumentOutOfRangeException("values",
+                throw new ArgumentOutOfRangeException(nameof(values),
                                                       "There must be three and only three input values for Int3.");
             }
 
@@ -144,19 +140,15 @@ namespace HelixToolkit.Maths
         /// <exception cref = "System.ArgumentOutOfRangeException">Thrown when the <paramref name = "index" /> is out of the range [0, 3].</exception>
         public int this[int index]
         {
-            get
+            readonly get
             {
-                switch (index)
+                return index switch
                 {
-                    case 0:
-                        return X;
-                    case 1:
-                        return Y;
-                    case 2:
-                        return Z;
-                }
-
-                throw new ArgumentOutOfRangeException("index", "Indices for Int3 run from 0 to 2, inclusive.");
+                    0 => X,
+                    1 => Y,
+                    2 => Z,
+                    _ => throw new ArgumentOutOfRangeException(nameof(index), "Indices for Int3 run from 0 to 2, inclusive."),
+                };
             }
 
             set
@@ -173,7 +165,7 @@ namespace HelixToolkit.Maths
                         Z = value;
                         break;
                     default:
-                        throw new ArgumentOutOfRangeException("index", "Indices for Int3 run from 0 to 2, inclusive.");
+                        throw new ArgumentOutOfRangeException(nameof(index), "Indices for Int3 run from 0 to 2, inclusive.");
                 }
             }
         }
@@ -182,7 +174,7 @@ namespace HelixToolkit.Maths
         /// Creates an array containing the elements of the vector.
         /// </summary>
         /// <returns>A four-element array containing the components of the vector.</returns>
-        public int[] ToArray()
+        public readonly int[] ToArray()
         {
             return new int[] {X, Y, Z};
         }
@@ -326,15 +318,15 @@ namespace HelixToolkit.Maths
         /// <param name = "result">When the method completes, contains the clamped value.</param>
         public static void Clamp(ref Int3 value, ref Int3 min, ref Int3 max, out Int3 result)
         {
-            var x = value.X;
+            int x = value.X;
             x = (x > max.X) ? max.X : x;
             x = (x < min.X) ? min.X : x;
 
-            var y = value.Y;
+            int y = value.Y;
             y = (y > max.Y) ? max.Y : y;
             y = (y < min.Y) ? min.Y : y;
 
-            var z = value.Z;
+            int z = value.Z;
             z = (z > max.Z) ? max.Z : z;
             z = (z < min.Z) ? min.Z : z;
 
@@ -350,8 +342,7 @@ namespace HelixToolkit.Maths
         /// <returns>The clamped value.</returns>
         public static Int3 Clamp(Int3 value, Int3 min, Int3 max)
         {
-            Int3 result;
-            Clamp(ref value, ref min, ref max, out result);
+            Clamp(ref value, ref min, ref max, out Int3 result);
             return result;
         }
 
@@ -376,8 +367,7 @@ namespace HelixToolkit.Maths
         /// <returns>A vector containing the largest components of the source vectors.</returns>
         public static Int3 Max(Int3 left, Int3 right)
         {
-            Int3 result;
-            Max(ref left, ref right, out result);
+            Max(ref left, ref right, out Int3 result);
             return result;
         }
 
@@ -402,8 +392,7 @@ namespace HelixToolkit.Maths
         /// <returns>A vector containing the smallest components of the source vectors.</returns>
         public static Int3 Min(Int3 left, Int3 right)
         {
-            Int3 result;
-            Min(ref left, ref right, out result);
+            Min(ref left, ref right, out Int3 result);
             return result;
         }
 
@@ -532,7 +521,7 @@ namespace HelixToolkit.Maths
         /// <returns>
         /// A <see cref = "System.String" /> that represents this instance.
         /// </returns>
-        public override string ToString()
+        public override readonly string ToString()
         {
             return string.Format(CultureInfo.CurrentCulture, "X:{0} Y:{1} Z:{2}", X, Y, Z);
         }
@@ -544,7 +533,7 @@ namespace HelixToolkit.Maths
         /// <returns>
         /// A <see cref = "System.String" /> that represents this instance.
         /// </returns>
-        public string ToString(string format)
+        public readonly string ToString(string format)
         {
             return format == null
                 ? ToString()
@@ -561,7 +550,7 @@ namespace HelixToolkit.Maths
         /// <returns>
         /// A <see cref = "System.String" /> that represents this instance.
         /// </returns>
-        public string ToString(IFormatProvider formatProvider)
+        public readonly string ToString(IFormatProvider formatProvider)
         {
             return string.Format(formatProvider, "X:{0} Y:{1} Z:{2}", X, Y, Z);
         }
@@ -574,7 +563,7 @@ namespace HelixToolkit.Maths
         /// <returns>
         /// A <see cref = "System.String" /> that represents this instance.
         /// </returns>
-        public string ToString(string? format, IFormatProvider? formatProvider)
+        public readonly string ToString(string? format, IFormatProvider? formatProvider)
         {
             return format == null && formatProvider == null
                 ? string.Empty
@@ -590,11 +579,11 @@ namespace HelixToolkit.Maths
         /// <returns>
         /// A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table. 
         /// </returns>
-        public override int GetHashCode()
+        public override readonly int GetHashCode()
         {
             unchecked
             {
-                var hashCode = X;
+                int hashCode = X;
                 hashCode = (hashCode * 397) ^ Y;
                 hashCode = (hashCode * 397) ^ Z;
                 return hashCode;
@@ -609,7 +598,7 @@ namespace HelixToolkit.Maths
         /// <c>true</c> if the specified <see cref = "Int3" /> is equal to this instance; otherwise, <c>false</c>.
         /// </returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)] // MethodImplOptions.AggressiveInlining
-        public bool Equals(ref Int3 other)
+        public readonly bool Equals(ref Int3 other)
         {
             return other.X == X && other.Y == Y && other.Z == Z;
         }
@@ -622,7 +611,7 @@ namespace HelixToolkit.Maths
         /// <c>true</c> if the specified <see cref = "Int3" /> is equal to this instance; otherwise, <c>false</c>.
         /// </returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)] // MethodImplOptions.AggressiveInlining
-        public bool Equals(Int3 other)
+        public readonly bool Equals(Int3 other)
         {
             return Equals(ref other);
         }
@@ -634,7 +623,7 @@ namespace HelixToolkit.Maths
         /// <returns>
         /// <c>true</c> if the specified <see cref = "System.Object" /> is equal to this instance; otherwise, <c>false</c>.
         /// </returns>
-        public override bool Equals(object? obj)
+        public override readonly bool Equals(object? obj)
         {
             return obj is Int3 int3 && Equals(ref int3);
         }

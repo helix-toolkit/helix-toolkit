@@ -29,13 +29,6 @@ The MIT License (MIT)
 Copyright (c) 2007-2011 SlimDX Group
 The MIT License (MIT)
 */
-using System;
-using System.Globalization;
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
-
-using System.Numerics;
-using Matrix = System.Numerics.Matrix4x4;
 namespace HelixToolkit.Maths
 {
     /// <summary>
@@ -49,16 +42,16 @@ namespace HelixToolkit.Maths
         /// <summary>
         /// The Black color (0, 0, 0, 1).
         /// </summary>
-        public static readonly Color4 Black = new Color4(0.0f, 0.0f, 0.0f, 1.0f);
+        public static readonly Color4 Black = new(0.0f, 0.0f, 0.0f, 1.0f);
 
         /// <summary>
         /// The White color (1, 1, 1, 1).
         /// </summary>
-        public static readonly Color4 White = new Color4(1.0f, 1.0f, 1.0f, 1.0f);
+        public static readonly Color4 White = new(1.0f, 1.0f, 1.0f, 1.0f);
         /// <summary>
         /// The Transparent color (1, 1, 1, 1).
         /// </summary>
-        public static readonly Color4 Empty = new Color4(0.0f, 0.0f, 0.0f, 0.0f);
+        public static readonly Color4 Empty = new(0.0f, 0.0f, 0.0f, 0.0f);
         /// <summary>
         /// The red component of the color.
         /// </summary>
@@ -162,12 +155,12 @@ namespace HelixToolkit.Maths
         {
             if (values == null)
             {
-                throw new ArgumentNullException("values");
+                throw new ArgumentNullException(nameof(values));
             }
 
             if (values.Length != 4)
             {
-                throw new ArgumentOutOfRangeException("values", "There must be four and only four input values for Color4.");
+                throw new ArgumentOutOfRangeException(nameof(values), "There must be four and only four input values for Color4.");
             }
 
             Red = values[0];
@@ -210,17 +203,16 @@ namespace HelixToolkit.Maths
         /// <exception cref="System.ArgumentOutOfRangeException">Thrown when the <paramref name="index"/> is out of the range [0, 3].</exception>
         public float this[int index]
         {
-            get
+            readonly get
             {
-                switch (index)
+                return index switch
                 {
-                    case 0: return Red;
-                    case 1: return Green;
-                    case 2: return Blue;
-                    case 3: return Alpha;
-                }
-
-                throw new ArgumentOutOfRangeException("index", "Indices for Color4 run from 0 to 3, inclusive.");
+                    0 => Red,
+                    1 => Green,
+                    2 => Blue,
+                    3 => Alpha,
+                    _ => throw new ArgumentOutOfRangeException(nameof(index), "Indices for Color4 run from 0 to 3, inclusive."),
+                };
             }
 
             set
@@ -231,7 +223,7 @@ namespace HelixToolkit.Maths
                     case 1: Green = value; break;
                     case 2: Blue = value; break;
                     case 3: Alpha = value; break;
-                    default: throw new ArgumentOutOfRangeException("index", "Indices for Color4 run from 0 to 3, inclusive.");
+                    default: throw new ArgumentOutOfRangeException(nameof(index), "Indices for Color4 run from 0 to 3, inclusive.");
                 }
             }
         }
@@ -240,14 +232,14 @@ namespace HelixToolkit.Maths
         /// Converts the color into a packed integer.
         /// </summary>
         /// <returns>A packed integer containing all four color components.</returns>
-        public int ToBgra()
+        public readonly int ToBgra()
         {
-            var a = (uint)(Alpha * 255.0f) & 255;
-            var r = (uint)(Red * 255.0f) & 255;
-            var g = (uint)(Green * 255.0f) & 255;
-            var b = (uint)(Blue * 255.0f) & 255;
+            uint a = (uint)(Alpha * 255.0f) & 255;
+            uint r = (uint)(Red * 255.0f) & 255;
+            uint g = (uint)(Green * 255.0f) & 255;
+            uint b = (uint)(Blue * 255.0f) & 255;
 
-            var value = b;
+            uint value = b;
             value |= g << 8;
             value |= r << 16;
             value |= a << 24;
@@ -259,7 +251,7 @@ namespace HelixToolkit.Maths
         /// Converts the color into a packed integer.
         /// </summary>
         /// <returns>A packed integer containing all four color components.</returns>
-        public void ToBgra(out byte r, out byte g, out byte b, out byte a)
+        public readonly void ToBgra(out byte r, out byte g, out byte b, out byte a)
         {
             a = (byte)(Alpha * 255.0f);
             r = (byte)(Red * 255.0f);
@@ -271,14 +263,14 @@ namespace HelixToolkit.Maths
         /// Converts the color into a packed integer.
         /// </summary>
         /// <returns>A packed integer containing all four color components.</returns>
-        public int ToRgba()
+        public readonly int ToRgba()
         {
-            var a = (uint) (Alpha * 255.0f) & 255;
-            var r = (uint) (Red * 255.0f) & 255;
-            var g = (uint) (Green * 255.0f) & 255;
-            var b = (uint) (Blue * 255.0f) & 255;
+            uint a = (uint) (Alpha * 255.0f) & 255;
+            uint r = (uint) (Red * 255.0f) & 255;
+            uint g = (uint) (Green * 255.0f) & 255;
+            uint b = (uint) (Blue * 255.0f) & 255;
 
-            var value = r;
+            uint value = r;
             value |= g << 8;
             value |= b << 16;
             value |= a << 24;
@@ -290,7 +282,7 @@ namespace HelixToolkit.Maths
         /// Converts the color into a three component vector.
         /// </summary>
         /// <returns>A three component vector containing the red, green, and blue components of the color.</returns>
-        public Vector3 ToVector3()
+        public readonly Vector3 ToVector3()
         {
             return new Vector3(Red, Green, Blue);
         }
@@ -299,7 +291,7 @@ namespace HelixToolkit.Maths
         /// Converts the color into a four component vector.
         /// </summary>
         /// <returns>A four component vector containing all four color components.</returns>
-        public Vector4 ToVector4()
+        public readonly Vector4 ToVector4()
         {
             return new Vector4(Red, Green, Blue, Alpha);
         }
@@ -308,7 +300,7 @@ namespace HelixToolkit.Maths
         /// Creates an array containing the elements of the color.
         /// </summary>
         /// <returns>A four-element array containing the components of the color.</returns>
-        public float[] ToArray()
+        public readonly float[] ToArray()
         {
             return new float[] { Red, Green, Blue, Alpha };
         }
@@ -445,19 +437,19 @@ namespace HelixToolkit.Maths
         /// <param name="result">When the method completes, contains the clamped value.</param>
         public static void Clamp(ref Color4 value, ref Color4 min, ref Color4 max, out Color4 result)
         {
-            var alpha = value.Alpha;
+            float alpha = value.Alpha;
             alpha = (alpha > max.Alpha) ? max.Alpha : alpha;
             alpha = (alpha < min.Alpha) ? min.Alpha : alpha;
 
-            var red = value.Red;
+            float red = value.Red;
             red = (red > max.Red) ? max.Red : red;
             red = (red < min.Red) ? min.Red : red;
 
-            var green = value.Green;
+            float green = value.Green;
             green = (green > max.Green) ? max.Green : green;
             green = (green < min.Green) ? min.Green : green;
 
-            var blue = value.Blue;
+            float blue = value.Blue;
             blue = (blue > max.Blue) ? max.Blue : blue;
             blue = (blue < min.Blue) ? min.Blue : blue;
 
@@ -473,7 +465,7 @@ namespace HelixToolkit.Maths
         /// <returns>The clamped value.</returns>
         public static Color4 Clamp(Color4 value, Color4 min, Color4 max)
         {
-            Clamp(ref value, ref min, ref max, out var result);
+            Clamp(ref value, ref min, ref max, out Color4 result);
             return result;
         }
 
@@ -507,7 +499,7 @@ namespace HelixToolkit.Maths
         /// </remarks>
         public static Color4 Lerp(Color4 start, Color4 end, float amount)
         {
-            Lerp(ref start, ref end, amount, out var result);
+            Lerp(ref start, ref end, amount, out Color4 result);
             return result;
         }
 
@@ -533,7 +525,7 @@ namespace HelixToolkit.Maths
         /// <returns>The cubic interpolation of the two colors.</returns>
         public static Color4 SmoothStep(Color4 start, Color4 end, float amount)
         {
-            SmoothStep(ref start, ref end, amount, out var result);
+            SmoothStep(ref start, ref end, amount, out Color4 result);
             return result;
         }
 
@@ -559,7 +551,7 @@ namespace HelixToolkit.Maths
         /// <returns>A color containing the largest components of the source colors.</returns>
         public static Color4 Max(Color4 left, Color4 right)
         {
-            Max(ref left, ref right, out var result);
+            Max(ref left, ref right, out Color4 result);
             return result;
         }
 
@@ -585,7 +577,7 @@ namespace HelixToolkit.Maths
         /// <returns>A color containing the smallest components of the source colors.</returns>
         public static Color4 Min(Color4 left, Color4 right)
         {
-            Min(ref left, ref right, out var result);
+            Min(ref left, ref right, out Color4 result);
             return result;
         }
 
@@ -626,7 +618,7 @@ namespace HelixToolkit.Maths
         /// <param name="result">When the method completes, contains the adjusted color.</param>
         public static void AdjustSaturation(ref Color4 value, float saturation, out Color4 result)
         {
-            var grey = value.Red * 0.2125f + value.Green * 0.7154f + value.Blue * 0.0721f;
+            float grey = value.Red * 0.2125f + value.Green * 0.7154f + value.Blue * 0.0721f;
 
             result.Alpha = value.Alpha;
             result.Red = grey + saturation * (value.Red - grey);
@@ -642,7 +634,7 @@ namespace HelixToolkit.Maths
         /// <returns>The adjusted color.</returns>
         public static Color4 AdjustSaturation(Color4 value, float saturation)
         {
-            var grey = value.Red * 0.2125f + value.Green * 0.7154f + value.Blue * 0.0721f;
+            float grey = value.Red * 0.2125f + value.Green * 0.7154f + value.Blue * 0.0721f;
 
             return new Color4(                
                 grey + saturation * (value.Red - grey),
@@ -671,7 +663,7 @@ namespace HelixToolkit.Maths
         /// <returns>The premultiplied result.</returns>
         public static Color4 Premultiply(Color4 value)
         {
-            Premultiply(ref value, out var result);
+            Premultiply(ref value, out Color4 result);
             return result;
         }
 
@@ -874,7 +866,7 @@ namespace HelixToolkit.Maths
         /// <returns>
         /// A <see cref="System.String"/> that represents this instance.
         /// </returns>
-        public override string ToString()
+        public override readonly string ToString()
         {
             return ToString(CultureInfo.CurrentCulture);
         }
@@ -886,7 +878,7 @@ namespace HelixToolkit.Maths
         /// <returns>
         /// A <see cref="System.String"/> that represents this instance.
         /// </returns>
-        public string ToString(string format)
+        public readonly string ToString(string format)
         {
             return ToString(format, CultureInfo.CurrentCulture);
         }
@@ -898,7 +890,7 @@ namespace HelixToolkit.Maths
         /// <returns>
         /// A <see cref="System.String"/> that represents this instance.
         /// </returns>
-        public string ToString(IFormatProvider formatProvider)
+        public readonly string ToString(IFormatProvider formatProvider)
         {
             return string.Format(formatProvider, toStringFormat_, Alpha, Red, Green, Blue);
         }
@@ -911,7 +903,7 @@ namespace HelixToolkit.Maths
         /// <returns>
         /// A <see cref="System.String"/> that represents this instance.
         /// </returns>
-        public string ToString(string? format, IFormatProvider? formatProvider)
+        public readonly string ToString(string? format, IFormatProvider? formatProvider)
         {
             return format == null && formatProvider == null
                 ? string.Empty
@@ -931,11 +923,11 @@ namespace HelixToolkit.Maths
         /// <returns>
         /// A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table. 
         /// </returns>
-        public override int GetHashCode()
+        public override readonly int GetHashCode()
         {
             unchecked
             {
-                var hashCode = Red.GetHashCode();
+                int hashCode = Red.GetHashCode();
                 hashCode = (hashCode * 397) ^ Green.GetHashCode();
                 hashCode = (hashCode * 397) ^ Blue.GetHashCode();
                 hashCode = (hashCode * 397) ^ Alpha.GetHashCode();
@@ -951,7 +943,7 @@ namespace HelixToolkit.Maths
         /// <c>true</c> if the specified <see cref="Color4"/> is equal to this instance; otherwise, <c>false</c>.
         /// </returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)] // MethodImplOptions.AggressiveInlining
-        public bool Equals(ref Color4 other)
+        public readonly bool Equals(ref Color4 other)
         {
             return Alpha == other.Alpha && Red == other.Red && Green == other.Green && Blue == other.Blue;
         }
@@ -964,7 +956,7 @@ namespace HelixToolkit.Maths
         /// <c>true</c> if the specified <see cref="Color4"/> is equal to this instance; otherwise, <c>false</c>.
         /// </returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)] // MethodImplOptions.AggressiveInlining
-        public bool Equals(Color4 other)
+        public readonly bool Equals(Color4 other)
         {
             return Equals(ref other);
         }
@@ -976,7 +968,7 @@ namespace HelixToolkit.Maths
         /// <returns>
         /// <c>true</c> if the specified <see cref="System.Object"/> is equal to this instance; otherwise, <c>false</c>.
         /// </returns>
-        public override bool Equals(object? obj)
+        public override readonly bool Equals(object? obj)
         {
             return obj is Color4 color && Equals(ref color);
         }

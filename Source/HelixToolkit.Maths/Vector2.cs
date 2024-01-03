@@ -29,13 +29,6 @@ The MIT License (MIT)
 Copyright (c) 2007-2011 SlimDX Group
 The MIT License (MIT)
 */
-using System;
-using System.Globalization;
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
-using System.Numerics;
-using Matrix = System.Numerics.Matrix4x4;
-
 namespace HelixToolkit.Maths
 {
     /// <summary>
@@ -51,22 +44,22 @@ namespace HelixToolkit.Maths
         /// <summary>
         /// A <see cref="Vector2"/> with all of its components set to zero.
         /// </summary>
-        public static readonly Vector2 Zero = new Vector2();
+        public static readonly Vector2 Zero = new();
 
         /// <summary>
         /// The X unit <see cref="Vector2"/> (1, 0).
         /// </summary>
-        public static readonly Vector2 UnitX = new Vector2(1.0f, 0.0f);
+        public static readonly Vector2 UnitX = new(1.0f, 0.0f);
 
         /// <summary>
         /// The Y unit <see cref="Vector2"/> (0, 1).
         /// </summary>
-        public static readonly Vector2 UnitY = new Vector2(0.0f, 1.0f);
+        public static readonly Vector2 UnitY = new(0.0f, 1.0f);
 
         /// <summary>
         /// A <see cref="Vector2"/> with all of its components set to one.
         /// </summary>
-        public static readonly Vector2 One = new Vector2(1.0f, 1.0f);
+        public static readonly Vector2 One = new(1.0f, 1.0f);
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector2 Min(this Vector2 v1, ref Vector2 v2)
@@ -116,13 +109,12 @@ namespace HelixToolkit.Maths
         /// <exception cref="System.ArgumentOutOfRangeException">Thrown when the <paramref name="index"/> is out of the range [0, 1].</exception>
         public static float Get(this Vector2 v, int index)
         {
-                switch (index)
-                {
-                    case 0: return v.X;
-                    case 1: return v.Y;
-                }
-
-                throw new ArgumentOutOfRangeException("index", "Indices for Vector2 run from 0 to 1, inclusive.");
+            return index switch
+            {
+                0 => v.X,
+                1 => v.Y,
+                _ => throw new ArgumentOutOfRangeException(nameof(index), "Indices for Vector2 run from 0 to 1, inclusive."),
+            };
         }
 
         public static void Set(ref Vector2 v, int index, float value)
@@ -131,7 +123,7 @@ namespace HelixToolkit.Maths
                 {
                     case 0: v.X = value; break;
                     case 1: v.Y = value; break;
-                    default: throw new ArgumentOutOfRangeException("index", "Indices for Vector2 run from 0 to 1, inclusive.");
+                    default: throw new ArgumentOutOfRangeException(nameof(index), "Indices for Vector2 run from 0 to 1, inclusive.");
                 }
         }
 
@@ -171,7 +163,7 @@ namespace HelixToolkit.Maths
         /// <returns>A new <see cref="Vector2"/> containing the 2D Cartesian coordinates of the specified point.</returns>
         public static Vector2 Barycentric(Vector2 value1, Vector2 value2, Vector2 value3, float amount1, float amount2)
         {
-            Barycentric(ref value1, ref value2, ref value3, amount1, amount2, out var result);
+            Barycentric(ref value1, ref value2, ref value3, amount1, amount2, out Vector2 result);
             return result;
         }
 
@@ -206,7 +198,7 @@ namespace HelixToolkit.Maths
         /// <returns>The cubic interpolation of the two vectors.</returns>
         public static Vector2 SmoothStep(Vector2 start, Vector2 end, float amount)
         {
-            SmoothStep(ref start, ref end, amount, out var result);
+            SmoothStep(ref start, ref end, amount, out Vector2 result);
             return result;
         }
 
@@ -221,12 +213,12 @@ namespace HelixToolkit.Maths
         /// <param name="result">When the method completes, contains the result of the Hermite spline interpolation.</param>
         public static void Hermite(ref Vector2 value1, ref Vector2 tangent1, ref Vector2 value2, ref Vector2 tangent2, float amount, out Vector2 result)
         {
-            var squared = amount * amount;
-            var cubed = amount * squared;
-            var part1 = ((2.0f * cubed) - (3.0f * squared)) + 1.0f;
-            var part2 = (-2.0f * cubed) + (3.0f * squared);
-            var part3 = (cubed - (2.0f * squared)) + amount;
-            var part4 = cubed - squared;
+            float squared = amount * amount;
+            float cubed = amount * squared;
+            float part1 = (2.0f * cubed) - (3.0f * squared) + 1.0f;
+            float part2 = (-2.0f * cubed) + (3.0f * squared);
+            float part3 = cubed - (2.0f * squared) + amount;
+            float part4 = cubed - squared;
             result = value1 * part1 + value2 * part2 + tangent1 * part3 + tangent2 * part4;
             //result.X = (((value1.X * part1) + (value2.X * part2)) + (tangent1.X * part3)) + (tangent2.X * part4);
             //result.Y = (((value1.Y * part1) + (value2.Y * part2)) + (tangent1.Y * part3)) + (tangent2.Y * part4);
@@ -243,7 +235,7 @@ namespace HelixToolkit.Maths
         /// <returns>The result of the Hermite spline interpolation.</returns>
         public static Vector2 Hermite(Vector2 value1, Vector2 tangent1, Vector2 value2, Vector2 tangent2, float amount)
         {
-            Hermite(ref value1, ref tangent1, ref value2, ref tangent2, amount, out var result);
+            Hermite(ref value1, ref tangent1, ref value2, ref tangent2, amount, out Vector2 result);
             return result;
         }
 
@@ -258,11 +250,11 @@ namespace HelixToolkit.Maths
         /// <param name="result">When the method completes, contains the result of the Catmull-Rom interpolation.</param>
         public static void CatmullRom(ref Vector2 value1, ref Vector2 value2, ref Vector2 value3, ref Vector2 value4, float amount, out Vector2 result)
         {
-            var squared = amount * amount;
-            var cubed = amount * squared;
-            result = 0.5f * ((((2f * value2) + ((-value1 + value3) * amount))
-                +(((((2f * value1) - (5f * value2)) + (4f * value3)) - value4) * squared))
-                + ((((-value1 + (3f * value2)) - (3f * value3)) + value4) * cubed));
+            float squared = amount * amount;
+            float cubed = amount * squared;
+            result = 0.5f * ((2f * value2) + ((-value1 + value3) * amount)
+                +(((2f * value1) - (5f * value2) + (4f * value3) - value4) * squared)
+                + ((-value1 + (3f * value2) - (3f * value3) + value4) * cubed));
 
             //result.X = 0.5f * ((((2.0f * value2.X) + ((-value1.X + value3.X) * amount)) +
             //(((((2.0f * value1.X) - (5.0f * value2.X)) + (4.0f * value3.X)) - value4.X) * squared)) +
@@ -284,7 +276,7 @@ namespace HelixToolkit.Maths
         /// <returns>A vector that is the result of the Catmull-Rom interpolation.</returns>
         public static Vector2 CatmullRom(Vector2 value1, Vector2 value2, Vector2 value3, Vector2 value4, float amount)
         {
-            CatmullRom(ref value1, ref value2, ref value3, ref value4, amount, out var result);
+            CatmullRom(ref value1, ref value2, ref value3, ref value4, amount, out Vector2 result);
             return result;
         }
 
@@ -315,26 +307,26 @@ namespace HelixToolkit.Maths
 
             if (source == null)
             {
-                throw new ArgumentNullException("source");
+                throw new ArgumentNullException(nameof(source));
             }
 
             if (destination == null)
             {
-                throw new ArgumentNullException("destination");
+                throw new ArgumentNullException(nameof(destination));
             }
 
             if (destination.Length < source.Length)
             {
-                throw new ArgumentOutOfRangeException("destination", "The destination array must be of same length or larger length than the source array.");
+                throw new ArgumentOutOfRangeException(nameof(destination), "The destination array must be of same length or larger length than the source array.");
             }
 
-            for (var i = 0; i < source.Length; ++i)
+            for (int i = 0; i < source.Length; ++i)
             {
-                var newvector = source[i];
+                Vector2 newvector = source[i];
 
-                for (var r = 0; r < i; ++r)
+                for (int r = 0; r < i; ++r)
                 {
-                    newvector -= (Vector2.Dot(destination[r], newvector) / Vector2.Dot(destination[r], destination[r])) * destination[r];
+                    newvector -= Vector2.Dot(destination[r], newvector) / Vector2.Dot(destination[r], destination[r]) * destination[r];
                 }
 
                 destination[i] = newvector;
@@ -370,24 +362,24 @@ namespace HelixToolkit.Maths
 
             if (source == null)
             {
-                throw new ArgumentNullException("source");
+                throw new ArgumentNullException(nameof(source));
             }
 
             if (destination == null)
             {
-                throw new ArgumentNullException("destination");
+                throw new ArgumentNullException(nameof(destination));
             }
 
             if (destination.Length < source.Length)
             {
-                throw new ArgumentOutOfRangeException("destination", "The destination array must be of same length or larger length than the source array.");
+                throw new ArgumentOutOfRangeException(nameof(destination), "The destination array must be of same length or larger length than the source array.");
             }
 
-            for (var i = 0; i < source.Length; ++i)
+            for (int i = 0; i < source.Length; ++i)
             {
-                var newvector = source[i];
+                Vector2 newvector = source[i];
 
-                for (var r = 0; r < i; ++r)
+                for (int r = 0; r < i; ++r)
                 {
                     newvector -= Vector2.Dot(destination[r], newvector) * destination[r];
                 }
@@ -409,20 +401,20 @@ namespace HelixToolkit.Maths
         {
             if (source == null)
             {
-                throw new ArgumentNullException("source");
+                throw new ArgumentNullException(nameof(source));
             }
 
             if (destination == null)
             {
-                throw new ArgumentNullException("destination");
+                throw new ArgumentNullException(nameof(destination));
             }
 
             if (destination.Length < source.Length)
             {
-                throw new ArgumentOutOfRangeException("destination", "The destination array must be of same length or larger length than the source array.");
+                throw new ArgumentOutOfRangeException(nameof(destination), "The destination array must be of same length or larger length than the source array.");
             }
 
-            for (var i=0; i < source.Length; ++i)
+            for (int i =0; i < source.Length; ++i)
             {
                 destination[i] = Vector2.Transform(source[i], rotation);
             }
@@ -460,20 +452,20 @@ namespace HelixToolkit.Maths
         {
             if (source == null)
             {
-                throw new ArgumentNullException("source");
+                throw new ArgumentNullException(nameof(source));
             }
 
             if (destination == null)
             {
-                throw new ArgumentNullException("destination");
+                throw new ArgumentNullException(nameof(destination));
             }
 
             if (destination.Length < source.Length)
             {
-                throw new ArgumentOutOfRangeException("destination", "The destination array must be of same length or larger length than the source array.");
+                throw new ArgumentOutOfRangeException(nameof(destination), "The destination array must be of same length or larger length than the source array.");
             }
 
-            for (var i = 0; i < source.Length; ++i)
+            for (int i = 0; i < source.Length; ++i)
             {
                 destination[i] = Vector4.Transform(new Vector4(source[i], 0, 1), transform);
             }
@@ -495,7 +487,7 @@ namespace HelixToolkit.Maths
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void TransformCoordinate(ref Vector2 coordinate, ref Matrix transform, out Vector2 result)
         {
-            var vector = Vector4.Transform(new Vector4(coordinate, 0, 1), transform);
+            Vector4 vector = Vector4.Transform(new Vector4(coordinate, 0, 1), transform);
             result = new Vector2(vector.X / vector.W, vector.Y / vector.W);
 
             //vector.X = (coordinate.X * transform.M11) + (coordinate.Y * transform.M21) + transform.M41;
@@ -522,7 +514,7 @@ namespace HelixToolkit.Maths
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector2 TransformCoordinate(Vector2 coordinate, Matrix transform)
         {
-            TransformCoordinate(ref coordinate, ref transform, out var result);
+            TransformCoordinate(ref coordinate, ref transform, out Vector2 result);
             return result;
         }
 
@@ -546,20 +538,20 @@ namespace HelixToolkit.Maths
         {
             if (source == null)
             {
-                throw new ArgumentNullException("source");
+                throw new ArgumentNullException(nameof(source));
             }
 
             if (destination == null)
             {
-                throw new ArgumentNullException("destination");
+                throw new ArgumentNullException(nameof(destination));
             }
 
             if (destination.Length < source.Length)
             {
-                throw new ArgumentOutOfRangeException("destination", "The destination array must be of same length or larger length than the source array.");
+                throw new ArgumentOutOfRangeException(nameof(destination), "The destination array must be of same length or larger length than the source array.");
             }
 
-            for (var i = 0; i < source.Length; ++i)
+            for (int i = 0; i < source.Length; ++i)
             {
                 TransformCoordinate(ref source[i], ref transform, out destination[i]);
             }
@@ -602,7 +594,7 @@ namespace HelixToolkit.Maths
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector2 TransformNormal(Vector2 normal, Matrix transform)
         {
-            TransformNormal(ref normal, ref transform, out var result);
+            TransformNormal(ref normal, ref transform, out Vector2 result);
             return result;
         }
 
@@ -626,20 +618,20 @@ namespace HelixToolkit.Maths
         {
             if (source == null)
             {
-                throw new ArgumentNullException("source");
+                throw new ArgumentNullException(nameof(source));
             }
 
             if (destination == null)
             {
-                throw new ArgumentNullException("destination");
+                throw new ArgumentNullException(nameof(destination));
             }
 
             if (destination.Length < source.Length)
             {
-                throw new ArgumentOutOfRangeException("destination", "The destination array must be of same length or larger length than the source array.");
+                throw new ArgumentOutOfRangeException(nameof(destination), "The destination array must be of same length or larger length than the source array.");
             }
 
-            for (var i = 0; i < source.Length; ++i)
+            for (int i = 0; i < source.Length; ++i)
             {
                 TransformNormal(ref source[i], ref transform, out destination[i]);
             }
