@@ -39,4 +39,7 @@
       <ProjectReference Include="..\HelixToolkit.Maths\HelixToolkit.Maths.csproj" />
       <ProjectReference Include="..\HelixToolkit\HelixToolkit.csproj" />
     </ItemGroup>
+	<ItemGroup>
+		<Compile Include="..\GlobalUsing.cs"/>
+	</ItemGroup>
 </Project>

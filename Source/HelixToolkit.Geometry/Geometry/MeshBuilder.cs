@@ -342,11 +342,11 @@ public sealed class MeshBuilder
             var v3 = positions[i3];
             var p1 = v2 - v1;
             var p2 = v3 - v1;
-            var n = SharedFunctions.CrossProduct(ref p1, ref p2);
+            var n = Vector3.Cross(p1, p2);
             // angle
             p1 = Vector3.Normalize(p1);
             p2 = Vector3.Normalize(p2);
-            var a = (float)Math.Acos(SharedFunctions.DotProduct(ref p1, ref p2));
+            var a = (float)Math.Acos(Vector3.Dot(p1, p2));
             n = Vector3.Normalize(n);
             normals[i1] += (a * n);
             normals[i2] += (a * n);
@@ -440,8 +440,8 @@ public sealed class MeshBuilder
         {
             var n = normals[i];
             var t = tan1[i];
-            t = Vector3.Normalize(t - n * SharedFunctions.DotProduct(ref n, ref t));
-            var b = SharedFunctions.CrossProduct(ref n, ref t);
+            t = Vector3.Normalize(t - n * Vector3.Dot(n, t));
+            var b = Vector3.Cross(n, t);
             tangents.Add(t);
             bitangents.Add(b);
         }
@@ -501,8 +501,8 @@ public sealed class MeshBuilder
         {
             var n = normals[i];
             var t = tan1[i];
-            t = Vector3.Normalize(t - n * SharedFunctions.DotProduct(ref n, ref t));
-            var b = SharedFunctions.CrossProduct(ref n, ref t);
+            t = Vector3.Normalize(t - n * Vector3.Dot(n, t));
+            var b = Vector3.Cross(n, t);
             tangents.Add(t);
             bitangents.Add(b);
         }
@@ -590,7 +590,7 @@ public sealed class MeshBuilder
     public void AddArrow(Vector3 point1, Vector3 point2, float diameter, float headLength = 3, int thetaDiv = 18)
     {
         var dir = point2 - point1;
-        var length = SharedFunctions.Length(ref dir);
+        var length = dir.Length();
         var r = diameter / 2;
 
         var pc = new Vector2Collection
@@ -713,7 +713,7 @@ public sealed class MeshBuilder
     /// <param name="faces">The faces to include.</param>
     public void AddBox(Vector3 center, Vector3 x, Vector3 y, float xlength, float ylength, float zlength, BoxFaces faces = BoxFaces.All)
     {
-        var z = SharedFunctions.CrossProduct(ref x, ref y);
+        var z = Vector3.Cross(x, y);
         if ((faces & BoxFaces.Front) == BoxFaces.Front)
         {
             this.AddCubeFace(center, x, z, xlength, ylength, zlength);
@@ -813,7 +813,7 @@ public sealed class MeshBuilder
     public void AddCone(Vector3 origin, Vector3 apex, float baseRadius, bool baseCap, int thetaDiv)
     {
         var dir = apex - origin;
-        this.AddCone(origin, dir, baseRadius, 0, SharedFunctions.Length(ref dir), baseCap, false, thetaDiv);
+        this.AddCone(origin, dir, baseRadius, 0, dir.Length(), baseCap, false, thetaDiv);
     }
 
     /// <summary>
@@ -839,7 +839,7 @@ public sealed class MeshBuilder
     /// </param>
     public void AddCubeFace(Vector3 center, Vector3 normal, Vector3 up, float dist, float width, float height)
     {
-        var right = SharedFunctions.CrossProduct(ref normal, ref up);
+        var right = Vector3.Cross(normal, up);
         var n = normal * dist / 2;
         up *= height / 2;
         right *= width / 2;
@@ -931,7 +931,7 @@ public sealed class MeshBuilder
     public void AddCylinder(Vector3 p1, Vector3 p2, float diameter, int thetaDiv)
     {
         var n = p2 - p1;
-        var l = SharedFunctions.Length(ref n);
+        var l = n.Length();
         n = Vector3.Normalize(n);
         this.AddCone(p1, n, diameter / 2, diameter / 2, l, false, false, thetaDiv);
     }
@@ -963,7 +963,7 @@ public sealed class MeshBuilder
     public void AddCylinder(Vector3 p1, Vector3 p2, float radius = 1, int thetaDiv = 32, bool cap1 = true, bool cap2 = true)
     {
         var n = p2 - p1;
-        var l = SharedFunctions.Length(ref n);
+        var l = n.Length();
         n = Vector3.Normalize(n);
         this.AddCone(p1, n, radius, radius, l, cap1, cap2, thetaDiv);
     }
@@ -986,7 +986,7 @@ public sealed class MeshBuilder
         // If points already exist in the MeshBuilder
         var positionsCount = this.Positions.Count;
 
-        var right = SharedFunctions.CrossProduct(ref up, ref forward);
+        var right = Vector3.Cross(up, forward);
         // Distance from the Center to the Dodekaeder-Points
         var radiusSphere = 0.25f * (float)Math.Sqrt(3) * (1 + (float)Math.Sqrt(5)) * sideLength;
         var radiusFace = 0.1f * (float)Math.Sqrt(50 + 10 * (float)Math.Sqrt(5)) * sideLength;
@@ -1010,9 +1010,9 @@ public sealed class MeshBuilder
         {
             var baseCenterToPoint = Vector3.Normalize(point - baseCenter);
             var centerToPoint = Vector3.Normalize(point - center);
-            var tempRight = SharedFunctions.CrossProduct(ref up, ref baseCenterToPoint);
+            var tempRight = Vector3.Cross(up, baseCenterToPoint);
             var newPoint = new Vector3(radiusSphere * (float)Math.Cos(gamma), 0, radiusSphere * (float)Math.Sin(gamma));
-            var tempUp = SharedFunctions.CrossProduct(ref centerToPoint, ref tempRight);
+            var tempUp = Vector3.Cross(centerToPoint, tempRight);
             this.Positions.Add(center + centerToPoint * newPoint.X + tempUp * newPoint.Z);
         }
 
@@ -1029,9 +1029,9 @@ public sealed class MeshBuilder
         {
             var topCenterToPoint = Vector3.Normalize(point - topCenter);
             var centerToPoint = Vector3.Normalize(point - center);
-            var tempRight = SharedFunctions.CrossProduct(ref up, ref topCenterToPoint);
+            var tempRight = Vector3.Cross(up, topCenterToPoint);
             var newPoint = new Vector3(radiusSphere * (float)Math.Cos(gamma), 0, radiusSphere * (float)Math.Sin(gamma));
-            var tempUp = SharedFunctions.CrossProduct(ref tempRight, ref centerToPoint);
+            var tempUp = Vector3.Cross(tempRight, centerToPoint);
             this.Positions.Add(center + centerToPoint * newPoint.X + tempUp * newPoint.Z);
         }
         // Add top Points at last
@@ -1056,9 +1056,9 @@ public sealed class MeshBuilder
             for (var i = positionsCount; i < this.Positions.Count; i++)
             {
                 var centerToPoint = Vector3.Normalize(this.Positions[i] - center);
-                var cTPUpValue = SharedFunctions.DotProduct(ref centerToPoint, ref up);
+                var cTPUpValue = Vector3.Dot(centerToPoint, up);
                 var planeCTP = Vector3.Normalize(centerToPoint - up * cTPUpValue);
-                var u = (float)Math.Atan2(SharedFunctions.DotProduct(ref planeCTP, ref forward), SharedFunctions.DotProduct(ref planeCTP, ref right));
+                var u = (float)Math.Atan2(Vector3.Dot(planeCTP, forward), Vector3.Dot(planeCTP, right));
                 var v = cTPUpValue * 0.5f + 0.5f;
                 this.TextureCoordinates.Add(new Vector2(u, v));
             }
@@ -1198,7 +1198,7 @@ public sealed class MeshBuilder
     public void AddExtrudedGeometry(IList<Vector2> points, Vector3 xaxis, Vector3 p0, Vector3 p1)
     {
         var p10 = p1 - p0;
-        var ydirection = SharedFunctions.CrossProduct(ref xaxis, ref p10);
+        var ydirection = Vector3.Cross(xaxis, p10);
         ydirection = Vector3.Normalize(ydirection);
         xaxis = Vector3.Normalize(xaxis);
 
@@ -1602,7 +1602,7 @@ public sealed class MeshBuilder
         }
 
         var p10 = p1 - p0;
-        var axisY = SharedFunctions.CrossProduct(ref axisX, ref p10);
+        var axisY = Vector3.Cross(axisX, p10);
         axisY = Vector3.Normalize(axisY);
         axisX = Vector3.Normalize(axisX);
         var index0 = this.Positions.Count;
@@ -1760,7 +1760,7 @@ public sealed class MeshBuilder
     /// <remarks>See <a href="http://en.wikipedia.org/wiki/Octahedron">Octahedron</a>.</remarks>
     public void AddOctahedron(Vector3 center, Vector3 forward, Vector3 up, float sideLength, float height)
     {
-        var right = SharedFunctions.CrossProduct(ref forward, ref up);
+        var right = Vector3.Cross(forward, up);
         var n = forward * sideLength / 2;
         up *= height / 2;
         right *= sideLength / 2;
@@ -1805,7 +1805,7 @@ public sealed class MeshBuilder
     {
         var dir = point2 - point1;
 
-        var height = SharedFunctions.Length(ref dir);
+        var height = dir.Length();
         dir = Vector3.Normalize(dir);
 
         var pc = new Vector2Collection
@@ -1994,7 +1994,7 @@ public sealed class MeshBuilder
     /// <param name="closeBase">Add triangles to the base of the pyramid or not.</param>
     public void AddPyramid(Vector3 center, Vector3 forward, Vector3 up, float sideLength, float height, bool closeBase = false)
     {
-        var right = SharedFunctions.CrossProduct(ref forward, ref up);
+        var right = Vector3.Cross(forward, up);
         var n = forward * sideLength / 2;
         up *= height;
         right *= sideLength / 2;
@@ -2124,7 +2124,7 @@ public sealed class MeshBuilder
         {
             var p10 = p1 - p0;
             var p30 = p3 - p0;
-            var w = SharedFunctions.CrossProduct(ref p10, ref p30);
+            var w = Vector3.Cross(p10, p30);
             w = Vector3.Normalize(w);
             this.Normals.Add(w);
             this.Normals.Add(w);
@@ -2455,7 +2455,7 @@ public sealed class MeshBuilder
                     this.Positions[index0 + (i1 * columns) + j0], this.Positions[index0 + (i0 * columns) + j0]);
                 var v = Vector3.Subtract(
                     this.Positions[index0 + (i0 * columns) + j1], this.Positions[index0 + (i0 * columns) + j0]);
-                var normal = SharedFunctions.CrossProduct(ref u, ref v);
+                var normal = Vector3.Cross(u, v);
                 normal = Vector3.Normalize(normal);
                 this.Normals.Add(normal);
             }
@@ -2701,7 +2701,7 @@ public sealed class MeshBuilder
 
         // Find two unit vectors orthogonal to the specified direction
         var u = direction.FindAnyPerpendicular();
-        var v = SharedFunctions.CrossProduct(ref direction, ref u);
+        var v = Vector3.Cross(direction, u);
         u = Vector3.Normalize(u);
         v = Vector3.Normalize(v);
 
@@ -2835,7 +2835,7 @@ public sealed class MeshBuilder
 
         // Find two unit vectors orthogonal to the specified direction
         var u = axis.FindAnyPerpendicular();
-        var v = SharedFunctions.CrossProduct(ref axis, ref u);
+        var v = Vector3.Cross(axis, u);
         var circle = GetCircle(thetaDiv);
         var n = section.Count;
         var index0 = this.Positions.Count;
@@ -2896,7 +2896,7 @@ public sealed class MeshBuilder
     public void AddTetrahedron(Vector3 center, Vector3 forward, Vector3 up, float sideLength)
     {
         // Helper Variables
-        var right = SharedFunctions.CrossProduct(ref up, ref forward);
+        var right = Vector3.Cross(up, forward);
         var heightSphere = (float)Math.Sqrt(6) / 3 * sideLength;
         var radiusSphere = (float)Math.Sqrt(6) / 4 * sideLength;
         var heightFace = (float)Math.Sqrt(3) / 2 * sideLength;
@@ -3211,7 +3211,7 @@ public sealed class MeshBuilder
         {
             var p10 = p1 - p0;
             var p20 = p2 - p0;
-            var w = SharedFunctions.CrossProduct(ref p10, ref p20);
+            var w = Vector3.Cross(p10, p20);
             w = Vector3.Normalize(w);
             this.Normals.Add(w);
             this.Normals.Add(w);
@@ -3562,9 +3562,9 @@ public sealed class MeshBuilder
             var i0 = i > 0 ? i - 1 : i;
             var i1 = i + 1 < pathLength ? i + 1 : i;
             var forward = path[i1] - path[i0];
-            var right = SharedFunctions.CrossProduct(ref up, ref forward);
+            var right = Vector3.Cross(up, forward);
 
-            up = SharedFunctions.CrossProduct(ref forward, ref right);
+            up = Vector3.Cross(forward, right);
             up = Vector3.Normalize(up);
             right = Vector3.Normalize(right);
             var u = right;
@@ -3583,7 +3583,7 @@ public sealed class MeshBuilder
                 up = lastUp;
                 //** Please verify that negation of "up" is correct here
                 up *= -1;
-                right = SharedFunctions.CrossProduct(ref up, ref forward);
+                right = Vector3.Cross(up, forward);
                 up = Vector3.Normalize(up);
                 right = Vector3.Normalize(right);
                 u = right;
@@ -3697,7 +3697,7 @@ public sealed class MeshBuilder
 
         var forward = path[1] - path[0];
         var right = sectionXAxis;
-        var up = SharedFunctions.CrossProduct(ref forward, ref right);
+        var up = Vector3.Cross(forward, right);
         up = Vector3.Normalize(up);
         right = Vector3.Normalize(right);
 
@@ -3717,10 +3717,10 @@ public sealed class MeshBuilder
             var i1 = i + 1 < pathLength ? i + 1 : i;
 
             forward = path[i1] - path[i0];
-            right = SharedFunctions.CrossProduct(ref up, ref forward);
-            if (SharedFunctions.LengthSquared(ref right) > 1e-6f)
+            right = Vector3.Cross(up, forward);
+            if (right.LengthSquared() > 1e-6f)
             {
-                up = SharedFunctions.CrossProduct(ref forward, ref right);
+                up = Vector3.Cross(forward, right);
             }
 
             up = Vector3.Normalize(up);
@@ -3919,9 +3919,9 @@ public sealed class MeshBuilder
             var pp0 = p - p0;
             var pp1 = p - p1;
             var pp2 = p - p2;
-            var d0 = SharedFunctions.LengthSquared(ref pp0);
-            var d1 = SharedFunctions.LengthSquared(ref pp1);
-            var d2 = SharedFunctions.LengthSquared(ref pp2);
+            var d0 = pp0.LengthSquared();
+            var d1 = pp1.LengthSquared();
+            var d2 = pp2.LengthSquared();
             var mind = Math.Min(d0, Math.Min(d1, d2));
             if (mind > eps)
             {
@@ -3948,15 +3948,13 @@ public sealed class MeshBuilder
 
             // origin is the corner vertex (at index i0)
             // find the intersections between the chamfer plane and the two edges connected to the corner
-            var p01 = plane.LineIntersection(p0, p1);
-            var p02 = plane.LineIntersection(p0, p2);
 
-            if (p01 == null)
+            if (!plane.IntersectsLine(ref p0, ref p1, out Vector3 p01))
             {
                 continue;
             }
 
-            if (p02 == null)
+            if (!plane.IntersectsLine(ref p0, ref p2, out Vector3 p02))
             {
                 continue;
             }
@@ -3964,24 +3962,24 @@ public sealed class MeshBuilder
             if (chamferPoints != null)
             {
                 // add the chamfered points
-                if (!chamferPoints.Contains(p01.Value))
+                if (!chamferPoints.Contains(p01))
                 {
-                    chamferPoints.Add(p01.Value);
+                    chamferPoints.Add(p01);
                 }
 
-                if (!chamferPoints.Contains(p02.Value))
+                if (!chamferPoints.Contains(p02))
                 {
-                    chamferPoints.Add(p02.Value);
+                    chamferPoints.Add(p02);
                 }
             }
 
             var i01 = i0;
 
             // change the original triangle to use the first chamfer point
-            this.Positions[this.TriangleIndices[i01]] = p01.Value;
+            this.Positions[this.TriangleIndices[i01]] = p01;
 
             var i02 = this.Positions.Count;
-            this.Positions.Add(p02.Value);
+            this.Positions.Add(p02);
 
             // add a new triangle for the other chamfer point
             this.TriangleIndices.Add(i01);
@@ -4049,9 +4047,9 @@ public sealed class MeshBuilder
             var pp0 = p - p0;
             var pp1 = p - p1;
             var pp2 = p - p2;
-            var d0 = SharedFunctions.LengthSquared(ref pp0);
-            var d1 = SharedFunctions.LengthSquared(ref pp1);
-            var d2 = SharedFunctions.LengthSquared(ref pp2);
+            var d0 = pp0.LengthSquared();
+            var d1 = pp1.LengthSquared();
+            var d2 = pp2.LengthSquared();
             var mind = Math.Min(d0, Math.Min(d1, d2));
             if (mind > eps)
             {
@@ -4061,7 +4059,7 @@ public sealed class MeshBuilder
             // calculate the triangle normal and check if this face is already added
             var p10 = p1 - p0;
             var p20 = p2 - p0;
-            var normal = Vector3.Normalize(SharedFunctions.CrossProduct(ref p10, ref p20));
+            var normal = Vector3.Normalize(Vector3.Cross(p10, p20));
 
             // todo: need to use the epsilon value to compare the normals?
             if (addedNormals.Contains(normal))

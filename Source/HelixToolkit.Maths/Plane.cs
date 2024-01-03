@@ -334,7 +334,7 @@ namespace HelixToolkit.Maths
         /// <param name="sphere">The sphere.</param>
         /// <returns></returns>
         public static PlaneIntersectionType Intersects(ref Plane p, ref BoundingSphere sphere)
-        { 
+        {
             return Collision.PlaneIntersectsSphere(ref p, ref sphere);
         }
         /// <summary>
@@ -345,7 +345,7 @@ namespace HelixToolkit.Maths
         /// <param name="p1"></param>
         /// <param name="intersection"></param>
         /// <returns></returns>
-        public static bool IntersectsLine(this Plane p, ref Vector3 p0, ref Vector3 p1, out Vector3 intersection)
+        public static bool IntersectsLine(ref Plane p, ref Vector3 p0, ref Vector3 p1, out Vector3 intersection)
         {
             // https://graphics.stanford.edu/~mdfisher/Code/Engine/Plane.cpp.html
             var diff = p0 - p1;
@@ -367,9 +367,9 @@ namespace HelixToolkit.Maths
         /// <param name="p1"></param>
         /// <param name="intersection"></param>
         /// <returns></returns>
-        public static bool IntersectsLine(this Plane p, Vector3 p0, Vector3 p1, out Vector3 intersection)
+        public static bool IntersectsLine(this Plane p, ref Vector3 p0, ref Vector3 p1, out Vector3 intersection)
         {
-            return IntersectsLine(p, ref p0, ref p1, out intersection);
+            return IntersectsLine(ref p, ref p0, ref p1, out intersection);
         }
         /// <summary>
         /// Builds a matrix that can be used to reflect vectors about a plane.
@@ -628,7 +628,7 @@ namespace HelixToolkit.Maths
                 throw new ArgumentNullException("planes");
             }
 
-            for (var i=0; i < planes.Length; ++i)
+            for (var i = 0; i < planes.Length; ++i)
             {
                 planes[i] = Plane.Transform(planes[i], rotation);
             }
