@@ -57,7 +57,7 @@ public static class MeshGeometryHelper
             var p2 = positions[index2];
             var u = p1 - p0;
             var v = p2 - p0;
-            var w = SharedFunctions.CrossProduct(ref u, ref v);
+            var w = Vector3.Cross(u, v);
             w = Vector3.Normalize(w);
             normals[index0] += w;
             normals[index1] += w;
@@ -196,10 +196,10 @@ public static class MeshGeometryHelper
             var p0 = mesh.Positions[mesh.TriangleIndices[i0]];
             var p1 = mesh.Positions[mesh.TriangleIndices[i0 + 1]];
             var p2 = mesh.Positions[mesh.TriangleIndices[i0 + 2]];
-            var triangleNormal = SharedFunctions.CrossProduct(p1 - p0, p2 - p0);
+            var triangleNormal = Vector3.Cross(p1 - p0, p2 - p0);
 
             // Handle degenerated triangles.
-            if (SharedFunctions.LengthSquared(ref triangleNormal) < 0.001f)
+            if (triangleNormal.LengthSquared() < 0.001f)
                 continue;
 
             triangleNormal = Vector3.Normalize(triangleNormal);
@@ -214,7 +214,7 @@ public static class MeshGeometryHelper
                 if (edgeNormals.TryGetValue(edgeKey, out var value) ||
                     edgeNormals.TryGetValue(reverseEdgeKey, out value))
                 {
-                    var rawDot = SharedFunctions.DotProduct(ref triangleNormal, ref value);
+                    var rawDot = Vector3.Dot(triangleNormal, value);
 
                     // Acos returns NaN if rawDot > 1 or rawDot < -1
                     var dot = Math.Max(-1, Math.Min(rawDot, 1));
@@ -317,7 +317,7 @@ public static class MeshGeometryHelper
                     continue;
                 }
                 var v = mesh.Positions[i] - mesh.Positions[j];
-                var l2 = SharedFunctions.LengthSquared(ref v);
+                var l2 = v.LengthSquared();
                 if (l2 < eps)
                 {
                     dict.Add(j, i);
@@ -658,7 +658,7 @@ public static class MeshGeometryHelper
         for (var i = 0; i < segments.Count; i++)
         {
             var v = point - segments[i];
-            var ls0 = SharedFunctions.LengthSquared(ref v);
+            var ls0 = v.LengthSquared();
             if (ls0 < best)
             {
                 result = i;
@@ -678,11 +678,11 @@ public static class MeshGeometryHelper
     {
         RemoveIsolatedVertices(mesh.Positions, mesh.TriangleIndices, mesh.TextureCoordinates, mesh.Normals,
             out var vertNew, out var triNew, out var textureNew, out var normalNew);
-        
+
         var newMesh = new MeshGeometry3D()
         {
-            Positions = vertNew as Vector3Collection?? new(),
-            TriangleIndices = triNew as IntCollection?? new(),
+            Positions = vertNew as Vector3Collection ?? new(),
+            TriangleIndices = triNew as IntCollection ?? new(),
             TextureCoordinates = textureNew as Vector2Collection,
             Normals = normalNew as Vector3Collection
         };

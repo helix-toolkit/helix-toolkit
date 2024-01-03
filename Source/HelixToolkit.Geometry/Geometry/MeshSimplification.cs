@@ -364,13 +364,13 @@ public sealed class MeshSimplification
 
             var d1 = Vector3.Normalize(vertices[id1].p - p);
             var d2 = Vector3.Normalize(vertices[id2].p - p);
-            if (SharedFunctions.DotProduct(ref d1, ref d2) > 0.999)
+            if (Vector3.Dot(d1, d2) > 0.999)
             {
                 return true;
             }
-            var n = Vector3.Normalize(SharedFunctions.CrossProduct(ref d1, ref d2));
+            var n = Vector3.Normalize(Vector3.Cross(d1, d2));
             deleted[i] = false;
-            if (SharedFunctions.DotProduct(ref n, ref t.normal) < 0.2)
+            if (Vector3.Dot(n, t.normal) < 0.2)
             {
                 return true;
             }
@@ -476,11 +476,11 @@ public sealed class MeshSimplification
                 var p0 = vertices[tri.v[0]].p;
                 var p1 = vertices[tri.v[1]].p;
                 var p2 = vertices[tri.v[2]].p;
-                var n = Vector3.Normalize(SharedFunctions.CrossProduct(p1 - p0, p2 - p0));
+                var n = Vector3.Normalize(Vector3.Cross(p1 - p0, p2 - p0));
                 tri.normal = n;
                 for (var j = 0; j < 3; ++j)
                 {
-                    vertices[tri.v[j]].q += new SymmetricMatrix(n.X, n.Y, n.Z, -SharedFunctions.DotProduct(ref n, ref p0));
+                    vertices[tri.v[j]].q += new SymmetricMatrix(n.X, n.Y, n.Z, -Vector3.Dot(n, p0));
                 }
             }
 
