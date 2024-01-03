@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Numerics;
-
-namespace HelixToolkit.Maths
+﻿namespace HelixToolkit.Maths
 {
     public static class BoundingSphereExtensions
     {
@@ -20,11 +16,11 @@ namespace HelixToolkit.Maths
                 return BoundingSphere.Empty;
             }
 
-            var upperEnd = start + count;
+            int upperEnd = start + count;
 
             //Find the center of all points.
-            var center = Vector3.Zero;
-            for (var i = start; i < upperEnd; ++i)
+            Vector3 center = Vector3.Zero;
+            for (int i = start; i < upperEnd; ++i)
             {
                 center += points[i];
             }
@@ -33,13 +29,13 @@ namespace HelixToolkit.Maths
             center /= (float)count;
 
             //Find the radius of the sphere
-            var radius = 0f;
-            for (var i = start; i < upperEnd; ++i)
+            float radius = 0f;
+            for (int i = start; i < upperEnd; ++i)
             {
                 //We are doing a relative distance comparison to find the maximum distance
                 //from the center of our sphere.
-                var p = points[i];
-                var distance = Vector3.DistanceSquared(center, p);
+                Vector3 p = points[i];
+                float distance = Vector3.DistanceSquared(center, p);
 
                 if (distance > radius)
                 {
@@ -72,11 +68,11 @@ namespace HelixToolkit.Maths
         /// <returns></returns>
         public static BoundingSphere TransformBoundingSphere(this BoundingSphere b, Matrix4x4 m)
         {
-            var center = b.Center;
-            var edge = b.Center + Vector3.UnitX * b.Radius;
+            Vector3 center = b.Center;
+            Vector3 edge = b.Center + Vector3.UnitX * b.Radius;
 
-            var worldCenter = Vector3.Transform(center, m);
-            var worldEdge = Vector3.Transform(edge, m);
+            Vector3 worldCenter = Vector3.Transform(center, m);
+            Vector3 worldEdge = Vector3.Transform(edge, m);
 
             return new BoundingSphere(worldCenter, (worldEdge - worldCenter).Length());
         }

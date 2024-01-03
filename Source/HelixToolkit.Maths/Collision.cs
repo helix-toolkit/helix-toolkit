@@ -29,10 +29,6 @@ The MIT License (MIT)
 Copyright (c) 2007-2011 SlimDX Group
 The MIT License (MIT)
 */
-using System;
-using System.Numerics;
-using Matrix = System.Numerics.Matrix4x4;
-
 namespace HelixToolkit.Maths
 {
     /*
@@ -78,12 +74,12 @@ namespace HelixToolkit.Maths
             //Reference: Page 136
 
             //Check if P in vertex region outside A
-            var ab = vertex2 - vertex1;
-            var ac = vertex3 - vertex1;
-            var ap = point - vertex1;
+            Vector3 ab = vertex2 - vertex1;
+            Vector3 ac = vertex3 - vertex1;
+            Vector3 ap = point - vertex1;
 
-            var d1 = Vector3.Dot(ab, ap);
-            var d2 = Vector3.Dot(ac, ap);
+            float d1 = Vector3.Dot(ab, ap);
+            float d2 = Vector3.Dot(ac, ap);
             if (d1 <= 0.0f && d2 <= 0.0f)
             {
                 result = vertex1; //Barycentric coordinates (1,0,0)
@@ -91,9 +87,9 @@ namespace HelixToolkit.Maths
             }
 
             //Check if P in vertex region outside B
-            var bp = point - vertex2;
-            var d3 = Vector3.Dot(ab, bp);
-            var d4 = Vector3.Dot(ac, bp);
+            Vector3 bp = point - vertex2;
+            float d3 = Vector3.Dot(ab, bp);
+            float d4 = Vector3.Dot(ac, bp);
             if (d3 >= 0.0f && d4 <= d3)
             {
                 result = vertex2; // Barycentric coordinates (0,1,0)
@@ -101,18 +97,18 @@ namespace HelixToolkit.Maths
             }
 
             //Check if P in edge region of AB, if so return projection of P onto AB
-            var vc = d1 * d4 - d3 * d2;
+            float vc = d1 * d4 - d3 * d2;
             if (vc <= 0.0f && d1 >= 0.0f && d3 <= 0.0f)
             {
-                var v = d1 / (d1 - d3);
+                float v = d1 / (d1 - d3);
                 result = vertex1 + v * ab; //Barycentric coordinates (1-v,v,0)
                 return;
             }
 
             //Check if P in vertex region outside C
-            var cp = point - vertex3;
-            var d5 = Vector3.Dot(ab, cp);
-            var d6 = Vector3.Dot(ac, cp);
+            Vector3 cp = point - vertex3;
+            float d5 = Vector3.Dot(ab, cp);
+            float d6 = Vector3.Dot(ac, cp);
             if (d6 >= 0.0f && d5 <= d6)
             {
                 result = vertex3; //Barycentric coordinates (0,0,1)
@@ -120,27 +116,27 @@ namespace HelixToolkit.Maths
             }
 
             //Check if P in edge region of AC, if so return projection of P onto AC
-            var vb = d5 * d2 - d1 * d6;
+            float vb = d5 * d2 - d1 * d6;
             if (vb <= 0.0f && d2 >= 0.0f && d6 <= 0.0f)
             {
-                var w = d2 / (d2 - d6);
+                float w = d2 / (d2 - d6);
                 result = vertex1 + w * ac; //Barycentric coordinates (1-w,0,w)
                 return;
             }
 
             //Check if P in edge region of BC, if so return projection of P onto BC
-            var va = d3 * d6 - d5 * d4;
+            float va = d3 * d6 - d5 * d4;
             if (va <= 0.0f && (d4 - d3) >= 0.0f && (d5 - d6) >= 0.0f)
             {
-                var w = (d4 - d3) / ((d4 - d3) + (d5 - d6));
+                float w = (d4 - d3) / (d4 - d3 + (d5 - d6));
                 result = vertex2 + w * (vertex3 - vertex2); //Barycentric coordinates (0,1-w,w)
                 return;
             }
 
             //P inside face region. Compute Q through its Barycentric coordinates (u,v,w)
-            var denom = 1.0f / (va + vb + vc);
-            var v2 = vb * denom;
-            var w2 = vc * denom;
+            float denom = 1.0f / (va + vb + vc);
+            float v2 = vb * denom;
+            float w2 = vc * denom;
             result = vertex1 + ab * v2 + ac * w2; //= u*vertex1 + v*vertex2 + w*vertex3, u = va * denom = 1.0f - v - w
         }
 
@@ -155,9 +151,9 @@ namespace HelixToolkit.Maths
             //Source: Real-Time Collision Detection by Christer Ericson
             //Reference: Page 126
 
-            var dot = Vector3.Dot(plane.Normal, point);
-            
-            var t = dot - plane.D;
+            float dot = Vector3.Dot(plane.Normal, point);
+
+            float t = dot - plane.D;
 
             result = point - (t * plane.Normal);
         }
@@ -237,7 +233,7 @@ namespace HelixToolkit.Maths
             //Source: Real-Time Collision Detection by Christer Ericson
             //Reference: Page 127
 
-            var dot = Vector3.Dot(plane.Normal, point);
+            float dot = Vector3.Dot(plane.Normal, point);
             
             return dot - plane.D;
         }
@@ -253,7 +249,7 @@ namespace HelixToolkit.Maths
             //Source: Real-Time Collision Detection by Christer Ericson
             //Reference: Page 131
 
-            var distance = 0f;
+            float distance = 0f;
 
             if (point.X < box.Minimum.X)
             {
@@ -299,41 +295,41 @@ namespace HelixToolkit.Maths
             //Source:
             //Reference:
 
-            var distance = 0f;
+            float distance = 0f;
 
             //Distance for X.
             if (box1.Minimum.X > box2.Maximum.X)
             {
-                var delta = box2.Maximum.X - box1.Minimum.X;
+                float delta = box2.Maximum.X - box1.Minimum.X;
                 distance += delta * delta;
             }
             else if (box2.Minimum.X > box1.Maximum.X)
             {
-                var delta = box1.Maximum.X - box2.Minimum.X;
+                float delta = box1.Maximum.X - box2.Minimum.X;
                 distance += delta * delta;
             }
 
             //Distance for Y.
             if (box1.Minimum.Y > box2.Maximum.Y)
             {
-                var delta = box2.Maximum.Y - box1.Minimum.Y;
+                float delta = box2.Maximum.Y - box1.Minimum.Y;
                 distance += delta * delta;
             }
             else if (box2.Minimum.Y > box1.Maximum.Y)
             {
-                var delta = box1.Maximum.Y - box2.Minimum.Y;
+                float delta = box1.Maximum.Y - box2.Minimum.Y;
                 distance += delta * delta;
             }
 
             //Distance for Z.
             if (box1.Minimum.Z > box2.Maximum.Z)
             {
-                var delta = box2.Maximum.Z - box1.Minimum.Z;
+                float delta = box2.Maximum.Z - box1.Minimum.Z;
                 distance += delta * delta;
             }
             else if (box2.Minimum.Z > box1.Maximum.Z)
             {
-                var delta = box1.Maximum.Z - box2.Minimum.Z;
+                float delta = box1.Maximum.Z - box2.Minimum.Z;
                 distance += delta * delta;
             }
 
@@ -351,7 +347,7 @@ namespace HelixToolkit.Maths
             //Source: Jorgy343
             //Reference: None
 
-            var distance = Vector3.Distance(sphere.Center, point);
+            float distance = Vector3.Distance(sphere.Center, point);
            
             distance -= sphere.Radius;
 
@@ -369,7 +365,7 @@ namespace HelixToolkit.Maths
             //Source: Jorgy343
             //Reference: None
 
-            var distance = Vector3.Distance(sphere1.Center, sphere2.Center);
+            float distance = Vector3.Distance(sphere1.Center, sphere2.Center);
             
             distance -= sphere1.Radius + sphere2.Radius;
 
@@ -387,20 +383,20 @@ namespace HelixToolkit.Maths
             //Source: RayIntersectsSphere
             //Reference: None
 
-            var m = Vector3.Subtract(ray.Position, point);
-            
+            Vector3 m = Vector3.Subtract(ray.Position, point);
+
 
             //Same thing as RayIntersectsSphere except that the radius of the sphere (point)
             //is the epsilon for zero.
-            var b = Vector3.Dot(m, ray.Direction);
-            var c = Vector3.Dot(m, m) - MathUtil.ZeroTolerance;
+            float b = Vector3.Dot(m, ray.Direction);
+            float c = Vector3.Dot(m, m) - MathUtil.ZeroTolerance;
 
             if (c > 0f && b > 0f)
             {
                 return false;
             }
 
-            var discriminant = b * b - c;
+            float discriminant = b * b - c;
 
             return discriminant >= 0f;
         }
@@ -428,10 +424,10 @@ namespace HelixToolkit.Maths
             //Source: Real-Time Rendering, Third Edition
             //Reference: Page 780
 
-            var cross = Vector3.Cross(ray1.Direction, ray2.Direction);
+            Vector3 cross = Vector3.Cross(ray1.Direction, ray2.Direction);
 
-            
-            var denominator = cross.Length();
+
+            float denominator = cross.Length();
 
             //Lines are parallel.
             if (MathUtil.IsZero(denominator) &&
@@ -444,16 +440,16 @@ namespace HelixToolkit.Maths
                 return true;
             }
 
-            denominator = denominator * denominator;
+            denominator *= denominator;
 
             //3x3 matrix for the first ray.
-            var v = ray2.Position - ray1.Position;
-            var m = new Matrix(v.X, v.Y, v.Z, 0, ray2.Direction.X, ray2.Direction.Y, ray2.Direction.Z, 0, 
+            Vector3 v = ray2.Position - ray1.Position;
+            Matrix m = new(v.X, v.Y, v.Z, 0, ray2.Direction.X, ray2.Direction.Y, ray2.Direction.Z, 0, 
                 cross.X, cross.Y, cross.Z, 0, 0, 0, 0, 1);
 
 
             //Determinant of first matrix.
-            var dets =
+            float dets =
                 m.GetDeterminant();
 
             //3x3 matrix for the second ray.
@@ -462,15 +458,15 @@ namespace HelixToolkit.Maths
             m.M23 = ray1.Direction.Z;
 
             //Determinant of the second matrix.
-            var dett = m.GetDeterminant();
+            float dett = m.GetDeterminant();
 
             //t values of the point of intersection.
-            var s = dets / denominator;
-            var t = dett / denominator;
+            float s = dets / denominator;
+            float t = dett / denominator;
 
             //The points of intersection.
-            var point1 = ray1.Position + (s * ray1.Direction);
-            var point2 = ray2.Position + (t * ray2.Direction);
+            Vector3 point1 = ray1.Position + (s * ray1.Direction);
+            Vector3 point2 = ray2.Position + (t * ray2.Direction);
 
             //If the points are not equal, no intersection has occurred.
             if (!MathUtil.NearEqual(point2.X, point1.X) ||
@@ -498,7 +494,7 @@ namespace HelixToolkit.Maths
             //Source: Real-Time Collision Detection by Christer Ericson
             //Reference: Page 175
 
-            var direction = Vector3.Dot(plane.Normal, ray.Direction);
+            float direction = Vector3.Dot(plane.Normal, ray.Direction);
             
 
             if (MathUtil.IsZero(direction))
@@ -507,7 +503,7 @@ namespace HelixToolkit.Maths
                 return false;
             }
 
-            var position = Vector3.Dot(plane.Normal, ray.Position);
+            float position = Vector3.Dot(plane.Normal, ray.Position);
             
             distance = (-plane.D - position) / direction;
 
@@ -533,8 +529,7 @@ namespace HelixToolkit.Maths
             //Source: Real-Time Collision Detection by Christer Ericson
             //Reference: Page 175
 
-            float distance;
-            if (!RayIntersectsPlane(ref ray, ref plane, out distance))
+            if (!RayIntersectsPlane(ref ray, ref plane, out float distance))
             {
                 point = Vector3.Zero;
                 return false;
@@ -567,17 +562,17 @@ namespace HelixToolkit.Maths
             //Reference: http://www.cs.virginia.edu/~gfx/Courses/2003/ImageSynthesis/papers/Acceleration/Fast%20MinimumStorage%20RayTriangle%20Intersection.pdf
 
             //Compute vectors along two edges of the triangle.
-            var edge1 = vertex2 - vertex1;
-            var edge2 = vertex3 - vertex1;
+            Vector3 edge1 = vertex2 - vertex1;
+            Vector3 edge2 = vertex3 - vertex1;
 
             //Cross product of ray direction and edge2 - first part of determinant.
-            var directioncrossedge2 = Vector3.Cross(ray.Direction, edge2);
+            Vector3 directioncrossedge2 = Vector3.Cross(ray.Direction, edge2);
             //directioncrossedge2.X = (ray.Direction.Y * edge2.Z) - (ray.Direction.Z * edge2.Y);
             //directioncrossedge2.Y = (ray.Direction.Z * edge2.X) - (ray.Direction.X * edge2.Z);
             //directioncrossedge2.Z = (ray.Direction.X * edge2.Y) - (ray.Direction.Y * edge2.X);
 
             //Compute the determinant.
-            var determinant = Vector3.Dot(edge1, directioncrossedge2);
+            float determinant = Vector3.Dot(edge1, directioncrossedge2);
             //Dot product of edge1 and the first part of determinant.
             //determinant = (edge1.X * directioncrossedge2.X) + (edge1.Y * directioncrossedge2.Y) + (edge1.Z * directioncrossedge2.Z);
 
@@ -590,15 +585,15 @@ namespace HelixToolkit.Maths
                 return false;
             }
 
-            var inversedeterminant = 1.0f / determinant;
+            float inversedeterminant = 1.0f / determinant;
 
             //Calculate the U parameter of the intersection point.
-            var distanceVector = ray.Position - vertex1;
+            Vector3 distanceVector = ray.Position - vertex1;
             //distanceVector.X = ray.Position.X - vertex1.X;
             //distanceVector.Y = ray.Position.Y - vertex1.Y;
             //distanceVector.Z = ray.Position.Z - vertex1.Z;
 
-            var triangleU = Vector3.Dot(distanceVector, directioncrossedge2);
+            float triangleU = Vector3.Dot(distanceVector, directioncrossedge2);
             //triangleU = (distanceVector.X * directioncrossedge2.X) + (distanceVector.Y * directioncrossedge2.Y) + (distanceVector.Z * directioncrossedge2.Z);
             triangleU *= inversedeterminant;
 
@@ -610,12 +605,12 @@ namespace HelixToolkit.Maths
             }
 
             //Calculate the V parameter of the intersection point.
-            var distancecrossedge1 = Vector3.Cross(distanceVector, edge1);
+            Vector3 distancecrossedge1 = Vector3.Cross(distanceVector, edge1);
             //distancecrossedge1.X = (distanceVector.Y * edge1.Z) - (distanceVector.Z * edge1.Y);
             //distancecrossedge1.Y = (distanceVector.Z * edge1.X) - (distanceVector.X * edge1.Z);
             //distancecrossedge1.Z = (distanceVector.X * edge1.Y) - (distanceVector.Y * edge1.X);
 
-            var triangleV = Vector3.Dot(ray.Direction, distancecrossedge1);
+            float triangleV = Vector3.Dot(ray.Direction, distancecrossedge1);
             //triangleV = ((ray.Direction.X * distancecrossedge1.X) + (ray.Direction.Y * distancecrossedge1.Y)) + (ray.Direction.Z * distancecrossedge1.Z);
             triangleV *= inversedeterminant;
 
@@ -627,7 +622,7 @@ namespace HelixToolkit.Maths
             }
 
             //Compute the distance along the ray to the triangle.
-            var raydistance = Vector3.Dot(edge2, distancecrossedge1);
+            float raydistance = Vector3.Dot(edge2, distancecrossedge1);
             //raydistance = (edge2.X * distancecrossedge1.X) + (edge2.Y * distancecrossedge1.Y) + (edge2.Z * distancecrossedge1.Z);
             raydistance *= inversedeterminant;
 
@@ -654,8 +649,7 @@ namespace HelixToolkit.Maths
         /// <returns>Whether the two objects intersected.</returns>
         public static bool RayIntersectsTriangle(ref Ray ray, ref Vector3 vertex1, ref Vector3 vertex2, ref Vector3 vertex3, out Vector3 point)
         {
-            float distance;
-            if (!RayIntersectsTriangle(ref ray, ref vertex1, ref vertex2, ref vertex3, out distance))
+            if (!RayIntersectsTriangle(ref ray, ref vertex1, ref vertex2, ref vertex3, out float distance))
             {
                 point = Vector3.Zero;
                 return false;
@@ -679,7 +673,7 @@ namespace HelixToolkit.Maths
             //Reference: Page 179
 
             distance = 0f;
-            var tmax = float.MaxValue;
+            float tmax = float.MaxValue;
 
             if (MathUtil.IsZero(ray.Direction.X))
             {
@@ -691,15 +685,13 @@ namespace HelixToolkit.Maths
             }
             else
             {
-                var inverse = 1.0f / ray.Direction.X;
-                var t1 = (box.Minimum.X - ray.Position.X) * inverse;
-                var t2 = (box.Maximum.X - ray.Position.X) * inverse;
+                float inverse = 1.0f / ray.Direction.X;
+                float t1 = (box.Minimum.X - ray.Position.X) * inverse;
+                float t2 = (box.Maximum.X - ray.Position.X) * inverse;
 
                 if (t1 > t2)
                 {
-                    var temp = t1;
-                    t1 = t2;
-                    t2 = temp;
+                    (t2, t1) = (t1, t2);
                 }
 
                 distance = Math.Max(t1, distance);
@@ -722,15 +714,13 @@ namespace HelixToolkit.Maths
             }
             else
             {
-                var inverse = 1.0f / ray.Direction.Y;
-                var t1 = (box.Minimum.Y - ray.Position.Y) * inverse;
-                var t2 = (box.Maximum.Y - ray.Position.Y) * inverse;
+                float inverse = 1.0f / ray.Direction.Y;
+                float t1 = (box.Minimum.Y - ray.Position.Y) * inverse;
+                float t2 = (box.Maximum.Y - ray.Position.Y) * inverse;
 
                 if (t1 > t2)
                 {
-                    var temp = t1;
-                    t1 = t2;
-                    t2 = temp;
+                    (t2, t1) = (t1, t2);
                 }
 
                 distance = Math.Max(t1, distance);
@@ -753,15 +743,13 @@ namespace HelixToolkit.Maths
             }
             else
             {
-                var inverse = 1.0f / ray.Direction.Z;
-                var t1 = (box.Minimum.Z - ray.Position.Z) * inverse;
-                var t2 = (box.Maximum.Z - ray.Position.Z) * inverse;
+                float inverse = 1.0f / ray.Direction.Z;
+                float t1 = (box.Minimum.Z - ray.Position.Z) * inverse;
+                float t2 = (box.Maximum.Z - ray.Position.Z) * inverse;
 
                 if (t1 > t2)
                 {
-                    var temp = t1;
-                    t1 = t2;
-                    t2 = temp;
+                    (t2, t1) = (t1, t2);
                 }
 
                 distance = Math.Max(t1, distance);
@@ -787,8 +775,7 @@ namespace HelixToolkit.Maths
         /// <returns>Whether the two objects intersected.</returns>
         public static bool RayIntersectsBox(ref Ray ray, ref BoundingBox box, out Vector3 point)
         {
-            float distance;
-            if (!RayIntersectsBox(ref ray, ref box, out distance))
+            if (!RayIntersectsBox(ref ray, ref box, out float distance))
             {
                 point = Vector3.Zero;
                 return false;
@@ -811,11 +798,11 @@ namespace HelixToolkit.Maths
             //Source: Real-Time Collision Detection by Christer Ericson
             //Reference: Page 177
 
-            var m = Vector3.Subtract(ray.Position, sphere.Center);
-            
+            Vector3 m = Vector3.Subtract(ray.Position, sphere.Center);
 
-            var b = Vector3.Dot(m, ray.Direction);
-            var c = Vector3.Dot(m, m) - (sphere.Radius * sphere.Radius);
+
+            float b = Vector3.Dot(m, ray.Direction);
+            float c = Vector3.Dot(m, m) - (sphere.Radius * sphere.Radius);
 
             if (c > 0f && b > 0f)
             {
@@ -823,7 +810,7 @@ namespace HelixToolkit.Maths
                 return false;
             }
 
-            var discriminant = b * b - c;
+            float discriminant = b * b - c;
 
             if (discriminant < 0f)
             {
@@ -851,8 +838,7 @@ namespace HelixToolkit.Maths
         /// <returns>Whether the two objects intersected.</returns>
         public static bool RayIntersectsSphere(ref Ray ray, ref BoundingSphere sphere, out Vector3 point)
         {
-            float distance;
-            if (!RayIntersectsSphere(ref ray, ref sphere, out distance))
+            if (!RayIntersectsSphere(ref ray, ref sphere, out float distance))
             {
                 point = Vector3.Zero;
                 return false;
@@ -870,16 +856,11 @@ namespace HelixToolkit.Maths
         /// <returns>Whether the two objects intersected.</returns>
         public static PlaneIntersectionType PlaneIntersectsPoint(ref Plane plane, ref Vector3 point)
         {
-            var distance = Vector3.Dot(plane.Normal, point);
+            float distance = Vector3.Dot(plane.Normal, point);
             
             distance += plane.D;
 
-            if (distance > 0f)
-            {
-                return PlaneIntersectionType.Front;
-            }
-
-            return distance < 0f ? PlaneIntersectionType.Back : PlaneIntersectionType.Intersecting;
+            return distance > 0f ? PlaneIntersectionType.Front : distance < 0f ? PlaneIntersectionType.Back : PlaneIntersectionType.Intersecting;
         }
 
         /// <summary>
@@ -890,12 +871,12 @@ namespace HelixToolkit.Maths
         /// <returns>Whether the two objects intersected.</returns>
         public static bool PlaneIntersectsPlane(ref Plane plane1, ref Plane plane2)
         {
-            var direction = Vector3.Cross(plane1.Normal, plane2.Normal);
-            
+            Vector3 direction = Vector3.Cross(plane1.Normal, plane2.Normal);
+
 
             //If direction is the zero vector, the planes are parallel and possibly
             //coincident. It is not an intersection. The dot product will tell us.
-            var denominator = Vector3.Dot(direction, direction);
+            float denominator = Vector3.Dot(direction, direction);
 
 
             return !MathUtil.IsZero(denominator);
@@ -919,12 +900,12 @@ namespace HelixToolkit.Maths
             //Source: Real-Time Collision Detection by Christer Ericson
             //Reference: Page 207
 
-            var direction = Vector3.Cross(plane1.Normal, plane2.Normal);
-            
+            Vector3 direction = Vector3.Cross(plane1.Normal, plane2.Normal);
+
 
             //If direction is the zero vector, the planes are parallel and possibly
             //coincident. It is not an intersection. The dot product will tell us.
-            var denominator = Vector3.Dot(direction, direction);
+            float denominator = Vector3.Dot(direction, direction);
             
 
             //We assume the planes are normalized, therefore the denominator
@@ -936,9 +917,9 @@ namespace HelixToolkit.Maths
                 return false;
             }
 
-            
-            var temp = plane1.D * plane2.Normal - plane2.D * plane1.Normal;
-            var point = Vector3.Cross(temp, direction);
+
+            Vector3 temp = plane1.D * plane2.Normal - plane2.D * plane1.Normal;
+            Vector3 point = Vector3.Cross(temp, direction);
 
             line.Position = point;
             line.Direction = Vector3.Normalize(direction);
@@ -970,16 +951,13 @@ namespace HelixToolkit.Maths
             //Source: Real-Time Collision Detection by Christer Ericson
             //Reference: Page 207
 
-            var test1 = PlaneIntersectsPoint(ref plane, ref vertex1);
-            var test2 = PlaneIntersectsPoint(ref plane, ref vertex2);
-            var test3 = PlaneIntersectsPoint(ref plane, ref vertex3);
+            PlaneIntersectionType test1 = PlaneIntersectsPoint(ref plane, ref vertex1);
+            PlaneIntersectionType test2 = PlaneIntersectsPoint(ref plane, ref vertex2);
+            PlaneIntersectionType test3 = PlaneIntersectsPoint(ref plane, ref vertex3);
 
-            if (test1 == PlaneIntersectionType.Front && test2 == PlaneIntersectionType.Front && test3 == PlaneIntersectionType.Front)
-            {
-                return PlaneIntersectionType.Front;
-            }
-
-            return test1 == PlaneIntersectionType.Back && test2 == PlaneIntersectionType.Back && test3 == PlaneIntersectionType.Back
+            return test1 == PlaneIntersectionType.Front && test2 == PlaneIntersectionType.Front && test3 == PlaneIntersectionType.Front
+                ? PlaneIntersectionType.Front
+                : test1 == PlaneIntersectionType.Back && test2 == PlaneIntersectionType.Back && test3 == PlaneIntersectionType.Back
                 ? PlaneIntersectionType.Back
                 : PlaneIntersectionType.Intersecting;
         }
@@ -1005,7 +983,7 @@ namespace HelixToolkit.Maths
             min.Y = (plane.Normal.Y >= 0.0f) ? box.Maximum.Y : box.Minimum.Y;
             min.Z = (plane.Normal.Z >= 0.0f) ? box.Maximum.Z : box.Minimum.Z;
 
-            var distance = Vector3.Dot(plane.Normal, max);
+            float distance = Vector3.Dot(plane.Normal, max);
 
             if (distance + plane.D > 0.0f)
             {
@@ -1028,15 +1006,12 @@ namespace HelixToolkit.Maths
             //Source: Real-Time Collision Detection by Christer Ericson
             //Reference: Page 160
 
-            var distance = Vector3.Dot(plane.Normal, sphere.Center);
+            float distance = Vector3.Dot(plane.Normal, sphere.Center);
             distance += plane.D;
 
-            if (distance > sphere.Radius)
-            {
-                return PlaneIntersectionType.Front;
-            }
-
-            return distance < -sphere.Radius ? PlaneIntersectionType.Back : PlaneIntersectionType.Intersecting;
+            return distance > sphere.Radius
+                ? PlaneIntersectionType.Front
+                : distance < -sphere.Radius ? PlaneIntersectionType.Back : PlaneIntersectionType.Intersecting;
         }
 
         /* This implementation is wrong
@@ -1071,17 +1046,9 @@ namespace HelixToolkit.Maths
         /// <returns>Whether the two objects intersected.</returns>
         public static bool BoxIntersectsBox(ref BoundingBox box1, ref BoundingBox box2)
         {
-            if (box1.Minimum.X > box2.Maximum.X || box2.Minimum.X > box1.Maximum.X)
-            {
-                return false;
-            }
-
-            if (box1.Minimum.Y > box2.Maximum.Y || box2.Minimum.Y > box1.Maximum.Y)
-            {
-                return false;
-            }
-
-            return box1.Minimum.Z <= box2.Maximum.Z && box2.Minimum.Z <= box1.Maximum.Z;
+            return box1.Minimum.X <= box2.Maximum.X && box2.Minimum.X <= box1.Maximum.X
+                    && box1.Minimum.Y <= box2.Maximum.Y && box2.Minimum.Y <= box1.Maximum.Y
+                    && box1.Minimum.Z <= box2.Maximum.Z && box2.Minimum.Z <= box1.Maximum.Z;
         }
 
         /// <summary>
@@ -1095,8 +1062,8 @@ namespace HelixToolkit.Maths
             //Source: Real-Time Collision Detection by Christer Ericson
             //Reference: Page 166
 
-            var vector = Vector3.Clamp(sphere.Center, box.Minimum, box.Maximum);
-            var distance = Vector3.DistanceSquared(sphere.Center, vector);
+            Vector3 vector = Vector3.Clamp(sphere.Center, box.Minimum, box.Maximum);
+            float distance = Vector3.DistanceSquared(sphere.Center, vector);
 
             return distance <= sphere.Radius * sphere.Radius;
         }
@@ -1114,11 +1081,10 @@ namespace HelixToolkit.Maths
             //Source: Real-Time Collision Detection by Christer Ericson
             //Reference: Page 167
 
-            Vector3 point;
-            ClosestPointPointTriangle(ref sphere.Center, ref vertex1, ref vertex2, ref vertex3, out point);
-            var v = point - sphere.Center;
+            ClosestPointPointTriangle(ref sphere.Center, ref vertex1, ref vertex2, ref vertex3, out Vector3 point);
+            Vector3 v = point - sphere.Center;
 
-            var dot = Vector3.Dot(v, v);
+            float dot = Vector3.Dot(v, v);
 
             return dot <= sphere.Radius * sphere.Radius;
         }
@@ -1131,7 +1097,7 @@ namespace HelixToolkit.Maths
         /// <returns>Whether the two objects intersected.</returns>
         public static bool SphereIntersectsSphere(ref BoundingSphere sphere1, ref BoundingSphere sphere2)
         {
-            var radiisum = sphere1.Radius + sphere2.Radius;
+            float radiisum = sphere1.Radius + sphere2.Radius;
             return Vector3.DistanceSquared(sphere1.Center, sphere2.Center) <= radiisum * radiisum;
         }
 
@@ -1183,23 +1149,14 @@ namespace HelixToolkit.Maths
         /// <returns>The type of containment the two objects have.</returns>
         public static ContainmentType BoxContainsBox(ref BoundingBox box1, ref BoundingBox box2)
         {
-            if (box1.Maximum.X < box2.Minimum.X || box1.Minimum.X > box2.Maximum.X)
-            {
-                return ContainmentType.Disjoint;
-            }
-
-            if (box1.Maximum.Y < box2.Minimum.Y || box1.Minimum.Y > box2.Maximum.Y)
-            {
-                return ContainmentType.Disjoint;
-            }
-
-            if (box1.Maximum.Z < box2.Minimum.Z || box1.Minimum.Z > box2.Maximum.Z)
-            {
-                return ContainmentType.Disjoint;
-            }
-
-            return box1.Minimum.X <= box2.Minimum.X && (box2.Maximum.X <= box1.Maximum.X &&
-                box1.Minimum.Y <= box2.Minimum.Y && box2.Maximum.Y <= box1.Maximum.Y) &&
+            return box1.Maximum.X < box2.Minimum.X || box1.Minimum.X > box2.Maximum.X
+                ? ContainmentType.Disjoint
+                : box1.Maximum.Y < box2.Minimum.Y || box1.Minimum.Y > box2.Maximum.Y
+                ? ContainmentType.Disjoint
+                : box1.Maximum.Z < box2.Minimum.Z || box1.Minimum.Z > box2.Maximum.Z
+                ? ContainmentType.Disjoint
+                : box1.Minimum.X <= box2.Minimum.X && box2.Maximum.X <= box1.Maximum.X &&
+                box1.Minimum.Y <= box2.Minimum.Y && box2.Maximum.Y <= box1.Maximum.Y &&
                 box1.Minimum.Z <= box2.Minimum.Z && box2.Maximum.Z <= box1.Maximum.Z
                 ? ContainmentType.Contains
                 : ContainmentType.Intersects;
@@ -1213,17 +1170,14 @@ namespace HelixToolkit.Maths
         /// <returns>The type of containment the two objects have.</returns>
         public static ContainmentType BoxContainsSphere(ref BoundingBox box, ref BoundingSphere sphere)
         {
-            var vector = Vector3.Clamp(sphere.Center, box.Minimum, box.Maximum);
-            var distance = Vector3.DistanceSquared(sphere.Center, vector);
+            Vector3 vector = Vector3.Clamp(sphere.Center, box.Minimum, box.Maximum);
+            float distance = Vector3.DistanceSquared(sphere.Center, vector);
 
-            if (distance > sphere.Radius * sphere.Radius)
-            {
-                return ContainmentType.Disjoint;
-            }
-
-            return (((box.Minimum.X + sphere.Radius <= sphere.Center.X) && (sphere.Center.X <= box.Maximum.X - sphere.Radius)) && ((box.Maximum.X - box.Minimum.X > sphere.Radius) &&
-                (box.Minimum.Y + sphere.Radius <= sphere.Center.Y))) && (((sphere.Center.Y <= box.Maximum.Y - sphere.Radius) && (box.Maximum.Y - box.Minimum.Y > sphere.Radius)) &&
-                (((box.Minimum.Z + sphere.Radius <= sphere.Center.Z) && (sphere.Center.Z <= box.Maximum.Z - sphere.Radius)) && (box.Maximum.Z - box.Minimum.Z > sphere.Radius)))
+            return distance > sphere.Radius * sphere.Radius
+                ? ContainmentType.Disjoint
+                : (box.Minimum.X + sphere.Radius <= sphere.Center.X) && (sphere.Center.X <= box.Maximum.X - sphere.Radius) && (box.Maximum.X - box.Minimum.X > sphere.Radius) &&
+                (box.Minimum.Y + sphere.Radius <= sphere.Center.Y) && (sphere.Center.Y <= box.Maximum.Y - sphere.Radius) && (box.Maximum.Y - box.Minimum.Y > sphere.Radius) &&
+                (box.Minimum.Z + sphere.Radius <= sphere.Center.Z) && (sphere.Center.Z <= box.Maximum.Z - sphere.Radius) && (box.Maximum.Z - box.Minimum.Z > sphere.Radius)
                 ? ContainmentType.Contains
                 : ContainmentType.Intersects;
         }
@@ -1254,16 +1208,13 @@ namespace HelixToolkit.Maths
             //Source: Jorgy343
             //Reference: None
 
-            var test1 = SphereContainsPoint(ref sphere, ref vertex1);
-            var test2 = SphereContainsPoint(ref sphere, ref vertex2);
-            var test3 = SphereContainsPoint(ref sphere, ref vertex3);
+            ContainmentType test1 = SphereContainsPoint(ref sphere, ref vertex1);
+            ContainmentType test2 = SphereContainsPoint(ref sphere, ref vertex2);
+            ContainmentType test3 = SphereContainsPoint(ref sphere, ref vertex3);
 
-            if (test1 == ContainmentType.Contains && test2 == ContainmentType.Contains && test3 == ContainmentType.Contains)
-            {
-                return ContainmentType.Contains;
-            }
-
-            return SphereIntersectsTriangle(ref sphere, ref vertex1, ref vertex2, ref vertex3)
+            return test1 == ContainmentType.Contains && test2 == ContainmentType.Contains && test3 == ContainmentType.Contains
+                ? ContainmentType.Contains
+                : SphereIntersectsTriangle(ref sphere, ref vertex1, ref vertex2, ref vertex3)
                 ? ContainmentType.Intersects
                 : ContainmentType.Disjoint;
         }
@@ -1281,7 +1232,7 @@ namespace HelixToolkit.Maths
                 return ContainmentType.Disjoint;
             }
 
-            var radiussquared = sphere.Radius * sphere.Radius;
+            float radiussquared = sphere.Radius * sphere.Radius;
             Vector3 vector;
             vector.X = sphere.Center.X - box.Minimum.X;
             vector.Y = sphere.Center.Y - box.Maximum.Y;
@@ -1361,14 +1312,11 @@ namespace HelixToolkit.Maths
         /// <returns>The type of containment the two objects have.</returns>
         public static ContainmentType SphereContainsSphere(ref BoundingSphere sphere1, ref BoundingSphere sphere2)
         {
-            var distance = Vector3.Distance(sphere1.Center, sphere2.Center);
+            float distance = Vector3.Distance(sphere1.Center, sphere2.Center);
 
-            if (sphere1.Radius + sphere2.Radius < distance)
-            {
-                return ContainmentType.Disjoint;
-            }
-
-            return sphere1.Radius - sphere2.Radius < distance ? ContainmentType.Intersects : ContainmentType.Contains;
+            return sphere1.Radius + sphere2.Radius < distance
+                ? ContainmentType.Disjoint
+                : sphere1.Radius - sphere2.Radius < distance ? ContainmentType.Intersects : ContainmentType.Contains;
         }
     }
 }

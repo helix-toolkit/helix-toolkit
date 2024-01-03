@@ -29,14 +29,6 @@ The MIT License (MIT)
 Copyright (c) 2007-2011 SlimDX Group
 The MIT License (MIT)
 */
-using System;
-using System.Globalization;
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
-
-using System.Numerics;
-using Matrix = System.Numerics.Matrix4x4;
-
 namespace HelixToolkit.Maths
 {
     /// <summary>
@@ -48,7 +40,7 @@ namespace HelixToolkit.Maths
         /// Gets the identity matrix.
         /// </summary>
         /// <value>The identity matrix.</value>
-        public readonly static Matrix3x2 Identity = new Matrix3x2(1, 0, 0, 1, 0, 0);
+        public readonly static Matrix3x2 Identity = new(1, 0, 0, 1, 0, 0);
 
         /// <summary>
         /// Gets or sets the first row in the matrix; that is M11 and M12.
@@ -206,7 +198,7 @@ namespace HelixToolkit.Maths
         /// <returns></returns>
         public static Matrix3x2 Translation(Vector2 value)
         {
-            var m = Matrix3x2.Identity;
+            Matrix3x2 m = Matrix3x2.Identity;
             SetTranslation(ref m, ref value);
             return m;
         }
@@ -247,17 +239,16 @@ namespace HelixToolkit.Maths
         /// <exception cref="System.ArgumentOutOfRangeException">Thrown when the <paramref name="index"/> is out of the range [0, 5].</exception>
         public static float Get(this Matrix3x2 m, int index)
         {
-                switch (index)
-                {
-                    case 0:  return m.M11;
-                    case 1:  return m.M12;
-                    case 2:  return m.M21;
-                    case 3:  return m.M22;
-                    case 4:  return m.M31;
-                    case 5:  return m.M32;
-                }
-
-                throw new ArgumentOutOfRangeException("index", "Indices for Matrix3x2 run from 0 to 5, inclusive.");
+            return index switch
+            {
+                0 => m.M11,
+                1 => m.M12,
+                2 => m.M21,
+                3 => m.M22,
+                4 => m.M31,
+                5 => m.M32,
+                _ => throw new ArgumentOutOfRangeException(nameof(index), "Indices for Matrix3x2 run from 0 to 5, inclusive."),
+            };
         }
         /// <summary>
         /// Sets the specified m.
@@ -276,7 +267,7 @@ namespace HelixToolkit.Maths
                     case 3: m.M22 = value; break;
                     case 4: m.M31 = value; break;
                     case 5: m.M32 = value; break;
-                    default: throw new ArgumentOutOfRangeException("index", "Indices for Matrix3x2 run from 0 to 5, inclusive.");
+                    default: throw new ArgumentOutOfRangeException(nameof(index), "Indices for Matrix3x2 run from 0 to 5, inclusive.");
                 }
         }
         /// <summary>
@@ -290,13 +281,10 @@ namespace HelixToolkit.Maths
         /// <exception cref="System.ArgumentOutOfRangeException">Thrown when the <paramref name="row"/> or <paramref name="column"/>is out of the range [0, 3].</exception>
         public static float Get(this Matrix3x2 m, int row, int column)
         {
-                if (row < 0 || row > 2)
-            {
-                throw new ArgumentOutOfRangeException("row", "Rows and columns for matrices run from 0 to 2, inclusive.");
-            }
-
-            return column < 0 || column > 1
-                ? throw new ArgumentOutOfRangeException("column", "Rows and columns for matrices run from 0 to 1, inclusive.")
+            return row < 0 || row > 2
+                    ? throw new ArgumentOutOfRangeException(nameof(row), "Rows and columns for matrices run from 0 to 2, inclusive.")
+                    : column < 0 || column > 1
+                ? throw new ArgumentOutOfRangeException(nameof(column), "Rows and columns for matrices run from 0 to 1, inclusive.")
                 : m.Get((row * 2) + column);
         }
         /// <summary>
@@ -315,12 +303,12 @@ namespace HelixToolkit.Maths
         {
             if (row < 0 || row > 2)
             {
-                throw new ArgumentOutOfRangeException("row", "Rows and columns for matrices run from 0 to 2, inclusive.");
+                throw new ArgumentOutOfRangeException(nameof(row), "Rows and columns for matrices run from 0 to 2, inclusive.");
             }
 
             if (column < 0 || column > 1)
             {
-                throw new ArgumentOutOfRangeException("column", "Rows and columns for matrices run from 0 to 1, inclusive.");
+                throw new ArgumentOutOfRangeException(nameof(column), "Rows and columns for matrices run from 0 to 1, inclusive.");
             }
 
             Set(ref m, (row * 2) + column, value);
@@ -392,8 +380,7 @@ namespace HelixToolkit.Maths
         /// <returns>The created skew matrix.</returns>
         public static Matrix3x2 Skew(float angleX, float angleY)
         {
-            Matrix3x2 result;
-            Skew(angleX, angleY, out result);
+            Skew(angleX, angleY, out Matrix3x2 result);
             return result;
         }
 

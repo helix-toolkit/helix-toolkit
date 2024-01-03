@@ -29,10 +29,6 @@ The MIT License (MIT)
 Copyright (c) 2007-2011 SlimDX Group
 The MIT License (MIT)
 */
-using System.Globalization;
-using System.Numerics;
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
 namespace HelixToolkit.Maths
 {
     /// <summary>
@@ -49,32 +45,32 @@ namespace HelixToolkit.Maths
         /// <summary>
         /// A <see cref = "Int4" /> with all of its components set to zero.
         /// </summary>
-        public static readonly Int4 Zero = new Int4();
+        public static readonly Int4 Zero = new();
 
         /// <summary>
         /// The X unit <see cref = "Int4" /> (1, 0, 0, 0).
         /// </summary>
-        public static readonly Int4 UnitX = new Int4(1, 0, 0, 0);
+        public static readonly Int4 UnitX = new(1, 0, 0, 0);
 
         /// <summary>
         /// The Y unit <see cref = "Int4" /> (0, 1, 0, 0).
         /// </summary>
-        public static readonly Int4 UnitY = new Int4(0, 1, 0, 0);
+        public static readonly Int4 UnitY = new(0, 1, 0, 0);
 
         /// <summary>
         /// The Z unit <see cref = "Int4" /> (0, 0, 1, 0).
         /// </summary>
-        public static readonly Int4 UnitZ = new Int4(0, 0, 1, 0);
+        public static readonly Int4 UnitZ = new(0, 0, 1, 0);
 
         /// <summary>
         /// The W unit <see cref = "Int4" /> (0, 0, 0, 1).
         /// </summary>
-        public static readonly Int4 UnitW = new Int4(0, 0, 0, 1);
+        public static readonly Int4 UnitW = new(0, 0, 0, 1);
 
         /// <summary>
         /// A <see cref = "Int4" /> with all of its components set to one.
         /// </summary>
-        public static readonly Int4 One = new Int4(1, 1, 1, 1);
+        public static readonly Int4 One = new(1, 1, 1, 1);
 
         /// <summary>
         /// The X component of the vector.
@@ -134,12 +130,12 @@ namespace HelixToolkit.Maths
         {
             if (values == null)
             {
-                throw new ArgumentNullException("values");
+                throw new ArgumentNullException(nameof(values));
             }
 
             if (values.Length != 4)
             {
-                throw new ArgumentOutOfRangeException("values",
+                throw new ArgumentOutOfRangeException(nameof(values),
                                                       "There must be four and only four input values for Int4.");
             }
 
@@ -158,21 +154,16 @@ namespace HelixToolkit.Maths
         /// <exception cref = "System.ArgumentOutOfRangeException">Thrown when the <paramref name = "index" /> is out of the range [0, 3].</exception>
         public int this[int index]
         {
-            get
+            readonly get
             {
-                switch (index)
+                return index switch
                 {
-                    case 0:
-                        return X;
-                    case 1:
-                        return Y;
-                    case 2:
-                        return Z;
-                    case 3:
-                        return W;
-                }
-
-                throw new ArgumentOutOfRangeException("index", "Indices for Int4 run from 0 to 3, inclusive.");
+                    0 => X,
+                    1 => Y,
+                    2 => Z,
+                    3 => W,
+                    _ => throw new ArgumentOutOfRangeException(nameof(index), "Indices for Int4 run from 0 to 3, inclusive."),
+                };
             }
 
             set
@@ -192,7 +183,7 @@ namespace HelixToolkit.Maths
                         W = value;
                         break;
                     default:
-                        throw new ArgumentOutOfRangeException("index", "Indices for Int4 run from 0 to 3, inclusive.");
+                        throw new ArgumentOutOfRangeException(nameof(index), "Indices for Int4 run from 0 to 3, inclusive.");
                 }
             }
         }
@@ -201,7 +192,7 @@ namespace HelixToolkit.Maths
         /// Creates an array containing the elements of the vector.
         /// </summary>
         /// <returns>A four-element array containing the components of the vector.</returns>
-        public int[] ToArray()
+        public readonly int[] ToArray()
         {
             return new int[] {X, Y, Z, W};
         }
@@ -345,19 +336,19 @@ namespace HelixToolkit.Maths
         /// <param name = "result">When the method completes, contains the clamped value.</param>
         public static void Clamp(ref Int4 value, ref Int4 min, ref Int4 max, out Int4 result)
         {
-            var x = value.X;
+            int x = value.X;
             x = (x > max.X) ? max.X : x;
             x = (x < min.X) ? min.X : x;
 
-            var y = value.Y;
+            int y = value.Y;
             y = (y > max.Y) ? max.Y : y;
             y = (y < min.Y) ? min.Y : y;
 
-            var z = value.Z;
+            int z = value.Z;
             z = (z > max.Z) ? max.Z : z;
             z = (z < min.Z) ? min.Z : z;
 
-            var w = value.W;
+            int w = value.W;
             w = (w > max.W) ? max.W : w;
             w = (w < min.W) ? min.W : w;
 
@@ -373,8 +364,7 @@ namespace HelixToolkit.Maths
         /// <returns>The clamped value.</returns>
         public static Int4 Clamp(Int4 value, Int4 min, Int4 max)
         {
-            Int4 result;
-            Clamp(ref value, ref min, ref max, out result);
+            Clamp(ref value, ref min, ref max, out Int4 result);
             return result;
         }
 
@@ -400,8 +390,7 @@ namespace HelixToolkit.Maths
         /// <returns>A vector containing the largest components of the source vectors.</returns>
         public static Int4 Max(Int4 left, Int4 right)
         {
-            Int4 result;
-            Max(ref left, ref right, out result);
+            Max(ref left, ref right, out Int4 result);
             return result;
         }
 
@@ -427,8 +416,7 @@ namespace HelixToolkit.Maths
         /// <returns>A vector containing the smallest components of the source vectors.</returns>
         public static Int4 Min(Int4 left, Int4 right)
         {
-            Int4 result;
-            Min(ref left, ref right, out result);
+            Min(ref left, ref right, out Int4 result);
             return result;
         }
 
@@ -567,7 +555,7 @@ namespace HelixToolkit.Maths
         /// <returns>
         /// A <see cref = "System.String" /> that represents this instance.
         /// </returns>
-        public override string ToString()
+        public override readonly string ToString()
         {
             return string.Format(CultureInfo.CurrentCulture, "X:{0} Y:{1} Z:{2} W:{3}", X, Y, Z, W);
         }
@@ -579,7 +567,7 @@ namespace HelixToolkit.Maths
         /// <returns>
         /// A <see cref = "System.String" /> that represents this instance.
         /// </returns>
-        public string ToString(string format)
+        public readonly string ToString(string format)
         {
             return format == null
                 ? ToString()
@@ -597,7 +585,7 @@ namespace HelixToolkit.Maths
         /// <returns>
         /// A <see cref = "System.String" /> that represents this instance.
         /// </returns>
-        public string ToString(IFormatProvider formatProvider)
+        public readonly string ToString(IFormatProvider formatProvider)
         {
             return string.Format(formatProvider, "X:{0} Y:{1} Z:{2} W:{3}", X, Y, Z, W);
         }
@@ -610,7 +598,7 @@ namespace HelixToolkit.Maths
         /// <returns>
         /// A <see cref = "System.String" /> that represents this instance.
         /// </returns>
-        public string ToString(string? format, IFormatProvider? formatProvider)
+        public readonly string ToString(string? format, IFormatProvider? formatProvider)
         {
             return format == null && formatProvider == null 
                 ? string.Empty
@@ -627,11 +615,11 @@ namespace HelixToolkit.Maths
         /// <returns>
         /// A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table. 
         /// </returns>
-        public override int GetHashCode()
+        public override readonly int GetHashCode()
         {
             unchecked
             {
-                var hashCode = X;
+                int hashCode = X;
                 hashCode = (hashCode * 397) ^ Y;
                 hashCode = (hashCode * 397) ^ Z;
                 hashCode = (hashCode * 397) ^ W;
@@ -647,7 +635,7 @@ namespace HelixToolkit.Maths
         /// <c>true</c> if the specified <see cref = "Int4" /> is equal to this instance; otherwise, <c>false</c>.
         /// </returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)] // MethodImplOptions.AggressiveInlining
-        public bool Equals(ref Int4 other)
+        public readonly bool Equals(ref Int4 other)
         {
             return other.X == X && other.Y == Y && other.Z == Z && other.W == W;
         }
@@ -660,7 +648,7 @@ namespace HelixToolkit.Maths
         /// <c>true</c> if the specified <see cref = "Int4" /> is equal to this instance; otherwise, <c>false</c>.
         /// </returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)] // MethodImplOptions.AggressiveInlining
-        public bool Equals(Int4 other)
+        public readonly bool Equals(Int4 other)
         {
             return Equals(ref other);
         }
@@ -672,7 +660,7 @@ namespace HelixToolkit.Maths
         /// <returns>
         /// <c>true</c> if the specified <see cref = "System.Object" /> is equal to this instance; otherwise, <c>false</c>.
         /// </returns>
-        public override bool Equals(object? obj)
+        public override readonly bool Equals(object? obj)
         {
             return obj is Int4 int4 && Equals(ref int4);
         }

@@ -29,12 +29,6 @@ The MIT License (MIT)
 Copyright (c) 2007-2011 SlimDX Group
 The MIT License (MIT)
 */
-using System;
-using System.Globalization;
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
-using System.Numerics;
-using Matrix = System.Numerics.Matrix4x4;
 namespace HelixToolkit.Maths
 {
     /// <summary>
@@ -152,7 +146,7 @@ namespace HelixToolkit.Maths
         /// <value>The bounds.</value>
         public Rectangle Bounds
         {
-            get
+            readonly get
             {
                 return new Rectangle(X, Y, Width, Height);
             }
@@ -174,7 +168,7 @@ namespace HelixToolkit.Maths
         /// <c>true</c> if the specified <see cref="Viewport"/> is equal to this instance; otherwise, <c>false</c>.
         /// </returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)] // MethodImplOptions.AggressiveInlining
-        public bool Equals(ref Viewport other)
+        public readonly bool Equals(ref Viewport other)
         {
             return X == other.X && Y == other.Y && Width == other.Width && Height == other.Height && MathUtil.NearEqual(MinDepth, other.MinDepth) && MathUtil.NearEqual(MaxDepth, other.MaxDepth);
         }
@@ -187,7 +181,7 @@ namespace HelixToolkit.Maths
         /// <c>true</c> if the specified <see cref="Viewport"/> is equal to this instance; otherwise, <c>false</c>.
         /// </returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)] // MethodImplOptions.AggressiveInlining
-        public bool Equals(Viewport other)
+        public readonly bool Equals(Viewport other)
         {
             return Equals(ref other);
         }
@@ -199,7 +193,7 @@ namespace HelixToolkit.Maths
         /// <returns>
         /// <c>true</c> if the specified object is equal to this instance; otherwise, <c>false</c>.
         /// </returns>
-        public override bool Equals(object? obj)
+        public override readonly bool Equals(object? obj)
         {
             return obj is Viewport v && Equals(ref v);
         }
@@ -210,11 +204,11 @@ namespace HelixToolkit.Maths
         /// <returns>
         /// A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table. 
         /// </returns>
-        public override int GetHashCode()
+        public override readonly int GetHashCode()
         {
             unchecked
             {
-                var hashCode = X;
+                int hashCode = X;
                 hashCode = (hashCode * 397) ^ Y;
                 hashCode = (hashCode * 397) ^ Width;
                 hashCode = (hashCode * 397) ^ Height;
@@ -252,7 +246,7 @@ namespace HelixToolkit.Maths
         /// Retrieves a string representation of this object.
         /// </summary>
         /// <returns>A <see cref="System.String" /> that represents this instance.</returns>
-        public override string ToString()
+        public override readonly string ToString()
         {
             return string.Format(CultureInfo.CurrentCulture, "{{X:{0} Y:{1} Width:{2} Height:{3} MinDepth:{4} MaxDepth:{5}}}", X, Y, Width, Height, MinDepth, MaxDepth);
         }
@@ -265,14 +259,13 @@ namespace HelixToolkit.Maths
         /// <param name="view">The view matrix.</param>
         /// <param name="world">The world matrix.</param>
         /// <returns>The projected vector.</returns>
-        public Vector3 Project(Vector3 source, Matrix projection, Matrix view, Matrix world)
+        public readonly Vector3 Project(Vector3 source, Matrix projection, Matrix view, Matrix world)
         {
-            var matrix = world * view * projection;
+            Matrix matrix = world * view * projection;
             //Matrix.Multiply(ref world, ref view, out matrix);
             //Matrix.Multiply(ref matrix, ref projection, out matrix);
 
-            Vector3 vector;
-            Project(ref source, ref matrix, out vector);
+            Project(ref source, ref matrix, out Vector3 vector);
             return vector;
         }
 
@@ -282,18 +275,18 @@ namespace HelixToolkit.Maths
         /// <param name="source">The vector to project.</param>
         /// <param name="matrix">A combined WorldViewProjection matrix.</param>
         /// <param name="vector">The projected vector.</param>
-        public void Project(ref Vector3 source, ref Matrix matrix, out Vector3 vector)
+        public readonly void Project(ref Vector3 source, ref Matrix matrix, out Vector3 vector)
         {
             vector = Vector3Helper.TransformCoordinate(source, matrix);
-            var a = (((source.X * matrix.M14) + (source.Y * matrix.M24)) + (source.Z * matrix.M34)) + matrix.M44;
+            float a = (source.X * matrix.M14) + (source.Y * matrix.M24) + (source.Z * matrix.M34) + matrix.M44;
 
             if (!MathUtil.IsOne(a))
             {
-                vector = (vector / a);
+                vector /= a;
             }
 
-            vector.X = (((vector.X + 1f) * 0.5f) * Width) + X;
-            vector.Y = (((-vector.Y + 1f) * 0.5f) * Height) + Y;
+            vector.X = ((vector.X + 1f) * 0.5f * Width) + X;
+            vector.Y = ((-vector.Y + 1f) * 0.5f * Height) + Y;
             vector.Z = (vector.Z * (MaxDepth - MinDepth)) + MinDepth;
         }
 
@@ -305,15 +298,14 @@ namespace HelixToolkit.Maths
         /// <param name="view">The view matrix.</param>
         /// <param name="world">The world matrix.</param>
         /// <returns>The unprojected Vector.</returns>
-        public Vector3 Unproject(Vector3 source, Matrix projection, Matrix view, Matrix world)
+        public readonly Vector3 Unproject(Vector3 source, Matrix projection, Matrix view, Matrix world)
         {
-            Matrix.Invert(world * view * projection, out var matrix);
+            Matrix.Invert(world * view * projection, out Matrix matrix);
             //Matrix.Multiply(ref world, ref view, out matrix);
             //Matrix.Multiply(ref matrix, ref projection, out matrix);
             //Matrix.Invert(matrix, out matrix);
 
-            Vector3 vector;
-            Unproject(ref source, ref matrix, out vector);
+            Unproject(ref source, ref matrix, out Vector3 vector);
             return vector;
         }
 
@@ -323,18 +315,18 @@ namespace HelixToolkit.Maths
         /// <param name="source">The vector to project.</param>
         /// <param name="matrix">An inverted combined WorldViewProjection matrix.</param>
         /// <param name="vector">The unprojected vector.</param>
-        public void Unproject(ref Vector3 source, ref Matrix matrix, out Vector3 vector)
+        public readonly void Unproject(ref Vector3 source, ref Matrix matrix, out Vector3 vector)
         {
-            vector.X = (((source.X - X) / (Width)) * 2f) - 1f;
-            vector.Y = -((((source.Y - Y) / (Height)) * 2f) - 1f);
+            vector.X = ((source.X - X) / Width * 2f) - 1f;
+            vector.Y = -(((source.Y - Y) / Height * 2f) - 1f);
             vector.Z = (source.Z - MinDepth) / (MaxDepth - MinDepth);
 
-            var a = (((vector.X * matrix.M14) + (vector.Y * matrix.M24)) + (vector.Z * matrix.M34)) + matrix.M44;
+            float a = (vector.X * matrix.M14) + (vector.Y * matrix.M24) + (vector.Z * matrix.M34) + matrix.M44;
             vector = Vector3Helper.TransformCoordinate(vector, matrix);
 
             if (!MathUtil.IsOne(a))
             {
-                vector = (vector / a);
+                vector /= a;
             }
         }
 
@@ -342,7 +334,7 @@ namespace HelixToolkit.Maths
         /// Gets the aspect ratio used by the viewport.
         /// </summary>
         /// <value>The aspect ratio.</value>
-        public float AspectRatio
+        public readonly float AspectRatio
         {
             get
             {
@@ -350,7 +342,7 @@ namespace HelixToolkit.Maths
             }
         }
 
-        public ViewportF ToViewportF()
+        public readonly ViewportF ToViewportF()
         {
             return new ViewportF(X, Y, Width, Height);
         }

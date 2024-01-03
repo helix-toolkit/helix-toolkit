@@ -29,10 +29,6 @@ The MIT License (MIT)
 Copyright (c) 2007-2011 SlimDX Group
 The MIT License (MIT)
 */
-using System.Globalization;
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
-
 namespace HelixToolkit.Maths
 {
     /// <summary>
@@ -121,7 +117,7 @@ namespace HelixToolkit.Maths
         /// </summary>
         public ushort RawValue
         {
-            get { return value_; }
+            readonly get { return value_; }
             set { this.value_ = value; }
         }
 
@@ -131,9 +127,9 @@ namespace HelixToolkit.Maths
         /// <param name = "values">The values to be converted.</param>
         /// <returns>An array of converted values.</returns>
         public static float[] ConvertToFloat(Half[] values)
-        {            
-            var results = new float[values.Length];
-            for(var i = 0; i < results.Length; i++)
+        {
+            float[] results = new float[values.Length];
+            for(int i = 0; i < results.Length; i++)
             {
                 results[i] = HalfUtils.Unpack(values[i].RawValue);
             }
@@ -148,8 +144,8 @@ namespace HelixToolkit.Maths
         /// <returns>An array of converted values.</returns>
         public static Half[] ConvertToHalf(float[] values)
         {
-            var results = new Half[values.Length];
-            for(var i = 0; i < results.Length; i++)
+            Half[] results = new Half[values.Length];
+            for(int i = 0; i < results.Length; i++)
             {
                 results[i] = new Half(values[i]);
             }
@@ -205,7 +201,7 @@ namespace HelixToolkit.Maths
         /// Converts the value of the object to its equivalent string representation.
         /// </summary>
         /// <returns>The string representation of the value of this instance.</returns>
-        public override string ToString()
+        public override readonly string ToString()
         {
             float num = this;
             return num.ToString(CultureInfo.CurrentCulture);
@@ -215,10 +211,10 @@ namespace HelixToolkit.Maths
         /// Returns the hash code for this instance.
         /// </summary>
         /// <returns>A 32-bit signed integer hash code.</returns>
-        public override int GetHashCode()
+        public override readonly int GetHashCode()
         {
-            var num = value_;
-            return (((num*3)/2) ^ num);
+            ushort num = value_;
+            return (num*3/2) ^ num;
         }
 
         /// <summary>
@@ -241,7 +237,7 @@ namespace HelixToolkit.Maths
         /// <param name = "other">Object to make the comparison with.</param>
         /// <returns>
         /// <c>true</c> if the current instance is equal to the specified object; <c>false</c> otherwise.</returns>
-        public bool Equals(Half other)
+        public readonly bool Equals(Half other)
         {
             return other.value_ == value_;
         }
@@ -252,7 +248,7 @@ namespace HelixToolkit.Maths
         /// <param name = "obj">Object to make the comparison with.</param>
         /// <returns>
         /// <c>true</c> if the current instance is equal to the specified object; <c>false</c> otherwise.</returns>
-        public override bool Equals(object? obj)
+        public override readonly bool Equals(object? obj)
         {
             return obj is Half half && Equals(half);
         }

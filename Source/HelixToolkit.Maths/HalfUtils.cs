@@ -29,8 +29,6 @@ The MIT License (MIT)
 Copyright (c) 2007-2011 SlimDX Group
 The MIT License (MIT)
 */
-using System.Runtime.InteropServices;
-
 namespace HelixToolkit.Maths
 {
     /// <summary>
@@ -56,8 +54,10 @@ namespace HelixToolkit.Maths
         /// <returns></returns>
         public static float Unpack(ushort h)
         {
-            var conv = new FloatToUint();
-            conv.uintValue = halfToFloatMantissaTable_[halfToFloatOffsetTable_[h >> 10] + (((uint)h) & 0x3ff)] + halfToFloatExponentTable_[h >> 10];
+            FloatToUint conv = new()
+            {
+                uintValue = halfToFloatMantissaTable_[halfToFloatOffsetTable_[h >> 10] + (((uint)h) & 0x3ff)] + halfToFloatExponentTable_[h >> 10]
+            };
             return conv.floatValue;
         }
 
@@ -68,8 +68,10 @@ namespace HelixToolkit.Maths
         /// <returns></returns>
         public static ushort Pack(float f)
         {
-            var conv = new FloatToUint();
-            conv.floatValue = f;
+            FloatToUint conv = new()
+            {
+                floatValue = f
+            };
             return (ushort)(floatToHalfBaseTable_[(conv.uintValue >> 23) & 0x1ff] + ((conv.uintValue & 0x007fffff) >> floatToHalfShiftTable_[(conv.uintValue >> 23) & 0x1ff]));
         }
 
@@ -95,7 +97,7 @@ namespace HelixToolkit.Maths
             // Transform subnormal to normalized
             for (i = 1; i < 1024; i++)
             {
-                var m = ((uint)i) << 13;
+                uint m = ((uint)i) << 13;
                 uint e = 0;
 
                 while ((m & 0x00800000) == 0)
@@ -121,14 +123,7 @@ namespace HelixToolkit.Maths
 
             for (i = 1; i < 63; i++)
             {
-                if (i < 31) // Positive Numbers
-                {
-                    halfToFloatExponentTable_[i] = ((uint)i) << 23;
-                }
-                else // Negative Numbers
-                {
-                    halfToFloatExponentTable_[i] = 0x80000000 + (((uint)(i - 32)) << 23);
-                }
+                halfToFloatExponentTable_[i] = i < 31 ? ((uint)i) << 23 : 0x80000000 + (((uint)(i - 32)) << 23);
             }
             halfToFloatExponentTable_[31] = 0x47800000;
             halfToFloatExponentTable_[32] = 0x80000000;
@@ -146,10 +141,9 @@ namespace HelixToolkit.Maths
             // -------------------------------------------------------------------
             // Float to Half tables
             // -------------------------------------------------------------------
-#pragma warning disable S2437 // Silly bit operations should not be performed       
             for (i = 0; i < 256; i++)
             {
-                var e = i - 127;
+                int e = i - 127;
                 if (e < -24)
                 { // Very small numbers map to zero
 
@@ -187,7 +181,6 @@ namespace HelixToolkit.Maths
                     floatToHalfShiftTable_[i | 0x100] = 13;
                 }
             }
-#pragma warning restore S2437 // Silly bit operations should not be performed
         }
     }
 }

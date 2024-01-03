@@ -29,13 +29,6 @@ The MIT License (MIT)
 Copyright (c) 2007-2011 SlimDX Group
 The MIT License (MIT)
 */
-using System;
-using System.Globalization;
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
-using System.Numerics;
-using Matrix = System.Numerics.Matrix4x4;
-
 namespace HelixToolkit.Maths
 {
     /// <summary>
@@ -51,32 +44,32 @@ namespace HelixToolkit.Maths
         /// <summary>
         /// A <see cref="Vector4"/> with all of its components set to zero.
         /// </summary>
-        public static readonly Vector4 Zero = new Vector4();
+        public static readonly Vector4 Zero = new();
 
         /// <summary>
         /// The X unit <see cref="Vector4"/> (1, 0, 0, 0).
         /// </summary>
-        public static readonly Vector4 UnitX = new Vector4(1.0f, 0.0f, 0.0f, 0.0f);
+        public static readonly Vector4 UnitX = new(1.0f, 0.0f, 0.0f, 0.0f);
 
         /// <summary>
         /// The Y unit <see cref="Vector4"/> (0, 1, 0, 0).
         /// </summary>
-        public static readonly Vector4 UnitY = new Vector4(0.0f, 1.0f, 0.0f, 0.0f);
+        public static readonly Vector4 UnitY = new(0.0f, 1.0f, 0.0f, 0.0f);
 
         /// <summary>
         /// The Z unit <see cref="Vector4"/> (0, 0, 1, 0).
         /// </summary>
-        public static readonly Vector4 UnitZ = new Vector4(0.0f, 0.0f, 1.0f, 0.0f);
+        public static readonly Vector4 UnitZ = new(0.0f, 0.0f, 1.0f, 0.0f);
 
         /// <summary>
         /// The W unit <see cref="Vector4"/> (0, 0, 0, 1).
         /// </summary>
-        public static readonly Vector4 UnitW = new Vector4(0.0f, 0.0f, 0.0f, 1.0f);
+        public static readonly Vector4 UnitW = new(0.0f, 0.0f, 0.0f, 1.0f);
 
         /// <summary>
         /// A <see cref="Vector4"/> with all of its components set to one.
         /// </summary>
-        public static readonly Vector4 One = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
+        public static readonly Vector4 One = new(1.0f, 1.0f, 1.0f, 1.0f);
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector4 Min(this Vector4 v1, ref Vector4 v2)
@@ -127,14 +120,14 @@ namespace HelixToolkit.Maths
         /// <exception cref="System.ArgumentOutOfRangeException">Thrown when the <paramref name="index"/> is out of the range [0, 3].</exception>
         public static float Get(this Vector4 v, int index)
         {
-            switch (index)
+            return index switch
             {
-                case 0: return v.X;
-                case 1: return v.Y;
-                case 2: return v.Z;
-                case 3: return v.W;
-                default: throw new ArgumentOutOfRangeException("index", "Indices for Vector4 run from 0 to 3, inclusive.");
-            }           
+                0 => v.X,
+                1 => v.Y,
+                2 => v.Z,
+                3 => v.W,
+                _ => throw new ArgumentOutOfRangeException(nameof(index), "Indices for Vector4 run from 0 to 3, inclusive."),
+            };
         }
 
         public static void Set(ref Vector4 v, int index, float value)
@@ -145,7 +138,7 @@ namespace HelixToolkit.Maths
                 case 1: v.Y = value; break;
                 case 2: v.Z = value; break;
                 case 3: v.W = value; break;
-                default: throw new ArgumentOutOfRangeException("index", "Indices for Vector4 run from 0 to 3, inclusive.");
+                default: throw new ArgumentOutOfRangeException(nameof(index), "Indices for Vector4 run from 0 to 3, inclusive.");
             }
         }
 
@@ -187,7 +180,7 @@ namespace HelixToolkit.Maths
         /// <returns>A new <see cref="Vector4"/> containing the 4D Cartesian coordinates of the specified point.</returns>
         public static Vector4 Barycentric(Vector4 value1, Vector4 value2, Vector4 value3, float amount1, float amount2)
         {
-            Barycentric(ref value1, ref value2, ref value3, amount1, amount2, out var result);
+            Barycentric(ref value1, ref value2, ref value3, amount1, amount2, out Vector4 result);
             return result;
         }
 
@@ -213,7 +206,7 @@ namespace HelixToolkit.Maths
         /// <returns>The cubic interpolation of the two vectors.</returns>
         public static Vector4 SmoothStep(Vector4 start, Vector4 end, float amount)
         {
-            SmoothStep(ref start, ref end, amount, out var result);
+            SmoothStep(ref start, ref end, amount, out Vector4 result);
             return result;
         }
 
@@ -228,12 +221,12 @@ namespace HelixToolkit.Maths
         /// <param name="result">When the method completes, contains the result of the Hermite spline interpolation.</param>
         public static void Hermite(ref Vector4 value1, ref Vector4 tangent1, ref Vector4 value2, ref Vector4 tangent2, float amount, out Vector4 result)
         {
-            var squared = amount * amount;
-            var cubed = amount * squared;
-            var part1 = ((2.0f * cubed) - (3.0f * squared)) + 1.0f;
-            var part2 = (-2.0f * cubed) + (3.0f * squared);
-            var part3 = (cubed - (2.0f * squared)) + amount;
-            var part4 = cubed - squared;
+            float squared = amount * amount;
+            float cubed = amount * squared;
+            float part1 = (2.0f * cubed) - (3.0f * squared) + 1.0f;
+            float part2 = (-2.0f * cubed) + (3.0f * squared);
+            float part3 = cubed - (2.0f * squared) + amount;
+            float part4 = cubed - squared;
 
             result = value1 * part1 + value2 * part2 + tangent1 * part3 + tangent2 * part4;
                 //new Vector4((((value1.X * part1) + (value2.X * part2)) + (tangent1.X * part3)) + (tangent2.X * part4),
@@ -253,7 +246,7 @@ namespace HelixToolkit.Maths
         /// <returns>The result of the Hermite spline interpolation.</returns>
         public static Vector4 Hermite(Vector4 value1, Vector4 tangent1, Vector4 value2, Vector4 tangent2, float amount)
         {
-            Hermite(ref value1, ref tangent1, ref value2, ref tangent2, amount, out var result);
+            Hermite(ref value1, ref tangent1, ref value2, ref tangent2, amount, out Vector4 result);
             return result;
         }
 
@@ -268,9 +261,9 @@ namespace HelixToolkit.Maths
         /// <param name="result">When the method completes, contains the result of the Catmull-Rom interpolation.</param>
         public static void CatmullRom(ref Vector4 value1, ref Vector4 value2, ref Vector4 value3, ref Vector4 value4, float amount, out Vector4 result)
         {
-            var squared = amount * amount;
-            var cubed = amount * squared;
-            result = 0.5f * ((((2.0f * value2) + ((-value1 + value3) * amount)) + (((((2.0f * value1) - (5.0f * value2)) + (4.0f * value3)) - value4) * squared)) + ((((-value1 + (3.0f * value2)) - (3.0f * value3)) + value4) * cubed));
+            float squared = amount * amount;
+            float cubed = amount * squared;
+            result = 0.5f * ((2.0f * value2) + ((-value1 + value3) * amount) + (((2.0f * value1) - (5.0f * value2) + (4.0f * value3) - value4) * squared) + ((-value1 + (3.0f * value2) - (3.0f * value3) + value4) * cubed));
             //result.X = 0.5f * ((((2.0f * value2.X) + ((-value1.X + value3.X) * amount)) + (((((2.0f * value1.X) - (5.0f * value2.X)) + (4.0f * value3.X)) - value4.X) * squared)) + ((((-value1.X + (3.0f * value2.X)) - (3.0f * value3.X)) + value4.X) * cubed));
             //result.Y = 0.5f * ((((2.0f * value2.Y) + ((-value1.Y + value3.Y) * amount)) + (((((2.0f * value1.Y) - (5.0f * value2.Y)) + (4.0f * value3.Y)) - value4.Y) * squared)) + ((((-value1.Y + (3.0f * value2.Y)) - (3.0f * value3.Y)) + value4.Y) * cubed));
             //result.Z = 0.5f * ((((2.0f * value2.Z) + ((-value1.Z + value3.Z) * amount)) + (((((2.0f * value1.Z) - (5.0f * value2.Z)) + (4.0f * value3.Z)) - value4.Z) * squared)) + ((((-value1.Z + (3.0f * value2.Z)) - (3.0f * value3.Z)) + value4.Z) * cubed));
@@ -288,7 +281,7 @@ namespace HelixToolkit.Maths
         /// <returns>A vector that is the result of the Catmull-Rom interpolation.</returns>
         public static Vector4 CatmullRom(Vector4 value1, Vector4 value2, Vector4 value3, Vector4 value4, float amount)
         {
-            CatmullRom(ref value1, ref value2, ref value3, ref value4, amount, out var result);
+            CatmullRom(ref value1, ref value2, ref value3, ref value4, amount, out Vector4 result);
             return result;
         }
 
@@ -319,26 +312,26 @@ namespace HelixToolkit.Maths
 
             if (source == null)
             {
-                throw new ArgumentNullException("source");
+                throw new ArgumentNullException(nameof(source));
             }
 
             if (destination == null)
             {
-                throw new ArgumentNullException("destination");
+                throw new ArgumentNullException(nameof(destination));
             }
 
             if (destination.Length < source.Length)
             {
-                throw new ArgumentOutOfRangeException("destination", "The destination array must be of same length or larger length than the source array.");
+                throw new ArgumentOutOfRangeException(nameof(destination), "The destination array must be of same length or larger length than the source array.");
             }
 
-            for (var i = 0; i < source.Length; ++i)
+            for (int i = 0; i < source.Length; ++i)
             {
-                var newvector = source[i];
+                Vector4 newvector = source[i];
 
-                for (var r = 0; r < i; ++r)
+                for (int r = 0; r < i; ++r)
                 {
-                    newvector -= (Vector4.Dot(destination[r], newvector) / Vector4.Dot(destination[r], destination[r])) * destination[r];
+                    newvector -= Vector4.Dot(destination[r], newvector) / Vector4.Dot(destination[r], destination[r]) * destination[r];
                 }
 
                 destination[i] = newvector;
@@ -374,24 +367,24 @@ namespace HelixToolkit.Maths
 
             if (source == null)
             {
-                throw new ArgumentNullException("source");
+                throw new ArgumentNullException(nameof(source));
             }
 
             if (destination == null)
             {
-                throw new ArgumentNullException("destination");
+                throw new ArgumentNullException(nameof(destination));
             }
 
             if (destination.Length < source.Length)
             {
-                throw new ArgumentOutOfRangeException("destination", "The destination array must be of same length or larger length than the source array.");
+                throw new ArgumentOutOfRangeException(nameof(destination), "The destination array must be of same length or larger length than the source array.");
             }
 
-            for (var i = 0; i < source.Length; ++i)
+            for (int i = 0; i < source.Length; ++i)
             {
-                var newvector = source[i];
+                Vector4 newvector = source[i];
 
-                for (var r = 0; r < i; ++r)
+                for (int r = 0; r < i; ++r)
                 {
                     newvector -= Vector4.Dot(destination[r], newvector) * destination[r];
                 }
@@ -412,20 +405,20 @@ namespace HelixToolkit.Maths
         {
             if (source == null)
             {
-                throw new ArgumentNullException("source");
+                throw new ArgumentNullException(nameof(source));
             }
 
             if (destination == null)
             {
-                throw new ArgumentNullException("destination");
+                throw new ArgumentNullException(nameof(destination));
             }
 
             if (destination.Length < source.Length)
             {
-                throw new ArgumentOutOfRangeException("destination", "The destination array must be of same length or larger length than the source array.");
+                throw new ArgumentOutOfRangeException(nameof(destination), "The destination array must be of same length or larger length than the source array.");
             }
 
-            for (var i=0; i < source.Length; ++i)
+            for (int i =0; i < source.Length; ++i)
             {
                 destination[i] = Vector4.Transform(source[i], rotation);
             }
@@ -506,20 +499,20 @@ namespace HelixToolkit.Maths
         {
             if (source == null)
             {
-                throw new ArgumentNullException("source");
+                throw new ArgumentNullException(nameof(source));
             }
 
             if (destination == null)
             {
-                throw new ArgumentNullException("destination");
+                throw new ArgumentNullException(nameof(destination));
             }
 
             if (destination.Length < source.Length)
             {
-                throw new ArgumentOutOfRangeException("destination", "The destination array must be of same length or larger length than the source array.");
+                throw new ArgumentOutOfRangeException(nameof(destination), "The destination array must be of same length or larger length than the source array.");
             }
 
-            for (var i = 0; i < source.Length; ++i)
+            for (int i = 0; i < source.Length; ++i)
             {
                 Transform(ref source[i], ref transform, out destination[i]);
             }

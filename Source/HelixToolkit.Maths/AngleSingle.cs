@@ -29,9 +29,6 @@ The MIT License (MIT)
 Copyright (c) 2007-2011 SlimDX Group
 The MIT License (MIT)
 */
-using System.Globalization;
-using System.Runtime.InteropServices;
-
 namespace HelixToolkit.Maths
 {
     /// <summary>
@@ -78,7 +75,7 @@ namespace HelixToolkit.Maths
         float radians_;
 
         [FieldOffset(0)]
-        private int radiansInt_;
+        private readonly int radiansInt_;
 
         /// <summary>
         /// Initializes a new instance of the SharpDX.AngleSingle structure with the
@@ -89,28 +86,14 @@ namespace HelixToolkit.Maths
         public AngleSingle(float angle, AngleType type)
         {
             radiansInt_ = 0;
-            switch (type)
+            radians_ = type switch
             {
-                case AngleType.Revolution:
-                    radians_ = MathUtil.RevolutionsToRadians(angle);
-                    break;
-
-                case AngleType.Degree:
-                    radians_ = MathUtil.DegreesToRadians(angle);
-                    break;
-
-                case AngleType.Radian:
-                    radians_ = angle;
-                    break;
-
-                case AngleType.Gradian:
-                    radians_ = MathUtil.GradiansToRadians(angle);
-                    break;
-
-                default:
-                    radians_ = 0.0f;
-                    break;
-            }
+                AngleType.Revolution => MathUtil.RevolutionsToRadians(angle),
+                AngleType.Degree => MathUtil.DegreesToRadians(angle),
+                AngleType.Radian => angle,
+                AngleType.Gradian => MathUtil.GradiansToRadians(angle),
+                _ => 0.0f,
+            };
         }
 
         /// <summary>
@@ -130,7 +113,7 @@ namespace HelixToolkit.Maths
         /// </summary>
         public void Wrap()
         {
-            var newangle = (float)Math.IEEERemainder(radians_, MathUtil.TwoPi);
+            float newangle = (float)Math.IEEERemainder(radians_, MathUtil.TwoPi);
 
             if (newangle <= -MathUtil.Pi)
             {
@@ -149,7 +132,7 @@ namespace HelixToolkit.Maths
         /// </summary>
         public void WrapPositive()
         {
-            var newangle = radians_ % MathUtil.TwoPi;
+            float newangle = radians_ % MathUtil.TwoPi;
 
             if (newangle < 0.0)
             {
@@ -164,7 +147,7 @@ namespace HelixToolkit.Maths
         /// </summary>
         public float Revolutions
         {
-            get { return MathUtil.RadiansToRevolutions(radians_); }
+            readonly get { return MathUtil.RadiansToRevolutions(radians_); }
             set { radians_ = MathUtil.RevolutionsToRadians(value); }
         }
 
@@ -173,7 +156,7 @@ namespace HelixToolkit.Maths
         /// </summary>
         public float Degrees
         {
-            get { return MathUtil.RadiansToDegrees(radians_); }
+            readonly get { return MathUtil.RadiansToDegrees(radians_); }
             set { radians_ = MathUtil.DegreesToRadians(value); }
         }
 
@@ -185,25 +168,25 @@ namespace HelixToolkit.Maths
         /// </summary>
         public float Minutes
         {
-            get
+            readonly get
             {
-                var degrees = MathUtil.RadiansToDegrees(radians_);
+                float degrees = MathUtil.RadiansToDegrees(radians_);
 
                 if (degrees < 0)
                 {
-                    var degreesfloor = (float)Math.Ceiling(degrees);
+                    float degreesfloor = (float)Math.Ceiling(degrees);
                     return (degrees - degreesfloor) * 60.0f;
                 }
                 else
                 {
-                    var degreesfloor = (float)Math.Floor(degrees);
+                    float degreesfloor = (float)Math.Floor(degrees);
                     return (degrees - degreesfloor) * 60.0f;
                 }
             }
             set
             {
-                var degrees = MathUtil.RadiansToDegrees(radians_);
-                var degreesfloor = (float)Math.Floor(degrees);
+                float degrees = MathUtil.RadiansToDegrees(radians_);
+                float degreesfloor = (float)Math.Floor(degrees);
 
                 degreesfloor += value / 60.0f;
                 radians_ = MathUtil.DegreesToRadians(degreesfloor);
@@ -218,36 +201,36 @@ namespace HelixToolkit.Maths
         /// </summary>
         public float Seconds
         {
-            get
+            readonly get
             {
-                var degrees = MathUtil.RadiansToDegrees(radians_);
+                float degrees = MathUtil.RadiansToDegrees(radians_);
 
                 if (degrees < 0)
                 {
-                    var degreesfloor = (float)Math.Ceiling(degrees);
+                    float degreesfloor = (float)Math.Ceiling(degrees);
 
-                    var minutes = (degrees - degreesfloor) * 60.0f;
-                    var minutesfloor = (float)Math.Ceiling(minutes);
+                    float minutes = (degrees - degreesfloor) * 60.0f;
+                    float minutesfloor = (float)Math.Ceiling(minutes);
 
                     return (minutes - minutesfloor) * 60.0f;
                 }
                 else
                 {
-                    var degreesfloor = (float)Math.Floor(degrees);
+                    float degreesfloor = (float)Math.Floor(degrees);
 
-                    var minutes = (degrees - degreesfloor) * 60.0f;
-                    var minutesfloor = (float)Math.Floor(minutes);
+                    float minutes = (degrees - degreesfloor) * 60.0f;
+                    float minutesfloor = (float)Math.Floor(minutes);
 
                     return (minutes - minutesfloor) * 60.0f;
                 }
             }
             set
             {
-                var degrees = MathUtil.RadiansToDegrees(radians_);
-                var degreesfloor = (float)Math.Floor(degrees);
+                float degrees = MathUtil.RadiansToDegrees(radians_);
+                float degreesfloor = (float)Math.Floor(degrees);
 
-                var minutes = (degrees - degreesfloor) * 60.0f;
-                var minutesfloor = (float)Math.Floor(minutes);
+                float minutes = (degrees - degreesfloor) * 60.0f;
+                float minutesfloor = (float)Math.Floor(minutes);
 
                 minutesfloor += value / 60.0f;
                 degreesfloor += minutesfloor / 60.0f;
@@ -260,7 +243,7 @@ namespace HelixToolkit.Maths
         /// </summary>
         public float Radians
         {
-            get { return radians_; }
+            readonly get { return radians_; }
             set { radians_ = value; }
         }
 
@@ -270,7 +253,7 @@ namespace HelixToolkit.Maths
         /// </summary>
         public float Milliradians
         {
-            get { return radians_ / (Milliradian * MathUtil.TwoPi); }
+            readonly get { return radians_ / (Milliradian * MathUtil.TwoPi); }
             set { radians_ = value * (Milliradian * MathUtil.TwoPi); }
         }
 
@@ -279,7 +262,7 @@ namespace HelixToolkit.Maths
         /// </summary>
         public float Gradians
         {
-            get { return MathUtil.RadiansToGradians(radians_); }
+            readonly get { return MathUtil.RadiansToGradians(radians_); }
             set { radians_ = MathUtil.RadiansToGradians(value); }
         }
 
@@ -287,7 +270,7 @@ namespace HelixToolkit.Maths
         /// Gets a System.Boolean that determines whether this SharpDX.Angle
         /// is a right angle (i.e. 90° or π/2).
         /// </summary>
-        public bool IsRight
+        public readonly bool IsRight
         {
             get { return radians_ == MathUtil.PiOverTwo; }
         }
@@ -296,7 +279,7 @@ namespace HelixToolkit.Maths
         /// Gets a System.Boolean that determines whether this SharpDX.Angle
         /// is a straight angle (i.e. 180° or π).
         /// </summary>
-        public bool IsStraight
+        public readonly bool IsStraight
         {
             get { return radians_ == MathUtil.Pi; }
         }
@@ -305,7 +288,7 @@ namespace HelixToolkit.Maths
         /// Gets a System.Boolean that determines whether this SharpDX.Angle
         /// is a full rotation angle (i.e. 360° or 2π).
         /// </summary>
-        public bool IsFullRotation
+        public readonly bool IsFullRotation
         {
             get { return radians_ == MathUtil.TwoPi; }
         }
@@ -314,7 +297,7 @@ namespace HelixToolkit.Maths
         /// Gets a System.Boolean that determines whether this SharpDX.Angle
         /// is an oblique angle (i.e. is not 90° or a multiple of 90°).
         /// </summary>
-        public bool IsOblique
+        public readonly bool IsOblique
         {
             get { return WrapPositive(this).radians_ != MathUtil.PiOverTwo; }
         }
@@ -323,7 +306,7 @@ namespace HelixToolkit.Maths
         /// Gets a System.Boolean that determines whether this SharpDX.Angle
         /// is an acute angle (i.e. less than 90° but greater than 0°).
         /// </summary>
-        public bool IsAcute
+        public readonly bool IsAcute
         {
             get { return radians_ > 0.0 && radians_ < MathUtil.PiOverTwo; }
         }
@@ -332,7 +315,7 @@ namespace HelixToolkit.Maths
         /// Gets a System.Boolean that determines whether this SharpDX.Angle
         /// is an obtuse angle (i.e. greater than 90° but less than 180°).
         /// </summary>
-        public bool IsObtuse
+        public readonly bool IsObtuse
         {
             get { return radians_ > MathUtil.PiOverTwo && radians_ < MathUtil.Pi; }
         }
@@ -341,7 +324,7 @@ namespace HelixToolkit.Maths
         /// Gets a System.Boolean that determines whether this SharpDX.Angle
         /// is a reflex angle (i.e. greater than 180° but less than 360°).
         /// </summary>
-        public bool IsReflex
+        public readonly bool IsReflex
         {
             get { return radians_ > MathUtil.Pi && radians_ < MathUtil.TwoPi; }
         }
@@ -349,7 +332,7 @@ namespace HelixToolkit.Maths
         /// <summary>
         /// Gets a SharpDX.AngleSingle instance that complements this angle (i.e. the two angles add to 90°).
         /// </summary>
-        public AngleSingle Complement
+        public readonly AngleSingle Complement
         {
             get { return new AngleSingle(MathUtil.PiOverTwo - radians_, AngleType.Radian); }
         }
@@ -357,7 +340,7 @@ namespace HelixToolkit.Maths
         /// <summary>
         /// Gets a SharpDX.AngleSingle instance that supplements this angle (i.e. the two angles add to 180°).
         /// </summary>
-        public AngleSingle Supplement
+        public readonly AngleSingle Supplement
         {
             get { return new AngleSingle(MathUtil.Pi - radians_, AngleType.Radian); }
         }
@@ -644,14 +627,9 @@ namespace HelixToolkit.Maths
                 throw new ArgumentException("Argument must be of type Angle.", nameof(other));
             }
 
-            var radians = angle.radians_;
+            float radians = angle.radians_;
 
-            if (this.radians_ > radians)
-            {
-                return 1;
-            }
-
-            return this.radians_ < radians ? -1 : 0;
+            return this.radians_ > radians ? 1 : this.radians_ < radians ? -1 : 0;
         }
 
         /// <summary>
@@ -667,14 +645,9 @@ namespace HelixToolkit.Maths
         /// to the other. If the value is greater than zero, the current instance is
         /// greater than the other.
         /// </returns>
-        public int CompareTo(AngleSingle other)
+        public readonly int CompareTo(AngleSingle other)
         {
-            if (this.radians_ > other.radians_)
-            {
-                return 1;
-            }
-
-            return this.radians_ < other.radians_ ? -1 : 0;
+            return this.radians_ > other.radians_ ? 1 : this.radians_ < other.radians_ ? -1 : 0;
         }
 
         /// <summary>
@@ -686,7 +659,7 @@ namespace HelixToolkit.Maths
         /// Returns true if this SharpDX.AngleSingle object and another have the same value;
         /// otherwise, false.
         /// </returns>
-        public bool Equals(AngleSingle other)
+        public readonly bool Equals(AngleSingle other)
         {
             return this == other;
         }
@@ -697,7 +670,7 @@ namespace HelixToolkit.Maths
         /// <returns>
         /// A <see cref="System.String"/> that represents this instance.
         /// </returns>
-        public override string ToString()
+        public override readonly string ToString()
         {
             return string.Format(CultureInfo.CurrentCulture, MathUtil.RadiansToDegrees(radians_).ToString("0.##°"));
         }
@@ -709,7 +682,7 @@ namespace HelixToolkit.Maths
         /// <returns>
         /// A <see cref="System.String"/> that represents this instance.
         /// </returns>
-        public string ToString(string format)
+        public readonly string ToString(string format)
         {
             return format == null
                 ? ToString()
@@ -723,7 +696,7 @@ namespace HelixToolkit.Maths
         /// <returns>
         /// A <see cref="System.String"/> that represents this instance.
         /// </returns>
-        public string ToString(IFormatProvider formatProvider)
+        public readonly string ToString(IFormatProvider formatProvider)
         {
             return string.Format(formatProvider, MathUtil.RadiansToDegrees(radians_).ToString("0.##°"));
         }
@@ -736,7 +709,7 @@ namespace HelixToolkit.Maths
         /// <returns>
         /// A <see cref="System.String"/> that represents this instance.
         /// </returns>
-        public string ToString(string? format, IFormatProvider? formatProvider)
+        public readonly string ToString(string? format, IFormatProvider? formatProvider)
         {
             return format == null && formatProvider == null
                 ? string.Empty
@@ -749,7 +722,7 @@ namespace HelixToolkit.Maths
         /// Returns a hash code for this SharpDX.AngleSingle instance.
         /// </summary>
         /// <returns>A 32-bit signed integer hash code.</returns>
-        public override int GetHashCode()
+        public override readonly int GetHashCode()
         {
             return radiansInt_;
         }
@@ -765,7 +738,7 @@ namespace HelixToolkit.Maths
         /// its value is equal to the value of the current SharpDX.Angle
         /// object; otherwise, false.
         /// </returns>
-        public override bool Equals(object? obj)
+        public override readonly bool Equals(object? obj)
         {
             return (obj is AngleSingle) && (this == (AngleSingle)obj);
         }

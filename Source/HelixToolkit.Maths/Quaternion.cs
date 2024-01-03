@@ -29,14 +29,6 @@ The MIT License (MIT)
 Copyright (c) 2007-2011 SlimDX Group
 The MIT License (MIT)
 */
-using System;
-using System.Globalization;
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
-
-using System.Numerics;
-using Matrix = System.Numerics.Matrix4x4;
-
 namespace HelixToolkit.Maths
 {
     /// <summary>
@@ -52,17 +44,17 @@ namespace HelixToolkit.Maths
         /// <summary>
         /// A <see cref="Quaternion"/> with all of its components set to zero.
         /// </summary>
-        public static readonly Quaternion Zero = new Quaternion();
+        public static readonly Quaternion Zero = new();
 
         /// <summary>
         /// A <see cref="Quaternion"/> with all of its components set to one.
         /// </summary>
-        public static readonly Quaternion One = new Quaternion(1.0f, 1.0f, 1.0f, 1.0f);
+        public static readonly Quaternion One = new(1.0f, 1.0f, 1.0f, 1.0f);
 
         /// <summary>
         /// The identity <see cref="Quaternion"/> (0, 0, 0, 1).
         /// </summary>
-        public static readonly Quaternion Identity = new Quaternion(0.0f, 0.0f, 0.0f, 1.0f);
+        public static readonly Quaternion Identity = new(0.0f, 0.0f, 0.0f, 1.0f);
 
         /// <summary>
         /// Gets a value indicting whether this instance is normalized.
@@ -78,7 +70,7 @@ namespace HelixToolkit.Maths
         /// <value>The quaternion's angle.</value>
         public static float Angle(this Quaternion q)
         {
-                var length =  (q.X * q.X) + (q.Y * q.Y) + (q.Z * q.Z);
+            float length =  (q.X * q.X) + (q.Y * q.Y) + (q.Z * q.Z);
             return MathUtil.IsZero(length) ? 0.0f : (float)(2.0 * Math.Acos(MathUtil.Clamp(q.W, -1f, 1f)));
         }
 
@@ -88,13 +80,13 @@ namespace HelixToolkit.Maths
         /// <value>The axis components of the quaternion.</value>
         public static Vector3 Axis(this Quaternion q)
         {
-                var length =  (q.X * q.X) + (q.Y * q.Y) + (q.Z * q.Z);
+            float length =  (q.X * q.X) + (q.Y * q.Y) + (q.Z * q.Z);
             if (MathUtil.IsZero(length))
             {
                 return Vector3.UnitX;
             }
 
-            var inv = 1.0f / (float)Math.Sqrt(length);
+            float inv = 1.0f / (float)Math.Sqrt(length);
                 return new Vector3(q.X * inv, q.Y * inv, q.Z * inv);
         }
 
@@ -108,15 +100,14 @@ namespace HelixToolkit.Maths
         /// <exception cref="System.ArgumentOutOfRangeException">Thrown when the <paramref name="index"/> is out of the range [0, 3].</exception>
         public static float Get(this Quaternion q,int index)
         {
-                switch (index)
-                {
-                    case 0: return q.X;
-                    case 1: return q.Y;
-                    case 2: return q.Z;
-                    case 3: return q.W;
-                }
-
-                throw new ArgumentOutOfRangeException("index", "Indices for Quaternion run from 0 to 3, inclusive.");
+            return index switch
+            {
+                0 => q.X,
+                1 => q.Y,
+                2 => q.Z,
+                3 => q.W,
+                _ => throw new ArgumentOutOfRangeException(nameof(index), "Indices for Quaternion run from 0 to 3, inclusive."),
+            };
         }
 
         /// <summary>
@@ -134,7 +125,7 @@ namespace HelixToolkit.Maths
                     case 1: q.Y = value; break;
                     case 2: q.Z = value; break;
                     case 3: q.W = value; break;
-                    default: throw new ArgumentOutOfRangeException("index", "Indices for Quaternion run from 0 to 3, inclusive.");
+                    default: throw new ArgumentOutOfRangeException(nameof(index), "Indices for Quaternion run from 0 to 3, inclusive.");
                 }
         }
 
@@ -158,9 +149,9 @@ namespace HelixToolkit.Maths
         /// <param name="result">When the method completes, contains a new <see cref="Quaternion"/> containing the 4D Cartesian coordinates of the specified point.</param>
         public static void Barycentric(ref Quaternion value1, ref Quaternion value2, ref Quaternion value3, float amount1, float amount2, out Quaternion result)
         {
-            var a = amount1 + amount2;
-            var start = Quaternion.Slerp(value1, value2, a);
-            var end = Quaternion.Slerp(value1, value3, a);
+            float a = amount1 + amount2;
+            Quaternion start = Quaternion.Slerp(value1, value2, a);
+            Quaternion end = Quaternion.Slerp(value1, value3, a);
             result = Quaternion.Slerp(start, end, amount2 / a);
 
             //Quaternion start, end;
@@ -180,8 +171,7 @@ namespace HelixToolkit.Maths
         /// <returns>A new <see cref="Quaternion"/> containing the 4D Cartesian coordinates of the specified point.</returns>
         public static Quaternion Barycentric(Quaternion value1, Quaternion value2, Quaternion value3, float amount1, float amount2)
         {
-            Quaternion result;
-            Barycentric(ref value1, ref value2, ref value3, amount1, amount2, out result);
+            Barycentric(ref value1, ref value2, ref value3, amount1, amount2, out Quaternion result);
             return result;
         }
 
@@ -192,12 +182,12 @@ namespace HelixToolkit.Maths
         /// <param name="result">When the method completes, contains the exponentiated quaternion.</param>
         public static void Exponential(ref Quaternion value, out Quaternion result)
         {
-            var angle = (float)Math.Sqrt((value.X * value.X) + (value.Y * value.Y) + (value.Z * value.Z));
-            var sin = (float)Math.Sin(angle);
+            float angle = (float)Math.Sqrt((value.X * value.X) + (value.Y * value.Y) + (value.Z * value.Z));
+            float sin = (float)Math.Sin(angle);
 
             if (!MathUtil.IsZero(sin))
             {
-                var coeff = sin / angle;
+                float coeff = sin / angle;
                 result = value * coeff;
                 //result.X = coeff * value.X;
                 //result.Y = coeff * value.Y;
@@ -218,8 +208,7 @@ namespace HelixToolkit.Maths
         /// <returns>The exponentiated quaternion.</returns>
         public static Quaternion Exponential(Quaternion value)
         {
-            Quaternion result;
-            Exponential(ref value, out result);
+            Exponential(ref value, out Quaternion result);
             return result;
         }
 
@@ -232,12 +221,12 @@ namespace HelixToolkit.Maths
         {
             if (Math.Abs(value.W) < 1.0)
             {
-                var angle = (float)Math.Acos(value.W);
-                var sin = (float)Math.Sin(angle);
+                float angle = (float)Math.Acos(value.W);
+                float sin = (float)Math.Sin(angle);
 
                 if (!MathUtil.IsZero(sin))
                 {
-                    var coeff = angle / sin;
+                    float coeff = angle / sin;
                     result = value * coeff;
                     //result.X = value.X * coeff;
                     //result.Y = value.Y * coeff;
@@ -263,8 +252,7 @@ namespace HelixToolkit.Maths
         /// <returns>The natural logarithm of the quaternion.</returns>
         public static Quaternion Logarithm(Quaternion value)
         {
-            Quaternion result;
-            Logarithm(ref value, out result);
+            Logarithm(ref value, out Quaternion result);
             return result;
         }
 
@@ -421,8 +409,7 @@ namespace HelixToolkit.Maths
         /// <param name="result">When the method completes, contains the created look-at quaternion.</param>
         public static void LookAtLH(ref Vector3 eye, ref Vector3 target, ref Vector3 up, out Quaternion result)
         {
-            Matrix3x3 matrix;
-            Matrix3x3.LookAtLH(ref eye, ref target, ref up, out matrix);
+            Matrix3x3.LookAtLH(ref eye, ref target, ref up, out Matrix3x3 matrix);
             RotationMatrix(ref matrix, out result);
         }
 
@@ -435,8 +422,7 @@ namespace HelixToolkit.Maths
         /// <returns>The created look-at quaternion.</returns>
         public static Quaternion LookAtLH(Vector3 eye, Vector3 target, Vector3 up)
         {
-            Quaternion result;
-            LookAtLH(ref eye, ref target, ref up, out result);
+            LookAtLH(ref eye, ref target, ref up, out Quaternion result);
             return result;
         }
 
@@ -448,7 +434,7 @@ namespace HelixToolkit.Maths
         /// <param name="result">When the method completes, contains the created look-at quaternion.</param>
         public static void RotationLookAtLH(ref Vector3 forward, ref Vector3 up, out Quaternion result)
         {
-            var eye = Vector3.Zero;
+            Vector3 eye = Vector3.Zero;
             LookAtLH(ref eye, ref forward, ref up, out result);
         }
 
@@ -460,8 +446,7 @@ namespace HelixToolkit.Maths
         /// <returns>The created look-at quaternion.</returns>
         public static Quaternion RotationLookAtLH(Vector3 forward, Vector3 up)
         {
-            Quaternion result;
-            RotationLookAtLH(ref forward, ref up, out result);
+            RotationLookAtLH(ref forward, ref up, out Quaternion result);
             return result;
         }
 
@@ -474,8 +459,7 @@ namespace HelixToolkit.Maths
         /// <param name="result">When the method completes, contains the created look-at quaternion.</param>
         public static void LookAtRH(ref Vector3 eye, ref Vector3 target, ref Vector3 up, out Quaternion result)
         {
-            Matrix3x3 matrix;
-            Matrix3x3.LookAtRH(ref eye, ref target, ref up, out matrix);
+            Matrix3x3.LookAtRH(ref eye, ref target, ref up, out Matrix3x3 matrix);
             RotationMatrix(ref matrix, out result);
         }
 
@@ -488,8 +472,7 @@ namespace HelixToolkit.Maths
         /// <returns>The created look-at quaternion.</returns>
         public static Quaternion LookAtRH(Vector3 eye, Vector3 target, Vector3 up)
         {
-            Quaternion result;
-            LookAtRH(ref eye, ref target, ref up, out result);
+            LookAtRH(ref eye, ref target, ref up, out Quaternion result);
             return result;
         }
 
@@ -501,7 +484,7 @@ namespace HelixToolkit.Maths
         /// <param name="result">When the method completes, contains the created look-at quaternion.</param>
         public static void RotationLookAtRH(ref Vector3 forward, ref Vector3 up, out Quaternion result)
         {
-            var eye = Vector3.Zero;
+            Vector3 eye = Vector3.Zero;
             LookAtRH(ref eye, ref forward, ref up, out result);
         }
 
@@ -513,8 +496,7 @@ namespace HelixToolkit.Maths
         /// <returns>The created look-at quaternion.</returns>
         public static Quaternion RotationLookAtRH(Vector3 forward, Vector3 up)
         {
-            Quaternion result;
-            RotationLookAtRH(ref forward, ref up, out result);
+            RotationLookAtRH(ref forward, ref up, out Quaternion result);
             return result;
         }
 
@@ -528,8 +510,7 @@ namespace HelixToolkit.Maths
         /// <param name="result">When the method completes, contains the created billboard quaternion.</param>
         public static void BillboardLH(ref Vector3 objectPosition, ref Vector3 cameraPosition, ref Vector3 cameraUpVector, ref Vector3 cameraForwardVector, out Quaternion result)
         {
-            Matrix3x3 matrix;
-            Matrix3x3.BillboardLH(ref objectPosition, ref cameraPosition, ref cameraUpVector, ref cameraForwardVector, out matrix);
+            Matrix3x3.BillboardLH(ref objectPosition, ref cameraPosition, ref cameraUpVector, ref cameraForwardVector, out Matrix3x3 matrix);
             RotationMatrix(ref matrix, out result);
         }
 
@@ -543,8 +524,7 @@ namespace HelixToolkit.Maths
         /// <returns>The created billboard quaternion.</returns>
         public static Quaternion BillboardLH(Vector3 objectPosition, Vector3 cameraPosition, Vector3 cameraUpVector, Vector3 cameraForwardVector)
         {
-            Quaternion result;
-            BillboardLH(ref objectPosition, ref cameraPosition, ref cameraUpVector, ref cameraForwardVector, out result);
+            BillboardLH(ref objectPosition, ref cameraPosition, ref cameraUpVector, ref cameraForwardVector, out Quaternion result);
             return result;
         }
 
@@ -558,8 +538,7 @@ namespace HelixToolkit.Maths
         /// <param name="result">When the method completes, contains the created billboard quaternion.</param>
         public static void BillboardRH(ref Vector3 objectPosition, ref Vector3 cameraPosition, ref Vector3 cameraUpVector, ref Vector3 cameraForwardVector, out Quaternion result)
         {
-            Matrix3x3 matrix;
-            Matrix3x3.BillboardRH(ref objectPosition, ref cameraPosition, ref cameraUpVector, ref cameraForwardVector, out matrix);
+            Matrix3x3.BillboardRH(ref objectPosition, ref cameraPosition, ref cameraUpVector, ref cameraForwardVector, out Matrix3x3 matrix);
             RotationMatrix(ref matrix, out result);
         }
 
@@ -573,8 +552,7 @@ namespace HelixToolkit.Maths
         /// <returns>The created billboard quaternion.</returns>
         public static Quaternion BillboardRH(Vector3 objectPosition, Vector3 cameraPosition, Vector3 cameraUpVector, Vector3 cameraForwardVector)
         {
-            Quaternion result;
-            BillboardRH(ref objectPosition, ref cameraPosition, ref cameraUpVector, ref cameraForwardVector, out result);
+            BillboardRH(ref objectPosition, ref cameraPosition, ref cameraUpVector, ref cameraForwardVector, out Quaternion result);
             return result;
         }
 
@@ -585,8 +563,7 @@ namespace HelixToolkit.Maths
         /// <returns>The newly created quaternion.</returns>
         public static Quaternion RotationMatrix(Matrix matrix)
         {
-            Quaternion result;
-            RotationMatrix(ref matrix, out result);
+            RotationMatrix(ref matrix, out Quaternion result);
             return result;
         }
 
@@ -643,8 +620,8 @@ namespace HelixToolkit.Maths
         /// <param name="result">When the method completes, contains the spherical quadrangle interpolation of the quaternions.</param>
         public static void Squad(ref Quaternion value1, ref Quaternion value2, ref Quaternion value3, ref Quaternion value4, float amount, out Quaternion result)
         {
-            var start = Quaternion.Slerp(value1, value4, amount);
-            var end = Quaternion.Slerp(value2, value3, amount);
+            Quaternion start = Quaternion.Slerp(value1, value4, amount);
+            Quaternion end = Quaternion.Slerp(value2, value3, amount);
             result = Quaternion.Slerp(start, end, 2.0f * amount * (1.0f - amount));
         }
 
@@ -659,8 +636,7 @@ namespace HelixToolkit.Maths
         /// <returns>The spherical quadrangle interpolation of the quaternions.</returns>
         public static Quaternion Squad(Quaternion value1, Quaternion value2, Quaternion value3, Quaternion value4, float amount)
         {
-            Quaternion result;
-            Squad(ref value1, ref value2, ref value3, ref value4, amount, out result);
+            Squad(ref value1, ref value2, ref value3, ref value4, amount, out Quaternion result);
             return result;
         }
 
@@ -674,16 +650,15 @@ namespace HelixToolkit.Maths
         /// <returns>An array of three quaternions that represent control points for spherical quadrangle interpolation.</returns>
         public static Quaternion[] SquadSetup(Quaternion value1, Quaternion value2, Quaternion value3, Quaternion value4)
         {
-            var q0 = (value1 + value2).LengthSquared() < (value1 - value2).LengthSquared() ? -value1 : value1;
-            var q2 = (value2 + value3).LengthSquared() < (value2 - value3).LengthSquared() ? -value3 : value3;
-            var q3 = (value3 + value4).LengthSquared() < (value3 - value4).LengthSquared() ? -value4 : value4;
-            var q1 = value2;
+            Quaternion q0 = (value1 + value2).LengthSquared() < (value1 - value2).LengthSquared() ? -value1 : value1;
+            Quaternion q2 = (value2 + value3).LengthSquared() < (value2 - value3).LengthSquared() ? -value3 : value3;
+            Quaternion q3 = (value3 + value4).LengthSquared() < (value3 - value4).LengthSquared() ? -value4 : value4;
+            Quaternion q1 = value2;
 
-            Quaternion q1Exp, q2Exp;
-            Exponential(ref q1, out q1Exp);
-            Exponential(ref q2, out q2Exp);
+            Exponential(ref q1, out Quaternion q1Exp);
+            Exponential(ref q2, out Quaternion q2Exp);
 
-            var results = new Quaternion[3];
+            Quaternion[] results = new Quaternion[3];
             results[0] = q1 * Exponential((Logarithm(q1Exp * q2) + Logarithm(q1Exp * q0)) * -0.25f);
             results[1] = q2 * Exponential((Logarithm(q2Exp * q3) + Logarithm(q2Exp * q1)) * -0.25f);
             results[2] = q2;
@@ -703,7 +678,7 @@ namespace HelixToolkit.Maths
             float yz = rotation.Y * rotation.Z;
             float xw = rotation.X * rotation.W;
 
-            var result = Matrix.Identity;
+            Matrix result = Matrix.Identity;
             result.M11 = 1.0f - (2.0f * (yy + zz));
             result.M12 = 2.0f * (xy + zw);
             result.M13 = 2.0f * (zx - yw);

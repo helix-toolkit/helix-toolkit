@@ -30,11 +30,6 @@ Copyright (c) 2007-2011 SlimDX Group
 The MIT License (MIT)
 */
 
-using System;
-using System.Globalization;
-using System.Numerics;
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
 namespace HelixToolkit.Maths
 {
     /// <summary>
@@ -236,12 +231,12 @@ namespace HelixToolkit.Maths
         {
             if (values == null)
             {
-                throw new ArgumentNullException("values");
+                throw new ArgumentNullException(nameof(values));
             }
 
             if (values.Length != 4)
             {
-                throw new ArgumentOutOfRangeException("values", "There must be four and only four input values for Color.");
+                throw new ArgumentOutOfRangeException(nameof(values), "There must be four and only four input values for Color.");
             }
 
             R = ToByte(values[0]);
@@ -260,12 +255,12 @@ namespace HelixToolkit.Maths
         {
             if (values == null)
             {
-                throw new ArgumentNullException("values");
+                throw new ArgumentNullException(nameof(values));
             }
 
             if (values.Length != 4)
             {
-                throw new ArgumentOutOfRangeException("values", "There must be four and only four input values for Color.");
+                throw new ArgumentOutOfRangeException(nameof(values), "There must be four and only four input values for Color.");
             }
 
             R = values[0];
@@ -283,17 +278,16 @@ namespace HelixToolkit.Maths
         /// <exception cref="System.ArgumentOutOfRangeException">Thrown when the <paramref name="index"/> is out of the range [0, 3].</exception>
         public byte this[int index]
         {
-            get
+            readonly get
             {
-                switch (index)
+                return index switch
                 {
-                    case 0: return R;
-                    case 1: return G;
-                    case 2: return B;
-                    case 3: return A;
-                }
-
-                throw new ArgumentOutOfRangeException("index", "Indices for Color run from 0 to 3, inclusive.");
+                    0 => R,
+                    1 => G,
+                    2 => B,
+                    3 => A,
+                    _ => throw new ArgumentOutOfRangeException(nameof(index), "Indices for Color run from 0 to 3, inclusive."),
+                };
             }
 
             set
@@ -304,7 +298,7 @@ namespace HelixToolkit.Maths
                     case 1: G = value; break;
                     case 2: B = value; break;
                     case 3: A = value; break;
-                    default: throw new ArgumentOutOfRangeException("index", "Indices for Color run from 0 to 3, inclusive.");
+                    default: throw new ArgumentOutOfRangeException(nameof(index), "Indices for Color run from 0 to 3, inclusive.");
                 }
             }
         }
@@ -313,7 +307,7 @@ namespace HelixToolkit.Maths
         /// Converts the color into a packed integer.
         /// </summary>
         /// <returns>A packed integer containing all four color components.</returns>
-        public int ToBgra()
+        public readonly int ToBgra()
         {
             int value = B;
             value |= G << 8;
@@ -327,7 +321,7 @@ namespace HelixToolkit.Maths
         /// Converts the color into a packed integer.
         /// </summary>
         /// <returns>A packed integer containing all four color components.</returns>
-        public int ToRgba()
+        public readonly int ToRgba()
         {
             int value = R;
             value |= G << 8;
@@ -341,7 +335,7 @@ namespace HelixToolkit.Maths
         /// Converts the color into a packed integer.
         /// </summary>
         /// <returns>A packed integer containing all four color components.</returns>
-        public int ToAbgr()
+        public readonly int ToAbgr()
         {
             int value = A;
             value |= B << 8;
@@ -355,7 +349,7 @@ namespace HelixToolkit.Maths
         /// Converts the color into a three component vector.
         /// </summary>
         /// <returns>A three component vector containing the red, green, and blue components of the color.</returns>
-        public Vector3 ToVector3()
+        public readonly Vector3 ToVector3()
         {
             return new Vector3(R / 255.0f, G / 255.0f, B / 255.0f);
         }
@@ -364,7 +358,7 @@ namespace HelixToolkit.Maths
         /// Converts the color into a three component color.
         /// </summary>
         /// <returns>A three component color containing the red, green, and blue components of the color.</returns>
-        public Color3 ToColor3()
+        public readonly Color3 ToColor3()
         {
             return new Color3(R / 255.0f, G / 255.0f, B / 255.0f);
         }
@@ -373,7 +367,7 @@ namespace HelixToolkit.Maths
         /// Converts the color into a four component vector.
         /// </summary>
         /// <returns>A four component vector containing all four color components.</returns>
-        public Vector4 ToVector4()
+        public readonly Vector4 ToVector4()
         {
             return new Vector4(R / 255.0f, G / 255.0f, B / 255.0f, A / 255.0f);
         }
@@ -382,7 +376,7 @@ namespace HelixToolkit.Maths
         /// Creates an array containing the elements of the color.
         /// </summary>
         /// <returns>A four-element array containing the components of the color in RGBA order.</returns>
-        public byte[] ToArray()
+        public readonly byte[] ToArray()
         {
             return new [] { R, G , B, A };
         }
@@ -391,11 +385,11 @@ namespace HelixToolkit.Maths
         /// Gets the brightness.
         /// </summary>
         /// <returns>The Hue-Saturation-Brightness (HSB) brightness for this <see cref="Color"/></returns>
-        public float GetBrightness()
+        public readonly float GetBrightness()
         {
-            var r = (float)R / 255.0f;
-            var g = (float)G / 255.0f;
-            var b = (float)B / 255.0f;
+            float r = (float)R / 255.0f;
+            float g = (float)G / 255.0f;
+            float b = (float)B / 255.0f;
 
             float max, min;
 
@@ -428,20 +422,20 @@ namespace HelixToolkit.Maths
         /// Gets the hue.
         /// </summary>
         /// <returns>The Hue-Saturation-Brightness (HSB) hue for this <see cref="Color"/></returns>
-        public float GetHue()
+        public readonly float GetHue()
         {
             if (R == G && G == B)
             {
                 return 0; // 0 makes as good an UNDEFINED value as any
             }
 
-            var r = (float)R / 255.0f;
-            var g = (float)G / 255.0f;
-            var b = (float)B / 255.0f;
+            float r = (float)R / 255.0f;
+            float g = (float)G / 255.0f;
+            float b = (float)B / 255.0f;
 
             float max, min;
             float delta;
-            var hue = 0.0f;
+            float hue = 0.0f;
 
             max = r; min = r;
 
@@ -475,9 +469,7 @@ namespace HelixToolkit.Maths
             {
                 hue = 2 + (b - r) / delta;
             }
-#pragma warning disable S2589 // Boolean expressions should not be gratuitous
             else if (b == max)
-#pragma warning restore S2589 // Boolean expressions should not be gratuitous
             {
                 hue = 4 + (r - g) / delta;
             }
@@ -494,11 +486,11 @@ namespace HelixToolkit.Maths
         /// Gets the saturation.
         /// </summary>
         /// <returns>The Hue-Saturation-Brightness (HSB) saturation for this <see cref="Color"/></returns>
-        public float GetSaturation()
+        public readonly float GetSaturation()
         {
-            var r = (float)R / 255.0f;
-            var g = (float)G / 255.0f;
-            var b = (float)B / 255.0f;
+            float r = (float)R / 255.0f;
+            float g = (float)G / 255.0f;
+            float b = (float)B / 255.0f;
 
             float max, min;
             float l, s = 0;
@@ -532,14 +524,7 @@ namespace HelixToolkit.Maths
             {
                 l = (max + min) / 2;
 
-                if (l <= .5)
-                {
-                    s = (max - min) / (max + min);
-                }
-                else
-                {
-                    s = (max - min) / (2 - max - min);
-                }
+                s = l <= .5 ? (max - min) / (max + min) : (max - min) / (2 - max - min);
             }
             return s;
         } 
@@ -676,19 +661,19 @@ namespace HelixToolkit.Maths
         /// <param name="result">When the method completes, contains the clamped value.</param>
         public static void Clamp(ref Color value, ref Color min, ref Color max, out Color result)
         {
-            var alpha = value.A;
+            byte alpha = value.A;
             alpha = (alpha > max.A) ? max.A : alpha;
             alpha = (alpha < min.A) ? min.A : alpha;
 
-            var red = value.R;
+            byte red = value.R;
             red = (red > max.R) ? max.R : red;
             red = (red < min.R) ? min.R : red;
 
-            var green = value.G;
+            byte green = value.G;
             green = (green > max.G) ? max.G : green;
             green = (green < min.G) ? min.G : green;
 
-            var blue = value.B;
+            byte blue = value.B;
             blue = (blue > max.B) ? max.B : blue;
             blue = (blue < min.B) ? min.B : blue;
 
@@ -702,7 +687,7 @@ namespace HelixToolkit.Maths
         /// <param name="result">The premultiplied result.</param>
         public static void Premultiply(ref Color value, out Color result)
         {
-            var a = value.A / (255f * 255f);
+            float a = value.A / (255f * 255f);
             result.A = value.A;
             result.R = ToByte(value.R * a);
             result.G = ToByte(value.G * a);
@@ -716,8 +701,7 @@ namespace HelixToolkit.Maths
         /// <returns>The premultiplied result.</returns>
         public static Color Premultiply(Color value)
         {
-            Color result;
-            Premultiply(ref value, out result);
+            Premultiply(ref value, out Color result);
             return result;
         }
 
@@ -790,8 +774,7 @@ namespace HelixToolkit.Maths
         /// <returns>The clamped value.</returns>
         public static Color Clamp(Color value, Color min, Color max)
         {
-            Color result;
-            Clamp(ref value, ref min, ref max, out result);
+            Clamp(ref value, ref min, ref max, out Color result);
             return result;
         }
 
@@ -825,8 +808,7 @@ namespace HelixToolkit.Maths
         /// </remarks>
         public static Color Lerp(Color start, Color end, float amount)
         {
-            Color result;
-            Lerp(ref start, ref end, amount, out result);
+            Lerp(ref start, ref end, amount, out Color result);
             return result;
         }
 
@@ -852,8 +834,7 @@ namespace HelixToolkit.Maths
         /// <returns>The cubic interpolation of the two colors.</returns>
         public static Color SmoothStep(Color start, Color end, float amount)
         {
-            Color result;
-            SmoothStep(ref start, ref end, amount, out result);
+            SmoothStep(ref start, ref end, amount, out Color result);
             return result;
         }
 
@@ -879,8 +860,7 @@ namespace HelixToolkit.Maths
         /// <returns>A color containing the largest components of the source colors.</returns>
         public static Color Max(Color left, Color right)
         {
-            Color result;
-            Max(ref left, ref right, out result);
+            Max(ref left, ref right, out Color result);
             return result;
         }
 
@@ -906,8 +886,7 @@ namespace HelixToolkit.Maths
         /// <returns>A color containing the smallest components of the source colors.</returns>
         public static Color Min(Color left, Color right)
         {
-            Color result;
-            Min(ref left, ref right, out result);
+            Min(ref left, ref right, out Color result);
             return result;
         }
 
@@ -948,7 +927,7 @@ namespace HelixToolkit.Maths
         /// <param name="result">When the method completes, contains the adjusted color.</param>
         public static void AdjustSaturation(ref Color value, float saturation, out Color result)
         {
-            var grey = value.R  / 255.0f * 0.2125f + value.G / 255.0f * 0.7154f + value.B / 255.0f * 0.0721f;
+            float grey = value.R  / 255.0f * 0.2125f + value.G / 255.0f * 0.7154f + value.B / 255.0f * 0.0721f;
 
             result.A = value.A;
             result.R = ToByte(grey + saturation * (value.R / 255.0f - grey));
@@ -964,7 +943,7 @@ namespace HelixToolkit.Maths
         /// <returns>The adjusted color.</returns>
         public static Color AdjustSaturation(Color value, float saturation)
         {
-            var grey = value.R / 255.0f * 0.2125f + value.G / 255.0f * 0.7154f + value.B / 255.0f * 0.0721f;
+            float grey = value.R / 255.0f * 0.2125f + value.G / 255.0f * 0.7154f + value.B / 255.0f * 0.0721f;
 
             return new Color(                
                 ToByte(grey + saturation * (value.R / 255.0f - grey)),
@@ -1106,7 +1085,7 @@ namespace HelixToolkit.Maths
         /// Convert this instance to a <see cref="Color4"/>
         /// </summary>
         /// <returns>The result of the conversion.</returns>
-        public Color4 ToColor4()
+        public readonly Color4 ToColor4()
         {
             return new Color4(R / 255.0f, G / 255.0f, B / 255.0f, A / 255.0f);
         }
@@ -1191,7 +1170,7 @@ namespace HelixToolkit.Maths
         /// <returns>
         /// A <see cref="System.String"/> that represents this instance.
         /// </returns>
-        public override string ToString()
+        public override readonly string ToString()
         {
             return ToString(CultureInfo.CurrentCulture);
         }
@@ -1203,7 +1182,7 @@ namespace HelixToolkit.Maths
         /// <returns>
         /// A <see cref="System.String"/> that represents this instance.
         /// </returns>
-        public string ToString(string format)
+        public readonly string ToString(string format)
         {
             return ToString(format, CultureInfo.CurrentCulture);
         }
@@ -1215,7 +1194,7 @@ namespace HelixToolkit.Maths
         /// <returns>
         /// A <see cref="System.String"/> that represents this instance.
         /// </returns>
-        public string ToString(IFormatProvider formatProvider)
+        public readonly string ToString(IFormatProvider formatProvider)
         {
             return string.Format(formatProvider, toStringFormat_, A, R, G, B);
         }
@@ -1228,7 +1207,7 @@ namespace HelixToolkit.Maths
         /// <returns>
         /// A <see cref="System.String"/> that represents this instance.
         /// </returns>
-        public string ToString(string? format, IFormatProvider? formatProvider)
+        public readonly string ToString(string? format, IFormatProvider? formatProvider)
         {
             return format == null && formatProvider == null
                 ? string.Empty
@@ -1248,11 +1227,13 @@ namespace HelixToolkit.Maths
         /// <returns>
         /// A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table. 
         /// </returns>
-        public override int GetHashCode()
+#pragma warning disable IDE0070 // Use 'System.HashCode'
+        public override readonly int GetHashCode()
+#pragma warning restore IDE0070 // Use 'System.HashCode'
         {
             unchecked
             {
-                var hashCode = R.GetHashCode();
+                int hashCode = R.GetHashCode();
                 hashCode = (hashCode * 397) ^ G.GetHashCode();
                 hashCode = (hashCode * 397) ^ B.GetHashCode();
                 hashCode = (hashCode * 397) ^ A.GetHashCode();
@@ -1268,7 +1249,7 @@ namespace HelixToolkit.Maths
         /// <c>true</c> if the specified <see cref="Color"/> is equal to this instance; otherwise, <c>false</c>.
         /// </returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)] // MethodImplOptions.AggressiveInlining
-        public bool Equals(ref Color other)
+        public readonly bool Equals(ref Color other)
         {
             return R == other.R && G == other.G && B == other.B && A == other.A;
         }
@@ -1281,7 +1262,7 @@ namespace HelixToolkit.Maths
         /// <c>true</c> if the specified <see cref="Color"/> is equal to this instance; otherwise, <c>false</c>.
         /// </returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)] // MethodImplOptions.AggressiveInlining
-        public bool Equals(Color other)
+        public readonly bool Equals(Color other)
         {
             return Equals(ref other);
         }
@@ -1293,22 +1274,20 @@ namespace HelixToolkit.Maths
         /// <returns>
         /// <c>true</c> if the specified <see cref="System.Object"/> is equal to this instance; otherwise, <c>false</c>.
         /// </returns>
-        public override bool Equals(object? obj)
+        public override readonly bool Equals(object? obj)
         {
             return obj is Color c && Equals(ref c);
         }
 
         private static byte ToByte(float component)
         {
-            var value = (int)(component * 255.0f);
+            int value = (int)(component * 255.0f);
             return ToByte(value);
         }
 
         public static byte ToByte(int value)
         {
-#pragma warning disable S3358 // Ternary operators should not be nested
             return (byte)(value < 0 ? 0 : value <= 255 ? value : 255);
-#pragma warning restore S3358 // Ternary operators should not be nested
         }
     }
 }

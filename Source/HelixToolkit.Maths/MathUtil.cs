@@ -29,8 +29,6 @@ The MIT License (MIT)
 Copyright (c) 2007-2011 SlimDX Group
 The MIT License (MIT)
 */
-using System;
-
 namespace HelixToolkit.Maths
 {
     public static class MathUtil
@@ -81,8 +79,8 @@ namespace HelixToolkit.Maths
             }
 
             // Original from Bruce Dawson: http://randomascii.wordpress.com/2012/02/25/comparing-floating-point-numbers-2012-edition/
-            var aInt = *(int*)&a;
-            var bInt = *(int*)&b;
+            int aInt = *(int*)&a;
+            int bInt = *(int*)&b;
 
             // Different signs means they do not match.
             if ((aInt < 0) != (bInt < 0))
@@ -91,12 +89,12 @@ namespace HelixToolkit.Maths
             }
 
             // Find the difference in ULPs.
-            var ulp = Math.Abs(aInt - bInt);
+            int ulp = Math.Abs(aInt - bInt);
 
             // Choose of maxUlp = 4
             // according to http://code.google.com/p/googletest/source/browse/trunk/include/gtest/internal/gtest-internal.h
             const int maxUlp = 4;
-            return (ulp <= maxUlp);
+            return ulp <= maxUlp;
         }
 
         /// <summary>
@@ -128,8 +126,8 @@ namespace HelixToolkit.Maths
         /// <returns><c>true</c> if a almost equal to b within a float epsilon, <c>false</c> otherwise</returns>
         public static bool WithinEpsilon(float a, float b, float epsilon)
         {
-            var num = a - b;
-            return ((-epsilon <= num) && (num <= epsilon));
+            float num = a - b;
+            return (-epsilon <= num) && (num <= epsilon);
         }
 
         /// <summary>
@@ -251,9 +249,7 @@ namespace HelixToolkit.Maths
         /// <returns>The result of clamping a value between min and max</returns>
         public static float Clamp(float value, float min, float max)
         {
-#pragma warning disable S3358 // Ternary operators should not be nested
             return value < min ? min : (value > max ? max : value);
-#pragma warning restore S3358 // Ternary operators should not be nested
         }
 
         /// <summary>
@@ -265,9 +261,7 @@ namespace HelixToolkit.Maths
         /// <returns>The result of clamping a value between min and max</returns>
         public static int Clamp(int value, int min, int max)
         {
-#pragma warning disable S3358 // Ternary operators should not be nested
             return value < min ? min : (value > max ? max : value);
-#pragma warning restore S3358 // Ternary operators should not be nested
         }
 
         /// <summary>
@@ -327,11 +321,9 @@ namespace HelixToolkit.Maths
         /// <param name="amount">Value between 0 and 1 indicating interpolation amount.</param>
         public static float SmoothStep(float amount)
         {
-#pragma warning disable S3358 // Ternary operators should not be nested
             return (amount <= 0) ? 0
                 : (amount >= 1) ? 1
                 : amount * amount * (3 - (2 * amount));
-#pragma warning restore S3358 // Ternary operators should not be nested
         }
 
         /// <summary>
@@ -343,11 +335,9 @@ namespace HelixToolkit.Maths
         /// <param name="amount">Value between 0 and 1 indicating interpolation amount.</param>
         public static float SmootherStep(float amount)
         {
-#pragma warning disable S3358 // Ternary operators should not be nested
             return (amount <= 0) ? 0
                 : (amount >= 1) ? 1
                 : amount * amount * amount * (amount * ((amount * 6) - 15) + 10);
-#pragma warning restore S3358 // Ternary operators should not be nested
         }
 
         /// <summary>
@@ -383,11 +373,11 @@ namespace HelixToolkit.Maths
         {
             if (min > max)
             {
-                throw new ArgumentException(string.Format("min {0} should be less than or equal to max {1}", min, max), "min");
+                throw new ArgumentException(string.Format("min {0} should be less than or equal to max {1}", min, max), nameof(min));
             }
 
             // Code from http://stackoverflow.com/a/707426/1356325
-            var range_size = max - min + 1;
+            int range_size = max - min + 1;
 
             if (value < min)
             {
@@ -418,10 +408,10 @@ namespace HelixToolkit.Maths
 
             if (mind > maxd)
             {
-                throw new ArgumentException(string.Format("min {0} should be less than or equal to max {1}", min, max), "min");
+                throw new ArgumentException(string.Format("min {0} should be less than or equal to max {1}", min, max), nameof(min));
             }
 
-            var range_size = maxd - mind;
+            double range_size = maxd - mind;
             return (float)(mind + (valued - mind) - (range_size * Math.Floor((valued - mind) / range_size)));
         }
 
@@ -456,11 +446,11 @@ namespace HelixToolkit.Maths
         /// <returns>The result of Gaussian function.</returns>
         public static double Gauss(double amplitude, double x, double y, double centerX, double centerY, double sigmaX, double sigmaY)
         {
-            var cx = x - centerX;
-            var cy = y - centerY;
+            double cx = x - centerX;
+            double cy = y - centerY;
 
-            var componentX = (cx * cx) / (2 * sigmaX * sigmaX);
-            var componentY = (cy * cy) / (2 * sigmaY * sigmaY);
+            double componentX = cx * cx / (2 * sigmaX * sigmaX);
+            double componentY = cy * cy / (2 * sigmaY * sigmaY);
 
             return amplitude * Math.Exp(-(componentX + componentY));
         }

@@ -29,11 +29,6 @@ The MIT License (MIT)
 Copyright (c) 2007-2011 SlimDX Group
 The MIT License (MIT)
 */
-using System.Globalization;
-using System.Numerics;
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
-
 namespace HelixToolkit.Maths
 {
     /// <summary>
@@ -66,7 +61,7 @@ namespace HelixToolkit.Maths
         /// <summary>
         /// Returns the width of the bounding box
         /// </summary>
-        public float Width
+        public readonly float Width
         {
             get { return this.Maximum.X - this.Minimum.X; }
         }
@@ -74,7 +69,7 @@ namespace HelixToolkit.Maths
         /// <summary>
         /// Returns the height of the bounding box
         /// </summary>
-        public float Height
+        public readonly float Height
         {
             get { return this.Maximum.Y - this.Minimum.Y; }
         }
@@ -82,7 +77,7 @@ namespace HelixToolkit.Maths
         /// <summary>
         /// Returns the height of the bounding box
         /// </summary>
-        public float Depth
+        public readonly float Depth
         {
             get { return this.Maximum.Z - this.Minimum.Z; }
         }
@@ -90,7 +85,7 @@ namespace HelixToolkit.Maths
         /// <summary>
         /// Returns the size of the bounding box
         /// </summary>
-        public Vector3 Size
+        public readonly Vector3 Size
         {
             get { return this.Maximum - this.Minimum; }
         }
@@ -98,7 +93,7 @@ namespace HelixToolkit.Maths
         /// <summary>
         /// Returns the size of the bounding box
         /// </summary>
-        public Vector3 Center
+        public readonly Vector3 Center
         {
             get { return (this.Maximum + this.Minimum) * 0.5f; }
         }
@@ -107,9 +102,9 @@ namespace HelixToolkit.Maths
         /// Retrieves the eight corners of the bounding box.
         /// </summary>
         /// <returns>An array of points representing the eight corners of the bounding box.</returns>
-        public Vector3[] GetCorners()
+        public readonly Vector3[] GetCorners()
         {
-            var results = new Vector3[8];
+            Vector3[] results = new Vector3[8];
             GetCorners(results);
             return results;
         }
@@ -118,7 +113,7 @@ namespace HelixToolkit.Maths
         /// Retrieves the eight corners of the bounding box.
         /// </summary>
         /// <returns>An array of points representing the eight corners of the bounding box.</returns>
-        public void GetCorners(Vector3[] corners)
+        public readonly void GetCorners(Vector3[] corners)
         {
             corners[0] = new Vector3(Minimum.X, Maximum.Y, Maximum.Z);
             corners[1] = new Vector3(Maximum.X, Maximum.Y, Maximum.Z);
@@ -137,8 +132,7 @@ namespace HelixToolkit.Maths
         /// <returns>Whether the two objects intersected.</returns>
         public bool Intersects(ref Ray ray)
         {
-            float distance;
-            return Collision.RayIntersectsBox(ref ray, ref this, out distance);
+            return Collision.RayIntersectsBox(ref ray, ref this, out float _);
         }
 
         /// <summary>
@@ -313,13 +307,13 @@ namespace HelixToolkit.Maths
         {
             if (points == null)
             {
-                throw new ArgumentNullException("points");
+                throw new ArgumentNullException(nameof(points));
             }
 
-            var min = new Vector3(float.MaxValue);
-            var max = new Vector3(float.MinValue);
+            Vector3 min = new(float.MaxValue);
+            Vector3 max = new(float.MinValue);
 
-            for (var i = 0; i < points.Length; ++i)
+            for (int i = 0; i < points.Length; ++i)
             {
                 min = Vector3.Min(min, points[i]);
                 max = Vector3.Max(max, points[i]);
@@ -338,13 +332,13 @@ namespace HelixToolkit.Maths
         {
             if (points == null)
             {
-                throw new ArgumentNullException("points");
+                throw new ArgumentNullException(nameof(points));
             }
 
-            var min = new Vector3(float.MaxValue);
-            var max = new Vector3(float.MinValue);
+            Vector3 min = new(float.MaxValue);
+            Vector3 max = new(float.MinValue);
 
-            for (var i = 0; i < points.Length; ++i)
+            for (int i = 0; i < points.Length; ++i)
             {
                 min = Vector3.Min(min, points[i]);
                 max = Vector3.Max(max, points[i]);
@@ -430,7 +424,7 @@ namespace HelixToolkit.Maths
         /// <returns>
         /// A <see cref="System.String"/> that represents this instance.
         /// </returns>
-        public override string ToString()
+        public override readonly string ToString()
         {
             return string.Format(CultureInfo.CurrentCulture, "Minimum:{0} Maximum:{1}", Minimum.ToString(), Maximum.ToString());
         }
@@ -442,7 +436,7 @@ namespace HelixToolkit.Maths
         /// <returns>
         /// A <see cref="System.String"/> that represents this instance.
         /// </returns>
-        public string ToString(string format)
+        public readonly string ToString(string format)
         {
             return format == null
                 ? ToString()
@@ -457,7 +451,7 @@ namespace HelixToolkit.Maths
         /// <returns>
         /// A <see cref="System.String"/> that represents this instance.
         /// </returns>
-        public string ToString(IFormatProvider formatProvider)
+        public readonly string ToString(IFormatProvider formatProvider)
         {
             return string.Format(formatProvider, "Minimum:{0} Maximum:{1}", Minimum.ToString(), Maximum.ToString());
         }
@@ -470,7 +464,7 @@ namespace HelixToolkit.Maths
         /// <returns>
         /// A <see cref="System.String"/> that represents this instance.
         /// </returns>
-        public string ToString(string? format, IFormatProvider? formatProvider)
+        public readonly string ToString(string? format, IFormatProvider? formatProvider)
         {
             return format == null && formatProvider == null
                 ? string.Empty
@@ -486,7 +480,7 @@ namespace HelixToolkit.Maths
         /// <returns>
         /// A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table. 
         /// </returns>
-        public override int GetHashCode()
+        public override readonly int GetHashCode()
         {
             unchecked
             {
@@ -502,7 +496,7 @@ namespace HelixToolkit.Maths
         /// <c>true</c> if the specified <see cref="Vector4"/> is equal to this instance; otherwise, <c>false</c>.
         /// </returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)] // MethodImplOptions.AggressiveInlining
-        public bool Equals(ref BoundingBox value)
+        public readonly bool Equals(ref BoundingBox value)
         {
             return Minimum == value.Minimum && Maximum == value.Maximum;
         }
@@ -515,7 +509,7 @@ namespace HelixToolkit.Maths
         /// <c>true</c> if the specified <see cref="Vector4"/> is equal to this instance; otherwise, <c>false</c>.
         /// </returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)] // MethodImplOptions.AggressiveInlining
-        public bool Equals(BoundingBox value)
+        public readonly bool Equals(BoundingBox value)
         {
             return Equals(ref value);
         }
@@ -527,7 +521,7 @@ namespace HelixToolkit.Maths
         /// <returns>
         /// <c>true</c> if the specified <see cref="System.Object"/> is equal to this instance; otherwise, <c>false</c>.
         /// </returns>
-        public override bool Equals(object? obj)
+        public override readonly bool Equals(object? obj)
         {
             return obj is BoundingBox b && Equals(ref b);
         }

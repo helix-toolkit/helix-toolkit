@@ -29,13 +29,6 @@ The MIT License (MIT)
 Copyright (c) 2007-2011 SlimDX Group
 The MIT License (MIT)
 */
-using System;
-using System.Globalization;
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
-using System.Numerics;
-using Matrix = System.Numerics.Matrix4x4;
-
 namespace HelixToolkit.Maths
 {
     /// <summary>
@@ -63,9 +56,9 @@ namespace HelixToolkit.Maths
         /// <returns></returns>
         public static Plane Create(Vector3 point1, Vector3 point2, Vector3 point3)
         {
-            var p12 = point2 - point1;
-            var p13 = point3 - point1;
-            var normal = Vector3.Normalize(Vector3.Cross(p12, p13));
+            Vector3 p12 = point2 - point1;
+            Vector3 p13 = point3 - point1;
+            Vector3 normal = Vector3.Normalize(Vector3.Cross(p12, p13));
             return new Plane(normal, -Vector3.Dot(normal, point1));
             //float x1 = point2.X - point1.X;
             //float y1 = point2.Y - point1.Y;
@@ -89,7 +82,7 @@ namespace HelixToolkit.Maths
         /// </summary>
         public static Plane NormalizeUnit(this Plane plane)
         {
-            var length = 1 / plane.Normal.Length();
+            float length = 1 / plane.Normal.Length();
             plane.Normal *= length;
             plane.D *= length;
             return plane;
@@ -104,15 +97,14 @@ namespace HelixToolkit.Maths
         /// <exception cref="System.ArgumentOutOfRangeException">Thrown when the <paramref name="index"/> is out of the range [0, 3].</exception>
         public static float Get(this Plane p, int index)
         {
-            switch (index)
+            return index switch
             {
-                case 0: return p.Normal.X;
-                case 1: return p.Normal.Y;
-                case 2: return p.Normal.Z;
-                case 3: return p.D;
-            }
-
-            throw new ArgumentOutOfRangeException("index", "Indices for Plane run from 0 to 3, inclusive.");
+                0 => p.Normal.X,
+                1 => p.Normal.Y,
+                2 => p.Normal.Z,
+                3 => p.D,
+                _ => throw new ArgumentOutOfRangeException(nameof(index), "Indices for Plane run from 0 to 3, inclusive."),
+            };
         }
 
         public static void Set(ref Plane p, int index, float value)
@@ -123,7 +115,7 @@ namespace HelixToolkit.Maths
                 case 1: p.Normal.Y = value; break;
                 case 2: p.Normal.Z = value; break;
                 case 3: p.D = value; break;
-                default: throw new ArgumentOutOfRangeException("index", "Indices for Plane run from 0 to 3, inclusive.");
+                default: throw new ArgumentOutOfRangeException(nameof(index), "Indices for Plane run from 0 to 3, inclusive.");
             }
         }
 
@@ -165,7 +157,7 @@ namespace HelixToolkit.Maths
         /// <returns>Whether the two objects intersected.</returns>
         public static bool Intersects(this Plane p, ref Ray ray)
         {
-            return Collision.RayIntersectsPlane(ref ray, ref p, out float distance);
+            return Collision.RayIntersectsPlane(ref ray, ref p, out float _);
         }
 
         /// <summary>
@@ -176,7 +168,7 @@ namespace HelixToolkit.Maths
         /// <returns></returns>
         public static bool Intersects(ref Plane p, ref Ray ray)
         {
-            return Collision.RayIntersectsPlane(ref ray, ref p, out float distance);
+            return Collision.RayIntersectsPlane(ref ray, ref p, out float _);
         }
         /// <summary>
         /// Determines if there is an intersection between the current object and a <see cref="Ray"/>.
@@ -348,15 +340,15 @@ namespace HelixToolkit.Maths
         public static bool IntersectsLine(ref Plane p, ref Vector3 p0, ref Vector3 p1, out Vector3 intersection)
         {
             // https://graphics.stanford.edu/~mdfisher/Code/Engine/Plane.cpp.html
-            var diff = p0 - p1;
-            var d = Vector3.Dot(diff, p.Normal);
+            Vector3 diff = p0 - p1;
+            float d = Vector3.Dot(diff, p.Normal);
             if (d == 0)
             {
                 intersection = Vector3.Zero;
                 return false;
             }
-            var u = (Vector3.Dot(p0, p.Normal) + p.D) / d;
-            intersection = (p0 + u * (p1 - p0));
+            float u = (Vector3.Dot(p0, p.Normal) + p.D) / d;
+            intersection = p0 + u * (p1 - p0);
             return true;
         }
         /// <summary>
@@ -378,12 +370,12 @@ namespace HelixToolkit.Maths
         /// <param name="result">The result.</param>
         public static void Reflection(ref Plane p, out Matrix result)
         {
-            var x = p.Normal.X;
-            var y = p.Normal.Y;
-            var z = p.Normal.Z;
-            var x2 = -2.0f * x;
-            var y2 = -2.0f * y;
-            var z2 = -2.0f * z;
+            float x = p.Normal.X;
+            float y = p.Normal.Y;
+            float z = p.Normal.Z;
+            float x2 = -2.0f * x;
+            float y2 = -2.0f * y;
+            float z2 = -2.0f * z;
 
             result.M11 = (x2 * x) + 1.0f;
             result.M12 = y2 * x;
@@ -423,11 +415,11 @@ namespace HelixToolkit.Maths
         /// <param name="result">When the method completes, contains the shadow matrix.</param>
         public static void Shadow(ref Plane p, ref Vector4 light, out Matrix result)
         {
-            var dot = Plane.Dot(p, light);// (p.Normal.X * light.X) + (p.Normal.Y * light.Y) + (p.Normal.Z * light.Z) + (p.D * light.W);
-            var x = -p.Normal.X;
-            var y = -p.Normal.Y;
-            var z = -p.Normal.Z;
-            var d = -p.D;
+            float dot = Plane.Dot(p, light);// (p.Normal.X * light.X) + (p.Normal.Y * light.Y) + (p.Normal.Z * light.Z) + (p.D * light.W);
+            float x = -p.Normal.X;
+            float y = -p.Normal.Y;
+            float z = -p.Normal.Z;
+            float d = -p.D;
 
             result.M11 = (x * light.X) + dot;
             result.M21 = y * light.X;
@@ -457,7 +449,7 @@ namespace HelixToolkit.Maths
         /// <returns>The shadow matrix.</returns>
         public static Matrix Shadow(this Plane p, Vector4 light)
         {
-            Shadow(ref p, ref light, out var result);
+            Shadow(ref p, ref light, out Matrix result);
             return result;
         }
 
@@ -469,12 +461,12 @@ namespace HelixToolkit.Maths
         /// <param name="result">When the method completes, contains the reflection Matrix3x3.</param>
         public static void Reflection(ref Plane p, out Matrix3x3 result)
         {
-            var x = p.Normal.X;
-            var y = p.Normal.Y;
-            var z = p.Normal.Z;
-            var x2 = -2.0f * x;
-            var y2 = -2.0f * y;
-            var z2 = -2.0f * z;
+            float x = p.Normal.X;
+            float y = p.Normal.Y;
+            float z = p.Normal.Z;
+            float x2 = -2.0f * x;
+            float y2 = -2.0f * y;
+            float z2 = -2.0f * z;
 
             result.M11 = (x2 * x) + 1.0f;
             result.M12 = y2 * x;
@@ -507,10 +499,10 @@ namespace HelixToolkit.Maths
         /// <param name="result">When the method completes, contains the shadow Matrix3x3.</param>
         public static void Shadow(ref Vector4 light, ref Plane plane, out Matrix3x3 result)
         {
-            var dot = Plane.Dot(plane, light);//(plane.Normal.X * light.X) + (plane.Normal.Y * light.Y) + (plane.Normal.Z * light.Z) + (plane.D * light.W);
-            var x = -plane.Normal.X;
-            var y = -plane.Normal.Y;
-            var z = -plane.Normal.Z;
+            float dot = Plane.Dot(plane, light);//(plane.Normal.X * light.X) + (plane.Normal.Y * light.Y) + (plane.Normal.Z * light.Z) + (plane.D * light.W);
+            float x = -plane.Normal.X;
+            float y = -plane.Normal.Y;
+            float z = -plane.Normal.Z;
 
             result.M11 = (x * light.X) + dot;
             result.M21 = y * light.X;
@@ -532,7 +524,7 @@ namespace HelixToolkit.Maths
         /// <returns>The shadow Matrix3x3.</returns>
         public static Matrix3x3 Shadow(Vector4 light, Plane plane)
         {
-            Shadow(ref light, ref plane, out var result);
+            Shadow(ref light, ref plane, out Matrix3x3 result);
             return result;
         }
 
@@ -625,10 +617,10 @@ namespace HelixToolkit.Maths
         {
             if (planes == null)
             {
-                throw new ArgumentNullException("planes");
+                throw new ArgumentNullException(nameof(planes));
             }
 
-            for (var i = 0; i < planes.Length; ++i)
+            for (int i = 0; i < planes.Length; ++i)
             {
                 planes[i] = Plane.Transform(planes[i], rotation);
             }
@@ -655,10 +647,10 @@ namespace HelixToolkit.Maths
         {
             if (planes == null)
             {
-                throw new ArgumentNullException("planes");
+                throw new ArgumentNullException(nameof(planes));
             }
 
-            for (var i = 0; i < planes.Length; ++i)
+            for (int i = 0; i < planes.Length; ++i)
             {
                 planes[i] = Plane.Transform(planes[i], transformation);
             }

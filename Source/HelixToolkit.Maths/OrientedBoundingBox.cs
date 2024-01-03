@@ -29,12 +29,6 @@ The MIT License (MIT)
 Copyright (c) 2007-2011 SlimDX Group
 The MIT License (MIT)
 */
-using System;
-using System.Globalization;
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
-using System.Numerics;
-using Matrix = System.Numerics.Matrix4x4;
 namespace HelixToolkit.Maths
 {
     /// <summary>
@@ -62,7 +56,7 @@ namespace HelixToolkit.Maths
         /// </remarks>
         public OrientedBoundingBox(BoundingBox bb)
         {
-            var center = bb.Minimum + (bb.Maximum - bb.Minimum) / 2f;
+            Vector3 center = bb.Minimum + (bb.Maximum - bb.Minimum) / 2f;
             Extents = bb.Maximum - center;
             Transformation = Matrix.CreateTranslation(center);
         }
@@ -77,7 +71,7 @@ namespace HelixToolkit.Maths
         /// </remarks>
         public OrientedBoundingBox(Vector3 minimum, Vector3 maximum)
         {
-            var center = minimum + (maximum - minimum) / 2f;
+            Vector3 center = minimum + (maximum - minimum) / 2f;
             Extents = maximum - center;
             Transformation = Matrix.CreateTranslation(center);
         }
@@ -94,19 +88,19 @@ namespace HelixToolkit.Maths
         {
             if (points == null || points.Length == 0)
             {
-                throw new ArgumentNullException("points");
+                throw new ArgumentNullException(nameof(points));
             }
 
-            var minimum = new Vector3(float.MaxValue);
-            var maximum = new Vector3(float.MinValue);
+            Vector3 minimum = new(float.MaxValue);
+            Vector3 maximum = new(float.MinValue);
 
-            for (var i = 0; i < points.Length; ++i)
+            for (int i = 0; i < points.Length; ++i)
             {
                 minimum = Vector3.Min(minimum, points[i]);
                 maximum = Vector3.Max(maximum, points[i]);
             }
 
-            var center = minimum + (maximum - minimum) / 2f;
+            Vector3 center = minimum + (maximum - minimum) / 2f;
             Extents = maximum - center;
             Transformation = Matrix.CreateTranslation(center);
         }
@@ -115,18 +109,18 @@ namespace HelixToolkit.Maths
         /// Retrieves the eight corners of the bounding box.
         /// </summary>
         /// <returns>An array of points representing the eight corners of the bounding box.</returns>
-        public Vector3[] GetCorners()
+        public readonly Vector3[] GetCorners()
         {
-            var xv = new Vector3(Extents.X, 0, 0);
-            var yv = new Vector3(0, Extents.Y, 0);
-            var zv = new Vector3(0, 0, Extents.Z);
+            Vector3 xv = new(Extents.X, 0, 0);
+            Vector3 yv = new(0, Extents.Y, 0);
+            Vector3 zv = new(0, 0, Extents.Z);
             xv = Vector3.TransformNormal(xv, Transformation);
             yv = Vector3.TransformNormal(yv, Transformation);
             zv = Vector3.TransformNormal(zv, Transformation);
 
-            var center = Transformation.Translation;
+            Vector3 center = Transformation.Translation;
 
-            var corners = new Vector3[8];
+            Vector3[] corners = new Vector3[8];
             corners[0] = center + xv + yv + zv;
             corners[1] = center + xv + yv - zv;
             corners[2] = center - xv + yv - zv;
@@ -220,7 +214,7 @@ namespace HelixToolkit.Maths
         /// The property will return the actual size even if the scaling is applied using Scale method, 
         /// but if the scaling is applied to transformation matrix, use GetSize Function instead.
         /// </remarks>
-        public Vector3 Size
+        public readonly Vector3 Size
         {
             get
             {
@@ -236,11 +230,11 @@ namespace HelixToolkit.Maths
         /// This method is computationally expensive, so if no scale is applied to the transformation matrix
         /// use <see cref="OrientedBoundingBox.Size"/> property instead.
         /// </remarks>
-        public Vector3 GetSize()
+        public readonly Vector3 GetSize()
         {
-            var xv = new Vector3(Extents.X * 2, 0, 0);
-            var yv = new Vector3(0, Extents.Y * 2, 0);
-            var zv = new Vector3(0, 0, Extents.Z * 2);
+            Vector3 xv = new(Extents.X * 2, 0, 0);
+            Vector3 yv = new(0, Extents.Y * 2, 0);
+            Vector3 zv = new(0, 0, Extents.Z * 2);
             xv = Vector3.TransformNormal(xv, Transformation);
             yv = Vector3.TransformNormal(yv, Transformation);
             zv = Vector3.TransformNormal(zv, Transformation);
@@ -252,11 +246,11 @@ namespace HelixToolkit.Maths
         /// Returns the square size of the <see cref="OrientedBoundingBox"/> taking into consideration the scaling applied to the transformation matrix.
         /// </summary>
         /// <returns>The size of the consideration</returns>
-        public Vector3 GetSizeSquared()
+        public readonly Vector3 GetSizeSquared()
         {
-            var xv = new Vector3(Extents.X * 2, 0, 0);
-            var yv = new Vector3(0, Extents.Y * 2, 0);
-            var zv = new Vector3(0, 0, Extents.Z * 2);
+            Vector3 xv = new(Extents.X * 2, 0, 0);
+            Vector3 yv = new(0, Extents.Y * 2, 0);
+            Vector3 zv = new(0, 0, Extents.Z * 2);
             xv = Vector3.TransformNormal(xv, Transformation);
             yv = Vector3.TransformNormal(yv, Transformation);
             zv = Vector3.TransformNormal(zv, Transformation);
@@ -267,7 +261,7 @@ namespace HelixToolkit.Maths
         /// <summary>
         /// Returns the center of the <see cref="OrientedBoundingBox"/>.
         /// </summary>
-        public Vector3 Center
+        public readonly Vector3 Center
         {
             get
             {
@@ -280,26 +274,21 @@ namespace HelixToolkit.Maths
         /// </summary>
         /// <param name="point">The point to test.</param>
         /// <returns>The type of containment the two objects have.</returns>
-        public ContainmentType Contains(ref Vector3 point)
+        public readonly ContainmentType Contains(ref Vector3 point)
         {
             // Transform the point into the obb coordinates
-            Matrix invTrans;
-            Matrix.Invert(Transformation, out invTrans);
+            Matrix.Invert(Transformation, out Matrix invTrans);
 
-            Vector3 locPoint;
-            Vector3Helper.TransformCoordinate(ref point, ref invTrans, out locPoint);
+            Vector3Helper.TransformCoordinate(ref point, ref invTrans, out Vector3 locPoint);
 
             locPoint.X = Math.Abs(locPoint.X);
             locPoint.Y = Math.Abs(locPoint.Y);
             locPoint.Z = Math.Abs(locPoint.Z);
 
             //Simple axes-aligned BB check
-            if (MathUtil.NearEqual(locPoint.X, Extents.X) && MathUtil.NearEqual(locPoint.Y, Extents.Y) && MathUtil.NearEqual(locPoint.Z, Extents.Z))
-            {
-                return ContainmentType.Intersects;
-            }
-
-            return locPoint.X < Extents.X && locPoint.Y < Extents.Y && locPoint.Z < Extents.Z
+            return MathUtil.NearEqual(locPoint.X, Extents.X) && MathUtil.NearEqual(locPoint.Y, Extents.Y) && MathUtil.NearEqual(locPoint.Z, Extents.Z)
+                ? ContainmentType.Intersects
+                : locPoint.X < Extents.X && locPoint.Y < Extents.Y && locPoint.Z < Extents.Z
                 ? ContainmentType.Contains
                 : ContainmentType.Disjoint;
         }
@@ -309,7 +298,7 @@ namespace HelixToolkit.Maths
         /// </summary>
         /// <param name="point">The point to test.</param>
         /// <returns>The type of containment the two objects have.</returns>
-        public ContainmentType Contains(Vector3 point)
+        public readonly ContainmentType Contains(Vector3 point)
         {
             return Contains(ref point);
         }
@@ -319,18 +308,16 @@ namespace HelixToolkit.Maths
         /// </summary>
         /// <param name="points">The points array to test.</param>
         /// <returns>The type of containment.</returns>
-        public ContainmentType Contains(Vector3[] points)
+        public readonly ContainmentType Contains(Vector3[] points)
         {
-            Matrix invTrans;
-            Matrix.Invert(Transformation, out invTrans);
+            Matrix.Invert(Transformation, out Matrix invTrans);
 
-            var containsAll = true;
-            var containsAny = false;
+            bool containsAll = true;
+            bool containsAny = false;
 
-            for (var i = 0; i < points.Length; i++)
+            for (int i = 0; i < points.Length; i++)
             {
-                Vector3 locPoint;
-                Vector3Helper.TransformCoordinate(ref points[i], ref invTrans, out locPoint);
+                Vector3Helper.TransformCoordinate(ref points[i], ref invTrans, out Vector3 locPoint);
 
                 locPoint.X = Math.Abs(locPoint.X);
                 locPoint.Y = Math.Abs(locPoint.Y);
@@ -354,14 +341,7 @@ namespace HelixToolkit.Maths
                 }
             }
 
-            if (containsAll)
-            {
-                return ContainmentType.Contains;
-            }
-            else
-            {
-                return containsAny ? ContainmentType.Intersects : ContainmentType.Disjoint;
-            }
+            return containsAll ? ContainmentType.Contains : containsAny ? ContainmentType.Intersects : ContainmentType.Disjoint;
         }
 
         /// <summary>
@@ -374,14 +354,12 @@ namespace HelixToolkit.Maths
         /// This method is not designed for <see cref="OrientedBoundingBox"/> which has a non-uniform scaling applied to its transformation matrix.
         /// But any type of scaling applied using Scale method will keep this method accurate.
         /// </remarks>
-        public ContainmentType Contains(BoundingSphere sphere, bool IgnoreScale = false)
+        public readonly ContainmentType Contains(BoundingSphere sphere, bool IgnoreScale = false)
         {
-            Matrix invTrans;
-            Matrix.Invert(Transformation, out invTrans);
+            Matrix.Invert(Transformation, out Matrix invTrans);
 
             // Transform sphere center into the obb coordinates
-            Vector3 locCenter;
-            Vector3Helper.TransformCoordinate(ref sphere.Center, ref invTrans, out locCenter);
+            Vector3Helper.TransformCoordinate(ref sphere.Center, ref invTrans, out Vector3 locCenter);
 
             float locRadius;
             if (IgnoreScale)
@@ -391,24 +369,21 @@ namespace HelixToolkit.Maths
             else
             {
                 // Transform sphere radius into the obb coordinates
-                var vRadius = Vector3.UnitX * sphere.Radius;
+                Vector3 vRadius = Vector3.UnitX * sphere.Radius;
                 vRadius = Vector3.TransformNormal(vRadius, invTrans);
                 locRadius = vRadius.Length();
             }
 
             //Perform regular BoundingBox to BoundingSphere containment check
-            var minusExtens = -Extents;
-            var vector = Vector3.Clamp(locCenter, minusExtens, Extents);
-            var distance = Vector3.DistanceSquared(locCenter, vector);
+            Vector3 minusExtens = -Extents;
+            Vector3 vector = Vector3.Clamp(locCenter, minusExtens, Extents);
+            float distance = Vector3.DistanceSquared(locCenter, vector);
 
-            if (distance > locRadius * locRadius)
-            {
-                return ContainmentType.Disjoint;
-            }
-
-            return (((minusExtens.X + locRadius <= locCenter.X) && (locCenter.X <= Extents.X - locRadius)) && ((Extents.X - minusExtens.X > locRadius) &&
-                (minusExtens.Y + locRadius <= locCenter.Y))) && (((locCenter.Y <= Extents.Y - locRadius) && (Extents.Y - minusExtens.Y > locRadius)) &&
-                (((minusExtens.Z + locRadius <= locCenter.Z) && (locCenter.Z <= Extents.Z - locRadius)) && (Extents.Z - minusExtens.Z > locRadius)))
+            return distance > locRadius * locRadius
+                ? ContainmentType.Disjoint
+                : (minusExtens.X + locRadius <= locCenter.X) && (locCenter.X <= Extents.X - locRadius) && (Extents.X - minusExtens.X > locRadius) &&
+                (minusExtens.Y + locRadius <= locCenter.Y) && (locCenter.Y <= Extents.Y - locRadius) && (Extents.Y - minusExtens.Y > locRadius) &&
+                (minusExtens.Z + locRadius <= locCenter.Z) && (locCenter.Z <= Extents.Z - locRadius) && (Extents.Z - minusExtens.Z > locRadius)
                 ? ContainmentType.Contains
                 : ContainmentType.Intersects;
         }
@@ -416,9 +391,9 @@ namespace HelixToolkit.Maths
         private static Vector3[] GetRows(ref Matrix mat)
         {
             return new Vector3[] {
-                new Vector3(mat.M11,mat.M12,mat.M13),
-                new Vector3(mat.M21,mat.M22,mat.M23),
-                new Vector3(mat.M31,mat.M32,mat.M33)
+                new(mat.M11,mat.M12,mat.M13),
+                new(mat.M21,mat.M22,mat.M23),
+                new(mat.M31,mat.M32,mat.M33)
             };
         }
 
@@ -433,20 +408,20 @@ namespace HelixToolkit.Maths
         /// </remarks>
         public ContainmentType Contains(ref OrientedBoundingBox obb)
         {
-            var cornersCheck = Contains(obb.GetCorners());
+            ContainmentType cornersCheck = Contains(obb.GetCorners());
             if (cornersCheck != ContainmentType.Disjoint)
             {
                 return cornersCheck;
             }
 
             //http://www.3dkingdoms.com/weekly/bbox.cpp
-            var SizeA = Extents;
-            var SizeB = obb.Extents;
-            var RotA = GetRows(ref Transformation);
-            var RotB = GetRows(ref obb.Transformation);
+            Vector3 SizeA = Extents;
+            Vector3 SizeB = obb.Extents;
+            Vector3[] RotA = GetRows(ref Transformation);
+            Vector3[] RotB = GetRows(ref obb.Transformation);
 
-            var R = new Matrix();       // Rotation from B to A
-            var AR = new Matrix();      // absolute values of R matrix, to use with box extents
+            Matrix R = new();       // Rotation from B to A
+            Matrix AR = new();      // absolute values of R matrix, to use with box extents
 
             float ExtentA, ExtentB, Separation;
             int i, k;
@@ -463,9 +438,9 @@ namespace HelixToolkit.Maths
 
 
             // Vector separating the centers of Box B and of Box A	
-            var vSepWS = obb.Center - Center;
+            Vector3 vSepWS = obb.Center - Center;
             // Rotated into Box A's coordinates
-            var vSepA = new Vector3(Vector3.Dot(vSepWS, RotA[0]), Vector3.Dot(vSepWS, RotA[1]), Vector3.Dot(vSepWS, RotA[2]));
+            Vector3 vSepA = new(Vector3.Dot(vSepWS, RotA[0]), Vector3.Dot(vSepWS, RotA[1]), Vector3.Dot(vSepWS, RotA[2]));
 
             // Test if any of A's basis vectors separate the box
             for (i = 0; i < 3; i++)
@@ -524,9 +499,9 @@ namespace HelixToolkit.Maths
         /// For accuracy, The transformation matrix for the <see cref="OrientedBoundingBox"/> must not have any scaling applied to it.
         /// Anyway, scaling using Scale method will keep this method accurate.
         /// </remarks>
-        public ContainmentType ContainsLine(ref Vector3 L1, ref Vector3 L2)
+        public readonly ContainmentType ContainsLine(ref Vector3 L1, ref Vector3 L2)
         {
-            var cornersCheck = Contains(new Vector3[] { L1, L2 });
+            ContainmentType cornersCheck = Contains(new Vector3[] { L1, L2 });
             if (cornersCheck != ContainmentType.Disjoint)
             {
                 return cornersCheck;
@@ -534,18 +509,15 @@ namespace HelixToolkit.Maths
 
             //http://www.3dkingdoms.com/weekly/bbox.cpp
             // Put line in box space
-            Matrix invTrans;
-            Matrix.Invert(Transformation, out invTrans);
+            Matrix.Invert(Transformation, out Matrix invTrans);
 
-            Vector3 LB1;
-            Vector3Helper.TransformCoordinate(ref L1, ref invTrans, out LB1);
-            Vector3 LB2;
-            Vector3Helper.TransformCoordinate(ref L1, ref invTrans, out LB2);
+            Vector3Helper.TransformCoordinate(ref L1, ref invTrans, out Vector3 LB1);
+            Vector3Helper.TransformCoordinate(ref L1, ref invTrans, out Vector3 LB2);
 
             // Get line midpoint and extent
-            var LMid = (LB1 + LB2) * 0.5f;
-            var L = (LB1 - LMid);
-            var LExt = new Vector3(Math.Abs(L.X), Math.Abs(L.Y), Math.Abs(L.Z));
+            Vector3 LMid = (LB1 + LB2) * 0.5f;
+            Vector3 L = LB1 - LMid;
+            Vector3 LExt = new(Math.Abs(L.X), Math.Abs(L.Y), Math.Abs(L.Z));
 
             // Use Separating Axis Test
             // Separation vector from box center to line center is LMid, since the line is in box space
@@ -593,25 +565,25 @@ namespace HelixToolkit.Maths
         /// </remarks>
         public ContainmentType Contains(ref BoundingBox box)
         {
-            var cornersCheck = Contains(box.GetCorners());
+            ContainmentType cornersCheck = Contains(box.GetCorners());
             if (cornersCheck != ContainmentType.Disjoint)
             {
                 return cornersCheck;
             }
 
-            var boxCenter = box.Minimum + (box.Maximum - box.Minimum) / 2f;
-            var boxExtents = box.Maximum - boxCenter;
+            Vector3 boxCenter = box.Minimum + (box.Maximum - box.Minimum) / 2f;
+            Vector3 boxExtents = box.Maximum - boxCenter;
 
-            var SizeA = Extents;
-            var SizeB = boxExtents;
-            var RotA = GetRows(ref Transformation);
+            Vector3 SizeA = Extents;
+            Vector3 SizeB = boxExtents;
+            Vector3[] RotA = GetRows(ref Transformation);
 
             float ExtentA, ExtentB, Separation;
             int i, k;
 
-            Matrix R;                   // Rotation from B to A
-            Matrix.Invert(Transformation, out R);
-            var AR = new Matrix();      // absolute values of R matrix, to use with box extents
+            // Rotation from B to A
+            Matrix.Invert(Transformation, out Matrix R);
+            Matrix AR = new();      // absolute values of R matrix, to use with box extents
 
             for (i = 0; i < 3; i++)
             {
@@ -623,9 +595,9 @@ namespace HelixToolkit.Maths
 
 
             // Vector separating the centers of Box B and of Box A	
-            var vSepWS = boxCenter - Center;
+            Vector3 vSepWS = boxCenter - Center;
             // Rotated into Box A's coordinates
-            var vSepA = new Vector3(Vector3.Dot(vSepWS, RotA[0]), Vector3.Dot(vSepWS, RotA[1]), Vector3.Dot(vSepWS, RotA[2]));
+            Vector3 vSepA = new(Vector3.Dot(vSepWS, RotA[0]), Vector3.Dot(vSepWS, RotA[1]), Vector3.Dot(vSepWS, RotA[2]));
 
             // Test if any of A's basis vectors separate the box
             for (i = 0; i < 3; i++)
@@ -684,16 +656,15 @@ namespace HelixToolkit.Maths
         public bool Intersects(ref Ray ray, out Vector3 point)
         {
             // Put ray in box space
-            Matrix invTrans;
-            Matrix.Invert(Transformation, out invTrans);
+            Matrix.Invert(Transformation, out Matrix invTrans);
 
             Ray bRay;
             bRay.Direction = Vector3.TransformNormal(ray.Direction, invTrans);
             Vector3Helper.TransformCoordinate(ref ray.Position, ref invTrans, out bRay.Position);
 
             //Perform a regular ray to BoundingBox check
-            var bb = new BoundingBox(-Extents, Extents);
-            var intersects = Collision.RayIntersectsBox(ref bRay, ref bb, out point);
+            BoundingBox bb = new(-Extents, Extents);
+            bool intersects = Collision.RayIntersectsBox(ref bRay, ref bb, out point);
 
             //Put the result intersection back to world
             if (intersects)
@@ -711,17 +682,16 @@ namespace HelixToolkit.Maths
         /// <returns>Whether the two objects intersected.</returns>
         public bool Intersects(ref Ray ray)
         {
-            Vector3 point;
-            return Intersects(ref ray, out point);
+            return Intersects(ref ray, out _);
         }
 
-        private Vector3[] GetLocalCorners()
+        private readonly Vector3[] GetLocalCorners()
         {
-            var xv = new Vector3(Extents.X, 0, 0);
-            var yv = new Vector3(0, Extents.Y, 0);
-            var zv = new Vector3(0, 0, Extents.Z);
+            Vector3 xv = new(Extents.X, 0, 0);
+            Vector3 yv = new(0, Extents.Y, 0);
+            Vector3 zv = new(0, 0, Extents.Z);
 
-            var corners = new Vector3[8];
+            Vector3[] corners = new Vector3[8];
             corners[0] = xv + yv + zv;
             corners[1] = xv + yv - zv;
             corners[2] = -xv + yv - zv;
@@ -738,7 +708,7 @@ namespace HelixToolkit.Maths
         /// Get the axis-aligned <see cref="BoundingBox"/> which contains all <see cref="OrientedBoundingBox"/> corners.
         /// </summary>
         /// <returns>The axis-aligned BoundingBox of this OrientedBoundingBox.</returns>
-        public BoundingBox GetBoundingBox()
+        public readonly BoundingBox GetBoundingBox()
         {
             return BoundingBox.FromPoints(GetCorners());
         }
@@ -759,8 +729,8 @@ namespace HelixToolkit.Maths
             // Calculate B to A transformation matrix
             if (NoMatrixScaleApplied)
             {
-                var RotA = GetRows(ref A.Transformation);
-                var RotB = GetRows(ref B.Transformation);
+                Vector3[] RotA = GetRows(ref A.Transformation);
+                Vector3[] RotB = GetRows(ref B.Transformation);
                 AtoB_Matrix = new Matrix();
                 int i, k;
                 for (i = 0; i < 3; i++)
@@ -771,7 +741,7 @@ namespace HelixToolkit.Maths
                     }
                 }
 
-                var v = B.Center - A.Center;
+                Vector3 v = B.Center - A.Center;
                 AtoB_Matrix.M41 = Vector3.Dot(v, RotA[0]);
                 AtoB_Matrix.M42 = Vector3.Dot(v, RotA[1]);
                 AtoB_Matrix.M43 = Vector3.Dot(v, RotA[2]);
@@ -779,8 +749,7 @@ namespace HelixToolkit.Maths
             }
             else
             {
-                Matrix AInvMat;
-                Matrix.Invert(A.Transformation, out AInvMat);
+                Matrix.Invert(A.Transformation, out Matrix AInvMat);
                 AtoB_Matrix = B.Transformation * AInvMat;
             }
 
@@ -800,24 +769,23 @@ namespace HelixToolkit.Maths
         /// </remarks>
         public static void Merge(ref OrientedBoundingBox A, ref OrientedBoundingBox B, bool NoMatrixScaleApplied = false)
         {
-            var AtoB_Matrix = GetBoxToBoxMatrix(ref A, ref B, NoMatrixScaleApplied);
+            Matrix AtoB_Matrix = GetBoxToBoxMatrix(ref A, ref B, NoMatrixScaleApplied);
 
             //Get B corners in A Space
-            var bCorners = B.GetLocalCorners();
+            Vector3[] bCorners = B.GetLocalCorners();
             Vector3Helper.TransformCoordinate(bCorners, ref AtoB_Matrix, bCorners);
 
             //Get A local Bounding Box
-            var A_LocalBB = new BoundingBox(-A.Extents, A.Extents);
+            BoundingBox A_LocalBB = new(-A.Extents, A.Extents);
 
             //Find B BoundingBox in A Space
-            var B_LocalBB = BoundingBox.FromPoints(bCorners);
+            BoundingBox B_LocalBB = BoundingBox.FromPoints(bCorners);
 
             //Merger A and B local Bounding Boxes
-            BoundingBox mergedBB;
-            BoundingBox.Merge(ref B_LocalBB, ref A_LocalBB, out mergedBB);
+            BoundingBox.Merge(ref B_LocalBB, ref A_LocalBB, out BoundingBox mergedBB);
 
             //Find the new Extents and Center, Transform Center back to world
-            var newCenter = mergedBB.Minimum + (mergedBB.Maximum - mergedBB.Minimum) / 2f;
+            Vector3 newCenter = mergedBB.Minimum + (mergedBB.Maximum - mergedBB.Minimum) / 2f;
             A.Extents = mergedBB.Maximum - newCenter;
             Vector3Helper.TransformCoordinate(ref newCenter, ref A.Transformation, out newCenter);
             A.Transformation.Translation = newCenter;
@@ -855,7 +823,7 @@ namespace HelixToolkit.Maths
         /// <c>true</c> if the specified <see cref="Vector4"/> is equal to this instance; otherwise, <c>false</c>.
         /// </returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)] // MethodImplOptions.AggressiveInlining
-        public bool Equals(ref OrientedBoundingBox value)
+        public readonly bool Equals(ref OrientedBoundingBox value)
         {
             return Extents == value.Extents && Transformation == value.Transformation;
         }
@@ -868,7 +836,7 @@ namespace HelixToolkit.Maths
         /// <c>true</c> if the specified <see cref="Vector4"/> is equal to this instance; otherwise, <c>false</c>.
         /// </returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)] // MethodImplOptions.AggressiveInlining
-        public bool Equals(OrientedBoundingBox value)
+        public readonly bool Equals(OrientedBoundingBox value)
         {
             return Equals(ref value);
         }
@@ -880,7 +848,7 @@ namespace HelixToolkit.Maths
         /// <returns>
         /// <c>true</c> if the specified <see cref="System.Object"/> is equal to this instance; otherwise, <c>false</c>.
         /// </returns>
-        public override bool Equals(object? value)
+        public override readonly bool Equals(object? value)
         {
             return value is OrientedBoundingBox boundingBox && Equals(ref boundingBox);
         }
@@ -915,7 +883,7 @@ namespace HelixToolkit.Maths
         /// <returns>
         /// A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table. 
         /// </returns>
-        public override int GetHashCode()
+        public override readonly int GetHashCode()
         {
             return Extents.GetHashCode() + Transformation.GetHashCode();
         }
@@ -926,7 +894,7 @@ namespace HelixToolkit.Maths
         /// <returns>
         /// A <see cref="System.String"/> that represents this instance.
         /// </returns>
-        public override string ToString()
+        public override readonly string ToString()
         {
             return String.Format(CultureInfo.CurrentCulture, "Center: {0}, Extents: {1}", Center, Extents);
         }
@@ -938,7 +906,7 @@ namespace HelixToolkit.Maths
         /// <returns>
         /// A <see cref="System.String"/> that represents this instance.
         /// </returns>
-        public string ToString(string format)
+        public readonly string ToString(string format)
         {
             return format == null
                 ? ToString()
@@ -953,7 +921,7 @@ namespace HelixToolkit.Maths
         /// <returns>
         /// A <see cref="System.String"/> that represents this instance.
         /// </returns>
-        public string ToString(IFormatProvider formatProvider)
+        public readonly string ToString(IFormatProvider formatProvider)
         {
             return string.Format(formatProvider, "Center: {0}, Extents: {1}", Center.ToString(), Extents.ToString());
         }
@@ -966,7 +934,7 @@ namespace HelixToolkit.Maths
         /// <returns>
         /// A <see cref="System.String"/> that represents this instance.
         /// </returns>
-        public string ToString(string? format, IFormatProvider? formatProvider)
+        public readonly string ToString(string? format, IFormatProvider? formatProvider)
         {
             return format == null && formatProvider == null 
                 ? string.Empty

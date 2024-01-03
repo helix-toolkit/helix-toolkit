@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Numerics;
-
-namespace HelixToolkit.Maths
+﻿namespace HelixToolkit.Maths
 {
     public static class RandomUtils
     {

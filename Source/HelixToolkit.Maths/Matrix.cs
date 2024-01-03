@@ -29,14 +29,6 @@ The MIT License (MIT)
 Copyright (c) 2007-2011 SlimDX Group
 The MIT License (MIT)
 */
-using System;
-using System.Globalization;
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
-
-using System.Numerics;
-using Matrix = System.Numerics.Matrix4x4;
-
 namespace HelixToolkit.Maths
 {
     /// <summary>
@@ -52,12 +44,12 @@ namespace HelixToolkit.Maths
         /// <summary>
         /// A <see cref="Matrix"/> with all of its components set to zero.
         /// </summary>
-        public static readonly Matrix Zero = new Matrix();
+        public static readonly Matrix Zero = new();
 
         /// <summary>
         /// The identity <see cref="Matrix"/>.
         /// </summary>
-        public static readonly Matrix Identity = new Matrix() { M11 = 1.0f, M22 = 1.0f, M33 = 1.0f, M44 = 1.0f };
+        public static readonly Matrix Identity = new() { M11 = 1.0f, M22 = 1.0f, M33 = 1.0f, M44 = 1.0f };
 
 
         /// <summary>
@@ -223,14 +215,14 @@ namespace HelixToolkit.Maths
         /// <exception cref="ArgumentException">Row Index out of bound.</exception>
         public static Vector4 GetRow(this Matrix m, int rowIdx)
         {
-            switch (rowIdx)
+            return rowIdx switch
             {
-                case 0: return m.Row1();
-                case 1: return m.Row2();
-                case 2: return m.Row3();
-                case 3: return m.Row4();
-                default: throw new ArgumentException("Row Index out of bound.");
-            }
+                0 => m.Row1(),
+                1 => m.Row2(),
+                2 => m.Row3(),
+                3 => m.Row4(),
+                _ => throw new ArgumentException("Row Index out of bound."),
+            };
         }
         /// <summary>
         /// Sets the row by index. Index 0 sets row 1.
@@ -259,14 +251,14 @@ namespace HelixToolkit.Maths
         /// <exception cref="ArgumentException">Column Index out of bound.</exception>
         public static Vector4 GetColumn(this Matrix m, int columnIdx)
         {
-            switch (columnIdx)
+            return columnIdx switch
             {
-                case 0: return m.Column1();
-                case 1: return m.Column2();
-                case 2: return m.Column3();
-                case 3: return m.Column4();
-                default: throw new ArgumentException("Column Index out of bound.");
-            }
+                0 => m.Column1(),
+                1 => m.Column2(),
+                2 => m.Column3(),
+                3 => m.Column4(),
+                _ => throw new ArgumentException("Column Index out of bound."),
+            };
         }
         /// <summary>
         /// Sets the column by index. Index 0 sets column 1;
@@ -374,27 +366,26 @@ namespace HelixToolkit.Maths
         /// <exception cref="System.ArgumentOutOfRangeException">Thrown when the <paramref name="index"/> is out of the range [0, 15].</exception>
         public static float Get(this Matrix m, int index)
         {
-            switch (index)
+            return index switch
             {
-                case 0: return m.M11;
-                case 1: return m.M12;
-                case 2: return m.M13;
-                case 3: return m.M14;
-                case 4: return m.M21;
-                case 5: return m.M22;
-                case 6: return m.M23;
-                case 7: return m.M24;
-                case 8: return m.M31;
-                case 9: return m.M32;
-                case 10: return m.M33;
-                case 11: return m.M34;
-                case 12: return m.M41;
-                case 13: return m.M42;
-                case 14: return m.M43;
-                case 15: return m.M44;
-            }
-
-            throw new ArgumentOutOfRangeException("index", "Indices for Matrix run from 0 to 15, inclusive.");
+                0 => m.M11,
+                1 => m.M12,
+                2 => m.M13,
+                3 => m.M14,
+                4 => m.M21,
+                5 => m.M22,
+                6 => m.M23,
+                7 => m.M24,
+                8 => m.M31,
+                9 => m.M32,
+                10 => m.M33,
+                11 => m.M34,
+                12 => m.M41,
+                13 => m.M42,
+                14 => m.M43,
+                15 => m.M44,
+                _ => throw new ArgumentOutOfRangeException(nameof(index), "Indices for Matrix run from 0 to 15, inclusive."),
+            };
         }
 
         public static void Set(ref Matrix m, int index, float value)
@@ -417,7 +408,7 @@ namespace HelixToolkit.Maths
                 case 13: m.M42 = value; break;
                 case 14: m.M43 = value; break;
                 case 15: m.M44 = value; break;
-                default: throw new ArgumentOutOfRangeException("index", "Indices for Matrix run from 0 to 15, inclusive.");
+                default: throw new ArgumentOutOfRangeException(nameof(index), "Indices for Matrix run from 0 to 15, inclusive.");
             }
         }
 
@@ -432,13 +423,10 @@ namespace HelixToolkit.Maths
         /// <exception cref="System.ArgumentOutOfRangeException">Thrown when the <paramref name="row"/> or <paramref name="column"/>is out of the range [0, 3].</exception>
         public static float Get(this Matrix m, int row, int column)
         {
-            if (row < 0 || row > 3)
-            {
-                throw new ArgumentOutOfRangeException("row", "Rows and columns for matrices run from 0 to 3, inclusive.");
-            }
-
-            return column < 0 || column > 3
-                ? throw new ArgumentOutOfRangeException("column", "Rows and columns for matrices run from 0 to 3, inclusive.")
+            return row < 0 || row > 3
+                ? throw new ArgumentOutOfRangeException(nameof(row), "Rows and columns for matrices run from 0 to 3, inclusive.")
+                : column < 0 || column > 3
+                ? throw new ArgumentOutOfRangeException(nameof(column), "Rows and columns for matrices run from 0 to 3, inclusive.")
                 : m.Get((row * 4) + column);
         }
 
@@ -446,12 +434,12 @@ namespace HelixToolkit.Maths
         {
             if (row < 0 || row > 3)
             {
-                throw new ArgumentOutOfRangeException("row", "Rows and columns for matrices run from 0 to 3, inclusive.");
+                throw new ArgumentOutOfRangeException(nameof(row), "Rows and columns for matrices run from 0 to 3, inclusive.");
             }
 
             if (column < 0 || column > 3)
             {
-                throw new ArgumentOutOfRangeException("column", "Rows and columns for matrices run from 0 to 3, inclusive.");
+                throw new ArgumentOutOfRangeException(nameof(column), "Rows and columns for matrices run from 0 to 3, inclusive.");
             }
 
             Set(ref m, (row * 4) + column, value);
@@ -505,7 +493,7 @@ namespace HelixToolkit.Maths
         /// <param name="R">When the method completes, contains the right triangular matrix of the decomposition.</param>
         public static void DecomposeQR(this Matrix m, out Matrix Q, out Matrix R)
         {
-            var temp = Matrix.Transpose(m);
+            Matrix temp = Matrix.Transpose(m);
             Orthonormalize(ref temp, out Q);
             Q = Matrix.Transpose(Q);
 
@@ -575,7 +563,7 @@ namespace HelixToolkit.Maths
 
             //Scaling is the length of the rows. ( just take one row since this is a uniform matrix)
             scale = (float)Math.Sqrt((m.M11 * m.M11) + (m.M12 * m.M12) + (m.M13 * m.M13));
-            var inv_scale = 1f / scale;
+            float inv_scale = 1f / scale;
 
             //If any of the scaling factors are zero, then the rotation matrix can not exist.
             if (Math.Abs(scale) < MathUtil.ZeroTolerance)
@@ -585,7 +573,7 @@ namespace HelixToolkit.Maths
             }
 
             //The rotation is the left over matrix after dividing out the scaling.
-            var rotationmatrix = new Matrix
+            Matrix rotationmatrix = new()
             {
                 M11 = m.M11 * inv_scale,
                 M12 = m.M12 * inv_scale,
@@ -616,22 +604,22 @@ namespace HelixToolkit.Maths
         {
             if (firstRow < 0)
             {
-                throw new ArgumentOutOfRangeException("firstRow", "The parameter firstRow must be greater than or equal to zero.");
+                throw new ArgumentOutOfRangeException(nameof(firstRow), "The parameter firstRow must be greater than or equal to zero.");
             }
 
             if (firstRow > 3)
             {
-                throw new ArgumentOutOfRangeException("firstRow", "The parameter firstRow must be less than or equal to three.");
+                throw new ArgumentOutOfRangeException(nameof(firstRow), "The parameter firstRow must be less than or equal to three.");
             }
 
             if (secondRow < 0)
             {
-                throw new ArgumentOutOfRangeException("secondRow", "The parameter secondRow must be greater than or equal to zero.");
+                throw new ArgumentOutOfRangeException(nameof(secondRow), "The parameter secondRow must be greater than or equal to zero.");
             }
 
             if (secondRow > 3)
             {
-                throw new ArgumentOutOfRangeException("secondRow", "The parameter secondRow must be less than or equal to three.");
+                throw new ArgumentOutOfRangeException(nameof(secondRow), "The parameter secondRow must be less than or equal to three.");
             }
 
             if (firstRow == secondRow)
@@ -639,10 +627,10 @@ namespace HelixToolkit.Maths
                 return;
             }
 
-            var temp0 = m.Get(secondRow, 0);
-            var temp1 = m.Get(secondRow, 1);
-            var temp2 = m.Get(secondRow, 2);
-            var temp3 = m.Get(secondRow, 3);
+            float temp0 = m.Get(secondRow, 0);
+            float temp1 = m.Get(secondRow, 1);
+            float temp2 = m.Get(secondRow, 2);
+            float temp3 = m.Get(secondRow, 3);
 
             Set(ref m, secondRow, 0, m.Get(firstRow, 0));
             Set(ref m, secondRow, 1, m.Get(firstRow, 1));
@@ -665,22 +653,22 @@ namespace HelixToolkit.Maths
         {
             if (firstColumn < 0)
             {
-                throw new ArgumentOutOfRangeException("firstColumn", "The parameter firstColumn must be greater than or equal to zero.");
+                throw new ArgumentOutOfRangeException(nameof(firstColumn), "The parameter firstColumn must be greater than or equal to zero.");
             }
 
             if (firstColumn > 3)
             {
-                throw new ArgumentOutOfRangeException("firstColumn", "The parameter firstColumn must be less than or equal to three.");
+                throw new ArgumentOutOfRangeException(nameof(firstColumn), "The parameter firstColumn must be less than or equal to three.");
             }
 
             if (secondColumn < 0)
             {
-                throw new ArgumentOutOfRangeException("secondColumn", "The parameter secondColumn must be greater than or equal to zero.");
+                throw new ArgumentOutOfRangeException(nameof(secondColumn), "The parameter secondColumn must be greater than or equal to zero.");
             }
 
             if (secondColumn > 3)
             {
-                throw new ArgumentOutOfRangeException("secondColumn", "The parameter secondColumn must be less than or equal to three.");
+                throw new ArgumentOutOfRangeException(nameof(secondColumn), "The parameter secondColumn must be less than or equal to three.");
             }
 
             if (firstColumn == secondColumn)
@@ -688,10 +676,10 @@ namespace HelixToolkit.Maths
                 return;
             }
 
-            var temp0 = m.Get(0, secondColumn);
-            var temp1 = m.Get(1, secondColumn);
-            var temp2 = m.Get(2, secondColumn);
-            var temp3 = m.Get(3, secondColumn);
+            float temp0 = m.Get(0, secondColumn);
+            float temp1 = m.Get(1, secondColumn);
+            float temp2 = m.Get(2, secondColumn);
+            float temp3 = m.Get(3, secondColumn);
 
             Set(ref m, 0, secondColumn, m.Get(0, firstColumn));
             Set(ref m, 1, secondColumn, m.Get(1, firstColumn));
@@ -728,7 +716,7 @@ namespace HelixToolkit.Maths
 
             if (exponent < 0)
             {
-                throw new ArgumentOutOfRangeException("exponent", "The exponent can not be negative.");
+                throw new ArgumentOutOfRangeException(nameof(exponent), "The exponent can not be negative.");
             }
 
             if (exponent == 0)
@@ -743,14 +731,14 @@ namespace HelixToolkit.Maths
                 return;
             }
 
-            var identity = Matrix.Identity;
-            var temp = value;
+            Matrix identity = Matrix.Identity;
+            Matrix temp = value;
 
             while (true)
             {
                 if ((exponent & 1) != 0)
                 {
-                    identity = identity * temp;
+                    identity *= temp;
                 }
 
                 exponent /= 2;
@@ -777,7 +765,7 @@ namespace HelixToolkit.Maths
         /// <exception cref="System.ArgumentOutOfRangeException">Thrown when the <paramref name="exponent"/> is negative.</exception>
         public static Matrix Exponent(Matrix value, int exponent)
         {
-            Exponent(ref value, exponent, out var result);
+            Exponent(ref value, exponent, out Matrix result);
             return result;
         }
 
@@ -828,7 +816,7 @@ namespace HelixToolkit.Maths
         /// <returns>The cubic interpolation of the two matrices.</returns>
         public static Matrix SmoothStep(Matrix start, Matrix end, float amount)
         {
-            SmoothStep(ref start, ref end, amount, out var result);
+            SmoothStep(ref start, ref end, amount, out Matrix result);
             return result;
         }
 
@@ -858,15 +846,15 @@ namespace HelixToolkit.Maths
 
             //By separating the above algorithm into multiple lines, we actually increase accuracy.
             result = value;
-            var row1 = result.Row1();
-            SetRow2(ref result, result.Row2() - (Vector4.Dot(row1, result.Row2()) / Vector4.Dot(row1, row1)) * row1);
-            var row2 = result.Row2();
-            SetRow3(ref result, result.Row3() - (Vector4.Dot(row1, result.Row3()) / Vector4.Dot(row1, row1)) * row1);
-            SetRow3(ref result, result.Row3() - (Vector4.Dot(row2, result.Row3()) / Vector4.Dot(row2, row2)) * row2);
-            var row3 = result.Row3();
-            SetRow4(ref result, result.Row4() - (Vector4.Dot(row1, result.Row4()) / Vector4.Dot(row1, row1)) * row1);
-            SetRow4(ref result, result.Row4() - (Vector4.Dot(row2, result.Row4()) / Vector4.Dot(row2, row2)) * row2);
-            SetRow4(ref result, result.Row4() - (Vector4.Dot(row3, result.Row4()) / Vector4.Dot(row3, row3)) * row3);
+            Vector4 row1 = result.Row1();
+            SetRow2(ref result, result.Row2() - Vector4.Dot(row1, result.Row2()) / Vector4.Dot(row1, row1) * row1);
+            Vector4 row2 = result.Row2();
+            SetRow3(ref result, result.Row3() - Vector4.Dot(row1, result.Row3()) / Vector4.Dot(row1, row1) * row1);
+            SetRow3(ref result, result.Row3() - Vector4.Dot(row2, result.Row3()) / Vector4.Dot(row2, row2) * row2);
+            Vector4 row3 = result.Row3();
+            SetRow4(ref result, result.Row4() - Vector4.Dot(row1, result.Row4()) / Vector4.Dot(row1, row1) * row1);
+            SetRow4(ref result, result.Row4() - Vector4.Dot(row2, result.Row4()) / Vector4.Dot(row2, row2) * row2);
+            SetRow4(ref result, result.Row4() - Vector4.Dot(row3, result.Row4()) / Vector4.Dot(row3, row3) * row3);
         }
 
         /// <summary>
@@ -887,7 +875,7 @@ namespace HelixToolkit.Maths
         /// </remarks>
         public static Matrix Orthogonalize(Matrix value)
         {
-            Orthogonalize(ref value, out var result);
+            Orthogonalize(ref value, out Matrix result);
             return result;
         }
 
@@ -923,14 +911,14 @@ namespace HelixToolkit.Maths
             result = value;
 
             SetRow1(ref result, Vector4.Normalize(result.Row1()));
-            var row1 = result.Row1();
+            Vector4 row1 = result.Row1();
             SetRow2(ref result, result.Row2() - Vector4.Dot(row1, result.Row2()) * row1);
             SetRow2(ref result, Vector4.Normalize(result.Row2()));
-            var row2 = result.Row2();
+            Vector4 row2 = result.Row2();
             SetRow3(ref result, result.Row3() - Vector4.Dot(row1, result.Row3()) * row1);
             SetRow3(ref result, result.Row3() - Vector4.Dot(row2, result.Row3()) * row2);
             SetRow3(ref result, Vector4.Normalize(result.Row3()));
-            var row3 = result.Row3();
+            Vector4 row3 = result.Row3();
             SetRow4(ref result, result.Row4() - Vector4.Dot(row1, result.Row4()) * row1);
             SetRow4(ref result, result.Row4() - Vector4.Dot(row2, result.Row4()) * row2);
             SetRow4(ref result, result.Row4() - Vector4.Dot(row3, result.Row4()) * row3);
@@ -957,7 +945,7 @@ namespace HelixToolkit.Maths
         /// </remarks>
         public static Matrix Orthonormalize(Matrix value)
         {
-            Orthonormalize(ref value, out var result);
+            Orthonormalize(ref value, out Matrix result);
             return result;
         }
 
@@ -976,18 +964,18 @@ namespace HelixToolkit.Maths
         {
             //Adapted from the row echelon code.
             result = value;
-            var lead = 0;
-            var rowcount = 4;
-            var columncount = 4;
+            int lead = 0;
+            int rowcount = 4;
+            int columncount = 4;
 
-            for (var r = 0; r < rowcount; ++r)
+            for (int r = 0; r < rowcount; ++r)
             {
                 if (columncount <= lead)
                 {
                     return;
                 }
 
-                var i = r;
+                int i = r;
 
                 while (MathUtil.IsZero(result.Get(i, lead)))
                 {
@@ -1010,7 +998,7 @@ namespace HelixToolkit.Maths
                     ExchangeRows(ref result, i, r);
                 }
 
-                var multiplier = 1f / result.Get(r, lead);
+                float multiplier = 1f / result.Get(r, lead);
 
                 for (; i < rowcount; ++i)
                 {
@@ -1042,7 +1030,7 @@ namespace HelixToolkit.Maths
         /// </remarks>
         public static Matrix UpperTriangularForm(Matrix value)
         {
-            UpperTriangularForm(ref value, out var result);
+            UpperTriangularForm(ref value, out Matrix result);
             return result;
         }
 
@@ -1060,21 +1048,21 @@ namespace HelixToolkit.Maths
         public static void LowerTriangularForm(ref Matrix value, out Matrix result)
         {
             //Adapted from the row echelon code.
-            var temp = value;
+            Matrix temp = value;
             result = Matrix.Transpose(temp);
 
-            var lead = 0;
-            var rowcount = 4;
-            var columncount = 4;
+            int lead = 0;
+            int rowcount = 4;
+            int columncount = 4;
 
-            for (var r = 0; r < rowcount; ++r)
+            for (int r = 0; r < rowcount; ++r)
             {
                 if (columncount <= lead)
                 {
                     return;
                 }
 
-                var i = r;
+                int i = r;
 
                 while (MathUtil.IsZero(result.Get(i, lead)))
                 {
@@ -1097,7 +1085,7 @@ namespace HelixToolkit.Maths
                     ExchangeRows(ref result, i, r);
                 }
 
-                var multiplier = 1f / result.Get(r, lead);
+                float multiplier = 1f / result.Get(r, lead);
 
                 for (; i < rowcount; ++i)
                 {
@@ -1131,7 +1119,7 @@ namespace HelixToolkit.Maths
         /// </remarks>
         public static Matrix LowerTriangularForm(Matrix value)
         {
-            LowerTriangularForm(ref value, out var result);
+            LowerTriangularForm(ref value, out Matrix result);
             return result;
         }
 
@@ -1146,18 +1134,18 @@ namespace HelixToolkit.Maths
             //Reference: http://en.wikipedia.org/wiki/Row_echelon_form#Pseudocode
 
             result = value;
-            var lead = 0;
-            var rowcount = 4;
-            var columncount = 4;
+            int lead = 0;
+            int rowcount = 4;
+            int columncount = 4;
 
-            for (var r = 0; r < rowcount; ++r)
+            for (int r = 0; r < rowcount; ++r)
             {
                 if (columncount <= lead)
                 {
                     return;
                 }
 
-                var i = r;
+                int i = r;
 
                 while (MathUtil.IsZero(result.Get(i, lead)))
                 {
@@ -1180,7 +1168,7 @@ namespace HelixToolkit.Maths
                     ExchangeRows(ref result, i, r);
                 }
 
-                var multiplier = 1f / result.Get(r, lead);
+                float multiplier = 1f / result.Get(r, lead);
                 SetRow(ref result, r, result.GetRow(r) * multiplier);
                 //result[r, 0] *= multiplier;
                 //result[r, 1] *= multiplier;
@@ -1210,7 +1198,7 @@ namespace HelixToolkit.Maths
         /// <returns>When the method completes, contains the row echelon form of the matrix.</returns>
         public static Matrix RowEchelonForm(Matrix value)
         {
-            RowEchelonForm(ref value, out var result);
+            RowEchelonForm(ref value, out Matrix result);
             return result;
         }
 
@@ -1236,7 +1224,7 @@ namespace HelixToolkit.Maths
             //Source: http://rosettacode.org
             //Reference: http://rosettacode.org/wiki/Reduced_row_echelon_form
 
-            var matrix = new float[4, 5];
+            float[,] matrix = new float[4, 5];
 
             matrix[0, 0] = value.M11;
             matrix[0, 1] = value.M12;
@@ -1262,18 +1250,18 @@ namespace HelixToolkit.Maths
             matrix[3, 3] = value.M44;
             matrix[3, 4] = augment.W;
 
-            var lead = 0;
-            var rowcount = 4;
-            var columncount = 5;
+            int lead = 0;
+            int rowcount = 4;
+            int columncount = 5;
 
-            for (var r = 0; r < rowcount; r++)
+            for (int r = 0; r < rowcount; r++)
             {
                 if (columncount <= lead)
                 {
                     break;
                 }
 
-                var i = r;
+                int i = r;
 
                 while (matrix[i, lead] == 0)
                 {
@@ -1291,28 +1279,26 @@ namespace HelixToolkit.Maths
                     }
                 }
 
-                for (var j = 0; j < columncount; j++)
+                for (int j = 0; j < columncount; j++)
                 {
-                    var temp = matrix[r, j];
-                    matrix[r, j] = matrix[i, j];
-                    matrix[i, j] = temp;
+                    (matrix[i, j], matrix[r, j]) = (matrix[r, j], matrix[i, j]);
                 }
 
-                var div = matrix[r, lead];
+                float div = matrix[r, lead];
 
-                for (var j = 0; j < columncount; j++)
+                for (int j = 0; j < columncount; j++)
                 {
                     matrix[r, j] /= div;
                 }
 
-                for (var j = 0; j < rowcount; j++)
+                for (int j = 0; j < rowcount; j++)
                 {
                     if (j != r)
                     {
-                        var sub = matrix[j, lead];
-                        for (var k = 0; k < columncount; k++)
+                        float sub = matrix[j, lead];
+                        for (int k = 0; k < columncount; k++)
                         {
-                            matrix[j, k] -= (sub * matrix[r, k]);
+                            matrix[j, k] -= sub * matrix[r, k];
                         }
                     }
                 }
@@ -1356,9 +1342,9 @@ namespace HelixToolkit.Maths
         /// <param name="result">When the method completes, contains the created billboard matrix.</param>
         public static void BillboardLH(ref Vector3 objectPosition, ref Vector3 cameraPosition, ref Vector3 cameraUpVector, ref Vector3 cameraForwardVector, out Matrix result)
         {
-            var difference = cameraPosition - objectPosition;
+            Vector3 difference = cameraPosition - objectPosition;
 
-            var lengthSq = difference.LengthSquared();
+            float lengthSq = difference.LengthSquared();
             if (MathUtil.IsZero(lengthSq))
             {
                 difference = -cameraForwardVector;
@@ -1368,8 +1354,8 @@ namespace HelixToolkit.Maths
                 difference *= (float)(1.0 / Math.Sqrt(lengthSq));
             }
 
-            var crossed = Vector3.Normalize(Vector3.Cross(cameraUpVector, difference));
-            var final = Vector3.Cross(difference, crossed);
+            Vector3 crossed = Vector3.Normalize(Vector3.Cross(cameraUpVector, difference));
+            Vector3 final = Vector3.Cross(difference, crossed);
 
             result.M11 = crossed.X;
             result.M12 = crossed.Y;
@@ -1399,7 +1385,7 @@ namespace HelixToolkit.Maths
         /// <returns>The created billboard matrix.</returns>
         public static Matrix BillboardLH(Vector3 objectPosition, Vector3 cameraPosition, Vector3 cameraUpVector, Vector3 cameraForwardVector)
         {
-            BillboardLH(ref objectPosition, ref cameraPosition, ref cameraUpVector, ref cameraForwardVector, out var result);
+            BillboardLH(ref objectPosition, ref cameraPosition, ref cameraUpVector, ref cameraForwardVector, out Matrix result);
             return result;
         }
 
@@ -1471,9 +1457,9 @@ namespace HelixToolkit.Maths
         /// <param name="result">When the method completes, contains the created look-at matrix.</param>
         public static void LookAtLH(ref Vector3 eye, ref Vector3 target, ref Vector3 up, out Matrix result)
         {
-            var zaxis = Vector3.Normalize(Vector3.Subtract(target, eye));
-            var xaxis = Vector3.Normalize(Vector3.Cross(up, zaxis));
-            var yaxis = Vector3.Cross(zaxis, xaxis);
+            Vector3 zaxis = Vector3.Normalize(Vector3.Subtract(target, eye));
+            Vector3 xaxis = Vector3.Normalize(Vector3.Cross(up, zaxis));
+            Vector3 yaxis = Vector3.Cross(zaxis, xaxis);
 
             result = Matrix.Identity;
             result.M11 = xaxis.X; result.M21 = xaxis.Y; result.M31 = xaxis.Z;
@@ -1494,7 +1480,7 @@ namespace HelixToolkit.Maths
         /// <returns>The created look-at matrix.</returns>
         public static Matrix LookAtLH(Vector3 eye, Vector3 target, Vector3 up)
         {
-            LookAtLH(ref eye, ref target, ref up, out var result);
+            LookAtLH(ref eye, ref target, ref up, out Matrix result);
             return result;
         }
 
@@ -1552,8 +1538,8 @@ namespace HelixToolkit.Maths
         /// <param name="result">When the method completes, contains the created projection matrix.</param>
         public static void OrthoLH(float width, float height, float znear, float zfar, out Matrix result)
         {
-            var halfWidth = width * 0.5f;
-            var halfHeight = height * 0.5f;
+            float halfWidth = width * 0.5f;
+            float halfHeight = height * 0.5f;
 
             OrthoOffCenterLH(-halfWidth, halfWidth, -halfHeight, halfHeight, znear, zfar, out result);
         }
@@ -1568,7 +1554,7 @@ namespace HelixToolkit.Maths
         /// <returns>The created projection matrix.</returns>
         public static Matrix OrthoLH(float width, float height, float znear, float zfar)
         {
-            OrthoLH(width, height, znear, zfar, out var result);
+            OrthoLH(width, height, znear, zfar, out Matrix result);
             return result;
         }
 
@@ -1617,7 +1603,7 @@ namespace HelixToolkit.Maths
         /// <param name="result">When the method completes, contains the created projection matrix.</param>
         public static void OrthoOffCenterLH(float left, float right, float bottom, float top, float znear, float zfar, out Matrix result)
         {
-            var zRange = 1.0f / (zfar - znear);
+            float zRange = 1.0f / (zfar - znear);
 
             result = Matrix.Identity;
             result.M11 = 2.0f / (right - left);
@@ -1640,7 +1626,7 @@ namespace HelixToolkit.Maths
         /// <returns>The created projection matrix.</returns>
         public static Matrix OrthoOffCenterLH(float left, float right, float bottom, float top, float znear, float zfar)
         {
-            OrthoOffCenterLH(left, right, bottom, top, znear, zfar, out var result);
+            OrthoOffCenterLH(left, right, bottom, top, znear, zfar, out Matrix result);
             return result;
         }
 
@@ -1689,8 +1675,8 @@ namespace HelixToolkit.Maths
         /// <param name="result">When the method completes, contains the created projection matrix.</param>
         public static void PerspectiveLH(float width, float height, float znear, float zfar, out Matrix result)
         {
-            var halfWidth = width * 0.5f;
-            var halfHeight = height * 0.5f;
+            float halfWidth = width * 0.5f;
+            float halfHeight = height * 0.5f;
 
             PerspectiveOffCenterLH(-halfWidth, halfWidth, -halfHeight, halfHeight, znear, zfar, out result);
         }
@@ -1705,7 +1691,7 @@ namespace HelixToolkit.Maths
         /// <returns>The created projection matrix.</returns>
         public static Matrix PerspectiveLH(float width, float height, float znear, float zfar)
         {
-            PerspectiveLH(width, height, znear, zfar, out var result);
+            PerspectiveLH(width, height, znear, zfar, out Matrix result);
             return result;
         }
 
@@ -1752,8 +1738,8 @@ namespace HelixToolkit.Maths
         /// <param name="result">When the method completes, contains the created projection matrix.</param>
         public static void PerspectiveFovLH(float fov, float aspect, float znear, float zfar, out Matrix result)
         {
-            var yScale = (float)(1.0f / Math.Tan(fov * 0.5f));
-            var q = zfar / (zfar - znear);
+            float yScale = (float)(1.0f / Math.Tan(fov * 0.5f));
+            float q = zfar / (zfar - znear);
 
             result = new Matrix
             {
@@ -1775,7 +1761,7 @@ namespace HelixToolkit.Maths
         /// <returns>The created projection matrix.</returns>
         public static Matrix PerspectiveFovLH(float fov, float aspect, float znear, float zfar)
         {
-            PerspectiveFovLH(fov, aspect, znear, zfar, out var result);
+            PerspectiveFovLH(fov, aspect, znear, zfar, out Matrix result);
             return result;
         }
 
@@ -1829,7 +1815,7 @@ namespace HelixToolkit.Maths
         /// <param name="result">When the method completes, contains the created projection matrix.</param>
         public static void PerspectiveOffCenterLH(float left, float right, float bottom, float top, float znear, float zfar, out Matrix result)
         {
-            var zRange = zfar / (zfar - znear);
+            float zRange = zfar / (zfar - znear);
 
             result = new Matrix
             {
@@ -1855,7 +1841,7 @@ namespace HelixToolkit.Maths
         /// <returns>The created projection matrix.</returns>
         public static Matrix PerspectiveOffCenterLH(float left, float right, float bottom, float top, float znear, float zfar)
         {
-            PerspectiveOffCenterLH(left, right, bottom, top, znear, zfar, out var result);
+            PerspectiveOffCenterLH(left, right, bottom, top, znear, zfar, out Matrix result);
             return result;
         }
 
@@ -1909,27 +1895,27 @@ namespace HelixToolkit.Maths
         public static void Skew(float angle, ref Vector3 rotationVec, ref Vector3 transVec, out Matrix matrix)
         {
             //http://elckerlyc.ewi.utwente.nl/browser/Elckerlyc/Hmi/HmiMath/src/hmi/math/Mat3f.java
-            var MINIMAL_SKEW_ANGLE = 0.000001f;
+            float MINIMAL_SKEW_ANGLE = 0.000001f;
 
-            var e0 = rotationVec;
-            var e1 = Vector3.Normalize(transVec);
+            Vector3 e0 = rotationVec;
+            Vector3 e1 = Vector3.Normalize(transVec);
 
-            var rv1 = Vector3.Dot(rotationVec, e1);
+            float rv1 = Vector3.Dot(rotationVec, e1);
 
             e0 += rv1 * e1;
-            var rv0 = Vector3.Dot(rotationVec, e0);
+            float rv0 = Vector3.Dot(rotationVec, e0);
 
-            var cosa = (float)Math.Cos(angle);
-            var sina = (float)Math.Sin(angle);
-            var rr0 = rv0 * cosa - rv1 * sina;
-            var rr1 = rv0 * sina + rv1 * cosa;
+            float cosa = (float)Math.Cos(angle);
+            float sina = (float)Math.Sin(angle);
+            float rr0 = rv0 * cosa - rv1 * sina;
+            float rr1 = rv0 * sina + rv1 * cosa;
 
             if (rr0 < MINIMAL_SKEW_ANGLE)
             {
                 throw new ArgumentException("illegal skew angle");
             }
 
-            var d = (rr1 / rr0) - (rv1 / rv0);
+            float d = (rr1 / rr0) - (rv1 / rv0);
 
             matrix = Matrix.Identity;
             matrix.M11 = d * e1.X * e0.X + 1.0f;
@@ -2022,7 +2008,7 @@ namespace HelixToolkit.Maths
         /// <returns>The created affine transformation matrix.</returns>
         public static Matrix AffineTransformation2D(float scaling, float rotation, Vector2 translation)
         {
-            AffineTransformation2D(scaling, rotation, ref translation, out var result);
+            AffineTransformation2D(scaling, rotation, ref translation, out Matrix result);
             return result;
         }
 
@@ -2053,7 +2039,7 @@ namespace HelixToolkit.Maths
         /// <returns>The created affine transformation matrix.</returns>
         public static Matrix AffineTransformation2D(float scaling, Vector2 rotationCenter, float rotation, Vector2 translation)
         {
-            AffineTransformation2D(scaling, ref rotationCenter, rotation, ref translation, out var result);
+            AffineTransformation2D(scaling, ref rotationCenter, rotation, ref translation, out Matrix result);
             return result;
         }
 
@@ -2069,7 +2055,7 @@ namespace HelixToolkit.Maths
         /// <param name="result">When the method completes, contains the created transformation matrix.</param>
         public static void Transformation(ref Vector3 scalingCenter, ref Quaternion scalingRotation, ref Vector3 scaling, ref Vector3 rotationCenter, ref Quaternion rotation, ref Vector3 translation, out Matrix result)
         {
-            var sr = Matrix.CreateFromQuaternion(scalingRotation);
+            Matrix sr = Matrix.CreateFromQuaternion(scalingRotation);
             result = Matrix.CreateTranslation(-scalingCenter) * Matrix.Transpose(sr)
                 * Matrix.CreateScale(scaling) * sr * Matrix.CreateTranslation(scalingCenter)
                 * Matrix.CreateTranslation(-rotationCenter)
@@ -2094,7 +2080,7 @@ namespace HelixToolkit.Maths
         /// <returns>The created transformation matrix.</returns>
         public static Matrix Transformation(Vector3 scalingCenter, Quaternion scalingRotation, Vector3 scaling, Vector3 rotationCenter, Quaternion rotation, Vector3 translation)
         {
-            Transformation(ref scalingCenter, ref scalingRotation, ref scaling, ref rotationCenter, ref rotation, ref translation, out var result);
+            Transformation(ref scalingCenter, ref scalingRotation, ref scaling, ref rotationCenter, ref rotation, ref translation, out Matrix result);
             return result;
         }
 
@@ -2137,7 +2123,7 @@ namespace HelixToolkit.Maths
         /// <returns>The created transformation matrix.</returns>
         public static Matrix Transformation2D(Vector2 scalingCenter, float scalingRotation, Vector2 scaling, Vector2 rotationCenter, float rotation, Vector2 translation)
         {
-            Transformation2D(ref scalingCenter, scalingRotation, ref scaling, ref rotationCenter, rotation, ref translation, out var result);
+            Transformation2D(ref scalingCenter, scalingRotation, ref scaling, ref rotationCenter, rotation, ref translation, out Matrix result);
             return result;
         }
 
@@ -2246,9 +2232,9 @@ namespace HelixToolkit.Maths
         /// <returns></returns>
         public static Matrix PsudoInvert(ref Matrix viewMatrix)
         {
-            var x = viewMatrix.M41 * viewMatrix.M11 + viewMatrix.M42 * viewMatrix.M12 + viewMatrix.M43 * viewMatrix.M13;
-            var y = viewMatrix.M41 * viewMatrix.M21 + viewMatrix.M42 * viewMatrix.M22 + viewMatrix.M43 * viewMatrix.M23;
-            var z = viewMatrix.M41 * viewMatrix.M31 + viewMatrix.M42 * viewMatrix.M32 + viewMatrix.M43 * viewMatrix.M33;
+            float x = viewMatrix.M41 * viewMatrix.M11 + viewMatrix.M42 * viewMatrix.M12 + viewMatrix.M43 * viewMatrix.M13;
+            float y = viewMatrix.M41 * viewMatrix.M21 + viewMatrix.M42 * viewMatrix.M22 + viewMatrix.M43 * viewMatrix.M23;
+            float z = viewMatrix.M41 * viewMatrix.M31 + viewMatrix.M42 * viewMatrix.M32 + viewMatrix.M43 * viewMatrix.M33;
 
             return new Matrix(
                 viewMatrix.M11, viewMatrix.M21, viewMatrix.M31, 0,
