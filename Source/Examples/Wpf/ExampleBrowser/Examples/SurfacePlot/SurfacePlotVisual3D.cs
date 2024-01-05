@@ -169,7 +169,7 @@ public sealed partial class SurfacePlotVisual3D : ModelVisual3D
         }
 
         var bb = new Rect3D(minX, minY, minZ, maxX - minX, maxY - minY, 0 * (maxZ - minZ));
-        axesMeshBuilder.AddBoundingBox(bb.ToRect3D(), (float)LineThickness);
+        axesMeshBuilder.AddBoundingBox(bb.ToBoundingBox(), (float)LineThickness);
 
         var axesModel = new GeometryModel3D(axesMeshBuilder.ToMesh().ToMeshGeometry3D(), Materials.Black);
 

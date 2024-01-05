@@ -614,33 +614,25 @@ public sealed class MeshBuilder
     /// <param name="diameter">
     /// The diameter of the cylinders.
     /// </param>
-    public void AddBoundingBox(Rect3D boundingBox, float diameter)
+    public void AddBoundingBox(BoundingBox boundingBox, float diameter)
     {
-        var p0 = new Vector3(boundingBox.X, boundingBox.Y, boundingBox.Z);
-        var p1 = new Vector3(boundingBox.X, boundingBox.Y + boundingBox.SizeY, boundingBox.Z);
-        var p2 = new Vector3(boundingBox.X + boundingBox.SizeX, boundingBox.Y + boundingBox.SizeY, boundingBox.Z);
-        var p3 = new Vector3(boundingBox.X + boundingBox.SizeX, boundingBox.Y, boundingBox.Z);
-        var p4 = new Vector3(boundingBox.X, boundingBox.Y, boundingBox.Z + boundingBox.SizeZ);
-        var p5 = new Vector3(boundingBox.X, boundingBox.Y + boundingBox.SizeY, boundingBox.Z + boundingBox.SizeZ);
-        var p6 = new Vector3(boundingBox.X + boundingBox.SizeX, boundingBox.Y + boundingBox.SizeY, boundingBox.Z + boundingBox.SizeZ);
-        var p7 = new Vector3(boundingBox.X + boundingBox.SizeX, boundingBox.Y, boundingBox.Z + boundingBox.SizeZ);
-
+        Vector3[] corners = boundingBox.GetCorners();
         void addEdge(Vector3 c1, Vector3 c2) => this.AddPipe(c1, c2, 0, diameter, 10);
 
-        addEdge(p0, p1);
-        addEdge(p1, p2);
-        addEdge(p2, p3);
-        addEdge(p3, p0);
+        addEdge(corners[0], corners[1]);
+        addEdge(corners[1], corners[2]);
+        addEdge(corners[2], corners[3]);
+        addEdge(corners[3], corners[0]);
 
-        addEdge(p4, p5);
-        addEdge(p5, p6);
-        addEdge(p6, p7);
-        addEdge(p7, p4);
+        addEdge(corners[4], corners[5]);
+        addEdge(corners[5], corners[6]);
+        addEdge(corners[6], corners[7]);
+        addEdge(corners[7], corners[4]);
 
-        addEdge(p0, p4);
-        addEdge(p1, p5);
-        addEdge(p2, p6);
-        addEdge(p3, p7);
+        addEdge(corners[0], corners[4]);
+        addEdge(corners[3], corners[7]);
+        addEdge(corners[1], corners[5]);
+        addEdge(corners[2], corners[6]);
     }
 
     /// <summary>
@@ -666,16 +658,13 @@ public sealed class MeshBuilder
     /// <summary>
     /// Adds a box aligned with the X, Y and Z axes.
     /// </summary>
-    /// <param name="rectangle">
-    /// The 3-D "rectangle".
+    /// <param name="boundingBox">
+    /// The bounding box.
     /// </param>
     /// <param name="faces">The faces to include.</param>
-    public void AddBox(Rect3D rectangle, BoxFaces faces = BoxFaces.All)
+    public void AddBox(BoundingBox boundingBox, BoxFaces faces = BoxFaces.All)
     {
-        this.AddBox(
-            new Vector3(rectangle.X + (rectangle.SizeX * 0.5f), rectangle.Y + (rectangle.SizeY * 0.5f), rectangle.Z + (rectangle.SizeZ * 0.5f)),
-            rectangle.SizeX, rectangle.SizeY, rectangle.SizeZ,
-            faces);
+        this.AddBox(boundingBox.Center, boundingBox.Width, boundingBox.Height, boundingBox.Depth, faces);
     }
 
     /// <summary>

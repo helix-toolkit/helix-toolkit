@@ -21,7 +21,7 @@ public class MainViewModel
         // Create a mesh builder and add a box to it
         var meshBuilder = new MeshBuilder(false, false);
         meshBuilder.AddBox(new Point3D(0, 0, 1).ToVector3(), 1, 2, 0.5f);
-        meshBuilder.AddBox(new Rect3D(0, 0, 1.2, 0.5, 1, 0.4).ToRect3D());
+        meshBuilder.AddBox(new Rect3D(0, 0, 1.2, 0.5, 1, 0.4).ToBoundingBox());
 
         // Create a mesh from the builder (and freeze it)
         var mesh = meshBuilder.ToMesh().ToMeshGeometry3D(true);

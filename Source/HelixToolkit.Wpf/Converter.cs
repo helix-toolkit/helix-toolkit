@@ -120,15 +120,15 @@ public static class Converter
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static System.Windows.Media.Media3D.Rect3D ToWnRect3D(this HelixToolkit.Geometry.Rect3D rect)
+    public static System.Windows.Media.Media3D.Rect3D ToWnRect3D(this HelixToolkit.Maths.BoundingBox boundingBox)
     {
-        return new System.Windows.Media.Media3D.Rect3D(rect.X, rect.Y, rect.Z, rect.SizeX, rect.SizeY, rect.SizeZ);
+        return new System.Windows.Media.Media3D.Rect3D(boundingBox.Minimum.ToWndPoint3D(), boundingBox.Size.ToWndSize3D());
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static HelixToolkit.Geometry.Rect3D ToRect3D(this System.Windows.Media.Media3D.Rect3D rect)
+    public static HelixToolkit.Maths.BoundingBox ToBoundingBox(this System.Windows.Media.Media3D.Rect3D rect)
     {
-        return new HelixToolkit.Geometry.Rect3D((float)rect.X, (float)rect.Y, (float)rect.Z, (float)rect.SizeX, (float)rect.SizeY, (float)rect.SizeZ);
+        return new HelixToolkit.Maths.BoundingBox(rect.Location.ToVector3(), rect.Location.ToVector3() + rect.Size.ToVector3());
     }
 
     public static System.Windows.Media.Media3D.Vector3DCollection? ToVector3DCollection(IList<System.Numerics.Vector3>? collection)
