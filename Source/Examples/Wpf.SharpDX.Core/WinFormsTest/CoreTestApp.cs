@@ -19,6 +19,7 @@ using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using HelixToolkit.Maths;
 
 namespace WinFormsTest
 {
@@ -121,7 +122,7 @@ namespace WinFormsTest
             window.KeyPress += Window_KeyPress;
             effectsManager = new DefaultEffectsManager();
             effectsManager.AddTechnique(ImGuiNode.RenderTechnique);
-            viewport.EffectsManager = effectsManager;           
+            viewport.EffectsManager = effectsManager;
             viewport.StartRendering += Viewport_OnStartRendering;
             viewport.StopRendering += Viewport_OnStopRendering;
             viewport.ErrorOccurred += Viewport_OnErrorOccurred;
@@ -142,9 +143,9 @@ namespace WinFormsTest
             if (options.ShowWireframeChanged)
             {
                 options.ShowWireframeChanged = false;
-                foreach(var node in groupModel.Items.Traverse(true, stackCache))
+                foreach (var node in groupModel.Items.Traverse(true, stackCache))
                 {
-                    if(node is MeshNode m)
+                    if (node is MeshNode m)
                     {
                         m.RenderWireframe = options.ShowWireframe;
                     }
@@ -197,7 +198,8 @@ namespace WinFormsTest
             groupEffects = new GroupNode();
             InitializeMaterials();
             var materialCount = materials.Count;
-            Task.Run(() => {
+            Task.Run(() =>
+            {
                 var builder = new MeshBuilder(true, true, true);
                 builder.AddSphere(System.Numerics.Vector3.Zero, 1);
                 for (int i = 0; i < NumItems; ++i)
@@ -214,14 +216,16 @@ namespace WinFormsTest
                         CullMode = SharpDX.Direct3D11.CullMode.Back
                     };
                     node.Attach(effectsManager);
-                    context.Post((o) => { 
-                        groupSphere.AddChildNode(node);                    
+                    context.Post((o) =>
+                    {
+                        groupSphere.AddChildNode(node);
                     }, null);
                     Task.Delay(1).Wait();
-                }            
+                }
             });
 
-            Task.Run(() => {
+            Task.Run(() =>
+            {
                 for (int i = 0; i < NumItems; ++i)
                 {
                     var transform = Matrix.CreateTranslation(new Vector3(rnd.NextFloat(-50, 50), rnd.NextFloat(-50, 50), rnd.NextFloat(-50, 50)));
@@ -240,10 +244,11 @@ namespace WinFormsTest
                         groupBox.AddChildNode(node);
                     }, null);
                     Task.Delay(1).Wait();
-                }            
+                }
             });
 
-            Task.Run(() => { 
+            Task.Run(() =>
+            {
                 for (int i = 0; i < NumItems; ++i)
                 {
                     var transform = Matrix.CreateTranslation(new Vector3(rnd.NextFloat(-50, 50), rnd.NextFloat(-50, 50), rnd.NextFloat(-50, 50)));
@@ -254,10 +259,11 @@ namespace WinFormsTest
                         groupPoints.AddChildNode(node);
                     }, null);
                     Task.Delay(1).Wait();
-                }            
+                }
             });
 
-            Task.Run(() => { 
+            Task.Run(() =>
+            {
                 for (int i = 0; i < NumItems; ++i)
                 {
                     var transform = Matrix.CreateTranslation(new Vector3(rnd.NextFloat(-50, 50), rnd.NextFloat(-50, 50), rnd.NextFloat(-50, 50)));
@@ -268,7 +274,7 @@ namespace WinFormsTest
                         groupLines.AddChildNode(node);
                     }, null);
                     Task.Delay(1).Wait();
-                }            
+                }
             });
 
             groupModel.AddChildNode(groupSphere);
@@ -288,12 +294,12 @@ namespace WinFormsTest
 
         private void Viewport_NodeHitOnMouseDown(object sender, SceneNodeMouseDownArgs e)
         {
-            if(currentHighlight != null)
+            if (currentHighlight != null)
             {
                 currentHighlight.PostEffects = "";
             }
             currentHighlight = null;
-            if(e.HitResult.ModelHit is IApplyPostEffect s)
+            if (e.HitResult.ModelHit is IApplyPostEffect s)
             {
                 currentHighlight = s;
                 currentHighlight.PostEffects = "highlightEffect";
@@ -312,12 +318,33 @@ namespace WinFormsTest
             materials.Add(new Tuple<bool, MaterialCore>(false, new DiffuseMaterialCore() { DiffuseColor = Color.Red, DiffuseMap = diffuse }));
             materials.Add(new Tuple<bool, MaterialCore>(false, new DiffuseMaterialCore() { DiffuseColor = Color.Green, DiffuseMap = diffuse }));
             materials.Add(new Tuple<bool, MaterialCore>(false, new DiffuseMaterialCore() { DiffuseColor = Color.Blue, DiffuseMap = diffuse }));
-            materials.Add(new Tuple<bool, MaterialCore>(false, new PhongMaterialCore() { DiffuseColor = Color.DodgerBlue, ReflectiveColor = Color.DarkGray, 
-                SpecularShininess = 10, SpecularColor = Color.Red, DiffuseMap = diffuse, NormalMap = normal }));
-            materials.Add(new Tuple<bool, MaterialCore>(false, new PhongMaterialCore() { DiffuseColor = Color.Orange, ReflectiveColor = Color.DarkGray, 
-                SpecularShininess = 10, SpecularColor = Color.Red, DiffuseMap = diffuse, NormalMap = normal }));
-            materials.Add(new Tuple<bool, MaterialCore>(false, new PhongMaterialCore() { DiffuseColor = Color.PaleGreen, ReflectiveColor = Color.DarkGray, 
-                SpecularShininess = 10, SpecularColor = Color.Red, DiffuseMap = diffuse, NormalMap = normal }));
+            materials.Add(new Tuple<bool, MaterialCore>(false, new PhongMaterialCore()
+            {
+                DiffuseColor = Color.DodgerBlue,
+                ReflectiveColor = Color.DarkGray,
+                SpecularShininess = 10,
+                SpecularColor = Color.Red,
+                DiffuseMap = diffuse,
+                NormalMap = normal
+            }));
+            materials.Add(new Tuple<bool, MaterialCore>(false, new PhongMaterialCore()
+            {
+                DiffuseColor = Color.Orange,
+                ReflectiveColor = Color.DarkGray,
+                SpecularShininess = 10,
+                SpecularColor = Color.Red,
+                DiffuseMap = diffuse,
+                NormalMap = normal
+            }));
+            materials.Add(new Tuple<bool, MaterialCore>(false, new PhongMaterialCore()
+            {
+                DiffuseColor = Color.PaleGreen,
+                ReflectiveColor = Color.DarkGray,
+                SpecularShininess = 10,
+                SpecularColor = Color.Red,
+                DiffuseMap = diffuse,
+                NormalMap = normal
+            }));
             materials.Add(new Tuple<bool, MaterialCore>(false, new NormalMaterialCore()));
             materials.Add(new Tuple<bool, MaterialCore>(false, new PBRMaterialCore() { AlbedoColor = Color.Beige, MetallicFactor = 0.8f, RoughnessFactor = 0.6f }));
             materials.Add(new Tuple<bool, MaterialCore>(false, new PBRMaterialCore() { AlbedoColor = Color.Bisque, MetallicFactor = 0.4f, RoughnessFactor = 0.9f }));
@@ -326,12 +353,33 @@ namespace WinFormsTest
             materials.Add(new Tuple<bool, MaterialCore>(true, new DiffuseMaterialCore() { DiffuseColor = new Color4(1, 0, 1, 0.6f), DiffuseMap = diffuse }));
             materials.Add(new Tuple<bool, MaterialCore>(true, new DiffuseMaterialCore() { DiffuseColor = new Color4(0, 1, 1, 0.4f), DiffuseMap = diffuse }));
             materials.Add(new Tuple<bool, MaterialCore>(true, new DiffuseMaterialCore() { DiffuseColor = new Color4(1, 0, 1, 0.3f), DiffuseMap = diffuse }));
-            materials.Add(new Tuple<bool, MaterialCore>(true, new PhongMaterialCore() { DiffuseColor = new Color4(1, 1, 0, 0.6f), ReflectiveColor = Color.DarkGray, 
-                SpecularShininess = 10, SpecularColor = Color.Red, DiffuseMap = diffuse, NormalMap = normal }));
-            materials.Add(new Tuple<bool, MaterialCore>(true, new PhongMaterialCore() { DiffuseColor = new Color4(0, 1, 1, 0.4f), ReflectiveColor = Color.DarkGray,
-                SpecularShininess = 10, SpecularColor = Color.Red, DiffuseMap = diffuse, NormalMap = normal }));
-            materials.Add(new Tuple<bool, MaterialCore>(true, new PhongMaterialCore() { DiffuseColor = new Color4(1, 0, 1, 0.3f), ReflectiveColor = Color.DarkGray,
-                SpecularShininess = 10, SpecularColor = Color.Red, DiffuseMap = diffuse, NormalMap = normal }));
+            materials.Add(new Tuple<bool, MaterialCore>(true, new PhongMaterialCore()
+            {
+                DiffuseColor = new Color4(1, 1, 0, 0.6f),
+                ReflectiveColor = Color.DarkGray,
+                SpecularShininess = 10,
+                SpecularColor = Color.Red,
+                DiffuseMap = diffuse,
+                NormalMap = normal
+            }));
+            materials.Add(new Tuple<bool, MaterialCore>(true, new PhongMaterialCore()
+            {
+                DiffuseColor = new Color4(0, 1, 1, 0.4f),
+                ReflectiveColor = Color.DarkGray,
+                SpecularShininess = 10,
+                SpecularColor = Color.Red,
+                DiffuseMap = diffuse,
+                NormalMap = normal
+            }));
+            materials.Add(new Tuple<bool, MaterialCore>(true, new PhongMaterialCore()
+            {
+                DiffuseColor = new Color4(1, 0, 1, 0.3f),
+                ReflectiveColor = Color.DarkGray,
+                SpecularShininess = 10,
+                SpecularColor = Color.Red,
+                DiffuseMap = diffuse,
+                NormalMap = normal
+            }));
             materials.Add(new Tuple<bool, MaterialCore>(true, new PBRMaterialCore() { AlbedoColor = new Color4(1, 1, 0, 0.6f), MetallicFactor = 0.8f, RoughnessFactor = 0.6f }));
             materials.Add(new Tuple<bool, MaterialCore>(true, new PBRMaterialCore() { AlbedoColor = new Color4(0, 1, 1, 0.4f), MetallicFactor = 0.4f, RoughnessFactor = 0.9f }));
             materials.Add(new Tuple<bool, MaterialCore>(true, new PBRMaterialCore() { AlbedoColor = new Color4(1, 0, 1, 0.6f), MetallicFactor = 0.2f, RoughnessFactor = 0.2f }));
@@ -344,12 +392,12 @@ namespace WinFormsTest
 
         private void Viewport_OnStopRendering(object sender, EventArgs e)
         {
-            
+
         }
 
         private void Viewport_OnStartRendering(object sender, EventArgs e)
         {
-            RenderLoop.Run(window, () => 
+            RenderLoop.Run(window, () =>
             {
                 if (resizeRequested)
                 {
@@ -365,7 +413,7 @@ namespace WinFormsTest
                 cameraController.OnTimeStep();
                 if (options.DirectionalLightFollowCamera)
                 {
-                    directionalLight.Direction = camera.LookDirection.Normalized();
+                    directionalLight.Direction = Vector3.Normalize(camera.LookDirection);
                 }
                 AssignViewportOption();
                 directionalLight.Color = Color.White.ToColor4().ChangeIntensity(options.DirectionLightIntensity);
@@ -409,18 +457,18 @@ namespace WinFormsTest
 
         private void ChangeEnvironmentMapVisibility(bool visible)
         {
-            if(environmentMap.Visible != visible)
+            if (environmentMap.Visible != visible)
             {
                 environmentMap.Visible = visible;
-                foreach(var model in groupModel.Traverse())
+                foreach (var model in groupModel.Traverse())
                 {
-                    if(model is MeshNode mesh)
+                    if (model is MeshNode mesh)
                     {
-                        if(mesh.Material is PBRMaterialCore pbr)
+                        if (mesh.Material is PBRMaterialCore pbr)
                         {
                             pbr.RenderEnvironmentMap = visible;
                         }
-                        else if(mesh.Material is PhongMaterialCore phong)
+                        else if (mesh.Material is PhongMaterialCore phong)
                         {
                             phong.RenderEnvironmentMap = visible;
                         }
@@ -528,7 +576,7 @@ namespace WinFormsTest
                     }
                 }
             }
-            else if(!io.WantCaptureMouse)
+            else if (!io.WantCaptureMouse)
             {
                 switch (e.Button)
                 {
@@ -551,7 +599,7 @@ namespace WinFormsTest
             {
                 io.MouseWheel = (int)(e.Delta * 0.01f);
             }
-            if(!io.WantCaptureMouse)
+            if (!io.WantCaptureMouse)
             {
                 cameraController.MouseWheel(e.Delta, new Vector2(e.X, e.Y));
             }

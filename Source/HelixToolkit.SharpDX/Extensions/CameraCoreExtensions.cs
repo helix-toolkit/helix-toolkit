@@ -129,8 +129,8 @@ public static class CameraCoreExtensions
             maxY = Math.Max(maxY, local.Y);
         }
         width = aspectRatio > 1 ? Math.Max((maxX - minX), (maxY - minY) * aspectRatio) : Math.Max((maxX - minX) / aspectRatio, maxY - minY);
-        position = boundingBox.Center - camera.LookDirection.Normalized() * width;
-        lookDir = camera.LookDirection.Normalized() * width;
+        lookDir = Vector3.Normalize(camera.LookDirection) * width;
+        position = boundingBox.Center - lookDir;
         upDir = camera.UpDirection;
     }
 

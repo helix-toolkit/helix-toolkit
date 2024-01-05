@@ -211,7 +211,7 @@ public class ScreenSpacedMeshRenderCore : RenderCore, IScreenSpacedRenderParams
             return Matrix.Identity;
         }
 
-        eye = -renderContext.Camera.LookDirection.Normalized() * CameraDistance;
+        eye = -Vector3.Normalize(renderContext.Camera.LookDirection) * CameraDistance;
         if (IsRightHand)
         {
             return MatrixHelper.LookAtRH(eye, Vector3.Zero, renderContext.Camera.UpDirection);

@@ -54,10 +54,9 @@ public static class VectorExtensions
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Color4 Normalized(this Color4 vector)
+    public static Color4 Normalized(this Color4 color)
     {
-        var v = vector.ToVector3();
-        return v.Normalized().ToColor4();
+        return (Color4)Vector4.Normalize((Vector4)color);
     }
 }
 

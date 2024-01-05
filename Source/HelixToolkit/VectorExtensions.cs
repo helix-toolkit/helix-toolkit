@@ -76,17 +76,6 @@ public static class VectorExtensions
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Vector3 Normalized(this Vector3 vector)
-    {
-        return Vector3.Normalize(vector);
-    }
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Vector4 Normalized(this Vector4 vector)
-    {
-        return Vector4.Normalize(vector);
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Matrix4x4 Inverted(this Matrix4x4 m)
     {
         return !Matrix4x4.Invert(m, out var inv) ? new() : inv;
