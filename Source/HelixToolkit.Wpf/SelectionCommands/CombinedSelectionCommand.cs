@@ -15,11 +15,6 @@ namespace HelixToolkit.Wpf;
 public sealed class CombinedSelectionCommand : SelectionCommand
 {
     /// <summary>
-    /// The Tolerance
-    /// </summary>
-    private const double TOLERANCE = 1e-10;
-
-    /// <summary>
     /// The selection rectangle.
     /// </summary>
     private Rect selectionRect;
@@ -117,7 +112,14 @@ public sealed class CombinedSelectionCommand : SelectionCommand
             HandleRectangleSelection();
         }
 
-        //[MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        bool IsPointSelection()
+        {
+            return this.selectionRect.Size.Equals(default)
+                || (HelixToolkit.Maths.MathUtil.IsZero((float)this.selectionRect.Width) && HelixToolkit.Maths.MathUtil.IsZero((float)this.selectionRect.Height));
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         void HandlePointSelection()
         {
             IList<Viewport3DHelper.HitResult>? res = this.Viewport.FindHits(this.selectionRect.Location) ?? new List<Viewport3DHelper.HitResult>();
@@ -126,7 +128,7 @@ public sealed class CombinedSelectionCommand : SelectionCommand
             var selectedVisuals = res.Select(hit => hit.Visual).ToList();
             this.OnVisualsSelected(new VisualsSelectedByPointEventArgs(selectedVisuals, this.selectionRect.Location));
         }
-        //[MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         void HandleRectangleSelection()
         {
             IEnumerable<Viewport3DHelper.RectangleHitResult> res = this.Viewport.FindHits(this.selectionRect, this.SelectionHitMode);
@@ -135,16 +137,6 @@ public sealed class CombinedSelectionCommand : SelectionCommand
             var selectedVisuals = res.Select(hit => hit.Visual).ToList();
             this.OnVisualsSelected(new VisualsSelectedByRectangleEventArgs(selectedVisuals, this.selectionRect));
         }
-    }
-
-    /// <summary>
-    /// Determines whether the selection is a point selection or not
-    /// </summary>
-    /// <returns></returns>
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private bool IsPointSelection()
-    {
-        return this.selectionRect.Width < TOLERANCE && this.selectionRect.Height < TOLERANCE;
     }
 
     /// <summary>

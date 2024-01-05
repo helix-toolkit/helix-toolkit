@@ -91,12 +91,11 @@ public sealed class RectangleSelectionCommand : SelectionCommand
         this.HideRectangle();
 
         var res = this.Viewport.FindHits(this.selectionRect, this.SelectionHitMode);
-
         var selectedModels = res.Select(hit => hit.Model).ToList();
 
-        // We do not handle the point selection, unless no models are selected. If no models are selected, we clear the
-        // existing selection.
-        if (this.selectionRect.Size.Equals(default(Size)) && selectedModels.Any())
+        // We do not handle the point selection, unless no models are selected.
+        // If no models are selected, we clear the existing selection.
+        if (this.selectionRect.Size.Equals(default) && selectedModels.Count != 0)
         {
             return;
         }

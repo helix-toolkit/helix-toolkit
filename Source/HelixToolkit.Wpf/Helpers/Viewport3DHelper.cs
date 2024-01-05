@@ -190,14 +190,14 @@ public static class Viewport3DHelper
     /// </returns>
     public static IEnumerable<RectangleHitResult> FindHits(this Viewport3D viewport, Rect rectangle, SelectionHitMode mode)
     {
-        const double Tolerance = 1e-10;
 
         if (viewport.Camera is not ProjectionCamera camera)
         {
             ThrowHelper.ThrowInvalidOperationException("No projection camera defined. Cannot find rectangle hits.");
         }
 
-        if (rectangle.Width < Tolerance && rectangle.Height < Tolerance)
+        if (rectangle.Size.Equals(default)
+           || HelixToolkit.Maths.MathUtil.IsZero((float)rectangle.Width) && HelixToolkit.Maths.MathUtil.IsZero((float)rectangle.Height))
         {
             var hitResults = FindHits(viewport, rectangle.BottomLeft);
 
