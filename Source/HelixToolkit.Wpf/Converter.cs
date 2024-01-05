@@ -1,5 +1,4 @@
 ﻿using System.Runtime.CompilerServices;
-using System.Windows.Media;
 
 namespace HelixToolkit.Wpf;
 
@@ -38,7 +37,7 @@ public static class Converter
 
         return result;
     }
-
+    #region System.Numerics.Vector2
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static System.Windows.Point ToWndPoint(this System.Numerics.Vector2 vector)
     {
@@ -51,6 +50,32 @@ public static class Converter
         return new System.Numerics.Vector2((float)vector.X, (float)vector.Y);
     }
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static System.Windows.Size ToWndSize(this System.Numerics.Vector2 vector)
+    {
+        return new System.Windows.Size(vector.X, vector.Y);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static System.Numerics.Vector2 ToVector(this System.Windows.Size size)
+    {
+        return new System.Numerics.Vector2((float)size.Width, (float)size.Height);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static System.Windows.Vector ToWndVector(this System.Numerics.Vector2 vector)
+    {
+        return new System.Windows.Vector(vector.X, vector.Y);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static System.Numerics.Vector2 ToVector(this System.Windows.Vector vector)
+    {
+        return new System.Numerics.Vector2((float)vector.X, (float)vector.Y);
+    }
+    #endregion
+
+    #region System.Numerics.Vector3
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static System.Windows.Media.Media3D.Point3D ToWndPoint3D(this System.Numerics.Vector3 vector)
     {
@@ -74,6 +99,19 @@ public static class Converter
     {
         return new System.Numerics.Vector3((float)vector.X, (float)vector.Y, (float)vector.Z);
     }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static System.Windows.Media.Media3D.Size3D ToWndSize3D(this System.Numerics.Vector3 vector)
+    {
+        return new System.Windows.Media.Media3D.Size3D(vector.X, vector.Y, vector.Z);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static System.Numerics.Vector3 ToVector3(this System.Windows.Media.Media3D.Size3D size)
+    {
+        return new System.Numerics.Vector3((float)size.X, (float)size.Y, (float)size.Z);
+    }
+    #endregion
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static System.Windows.Media.Media3D.Point4D ToWnPoint4D(this System.Numerics.Vector4 vector)
