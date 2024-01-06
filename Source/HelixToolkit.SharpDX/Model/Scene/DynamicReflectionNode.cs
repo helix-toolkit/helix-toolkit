@@ -249,7 +249,7 @@ public class DynamicReflectionNode : GroupNode, IDynamicReflector
         base.UpdateNotRender(context);
         if (Octree != null)
         {
-            Center = Octree.Bound.Center();
+            Center = Octree.Bound.Center;
         }
         else
         {
@@ -270,7 +270,7 @@ public class DynamicReflectionNode : GroupNode, IDynamicReflector
                     box = BoundingBox.Merge(box, ItemsInternal[i].BoundsWithTransform);
                 }
             }
-            Center = box.Center();
+            Center = box.Center;
         }
     }
 

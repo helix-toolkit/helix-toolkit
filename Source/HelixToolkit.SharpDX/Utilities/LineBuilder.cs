@@ -281,7 +281,7 @@ public class LineBuilder
     /// <returns></returns>
     public static LineGeometry3D GenerateBoundingBox(Geometry3D mesh)
     {
-        var bb = BoundingBoxExtensions.FromPoints(mesh.Positions);
+        var bb = BoundingBoxHelper.FromPoints(mesh.Positions);
         return GenerateBoundingBox(bb);
     }
 

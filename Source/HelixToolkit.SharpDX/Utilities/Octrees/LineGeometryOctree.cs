@@ -45,7 +45,7 @@ public class LineGeometryOctree : DynamicOctreeBase<KeyValuePair<int, BoundingBo
     {
         Positions = positions;
         Indices = indices;
-        Bound = BoundingBoxExtensions.FromPoints(positions);
+        Bound = BoundingBoxHelper.FromPoints(positions);
         Objects = indices is null ? null : new List<KeyValuePair<int, BoundingBox>>(indices.Count / 2);
         // Construct triangle index and its bounding box KeyValuePair
         if (indices is not null)

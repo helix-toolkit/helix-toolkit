@@ -3,33 +3,33 @@
     /// <summary>
     /// 
     /// </summary>
-    public static class BoundingBoxExtensions
+    public static class BoundingBoxHelper
     {
         /// <summary>
         /// Get bounding box from list of points
         /// </summary>
-        /// <param name="points"></param>
+        /// <param name="points">The points.</param>
         /// <returns></returns>
-        public static BoundingBox GetBoundingBox(this IList<Vector3> points)
+        public static BoundingBox FromPoints(IList<Vector3>? points)
         {
             if (points == null || points.Count == 0)
             {
                 return new BoundingBox();
             }
-            Vector3 min = new(float.MaxValue);
-            Vector3 max = new(float.MinValue);
+            var min = new Vector3(float.MaxValue);
+            var max = new Vector3(float.MinValue);
 
-            foreach (Vector3 point in points)
+            foreach (var p in points)
             {
-                min = min.Min(point);
-                max = max.Max(point);
+                var point = p;
+                min = min.Min(ref point);
+                max = max.Max(ref point);
             }
-            Vector3 diff = max - min;
-            return diff.AnySmallerOrEqual(0.0001f)
-                ? new BoundingBox(min - new Vector3(0.1f), max + new Vector3(0.1f))
-                : new BoundingBox(min, max);
+            var diff = max - min;
+            return diff.AnySmallerOrEqual(0.0001f) // Avoid bound too small on one dimension.
+               ? new BoundingBox(min - new Vector3(0.1f), max + new Vector3(0.1f))
+               : new BoundingBox(min, max);
         }
-
         /// <summary>
         /// Transform AABB with Affine Transformation matrix
         /// </summary>
@@ -142,6 +142,10 @@
             }
 
             return new BoundingBox(min, max);
+        }
+        public static RectangleF Translate(this RectangleF rect, Vector2 translation)
+        {
+            return new RectangleF(rect.Left + translation.X, rect.Top + translation.Y, rect.Width, rect.Height);
         }
     }
 }

@@ -356,7 +356,7 @@ public abstract class Geometry3D : ObservableObject, IGUID
         }
         else
         {
-            Bound = BoundingBoxExtensions.FromPoints(Positions);
+            Bound = BoundingBoxHelper.FromPoints(Positions);
             BoundingSphere = BoundingSphereExtensions.FromPoints(Positions);
         }
         if (Bound.Maximum.IsUndefined() || Bound.Minimum.IsUndefined() || BoundingSphere.Center.IsUndefined()

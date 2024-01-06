@@ -49,7 +49,7 @@ public class StaticMeshGeometryOctree : StaticOctree<KeyValuePair<int, BoundingB
 
     protected override BoundingBox GetMaxBound()
     {
-        return BoundingBoxExtensions.FromPoints(Positions);
+        return BoundingBoxHelper.FromPoints(Positions);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
