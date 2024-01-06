@@ -2,7 +2,8 @@
 
 namespace HelixToolkit.SharpDX;
 
-public static class DataStreamExtension
+public static class DataStreamExtensions
+
 {
     public static int ReadInt(this DataStream ds)
     {
