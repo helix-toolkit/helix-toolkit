@@ -398,8 +398,8 @@ public class ShadowMapNode : SceneNode
                     var dlight = light.RenderCore as DirectionalLightCore;
 
                     if (dlight is not null)
-                    {
-                        var dir = Vector3.TransformNormal(dlight.Direction, dlight.ModelMatrix).Normalized();
+                    {                        
+                        var dir = Vector3.Normalize(Vector3.TransformNormal(dlight.Direction, dlight.ModelMatrix));
                         if (AutoCoverCompleteScene)
                         {
                             if (sceneChanged || e.Context.updateSceneGraphRequested || IsSceneDynamic)

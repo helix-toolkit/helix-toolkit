@@ -130,7 +130,7 @@ public sealed partial class ScatterPlotVisual3D : ModelVisual3D
         }
 
         var bb = new Rect3D(minX, minY, minZ, maxX - minX, maxY - minY, maxZ - minZ);
-        axesMeshBuilder.AddBoundingBox(bb.ToRect3D(), (float)LineThickness);
+        axesMeshBuilder.AddBoundingBox(bb.ToBoundingBox(), (float)LineThickness);
 
         var axesModel = new GeometryModel3D(axesMeshBuilder.ToMesh().ToMeshGeometry3D(), Materials.Black);
 

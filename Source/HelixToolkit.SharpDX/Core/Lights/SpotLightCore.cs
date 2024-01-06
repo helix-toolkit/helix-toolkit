@@ -103,7 +103,7 @@ public class SpotLightCore : PointLightCore
         }
 
         base.OnRender(lightScene, index);
-        lightScene.LightModels.Lights[index].LightDir = Vector3.TransformNormal(direction, ModelMatrix).Normalized().ToVector4(0);
+        lightScene.LightModels.Lights[index].LightDir = Vector3.Normalize(Vector3.TransformNormal(direction, ModelMatrix)).ToVector4(0);
         lightScene.LightModels.Lights[index].LightSpot = new Vector4((float)Math.Cos(outerAngle / 360.0f * Math.PI), (float)Math.Cos(innerAngle / 360.0f * Math.PI), fallOff, 0);
     }
 }

@@ -31,6 +31,6 @@ public class DirectionalLightCore : LightCoreBase
         }
 
         base.OnRender(lightScene, index);
-        lightScene.LightModels.Lights[index].LightDir = -Vector3.TransformNormal(direction, ModelMatrix).Normalized().ToVector4(0);
+        lightScene.LightModels.Lights[index].LightDir = -Vector3.Normalize(Vector3.TransformNormal(direction, ModelMatrix)).ToVector4(0);
     }
 }
