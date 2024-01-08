@@ -16,16 +16,15 @@
             {
                 return new BoundingBox();
             }
-            var min = new Vector3(float.MaxValue);
-            var max = new Vector3(float.MinValue);
-
-            foreach (var p in points)
+            Vector3 min = new(float.MaxValue);
+            Vector3 max = new(float.MinValue);
+            foreach (Vector3 p in points)
             {
-                var point = p;
+                Vector3 point = p;
                 min = min.Min(ref point);
                 max = max.Max(ref point);
             }
-            var diff = max - min;
+            Vector3 diff = max - min;
             return diff.AnySmallerOrEqual(0.0001f) // Avoid bound too small on one dimension.
                ? new BoundingBox(min - new Vector3(0.1f), max + new Vector3(0.1f))
                : new BoundingBox(min, max);
@@ -36,7 +35,7 @@
         /// <param name="box"></param>
         /// <param name="transform"></param>
         /// <returns></returns>
-        public static BoundingBox Transform(this BoundingBox box, Matrix4x4 transform)
+        public static BoundingBox Transform(this BoundingBox box, Matrix transform)
         {
             /////////////////Row 4/////////////////
             Vector3 min = transform.Translation;
@@ -142,10 +141,6 @@
             }
 
             return new BoundingBox(min, max);
-        }
-        public static RectangleF Translate(this RectangleF rect, Vector2 translation)
-        {
-            return new RectangleF(rect.Left + translation.X, rect.Top + translation.Y, rect.Width, rect.Height);
         }
     }
 }
