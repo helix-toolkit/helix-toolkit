@@ -30,7 +30,7 @@ public class PointGeometryOctree : DynamicOctreeBase<int>
            : base(null, parameter, stackCache)
     {
         Positions = positions;
-        Bound = BoundingBoxExtensions.FromPoints(positions);
+        Bound = BoundingBoxHelper.FromPoints(positions);
         Objects = Positions is null ? null : new List<int>(Positions.Count);
         if (Positions is not null)
         {

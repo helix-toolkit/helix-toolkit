@@ -37,7 +37,7 @@ public class StaticPointGeometryOctree : StaticOctree<int>
     /// <returns></returns>
     protected override BoundingBox GetMaxBound()
     {
-        return BoundingBoxExtensions.FromPoints(Positions);
+        return BoundingBoxHelper.FromPoints(Positions);
     }
 
     /// <summary>

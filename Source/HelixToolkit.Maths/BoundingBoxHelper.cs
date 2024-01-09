@@ -3,14 +3,14 @@
     /// <summary>
     /// 
     /// </summary>
-    public static class BoundingBoxExtensions
+    public static class BoundingBoxHelper
     {
         /// <summary>
         /// Get bounding box from list of points
         /// </summary>
-        /// <param name="points"></param>
+        /// <param name="points">The points.</param>
         /// <returns></returns>
-        public static BoundingBox GetBoundingBox(this IList<Vector3> points)
+        public static BoundingBox FromPoints(IList<Vector3>? points)
         {
             if (points == null || points.Count == 0)
             {
@@ -18,25 +18,24 @@
             }
             Vector3 min = new(float.MaxValue);
             Vector3 max = new(float.MinValue);
-
-            foreach (Vector3 point in points)
+            foreach (Vector3 p in points)
             {
-                min = min.Min(point);
-                max = max.Max(point);
+                Vector3 point = p;
+                min = min.Min(ref point);
+                max = max.Max(ref point);
             }
             Vector3 diff = max - min;
-            return diff.AnySmallerOrEqual(0.0001f)
-                ? new BoundingBox(min - new Vector3(0.1f), max + new Vector3(0.1f))
-                : new BoundingBox(min, max);
+            return diff.AnySmallerOrEqual(0.0001f) // Avoid bound too small on one dimension.
+               ? new BoundingBox(min - new Vector3(0.1f), max + new Vector3(0.1f))
+               : new BoundingBox(min, max);
         }
-
         /// <summary>
         /// Transform AABB with Affine Transformation matrix
         /// </summary>
         /// <param name="box"></param>
         /// <param name="transform"></param>
         /// <returns></returns>
-        public static BoundingBox Transform(this BoundingBox box, Matrix4x4 transform)
+        public static BoundingBox Transform(this BoundingBox box, Matrix transform)
         {
             /////////////////Row 4/////////////////
             Vector3 min = transform.Translation;
