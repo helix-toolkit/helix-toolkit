@@ -51,7 +51,7 @@ public class PointGeometry3D : Geometry3D
             var svpm = context.RenderMatrices?.ScreenViewProjectionMatrix ?? Matrix.Identity;
             var smvpm = modelMatrix * svpm;
 
-            var clickPoint = context.HitPointSP.ToVector3() * (context.RenderMatrices?.DpiScale ?? 1.0f);
+            var clickPoint = new Vector3(context.HitPointSP, 1f) * (context.RenderMatrices?.DpiScale ?? 1.0f);
 
             var result = new HitTestResult { IsValid = false, Distance = double.MaxValue };
             var maxDist = hitThickness;

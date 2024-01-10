@@ -181,7 +181,7 @@ public class BillboardText3D : BillboardBase
             //Add backbround vertex first. This is also used for hit test
             BillboardVertices.Add(new BillboardVertex()
             {
-                Position = textInfo.Origin.ToVector4(),
+                Position = new Vector4(textInfo.Origin, 1f),
                 Background = textInfo.Background,
                 TexTL = Vector2.Zero,
                 TexBR = Vector2.Zero,
@@ -251,7 +251,7 @@ public class BillboardText3D : BillboardBase
 
         return new BillboardVertex()
         {
-            Position = info.Origin.ToVector4(),
+            Position = new Vector4(info.Origin, 1f),
             Foreground = info.Foreground,
             Background = Color.Transparent,
             TexTL = uv_tl,

@@ -121,7 +121,7 @@ public class StaticPointGeometryOctree : StaticOctree<int>
                 smvpm = modelMatrix * svpm;
                 needRecalculate = false;
             }
-            var clickPoint = context.HitPointSP.ToVector3() * (context.RenderMatrices?.DpiScale ?? 1.0f);
+            var clickPoint = new Vector3(context.HitPointSP, 1f) * (context.RenderMatrices?.DpiScale ?? 1.0f);
             isIntersect = true;
             var dist = hitThickness;
             var rayWS = context.RayWS;

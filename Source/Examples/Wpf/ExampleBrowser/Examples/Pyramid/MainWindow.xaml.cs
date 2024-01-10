@@ -89,16 +89,15 @@ public partial class MainWindow : Window
                     else
                     {
                         // add a new visual for each cubit, but reuse the geometry
-                        var transform = new TranslateTransform3D(center.ToVector3D());
+                        var transform = new TranslateTransform3D(center.ToWndVector3D());
                         var c = new ModelVisual3D
                         {
-                            Content =
-                                            new GeometryModel3D
-                                            {
-                                                Geometry = cuboidGeometry,
-                                                Material = cubit.Material,
-                                                Transform = transform
-                                            }
+                            Content = new GeometryModel3D()
+                            {
+                                Geometry = cuboidGeometry,
+                                Material = cubit.Material,
+                                Transform = transform
+                            }
                         };
                         vis.Children.Add(c);
                     }
@@ -110,12 +109,11 @@ public partial class MainWindow : Window
         {
             var c = new ModelVisual3D
             {
-                Content =
-                                new GeometryModel3D
-                                {
-                                    Geometry = builder!.ToMesh().ToMeshGeometry3D(),
-                                    Material = cubit.Material
-                                }
+                Content = new GeometryModel3D()
+                {
+                    Geometry = builder!.ToMesh().ToMeshGeometry3D(),
+                    Material = cubit.Material
+                }
             };
             view1.Children.Add(c);
         }

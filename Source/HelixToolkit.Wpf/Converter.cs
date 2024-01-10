@@ -4,6 +4,7 @@ namespace HelixToolkit.Wpf;
 
 public static class Converter
 {
+    #region Array
     public static float[]? ToFloatArray(this double[]? array)
     {
         if (array is null)
@@ -37,6 +38,7 @@ public static class Converter
 
         return result;
     }
+    #endregion
     #region System.Numerics.Vector2
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static System.Windows.Point ToWndPoint(this System.Numerics.Vector2 vector)
@@ -113,6 +115,7 @@ public static class Converter
     }
     #endregion
 
+    #region System.Numerics.Vector4
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static System.Windows.Media.Media3D.Point4D ToWnPoint4D(this System.Numerics.Vector4 vector)
     {
@@ -124,7 +127,9 @@ public static class Converter
     {
         return new System.Numerics.Vector4((float)vector.X, (float)vector.Y, (float)vector.Z, (float)vector.W);
     }
+    #endregion
 
+    #region System.Numerics.Matrix4x4
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static System.Windows.Media.Media3D.Matrix3D ToWndMatrix3D(this System.Numerics.Matrix4x4 matrix)
     {
@@ -144,7 +149,9 @@ public static class Converter
             (float)matrix.M31, (float)matrix.M32, (float)matrix.M33, (float)matrix.M34,
             (float)matrix.OffsetX, (float)matrix.OffsetY, (float)matrix.OffsetZ, (float)matrix.M44);
     }
+    #endregion
 
+    #region System.Windows.Media.Media3D.Vector3D
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static System.Windows.Media.Media3D.Point3D ToWndPoint3D(this System.Windows.Media.Media3D.Vector3D vector)
     {
@@ -156,7 +163,9 @@ public static class Converter
     {
         return new System.Windows.Media.Media3D.Vector3D(vector.X, vector.Y, vector.Z);
     }
+    #endregion
 
+    #region HelixToolkit.Maths.BoundingBox
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static System.Windows.Media.Media3D.Rect3D ToWnRect3D(this HelixToolkit.Maths.BoundingBox boundingBox)
     {
@@ -168,7 +177,37 @@ public static class Converter
     {
         return new HelixToolkit.Maths.BoundingBox(rect.Location.ToVector3(), rect.Location.ToVector3() + rect.Size.ToVector3());
     }
+    #endregion
 
+    #region System.Numerics.Plane
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static HelixToolkit.Wpf.Plane3D ToPlane3D(this System.Numerics.Plane plane)
+    {
+        return new HelixToolkit.Wpf.Plane3D((plane.Normal * plane.D).ToWndPoint3D(), plane.Normal.ToWndVector3D());
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static System.Numerics.Plane ToPlane(this HelixToolkit.Wpf.Plane3D plane)
+    {
+        return Maths.PlaneHelper.Create(plane.Position.ToVector3(), plane.Normal.ToVector3());
+    }
+    #endregion
+
+    #region HelixToolkit.Maths.Ray
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static HelixToolkit.Wpf.Ray3D ToRay3D(this HelixToolkit.Maths.Ray ray)
+    {
+        return new HelixToolkit.Wpf.Ray3D(ray.Position.ToWndPoint3D(), ray.Direction.ToWndVector3D());
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static HelixToolkit.Maths.Ray ToRay(this HelixToolkit.Wpf.Ray3D ray)
+    {
+        return new HelixToolkit.Maths.Ray(ray.Origin.ToVector3(), ray.Direction.ToVector3());
+    }
+    #endregion
+
+    #region Collection
     public static System.Windows.Media.Media3D.Vector3DCollection? ToVector3DCollection(IList<System.Numerics.Vector3>? collection)
     {
         if (collection is null)
@@ -186,14 +225,14 @@ public static class Converter
         return newCollection;
     }
 
-    public static Vector3Collection? ToCollection(this System.Windows.Media.Media3D.Vector3DCollection? collection)
+    public static HelixToolkit.Vector3Collection? ToCollection(this System.Windows.Media.Media3D.Vector3DCollection? collection)
     {
         if (collection is null)
         {
             return null;
         }
 
-        var newCollection = new Vector3Collection(collection.Count);
+        var newCollection = new HelixToolkit.Vector3Collection(collection.Count);
 
         for (int i = 0; i < collection.Count; i++)
         {
@@ -203,14 +242,14 @@ public static class Converter
         return newCollection;
     }
 
-    public static Vector3Collection? ToVector3Collection(this IList<System.Windows.Media.Media3D.Point3D>? collection)
+    public static HelixToolkit.Vector3Collection? ToVector3Collection(this IList<System.Windows.Media.Media3D.Point3D>? collection)
     {
         if (collection is null)
         {
             return null;
         }
 
-        var newCollection = new Vector3Collection(collection.Count);
+        var newCollection = new HelixToolkit.Vector3Collection(collection.Count);
 
         for (int i = 0; i < collection.Count; i++)
         {
@@ -237,14 +276,14 @@ public static class Converter
         return newCollection;
     }
 
-    public static Vector3Collection? ToCollection(this System.Windows.Media.Media3D.Point3DCollection? collection)
+    public static HelixToolkit.Vector3Collection? ToCollection(this System.Windows.Media.Media3D.Point3DCollection? collection)
     {
         if (collection is null)
         {
             return null;
         }
 
-        var newCollection = new Vector3Collection(collection.Count);
+        var newCollection = new HelixToolkit.Vector3Collection(collection.Count);
 
         for (int i = 0; i < collection.Count; i++)
         {
@@ -254,14 +293,14 @@ public static class Converter
         return newCollection;
     }
 
-    public static Vector2Collection? ToVector2Collection(this IList<System.Windows.Point>? collection)
+    public static HelixToolkit.Vector2Collection? ToVector2Collection(this IList<System.Windows.Point>? collection)
     {
         if (collection is null)
         {
             return null;
         }
 
-        var newCollection = new Vector2Collection(collection.Count);
+        var newCollection = new HelixToolkit.Vector2Collection(collection.Count);
 
         for (int i = 0; i < collection.Count; i++)
         {
@@ -288,14 +327,14 @@ public static class Converter
         return newCollection;
     }
 
-    public static Vector2Collection? ToCollection(this System.Windows.Media.PointCollection? collection)
+    public static HelixToolkit.Vector2Collection? ToCollection(this System.Windows.Media.PointCollection? collection)
     {
         if (collection is null)
         {
             return null;
         }
 
-        var newCollection = new Vector2Collection(collection.Count);
+        var newCollection = new HelixToolkit.Vector2Collection(collection.Count);
 
         for (int i = 0; i < collection.Count; i++)
         {
@@ -315,14 +354,14 @@ public static class Converter
         return new System.Windows.Media.Int32Collection(collection);
     }
 
-    public static IntCollection? ToCollection(this System.Windows.Media.Int32Collection? collection)
+    public static HelixToolkit.IntCollection? ToCollection(this System.Windows.Media.Int32Collection? collection)
     {
         if (collection is null)
         {
             return null;
         }
 
-        return new IntCollection(collection);
+        return new HelixToolkit.IntCollection(collection);
     }
 
     public static IList<float>? ToFloatCollection(this System.Windows.Media.DoubleCollection collection)
@@ -359,7 +398,7 @@ public static class Converter
         return newCollection;
     }
 
-    public static System.Windows.Media.Media3D.MeshGeometry3D ToMeshGeometry3D(this Geometry.MeshGeometry3D mesh, bool freeze = false)
+    public static System.Windows.Media.Media3D.MeshGeometry3D ToMeshGeometry3D(this HelixToolkit.Geometry.MeshGeometry3D mesh, bool freeze = false)
     {
         var mg = new System.Windows.Media.Media3D.MeshGeometry3D()
         {
@@ -377,14 +416,15 @@ public static class Converter
         return mg;
     }
 
-    public static Geometry.MeshGeometry3D ToWndMeshGeometry3D(this System.Windows.Media.Media3D.MeshGeometry3D mesh)
+    public static HelixToolkit.Geometry.MeshGeometry3D ToWndMeshGeometry3D(this System.Windows.Media.Media3D.MeshGeometry3D mesh)
     {
-        return new Geometry.MeshGeometry3D()
+        return new HelixToolkit.Geometry.MeshGeometry3D()
         {
             Normals = mesh.Normals?.ToCollection(),
-            Positions = mesh.Positions?.ToCollection() ?? new Vector3Collection(),
+            Positions = mesh.Positions?.ToCollection() ?? new HelixToolkit.Vector3Collection(),
             TextureCoordinates = mesh.TextureCoordinates?.ToCollection(),
-            TriangleIndices = mesh.TriangleIndices.ToCollection() ?? new IntCollection()
+            TriangleIndices = mesh.TriangleIndices.ToCollection() ?? new HelixToolkit.IntCollection()
         };
     }
+    #endregion 
 }

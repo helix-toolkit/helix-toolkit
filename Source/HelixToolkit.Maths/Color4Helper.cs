@@ -1,26 +1,22 @@
-﻿/*
-The MIT License (MIT)
-Copyright (c) 2022 Helix Toolkit contributors
-*/
-using System.ComponentModel;
+﻿using System.ComponentModel;
 
 namespace HelixToolkit.Maths
 {
     /// <summary>
     /// Ref https://referencesource.microsoft.com/#System.Drawing/commonui/System/Drawing/ColorConverter.cs
     /// </summary>
-    public static class Color4Extensions
+    public static class Color4Helper
+
     {
-        private static readonly Dictionary<string, object> colors_ = new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase);
+        private static readonly Dictionary<string, object> colors = new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase);
 
         /// <summary>
-        /// Initializes the <see cref="Color4Extensions"/> class.
+        /// Initializes the <see cref="Color4Helper"/> class.
         /// </summary>
-        static Color4Extensions()
+        static Color4Helper()
         {
-            FillConstants(colors_, typeof(Color));
+            FillConstants(colors, typeof(Color));
         }
-
 
         private static void FillConstants(Dictionary<string, object> hash, Type enumType)
         {
@@ -148,7 +144,7 @@ namespace HelixToolkit.Maths
                         //
                         var targetARGB = ((Color)obj).ToArgb();
 
-                        foreach (Color c in colors_.Values.Select(v => (Color)v))
+                        foreach (Color c in colors.Values.Select(v => (Color)v))
                         {
                             if (c.ToArgb() == targetARGB)
                             {
@@ -210,6 +206,11 @@ namespace HelixToolkit.Maths
 
             return value;
         }
+        internal static object? GetNamedColor(string name)
+        {
+            colors.TryGetValue(name, out var color);
+            return color;
+        }
 
         //private const float encodeDiv = 1f / 16777216;
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -231,10 +232,34 @@ namespace HelixToolkit.Maths
             return abPacked;
         }
 
-        internal static object? GetNamedColor(string name)
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Color4 ChangeIntensity(this Color4 c, float intensity)
         {
-            colors_.TryGetValue(name, out var color);
-            return color;
+            return new Color4(c.Red * intensity, c.Green * intensity, c.Blue * intensity, c.Alpha);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Color4 Normalized(this Color4 color)
+        {
+            return (Color4)Vector4.Normalize((Vector4)color);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static System.Numerics.Vector4 ToVector4(this HelixToolkit.Maths.Color4 color)
+        {
+            return new System.Numerics.Vector4(color.Red, color.Green, color.Blue, color.Alpha);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static System.Numerics.Vector3 ToVector3(this HelixToolkit.Maths.Color3 color)
+        {
+            return new System.Numerics.Vector3(color.Red, color.Green, color.Blue);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static HelixToolkit.Maths.Color4 ToColor4(this HelixToolkit.Maths.Color3 color, float alpha = 0f)
+        {
+            return new HelixToolkit.Maths.Color4(color, alpha);
         }
     }
 }

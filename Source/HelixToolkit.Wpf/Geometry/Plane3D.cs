@@ -1,4 +1,6 @@
-﻿using System.Windows.Media.Media3D;
+﻿using HelixToolkit.Maths;
+using System.Numerics;
+using System.Windows.Media.Media3D;
 
 namespace HelixToolkit.Wpf;
 
@@ -27,20 +29,19 @@ public class Plane3D
     {
         this.Position = position;
         this.Normal = normal;
-        this.Normal.Normalize();
     }
 
     /// <summary>
     /// Gets or sets the normal.
     /// </summary>
     /// <value>The normal.</value>
-    public Vector3D Normal { get; set; } = default;
+    public Vector3D Normal { get; set; }
 
     /// <summary>
     /// Gets or sets the position.
     /// </summary>
     /// <value>The position.</value>
-    public Point3D Position { get; set; } = default;
+    public Point3D Position { get; set; }
 
     /// <summary>
     /// Finds the intersection between the plane and a line.
@@ -56,22 +57,13 @@ public class Plane3D
     /// </returns>
     public Vector3D? LineIntersection(Vector3D la, Vector3D lb)
     {
-        // http://en.wikipedia.org/wiki/Line-plane_intersection
-        var l = lb - la;
-        var a = Vector3D.DotProduct(this.Position.ToVector3D() - la, this.Normal);
-        var b = Vector3D.DotProduct(l, this.Normal);
-
-        if (a == 0 && b == 0)
+        Vector3 v1 = la.ToVector3();
+        Vector3 v2 = lb.ToVector3();
+        if (this.ToPlane().IntersectsLine(ref v1, ref v2, out Vector3 intersection))
         {
-            return null;
+            return intersection.ToWndVector3D();
         }
-
-        if (b == 0)
-        {
-            return null;
-        }
-
-        return la + ((a / b) * l);
+        return null;
     }
 
     /// <summary>
@@ -86,8 +78,8 @@ public class Plane3D
     /// </returns>
     public double DistanceTo(Vector3D point)
     {
-        var planeToPoint = point - Position.ToVector3D();
-        return Vector3D.DotProduct(planeToPoint, Normal);
+        Vector3 p = point.ToVector3();
+        return this.ToPlane().DistanceTo(ref p);
     }
 
     /// <summary>
@@ -99,7 +91,7 @@ public class Plane3D
     /// </returns>
     public Vector3D Project(Vector3D point)
     {
-        var distance = DistanceTo(point);
-        return point - distance * Normal;
+        Vector3 p = point.ToVector3();
+        return this.ToPlane().Project(ref p).ToWndVector3D();
     }
 }

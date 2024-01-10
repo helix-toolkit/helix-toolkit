@@ -119,7 +119,7 @@ public class PointGeometryOctree : DynamicOctreeBase<int>
             result.Distance = double.MaxValue;
             var svpm = context.RenderMatrices?.ScreenViewProjectionMatrix ?? Matrix.Identity;
             var smvpm = modelMatrix * svpm;
-            var clickPoint3 = context.HitPointSP.ToVector3() * (context.RenderMatrices?.DpiScale ?? 1.0f);
+            var clickPoint3 = new Vector3(context.HitPointSP,1f) * (context.RenderMatrices?.DpiScale ?? 1.0f);
             var rayWS = context.RayWS;
             var pos3 = rayWS.Position;
             Vector3Helper.TransformCoordinate(ref clickPoint3, ref svpm, out var clickPoint);

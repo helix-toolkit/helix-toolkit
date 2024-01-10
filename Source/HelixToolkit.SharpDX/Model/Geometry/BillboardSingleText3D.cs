@@ -367,7 +367,7 @@ public class BillboardSingleText3D : BillboardBase
         var offBL = new Vector2(offTL.X, offBR.Y);
         BillboardVertices.Add(new BillboardVertex()
         {
-            Position = info.Origin.ToVector4(),
+            Position = new Vector4(info.Origin,1f),
             Foreground = FontColor,
             Background = BackgroundColor,
             TexTL = uv_tl,

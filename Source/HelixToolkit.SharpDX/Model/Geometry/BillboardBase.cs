@@ -143,7 +143,7 @@ public abstract class BillboardBase : Geometry3D, IBillboardText
         for (var i = 0; i < count; ++i)
         {
             var vert = BillboardVertices[i];
-            var pos = vert.Position.ToVector3();
+            var pos = vert.Position.ToHomogeneousVector3();
             var c = Vector3Helper.TransformCoordinate(pos, modelMatrix);
             var dir = c - context.RayWS.Position;
             if (Vector3.Dot(dir, context.RayWS.Direction) < 0)
@@ -225,7 +225,7 @@ public abstract class BillboardBase : Geometry3D, IBillboardText
         for (var i = 0; i < count; ++i)
         {
             var vert = BillboardVertices[i];
-            var pos = vert.Position.ToVector3();
+            var pos = vert.Position.ToHomogeneousVector3();
             var c = Vector3Helper.TransformCoordinate(pos, modelMatrix);
             var dir = c - rayWS.Position;
             if (Vector3.Dot(dir, rayWS.Direction) < 0)

@@ -57,6 +57,6 @@ public class Vector3DExtensionsTests
     public void ToPoint3D_GivenAVector_ReturnsCorrectPoint()
     {
         var v = new Vector3D(1, 2, 3);
-        Assert.AreEqual(new Point3D(1, 2, 3), v.ToPoint3D());
+        Assert.AreEqual(new Point3D(1, 2, 3), v.ToWndPoint3D());
     }
 }

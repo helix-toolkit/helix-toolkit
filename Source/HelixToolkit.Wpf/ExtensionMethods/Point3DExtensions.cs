@@ -42,20 +42,6 @@ public static class Point3DExtensions
     }
 
     /// <summary>
-    /// Convert a <see cref="Point3D"/> to a <see cref="Vector3D"/>.
-    /// </summary>
-    /// <param name="n">
-    /// The input point.
-    /// </param>
-    /// <returns>
-    /// A vector.
-    /// </returns>
-    public static Vector3D ToVector3D(this Point3D n)
-    {
-        return new Vector3D(n.X, n.Y, n.Z);
-    }
-
-    /// <summary>
     /// Multiplies the specified point with a scalar.
     /// </summary>
     /// <param name="p">

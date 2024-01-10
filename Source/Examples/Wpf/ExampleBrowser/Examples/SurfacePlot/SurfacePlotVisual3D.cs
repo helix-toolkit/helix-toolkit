@@ -192,12 +192,12 @@ public sealed partial class SurfacePlotVisual3D : ModelVisual3D
         if (j < 0) j = 0;
         double u = i - i0;
         double v = j - j0;
-        Vector3D v00 = p[i0, j0].ToVector3D();
-        Vector3D v01 = p[i0, j0 + 1].ToVector3D();
-        Vector3D v10 = p[i0 + 1, j0].ToVector3D();
-        Vector3D v11 = p[i0 + 1, j0 + 1].ToVector3D();
+        Vector3D v00 = p[i0, j0].ToWndVector3D();
+        Vector3D v01 = p[i0, j0 + 1].ToWndVector3D();
+        Vector3D v10 = p[i0 + 1, j0].ToWndVector3D();
+        Vector3D v11 = p[i0 + 1, j0 + 1].ToWndVector3D();
         Vector3D v0 = v00 * (1 - u) + v10 * u;
         Vector3D v1 = v01 * (1 - u) + v11 * u;
-        return (v0 * (1 - v) + v1 * v).ToPoint3D();
+        return (v0 * (1 - v) + v1 * v).ToWndPoint3D();
     }
 }

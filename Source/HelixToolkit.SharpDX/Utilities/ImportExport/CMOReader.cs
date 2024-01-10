@@ -358,7 +358,7 @@ public class CMOReader : IModelReader
             var vertexCollection = new Vector3Collection(vertexBuffers[(int)sub.VertexDataIndex].Select(x => x.Position));
             var normal = new Vector3Collection(vertexBuffers[(int)sub.VertexDataIndex].Select(x => x.Normal));
             var tex = new Vector2Collection(vertexBuffers[(int)sub.VertexDataIndex].Select(x => x.UV));
-            var tangent = new Vector3Collection(vertexBuffers[(int)sub.VertexDataIndex].Select(x => x.Tangent.ToVector3()));
+            var tangent = new Vector3Collection(vertexBuffers[(int)sub.VertexDataIndex].Select(x => x.Tangent.ToHomogeneousVector3()));
             var biTangent = new Vector3Collection(normal.Zip(tangent, (x, y) => { return Vector3.Cross(x, y); }));
             var indexCollection = new IntCollection(indices[(int)sub.IndexDataIndex].Select(x => (int)x));
             var meshGeo = new MeshGeometry3D()

@@ -181,8 +181,8 @@ public class LineGeometryOctree : DynamicOctreeBase<KeyValuePair<int, BoundingBo
                 Vector4 tp4;
                 Vector3Helper.Transform(ref sp, ref svpm, out sp4);
                 Vector3Helper.Transform(ref tp, ref svpm, out tp4);
-                var sp3 = sp4.ToVector3();
-                var tp3 = tp4.ToVector3();
+                var sp3 = sp4.ToHomogeneousVector3();
+                var tp3 = tp4.ToHomogeneousVector3();
                 var tv2 = new Vector2(tp3.X - sp3.X, tp3.Y - sp3.Y);
                 var dist = tv2.Length();
                 if (dist < lastDist && dist <= hitThickness)

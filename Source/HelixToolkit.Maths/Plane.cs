@@ -341,13 +341,14 @@ namespace HelixToolkit.Maths
         {
             // https://graphics.stanford.edu/~mdfisher/Code/Engine/Plane.cpp.html
             Vector3 diff = p0 - p1;
-            float d = Vector3.Dot(diff, p.Normal);
+            Vector3 planeNormalize = Vector3.Normalize(p.Normal);
+            float d = Vector3.Dot(diff, planeNormalize);
             if (d == 0)
             {
                 intersection = Vector3.Zero;
                 return false;
             }
-            float u = (Vector3.Dot(p0, p.Normal) + p.D) / d;
+            float u = (Vector3.Dot(p0, planeNormalize) + p.D) / d;
             intersection = p0 + u * (p1 - p0);
             return true;
         }
@@ -654,6 +655,64 @@ namespace HelixToolkit.Maths
             {
                 planes[i] = Plane.Transform(planes[i], transformation);
             }
+        }
+
+        /// <summary>
+        /// Calculates the distance from a point to a plane.
+        /// </summary>
+        /// <param name="plane">The <see cref="Plane"/></param>
+        /// <param name="point">The point used to calculate distance</param>
+        /// <returns>
+        /// The distance from given point to the given plane<br/>
+        /// Equal zero: Point on the plane<br/>
+        /// Greater than zero: The point is on the same side of the plane's normal vector<br/>
+        /// Less than zero: The point is on the opposite side of the plane's normal vector<br/>
+        /// </returns>
+        public static float DistanceTo(ref Plane plane, ref Vector3 point)
+        {
+            var planeNormalize = Vector3.Normalize(plane.Normal);
+            return Vector3.Dot(planeNormalize, point) + plane.D;
+        }
+
+        /// <inheritdoc cref="DistanceTo(ref Plane, ref Vector3)"/>
+        public static float DistanceTo(this Plane p, ref Vector3 point)
+        {
+            return DistanceTo(ref p, ref point);
+        }
+
+        /// <summary>
+        /// Calculates the projection of a point onto a plane (nearest point).
+        /// </summary>
+        /// <param name="plane">The <see cref="Plane"/></param>
+        /// <param name="point">The point used to calculate projection</param>
+        /// <returns>The projection of a given point on a given plane.</returns>
+        public static Vector3 Project(ref Plane plane, ref Vector3 point)
+        {
+            var planeNormalize = Vector3.Normalize(plane.Normal);
+            float pointToPlaneDistance = Vector3.Dot(planeNormalize, point) + plane.D;
+            return point - pointToPlaneDistance * planeNormalize;
+        }
+
+        /// <inheritdoc cref="Project(ref Plane, ref Vector3)"/>
+        public static Vector3 Project(this Plane p, ref Vector3 point)
+        {
+            return Project(ref p, ref point);
+        }
+
+        /// <summary>
+        /// Return a new plane facing the opposite direction
+        /// </summary>
+        /// <param name="plane">The <see cref="Plane"/></param>
+        /// <returns></returns>
+        public static Plane Flip(ref Plane plane)
+        {
+            return new Plane(-plane.Normal, -plane.D);
+        }
+
+        /// <inheritdoc cref="Flip(ref Plane)"/>
+        public static Plane Flip(this Plane plane)
+        {
+            return Flip(ref plane);
         }
     }
 }
