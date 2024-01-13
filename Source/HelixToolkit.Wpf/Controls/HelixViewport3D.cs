@@ -3665,8 +3665,8 @@ public class HelixViewport3D : ItemsControl, IHelixViewport3D
         if (this.CursorRay != null)
         {
             this.CursorOnConstructionPlanePosition = this.ConstructionPlane.LineIntersection(
-                this.CursorRay.Origin.ToVector3D(),
-                (this.CursorRay.Origin.ToVector3D() + this.CursorRay.Direction))
+                this.CursorRay.Origin.ToWndVector3D(),
+                (this.CursorRay.Origin.ToWndVector3D() + this.CursorRay.Direction))
                 ?.ToWndPoint3D();
         }
         else
