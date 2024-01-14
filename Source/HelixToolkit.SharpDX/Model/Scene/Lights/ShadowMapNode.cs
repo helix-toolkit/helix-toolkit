@@ -427,7 +427,7 @@ public class ShadowMapNode : SceneNode
 
                     if (splight is not null)
                     {
-                        persCamera.Position = (splight.Position + splight.ModelMatrix.Row4().ToVector3());
+                        persCamera.Position = splight.Position + splight.ModelMatrix.Row4().ToHomogeneousVector3();
                         var look = Vector3.TransformNormal(splight.Direction, splight.ModelMatrix);
                         persCamera.LookDirection = look;
                         persCamera.FarPlaneDistance = (float)splight.Range;

@@ -126,17 +126,13 @@ namespace HelixToolkit.Maths
             return Vector3.Max(v1, v2);
         }
 
-        public static bool AnySmallerOrEqual(this Vector3 v, float value)
-        {
-            return v.X <= value || v.Y <= value || v.Z <= value;
-        }
         /// <summary>
         /// Gets a value indicting whether this instance is normalized.
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool IsNormalized(this Vector3 v)
         {
-            return MathUtil.IsOne(Vector3.Dot(v,v));
+            return MathUtil.IsOne(Vector3.Dot(v, v));
         }
 
         /// <summary>
@@ -146,6 +142,19 @@ namespace HelixToolkit.Maths
         public static bool IsZero(this Vector3 v)
         {
             return v.X == 0 && v.Y == 0 && v.Z == 0;
+        }
+
+        /// <summary>
+        /// Determines whether the specified vector is undefined (NaN,NaN,NaN).
+        /// </summary>
+        /// <param name="v">The vector.</param>
+        /// <returns>
+        /// <c>true</c> if the specified vector is undefined; otherwise, <c>false</c>.
+        /// </returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool IsUndefined(this Vector3 v)
+        {
+            return float.IsNaN(v.X) || float.IsNaN(v.Y) || float.IsNaN(v.Z);
         }
 
         /// <summary>
@@ -169,13 +178,13 @@ namespace HelixToolkit.Maths
 
         public static void Set(ref Vector3 v, int index, float value)
         {
-                switch (index)
-                {
-                    case 0: v.X = value; break;
-                    case 1: v.Y = value; break;
-                    case 2: v.Z = value; break;
-                    default: throw new ArgumentOutOfRangeException(nameof(index), "Indices for Vector3 run from 0 to 2, inclusive.");
-                }
+            switch (index)
+            {
+                case 0: v.X = value; break;
+                case 1: v.Y = value; break;
+                case 2: v.Z = value; break;
+                default: throw new ArgumentOutOfRangeException(nameof(index), "Indices for Vector3 run from 0 to 2, inclusive.");
+            }
         }
 
         /// <summary>
@@ -436,7 +445,7 @@ namespace HelixToolkit.Maths
             return result;
         }
 
- 
+
         /// <summary>
         /// Orthogonalizes a list of vectors.
         /// </summary>
@@ -571,7 +580,7 @@ namespace HelixToolkit.Maths
                 throw new ArgumentOutOfRangeException(nameof(destination), "The destination array must be of same length or larger length than the source array.");
             }
 
-            for (int i =0; i < source.Length; ++i)
+            for (int i = 0; i < source.Length; ++i)
             {
                 destination[i] = Vector3.Transform(source[i], rotation);
             }
@@ -867,34 +876,14 @@ namespace HelixToolkit.Maths
             }
         }
 
-        /// <summary>
-        /// Performs an explicit conversion from <see cref="Vector3"/> to <see cref="Vector2"/>.
-        /// </summary>
-        /// <param name="value">The value.</param>
-        /// <returns>The result of the conversion.</returns>
-        public static Vector2 ToVector2(this Vector3 value)
+        public static bool AnyUndefined(this Vector3 vector)
         {
-            return new Vector2(value.X, value.Y);
+            return float.IsNaN(vector.X) || float.IsNaN(vector.Y) || float.IsNaN(vector.Z);
         }
 
-        /// <summary>
-        /// Performs an explicit conversion from <see cref="Vector3"/> to <see cref="Vector4"/>.
-        /// </summary>
-        /// <param name="value">The value.</param>
-        /// <returns>The result of the conversion.</returns>
-        public static Vector4 ToVector4(this Vector3 value)
+        public static bool AnyInfinity(this Vector3 vector)
         {
-            return new Vector4(value, 0.0f);
-        }
-
-        public static bool AnyUndefined(this Vector3 value)
-        {
-            return float.IsNaN(value.X) || float.IsNaN(value.Y) || float.IsNaN(value.Z);
-        }
-
-        public static bool AnyInfinity(this Vector3 value)
-        {
-            return float.IsInfinity(value.X) || float.IsInfinity(value.Y) || float.IsInfinity(value.Z);
+            return float.IsInfinity(vector.X) || float.IsInfinity(vector.Y) || float.IsInfinity(vector.Z);
         }
 
         public static Vector3 FindAnyPerpendicular(this Vector3 value)
@@ -924,5 +913,61 @@ namespace HelixToolkit.Maths
             float z = Math.Max(min.Z, Math.Min(value.Z, max.Z));
             return new Vector3(x, y, z);
         }
+
+        /// <summary>
+        /// Angles the between two vectors. Return Radians;
+        /// </summary>
+        /// <param name="vector1">The vector1.</param>
+        /// <param name="vector2">The vector2.</param>
+        /// <returns></returns>
+        public static float AngleBetween(this Vector3 vector1, Vector3 vector2)
+        {
+            vector1 = Vector3.Normalize(vector1);
+            vector2 = Vector3.Normalize(vector2);
+            var ratio = Vector3.Dot(vector1, vector2);
+            float theta;
+
+            if (ratio < 0)
+            {
+                theta = (float)(Math.PI - 2.0 * Math.Asin((-vector1 - vector2).Length() / 2.0));
+            }
+            else
+            {
+                theta = (float)(2.0 * Math.Asin((vector1 - vector2).Length() / 2.0));
+            }
+            return theta;
+        }
+
+        /// <summary>
+        /// Point to plane position. Front/Back/Intersecting.
+        /// </summary>
+        /// <param name="point">The point.</param>
+        /// <param name="plane">The plane.</param>
+        /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static PlaneIntersectionType PointToPlanePosition(this Vector3 point, ref Plane plane)
+        {
+            var normal = plane.Normal * (plane.D >= 0 ? 1 : -1);
+            var v1 = new Vector4(normal, Math.Abs(plane.D));
+            var v2 = new Vector4(point, 1);
+            var ret = Vector4.Dot(v1, v2);
+            return ret > 0 ? PlaneIntersectionType.Front : ret == 0 ? PlaneIntersectionType.Intersecting : PlaneIntersectionType.Back;
+        }
+
+        /// <summary>
+        /// Point to plane position. Front/Back/Intersecting.
+        /// </summary>
+        /// <param name="point">The point.</param>
+        /// <param name="plane">The plane.</param>
+        /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static PlaneIntersectionType PointToPlanePosition(this Vector3 point, Plane plane)
+        {
+            var v1 = new Vector4((plane.Normal * (plane.D > 0 ? 1 : -1)), Math.Abs(plane.D));
+            var v2 = new Vector4(point, 1);
+            var ret = Vector4.Dot(v1, v2);
+            return ret > 0 ? PlaneIntersectionType.Front : ret == 0 ? PlaneIntersectionType.Intersecting : PlaneIntersectionType.Back;
+        }
+
     }
 }

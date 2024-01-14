@@ -90,7 +90,7 @@ public sealed class LoopSubdivision
         this.Scheme = SubdivisionScheme.Loop;
 
         // Convert points to vectors
-        this.vertices = new List<Vector3D>(vertices.Select(v => v.ToVector3D()));
+        this.vertices = new List<Vector3D>(vertices.Select(v => v.ToWndVector3D()));
 
         this.triangleIndices = triangleIndices;
     }
@@ -130,7 +130,7 @@ public sealed class LoopSubdivision
         get
         {
             // Converts vectors to points
-            return new List<Point3D>(this.vertices.Select(v => v.ToPoint3D()));
+            return new List<Point3D>(this.vertices.Select(v => v.ToWndPoint3D()));
         }
     }
 

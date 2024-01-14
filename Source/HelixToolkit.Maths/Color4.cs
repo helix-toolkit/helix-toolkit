@@ -981,7 +981,7 @@ namespace HelixToolkit.Maths
         /// </returns>
         public static implicit operator Color4(string colorStr)
         {
-            return Color4Extensions.ToColor4(colorStr);
+            return Color4Helper.ToColor4(colorStr);
         }
     }
 }

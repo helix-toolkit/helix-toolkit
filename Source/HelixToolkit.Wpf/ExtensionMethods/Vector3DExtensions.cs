@@ -39,18 +39,4 @@ public static class Vector3DExtensions
     {
         return double.IsNaN(v.X) && double.IsNaN(v.Y) && double.IsNaN(v.Z);
     }
-
-    /// <summary>
-    /// Convert a <see cref="Vector3D"/> to a <see cref="Point3D"/>.
-    /// </summary>
-    /// <param name="n">
-    /// The input vector.
-    /// </param>
-    /// <returns>
-    /// A point.
-    /// </returns>
-    public static Point3D ToPoint3D(this Vector3D n)
-    {
-        return new Point3D(n.X, n.Y, n.Z);
-    }
 }

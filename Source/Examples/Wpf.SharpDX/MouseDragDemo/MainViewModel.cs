@@ -66,7 +66,9 @@ public partial class MainViewModel : DemoCore.BaseViewModel
         b1.AddSphere(new Vector3(0, 0, 0), 0.65f);
         b1.AddBox(new Vector3(0, 0, 0), 1, 1, 1);
         var meshGeometry = b1.ToMeshGeometry3D();
-        meshGeometry.Colors = meshGeometry.TextureCoordinates is null ? new() : new Color4Collection(meshGeometry.TextureCoordinates.Select(x => x.ToColor4()));
+        meshGeometry.Colors = meshGeometry.TextureCoordinates is null 
+            ? null 
+            : new Color4Collection(meshGeometry.TextureCoordinates.Select(x => x.ToColor4(1f,1f)));
         this.MeshGeometry = meshGeometry;
         this.Model1Instances = new List<Matrix>();
         for (int i = 0; i < 5; i++)

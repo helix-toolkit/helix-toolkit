@@ -496,7 +496,7 @@ public class CrossSectionMeshNode : MeshNode
 
     private static Plane VectorToPlane(Vector4 v)
     {
-        return new Plane(v.ToXYZ(), v.W);
+        return new Plane(v.ToVector3(), v.W);
     }
 
     protected override IRenderTechnique? OnCreateRenderTechnique(IEffectsManager effectsManager)

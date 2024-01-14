@@ -64,7 +64,7 @@ public static class VolumeDataHelper
                 for (var x = 0; x < width; x++)
                 {
                     float w = data[index].W;
-                    data[index++] = SampleNxNxN(data, width, height, depth, x, y, z, n).ToVector4(w);
+                    data[index++] = new Vector4(SampleNxNxN(data, width, height, depth, x, y, z, n), w);
                 }
             }
         }

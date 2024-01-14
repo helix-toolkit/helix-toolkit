@@ -85,7 +85,7 @@ public class BillboardImage3D : BillboardBase
         var offBL = new Vector2(offTL.X, offBR.Y);
         BillboardVertices.Add(new BillboardVertex()
         {
-            Position = info.Position.ToVector4(),
+            Position = new Vector4(info.Position,1f),
             Foreground = Color.White,
             Background = maskColor,
             TexTL = info.UV_TopLeft,

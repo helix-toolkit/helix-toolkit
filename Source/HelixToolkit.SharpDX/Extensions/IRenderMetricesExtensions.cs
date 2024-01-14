@@ -39,7 +39,7 @@ public static class IRenderMetricesExtensions
         Vector3 zn;
         if (renderMatrices.IsPerspective)
         {
-            zn = viewInv.Row4().ToVector3();
+            zn = viewInv.Row4().ToHomogeneousVector3();
         }
         else
         {

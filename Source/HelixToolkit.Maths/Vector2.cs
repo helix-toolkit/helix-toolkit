@@ -87,7 +87,7 @@ namespace HelixToolkit.Maths
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool IsNormalized(this Vector2 v)
         {
-            return MathUtil.IsOne(Vector2.Dot(v,v));
+            return MathUtil.IsOne(Vector2.Dot(v, v));
         }
 
         /// <summary>
@@ -119,12 +119,12 @@ namespace HelixToolkit.Maths
 
         public static void Set(ref Vector2 v, int index, float value)
         {
-                switch (index)
-                {
-                    case 0: v.X = value; break;
-                    case 1: v.Y = value; break;
-                    default: throw new ArgumentOutOfRangeException(nameof(index), "Indices for Vector2 run from 0 to 1, inclusive.");
-                }
+            switch (index)
+            {
+                case 0: v.X = value; break;
+                case 1: v.Y = value; break;
+                default: throw new ArgumentOutOfRangeException(nameof(index), "Indices for Vector2 run from 0 to 1, inclusive.");
+            }
         }
 
         /// <summary>
@@ -148,8 +148,8 @@ namespace HelixToolkit.Maths
         public static void Barycentric(ref Vector2 value1, ref Vector2 value2, ref Vector2 value3, float amount1, float amount2, out Vector2 result)
         {
             result = value1 + amount1 * (value2 - value1) + amount2 * (value3 - value1);
-                //new Vector2((value1.X + (amount1 * (value2.X - value1.X))) + (amount2 * (value3.X - value1.X)),
-                //(value1.Y + (amount1 * (value2.Y - value1.Y))) + (amount2 * (value3.Y - value1.Y)));
+            //new Vector2((value1.X + (amount1 * (value2.X - value1.X))) + (amount2 * (value3.X - value1.X)),
+            //(value1.Y + (amount1 * (value2.Y - value1.Y))) + (amount2 * (value3.Y - value1.Y)));
         }
 
         /// <summary>
@@ -253,7 +253,7 @@ namespace HelixToolkit.Maths
             float squared = amount * amount;
             float cubed = amount * squared;
             result = 0.5f * ((2f * value2) + ((-value1 + value3) * amount)
-                +(((2f * value1) - (5f * value2) + (4f * value3) - value4) * squared)
+                + (((2f * value1) - (5f * value2) + (4f * value3) - value4) * squared)
                 + ((-value1 + (3f * value2) - (3f * value3) + value4) * cubed));
 
             //result.X = 0.5f * ((((2.0f * value2.X) + ((-value1.X + value3.X) * amount)) +
@@ -414,7 +414,7 @@ namespace HelixToolkit.Maths
                 throw new ArgumentOutOfRangeException(nameof(destination), "The destination array must be of same length or larger length than the source array.");
             }
 
-            for (int i =0; i < source.Length; ++i)
+            for (int i = 0; i < source.Length; ++i)
             {
                 destination[i] = Vector2.Transform(source[i], rotation);
             }
@@ -637,25 +637,5 @@ namespace HelixToolkit.Maths
             }
         }
 
-
-        /// <summary>
-        /// Performs an explicit conversion from <see cref="Vector2"/> to <see cref="Vector3"/>.
-        /// </summary>
-        /// <param name="value">The value.</param>
-        /// <returns>The result of the conversion.</returns>
-        public static Vector3 ToVector3(this Vector2 value)
-        {
-            return new Vector3(value.X, value.Y, 0.0f);
-        }
-
-        /// <summary>
-        /// Performs an explicit conversion from <see cref="Vector2"/> to <see cref="Vector4"/>.
-        /// </summary>
-        /// <param name="value">The value.</param>
-        /// <returns>The result of the conversion.</returns>
-        public static Vector4 ToVector4(this Vector2 value)
-        {
-            return new Vector4(value, 0.0f, 0.0f);
-        }
     }
 }

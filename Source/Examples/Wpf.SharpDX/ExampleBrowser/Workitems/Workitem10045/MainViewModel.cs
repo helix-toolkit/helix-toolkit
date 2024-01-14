@@ -57,7 +57,9 @@ public class MainViewModel : DemoCore.BaseViewModel
         b1.AddBox(new Vector3(0, 0, 0), 1, 0.5f, 2, BoxFaces.All);
 
         var meshGeometry = b1.ToMeshGeometry3D();
-        meshGeometry.Colors = meshGeometry.TextureCoordinates is null ? null : new Color4Collection(meshGeometry.TextureCoordinates.Select(x => x.ToColor4()));
+        meshGeometry.Colors = meshGeometry.TextureCoordinates is null 
+            ? null 
+            : new Color4Collection(meshGeometry.TextureCoordinates.Select(x => x.ToColor4(1f,1f)));
         this.Model = meshGeometry;
 
         // lines model3d

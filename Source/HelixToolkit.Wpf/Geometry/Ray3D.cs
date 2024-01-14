@@ -1,4 +1,5 @@
-﻿using System.Windows.Media.Media3D;
+﻿using System.Numerics;
+using System.Windows.Media.Media3D;
 
 namespace HelixToolkit.Wpf;
 
@@ -11,48 +12,6 @@ public class Ray3D
     /// The direction
     /// </summary>
     private Vector3D direction;
-
-    /// <summary>
-    /// The origin
-    /// </summary>
-    private Point3D origin;
-
-    /// <summary>
-    /// Initializes a new instance of the <see cref = "Ray3D" /> class.
-    /// </summary>
-    public Ray3D()
-    {
-    }
-
-    /// <summary>
-    /// Initializes a new instance of the <see cref="Ray3D"/> class.
-    /// </summary>
-    /// <param name="o">
-    /// The o.
-    /// </param>
-    /// <param name="d">
-    /// The sender.
-    /// </param>
-    public Ray3D(Point3D o, Vector3D d)
-    {
-        this.Origin = o;
-        this.Direction = d;
-    }
-
-    /// <summary>
-    /// Initializes a new instance of the <see cref="Ray3D"/> class.
-    /// </summary>
-    /// <param name="p0">
-    /// The p0.
-    /// </param>
-    /// <param name="p1">
-    /// The p1.
-    /// </param>
-    public Ray3D(Point3D p0, Point3D p1)
-    {
-        this.Origin = p0;
-        this.Direction = p1 - p0;
-    }
 
     /// <summary>
     /// Gets or sets the direction.
@@ -70,6 +29,10 @@ public class Ray3D
             this.direction = value;
         }
     }
+    /// <summary>
+    /// The origin
+    /// </summary>
+    private Point3D origin;
 
     /// <summary>
     /// Gets or sets the origin.
@@ -86,6 +49,43 @@ public class Ray3D
         {
             this.origin = value;
         }
+    }
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref = "Ray3D" /> class.
+    /// </summary>
+    public Ray3D()
+    {
+    }
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="Ray3D"/> class.
+    /// </summary>
+    /// <param name="origin">
+    /// The origin.
+    /// </param>
+    /// <param name="direction">
+    /// The direction.
+    /// </param>
+    public Ray3D(Point3D origin, Vector3D direction)
+    {
+        this.Origin = origin;
+        this.Direction = direction;
+    }
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="Ray3D"/> class.
+    /// </summary>
+    /// <param name="p0">
+    /// The p0.
+    /// </param>
+    /// <param name="p1">
+    /// The p1.
+    /// </param>
+    public Ray3D(Point3D p0, Point3D p1)
+    {
+        this.Origin = p0;
+        this.Direction = p1 - p0;
     }
 
     /// <summary>
@@ -122,7 +122,6 @@ public class Ray3D
         {
             return intersection;
         }
-
         return null;
     }
 
@@ -137,16 +136,9 @@ public class Ray3D
     /// </returns>
     public bool PlaneIntersection(Point3D position, Vector3D normal, out Point3D intersection)
     {
-        // http://paulbourke.net/geometry/planeline/
-        double dn = Vector3D.DotProduct(normal, this.Direction);
-        if (dn.Equals(0))
-        {
-            intersection = default;
-            return false;
-        }
-
-        double u = Vector3D.DotProduct(normal, position - this.origin) / dn;
-        intersection = this.Origin + (u * this.direction);
-        return true;
+        Plane plane = HelixToolkit.Maths.PlaneHelper.Create(position.ToVector3(), normal.ToVector3());
+        bool isIntersect = this.ToRay().Intersects(ref plane, out Vector3 point);
+        intersection = point.ToWndPoint3D();
+        return isIntersect;
     }
 }

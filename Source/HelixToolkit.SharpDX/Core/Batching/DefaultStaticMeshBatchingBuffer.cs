@@ -75,7 +75,7 @@ public class DefaultStaticMeshBatchingBuffer
                     textures.MoveNext();
                     array[i] = new BatchedMeshVertex()
                     {
-                        Position = positions.Current.ToVector4(),
+                        Position = new Vector4(positions.Current, 1f),
                         Normal = normals.Current,
                         Tangent = tangents.Current,
                         BiTangent = bitangents.Current,
@@ -96,7 +96,7 @@ public class DefaultStaticMeshBatchingBuffer
                     textures.MoveNext();
                     array[i] = new BatchedMeshVertex()
                     {
-                        Position = positions.Current.ToVector4().Transform(ref transform),
+                        Position = new Vector4(positions.Current, 1f).Transform(ref transform),
                         Normal = Vector3Helper.TransformNormal(normals.Current, ref transform),
                         Tangent = Vector3Helper.TransformNormal(tangents.Current, ref transform),
                         BiTangent = Vector3Helper.TransformNormal(bitangents.Current, ref transform),

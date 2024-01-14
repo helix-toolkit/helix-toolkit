@@ -98,7 +98,7 @@ namespace HelixToolkit.Maths
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool IsNormalized(this Vector4 v)
         {
-            return MathUtil.IsOne(Vector4.Dot(v,v));
+            return MathUtil.IsOne(Vector4.Dot(v, v));
         }
 
         /// <summary>
@@ -229,10 +229,10 @@ namespace HelixToolkit.Maths
             float part4 = cubed - squared;
 
             result = value1 * part1 + value2 * part2 + tangent1 * part3 + tangent2 * part4;
-                //new Vector4((((value1.X * part1) + (value2.X * part2)) + (tangent1.X * part3)) + (tangent2.X * part4),
-                //(((value1.Y * part1) + (value2.Y * part2)) + (tangent1.Y * part3)) + (tangent2.Y * part4),
-                //(((value1.Z * part1) + (value2.Z * part2)) + (tangent1.Z * part3)) + (tangent2.Z * part4),
-                //(((value1.W * part1) + (value2.W * part2)) + (tangent1.W * part3)) + (tangent2.W * part4));
+            //new Vector4((((value1.X * part1) + (value2.X * part2)) + (tangent1.X * part3)) + (tangent2.X * part4),
+            //(((value1.Y * part1) + (value2.Y * part2)) + (tangent1.Y * part3)) + (tangent2.Y * part4),
+            //(((value1.Z * part1) + (value2.Z * part2)) + (tangent1.Z * part3)) + (tangent2.Z * part4),
+            //(((value1.W * part1) + (value2.W * part2)) + (tangent1.W * part3)) + (tangent2.W * part4));
         }
 
         /// <summary>
@@ -418,7 +418,7 @@ namespace HelixToolkit.Maths
                 throw new ArgumentOutOfRangeException(nameof(destination), "The destination array must be of same length or larger length than the source array.");
             }
 
-            for (int i =0; i < source.Length; ++i)
+            for (int i = 0; i < source.Length; ++i)
             {
                 destination[i] = Vector4.Transform(source[i], rotation);
             }
@@ -465,11 +465,11 @@ namespace HelixToolkit.Maths
         public static void Transform(ref Vector4 vector, ref Matrix transform, out Vector4 result)
         {
             result = Vector4.Transform(vector, transform);
-                //new Vector4(
-                //(vector.X * transform.M11) + (vector.Y * transform.M21) + (vector.Z * transform.M31) + (vector.W * transform.M41),
-                //(vector.X * transform.M12) + (vector.Y * transform.M22) + (vector.Z * transform.M32) + (vector.W * transform.M42),
-                //(vector.X * transform.M13) + (vector.Y * transform.M23) + (vector.Z * transform.M33) + (vector.W * transform.M43),
-                //(vector.X * transform.M14) + (vector.Y * transform.M24) + (vector.Z * transform.M34) + (vector.W * transform.M44));
+            //new Vector4(
+            //(vector.X * transform.M11) + (vector.Y * transform.M21) + (vector.Z * transform.M31) + (vector.W * transform.M41),
+            //(vector.X * transform.M12) + (vector.Y * transform.M22) + (vector.Z * transform.M32) + (vector.W * transform.M42),
+            //(vector.X * transform.M13) + (vector.Y * transform.M23) + (vector.Z * transform.M33) + (vector.W * transform.M43),
+            //(vector.X * transform.M14) + (vector.Y * transform.M24) + (vector.Z * transform.M34) + (vector.W * transform.M44));
         }
         /// <summary>
         /// Transforms a 4D vector by the given <see cref="Matrix"/>.
@@ -518,24 +518,5 @@ namespace HelixToolkit.Maths
             }
         }
 
-        /// <summary>
-        /// Performs an explicit conversion from <see cref="Vector4"/> to <see cref="Vector2"/>.
-        /// </summary>
-        /// <param name="value">The value.</param>
-        /// <returns>The result of the conversion.</returns>
-        public static Vector2 ToVector2(this Vector4 value)
-        {
-            return new Vector2(value.X, value.Y);
-        }
-
-        /// <summary>
-        /// Performs an explicit conversion from <see cref="Vector4"/> to <see cref="Vector3"/>.
-        /// </summary>
-        /// <param name="value">The value.</param>
-        /// <returns>The result of the conversion.</returns>
-        public static Vector3 ToVector3(this Vector4 value)
-        {
-            return new Vector3(value.X, value.Y, value.Z);
-        }
     }
 }

@@ -224,7 +224,7 @@ public class BillboardSingleImage3D : BillboardBase
         var bl = new Vector2(tl.X, br.Y);
         BillboardVertices.Add(new BillboardVertex()
         {
-            Position = Center.ToVector4(),
+            Position = new Vector4(Center, 1f),
             Foreground = Color.White,
             Background = MaskColor,
             TexTL = uv_tl,
