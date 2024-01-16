@@ -90,7 +90,7 @@ namespace HelixToolkit.Maths
                             {
                                 return Color.Transparent;
                             }
-                            obj = FromArgb(unchecked((int)(0xFF000000 | (uint)intVal)));
+                            obj = FromArgb(unchecked((int)(0xFF000000 | Convert.ToUInt32(intVal))));
                         }
                     }
 
