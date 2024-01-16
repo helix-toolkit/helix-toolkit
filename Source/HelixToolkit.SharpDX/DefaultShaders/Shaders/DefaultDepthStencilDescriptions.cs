@@ -105,8 +105,8 @@ public static class DefaultDepthStencilDescriptions
         StencilReadMask = 0,
         BackFace = new DepthStencilOperationDescription()
         {
-            PassOperation = StencilOperation.Keep,
-            Comparison = Comparison.Never,
+            PassOperation = StencilOperation.Replace,
+            Comparison = Comparison.Always,
             DepthFailOperation = StencilOperation.Keep,
             FailOperation = StencilOperation.Keep
         },
