@@ -147,6 +147,6 @@ public class QuadVisual3D : MeshElement3D
             new System.Numerics.Vector2(1, 1),
             new System.Numerics.Vector2(1, 0),
             new System.Numerics.Vector2(0, 0));
-        return builder.ToMesh().ToMeshGeometry3D();
+        return builder.ToMesh().ToWndMeshGeometry3D();
     }
 }

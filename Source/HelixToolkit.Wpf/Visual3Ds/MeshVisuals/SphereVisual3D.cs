@@ -111,6 +111,6 @@ public class SphereVisual3D : MeshElement3D
     {
         var builder = new MeshBuilder(true, true);
         builder.AddSphere(this.Center.ToVector3(), (float)this.Radius, this.ThetaDiv, this.PhiDiv);
-        return builder.ToMesh().ToMeshGeometry3D();
+        return builder.ToMesh().ToWndMeshGeometry3D();
     }
 }

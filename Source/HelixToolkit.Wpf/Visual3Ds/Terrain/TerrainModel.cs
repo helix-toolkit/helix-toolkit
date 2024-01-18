@@ -124,7 +124,7 @@ public class TerrainModel
 
         var mb = new MeshBuilder(false, false);
         mb.AddRectangularMesh(pts.ToVector3Collection()!, nj);
-        var mesh = mb.ToMesh().ToMeshGeometry3D();
+        var mesh = mb.ToMesh().ToWndMeshGeometry3D();
 
         var material = Materials.Green;
 

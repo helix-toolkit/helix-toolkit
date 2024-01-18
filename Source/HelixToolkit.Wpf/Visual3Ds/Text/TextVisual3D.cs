@@ -435,10 +435,6 @@ public class TextVisual3D : ModelVisual3D
         }
         set
         {
-            if (value != 0 && rotateTransform is null)
-            {
-                rotateTransform = new RotateTransform();
-            }
             this.SetValue(AngleProperty, value);
         }
     }

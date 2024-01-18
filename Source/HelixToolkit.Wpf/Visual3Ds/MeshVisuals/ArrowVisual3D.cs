@@ -176,6 +176,6 @@ public class ArrowVisual3D : MeshElement3D
 
         var builder = new MeshBuilder(true, true);
         builder.AddArrow(this.Point1.ToVector3(), this.Point2.ToVector3(), (float)this.Diameter, (float)this.HeadLength, this.ThetaDiv);
-        return builder.ToMesh().ToMeshGeometry3D();
+        return builder.ToMesh().ToWndMeshGeometry3D();
     }
 }

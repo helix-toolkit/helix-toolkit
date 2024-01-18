@@ -88,7 +88,7 @@ public sealed class OffReader : ModelReader
             mb.AddTriangleFan(face);
         }
 
-        return mb.ToMesh().ToMeshGeometry3D();
+        return mb.ToMesh().ToWndMeshGeometry3D();
     }
 
     /// <summary>

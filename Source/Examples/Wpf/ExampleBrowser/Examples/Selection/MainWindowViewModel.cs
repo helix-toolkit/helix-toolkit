@@ -24,13 +24,13 @@ public sealed partial class MainWindowViewModel : ObservableObject
     }
 
     [ObservableProperty]
-    private bool _isPointSelectionCommand = true;
+    private bool isPointSelectionCommand = true;
 
     [ObservableProperty]
-    private bool _isRectangleSelectionCommand;
+    private bool isRectangleSelectionCommand;
 
     [ObservableProperty]
-    private bool _isCombinedSelectionCommand;
+    private bool isCombinedSelectionCommand;
 
     public bool AllowAutoSetSelectionHitMode
     {

@@ -559,7 +559,7 @@ public class TextGroupVisual3D : ModelVisual3D
                 addedChildren.Add(item);
             }
 
-            var mg = builder.ToMesh().ToMeshGeometry3D();
+            var mg = builder.ToMesh().ToWndMeshGeometry3D();
             group.Children.Add(new GeometryModel3D(mg, material));
 
             foreach (var c in addedChildren)

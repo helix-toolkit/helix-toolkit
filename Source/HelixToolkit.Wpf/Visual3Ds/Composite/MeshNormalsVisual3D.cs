@@ -112,7 +112,7 @@ public class MeshNormalsVisual3D : ModelVisual3D
 
         this.Content = new GeometryModel3D
         {
-            Geometry = builder.ToMesh().ToMeshGeometry3D(true),
+            Geometry = builder.ToMesh().ToWndMeshGeometry3D(true),
             Material = MaterialHelper.CreateMaterial(this.Color)
         };
     }

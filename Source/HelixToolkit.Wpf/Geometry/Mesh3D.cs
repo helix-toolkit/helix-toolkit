@@ -372,7 +372,7 @@ public class Mesh3D : ICloneable
                     tm.Positions.Add(vertex.ToVector3());
                     if (tm.CreateTextureCoordinates)
                     {
-                        tm.TextureCoordinates!.Add(this.TextureCoordinates![v].ToVector());
+                        tm.TextureCoordinates!.Add(this.TextureCoordinates![v].ToVector2());
                     }
                 }
 
@@ -389,7 +389,7 @@ public class Mesh3D : ICloneable
                 faceIndex++;
             }
 
-            return tm.ToMesh().ToMeshGeometry3D();
+            return tm.ToMesh().ToWndMeshGeometry3D();
         }
         else
         {
@@ -404,7 +404,7 @@ public class Mesh3D : ICloneable
             {
                 foreach (var uv in this.TextureCoordinates)
                 {
-                    tm.TextureCoordinates!.Add(uv.ToVector());
+                    tm.TextureCoordinates!.Add(uv.ToVector2());
                 }
             }
 
@@ -424,7 +424,7 @@ public class Mesh3D : ICloneable
                 faceIndex++;
             }
 
-            return tm.ToMesh().ToMeshGeometry3D();
+            return tm.ToMesh().ToWndMeshGeometry3D();
         }
     }
 

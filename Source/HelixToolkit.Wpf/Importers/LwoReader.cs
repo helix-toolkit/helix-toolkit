@@ -132,7 +132,7 @@ public sealed class LwoReader : ModelReader
                 {
                     var gm = new GeometryModel3D
                     {
-                        Geometry = mesh.ToMesh().ToMeshGeometry3D(),
+                        Geometry = mesh.ToMesh().ToWndMeshGeometry3D(),
                         Material = this.Materials[index],
                         BackMaterial = this.Materials[index]
                     };

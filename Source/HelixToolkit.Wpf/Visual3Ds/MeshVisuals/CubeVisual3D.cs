@@ -105,6 +105,6 @@ public class CubeVisual3D : MeshElement3D
             (float)this.SideLength,
             (float)this.SideLength);
 
-        return b.ToMesh().ToMeshGeometry3D();
+        return b.ToMesh().ToWndMeshGeometry3D();
     }
 }

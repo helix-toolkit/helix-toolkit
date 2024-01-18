@@ -359,7 +359,7 @@ public abstract class Geometry3D : ObservableObject, IGUID
             Bound = BoundingBoxHelper.FromPoints(Positions);
             BoundingSphere = BoundingSphereExtensions.FromPoints(Positions);
         }
-        if (Bound.Maximum.IsUndefined() || Bound.Minimum.IsUndefined() || BoundingSphere.Center.IsUndefined()
+        if (Bound.Maximum.AnyUndefined() || Bound.Minimum.AnyUndefined() || BoundingSphere.Center.AnyUndefined()
             || float.IsInfinity(Bound.Center.X) || float.IsInfinity(Bound.Center.Y) || float.IsInfinity(Bound.Center.Z))
         {
             throw new Exception("Position vertex contains invalid value(Example: Float.NaN, Float.Infinity).");
