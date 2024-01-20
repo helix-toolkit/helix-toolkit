@@ -212,6 +212,6 @@ public class TruncatedConeVisual3D : MeshElement3D
             this.BaseCap,
             this.TopCap,
             this.ThetaDiv);
-        return builder.ToMesh().ToMeshGeometry3D();
+        return builder.ToMesh().ToWndMeshGeometry3D();
     }
 }

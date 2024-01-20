@@ -75,7 +75,7 @@ namespace HelixToolkit.Maths
         }
 
         /// <summary>
-        /// Returns the height of the bounding box
+        /// Returns the depth of the bounding box
         /// </summary>
         public readonly float Depth
         {
@@ -91,7 +91,7 @@ namespace HelixToolkit.Maths
         }
 
         /// <summary>
-        /// Returns the size of the bounding box
+        /// Returns the center point of the bounding box
         /// </summary>
         public readonly Vector3 Center
         {

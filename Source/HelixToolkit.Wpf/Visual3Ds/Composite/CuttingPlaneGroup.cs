@@ -227,10 +227,10 @@ public class CuttingPlaneGroup : RenderingModelVisual3D
                     foreach (var cp in this.CuttingPlanes)
                     {
                         var cg = this.Intersect(originalMeshGeometry, inverseTransform, cp, true);
-                        builder.Append(cg.ToWndMeshGeometry3D());
+                        builder.Append(cg.ToMeshGeometry3D());
                     }
 
-                    newGeometry = builder.ToMesh().ToMeshGeometry3D(true);
+                    newGeometry = builder.ToMesh().ToWndMeshGeometry3D(true);
                     break;
             }
         }
@@ -258,7 +258,7 @@ public class CuttingPlaneGroup : RenderingModelVisual3D
             n *= -1;
         }
 
-        return MeshGeometryHelper.Cut(source.ToWndMeshGeometry3D(), p.ToVector3(), n.ToVector3()).ToMeshGeometry3D();
+        return MeshGeometryHelper.Cut(source.ToMeshGeometry3D(), p.ToVector3(), n.ToVector3()).ToWndMeshGeometry3D();
     }
     /// <summary>
     /// Update the cutting planes to the model.

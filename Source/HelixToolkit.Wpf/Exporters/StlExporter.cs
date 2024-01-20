@@ -110,7 +110,7 @@ public sealed class StlExporter : Exporter<BinaryWriter>
         var normals = mesh.Normals;
         if (normals == null || normals.Count != mesh.Positions.Count)
         {
-            normals = Converter.ToVector3DCollection(MeshGeometryHelper.CalculateNormals(mesh.ToWndMeshGeometry3D()));
+            normals = Converter.ToWndVector3DCollection(MeshGeometryHelper.CalculateNormals(mesh.ToMeshGeometry3D()));
         }
 
         // TODO: Also handle non-uniform scale

@@ -145,19 +145,6 @@ namespace HelixToolkit.Maths
         }
 
         /// <summary>
-        /// Determines whether the specified vector is undefined (NaN,NaN,NaN).
-        /// </summary>
-        /// <param name="v">The vector.</param>
-        /// <returns>
-        /// <c>true</c> if the specified vector is undefined; otherwise, <c>false</c>.
-        /// </returns>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static bool IsUndefined(this Vector3 v)
-        {
-            return float.IsNaN(v.X) || float.IsNaN(v.Y) || float.IsNaN(v.Z);
-        }
-
-        /// <summary>
         /// Gets or sets the component at the specified index.
         /// </summary>
         /// <value>The value of the X, Y, or Z component, depending on the index.</value>
@@ -876,6 +863,30 @@ namespace HelixToolkit.Maths
             }
         }
 
+        public static void Clamp(ref Vector3 value, ref Vector3 min, ref Vector3 max, out Vector3 result)
+        {
+            float x = Math.Max(min.X, Math.Min(value.X, max.X));
+            float y = Math.Max(min.Y, Math.Min(value.Y, max.Y));
+            float z = Math.Max(min.Z, Math.Min(value.Z, max.Z));
+            result = new Vector3(x, y, z);
+        }
+
+        public static Vector3 Clamp(this Vector3 value, Vector3 min, Vector3 max)
+        {
+            float x = Math.Max(min.X, Math.Min(value.X, max.X));
+            float y = Math.Max(min.Y, Math.Min(value.Y, max.Y));
+            float z = Math.Max(min.Z, Math.Min(value.Z, max.Z));
+            return new Vector3(x, y, z);
+        }
+
+        /// <summary>
+        /// Determines whether any components of the vector are undefined (NaN).
+        /// </summary>
+        /// <param name="vector">The vector.</param>
+        /// <returns>
+        /// <c>true</c> if the vector has at least one undefined component; otherwise, <c>false</c>.
+        /// </returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool AnyUndefined(this Vector3 vector)
         {
             return float.IsNaN(vector.X) || float.IsNaN(vector.Y) || float.IsNaN(vector.Z);
@@ -894,24 +905,7 @@ namespace HelixToolkit.Maths
             {
                 u = Vector3.Cross(new Vector3(1, 0, 0), n);
             }
-
             return u;
-        }
-
-        public static void Clamp(ref Vector3 value, ref Vector3 min, ref Vector3 max, out Vector3 result)
-        {
-            float x = Math.Max(min.X, Math.Min(value.X, max.X));
-            float y = Math.Max(min.Y, Math.Min(value.Y, max.Y));
-            float z = Math.Max(min.Z, Math.Min(value.Z, max.Z));
-            result = new Vector3(x, y, z);
-        }
-
-        public static Vector3 Clamp(this Vector3 value, Vector3 min, Vector3 max)
-        {
-            float x = Math.Max(min.X, Math.Min(value.X, max.X));
-            float y = Math.Max(min.Y, Math.Min(value.Y, max.Y));
-            float z = Math.Max(min.Z, Math.Min(value.Z, max.Z));
-            return new Vector3(x, y, z);
         }
 
         /// <summary>

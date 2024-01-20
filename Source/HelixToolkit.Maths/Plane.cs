@@ -60,6 +60,7 @@ namespace HelixToolkit.Maths
             Vector3 p13 = point3 - point1;
             Vector3 normal = Vector3.Normalize(Vector3.Cross(p12, p13));
             return new Plane(normal, -Vector3.Dot(normal, point1));
+            //return Plane.CreateFromVertices(point1, point2, point3);
             //float x1 = point2.X - point1.X;
             //float y1 = point2.Y - point1.Y;
             //float z1 = point2.Z - point1.Z;
@@ -86,6 +87,7 @@ namespace HelixToolkit.Maths
             plane.Normal *= length;
             plane.D *= length;
             return plane;
+            //return Plane.Normalize(plane);
         }
         /// <summary>
         /// Gets or sets the component at the specified index.

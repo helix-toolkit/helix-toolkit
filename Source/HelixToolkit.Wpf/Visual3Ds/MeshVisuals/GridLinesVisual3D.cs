@@ -276,7 +276,7 @@ public class GridLinesVisual3D : MeshElement3D
             y += this.MinorDistance;
         }
 
-        var m = mesh.ToMesh().ToMeshGeometry3D(true);
+        var m = mesh.ToMesh().ToWndMeshGeometry3D(true);
         return m;
     }
 

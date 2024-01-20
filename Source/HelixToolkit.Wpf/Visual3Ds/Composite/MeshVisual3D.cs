@@ -290,7 +290,7 @@ public class MeshVisual3D : ModelVisual3D
                 // gm.AddBox(p, VertexRadius, VertexRadius, VertexRadius);
             }
 
-            m.Children.Add(new GeometryModel3D(gm.ToMesh().ToMeshGeometry3D(), this.VertexMaterial));
+            m.Children.Add(new GeometryModel3D(gm.ToMesh().ToWndMeshGeometry3D(), this.VertexMaterial));
         }
 
         // Add the edges
@@ -309,7 +309,7 @@ public class MeshVisual3D : ModelVisual3D
                 }
             }
 
-            m.Children.Add(new GeometryModel3D(em.ToMesh().ToMeshGeometry3D(), this.EdgeMaterial));
+            m.Children.Add(new GeometryModel3D(em.ToMesh().ToWndMeshGeometry3D(), this.EdgeMaterial));
         }
 
         this.Content = m;

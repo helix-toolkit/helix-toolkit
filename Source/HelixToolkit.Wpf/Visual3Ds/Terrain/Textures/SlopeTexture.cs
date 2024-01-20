@@ -44,7 +44,7 @@ public class SlopeTexture : TerrainTexture
     /// </param>
     public override void Calculate(TerrainModel model, MeshGeometry3D mesh)
     {
-        var normals = MeshGeometryHelper.CalculateNormals(mesh.ToWndMeshGeometry3D());
+        var normals = MeshGeometryHelper.CalculateNormals(mesh.ToMeshGeometry3D());
         var texcoords = new PointCollection();
         var up = new Vector3D(0, 0, 1);
         for (int i = 0; i < normals.Count; i++)

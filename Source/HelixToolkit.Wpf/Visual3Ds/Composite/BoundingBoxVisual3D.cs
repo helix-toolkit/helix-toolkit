@@ -5,7 +5,7 @@ using System.Windows.Media.Media3D;
 namespace HelixToolkit.Wpf;
 
 /// <summary>
-/// A visual element that shows a wireframe for the specified bounding box.
+/// A visual element that shows the edges of the specified bounding box.
 /// </summary>
 public class BoundingBoxVisual3D : ModelVisual3D
 {
@@ -90,7 +90,7 @@ public class BoundingBoxVisual3D : ModelVisual3D
         }
         var meshBuilder = new MeshBuilder(false, false);
         meshBuilder.AddBoundingBox(this.BoundingBox.ToBoundingBox(), (float)Diameter);
-        GeometryModel3D geoBoundingBox = new GeometryModel3D(meshBuilder.ToMesh().ToMeshGeometry3D(), MaterialHelper.CreateMaterial(Fill));
+        GeometryModel3D geoBoundingBox = new GeometryModel3D(meshBuilder.ToMesh().ToWndMeshGeometry3D(), MaterialHelper.CreateMaterial(Fill));
         this.Content = geoBoundingBox;
     }
 

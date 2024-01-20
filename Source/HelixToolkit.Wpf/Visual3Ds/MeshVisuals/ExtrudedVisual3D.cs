@@ -239,15 +239,15 @@ public class ExtrudedVisual3D : MeshElement3D
         }
 
         builder.AddTube(
-            this.Path.ToCollection()!,
+            this.Path.ToVector3Collection()!,
             this.Angles?.ToFloatCollection(),
             this.TextureCoordinates?.ToFloatCollection(),
             this.Diameters?.ToFloatCollection(),
-            this.Section?.ToCollection(),
+            this.Section?.ToVector2Collection(),
             sectionXAxis.ToVector3(),
             this.IsPathClosed,
             this.IsSectionClosed);
 
-        return builder.ToMesh().ToMeshGeometry3D();
+        return builder.ToMesh().ToWndMeshGeometry3D();
     }
 }

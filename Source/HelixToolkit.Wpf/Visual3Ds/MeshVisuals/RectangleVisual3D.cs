@@ -211,7 +211,7 @@ public class RectangleVisual3D : MeshElement3D
         var builder = new MeshBuilder(false, true);
         builder.AddRectangularMesh(pts.ToVector3Collection()!, this.DivWidth);
 
-        return builder.ToMesh().ToMeshGeometry3D();
+        return builder.ToMesh().ToWndMeshGeometry3D();
     }
 
     /// <summary>

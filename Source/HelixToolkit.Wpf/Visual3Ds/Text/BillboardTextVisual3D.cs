@@ -297,10 +297,6 @@ public class BillboardTextVisual3D : BillboardVisual3D, IBoundsIgnoredVisual3D
         }
         set
         {
-            if (value != 0 && rotateTransform is null)
-            {
-                rotateTransform = new RotateTransform();
-            }
             this.SetValue(AngleProperty, value);
         }
     }

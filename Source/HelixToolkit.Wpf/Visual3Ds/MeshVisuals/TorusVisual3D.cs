@@ -114,6 +114,6 @@ public class TorusVisual3D : MeshElement3D
     {
         var builder = new MeshBuilder(false, true);
         builder.AddTorus((float)this.TorusDiameter, (float)this.TubeDiameter, this.ThetaDiv, this.PhiDiv);
-        return builder.ToMesh().ToMeshGeometry3D();
+        return builder.ToMesh().ToWndMeshGeometry3D();
     }
 }

@@ -159,6 +159,6 @@ public class EllipsoidVisual3D : MeshElement3D
     {
         var builder = new MeshBuilder(false, true);
         builder.AddEllipsoid(this.Center.ToVector3(), (float)this.RadiusX, (float)this.RadiusY, (float)this.RadiusZ, this.ThetaDiv, this.PhiDiv);
-        return builder.ToMesh().ToMeshGeometry3D();
+        return builder.ToMesh().ToWndMeshGeometry3D();
     }
 }

@@ -211,6 +211,6 @@ public class PieSliceVisual3D : MeshElement3D
 
         var b = new MeshBuilder(false, false);
         b.AddTriangleStrip(pts.ToVector3Collection()!);
-        return b.ToMesh().ToMeshGeometry3D();
+        return b.ToMesh().ToWndMeshGeometry3D();
     }
 }

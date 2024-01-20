@@ -172,16 +172,16 @@ public class VectorFieldVisual3D : ModelVisual3D
         var pc = new PointCollection { new Point(-l, r), new Point(-l, r * 2), new Point(0, 0) };
 
         var headBuilder = new MeshBuilder(false, false);
-        headBuilder.AddRevolvedGeometry(pc.ToCollection()!, null, new Vector3(0, 0, 0), new Vector3(0, 0, 1), this.ThetaDiv);
-        this.head = headBuilder.ToMesh().ToMeshGeometry3D();
+        headBuilder.AddRevolvedGeometry(pc.ToVector2Collection()!, null, new Vector3(0, 0, 0), new Vector3(0, 0, 1), this.ThetaDiv);
+        this.head = headBuilder.ToMesh().ToWndMeshGeometry3D();
         this.head.Freeze();
 
         // body
         pc = new PointCollection { new Point(0, 0), new Point(0, r), new Point(1, r) };
 
         var bodyBuilder = new MeshBuilder(false, false);
-        bodyBuilder.AddRevolvedGeometry(pc.ToCollection()!, null, new Vector3(0, 0, 0), new Vector3(0, 0, 1), this.ThetaDiv);
-        this.body = bodyBuilder.ToMesh().ToMeshGeometry3D();
+        bodyBuilder.AddRevolvedGeometry(pc.ToVector2Collection()!, null, new Vector3(0, 0, 0), new Vector3(0, 0, 1), this.ThetaDiv);
+        this.body = bodyBuilder.ToMesh().ToWndMeshGeometry3D();
         this.body.Freeze();
     }
 }

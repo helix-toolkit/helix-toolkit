@@ -34,7 +34,7 @@ public static class Extensions
                 var outline = outlines[i];
                 var isHole = i != outlines.Count - 1 && IsPointInPolygon(outerOutline, outline[0]);
                 polygon.AddContour(outline.Select(p => new Vertex(p.X, p.Y)), marker++, isHole);
-                builder.AddExtrudedSegments(outline.ToSegments().Select(t => t.ToVector()).ToList(), textDirection.ToVector3(), p0.ToVector3(), p1.ToVector3());
+                builder.AddExtrudedSegments(outline.ToSegments().Select(t => t.ToVector2()).ToList(), textDirection.ToVector3(), p0.ToVector3(), p1.ToVector3());
             }
         }
 

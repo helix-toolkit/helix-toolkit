@@ -3565,7 +3565,7 @@ public sealed class MeshBuilder
             // ** it is always a reflection of the current move
             // ** so reversing the last move vector should work?
             //*******************************
-            if (u.IsUndefined() || v.IsUndefined())
+            if (u.AnyUndefined() || v.AnyUndefined())
             {
                 forward = lastForward;
                 forward *= -1;

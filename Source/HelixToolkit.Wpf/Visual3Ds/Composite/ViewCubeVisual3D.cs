@@ -339,19 +339,19 @@ public class ViewCubeVisual3D : ModelVisual3D
     /// <summary>
     /// The dictionary [object,(normal vector,up vector)].
     /// </summary>
-    private readonly Dictionary<object, NormalAndUpVector> _faceUpNormalVectors = new();
+    private readonly Dictionary<object, NormalAndUpVector> faceUpNormalVectors = new();
     // use value tuple instead of NormalAndUpVector when upgrade .net 4.7
     // private readonly Dictionary<object, (Vector3D faceNormal, Vector3D faceUpVector)> _faceUpNormalVectors = new();
 
-    private readonly Dictionary<CubeFaces, ModelUIElement3D> _cubeFaceModels = new(6);// 6 faces of cuve
-    private readonly ModelUIElement3D[] _cubeEdgeModels = new ModelUIElement3D[12];//3*4=12 edges of cube;
-    private readonly ModelUIElement3D[] _cubeCornerModels = new ModelUIElement3D[8];//8 corners of cube
-    private readonly PieSliceVisual3D _circle = new();
+    private readonly Dictionary<CubeFaces, ModelUIElement3D> cubeFaceModels = new(6);// 6 faces of cuve
+    private readonly ModelUIElement3D[] cubeEdgeModels = new ModelUIElement3D[12];//3*4=12 edges of cube;
+    private readonly ModelUIElement3D[] cubeCornerModels = new ModelUIElement3D[8];//8 corners of cube
+    private readonly PieSliceVisual3D circle = new();
 
 
-    private readonly SolidColorBrush _cornerBrush = Brushes.Silver;
-    private readonly SolidColorBrush _edgeBrush = Brushes.Silver;
-    private readonly SolidColorBrush _highlightBrush = Brushes.CornflowerBlue;
+    private readonly SolidColorBrush cornerBrush = Brushes.Silver;
+    private readonly SolidColorBrush edgeBrush = Brushes.Silver;
+    private readonly SolidColorBrush highlightBrush = Brushes.CornflowerBlue;
 
     private Vector3D frontVector;
     private Vector3D leftVector;
@@ -410,31 +410,31 @@ public class ViewCubeVisual3D : ModelVisual3D
             element.MouseLeftButtonDown += this.FaceMouseLeftButtonDown;
             element.MouseEnter += FacesMouseEnters;
             element.MouseLeave += FacesMouseLeaves;
-            _cubeFaceModels[cubeFace] = element;
-            Children.Add(element);
+            this.cubeFaceModels[cubeFace] = element;
+            this.Children.Add(element);
         }
         // Init 12 edges of cube
-        for (int i = 0; i < _cubeEdgeModels.Length; ++i)
+        for (int i = 0; i < this.cubeEdgeModels.Length; ++i)
         {
             var element = new ModelUIElement3D();
             element.MouseLeftButtonDown += this.FaceMouseLeftButtonDown;
             element.MouseEnter += EdgesMouseEnters;
             element.MouseLeave += EdgesMouseLeaves;
-            _cubeEdgeModels[i] = element;
-            Children.Add(element);
+            this.cubeEdgeModels[i] = element;
+            this.Children.Add(element);
         }
         // Init 8 edges of cube
-        for (int i = 0; i < _cubeCornerModels.Length; ++i)
+        for (int i = 0; i < this.cubeCornerModels.Length; ++i)
         {
             var element = new ModelUIElement3D();
             element.MouseLeftButtonDown += this.FaceMouseLeftButtonDown;
             element.MouseEnter += CornersMouseEnters;
             element.MouseLeave += CornersMouseLeaves;
-            _cubeCornerModels[i] = element;
-            Children.Add(element);
+            this.cubeCornerModels[i] = element;
+            this.Children.Add(element);
         }
 
-        this.Children.Add(_circle);
+        this.Children.Add(circle);
 
         UpdateVisuals();
         EnableDisableEdgeClicks();
@@ -445,7 +445,7 @@ public class ViewCubeVisual3D : ModelVisual3D
         // 1.Update local unit vectors
         CalculateLocalUnitVectors();
         // 2.Update faces
-        _faceUpNormalVectors.Clear();
+        this.faceUpNormalVectors.Clear();
         CreateCubeFaces();
         CreateCubeEdges();
         CreateCubeCorners();
@@ -489,25 +489,25 @@ public class ViewCubeVisual3D : ModelVisual3D
     }
     void CreateCubeFaces()
     {
-        AddCubeFace(_cubeFaceModels[CubeFaces.Front], frontVector, upVector, GetCubeFaceColor(CubeFaces.Front), FrontText);
-        AddCubeFace(_cubeFaceModels[CubeFaces.Back], -frontVector, upVector, GetCubeFaceColor(CubeFaces.Back), BackText);
-        AddCubeFace(_cubeFaceModels[CubeFaces.Left], leftVector, upVector, GetCubeFaceColor(CubeFaces.Left), LeftText);
-        AddCubeFace(_cubeFaceModels[CubeFaces.Right], -leftVector, upVector, GetCubeFaceColor(CubeFaces.Right), RightText);
+        AddCubeFace(cubeFaceModels[CubeFaces.Front], frontVector, upVector, GetCubeFaceColor(CubeFaces.Front), FrontText);
+        AddCubeFace(cubeFaceModels[CubeFaces.Back], -frontVector, upVector, GetCubeFaceColor(CubeFaces.Back), BackText);
+        AddCubeFace(cubeFaceModels[CubeFaces.Left], leftVector, upVector, GetCubeFaceColor(CubeFaces.Left), LeftText);
+        AddCubeFace(cubeFaceModels[CubeFaces.Right], -leftVector, upVector, GetCubeFaceColor(CubeFaces.Right), RightText);
         if (IsTopBottomViewOrientedToFrontBack)
         {
-            AddCubeFace(_cubeFaceModels[CubeFaces.Top], upVector, frontVector, GetCubeFaceColor(CubeFaces.Top), TopText);
-            AddCubeFace(_cubeFaceModels[CubeFaces.Bottom], -upVector, -frontVector, GetCubeFaceColor(CubeFaces.Bottom), BottomText);
+            AddCubeFace(cubeFaceModels[CubeFaces.Top], upVector, frontVector, GetCubeFaceColor(CubeFaces.Top), TopText);
+            AddCubeFace(cubeFaceModels[CubeFaces.Bottom], -upVector, -frontVector, GetCubeFaceColor(CubeFaces.Bottom), BottomText);
         }
         else
         {
-            AddCubeFace(_cubeFaceModels[CubeFaces.Top], upVector, leftVector, GetCubeFaceColor(CubeFaces.Top), TopText);
-            AddCubeFace(_cubeFaceModels[CubeFaces.Bottom], -upVector, -leftVector, GetCubeFaceColor(CubeFaces.Bottom), BottomText);
+            AddCubeFace(cubeFaceModels[CubeFaces.Top], upVector, leftVector, GetCubeFaceColor(CubeFaces.Top), TopText);
+            AddCubeFace(cubeFaceModels[CubeFaces.Bottom], -upVector, -leftVector, GetCubeFaceColor(CubeFaces.Bottom), BottomText);
         }
     }
     private Brush GetCubeFaceColor(CubeFaces cubeFace)
     {
-        double max = Math.Max(Math.Max(ModelUpDirection.X, ModelUpDirection.Y), ModelUpDirection.Z);
-        if (max == ModelUpDirection.Z)
+        double max = Math.Max(Math.Max(this.ModelUpDirection.X, this.ModelUpDirection.Y), this.ModelUpDirection.Z);
+        if (max == this.ModelUpDirection.Z)
         {
             return cubeFace switch
             {
@@ -517,7 +517,7 @@ public class ViewCubeVisual3D : ModelVisual3D
                 _ => Brushes.White,
             };
         }
-        else if (max == ModelUpDirection.Y)
+        else if (max == this.ModelUpDirection.Y)
         {
             return cubeFace switch
             {
@@ -576,32 +576,32 @@ public class ViewCubeVisual3D : ModelVisual3D
          */
 
         if (this.Size == 0) return;
-        double halfSize = Size / 2;
-        double sideWidthHeight = Size / 5;
+        double halfSize = this.Size / 2;
+        double sideWidthHeight = this.Size / 5;
 
-        var moveDistance = Math.Sqrt(2) * (sideWidthHeight / 2 - Overhang);
-        double squaredLength = Size - 2 * (sideWidthHeight - Overhang);
+        var moveDistance = Math.Sqrt(2) * (sideWidthHeight / 2 - this.Overhang);
+        double squaredLength = this.Size - 2 * (sideWidthHeight - this.Overhang);
 
 
-        var p0 = Center - (leftVector + frontVector + upVector) * halfSize;
-        var p1 = p0 + frontVector * Size;
-        var p2 = p1 + leftVector * Size;
-        var p3 = p0 + leftVector * Size;
+        var p0 = this.Center - (this.leftVector + this.frontVector + this.upVector) * halfSize;
+        var p1 = p0 + this.frontVector * this.Size;
+        var p2 = p1 + this.leftVector * this.Size;
+        var p3 = p0 + this.leftVector * this.Size;
 
-        var p04 = p0 + upVector * halfSize;
-        var p15 = p1 + upVector * halfSize;
-        var p26 = p2 + upVector * halfSize;
-        var p37 = p3 + upVector * halfSize;
+        var p04 = p0 + this.upVector * halfSize;
+        var p15 = p1 + this.upVector * halfSize;
+        var p26 = p2 + this.upVector * halfSize;
+        var p37 = p3 + this.upVector * halfSize;
 
-        var p01 = p0 + frontVector * halfSize;
-        var p03 = p0 + leftVector * halfSize;
-        var p12 = p03 + frontVector * Size;
-        var p23 = p01 + leftVector * Size;
+        var p01 = p0 + this.frontVector * halfSize;
+        var p03 = p0 + this.leftVector * halfSize;
+        var p12 = p03 + this.frontVector * this.Size;
+        var p23 = p01 + this.leftVector * this.Size;
 
-        var p45 = p01 + upVector * Size;
-        var p56 = p12 + upVector * Size;
-        var p67 = p23 + upVector * Size;
-        var p47 = p03 + upVector * Size;
+        var p45 = p01 + this.upVector * this.Size;
+        var p56 = p12 + this.upVector * this.Size;
+        var p67 = p23 + this.upVector * this.Size;
+        var p47 = p03 + this.upVector * this.Size;
 
         var xPoints = new Point3D[] { p01, p23, p67, p45 };
         var yPoints = new Point3D[] { p56, p12, p03, p47 };
@@ -613,7 +613,7 @@ public class ViewCubeVisual3D : ModelVisual3D
             Vector3D faceNormal = (Vector3D)point;
             faceNormal.Normalize();
             Point3D p = point - faceNormal * moveDistance;
-            AddCubeEdge(_cubeEdgeModels[counter], p, squaredLength, sideWidthHeight, sideWidthHeight, faceNormal);
+            AddCubeEdge(this.cubeEdgeModels[counter], p, squaredLength, sideWidthHeight, sideWidthHeight, faceNormal);
             counter++;
         }
         for (int i = 0; i < yPoints.Length; i++)
@@ -622,7 +622,7 @@ public class ViewCubeVisual3D : ModelVisual3D
             Vector3D faceNormal = (Vector3D)point;
             faceNormal.Normalize();
             Point3D p = point - faceNormal * moveDistance;
-            AddCubeEdge(_cubeEdgeModels[counter], p, sideWidthHeight, squaredLength, sideWidthHeight, faceNormal);
+            AddCubeEdge(this.cubeEdgeModels[counter], p, sideWidthHeight, squaredLength, sideWidthHeight, faceNormal);
             counter++;
         }
         for (int i = 0; i < zPoints.Length; i++)
@@ -631,7 +631,7 @@ public class ViewCubeVisual3D : ModelVisual3D
             Vector3D faceNormal = (Vector3D)point;
             faceNormal.Normalize();
             Point3D p = point - faceNormal * moveDistance;
-            AddCubeEdge(_cubeEdgeModels[counter], p, sideWidthHeight, sideWidthHeight, squaredLength, faceNormal);
+            AddCubeEdge(this.cubeEdgeModels[counter], p, sideWidthHeight, sideWidthHeight, squaredLength, faceNormal);
             counter++;
         }
     }
@@ -662,21 +662,21 @@ public class ViewCubeVisual3D : ModelVisual3D
 
         if (this.Size == 0) return;
 
-        double halfSize = Size / 2;
-        double sideLength = Size / 5;
-        var moveDistance = Math.Sqrt(3) * (sideLength / 2 - Overhang);
+        double halfSize = this.Size / 2;
+        double sideLength = this.Size / 5;
+        var moveDistance = Math.Sqrt(3) * (sideLength / 2 - this.Overhang);
 
-        var p0 = Center - (leftVector + frontVector + upVector) * halfSize;
-        var p1 = p0 + frontVector * Size;
-        var p2 = p1 + leftVector * Size;
-        var p3 = p0 + leftVector * Size;
-        var p4 = p0 + upVector * Size;
-        var p5 = p1 + upVector * Size;
-        var p6 = p2 + upVector * Size;
-        var p7 = p3 + upVector * Size;
+        var p0 = this.Center - (this.leftVector + this.frontVector + this.upVector) * halfSize;
+        var p1 = p0 + this.frontVector * this.Size;
+        var p2 = p1 + this.leftVector * this.Size;
+        var p3 = p0 + this.leftVector * this.Size;
+        var p4 = p0 + this.upVector * this.Size;
+        var p5 = p1 + this.upVector * this.Size;
+        var p6 = p2 + this.upVector * this.Size;
+        var p7 = p3 + this.upVector * this.Size;
 
         var cornerPoints = new Point3D[] { p0, p1, p2, p3, p4, p5, p6, p7 };
-        for (int i = 0; i < _cubeCornerModels.Length; i++)
+        for (int i = 0; i < this.cubeCornerModels.Length; i++)
         {
             Point3D point = cornerPoints[i];
             Vector3D faceNormal = (Vector3D)point;
@@ -684,21 +684,21 @@ public class ViewCubeVisual3D : ModelVisual3D
 
             Point3D p = point - faceNormal * moveDistance;
 
-            AddCubeCorner(_cubeCornerModels[i], p, sideLength, faceNormal);
+            AddCubeCorner(this.cubeCornerModels[i], p, sideLength, faceNormal);
         }
     }
     void CreateCircle()
     {
-        _circle.BeginEdit();
-        _circle.Center = (Point3D)(this.upVector * (-this.Size / 2));
-        _circle.Normal = this.upVector;
-        _circle.UpVector = this.leftVector; // rotate 90° so that it's at the bottom plane of the cube.
-        _circle.InnerRadius = this.Size;
-        _circle.OuterRadius = this.Size * 1.3;
-        _circle.StartAngle = 0;
-        _circle.EndAngle = 360;
-        _circle.Fill = Brushes.Gray;
-        _circle.EndEdit();
+        this.circle.BeginEdit();
+        this.circle.Center = (Point3D)(this.upVector * (-this.Size / 2));
+        this.circle.Normal = this.upVector;
+        this.circle.UpVector = this.leftVector; // rotate 90° so that it's at the bottom plane of the cube.
+        this.circle.InnerRadius = this.Size;
+        this.circle.OuterRadius = this.Size * 1.3;
+        this.circle.StartAngle = 0;
+        this.circle.EndAngle = 360;
+        this.circle.Fill = Brushes.Gray;
+        this.circle.EndEdit();
     }
 
     /// <summary>
@@ -715,24 +715,24 @@ public class ViewCubeVisual3D : ModelVisual3D
         double a = this.Size;
         var builder = new MeshBuilder(false, true);
         builder.AddCubeFace(this.Center.ToVector3(), normal.ToVector3(), up.ToVector3(), (float)a, (float)a, (float)a);
-        MeshGeometry3D geometry = builder.ToMesh().ToMeshGeometry3D();
+        MeshGeometry3D geometry = builder.ToMesh().ToWndMeshGeometry3D();
         geometry.Freeze();
         var model = new GeometryModel3D { Geometry = geometry, Material = material };
         element.Model = model;
 
-        _faceUpNormalVectors.Add(element, new NormalAndUpVector(normal, up));
+        this.faceUpNormalVectors.Add(element, new NormalAndUpVector(normal, up));
         // _faceUpNormalVectors.Add(element, (normal, up));  // use value tuple it instead of NormalAndUpVector when upgrade .net 4.7
     }
     private void AddCubeEdge(ModelUIElement3D element, Point3D center, double x, double y, double z, Vector3D faceNormal)
     {
         var builder = new MeshBuilder(false, true);
         builder.AddBox(center.ToVector3(), frontVector.ToVector3(), leftVector.ToVector3(), (float)x, (float)y, (float)z);
-        var geometry = builder.ToMesh().ToMeshGeometry3D();
+        var geometry = builder.ToMesh().ToWndMeshGeometry3D();
         geometry.Freeze();
-        var model = new GeometryModel3D { Geometry = geometry, Material = MaterialHelper.CreateMaterial(_edgeBrush) };
+        var model = new GeometryModel3D { Geometry = geometry, Material = MaterialHelper.CreateMaterial(edgeBrush) };
         element.Model = model;
 
-        _faceUpNormalVectors.Add(element, new NormalAndUpVector(faceNormal, upVector));
+        this.faceUpNormalVectors.Add(element, new NormalAndUpVector(faceNormal, upVector));
         //_faceUpNormalVectors.Add(element, (faceNormal, _upVector)); // use value tuple it instead of NormalAndUpVector when upgrade .net 4.7
 
     }
@@ -741,16 +741,16 @@ public class ViewCubeVisual3D : ModelVisual3D
 
         var builder = new MeshBuilder(false, true);
         builder.AddBox(center.ToVector3(), frontVector.ToVector3(), leftVector.ToVector3(), (float)sideLength, (float)sideLength, (float)sideLength);
-        var geometry = builder.ToMesh().ToMeshGeometry3D();
+        var geometry = builder.ToMesh().ToWndMeshGeometry3D();
         geometry.Freeze();
-        var model = new GeometryModel3D { Geometry = geometry, Material = MaterialHelper.CreateMaterial(_cornerBrush) };
+        var model = new GeometryModel3D { Geometry = geometry, Material = MaterialHelper.CreateMaterial(cornerBrush) };
         element.Model = model;
 
-        _faceUpNormalVectors.Add(element, new NormalAndUpVector(faceNormal, upVector));
+        this.faceUpNormalVectors.Add(element, new NormalAndUpVector(faceNormal, upVector));
         //_faceUpNormalVectors.Add(element, (faceNormal, _upVector)); // use value tuple it instead of NormalAndUpVector when upgrade .net 4.7
 
     }
-    private Material CreateTextMaterial(Brush? background, string text, Brush? foreground = null)
+    private static Material CreateTextMaterial(Brush? background, string text, Brush? foreground = null)
     {
         var grid = new Grid { Width = 25, Height = 25, Background = background };
         if (foreground is null) foreground = Brushes.White;
@@ -775,35 +775,35 @@ public class ViewCubeVisual3D : ModelVisual3D
     }
     private void EnableDisableEdgeClicks()
     {
-        if (EnableEdgeClicks)
+        if (this.EnableEdgeClicks)
         {
-            for (int i = 0; i < _cubeEdgeModels.Length; i++)
+            for (int i = 0; i < this.cubeEdgeModels.Length; i++)
             {
-                _cubeEdgeModels[i].Visibility = Visibility.Visible;
+                this.cubeEdgeModels[i].Visibility = Visibility.Visible;
             }
-            for (int i = 0; i < _cubeCornerModels.Length; i++)
+            for (int i = 0; i < this.cubeCornerModels.Length; i++)
             {
-                _cubeCornerModels[i].Visibility = Visibility.Visible;
+                this.cubeCornerModels[i].Visibility = Visibility.Visible;
             }
         }
         else
         {
-            for (int i = 0; i < _cubeEdgeModels.Length; i++)
+            for (int i = 0; i < this.cubeEdgeModels.Length; i++)
             {
-                _cubeEdgeModels[i].Visibility = Visibility.Hidden;
+                this.cubeEdgeModels[i].Visibility = Visibility.Hidden;
             }
-            for (int i = 0; i < _cubeCornerModels.Length; i++)
+            for (int i = 0; i < cubeCornerModels.Length; i++)
             {
-                _cubeCornerModels[i].Visibility = Visibility.Hidden;
+                this.cubeCornerModels[i].Visibility = Visibility.Hidden;
             }
         }
     }
 
     private void UpdateCubeFaceMaterial(CubeFaces cubeFace, Brush? background, string text)
     {
-        if (_cubeFaceModels.ContainsKey(cubeFace))
+        if (this.cubeFaceModels.ContainsKey(cubeFace))
         {
-            var gm = _cubeFaceModels[cubeFace].Model as GeometryModel3D;
+            var gm = this.cubeFaceModels[cubeFace].Model as GeometryModel3D;
 
             if (gm is not null)
             {
@@ -815,19 +815,19 @@ public class ViewCubeVisual3D : ModelVisual3D
     private void FacesMouseEnters(object? sender, MouseEventArgs e)
     {
         var s = sender as ModelUIElement3D;
-        CubeFaces cubeFace = _cubeFaceModels.FirstOrDefault(x => x.Value == s).Key;
+        CubeFaces cubeFace = this.cubeFaceModels.FirstOrDefault(x => x.Value == s).Key;
         var gm = s?.Model as GeometryModel3D;
 
         if (gm is not null)
         {
-            gm.Material = CreateTextMaterial(_highlightBrush, GetCubeFaceName(cubeFace), GetCubeFaceColor(cubeFace));
+            gm.Material = CreateTextMaterial(this.highlightBrush, GetCubeFaceName(cubeFace), GetCubeFaceColor(cubeFace));
         }
     }
 
     private void FacesMouseLeaves(object? sender, MouseEventArgs e)
     {
         var s = sender as ModelUIElement3D;
-        CubeFaces cubeFace = _cubeFaceModels.FirstOrDefault(x => x.Value == s).Key;
+        CubeFaces cubeFace = this.cubeFaceModels.FirstOrDefault(x => x.Value == s).Key;
         var gm = s?.Model as GeometryModel3D;
 
         if (gm is not null)
@@ -843,7 +843,7 @@ public class ViewCubeVisual3D : ModelVisual3D
 
         if (gm is not null)
         {
-            gm.Material = MaterialHelper.CreateMaterial(_highlightBrush);
+            gm.Material = MaterialHelper.CreateMaterial(this.highlightBrush);
         }
     }
 
@@ -854,7 +854,7 @@ public class ViewCubeVisual3D : ModelVisual3D
 
         if (gm is not null)
         {
-            gm.Material = MaterialHelper.CreateMaterial(_edgeBrush);
+            gm.Material = MaterialHelper.CreateMaterial(this.edgeBrush);
         }
     }
 
@@ -865,7 +865,7 @@ public class ViewCubeVisual3D : ModelVisual3D
 
         if (gm is not null)
         {
-            gm.Material = MaterialHelper.CreateMaterial(_highlightBrush);
+            gm.Material = MaterialHelper.CreateMaterial(this.highlightBrush);
         }
     }
 
@@ -876,7 +876,7 @@ public class ViewCubeVisual3D : ModelVisual3D
 
         if (gm is not null)
         {
-            gm.Material = MaterialHelper.CreateMaterial(_cornerBrush);
+            gm.Material = MaterialHelper.CreateMaterial(this.cornerBrush);
         }
     }
 
@@ -896,8 +896,8 @@ public class ViewCubeVisual3D : ModelVisual3D
             return;
         }
 
-        var faceNormal = _faceUpNormalVectors[sender].faceNormal;
-        var faceUp = _faceUpNormalVectors[sender].faceUpVector;
+        var faceNormal = this.faceUpNormalVectors[sender].faceNormal;
+        var faceUp = this.faceUpNormalVectors[sender].faceUpVector;
 
         var lookDirection = -faceNormal;
         var upDirection = faceUp;

@@ -615,7 +615,7 @@ public sealed class ObjReader : ModelReader
                 // add texture coordinate (if enabled)
                 if (builder.CreateTextureCoordinates)
                 {
-                    textureCoordinates!.Add(this.TextureCoordinates[vti - 1].ToVector());
+                    textureCoordinates!.Add(this.TextureCoordinates[vti - 1].ToVector2());
                 }
 
                 // add normal (if enabled)
@@ -991,7 +991,7 @@ public sealed class ObjReader : ModelReader
 
                 var model = new GeometryModel3D
                 {
-                    Geometry = mesh.ToMeshGeometry3D(),
+                    Geometry = mesh.ToWndMeshGeometry3D(),
                     Material = material,
                     BackMaterial = material
                 };

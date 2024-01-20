@@ -109,7 +109,7 @@ public sealed class StLReader : ModelReader
                 {
                     var gm = new GeometryModel3D
                     {
-                        Geometry = mesh.ToMesh().ToMeshGeometry3D(),
+                        Geometry = mesh.ToMesh().ToWndMeshGeometry3D(),
                         Material = this.Materials[i],
                         BackMaterial = this.Materials[i]
                     };

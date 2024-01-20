@@ -177,6 +177,6 @@ public class BoxVisual3D : MeshElement3D
                 this.Center.ToVector3(), new Vector3(0, 0, -1), new Vector3(0, 1, 0), (float)this.Height, (float)this.Length, (float)this.Width);
         }
 
-        return b.ToMesh().ToMeshGeometry3D();
+        return b.ToMesh().ToWndMeshGeometry3D();
     }
 }

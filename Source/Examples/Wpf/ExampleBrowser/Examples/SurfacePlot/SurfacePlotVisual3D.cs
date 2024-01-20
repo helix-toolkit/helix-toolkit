@@ -97,9 +97,9 @@ public sealed partial class SurfacePlotVisual3D : ModelVisual3D
             }
 
         var surfaceMeshBuilder = new MeshBuilder();
-        surfaceMeshBuilder.AddRectangularMesh(Points.Convert(t => t.ToVector3()), texcoords.Convert(t => t.ToVector()));
+        surfaceMeshBuilder.AddRectangularMesh(Points.Convert(t => t.ToVector3()), texcoords.Convert(t => t.ToVector2()));
 
-        var surfaceModel = new GeometryModel3D(surfaceMeshBuilder.ToMesh().ToMeshGeometry3D(),
+        var surfaceModel = new GeometryModel3D(surfaceMeshBuilder.ToMesh().ToWndMeshGeometry3D(),
                                                MaterialHelper.CreateMaterial(SurfaceBrush, null, null, 1, 0));
         surfaceModel.BackMaterial = surfaceModel.Material;
 
@@ -171,7 +171,7 @@ public sealed partial class SurfacePlotVisual3D : ModelVisual3D
         var bb = new Rect3D(minX, minY, minZ, maxX - minX, maxY - minY, 0 * (maxZ - minZ));
         axesMeshBuilder.AddBoundingBox(bb.ToBoundingBox(), (float)LineThickness);
 
-        var axesModel = new GeometryModel3D(axesMeshBuilder.ToMesh().ToMeshGeometry3D(), Materials.Black);
+        var axesModel = new GeometryModel3D(axesMeshBuilder.ToMesh().ToWndMeshGeometry3D(), Materials.Black);
 
         plotModel.Children.Add(surfaceModel);
         plotModel.Children.Add(axesModel);

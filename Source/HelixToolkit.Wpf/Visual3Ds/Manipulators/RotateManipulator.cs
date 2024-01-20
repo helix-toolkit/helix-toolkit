@@ -144,7 +144,7 @@ public class RotateManipulator : Manipulator
         var p1 = p0 - (d * this.Length * 0.5);
         var p2 = p0 + (d * this.Length * 0.5);
         mb.AddPipe(p1.ToVector3(), p2.ToVector3(), (float)this.InnerDiameter, (float)this.Diameter, 60);
-        this.Model.Geometry = mb.ToMesh().ToMeshGeometry3D();
+        this.Model.Geometry = mb.ToMesh().ToWndMeshGeometry3D();
     }
 
     /// <summary>
