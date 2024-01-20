@@ -122,7 +122,7 @@ public class ViewBoxNode : ScreenSpacedNode
 
         for (var i = 0; i < count; ++i)
         {
-            edgeInstances[i] = Matrix.CreateRotationX((float)Math.PI / 2) * Matrix.CreateTranslation(xAligned[i] * halfSize * 0.95f);
+            edgeInstances[i] = Matrix.CreateRotationZ((float)Math.PI / 2) * Matrix.CreateTranslation(xAligned[i] * halfSize * 0.95f);
         }
         for (var i = count; i < count * 2; ++i)
         {
