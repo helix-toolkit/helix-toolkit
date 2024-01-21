@@ -199,7 +199,7 @@ public sealed class HalfEdgeMesh
     /// <returns>
     /// A MeshGeometry3D.
     /// </returns>
-    public MeshGeometry3D ToMeshGeometry3D()
+    public MeshGeometry3D ToWndMeshGeometry3D()
     {
         return new MeshGeometry3D
         {

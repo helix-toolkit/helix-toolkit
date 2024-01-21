@@ -416,7 +416,7 @@ public class HalfEdgeMeshVisual3D : ModelVisual3D
                 gm.AddSubdivisionSphere(vertex.Position.ToVector3(), (float)this.VertexRadius, 4);
                 var vertexElement = new ModelUIElement3D
                 {
-                    Model = new GeometryModel3D(gm.ToMesh().ToMeshGeometry3D(), this.VertexMaterial)
+                    Model = new GeometryModel3D(gm.ToMesh().ToWndMeshGeometry3D(), this.VertexMaterial)
                 };
                 var currentVertex = vertex;
                 vertexElement.MouseLeftButtonDown += (s, e) => this.HighlightVertex(currentVertex);
@@ -448,7 +448,7 @@ public class HalfEdgeMeshVisual3D : ModelVisual3D
                 var faceElement = new ModelUIElement3D
                 {
                     Model =
-                            new GeometryModel3D(gm.ToMesh().ToMeshGeometry3D(), this.FaceMaterial)
+                            new GeometryModel3D(gm.ToMesh().ToWndMeshGeometry3D(), this.FaceMaterial)
                             {
                                 BackMaterial = this.FaceBackMaterial
                             }
@@ -474,7 +474,7 @@ public class HalfEdgeMeshVisual3D : ModelVisual3D
                 gm.AddArrow(start.ToVector3(), end.ToVector3(), (float)this.EdgeDiameter);
                 var edgeElement = new ModelUIElement3D
                 {
-                    Model = new GeometryModel3D(gm.ToMesh().ToMeshGeometry3D(), this.EdgeMaterial)
+                    Model = new GeometryModel3D(gm.ToMesh().ToWndMeshGeometry3D(), this.EdgeMaterial)
                 };
                 var currentEdge = edge;
                 edgeElement.MouseLeftButtonDown += (s, e) => { this.HighlightEdge(currentEdge); };

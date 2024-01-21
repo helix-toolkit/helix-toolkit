@@ -99,7 +99,7 @@ public sealed class SiloVisual3D : UIElement3D
         }
 
         builder.AddSurfaceOfRevolution(new Vector3(0, 0, 0), new Vector3(0, 0, 1), section.ToVector2Collection()!, sectionIndices, 80);
-        this.walls.Geometry = builder.ToMesh().ToMeshGeometry3D(true);
+        this.walls.Geometry = builder.ToMesh().ToWndMeshGeometry3D(true);
 
         var treadDepth = 0.3;
         var riseHeight = 0.15;
@@ -141,8 +141,8 @@ public sealed class SiloVisual3D : UIElement3D
 
         BuildRailing(railingBuilder, railBases, railingHeight, railingDiameter, railings);
 
-        this.stairs.Geometry = stairBuilder.ToMesh().ToMeshGeometry3D();
-        this.railing.Geometry = railingBuilder.ToMesh().ToMeshGeometry3D();
+        this.stairs.Geometry = stairBuilder.ToMesh().ToWndMeshGeometry3D();
+        this.railing.Geometry = railingBuilder.ToMesh().ToWndMeshGeometry3D();
     }
 
     private static void BuildRailing(

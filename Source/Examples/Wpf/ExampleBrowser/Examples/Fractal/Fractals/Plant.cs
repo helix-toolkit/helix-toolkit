@@ -23,7 +23,7 @@ public sealed class Plant : FractalBase
 
         var mv = new GeometryModel3D
         {
-            Geometry = mesh.ToMesh().ToMeshGeometry3D(),
+            Geometry = mesh.ToMesh().ToWndMeshGeometry3D(),
             Material = mat,
             BackMaterial = mat
         };

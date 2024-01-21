@@ -125,7 +125,7 @@ public sealed partial class MainViewModel : ObservableObject
             this.GetPosition(m + padding, -1 - padding, z).ToVector3(),
             this.GetPosition(m + padding, n + padding, z).ToVector3(),
             this.GetPosition(-1 - padding, n + padding, z).ToVector3());
-        return builder.ToMesh().ToMeshGeometry3D();
+        return builder.ToMesh().ToWndMeshGeometry3D();
     }
 
     /// <summary>
@@ -184,7 +184,7 @@ public sealed partial class MainViewModel : ObservableObject
             }
         }
 
-        return builder.ToMesh().ToMeshGeometry3D();
+        return builder.ToMesh().ToWndMeshGeometry3D();
     }
 
     /// <summary>
@@ -205,7 +205,7 @@ public sealed partial class MainViewModel : ObservableObject
             builder.AddTube(spline.ToVector3Collection()!, (float)diameter, 13, false);
         }
 
-        return builder.ToMesh().ToMeshGeometry3D();
+        return builder.ToMesh().ToWndMeshGeometry3D();
     }
 
     /// <summary>

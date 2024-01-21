@@ -93,7 +93,7 @@ public sealed partial class Flag : ObservableObject
 
         var mb = new MeshBuilder(false, true);
         mb.AddRectangularMesh(pts, null, false, false);
-        Mesh = mb.ToMesh().ToMeshGeometry3D();
+        Mesh = mb.ToMesh().ToWndMeshGeometry3D();
     }
 
     private Vector3D[] CalculateNormals()

@@ -146,7 +146,7 @@ public partial class MainWindow : Window
                     }
                 }
 
-                dispatcher.Invoke(new Action<MeshGeometry3D, Material, ModelVisual3D>(this.Add), b.ToMesh().ToMeshGeometry3D(true), mat2, model2);
+                dispatcher.Invoke(new Action<MeshGeometry3D, Material, ModelVisual3D>(this.Add), b.ToMesh().ToWndMeshGeometry3D(true), mat2, model2);
             }
 
             dispatcher.Invoke((Action)(() => this.Count2++));
@@ -184,7 +184,7 @@ public partial class MainWindow : Window
                     }
                 }
 
-                var box = new GeometryModel3D { Geometry = b.ToMesh().ToMeshGeometry3D(false), Material = m };
+                var box = new GeometryModel3D { Geometry = b.ToMesh().ToWndMeshGeometry3D(false), Material = m };
                 box.Freeze();
 
                 dispatcher.Invoke(new Action<Model3D, ModelVisual3D>(this.Add), box, this.model3);
@@ -228,7 +228,7 @@ public partial class MainWindow : Window
                     }
                 }
 
-                var box = new GeometryModel3D { Geometry = b.ToMesh().ToMeshGeometry3D(false), Material = m };
+                var box = new GeometryModel3D { Geometry = b.ToMesh().ToWndMeshGeometry3D(false), Material = m };
                 box.Freeze();
                 dispatcher.Invoke(new Action(() => mg!.Children.Add(box)));
             }

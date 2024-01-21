@@ -24,7 +24,7 @@ public class MainViewModel
         meshBuilder.AddBox(new Rect3D(0, 0, 1.2, 0.5, 1, 0.4).ToBoundingBox());
 
         // Create a mesh from the builder (and freeze it)
-        var mesh = meshBuilder.ToMesh().ToMeshGeometry3D(true);
+        var mesh = meshBuilder.ToMesh().ToWndMeshGeometry3D(true);
 
         // Create some materials
         var greenMaterial = MaterialHelper.CreateMaterial(Colors.Green);

@@ -35,7 +35,7 @@ public sealed class SierpinskiPyramid : FractalBase
 
         var mv = new GeometryModel3D
         {
-            Geometry = builder.ToMesh().ToMeshGeometry3D(true),
+            Geometry = builder.ToMesh().ToWndMeshGeometry3D(true),
             Material = MaterialHelper.CreateMaterial(Brushes.Gold)
         };
 

@@ -15,7 +15,7 @@ public class PolygonTriangulationTests
             new(0, 0), new(1, 0), new(0, 1)
         };
 
-        Int32Collection indices = Converter.ToInt32Collection(SweepLinePolygonTriangulator.Triangulate(triangleInPositiveOrientation)) ?? new();
+        Int32Collection indices = Converter.ToWndInt32Collection(SweepLinePolygonTriangulator.Triangulate(triangleInPositiveOrientation)) ?? new();
         Assert.That(indices.Count == 3);
         Assert.That(indices[0] == 0);
         Assert.That(indices[1] == 1);
@@ -27,7 +27,7 @@ public class PolygonTriangulationTests
                     new(0, 0), new(0, 1),  new(1, 0)
                 };
 
-        indices = Converter.ToInt32Collection(SweepLinePolygonTriangulator.Triangulate(triangleInNegativeOrientation)) ?? new();
+        indices = Converter.ToWndInt32Collection(SweepLinePolygonTriangulator.Triangulate(triangleInNegativeOrientation)) ?? new();
         Assert.That(indices.Count == 3);
         Assert.That(indices[0] == 0);
         Assert.That(indices[1] == 2);

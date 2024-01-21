@@ -84,7 +84,7 @@ public partial class MainWindow : Window
                 {
                     Material = new DiffuseMaterial(System.Windows.Media.Brushes.Orange),
                     BackMaterial = new DiffuseMaterial(System.Windows.Media.Brushes.Orange),
-                    Geometry = modelBuilder.ToMesh().ToMeshGeometry3D()
+                    Geometry = modelBuilder.ToMesh().ToWndMeshGeometry3D()
                 };
                 model.Position = new Point3D(0, -3, this.ObservableElements.Count);
 

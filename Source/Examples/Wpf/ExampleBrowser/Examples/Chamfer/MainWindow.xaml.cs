@@ -63,7 +63,7 @@ public partial class MainWindow : Window
         {
             Content = new GeometryModel3D
             {
-                Geometry = diceMesh.ToMesh().ToMeshGeometry3D(),
+                Geometry = diceMesh.ToMesh().ToWndMeshGeometry3D(),
                 Material = Materials.White
             }
         };

@@ -122,7 +122,7 @@ public class ObjExporterTests : ExporterTests
     {
         var b1 = new MeshBuilder();
         b1.AddTriangle(new Vector3(0, 0, 0), new Vector3(0, 0, 1), new Vector3(0, 1, 0));
-        var meshGeometry = b1.ToMesh().ToMeshGeometry3D();
+        var meshGeometry = b1.ToMesh().ToWndMeshGeometry3D();
 
         var mesh = new MeshGeometryVisual3D();
         mesh.MeshGeometry = meshGeometry;

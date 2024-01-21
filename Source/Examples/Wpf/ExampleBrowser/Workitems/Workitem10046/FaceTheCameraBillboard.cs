@@ -229,6 +229,6 @@ public partial class FaceTheCameraBillboard : MeshElement3D
         //new Point(1, 1),
         //new Point(1, 0),
         //new Point(0, 0));
-        return builder.ToMesh().ToMeshGeometry3D();
+        return builder.ToMesh().ToWndMeshGeometry3D();
     }
 }

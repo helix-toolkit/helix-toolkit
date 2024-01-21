@@ -190,7 +190,7 @@ public sealed partial class RubikCube : ModelVisual3D
                 break;
         }
 
-        m.Geometry = b.ToMesh().ToMeshGeometry3D();
+        m.Geometry = b.ToMesh().ToWndMeshGeometry3D();
         m.Material = MaterialHelper.CreateMaterial(brush);
         return m;
     }

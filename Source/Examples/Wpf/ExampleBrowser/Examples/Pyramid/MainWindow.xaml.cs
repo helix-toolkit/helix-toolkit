@@ -111,7 +111,7 @@ public partial class MainWindow : Window
             {
                 Content = new GeometryModel3D()
                 {
-                    Geometry = builder!.ToMesh().ToMeshGeometry3D(),
+                    Geometry = builder!.ToMesh().ToWndMeshGeometry3D(),
                     Material = cubit.Material
                 }
             };

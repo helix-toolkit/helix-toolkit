@@ -81,7 +81,7 @@ public class ContourHelperTests
 
     private void Contour(MeshGeometry3D mesh)
     {
-        var ch = new ContourHelper(origin.ToVector3(), normal.ToVector3(), mesh.ToWndMeshGeometry3D());
+        var ch = new ContourHelper(origin.ToVector3(), normal.ToVector3(), mesh.ToMeshGeometry3D());
         ch.ContourFacet(0, 1, 2, out var newPositions, out var newNormals, out var newTextureCoordinates, out var triangleIndices);
         this.newPositions = newPositions is null ? Array.Empty<Point3D>() : Array.ConvertAll(newPositions, t => t.ToWndPoint3D());
         this.newNormals = newNormals is null ? Array.Empty<Vector3D>() : Array.ConvertAll(newNormals, t => t.ToWndVector3D());
@@ -93,6 +93,6 @@ public class ContourHelperTests
     {
         var mb = new MeshBuilder(false, false);
         mb.AddTriangle(p1.ToVector3(), p2.ToVector3(), p3.ToVector3());
-        return mb.ToMesh().ToMeshGeometry3D();
+        return mb.ToMesh().ToWndMeshGeometry3D();
     }
 }

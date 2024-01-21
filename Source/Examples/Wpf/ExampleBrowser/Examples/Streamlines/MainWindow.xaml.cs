@@ -73,7 +73,7 @@ public partial class MainWindow : Window
 
         this.StreamLinesModel = new GeometryModel3D
         {
-            Geometry = mb.ToMesh().ToMeshGeometry3D(),
+            Geometry = mb.ToMesh().ToWndMeshGeometry3D(),
             Material = Materials.Hue,
             BackMaterial = Materials.Hue
         };

@@ -106,7 +106,7 @@ public sealed partial class MainViewModel : ObservableObject
             gm.AddArrow(p1.ToVector3(), p2.ToVector3(), 0.8f);
         }
 
-        m.Children.Add(new GeometryModel3D(gm.ToMesh().ToMeshGeometry3D(), Materials.Gold));
+        m.Children.Add(new GeometryModel3D(gm.ToMesh().ToWndMeshGeometry3D(), Materials.Gold));
 
         Model = m;
     }
