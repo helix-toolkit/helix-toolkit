@@ -33,7 +33,7 @@ public partial class MainWindow : Window
         var geometry = new GeometryModel3D();
         var meshBuilder = new MeshBuilder();
         meshBuilder.AddSphere(new Vector3(0, 0, 0), 2, 100, 50);
-        geometry.Geometry = meshBuilder.ToMesh().ToMeshGeometry3D();
+        geometry.Geometry = meshBuilder.ToMesh().ToWndMeshGeometry3D();
         geometry.Material = Materials.Green;
         element.Model = geometry;
         element.Transform = new TranslateTransform3D(5, 0, 0);

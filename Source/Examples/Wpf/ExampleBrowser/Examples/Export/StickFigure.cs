@@ -147,7 +147,7 @@ public sealed class StickFigure : ModelVisual3D
         model.SetValue(FrameworkElement.NameProperty, "box");
         var mb = new MeshBuilder(false, false);
         mb.AddBox(new Vector3(0, 0, (float)height * 0.5f), (float)width, (float)length, (float)height);
-        model.Geometry = mb.ToMesh().ToMeshGeometry3D();
+        model.Geometry = mb.ToMesh().ToWndMeshGeometry3D();
         model.Material = material;
         return model;
     }

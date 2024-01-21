@@ -47,7 +47,7 @@ public partial class MainWindow : Window
         // create a model
         var geom = new GeometryModel3D
         {
-            Geometry = mb.ToMesh().ToMeshGeometry3D(true),
+            Geometry = mb.ToMesh().ToWndMeshGeometry3D(true),
             Material = MaterialHelper.CreateMaterial(color)
         };
 

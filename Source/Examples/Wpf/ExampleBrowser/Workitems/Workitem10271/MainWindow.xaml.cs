@@ -44,7 +44,7 @@ public partial class MainWindow : Window
         var p2 = new Vector3(1, 1, 0);
         mb.AddTriangle(p0, p1, p2);
         mb.Normals?.ToList().ForEach(x => System.Diagnostics.Trace.WriteLine(x.ToString()));
-        return mb.ToMesh().ToMeshGeometry3D();
+        return mb.ToMesh().ToWndMeshGeometry3D();
     }
 
     private static object BuildQuad()
@@ -56,6 +56,6 @@ public partial class MainWindow : Window
         var p3 = new Vector3(0, 1, 0);
         mb.AddQuad(p0, p1, p2, p3);
         mb.Normals?.ToList().ForEach(x => System.Diagnostics.Trace.WriteLine(x.ToString()));
-        return mb.ToMesh().ToMeshGeometry3D();
+        return mb.ToMesh().ToWndMeshGeometry3D();
     }
 }

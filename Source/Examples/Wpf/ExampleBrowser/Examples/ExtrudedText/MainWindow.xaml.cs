@@ -39,7 +39,7 @@ public partial class MainWindow : Window
             new Point3D(0, 0, 0),
             new Point3D(0, 0, 1));
 
-        this.textGeometry = builder.ToMesh().ToMeshGeometry3D(true);
+        this.textGeometry = builder.ToMesh().ToWndMeshGeometry3D(true);
         this.DataContext = this;
     }
 

@@ -26,7 +26,7 @@ public sealed class MainViewModel
         CreateSimpleTriangulatedMesh(meshBuilder);
 
         // Create a mesh from the builder (and freeze it)
-        MeshGeometry3D mesh = meshBuilder.ToMesh().ToMeshGeometry3D(true);
+        MeshGeometry3D mesh = meshBuilder.ToMesh().ToWndMeshGeometry3D(true);
 
         // Create some materials
         Material blueMaterial = MaterialHelper.CreateMaterial(Colors.Blue);

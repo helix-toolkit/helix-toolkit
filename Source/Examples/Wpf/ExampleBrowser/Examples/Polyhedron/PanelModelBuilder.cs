@@ -53,7 +53,7 @@ public sealed class PanelModelBuilder
             panelIndex++;
         }
         var panelsGeometry = tm.ToMesh();
-        m.Children.Add(new GeometryModel3D(panelsGeometry.ToMeshGeometry3D(), Materials.Red)
+        m.Children.Add(new GeometryModel3D(panelsGeometry.ToWndMeshGeometry3D(), Materials.Red)
         {
             BackMaterial = Materials.Blue
         });
@@ -64,7 +64,7 @@ public sealed class PanelModelBuilder
         {
             gm.AddSphere(p, 0.05f);
         }
-        m.Children.Add(new GeometryModel3D(gm.ToMesh().ToMeshGeometry3D(), Materials.Gold));
+        m.Children.Add(new GeometryModel3D(gm.ToMesh().ToWndMeshGeometry3D(), Materials.Gold));
 
         // Add the edges
         var em = new MeshBuilder();
@@ -75,7 +75,7 @@ public sealed class PanelModelBuilder
                 em.AddCylinder(p.Points[i].ToVector3(), p.Points[(i + 1) % p.Points.Length].ToVector3(), 0.05f, 10);
             }
         }
-        m.Children.Add(new GeometryModel3D(em.ToMesh().ToMeshGeometry3D(), Materials.Gray));
+        m.Children.Add(new GeometryModel3D(em.ToMesh().ToWndMeshGeometry3D(), Materials.Gray));
 
         return m;
     }

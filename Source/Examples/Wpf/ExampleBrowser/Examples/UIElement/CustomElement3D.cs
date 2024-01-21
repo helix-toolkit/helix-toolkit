@@ -19,7 +19,7 @@ public class CustomElement3D : UIElement3D
         var gm = new GeometryModel3D();
         var mb = new MeshBuilder();
         mb.AddSphere(new Vector3(0, 0, 0), 2, 100, 50);
-        gm.Geometry = mb.ToMesh().ToMeshGeometry3D();
+        gm.Geometry = mb.ToMesh().ToWndMeshGeometry3D();
         gm.Material = Materials.Blue;
 
         Visual3DModel = gm;

@@ -57,7 +57,7 @@ public partial class MainWindow : Window
         var n = ContourPlane!.Normal;
 
         var mesh = model.Geometry as MeshGeometry3D;
-        var segments = mesh?.ToWndMeshGeometry3D()?.GetContourSegments(p.ToVector3(), n.ToVector3())?.ToList() ?? new();
+        var segments = mesh?.ToMeshGeometry3D()?.GetContourSegments(p.ToVector3(), n.ToVector3())?.ToList() ?? new();
 
         foreach (var contour in MeshGeometryHelper.CombineSegments(segments, 1e-6f).ToList())
         {

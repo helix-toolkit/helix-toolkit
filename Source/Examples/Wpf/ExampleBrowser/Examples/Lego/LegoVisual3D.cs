@@ -71,6 +71,6 @@ public sealed partial class LegoVisual3D : MeshElement3D
             (float)width, (float)wallThickness, (float)(height - wallThickness),
             BoxFaces.All ^ BoxFaces.Top);
 
-        return builder.ToMesh().ToMeshGeometry3D();
+        return builder.ToMesh().ToWndMeshGeometry3D();
     }
 }

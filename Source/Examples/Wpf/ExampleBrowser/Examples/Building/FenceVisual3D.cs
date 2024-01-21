@@ -108,7 +108,7 @@ public sealed class FenceVisual3D : UIElement3D
             builder.AddCylinder(p1.ToVector3(), p2.ToVector3(), (float)this.Diameter, 36);
         }
 
-        this.postsModel.Geometry = builder.ToMesh().ToMeshGeometry3D();
+        this.postsModel.Geometry = builder.ToMesh().ToWndMeshGeometry3D();
 
         var fenceBuilder = new MeshBuilder(false, true);
         var w0 = 0d;
@@ -132,7 +132,7 @@ public sealed class FenceVisual3D : UIElement3D
             w0 += dw;
         }
 
-        this.fenceModel.Geometry = fenceBuilder.ToMesh().ToMeshGeometry3D();
+        this.fenceModel.Geometry = fenceBuilder.ToMesh().ToWndMeshGeometry3D();
     }
 
     private static IEnumerable<Point3D> DistributePoles(IList<Point3D> positions, double distance)

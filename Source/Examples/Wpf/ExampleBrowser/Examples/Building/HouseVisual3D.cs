@@ -143,7 +143,7 @@ public sealed class HouseVisual3D : UIElement3D
         var p7 = new Vector2((float)-this.Width / 2, (float)y0);
         wallBuilder.AddPolygon(new Vector2[] { p0, p6, p7 }, new Vector3(0, -1, 0), new Vector3(0, 0, 1), new Vector3((float)-this.Length / 2, 0, 0));
         wallBuilder.AddPolygon(new Vector2[] { p0, p6, p7 }, new Vector3(0, 1, 0), new Vector3(0, 0, 1), new Vector3((float)this.Length / 2, 0, 0));
-        this.walls.Geometry = wallBuilder.ToMesh().ToMeshGeometry3D(true);
-        this.roof.Geometry = roofBuilder.ToMesh().ToMeshGeometry3D(true);
+        this.walls.Geometry = wallBuilder.ToMesh().ToWndMeshGeometry3D(true);
+        this.roof.Geometry = roofBuilder.ToMesh().ToWndMeshGeometry3D(true);
     }
 }

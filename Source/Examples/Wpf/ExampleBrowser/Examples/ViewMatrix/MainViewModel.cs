@@ -25,7 +25,7 @@ public sealed partial class MainViewModel : ObservableObject
         var gm = new MeshBuilder();
         gm.AddBox(new Vector3(0, 0, 0.5f), 1, 1, 1);
         gm.AddCylinder(new Vector3(5, 0, 0), new Vector3(5, 0, 5), 1, 36);
-        this.Model = new GeometryModel3D(gm.ToMesh().ToMeshGeometry3D(true), Materials.Blue);
+        this.Model = new GeometryModel3D(gm.ToMesh().ToWndMeshGeometry3D(true), Materials.Blue);
         this.Model.Freeze();
     }
 

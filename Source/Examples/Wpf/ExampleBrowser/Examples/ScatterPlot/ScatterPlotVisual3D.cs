@@ -77,7 +77,7 @@ public sealed partial class ScatterPlotVisual3D : ModelVisual3D
             oldTCCount = newTCCount;
         }
 
-        var scatterModel = new GeometryModel3D(scatterMeshBuilder.ToMesh().ToMeshGeometry3D(),
+        var scatterModel = new GeometryModel3D(scatterMeshBuilder.ToMesh().ToWndMeshGeometry3D(),
                                                MaterialHelper.CreateMaterial(SurfaceBrush, null, null, 1, 0));
         scatterModel.BackMaterial = scatterModel.Material;
 
@@ -132,7 +132,7 @@ public sealed partial class ScatterPlotVisual3D : ModelVisual3D
         var bb = new Rect3D(minX, minY, minZ, maxX - minX, maxY - minY, maxZ - minZ);
         axesMeshBuilder.AddBoundingBox(bb.ToBoundingBox(), (float)LineThickness);
 
-        var axesModel = new GeometryModel3D(axesMeshBuilder.ToMesh().ToMeshGeometry3D(), Materials.Black);
+        var axesModel = new GeometryModel3D(axesMeshBuilder.ToMesh().ToWndMeshGeometry3D(), Materials.Black);
 
         plotModel.Children.Add(scatterModel);
         plotModel.Children.Add(axesModel);

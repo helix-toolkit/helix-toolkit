@@ -99,7 +99,7 @@ public sealed class ChimneyVisual3D : UIElement3D
 
         this.TopPosition = this.Position + new Vector3D(0, 0, this.Height);
 
-        this.redbands.Geometry = redbuilder.ToMesh().ToMeshGeometry3D(true);
-        this.whitebands.Geometry = whitebuilder.ToMesh().ToMeshGeometry3D(true);
+        this.redbands.Geometry = redbuilder.ToMesh().ToWndMeshGeometry3D(true);
+        this.whitebands.Geometry = whitebuilder.ToMesh().ToWndMeshGeometry3D(true);
     }
 }

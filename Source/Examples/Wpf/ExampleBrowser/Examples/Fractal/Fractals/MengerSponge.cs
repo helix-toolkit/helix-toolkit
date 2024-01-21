@@ -72,7 +72,7 @@ public sealed class MengerSponge : FractalBase
         {
             builder.AddBox(center.ToVector3(), (float)L, (float)L, (float)L);
         }
-        var geometry = builder.ToMesh().ToMeshGeometry3D();
+        var geometry = builder.ToMesh().ToWndMeshGeometry3D();
         geometry.Freeze();
 
         Trace.WriteLine(Level + ": " + w.ElapsedMilliseconds + " ms");

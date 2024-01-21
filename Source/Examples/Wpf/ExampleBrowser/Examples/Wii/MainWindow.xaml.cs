@@ -102,7 +102,7 @@ public class ExplodingMesh
 
     public ExplodingMesh(MeshGeometry3D inputMesh, Point3D hitpos)
     {
-        var mesh = MeshGeometryHelper.NoSharedVertices(inputMesh.ToWndMeshGeometry3D());
+        var mesh = MeshGeometryHelper.NoSharedVertices(inputMesh.ToMeshGeometry3D());
 
         double cx, cy, cz;
         cx = cy = cz = 0;
@@ -128,9 +128,9 @@ public class ExplodingMesh
             integrator.InverseMass[i] = 0.01;
         }
 
-        integrator.CreateConstraintsByMesh(mesh.ToMeshGeometry3D(), 0.7);
+        integrator.CreateConstraintsByMesh(mesh.ToWndMeshGeometry3D(), 0.7);
         integrator.AddFloor(0.3);
-        this.Mesh = mesh.ToMeshGeometry3D();
+        this.Mesh = mesh.ToWndMeshGeometry3D();
         watch.Start();
     }
 

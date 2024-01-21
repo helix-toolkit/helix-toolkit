@@ -33,7 +33,7 @@ public partial class GenericUIElement3D : UIElement3D
     {
         var meshBuilder = new MeshBuilder(false, false);
         meshBuilder.AddBox(new System.Numerics.Vector3(0, 0, 0), 0.5f, 0.5f, 0.5f);
-        Model.Geometry = meshBuilder.ToMesh().ToMeshGeometry3D();
+        Model.Geometry = meshBuilder.ToMesh().ToWndMeshGeometry3D();
     }
 
     partial void OnColorChanged()
