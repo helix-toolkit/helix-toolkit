@@ -68,7 +68,7 @@ void main(uint3 GroupThreadID : SV_GroupThreadID)
     {
         uint rndNumber1 = rand_lcg(state);
         uint rndNumber2 = rand_lcg(state);
-        p.TexColRow = uint2(rndNumber1 % max(1, NumTexCol) - 1, rndNumber2 % max(1, NumTexRow) - 1);
+        p.TexColRow = uint2(rndNumber1 % max(1, NumTexCol), rndNumber2 % max(1, NumTexRow));
     }
     else
     {
