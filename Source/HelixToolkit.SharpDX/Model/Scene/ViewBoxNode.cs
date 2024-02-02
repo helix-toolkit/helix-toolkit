@@ -1,4 +1,5 @@
-﻿using HelixToolkit.SharpDX.Shaders;
+﻿using HelixToolkit.Geometry;
+using HelixToolkit.SharpDX.Shaders;
 using Microsoft.Extensions.Logging;
 using SharpDX;
 using SharpDX.Direct3D11;

@@ -1,11 +1,13 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using HelixToolkit;
+using HelixToolkit.Geometry;
 using HelixToolkit.SharpDX;
 using HelixToolkit.Wpf.SharpDX;
 using SharpDX;
 using System;
 using System.Windows.Media.Animation;
 using Media3D = System.Windows.Media.Media3D;
+using MeshGeometry3D = HelixToolkit.SharpDX.MeshGeometry3D;
 
 namespace OctreeDemo;
 

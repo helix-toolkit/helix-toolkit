@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Media.Media3D;
+using HelixToolkit.Geometry;
 
 namespace HelixToolkit.Wpf;
 
@@ -340,8 +341,7 @@ public class Mesh3D : ICloneable
     /// <returns>
     /// A mesh geometry.
     /// </returns>
-    public MeshGeometry3D ToMeshGeometry3D(
-        bool sharedVertices = true, double shrinkFactor = 0.0, List<int>? faceIndices = null)
+    public MeshGeometry3D ToMeshGeometry3D(bool sharedVertices = true, double shrinkFactor = 0.0, List<int>? faceIndices = null)
     {
         bool shrink = Math.Abs(shrinkFactor) > double.Epsilon;
 

@@ -1,4 +1,6 @@
-﻿namespace HelixToolkit.SharpDX;
+﻿using HelixToolkit.Geometry;
+
+namespace HelixToolkit.SharpDX;
 
 public struct ModelInfo
 {

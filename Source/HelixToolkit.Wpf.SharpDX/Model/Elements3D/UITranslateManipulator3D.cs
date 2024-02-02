@@ -5,6 +5,7 @@ using System.ComponentModel;
 using HelixToolkit.Wpf.SharpDX.Utilities;
 using HelixToolkit.SharpDX;
 using System.Windows;
+using HelixToolkit.Geometry;
 
 namespace HelixToolkit.Wpf.SharpDX;
 

@@ -1,5 +1,6 @@
 ﻿using SharpDX.Direct3D11;
 using SharpDX;
+using HelixToolkit.Geometry;
 
 namespace HelixToolkit.SharpDX.Model.Scene;
 

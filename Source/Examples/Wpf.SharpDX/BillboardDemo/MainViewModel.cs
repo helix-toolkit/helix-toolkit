@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using Cyotek.Drawing.BitmapFont;
 using HelixToolkit;
+using HelixToolkit.Geometry;
 using HelixToolkit.Maths;
 using HelixToolkit.SharpDX;
 using HelixToolkit.Wpf.SharpDX;

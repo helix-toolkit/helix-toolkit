@@ -1,4 +1,5 @@
-﻿using HelixToolkit.SharpDX.Model;
+﻿using HelixToolkit.Geometry;
+using HelixToolkit.SharpDX.Model;
 using System.Globalization;
 using System.Text.RegularExpressions;
 using FileFormatException = System.Exception;

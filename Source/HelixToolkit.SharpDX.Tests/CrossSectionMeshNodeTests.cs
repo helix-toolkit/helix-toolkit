@@ -3,6 +3,7 @@ using NUnit.Framework;
 using System.Numerics;
 using System.Reflection;
 using HelixToolkit.Maths;
+using HelixToolkit.Geometry;
 
 namespace HelixToolkit.SharpDX.Tests;
 

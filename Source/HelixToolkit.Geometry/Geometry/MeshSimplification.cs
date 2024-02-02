@@ -3,7 +3,7 @@ using HelixToolkit.Geometry;
 using System.Diagnostics;
 using System.Numerics;
 
-namespace HelixToolkit;
+namespace HelixToolkit.Geometry;
 
 /// <summary>
 /// Fast-Quadric-Mesh-Simplification, port from https://github.com/sp4cerat/Fast-Quadric-Mesh-Simplification

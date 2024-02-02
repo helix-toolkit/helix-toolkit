@@ -1,4 +1,5 @@
-﻿using HelixToolkit.SharpDX.Render;
+﻿using HelixToolkit.Geometry;
+using HelixToolkit.SharpDX.Render;
 using HelixToolkit.SharpDX.Shaders;
 using HelixToolkit.SharpDX.Utilities;
 using SharpDX;

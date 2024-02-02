@@ -1,7 +1,7 @@
 ﻿using CommunityToolkit.Diagnostics;
 using System.Numerics;
 
-namespace HelixToolkit;
+namespace HelixToolkit.Geometry;
 
 /// <summary>
 /// Represents a 3D polygon.

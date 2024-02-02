@@ -1,6 +1,6 @@
 ﻿using System.Numerics;
 
-namespace HelixToolkit;
+namespace HelixToolkit.Geometry;
 
 /// <summary>
 /// Represents a 2D polygon.

@@ -1,6 +1,7 @@
 ﻿using SharpDX;
 using Mesh3DGroup = System.Collections.Generic.List<HelixToolkit.SharpDX.Object3D>;
 using FileFormatException = System.Exception;
+using HelixToolkit.Geometry;
 
 namespace HelixToolkit.SharpDX;
 

@@ -1,4 +1,5 @@
 ﻿using HelixToolkit;
+using HelixToolkit.Geometry;
 using HelixToolkit.SharpDX;
 using SharpDX;
 

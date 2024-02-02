@@ -3,6 +3,7 @@ using NUnit.Framework;
 using System.Numerics;
 using System.IO;
 using System.Windows.Media.Media3D;
+using HelixToolkit.Geometry;
 
 namespace HelixToolkit.Wpf.SharpDX.Tests.Utilities;
 

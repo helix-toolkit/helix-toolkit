@@ -1,7 +1,6 @@
-﻿using HelixToolkit.Geometry;
-using System.Numerics;
+﻿using System.Numerics;
 
-namespace HelixToolkit;
+namespace HelixToolkit.Geometry;
 
 /// <summary>
 /// Triangulate a simple Polygon with the Sweep-Line Algorithm

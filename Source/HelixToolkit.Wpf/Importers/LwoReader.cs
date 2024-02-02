@@ -2,6 +2,7 @@
 using System.Text;
 using System.Windows.Media.Media3D;
 using System.Windows.Threading;
+using HelixToolkit.Geometry;
 
 namespace HelixToolkit.Wpf;
 

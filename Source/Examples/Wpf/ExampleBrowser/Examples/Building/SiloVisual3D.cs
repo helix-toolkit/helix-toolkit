@@ -8,6 +8,7 @@ using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Media3D;
 using System.Numerics;
+using HelixToolkit.Geometry;
 using BrowsableAttribute = System.ComponentModel.BrowsableAttribute;
 
 namespace Building;

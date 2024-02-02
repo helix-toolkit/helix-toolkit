@@ -3,6 +3,7 @@ using System.IO;
 using System.Text;
 using System.Windows.Media.Media3D;
 using CommunityToolkit.Diagnostics;
+using HelixToolkit.Geometry;
 
 namespace HelixToolkit.Wpf;
 

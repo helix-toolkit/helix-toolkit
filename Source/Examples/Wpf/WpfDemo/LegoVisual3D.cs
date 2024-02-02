@@ -3,6 +3,9 @@ using HelixToolkit;
 using HelixToolkit.Wpf;
 using System.Windows;
 using System.Windows.Media.Media3D;
+using HelixToolkit.Geometry;
+using MeshGeometry3D = System.Windows.Media.Media3D.MeshGeometry3D;
+using HxMeshGeometry3D = HelixToolkit.Geometry.MeshGeometry3D;
 
 namespace WpfDemo;
 

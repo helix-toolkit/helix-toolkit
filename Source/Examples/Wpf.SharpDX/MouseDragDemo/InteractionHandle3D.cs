@@ -1,4 +1,5 @@
 ﻿using DependencyPropertyGenerator;
+using HelixToolkit.Geometry;
 using HelixToolkit.SharpDX;
 using HelixToolkit.SharpDX.Cameras;
 using HelixToolkit.Wpf.SharpDX;

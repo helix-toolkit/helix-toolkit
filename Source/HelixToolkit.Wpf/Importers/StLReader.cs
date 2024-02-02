@@ -1,9 +1,10 @@
-﻿using System.Globalization;
-using System.IO;
+﻿using System.IO;
+using System.Globalization;
+using System.Windows.Threading;
 using System.Text.RegularExpressions;
 using System.Windows.Media;
 using System.Windows.Media.Media3D;
-using System.Windows.Threading;
+using HelixToolkit.Geometry;
 
 namespace HelixToolkit.Wpf;
 

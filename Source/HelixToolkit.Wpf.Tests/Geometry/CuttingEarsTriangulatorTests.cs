@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using HelixToolkit.Geometry;
+using NUnit.Framework;
 using System.Windows;
 
 namespace HelixToolkit.Wpf.Tests.Geometry;
@@ -10,15 +11,15 @@ public class CuttingEarsTriangulatorTests
     public void Triangulate_Discussion440914_ShouldBeValid()
     {
         var polygon = new[]
-                          {
-                                  new Point(0, 0),
-                                  new Point(0, 1.894),
-                                  new Point(-2.536, 1.42),
-                                  new Point(-5.072, 1.42),
-                                  new Point(-5.072, 2.84),
-                                  new Point(-10.144, 2.84),
-                                  new Point(-10.144, 0)
-                              };
+        {
+            new Point(0, 0),
+            new Point(0, 1.894),
+            new Point(-2.536, 1.42),
+            new Point(-5.072, 1.42),
+            new Point(-5.072, 2.84),
+            new Point(-10.144, 2.84),
+            new Point(-10.144, 0)
+        };
         var result = CuttingEarsTriangulator.Triangulate(polygon.ToVector2Collection()!);
         Assert.That(result, Is.Not.Null);
         Assert.AreEqual(5 * 3, result.Count);

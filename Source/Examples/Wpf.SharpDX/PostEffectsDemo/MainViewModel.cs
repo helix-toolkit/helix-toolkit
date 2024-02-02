@@ -1,4 +1,5 @@
-﻿using HelixToolkit.SharpDX;
+﻿using HelixToolkit.Geometry;
+using HelixToolkit.SharpDX;
 using HelixToolkit.Wpf.SharpDX;
 using System;
 using System.Collections.Generic;

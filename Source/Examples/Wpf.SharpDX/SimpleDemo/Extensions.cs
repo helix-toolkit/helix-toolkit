@@ -13,6 +13,7 @@ using Point = System.Windows.Point;
 using Point3D = System.Numerics.Vector3;
 using Vector3D = System.Numerics.Vector3;
 using System.Numerics;
+using HelixToolkit.Geometry;
 
 namespace SimpleDemo;
 

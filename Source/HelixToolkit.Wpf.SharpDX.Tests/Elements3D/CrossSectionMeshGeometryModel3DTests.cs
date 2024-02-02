@@ -1,4 +1,5 @@
-﻿using HelixToolkit.Maths;
+﻿using HelixToolkit.Geometry;
+using HelixToolkit.Maths;
 using HelixToolkit.SharpDX;
 using NUnit.Framework;
 using System.Numerics;
