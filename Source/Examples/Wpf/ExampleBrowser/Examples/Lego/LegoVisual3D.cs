@@ -3,6 +3,7 @@ using HelixToolkit;
 using HelixToolkit.Wpf;
 using System.Numerics;
 using System.Windows.Media.Media3D;
+using HelixToolkit.Geometry;
 
 namespace Lego;
 

@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.Input;
 using HelixToolkit;
+using HelixToolkit.Geometry;
 using HelixToolkit.SharpDX;
 using HelixToolkit.Wpf.SharpDX;
 using Microsoft.Win32;
@@ -7,6 +8,7 @@ using SharpDX;
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
+using MeshGeometry3D = HelixToolkit.SharpDX.MeshGeometry3D;
 
 namespace RenderTechniqueImportExportDemo;
 

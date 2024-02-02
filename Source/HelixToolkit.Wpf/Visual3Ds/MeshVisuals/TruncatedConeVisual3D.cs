@@ -1,5 +1,6 @@
 ﻿using System.Windows.Media.Media3D;
 using System.Windows;
+using HelixToolkit.Geometry;
 
 namespace HelixToolkit.Wpf;
 

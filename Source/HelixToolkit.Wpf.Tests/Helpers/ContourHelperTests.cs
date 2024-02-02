@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using HelixToolkit.Geometry;
+using NUnit.Framework;
 using System.Windows;
 using System.Windows.Media.Media3D;
 

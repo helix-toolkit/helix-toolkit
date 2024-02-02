@@ -1,4 +1,5 @@
-﻿using HelixToolkit.SharpDX.Model;
+﻿using HelixToolkit.Geometry;
+using HelixToolkit.SharpDX.Model;
 using System.Globalization;
 using Object3DGroup = System.Collections.Generic.List<HelixToolkit.SharpDX.Object3D>;
 

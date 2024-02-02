@@ -1,4 +1,4 @@
-﻿namespace HelixToolkit;
+﻿namespace HelixToolkit.Geometry;
 
 /// <summary>
 /// MeshFaces.

@@ -1,4 +1,5 @@
-﻿using HelixToolkit.Maths;
+﻿using HelixToolkit.Geometry;
+using HelixToolkit.Maths;
 using HelixToolkit.SharpDX;
 using HelixToolkit.Wpf.SharpDX.Tests.Controls;
 using NUnit.Framework;

@@ -2,7 +2,7 @@
 using HelixToolkit.Geometry;
 using System.Diagnostics;
 
-namespace HelixToolkit;
+namespace HelixToolkit.Geometry;
 
 /// <summary>
 /// Builds MeshGeometry3D objects.

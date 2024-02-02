@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using HelixToolkit.Geometry;
+using NUnit.Framework;
 using System.Diagnostics.CodeAnalysis;
 using System.Numerics;
 using System.Windows;

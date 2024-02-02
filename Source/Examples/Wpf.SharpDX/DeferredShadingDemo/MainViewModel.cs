@@ -5,6 +5,8 @@ using System.Windows.Media.Animation;
 using SharpDX;
 using HelixToolkit.SharpDX;
 using HelixToolkit;
+using System.IO;
+using HelixToolkit.Geometry;
 using HelixToolkit.Wpf.SharpDX;
 using Media3D = System.Windows.Media.Media3D;
 using Point3D = System.Windows.Media.Media3D.Point3D;
@@ -16,7 +18,7 @@ using TranslateTransform3D = System.Windows.Media.Media3D.TranslateTransform3D;
 using Vector3D = System.Windows.Media.Media3D.Vector3D;
 using Color = System.Windows.Media.Color;
 using Colors = System.Windows.Media.Colors;
-using System.IO;
+using MeshGeometry3D = HelixToolkit.SharpDX.MeshGeometry3D;
 
 namespace DeferredShadingDemo;
 

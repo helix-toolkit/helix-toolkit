@@ -1,4 +1,5 @@
-﻿using HelixToolkit.SharpDX.Utilities;
+﻿using HelixToolkit.Geometry;
+using HelixToolkit.SharpDX.Utilities;
 using SharpDX;
 using SharpDX.Direct2D1;
 using System.ComponentModel;

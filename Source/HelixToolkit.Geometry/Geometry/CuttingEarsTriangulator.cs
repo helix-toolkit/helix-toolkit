@@ -1,7 +1,7 @@
 ﻿
 using System.Numerics;
 
-namespace HelixToolkit;
+namespace HelixToolkit.Geometry;
 
 /// <summary>
 /// Provides a cutting ears triangulation algorithm for simple polygons with no holes. O(n^2)

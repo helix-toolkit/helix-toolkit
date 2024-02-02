@@ -1,7 +1,8 @@
 ﻿using System.Globalization;
 using System.IO;
-using System.Windows.Media.Media3D;
 using System.Windows.Threading;
+using System.Windows.Media.Media3D;
+using HelixToolkit.Geometry;
 
 namespace HelixToolkit.Wpf;
 

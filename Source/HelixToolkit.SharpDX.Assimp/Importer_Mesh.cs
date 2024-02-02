@@ -1,4 +1,5 @@
 ﻿using Assimp;
+using HelixToolkit.Geometry;
 using HelixToolkit.SharpDX.Model;
 using Microsoft.Extensions.Logging;
 using SharpDX;

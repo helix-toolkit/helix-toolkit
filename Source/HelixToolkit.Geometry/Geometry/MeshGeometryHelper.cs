@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using System.Text;
 
-namespace HelixToolkit;
+namespace HelixToolkit.Geometry;
 
 /// <summary>
 /// Provides helper methods for mesh geometries.

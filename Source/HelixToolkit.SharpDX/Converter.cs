@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Diagnostics;
+using HelixToolkit.Geometry;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 

@@ -1,4 +1,5 @@
 ﻿using HelixToolkit;
+using HelixToolkit.Geometry;
 using HelixToolkit.Maths;
 using HelixToolkit.SharpDX;
 using HelixToolkit.Wpf.SharpDX;
@@ -7,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using System.Windows;
+using MeshGeometry3D = HelixToolkit.SharpDX.MeshGeometry3D;
 
 namespace PolygonTriangulationDemo;
 

@@ -1,4 +1,5 @@
-﻿using SharpDX;
+﻿using HelixToolkit.Geometry;
+using SharpDX;
 
 namespace HelixToolkit.SharpDX;
 
