@@ -340,9 +340,7 @@ public class ViewCubeVisual3D : ModelVisual3D
     /// <summary>
     /// The dictionary [object,(normal vector,up vector)].
     /// </summary>
-    private readonly Dictionary<object, NormalAndUpVector> faceUpNormalVectors = new();
-    // use value tuple instead of NormalAndUpVector when upgrade .net 4.7
-    // private readonly Dictionary<object, (Vector3D faceNormal, Vector3D faceUpVector)> _faceUpNormalVectors = new();
+    private readonly Dictionary<object, (Vector3D faceNormalVector, Vector3D faceUpVector)> faceNormalUpVectors = new();
 
     private readonly Dictionary<CubeFaces, ModelUIElement3D> cubeFaceModels = new(6);// 6 faces of cuve
     private readonly ModelUIElement3D[] cubeEdgeModels = new ModelUIElement3D[12];//3*4=12 edges of cube;
@@ -446,7 +444,7 @@ public class ViewCubeVisual3D : ModelVisual3D
         // 1.Update local unit vectors
         CalculateLocalUnitVectors();
         // 2.Update faces
-        this.faceUpNormalVectors.Clear();
+        this.faceNormalUpVectors.Clear();
         CreateCubeFaces();
         CreateCubeEdges();
         CreateCubeCorners();
@@ -471,15 +469,15 @@ public class ViewCubeVisual3D : ModelVisual3D
          *
          */
 
-        var vecUp = this.ModelUpDirection;
+        Vector3D vecUp = this.ModelUpDirection;
         // create left vector 90° from up, using right-hand rule
-        var vecLeft1 = new Vector3D(vecUp.Y, vecUp.Z, vecUp.X);
+        Vector3D vecLeft1 = new Vector3D(vecUp.Y, vecUp.Z, vecUp.X);
         if (vecLeft1 == vecUp)
         {
             vecLeft1 = new Vector3D(0, 0, 1);
         }
-        var vecFront = Vector3D.CrossProduct(vecLeft1, vecUp);
-        var vecLeft = Vector3D.CrossProduct(vecUp, vecFront);
+        Vector3D vecFront = Vector3D.CrossProduct(vecLeft1, vecUp);
+        Vector3D vecLeft = Vector3D.CrossProduct(vecUp, vecFront);
         vecUp.Normalize();
         vecLeft.Normalize();
         vecFront.Normalize();
@@ -584,29 +582,29 @@ public class ViewCubeVisual3D : ModelVisual3D
         double squaredLength = this.Size - 2 * (sideWidthHeight - this.Overhang);
 
 
-        var p0 = this.Center - (this.leftVector + this.frontVector + this.upVector) * halfSize;
-        var p1 = p0 + this.frontVector * this.Size;
-        var p2 = p1 + this.leftVector * this.Size;
-        var p3 = p0 + this.leftVector * this.Size;
+        Point3D p0 = this.Center - (this.leftVector + this.frontVector + this.upVector) * halfSize;
+        Point3D p1 = p0 + this.frontVector * this.Size;
+        Point3D p2 = p1 + this.leftVector * this.Size;
+        Point3D p3 = p0 + this.leftVector * this.Size;
 
-        var p04 = p0 + this.upVector * halfSize;
-        var p15 = p1 + this.upVector * halfSize;
-        var p26 = p2 + this.upVector * halfSize;
-        var p37 = p3 + this.upVector * halfSize;
+        Point3D p04 = p0 + this.upVector * halfSize;
+        Point3D p15 = p1 + this.upVector * halfSize;
+        Point3D p26 = p2 + this.upVector * halfSize;
+        Point3D p37 = p3 + this.upVector * halfSize;
 
-        var p01 = p0 + this.frontVector * halfSize;
-        var p03 = p0 + this.leftVector * halfSize;
-        var p12 = p03 + this.frontVector * this.Size;
-        var p23 = p01 + this.leftVector * this.Size;
+        Point3D p01 = p0 + this.frontVector * halfSize;
+        Point3D p03 = p0 + this.leftVector * halfSize;
+        Point3D p12 = p03 + this.frontVector * this.Size;
+        Point3D p23 = p01 + this.leftVector * this.Size;
 
-        var p45 = p01 + this.upVector * this.Size;
-        var p56 = p12 + this.upVector * this.Size;
-        var p67 = p23 + this.upVector * this.Size;
-        var p47 = p03 + this.upVector * this.Size;
+        Point3D p45 = p01 + this.upVector * this.Size;
+        Point3D p56 = p12 + this.upVector * this.Size;
+        Point3D p67 = p23 + this.upVector * this.Size;
+        Point3D p47 = p03 + this.upVector * this.Size;
 
-        var xPoints = new Point3D[] { p01, p23, p67, p45 };
-        var yPoints = new Point3D[] { p56, p12, p03, p47 };
-        var zPoints = new Point3D[] { p04, p15, p26, p37 };
+        Point3D[] xPoints = new Point3D[] { p01, p23, p67, p45 };
+        Point3D[] yPoints = new Point3D[] { p56, p12, p03, p47 };
+        Point3D[] zPoints = new Point3D[] { p04, p15, p26, p37 };
         int counter = 0;
         for (int i = 0; i < xPoints.Length; i++)
         {
@@ -667,16 +665,16 @@ public class ViewCubeVisual3D : ModelVisual3D
         double sideLength = this.Size / 5;
         var moveDistance = Math.Sqrt(3) * (sideLength / 2 - this.Overhang);
 
-        var p0 = this.Center - (this.leftVector + this.frontVector + this.upVector) * halfSize;
-        var p1 = p0 + this.frontVector * this.Size;
-        var p2 = p1 + this.leftVector * this.Size;
-        var p3 = p0 + this.leftVector * this.Size;
-        var p4 = p0 + this.upVector * this.Size;
-        var p5 = p1 + this.upVector * this.Size;
-        var p6 = p2 + this.upVector * this.Size;
-        var p7 = p3 + this.upVector * this.Size;
+        Point3D p0 = this.Center - (this.leftVector + this.frontVector + this.upVector) * halfSize;
+        Point3D p1 = p0 + this.frontVector * this.Size;
+        Point3D p2 = p1 + this.leftVector * this.Size;
+        Point3D p3 = p0 + this.leftVector * this.Size;
+        Point3D p4 = p0 + this.upVector * this.Size;
+        Point3D p5 = p1 + this.upVector * this.Size;
+        Point3D p6 = p2 + this.upVector * this.Size;
+        Point3D p7 = p3 + this.upVector * this.Size;
 
-        var cornerPoints = new Point3D[] { p0, p1, p2, p3, p4, p5, p6, p7 };
+        Point3D[] cornerPoints = new Point3D[] { p0, p1, p2, p3, p4, p5, p6, p7 };
         for (int i = 0; i < this.cubeCornerModels.Length; i++)
         {
             Point3D point = cornerPoints[i];
@@ -706,49 +704,45 @@ public class ViewCubeVisual3D : ModelVisual3D
     /// Add a cube face.
     /// </summary>
     /// <param name="element"></param>
-    /// <param name="normal"></param>
-    /// <param name="up"></param>
+    /// <param name="faceNormal"></param>
+    /// <param name="upVector"></param>
     /// <param name="background"></param>
     /// <param name="text"></param>
-    private void AddCubeFace(ModelUIElement3D element, Vector3D normal, Vector3D up, Brush background, string text)
+    private void AddCubeFace(ModelUIElement3D element, Vector3D faceNormal, Vector3D upVector, Brush background, string text)
     {
         Material material = CreateTextMaterial(background, text);
         double a = this.Size;
         var builder = new MeshBuilder(false, true);
-        builder.AddCubeFace(this.Center.ToVector3(), normal.ToVector3(), up.ToVector3(), (float)a, (float)a, (float)a);
+        builder.AddCubeFace(this.Center.ToVector3(), faceNormal.ToVector3(), upVector.ToVector3(), (float)a, (float)a, (float)a);
         MeshGeometry3D geometry = builder.ToMesh().ToWndMeshGeometry3D();
         geometry.Freeze();
         var model = new GeometryModel3D { Geometry = geometry, Material = material };
         element.Model = model;
 
-        this.faceUpNormalVectors.Add(element, new NormalAndUpVector(normal, up));
-        // _faceUpNormalVectors.Add(element, (normal, up));  // use value tuple it instead of NormalAndUpVector when upgrade .net 4.7
+        faceNormalUpVectors.Add(element, (faceNormal, upVector));
     }
-    private void AddCubeEdge(ModelUIElement3D element, Point3D center, double x, double y, double z, Vector3D faceNormal)
+    private void AddCubeEdge(ModelUIElement3D element, Point3D center, double xLength, double yLength, double zLength, Vector3D faceNormal)
     {
         var builder = new MeshBuilder(false, true);
-        builder.AddBox(center.ToVector3(), frontVector.ToVector3(), leftVector.ToVector3(), (float)x, (float)y, (float)z);
-        var geometry = builder.ToMesh().ToWndMeshGeometry3D();
+        builder.AddBox(center.ToVector3(), frontVector.ToVector3(), leftVector.ToVector3(), (float)xLength, (float)yLength, (float)zLength);
+        MeshGeometry3D geometry = builder.ToMesh().ToWndMeshGeometry3D();
         geometry.Freeze();
         var model = new GeometryModel3D { Geometry = geometry, Material = MaterialHelper.CreateMaterial(edgeBrush) };
         element.Model = model;
 
-        this.faceUpNormalVectors.Add(element, new NormalAndUpVector(faceNormal, upVector));
-        //_faceUpNormalVectors.Add(element, (faceNormal, _upVector)); // use value tuple it instead of NormalAndUpVector when upgrade .net 4.7
+        faceNormalUpVectors.Add(element, (faceNormal, upVector));
 
     }
     void AddCubeCorner(ModelUIElement3D element, Point3D center, double sideLength, Vector3D faceNormal)
     {
-
         var builder = new MeshBuilder(false, true);
         builder.AddBox(center.ToVector3(), frontVector.ToVector3(), leftVector.ToVector3(), (float)sideLength, (float)sideLength, (float)sideLength);
-        var geometry = builder.ToMesh().ToWndMeshGeometry3D();
+        MeshGeometry3D geometry = builder.ToMesh().ToWndMeshGeometry3D();
         geometry.Freeze();
         var model = new GeometryModel3D { Geometry = geometry, Material = MaterialHelper.CreateMaterial(cornerBrush) };
         element.Model = model;
 
-        this.faceUpNormalVectors.Add(element, new NormalAndUpVector(faceNormal, upVector));
-        //_faceUpNormalVectors.Add(element, (faceNormal, _upVector)); // use value tuple it instead of NormalAndUpVector when upgrade .net 4.7
+        faceNormalUpVectors.Add(element, (faceNormal, upVector));
 
     }
     private static Material CreateTextMaterial(Brush? background, string text, Brush? foreground = null)
@@ -770,7 +764,7 @@ public class ViewCubeVisual3D : ModelVisual3D
         var bmp = new RenderTargetBitmap((int)grid.Width, (int)grid.Height, 96, 96, PixelFormats.Default);
         bmp.Render(grid);
         bmp.Freeze();
-        var material = MaterialHelper.CreateMaterial(new ImageBrush(bmp));
+        Material material = MaterialHelper.CreateMaterial(new ImageBrush(bmp));
         material.Freeze();
         return material;
     }
@@ -804,7 +798,7 @@ public class ViewCubeVisual3D : ModelVisual3D
     {
         if (this.cubeFaceModels.ContainsKey(cubeFace))
         {
-            var gm = this.cubeFaceModels[cubeFace].Model as GeometryModel3D;
+            GeometryModel3D? gm = this.cubeFaceModels[cubeFace].Model as GeometryModel3D;
 
             if (gm is not null)
             {
@@ -815,9 +809,9 @@ public class ViewCubeVisual3D : ModelVisual3D
 
     private void FacesMouseEnters(object? sender, MouseEventArgs e)
     {
-        var s = sender as ModelUIElement3D;
+        ModelUIElement3D? s = sender as ModelUIElement3D;
         CubeFaces cubeFace = this.cubeFaceModels.FirstOrDefault(x => x.Value == s).Key;
-        var gm = s?.Model as GeometryModel3D;
+        GeometryModel3D? gm = s?.Model as GeometryModel3D;
 
         if (gm is not null)
         {
@@ -827,9 +821,9 @@ public class ViewCubeVisual3D : ModelVisual3D
 
     private void FacesMouseLeaves(object? sender, MouseEventArgs e)
     {
-        var s = sender as ModelUIElement3D;
+        ModelUIElement3D? s = sender as ModelUIElement3D;
         CubeFaces cubeFace = this.cubeFaceModels.FirstOrDefault(x => x.Value == s).Key;
-        var gm = s?.Model as GeometryModel3D;
+        GeometryModel3D? gm = s?.Model as GeometryModel3D;
 
         if (gm is not null)
         {
@@ -839,8 +833,8 @@ public class ViewCubeVisual3D : ModelVisual3D
 
     private void EdgesMouseEnters(object? sender, MouseEventArgs e)
     {
-        var s = sender as ModelUIElement3D;
-        var gm = s?.Model as GeometryModel3D;
+        ModelUIElement3D? s = sender as ModelUIElement3D;
+        GeometryModel3D? gm = s?.Model as GeometryModel3D;
 
         if (gm is not null)
         {
@@ -850,8 +844,8 @@ public class ViewCubeVisual3D : ModelVisual3D
 
     private void EdgesMouseLeaves(object? sender, MouseEventArgs e)
     {
-        var s = sender as ModelUIElement3D;
-        var gm = s?.Model as GeometryModel3D;
+        ModelUIElement3D? s = sender as ModelUIElement3D;
+        GeometryModel3D? gm = s?.Model as GeometryModel3D;
 
         if (gm is not null)
         {
@@ -861,8 +855,8 @@ public class ViewCubeVisual3D : ModelVisual3D
 
     private void CornersMouseEnters(object? sender, MouseEventArgs e)
     {
-        var s = sender as ModelUIElement3D;
-        var gm = s?.Model as GeometryModel3D;
+        ModelUIElement3D? s = sender as ModelUIElement3D;
+        GeometryModel3D? gm = s?.Model as GeometryModel3D;
 
         if (gm is not null)
         {
@@ -872,8 +866,8 @@ public class ViewCubeVisual3D : ModelVisual3D
 
     private void CornersMouseLeaves(object? sender, MouseEventArgs e)
     {
-        var s = sender as ModelUIElement3D;
-        var gm = s?.Model as GeometryModel3D;
+        ModelUIElement3D? s = sender as ModelUIElement3D;
+        GeometryModel3D? gm = s?.Model as GeometryModel3D;
 
         if (gm is not null)
         {
@@ -897,11 +891,11 @@ public class ViewCubeVisual3D : ModelVisual3D
             return;
         }
 
-        var faceNormal = this.faceUpNormalVectors[sender].faceNormal;
-        var faceUp = this.faceUpNormalVectors[sender].faceUpVector;
+        Vector3D faceNormal = this.faceNormalUpVectors[sender].faceNormalVector;
+        Vector3D faceUp = this.faceNormalUpVectors[sender].faceUpVector;
 
-        var lookDirection = -faceNormal;
-        var upDirection = faceUp;
+        Vector3D lookDirection = -faceNormal;
+        Vector3D upDirection = faceUp;
         lookDirection.Normalize();
         upDirection.Normalize();
 
@@ -915,15 +909,15 @@ public class ViewCubeVisual3D : ModelVisual3D
             }
         }
 
-        if (this.Viewport != null)
+        if (this.Viewport is not null)
         {
-            var camera = this.Viewport.Camera as ProjectionCamera;
-            if (camera != null)
+            ProjectionCamera? camera = this.Viewport.Camera as ProjectionCamera;
+            if (camera is not null)
             {
-                var target = camera.Position + camera.LookDirection;
+                Point3D target = camera.Position + camera.LookDirection;
                 double distance = camera.LookDirection.Length;
                 lookDirection *= distance;
-                var newPosition = target - lookDirection;
+                Point3D newPosition = target - lookDirection;
                 CameraHelper.AnimateTo(camera, newPosition, lookDirection, upDirection, 500);
             }
         }
@@ -958,15 +952,5 @@ public class ViewCubeVisual3D : ModelVisual3D
         Right = 3,
         Top = 4,
         Bottom = 5,
-    }
-    private readonly struct NormalAndUpVector
-    {
-        public readonly Vector3D faceNormal;
-        public readonly Vector3D faceUpVector;
-        public NormalAndUpVector(Vector3D faceNormal, Vector3D faceUpVector)
-        {
-            this.faceNormal = faceNormal;
-            this.faceUpVector = faceUpVector;
-        }
     }
 }
