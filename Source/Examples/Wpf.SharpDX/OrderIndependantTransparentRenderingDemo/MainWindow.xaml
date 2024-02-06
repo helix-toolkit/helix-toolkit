@@ -130,6 +130,22 @@
                     Value="{Binding ElementName=view, Path=OITWeightDepthSlope}" />
             <CheckBox Foreground="White"
                       IsChecked="{Binding HighlightSeparated}">HighlightSeparated</CheckBox>
+            <Separator/>
+            <TextBlock>
+                <Run Text="Red Plane Opacity: " Foreground="White"/>
+                <Run Text="{Binding RedPlaneOpacity}" Foreground="Yellow"/>
+            </TextBlock>
+            <Slider Minimum="0" Maximum="100" Value="{Binding RedPlaneOpacity}"/>
+            <TextBlock>
+                <Run Text="Green Plane Opacity: " Foreground="White"/>
+                <Run Text="{Binding GreenPlaneOpacity}" Foreground="Yellow"/>
+            </TextBlock>
+            <Slider Minimum="0" Maximum="100" Value="{Binding GreenPlaneOpacity}"/>
+            <TextBlock>
+                <Run Text="Blue Plane Opacity: " Foreground="White"/>
+                <Run Text="{Binding BluePlaneOpacity}" Foreground="Yellow"/>
+            </TextBlock>
+            <Slider Minimum="0" Maximum="100" Value="{Binding BluePlaneOpacity}"/>
         </StackPanel>
     </Grid>
 </Window>

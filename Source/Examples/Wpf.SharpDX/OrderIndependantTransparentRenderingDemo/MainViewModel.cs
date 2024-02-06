@@ -88,6 +88,48 @@ public partial class MainViewModel : DemoCore.BaseViewModel
 
     public MaterialType[] MaterialTypes { get; } = new MaterialType[] { MaterialType.BlinnPhong, MaterialType.PBR, MaterialType.Diffuse };
 
+    [ObservableProperty]
+    private int redPlaneOpacity = 60;
+
+    partial void OnRedPlaneOpacityChanged(int value)
+    {
+        if (PlaneGeometry is null
+            || PlaneGeometry.Count == 0
+            || PlaneGeometry[0] is not MeshGeometryModel3D model
+            || model.Material is not PhongMaterial material)
+        {
+            return;
+        }
+        material.DiffuseColor = new Color4(1, 0, 0, value / 100f);
+    }
+    [ObservableProperty]
+    private int greenPlaneOpacity = 60;
+
+    partial void OnGreenPlaneOpacityChanged(int value)
+    {
+        if (PlaneGeometry is null
+            || PlaneGeometry.Count < 2
+            || PlaneGeometry[1] is not MeshGeometryModel3D model
+            || model.Material is not PhongMaterial material)
+        {
+            return;
+        }
+        material.DiffuseColor = new Color4(0, 1, 0, value / 100f);
+    }
+    [ObservableProperty]
+    private int bluePlaneOpacity = 60;
+
+    partial void OnBluePlaneOpacityChanged(int value)
+    {
+        if (PlaneGeometry is null
+            || PlaneGeometry.Count < 3
+            || PlaneGeometry[2] is not MeshGeometryModel3D model
+            || model.Material is not PhongMaterial material)
+        {
+            return;
+        }
+        material.DiffuseColor = new Color4(0, 0, 1, value / 100f);
+    }
     private readonly SynchronizationContext? context = SynchronizationContext.Current;
 
     private readonly Random rnd = new();
@@ -149,7 +191,7 @@ public partial class MainViewModel : DemoCore.BaseViewModel
 
         var material = new PhongMaterial
         {
-            DiffuseColor = new Color4(1, 0, 0, 0.5f)
+            DiffuseColor = new Color4(1, 0, 0, RedPlaneOpacity / 100f)
         };
 
         var model = new MeshGeometryModel3D()
@@ -164,7 +206,7 @@ public partial class MainViewModel : DemoCore.BaseViewModel
 
         material = new PhongMaterial
         {
-            DiffuseColor = new Color4(0, 1, 0, 0.5f)
+            DiffuseColor = new Color4(0, 1, 0, GreenPlaneOpacity / 100f)
         };
 
         model = new MeshGeometryModel3D()
@@ -179,7 +221,7 @@ public partial class MainViewModel : DemoCore.BaseViewModel
 
         material = new PhongMaterial
         {
-            DiffuseColor = new Color4(0, 0, 1, 0.5f)
+            DiffuseColor = new Color4(0, 0, 1, BluePlaneOpacity / 100f)
         };
 
         model = new MeshGeometryModel3D()
