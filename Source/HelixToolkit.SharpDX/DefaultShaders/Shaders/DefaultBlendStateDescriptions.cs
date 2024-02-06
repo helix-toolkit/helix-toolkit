@@ -39,17 +39,12 @@ public static class DefaultBlendStateDescriptions
 
         BSSourceAlways.RenderTarget[0] = new RenderTargetBlendDescription()
         {
-            AlphaBlendOperation = BlendOperation.Add,
-            BlendOperation = BlendOperation.Add,
-            DestinationBlend = BlendOption.Zero,
-            SourceBlend = BlendOption.One,
-            DestinationAlphaBlend = BlendOption.Zero,
-            SourceAlphaBlend = BlendOption.One,
             IsBlendEnabled = false,
             RenderTargetWriteMask = ColorWriteMaskFlags.All
         };
 
         NoBlend.RenderTarget[0] = new RenderTargetBlendDescription() { IsBlendEnabled = false };
+
         BSOverlayBlending.RenderTarget[0] = new RenderTargetBlendDescription()
         {
             IsBlendEnabled = true,
@@ -148,6 +143,7 @@ public static class DefaultBlendStateDescriptions
         };
 
         BSOITDP.IndependentBlendEnable = true;
+        BSOITDP.AlphaToCoverageEnable = false;
         // Max blending
         BSOITDP.RenderTarget[0] = new RenderTargetBlendDescription()
         {
@@ -184,11 +180,11 @@ public static class DefaultBlendStateDescriptions
             DestinationAlphaBlend = BlendOption.One,
             AlphaBlendOperation = BlendOperation.Add
         };
-
+        BSOITDPMaxBlending.AlphaToCoverageEnable = false;
+        BSOITDPMaxBlending.IndependentBlendEnable = true;
         // Max blending
         for (int i = 0; i < 3; ++i)
         {
-            BSOITDPMaxBlending.IndependentBlendEnable = true;
             BSOITDPMaxBlending.RenderTarget[i] = new RenderTargetBlendDescription()
             {
                 IsBlendEnabled = true,
@@ -201,17 +197,7 @@ public static class DefaultBlendStateDescriptions
                 AlphaBlendOperation = BlendOperation.Maximum
             };
         }
-
-        BSOITDPFinal.RenderTarget[0] = new RenderTargetBlendDescription()
-        {
-            IsBlendEnabled = true,
-            RenderTargetWriteMask = ColorWriteMaskFlags.All,
-            SourceBlend = BlendOption.One,
-            DestinationBlend = BlendOption.SourceAlpha,
-            BlendOperation = BlendOperation.Add,
-            SourceAlphaBlend = BlendOption.One,
-            DestinationAlphaBlend = BlendOption.One,
-            AlphaBlendOperation = BlendOperation.Maximum
-        };
+        BSOITDPFinal = BSSourceAlways;
+        BSOITDPFinal.AlphaToCoverageEnable = false;
     }
 }
