@@ -96,7 +96,7 @@ namespace OrderIndependentTransparentRendering
         {
             set
             {
-                if(SetValue(ref oitRenderType, value))
+                if (SetValue(ref oitRenderType, value))
                 {
                     switch (value)
                     {
@@ -122,7 +122,7 @@ namespace OrderIndependentTransparentRendering
         {
             set
             {
-                if(SetValue(ref materialType, value))
+                if (SetValue(ref materialType, value))
                 {
                     UpdateMaterials();
                 }
@@ -135,8 +135,45 @@ namespace OrderIndependentTransparentRendering
         public OITRenderType[] OITRenderTypes { get; } = new OITRenderType[] { OITRenderType.None, OITRenderType.DepthPeeling, OITRenderType.SinglePassWeighted };
 
         public MaterialType[] MaterialTypes { get; } = new MaterialType[] { MaterialType.BlinnPhong, MaterialType.PBR, MaterialType.Diffuse };
-
-
+        private int redPlaneOpacity = 60;
+        public int RedPlaneOpacity
+        {
+            set
+            {
+                if (SetValue(ref redPlaneOpacity, value))
+                {
+                    var m = (PlaneGeometry[0] as MeshGeometryModel3D).Material as PhongMaterial;
+                    m.DiffuseColor = new Color4(1, 0, 0, value / 100f);
+                }
+            }
+            get => redPlaneOpacity;
+        }
+        private int greenPlaneOpacity = 60;
+        public int GreenPlaneOpacity
+        {
+            set
+            {
+                if (SetValue(ref greenPlaneOpacity, value))
+                {
+                    var m = (PlaneGeometry[1] as MeshGeometryModel3D).Material as PhongMaterial;
+                    m.DiffuseColor = new Color4(0, 1, 0, value / 100f);
+                }
+            }
+            get => greenPlaneOpacity;
+        }
+        private int bluePlaneOpacity = 60;
+        public int BluePlaneOpacity
+        {
+            set
+            {
+                if (SetValue(ref bluePlaneOpacity, value))
+                {
+                    var m = (PlaneGeometry[2] as MeshGeometryModel3D).Material as PhongMaterial;
+                    m.DiffuseColor = new Color4(0, 0, 1, value / 100f);
+                }
+            }
+            get => bluePlaneOpacity;
+        }
         public ICommand ResetCameraCommand
         {
             set; get;
@@ -161,7 +198,7 @@ namespace OrderIndependentTransparentRendering
             };
             ResetCameraCommand = new RelayCommand((o) => { Camera.Reset(); });
             Task.Run(() => { Load3ds("NITRO_ENGINE.3ds"); });
-            
+
             BuildGrid();
             BuildPlanes();
         }
@@ -195,7 +232,7 @@ namespace OrderIndependentTransparentRendering
             var mesh = builder.ToMesh();
 
             var material = new PhongMaterial();
-            material.DiffuseColor = new SharpDX.Color4(1, 0, 0, 0.5f);
+            material.DiffuseColor = new SharpDX.Color4(1, 0, 0, RedPlaneOpacity / 100f);
 
             var model = new MeshGeometryModel3D()
             {
@@ -208,7 +245,7 @@ namespace OrderIndependentTransparentRendering
             PlaneGeometry.Add(model);
 
             material = new PhongMaterial();
-            material.DiffuseColor = new SharpDX.Color4(0, 1, 0, 0.5f);
+            material.DiffuseColor = new SharpDX.Color4(0, 1, 0, GreenPlaneOpacity / 100f);
 
             model = new MeshGeometryModel3D()
             {
@@ -221,7 +258,7 @@ namespace OrderIndependentTransparentRendering
             PlaneGeometry.Add(model);
 
             material = new PhongMaterial();
-            material.DiffuseColor = new SharpDX.Color4(0, 0, 1, 0.5f);
+            material.DiffuseColor = new SharpDX.Color4(0, 0, 1, BluePlaneOpacity / 100f);
 
             model = new MeshGeometryModel3D()
             {
@@ -257,14 +294,15 @@ namespace OrderIndependentTransparentRendering
 
         public void AttachModelList(List<Object3D> objs)
         {
-            
+
             var rnd = new Random();
 
             foreach (var ob in objs)
             {
                 ob.Geometry.UpdateOctree();
                 Task.Delay(50).Wait(); //Only for async loading demo
-                context.Post((o) => {
+                context.Post((o) =>
+                {
                     var s = new MeshGeometryModel3D
                     {
                         Geometry = ob.Geometry,
@@ -306,12 +344,12 @@ namespace OrderIndependentTransparentRendering
                     };
                     break;
                 case MaterialType.PBR:
-                    material = new PBRMaterial()                    
+                    material = new PBRMaterial()
                     {
                         AlbedoColor = diffuse,
                         MetallicFactor = 0.7f,
                         RoughnessFactor = 0.6f,
-                        ReflectanceFactor = 0.2, 
+                        ReflectanceFactor = 0.2,
                     };
                     break;
                 case MaterialType.Diffuse:
