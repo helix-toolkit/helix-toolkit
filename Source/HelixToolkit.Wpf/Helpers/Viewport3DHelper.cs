@@ -123,54 +123,52 @@ public static class Viewport3DHelper
         }
     }
 
+
+
     /// <summary>
     /// Finds the hits for the specified position.
     /// </summary>
-    /// <param name="viewport">
-    /// The viewport.
-    /// </param>
-    /// <param name="position">
-    /// The position.
-    /// </param>
-    /// <returns>
-    /// List of hits, sorted with the nearest hit first.
-    /// </returns>
-    public static IList<HitResult>? FindHits(this Viewport3D viewport, Point position)
+    /// <param name="viewport">The viewport.</param>
+    /// <param name="position">The position.</param>
+    /// <param name="filterCallback">The method that represents the hit test filter callback value./></param>
+    /// <param name="resultCallback">The method that represents the hit test result callback value.</param>
+    /// <returns> List of hits, sorted with the nearest hit first.</returns>
+    public static IList<HitResult>? FindHits(this Viewport3D viewport, Point position, HitTestFilterCallback? filterCallback = null, HitTestResultCallback? resultCallback = null)
     {
         if (viewport.Camera is not ProjectionCamera camera)
         {
             return null;
         }
 
-        var result = new List<HitResult>();
-        HitTestResultBehavior callback(HitTestResult hit)
+        var result = new HashSet<HitResult>();
+        resultCallback ??= DefaultResultCallback;
+        var pointHitTestParamrters = new PointHitTestParameters(position);
+        VisualTreeHelper.HitTest(viewport, filterCallback, resultCallback, pointHitTestParamrters);
+        return result.OrderBy(k => k.Distance).ToList();
+
+        HitTestResultBehavior DefaultResultCallback(HitTestResult hit)
         {
             if (hit is RayMeshGeometry3DHitTestResult rayHit)
             {
-                if (rayHit.MeshHit != null)
+                if (rayHit.MeshHit is not null)
                 {
                     var p = GetGlobalHitPosition(rayHit, viewport);
                     var nn = GetNormalHit(rayHit);
                     var n = nn ?? new Vector3D(0, 0, 1);
-
-                    result.Add(
-                        new HitResult
-                        {
-                            Distance = (camera.Position - p).Length,
-                            RayHit = rayHit,
-                            Normal = n,
-                            Position = p
-                        });
+                    var hitResult = new HitResult
+                    {
+                        Distance = (camera.Position - p).Length,
+                        RayHit = rayHit,
+                        Normal = n,
+                        Position = p
+                    };
+                    if (!result.Contains(hitResult))
+                        result.Add(hitResult);
                 }
             }
 
             return HitTestResultBehavior.Continue;
         }
-
-        var htp = new PointHitTestParameters(position);
-        VisualTreeHelper.HitTest(viewport, null, callback, htp);
-
-        return result.OrderBy(k => k.Distance).ToList();
     }
 
     /// <summary>
@@ -1313,6 +1311,16 @@ public static class Viewport3DHelper
     public sealed class RectangleHitResult
     {
         /// <summary>
+        /// Gets the hit model.
+        /// </summary>
+        public Model3D? Model { get; }
+
+        /// <summary>
+        /// Gets the hit visual.
+        /// </summary>
+        public Visual3D? Visual { get; }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="RectangleHitResult" /> class.
         /// </summary>
         /// <param name="model">The hit model.</param>
@@ -1322,16 +1330,23 @@ public static class Viewport3DHelper
             this.Model = model;
             this.Visual = visual;
         }
+        public override bool Equals(object? obj)
+        {
+            if (obj is HitResult other)
+            {
+                return this.Visual == other.Visual && this.Model == other.Model;
+            }
+            return false;
+        }
 
-        /// <summary>
-        /// Gets the hit model.
-        /// </summary>
-        public Model3D? Model { get; private set; }
-
-        /// <summary>
-        /// Gets the hit visual.
-        /// </summary>
-        public Visual3D? Visual { get; private set; }
+        public override int GetHashCode()
+        {
+#if NETFRAMEWORK
+            return (this.Visual, this.Model).GetHashCode();
+#else
+            return HashCode.Combine(this.Visual, this.Model).GetHashCode();
+#endif
+        }
     }
 
     /// <summary>
@@ -1397,6 +1412,24 @@ public static class Viewport3DHelper
             {
                 return this.RayHit?.VisualHit;
             }
+        }
+
+        public override bool Equals(object? obj)
+        {
+            if (obj is HitResult other)
+            {
+                return this.Visual == other.Visual && this.Model == other.Model;
+            }
+            return false;
+        }
+
+        public override int GetHashCode()
+        {
+#if NETFRAMEWORK
+            return (this.Visual, this.Model).GetHashCode();
+#else
+            return HashCode.Combine(this.Visual, this.Model).GetHashCode();
+#endif
         }
     }
 }
