@@ -171,7 +171,8 @@ public class ImmediateContextRenderer : DisposeObject, IRenderer
                     if (oitDepthPeelingCore is not null)
                     {
                         oitDepthPeelingCore.ExternRenderParameter = parameter;
-                        oitDepthPeelingCore.PeelingIteration = context.OITDepthPeelingIteration;
+                        oitDepthPeelingCore.PeelingIteration = context.RenderHost.RenderConfiguration.OITDepthPeelingIteration;
+                        oitDepthPeelingCore.EnableDynamicIteration = context.RenderHost.RenderConfiguration.EnableOITDepthPeelingDynamicIteration;
                         oitDepthPeelingCore.Render(context, ImmediateContext);
                     }
                     return oitDepthPeelingCore?.RenderCount ?? 0;

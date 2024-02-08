@@ -580,7 +580,8 @@ public abstract class DX11RenderHostBase : DisposeObject, IRenderHost
         RenderD2D = true,
         RenderLights = true,
         ClearEachFrame = true,
-        OITRenderType = OITRenderType.DepthPeeling
+        OITRenderType = OITRenderType.DepthPeeling,
+        EnableOITDepthPeelingDynamicIteration = true
     };
 
     /// <summary>
@@ -767,7 +768,6 @@ public abstract class DX11RenderHostBase : DisposeObject, IRenderHost
                 renderContext.SSAOEnabled = RenderConfiguration.EnableSSAO;
                 renderContext.SSAOBias = RenderConfiguration.SSAOBias;
                 renderContext.SSAOIntensity = RenderConfiguration.SSAOIntensity;
-                renderContext.OITDepthPeelingIteration = RenderConfiguration.OITDepthPeelingIteration;
             }
             if (renderBuffer is not null)
             {

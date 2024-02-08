@@ -358,6 +358,7 @@ public partial class Viewport3DX : Control, IViewport3DX
                 renderHostInternal.RenderConfiguration.AutoUpdateOctree = this.EnableAutoOctreeUpdate;
                 renderHostInternal.RenderConfiguration.OITRenderType = OITRenderMode;
                 renderHostInternal.RenderConfiguration.OITDepthPeelingIteration = OITDepthPeelingIteration;
+                renderHostInternal.RenderConfiguration.EnableOITDepthPeelingDynamicIteration = EnableOITDepthPeelingDynamicIteration;
                 renderHostInternal.RenderConfiguration.OITWeightPower = (float)OITWeightPower;
                 renderHostInternal.RenderConfiguration.OITWeightDepthSlope = (float)OITWeightDepthSlope;
                 renderHostInternal.RenderConfiguration.OITWeightMode = OITWeightMode;

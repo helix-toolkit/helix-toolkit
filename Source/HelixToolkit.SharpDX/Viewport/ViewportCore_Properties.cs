@@ -245,6 +245,30 @@ public partial class ViewportCore
         get => RenderHost.RenderConfiguration.EnableRenderOrder;
     }
     /// <summary>
+    /// Gets or sets the order independent transparency render type.
+    /// </summary>
+    public OITRenderType OITRenderType
+    {
+        set => RenderHost.RenderConfiguration.OITRenderType = value;
+        get => RenderHost.RenderConfiguration.OITRenderType;
+    }
+
+    public int OITDepthPeelingIteration
+    {
+        set => RenderHost.RenderConfiguration.OITDepthPeelingIteration = value;
+        get => RenderHost.RenderConfiguration.OITDepthPeelingIteration;
+    }
+
+    public bool EnableOITDepthPeelingDynamicIteration
+    {
+        set => RenderHost.RenderConfiguration.EnableOITDepthPeelingDynamicIteration = value;
+        get => RenderHost.RenderConfiguration.EnableOITDepthPeelingDynamicIteration;
+    }
+    /// <summary>
+    /// Gets the render configuration.
+    /// </summary>
+    public Render.DX11RenderHostConfiguration RenderConfiguration => RenderHost.RenderConfiguration;
+    /// <summary>
     /// Gets the actual width.
     /// </summary>
     /// <value>

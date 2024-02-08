@@ -95,7 +95,8 @@ namespace WinFormsTest
             WalkAround = false,
             ShowRenderDetail = false,
             ShowEnvironmentMap = false,
-            EnableDpiScale = true
+            EnableDpiScale = true,
+            DepthPeelingIteration = 4
         };
 
         public CoreTestApp(Form window, SynchronizationContext context)
@@ -420,6 +421,7 @@ namespace WinFormsTest
                 directionalLight.Color = Color.White.ToColor4().ChangeIntensity(options.DirectionLightIntensity);
                 ambientLight.Color = Color.White.ToColor4().ChangeIntensity(options.AmbientLightIntensity);
                 ChangeEnvironmentMapVisibility(options.ShowEnvironmentMap);
+                viewport.OITDepthPeelingIteration = options.DepthPeelingIteration;
                 viewport.Render();
 
                 if (options.PlayAnimation && options.AnimationUpdater != null)

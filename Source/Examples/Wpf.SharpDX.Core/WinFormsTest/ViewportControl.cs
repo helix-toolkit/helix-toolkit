@@ -27,5 +27,6 @@ namespace WinFormsTest
         public bool ShowEnvironmentMap;
         public bool EnableDpiScale;
         public long InitTimeStamp;
+        public int DepthPeelingIteration;
     }
 }
