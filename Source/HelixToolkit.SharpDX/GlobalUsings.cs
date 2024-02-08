@@ -9,3 +9,5 @@ global using Point = System.Numerics.Vector2;
 global using Point3D = System.Numerics.Vector3;
 global using Vector3D = System.Numerics.Vector3;
 global using HelixToolkit.Maths;
+global using Microsoft.Extensions.Logging;
+global using System.Diagnostics;

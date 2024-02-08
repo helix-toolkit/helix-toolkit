@@ -1,20 +1,23 @@
 ﻿using HelixToolkit.SharpDX.Render;
 using HelixToolkit.SharpDX.Shaders;
 using HelixToolkit.SharpDX.Utilities;
-using SharpDX;
 using SharpDX.Direct3D11;
 using SharpDX.DXGI;
-using System.Diagnostics;
 
 namespace HelixToolkit.SharpDX.Core;
 
 public sealed class OITDepthPeeling : RenderCore
 {
+    private static readonly ILogger logger = Logger.LogManager.Create("OITDepthPeeling");
     private int currWidth = 0, currHeight = 0;
     private ShaderResourceViewProxy? minMaxZTarget0, minMaxZTarget1, frontBlendingTarget, backBlendingTarget;
     private readonly ShaderResourceViewProxy?[] minMaxZTargets = new ShaderResourceViewProxy?[2];
     private readonly RenderTargetView?[] targets = new RenderTargetView?[3];
     private readonly ShaderResourceView?[] finalSRVs = new ShaderResourceView?[3];
+    private Predicate? predicate;
+    private int lastCheckIteration = 0;
+    private int predictedIteration = 0;
+    private bool predicting = false;
     private ShaderPass? finalPass = ShaderPass.NullPass;
     public RenderParameter ExternRenderParameter
     {
@@ -23,6 +26,8 @@ public sealed class OITDepthPeeling : RenderCore
     public int RenderCount { private set; get; }
 
     public int PeelingIteration { set; get; } = 4;
+
+    public bool EnableDynamicIteration { set; get; } = true;
 
     public OITDepthPeeling() : base(RenderType.Transparent) { }
 
@@ -86,7 +91,7 @@ public sealed class OITDepthPeeling : RenderCore
         deviceContext.ClearRenderTargetView(frontBlendingTarget, color);
 #pragma warning disable CS8602 // Dereference of a possibly null reference.
         if (ExternRenderParameter.RenderTargetView is not null &&
-            ExternRenderParameter.RenderTargetView.Length > 0 && 
+            ExternRenderParameter.RenderTargetView.Length > 0 &&
             backBlendingTarget.Resource is not null)
         {
             if (ExternRenderParameter.IsMSAATexture)
@@ -151,10 +156,36 @@ public sealed class OITDepthPeeling : RenderCore
         context.OITRenderStage = OITRenderStage.DepthPeelingInitMinMaxZ;
         deviceContext.SetRenderTarget(depthStencilView, minMaxZTargets[0]);
         DrawMesh(context, deviceContext);
-
         context.OITRenderStage = OITRenderStage.DepthPeeling;
         var currId = 0;
-        for (var layer = 1; layer < PeelingIteration; ++layer)
+        var iteration = predictedIteration == 0 ? PeelingIteration : predictedIteration;
+        if (EnableDynamicIteration && deviceContext.IsDataAvailable(predicate!))
+        {
+            predicting = false;
+#if DEBUG_DEPTH_PEELING
+            logger.LogDebug("Iteration: {0}.", lastCheckIteration);
+#endif
+            if (deviceContext.GetData<int>(predicate!, out var hasSample) && hasSample == 0)
+            {
+                iteration = lastCheckIteration;
+                lastCheckIteration--;
+            }
+            else
+            {
+                lastCheckIteration++;
+                iteration = lastCheckIteration;
+            }
+        }
+        lastCheckIteration = Math.Min(Math.Max(1, lastCheckIteration), PeelingIteration);
+        iteration = EnableDynamicIteration ? Math.Min(iteration, PeelingIteration) : PeelingIteration;
+        if (predictedIteration != iteration)
+        {
+            predictedIteration = iteration;
+#if DEBUG_DEPTH_PEELING
+            logger.LogDebug("Predicted iteration: {0}.", predictedIteration);
+#endif
+        }
+        for (var layer = 1; layer <= predictedIteration; ++layer)
         {
             currId = layer % 2;
             var prevId = 1 - currId;
@@ -165,8 +196,21 @@ public sealed class OITDepthPeeling : RenderCore
             targets[2] = backBlendingTarget;
             deviceContext.SetRenderTargets(depthStencilView, targets);
             deviceContext.SetShaderResource(new PixelShaderType(), 100, minMaxZTargets[prevId]);
+            if (!predicting && layer >= lastCheckIteration && EnableDynamicIteration)
+            {
+                deviceContext.Begin(predicate!);
+#if DEBUG_DEPTH_PEELING
+                logger.LogDebug("Predicting on layer {0}.", layer);
+#endif
+            }
             DrawMesh(context, deviceContext);
             deviceContext.SetShaderResource(new PixelShaderType(), 100, null);
+            if (!predicting && layer >= lastCheckIteration && EnableDynamicIteration)
+            {
+                deviceContext.End(predicate!);
+                predicting = true;
+                lastCheckIteration = layer;
+            }
         }
         context.OITRenderStage = OITRenderStage.None;
         finalSRVs[0] = minMaxZTargets[currId];
@@ -183,11 +227,13 @@ public sealed class OITDepthPeeling : RenderCore
     {
         finalPass = technique?[DefaultPassNames.OITDepthPeelingFinal];
         Debug.Assert(finalPass is not null && !finalPass.IsNULL);
+        predicate = new Predicate(technique!.Device, new QueryDescription { Type = QueryType.OcclusionPredicate });
         return true;
     }
 
     protected override void OnDetach()
     {
+        RemoveAndDispose(ref predicate);
         DisposeAllTargets();
         currWidth = currHeight = 0;
         finalPass = ShaderPass.NullPass;

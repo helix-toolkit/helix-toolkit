@@ -2072,6 +2072,33 @@ public partial class Viewport3DX
                 viewport.InvalidateRender();
             }
         }));
+
+    public bool EnableOITDepthPeelingDynamicIteration
+    {
+        get
+        {
+            return (bool)GetValue(EnableOITDepthPeelingDynamicIterationProperty);
+        }
+        set
+        {
+            SetValue(EnableOITDepthPeelingDynamicIterationProperty, value);
+        }
+    }
+
+    public static readonly DependencyProperty EnableOITDepthPeelingDynamicIterationProperty =
+    DependencyProperty.Register("EnableOITDepthPeelingDynamicIteration", typeof(bool), typeof(Viewport3DX), new PropertyMetadata(true, (d, e) =>
+    {
+        if (d is not Viewport3DX viewport)
+        {
+            return;
+        }
+
+        if (viewport.renderHostInternal != null)
+        {
+            viewport.renderHostInternal.RenderConfiguration.EnableOITDepthPeelingDynamicIteration = (bool)e.NewValue;
+            viewport.InvalidateRender();
+        }
+    }));
     /// <summary>
     /// Gets or sets the Order independent transparency rendering color weight power. 
     /// Used for color weight calculation. 

@@ -40,6 +40,10 @@ DDPOutputMRT depthPeelPS(in float4 pos, in float4 color)
 
     if (fragDepth < nearestDepth || fragDepth > farthestDepth)
     {
+		if (OUT.Depths.x == -MAX_DEPTH_FLOAT && OUT.Depths.y == -MAX_DEPTH_FLOAT)
+		{
+			discard;
+		}
         // Skip this depth in the peeling algorithm
         OUT.Depths.xy = -MAX_DEPTH_FLOAT;
         return OUT;

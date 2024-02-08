@@ -331,14 +331,7 @@ public sealed class RenderContext : DisposeObject, IRenderMatrices
             return (OITWeightMode)globalTransform.OITWeightMode;
         }
     }
-    /// <summary>
-    /// Depth peeling iteration. Default is 4. 
-    /// Iteration depends on estimating number of overlapping semi-transparent layers to be accurately rendered.
-    /// </summary>
-    public int OITDepthPeelingIteration
-    {
-        set; get;
-    } = 4;
+
     /// <summary>
     /// Gets or sets a value indicating whether [ssao enabled].
     /// </summary>

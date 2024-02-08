@@ -726,6 +726,7 @@ public partial class Viewport3DX : Control, IViewport3DX, IDisposable
             this.renderHostInternal.RenderConfiguration.OITWeightDepthSlope = (float)OITWeightDepthSlope;
             this.renderHostInternal.RenderConfiguration.OITWeightMode = OITWeightMode;
             this.renderHostInternal.RenderConfiguration.OITDepthPeelingIteration = OITDepthPeelingIteration;
+            this.renderHostInternal.RenderConfiguration.EnableOITDepthPeelingDynamicIteration = EnableOITDepthPeelingDynamicIteration;
             this.renderHostInternal.RenderConfiguration.FXAALevel = FXAALevel;
             this.renderHostInternal.RenderConfiguration.EnableRenderOrder = EnableRenderOrder;
             this.renderHostInternal.RenderConfiguration.EnableSSAO = EnableSSAO;

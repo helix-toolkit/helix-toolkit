@@ -64,9 +64,14 @@ public sealed class DX11RenderHostConfiguration
     public OITRenderType OITRenderType = OITRenderType.DepthPeeling;
 
     /// <summary>
-    /// 
+    /// OIT Dual depth peeling iteration.
     /// </summary>
     public int OITDepthPeelingIteration = 4;
+    /// <summary>
+    /// Enable dynamic iteration for depth peeling to improve performance.
+    /// Maximum iteration is set by <see cref="OITDepthPeelingIteration"/>.
+    /// </summary>
+    public bool EnableOITDepthPeelingDynamicIteration = true;
 
     /// <summary>
     /// Enable FXAA. If MSAA used, FXAA will be disabled automatically

@@ -68,6 +68,8 @@ namespace WinFormsTest
                     }
                     ImGui.Separator();
                     ImGui.ColorPicker3("Background Color", ref options.BackgroundColor);
+                    ImGui.Separator();
+                    ImGui.SliderInt("Depth Peeling Iteration", ref options.DepthPeelingIteration, 1, 20);
                     ImGui.EndMenu();
                 }
                 if (!showImGuiDemo && ImGui.BeginMenu("ImGui Demo"))

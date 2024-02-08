@@ -1421,6 +1421,20 @@ public partial class Viewport3DX
             }
         }));
 
+    public static readonly DependencyProperty EnableOITDepthPeelingDynamicIterationProperty =
+        DependencyProperty.Register("EnableOITDepthPeelingDynamicIteration", typeof(bool), typeof(Viewport3DX), new PropertyMetadata(true, (d, e) =>
+        {
+            if (d is not Viewport3DX viewport)
+            {
+                return;
+            }
+
+            if (viewport.renderHostInternal != null)
+            {
+                viewport.renderHostInternal.RenderConfiguration.EnableOITDepthPeelingDynamicIteration = (bool)e.NewValue;
+                viewport.InvalidateRender();
+            }
+        }));
     /// <summary>
     /// The fxaa level property
     /// </summary>
@@ -3531,7 +3545,17 @@ public partial class Viewport3DX
             SetValue(OITDepthPeelingIterationProperty, value);
         }
     }
-
+    public bool EnableOITDepthPeelingDynamicIteration
+    {
+        get
+        {
+            return (bool)GetValue(EnableOITDepthPeelingDynamicIterationProperty);
+        }
+        set
+        {
+            SetValue(EnableOITDepthPeelingDynamicIterationProperty, value);
+        }
+    }
     /// <summary>
     /// Gets or sets the fxaa. If MSAA is set, FXAA will be disabled automatically
     /// </summary>
