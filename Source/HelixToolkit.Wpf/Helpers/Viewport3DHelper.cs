@@ -623,7 +623,7 @@ public static class Viewport3DHelper
     /// <returns>A <see cref="Matrix3D"/>.</returns>
     public static Matrix3D GetProjectionMatrix(this Viewport3D viewport)
     {
-        return viewport.Camera.GetProjectionMatrix(viewport.ActualHeight / viewport.ActualWidth);
+        return viewport.Camera.GetProjectionMatrix(viewport.ActualWidth / viewport.ActualHeight);
     }
 
     /// <summary>
@@ -692,30 +692,37 @@ public static class Viewport3DHelper
     {
         pointNear = new Point3D();
         pointFar = new Point3D();
-
-        var pointIn3D = new Point3D(pointIn.X, pointIn.Y, 0);
-        var matrixViewport = GetViewportTransform(viewport);
-        var matrixCamera = GetCameraTransform(viewport);
-
-        if (!matrixViewport.HasInverse)
+        var matrixProj = GetProjectionMatrix(viewport);
+        var matrixView = (viewport.Camera is not null ? viewport.Camera.Transform.Value : Matrix3D.Identity) * GetViewMatrix(viewport);
+        if (viewport.ActualWidth == 0 || viewport.ActualHeight == 0)
         {
             return false;
         }
-
-        if (!matrixCamera.HasInverse)
+        if (!matrixView.HasInverse)
         {
             return false;
         }
-
-        matrixViewport.Invert();
-        matrixCamera.Invert();
-
-        var pointNormalized = matrixViewport.Transform(pointIn3D);
-        pointNormalized.Z = 0.01;
-        pointNear = matrixCamera.Transform(pointNormalized);
-        pointNormalized.Z = 0.99;
-        pointFar = matrixCamera.Transform(pointNormalized);
-
+        matrixView.Invert();
+        var v = new Point4D
+        {
+            X = (2 * pointIn.X / viewport.ActualWidth - 1) / matrixProj.M11,
+            Y = -(2 * pointIn.Y / viewport.ActualHeight - 1) / matrixProj.M22,
+            Z = 1 / matrixProj.M33,
+            W = 1
+        };
+        var zf = matrixView.Transform(v);
+        Point4D zn;
+        if (viewport.Camera is PerspectiveCamera)
+        {
+            zn = new Point4D(matrixView.OffsetX, matrixView.OffsetY, matrixView.OffsetZ, 1);
+        }
+        else
+        {
+            v.Z = 0;
+            zn = matrixView.Transform(v);
+        }
+        pointNear = new Point3D(zn.X / zn.W, zn.Y / zn.W, zn.Z / zn.W);
+        pointFar = new Point3D(zf.X / zf.W, zf.Y / zf.W, zf.Z / zf.W);
         return true;
     }
 

@@ -136,7 +136,7 @@ public class Ray3D
     /// </returns>
     public bool PlaneIntersection(Point3D position, Vector3D normal, out Point3D intersection)
     {
-        Plane plane = HelixToolkit.Maths.PlaneHelper.Create(position.ToVector3(), normal.ToVector3());
+        var plane = Maths.PlaneHelper.Create(position.ToVector3(), Vector3.Normalize(normal.ToVector3()));
         bool isIntersect = this.ToRay().Intersects(ref plane, out Vector3 point);
         intersection = point.ToWndPoint3D();
         return isIntersect;

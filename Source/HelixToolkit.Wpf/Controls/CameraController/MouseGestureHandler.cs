@@ -381,8 +381,9 @@ internal abstract class MouseGestureHandler
         {
             return null;
         }
-
-        return new Ray3D { Origin = point1, Direction = point2 - point1 };
+        var dir = point2 - point1;
+        dir.Normalize();
+        return new Ray3D { Origin = point1, Direction = dir };
     }
 
     /// <summary>

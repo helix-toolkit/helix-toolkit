@@ -55,7 +55,7 @@ namespace HelixToolkit.Maths
         public Ray(Vector3 position, Vector3 direction)
         {
             this.Position = position;
-            this.Direction = direction;
+            this.Direction = Vector3.Normalize(direction);
         }
 
         /// <summary>
