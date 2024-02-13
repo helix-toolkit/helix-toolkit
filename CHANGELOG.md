@@ -1,6 +1,31 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [2.25.0] Pre-Release
+
+### Added
+1. Add CombinedSelectionCommand. (WPF)
+1. Allow importer to load obj,off,ply,stl from application resources. (WPF)
+1. Add AngleProperty for BillboardTextVisual3D (WPF)
+1. Add Angle Property for TextVisual3D. (WPF)
+1. Added ability to create tiled image materials with controlled vertical and horizontal scale factor. (WPF)
+1. Support color inner rectangle of RectangleAdorner. (WPF)
+1. Add FillRectangleBrush property for RectangleSelectionCommand, CombinedSelectionCommand. (WPF)
+
+### Improvement
+1. Re-implmenet zoom extents algorithm.(WPF.SharpDX/UWP/WinUI)
+1. Get rid of the sync context in RenderHostBase. Get rid of unnecessary parallel frustum tests. Change SceneNode ItemsInternal from ObservableCollection to own implementation.(WPF.SharpDX/UWP/WinUI)
+1. Improve dual depth peeling implementation. (WPF.SharpDX/UWP/WinUI)
+   
+### Fixed
+1. Fixed NullRefrenceException in CuttingPlaneGroup.CuttingPlanes (WPF)
+1. Fixed null exception XamlExporter (WPF)
+1. Fix outline highlight not showing up while rending backface only. (WPF.SharpDX/UWP/WinUI)
+1. Fix particle system not able to render 2x2 particle texture. (WPF.SharpDX/UWP/WinUI)
+1. Fix rendering doesn't update after removing item from Viewport3DX.Items.(WPF.SharpDX/UWP/WinUI)
+1. Fix OIT mode switch not working in UWP demo.(WPF.SharpDX/UWP/WinUI)
+2. Fix WinUI crash. (WinUI)
+   
 ## [2.24.0] 2023-05-09
 
 ### Added
