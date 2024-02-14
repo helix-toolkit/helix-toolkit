@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -28,14 +29,15 @@ public partial class MainWindow : Window
     {
         this.InitializeComponent();
         this.DataContext = this;
-        this.Examples = this.GetExamples(this.GetType().Assembly).OrderBy(e => e.Title).ToArray();
+        var allExamples = this.GetExamples(this.GetType().Assembly).OrderBy(e => e.Title).ToArray();
+        this.Examples = new ObservableCollection<Example>(allExamples);
     }
 
     /// <summary>
     /// Gets the examples.
     /// </summary>
     /// <value>The examples.</value>
-    public IList<Example> Examples { get; }
+    public ObservableCollection<Example> Examples { get; }
 
     /// <summary>
     /// Creates a thumbnail of the specified window.
@@ -94,15 +96,36 @@ public partial class MainWindow : Window
     /// Gets the examples in the specified assembly.
     /// </summary>
     /// <param name="assembly"></param>
+    /// <param name="textSearch"></param>
     /// <returns></returns>
-    private IEnumerable<Example> GetExamples(Assembly assembly)
+    private IEnumerable<Example> GetExamples(Assembly assembly, string? textSearch= null)
     {
         foreach (var type in assembly.GetTypes())
         {
             if (type.GetCustomAttributes(typeof(ExampleAttribute), false).FirstOrDefault() is ExampleAttribute ea)
             {
-                yield return new Example(type, ea.Title, ea.Description);
+                if (!string.IsNullOrEmpty(textSearch))
+                {
+                    string lowerTextSearch = textSearch.ToLower();
+                    if (!string.IsNullOrEmpty(ea.Title) && ea.Title.ToLower().Contains(lowerTextSearch)
+                        || !string.IsNullOrEmpty(ea.Description) && ea.Description.ToLower().Contains(lowerTextSearch))
+                        yield return new Example(type, ea.Title, ea.Description);
+                }
+                else
+                {
+                    yield return new Example(type, ea.Title, ea.Description);
+                }
+
             }
+        }
+    }
+    private void ButtonSearch_Click(object sender, RoutedEventArgs e)
+    {
+        this.Examples.Clear();
+        var examples = this.GetExamples(this.GetType().Assembly, searchTxt.Text).OrderBy(e => e.Title).ToArray();
+        foreach (var example in examples)
+        {
+            this.Examples.Add(example);
         }
     }
 }
