@@ -133,7 +133,15 @@ public static class Viewport3DHelper
     /// <returns> List of hits, sorted with the nearest hit first.</returns>
     public static IList<HitResult>? FindHits(this Viewport3D viewport, Point position, HitTestFilterCallback? filterCallback = null, HitTestResultCallback? resultCallback = null)
     {
-        if (viewport.Camera is not ProjectionCamera camera)
+        if (viewport is null)
+        {
+            ThrowHelper.ThrowArgumentNullException(nameof(viewport));
+        }
+        if (viewport.Camera is null)
+        {
+            ThrowHelper.ThrowArgumentNullException(nameof(viewport.Camera));
+        }
+
         List<HitResult> result = new List<HitResult>();
         Point3D cameraPosition = new Point3D();
         if (viewport.Camera is ProjectionCamera projectionCamera)
@@ -151,7 +159,6 @@ public static class Viewport3DHelper
         return result.OrderBy(k => k.Distance).ToList();
 
         HitTestResultBehavior DefaultResultCallback(HitTestResult hit)
-        HitTestResultBehavior callback(HitTestResult hit)
         {
             if (hit is RayMeshGeometry3DHitTestResult rayHit)
             {
@@ -164,14 +171,8 @@ public static class Viewport3DHelper
                     result.Add(hitResult);
                 }
             }
-
             return HitTestResultBehavior.Continue;
         }
-
-        var htp = new PointHitTestParameters(position);
-        VisualTreeHelper.HitTest(viewport, null, callback, htp);
-
-        return result.OrderBy(k => k.Distance).ToList();
     }
 
     /// <summary>
@@ -191,10 +192,13 @@ public static class Viewport3DHelper
     /// </returns>
     public static IEnumerable<RectangleHitResult> FindHits(this Viewport3D viewport, Rect rectangle, SelectionHitMode mode)
     {
-
-        if (viewport.Camera is not ProjectionCamera camera)
+        if (viewport is null)
         {
-            ThrowHelper.ThrowInvalidOperationException("No projection camera defined. Cannot find rectangle hits.");
+            ThrowHelper.ThrowArgumentNullException(nameof(viewport));
+        }
+        if (viewport.Camera is null)
+        {
+            ThrowHelper.ThrowArgumentNullException(nameof(viewport.Camera));
         }
 
         if (rectangle.Size.Equals(default)
@@ -1340,16 +1344,6 @@ public static class Viewport3DHelper
             this.Model = model;
             this.Visual = visual;
         }
-
-        /// <summary>
-        /// Gets the hit model.
-        /// </summary>
-        public Model3D? Model { get; private set; }
-
-        /// <summary>
-        /// Gets the hit visual.
-        /// </summary>
-        public Visual3D? Visual { get; private set; }
     }
 
     /// <summary>
