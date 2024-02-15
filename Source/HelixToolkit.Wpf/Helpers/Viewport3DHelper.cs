@@ -37,7 +37,7 @@ public static class Viewport3DHelper
     /// <param name="m">The oversampling multiplier.</param>
     public static void Copy(this Viewport3D view, double width, double height, Brush background, int m = 1)
     {
-        Clipboard.SetImage(RenderBitmap(view, width, height, background));
+        Clipboard.SetImage(RenderBitmap(view, width, height, background, m));
     }
 
     /// <summary>
@@ -126,51 +126,53 @@ public static class Viewport3DHelper
     /// <summary>
     /// Finds the hits for the specified position.
     /// </summary>
-    /// <param name="viewport">
-    /// The viewport.
-    /// </param>
-    /// <param name="position">
-    /// The position.
-    /// </param>
-    /// <returns>
-    /// List of hits, sorted with the nearest hit first.
-    /// </returns>
-    public static IList<HitResult>? FindHits(this Viewport3D viewport, Point position)
+    /// <param name="viewport">The viewport.</param>
+    /// <param name="position">The position.</param>
+    /// <param name="filterCallback">The method that represents the hit test filter callback value./></param>
+    /// <param name="resultCallback">The method that represents the hit test result callback value.</param>
+    /// <returns> List of hits, sorted with the nearest hit first.</returns>
+    public static IList<HitResult>? FindHits(this Viewport3D viewport, Point position, HitTestFilterCallback? filterCallback = null, HitTestResultCallback? resultCallback = null)
     {
-        if (viewport.Camera is not ProjectionCamera camera)
+        if (viewport is null)
         {
-            return null;
+            ThrowHelper.ThrowArgumentNullException(nameof(viewport));
+        }
+        if (viewport.Camera is null)
+        {
+            ThrowHelper.ThrowArgumentNullException(nameof(viewport.Camera));
         }
 
-        var result = new List<HitResult>();
-        HitTestResultBehavior callback(HitTestResult hit)
+        List<HitResult> result = new List<HitResult>();
+        Point3D cameraPosition = new Point3D();
+        if (viewport.Camera is ProjectionCamera projectionCamera)
+        {
+            cameraPosition = projectionCamera.Position;
+        }
+        else if (viewport.Camera is MatrixCamera matrixCamera)
+        {
+            Matrix3D inversedViewMatrix = matrixCamera.ViewMatrix.Inverse();
+            cameraPosition = new Point3D(inversedViewMatrix.OffsetX, inversedViewMatrix.OffsetY, inversedViewMatrix.OffsetZ);
+        }
+        resultCallback ??= DefaultResultCallback;
+        var pointHitTestParamrters = new PointHitTestParameters(position);
+        VisualTreeHelper.HitTest(viewport, filterCallback, resultCallback, pointHitTestParamrters);
+        return result.OrderBy(k => k.Distance).ToList();
+
+        HitTestResultBehavior DefaultResultCallback(HitTestResult hit)
         {
             if (hit is RayMeshGeometry3DHitTestResult rayHit)
             {
-                if (rayHit.MeshHit != null)
+                if (rayHit.MeshHit is not null)
                 {
-                    var p = GetGlobalHitPosition(rayHit, viewport);
-                    var nn = GetNormalHit(rayHit);
-                    var n = nn ?? new Vector3D(0, 0, 1);
-
-                    result.Add(
-                        new HitResult
-                        {
-                            Distance = (camera.Position - p).Length,
-                            RayHit = rayHit,
-                            Normal = n,
-                            Position = p
-                        });
+                    Point3D position = GetGlobalHitPosition(rayHit, viewport);
+                    Vector3D normalHit = GetNormalHit(rayHit) ?? new Vector3D(0, 0, 1);
+                    double distance = (cameraPosition - position).Length;
+                    HitResult hitResult = new HitResult(rayHit, distance, position, normalHit);
+                    result.Add(hitResult);
                 }
             }
-
             return HitTestResultBehavior.Continue;
         }
-
-        var htp = new PointHitTestParameters(position);
-        VisualTreeHelper.HitTest(viewport, null, callback, htp);
-
-        return result.OrderBy(k => k.Distance).ToList();
     }
 
     /// <summary>
@@ -190,10 +192,13 @@ public static class Viewport3DHelper
     /// </returns>
     public static IEnumerable<RectangleHitResult> FindHits(this Viewport3D viewport, Rect rectangle, SelectionHitMode mode)
     {
-
-        if (viewport.Camera is not ProjectionCamera camera)
+        if (viewport is null)
         {
-            ThrowHelper.ThrowInvalidOperationException("No projection camera defined. Cannot find rectangle hits.");
+            ThrowHelper.ThrowArgumentNullException(nameof(viewport));
+        }
+        if (viewport.Camera is null)
+        {
+            ThrowHelper.ThrowArgumentNullException(nameof(viewport.Camera));
         }
 
         if (rectangle.Size.Equals(default)
@@ -1320,6 +1325,16 @@ public static class Viewport3DHelper
     public sealed class RectangleHitResult
     {
         /// <summary>
+        /// Gets the hit model.
+        /// </summary>
+        public Model3D? Model { get; }
+
+        /// <summary>
+        /// Gets the hit visual.
+        /// </summary>
+        public Visual3D? Visual { get; }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="RectangleHitResult" /> class.
         /// </summary>
         /// <param name="model">The hit model.</param>
@@ -1329,16 +1344,6 @@ public static class Viewport3DHelper
             this.Model = model;
             this.Visual = visual;
         }
-
-        /// <summary>
-        /// Gets the hit model.
-        /// </summary>
-        public Model3D? Model { get; private set; }
-
-        /// <summary>
-        /// Gets the hit visual.
-        /// </summary>
-        public Visual3D? Visual { get; private set; }
     }
 
     /// <summary>
@@ -1346,11 +1351,19 @@ public static class Viewport3DHelper
     /// </summary>
     public sealed class HitResult
     {
+        public HitResult(RayMeshGeometry3DHitTestResult? rayHit, double distance, Point3D position, Vector3D normal)
+        {
+            this.RayHit = rayHit;
+            this.Distance = distance;
+            this.Position = position;
+            this.Normal = normal;
+        }
+
         /// <summary>
-        /// Gets or sets the distance.
+        /// Gets the distance.
         /// </summary>
         /// <value>The distance.</value>
-        public double Distance { get; set; }
+        public double Distance { get; }
 
         /// <summary>
         /// Gets the mesh.
@@ -1377,22 +1390,22 @@ public static class Viewport3DHelper
         }
 
         /// <summary>
-        /// Gets or sets the normal.
+        /// Gets the normal.
         /// </summary>
         /// <value>The normal.</value>
-        public Vector3D Normal { get; set; }
+        public Vector3D Normal { get; }
 
         /// <summary>
-        /// Gets or sets the position.
+        /// Gets the position.
         /// </summary>
         /// <value>The position.</value>
-        public Point3D Position { get; set; }
+        public Point3D Position { get; }
 
         /// <summary>
-        /// Gets or sets the ray hit.
+        /// Gets the ray hit.
         /// </summary>
         /// <value>The ray hit.</value>
-        public RayMeshGeometry3DHitTestResult? RayHit { get; set; }
+        public RayMeshGeometry3DHitTestResult? RayHit { get; }
 
         /// <summary>
         /// Gets the visual.
