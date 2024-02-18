@@ -324,13 +324,20 @@ internal abstract class MouseGestureHandler
     /// </returns>
     public Point3D? UnProject(Point p, Point3D position, Vector3D normal)
     {
-        Ray3D? ray = this.GetRay(p);
-        if (ray == null)
+        //https://paulbourke.net/geometry/pointlineplane/
+        if (!this.Viewport.Point2DtoPoint3D(p, out Point3D pointNear, out Point3D pointFar))
         {
             return null;
         }
-
-        return ray.PlaneIntersection(position, normal, out Point3D i) ? i : null;
+        Vector3D direction = pointFar - pointNear;
+        double dn = Vector3D.DotProduct(normal, direction);
+        if (dn.Equals(0))
+        {
+            return null;
+        }
+        double u = Vector3D.DotProduct(normal, position - pointNear) / dn;
+        var intersection = pointNear + (Math.Abs(u) * direction);
+        return intersection;
     }
 
     /// <summary>
@@ -365,26 +372,6 @@ internal abstract class MouseGestureHandler
     /// A cursor.
     /// </returns>
     protected abstract Cursor GetCursor();
-
-    /// <summary>
-    /// Get the ray into the view volume given by the position in 2D (screen coordinates)
-    /// </summary>
-    /// <param name="position">
-    /// A 2D point.
-    /// </param>
-    /// <returns>
-    /// A ray
-    /// </returns>
-    protected Ray3D? GetRay(Point position)
-    {
-        if (!Viewport3DHelper.Point2DtoPoint3D(this.Viewport, position, out Point3D point1, out Point3D point2))
-        {
-            return null;
-        }
-        var dir = point2 - point1;
-        dir.Normalize();
-        return new Ray3D { Origin = point1, Direction = dir };
-    }
 
     /// <summary>
     /// Called when inertia is starting.
