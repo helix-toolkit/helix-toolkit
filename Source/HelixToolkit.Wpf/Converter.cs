@@ -1,4 +1,5 @@
 ﻿using System.Runtime.CompilerServices;
+using System.Windows;
 
 namespace HelixToolkit.Wpf;
 
@@ -151,17 +152,76 @@ public static class Converter
     }
     #endregion
 
-    #region System.Windows.Media.Media3D.Vector3D
+    #region System.Windows.Media.Media3D
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static System.Windows.Media.Media3D.Point3D ToWndPoint3D(this System.Windows.Media.Media3D.Vector3D vector)
     {
-        return new System.Windows.Media.Media3D.Point3D(vector.X, vector.Y, vector.Z);
+        return (System.Windows.Media.Media3D.Point3D)vector;
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static System.Windows.Media.Media3D.Vector3D ToWndVector3D(this System.Windows.Media.Media3D.Point3D vector)
+    public static System.Windows.Media.Media3D.Vector3D ToWndVector3D(this System.Windows.Media.Media3D.Point3D point)
     {
-        return new System.Windows.Media.Media3D.Vector3D(vector.X, vector.Y, vector.Z);
+        return (System.Windows.Media.Media3D.Vector3D)point;
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static System.Windows.Media.Media3D.Size3D ToWndSize3D(this System.Windows.Media.Media3D.Vector3D vector)
+    {
+        return (System.Windows.Media.Media3D.Size3D)vector;
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static System.Windows.Media.Media3D.Vector3D ToWndVector3D(this System.Windows.Media.Media3D.Size3D size)
+    {
+        return (System.Windows.Media.Media3D.Vector3D)size;
+    }
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static System.Windows.Media.Media3D.Point3D ToWndPoint3D(this System.Windows.Media.Media3D.Size3D size)
+    {
+        return (System.Windows.Media.Media3D.Point3D)size;
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static System.Windows.Media.Media3D.Size3D ToWndSize3D(this System.Windows.Media.Media3D.Point3D point)
+    {
+        return (System.Windows.Media.Media3D.Size3D)point.ToWndVector3D();
+    }
+    #endregion
+    #region System.Windows.Media
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static System.Windows.Point ToWndPoint(this System.Windows.Vector vector)
+    {
+        return (System.Windows.Point)vector;
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static System.Windows.Vector ToWndVector(this System.Windows.Point point)
+    {
+        return (System.Windows.Vector)point;
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static System.Windows.Point ToWndPoint(this System.Windows.Size vector)
+    {
+        return (System.Windows.Point)vector;
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static System.Windows.Size ToWndSize(this System.Windows.Point point)
+    {
+        return (System.Windows.Size)point;
+    }
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static System.Windows.Size ToWndSize(this System.Windows.Vector vector)
+    {
+        return (System.Windows.Size)vector;
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static System.Windows.Vector ToWndVector(this System.Windows.Size size)
+    {
+        return (System.Windows.Vector)size;
     }
     #endregion
 

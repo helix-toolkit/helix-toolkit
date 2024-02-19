@@ -47,47 +47,13 @@ namespace HelixToolkit.Maths
             normal = Vector3.Normalize(normal);
             return new Plane(normal, -Vector3.Dot(normal, point));
         }
-        /// <summary>
-        /// Gets the plane.
-        /// </summary>
-        /// <param name="point1">The point1.</param>
-        /// <param name="point2">The point2.</param>
-        /// <param name="point3">The point3.</param>
-        /// <returns></returns>
-        public static Plane Create(Vector3 point1, Vector3 point2, Vector3 point3)
-        {
-            Vector3 p12 = point2 - point1;
-            Vector3 p13 = point3 - point1;
-            Vector3 normal = Vector3.Normalize(Vector3.Cross(p12, p13));
-            return new Plane(normal, -Vector3.Dot(normal, point1));
-            //return Plane.CreateFromVertices(point1, point2, point3);
-            //float x1 = point2.X - point1.X;
-            //float y1 = point2.Y - point1.Y;
-            //float z1 = point2.Z - point1.Z;
-            //float x2 = point3.X - point1.X;
-            //float y2 = point3.Y - point1.Y;
-            //float z2 = point3.Z - point1.Z;
-            //float yz = (y1 * z2) - (z1 * y2);
-            //float xz = (z1 * x2) - (x1 * z2);
-            //float xy = (x1 * y2) - (y1 * x2);
-            //float invPyth = 1.0f / (float)(Math.Sqrt((yz * yz) + (xz * xz) + (xy * xy)));
-            //var Normal = Vector3.Zero;
-            //Normal.X = yz * invPyth;
-            //Normal.Y = xz * invPyth;
-            //Normal.Z = xy * invPyth;
-            //return new Plane(Normal, -Vector3.Dot(Normal, point1));
-        }
 
         /// <summary>
         /// Changes the coefficients of the normal vector of the plane to make it of unit length.
         /// </summary>
-        public static Plane NormalizeUnit(this Plane plane)
+        public static Plane Normalize(this Plane plane)
         {
-            float length = 1 / plane.Normal.Length();
-            plane.Normal *= length;
-            plane.D *= length;
-            return plane;
-            //return Plane.Normalize(plane);
+            return Plane.Normalize(plane);
         }
         /// <summary>
         /// Gets or sets the component at the specified index.

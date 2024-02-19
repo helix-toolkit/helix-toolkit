@@ -529,7 +529,7 @@ public static class Viewport3DHelper
     }
 
     /// <summary>
-    /// Gets the ray at the specified position.
+    /// Gets the ray at the specified position in 2D (screen coordinates).
     /// </summary>
     /// <param name="viewport">
     /// The viewport.
@@ -542,13 +542,13 @@ public static class Viewport3DHelper
     /// </returns>
     public static Ray3D? GetRay(this Viewport3D viewport, Point position)
     {
-        bool ok = Point2DtoPoint3D(viewport, position, out Point3D point1, out Point3D point2);
-        if (!ok)
+        if (!Point2DtoPoint3D(viewport, position, out Point3D point1, out Point3D point2))
         {
             return null;
         }
-
-        return new Ray3D { Origin = point1, Direction = point2 - point1 };
+        var dir = point2 - point1;
+        dir.Normalize();
+        return new Ray3D { Origin = point1, Direction = dir };
     }
 
     /// <summary>
@@ -1002,7 +1002,7 @@ public static class Viewport3DHelper
     public static Point3D? UnProject(this Viewport3D viewport, Point p, Point3D position, Vector3D normal)
     {
         var ray = GetRay(viewport, p);
-        if (ray == null)
+        if (ray is null)
         {
             return null;
         }
