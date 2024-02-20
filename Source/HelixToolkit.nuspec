@@ -10,6 +10,7 @@
     <icon>helixtoolkit.png</icon>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Portable core assembly that is referenced by the other Helix Toolkit packages.</description>
+    <readme>..\README.md</readme>
     <tags>3D</tags>
 	<dependencies>
 	    <group targetFramework="netstandard2.0">

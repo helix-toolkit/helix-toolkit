@@ -10,6 +10,7 @@
     <icon>helixtoolkit.png</icon>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Provides custom 3D controls for netcore WPF based on SharpDX.</description>
+	<readme>..\README.md</readme>
     <tags>netcore Wpf SharpDX 3D DirectX</tags>
     <dependencies>
 	   <group targetFramework="netcoreapp3.1">

@@ -10,6 +10,7 @@
     <icon>helixtoolkit.png</icon>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Provides custom 3D controls for UWP and a scene graph based on SharpDX.</description>
+    <readme>..\README.md</readme>
     <tags>UWP SharpDX 3D DirectX</tags>
     <dependencies>
 	    <group targetFramework="UAP10.0">

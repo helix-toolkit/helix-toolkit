@@ -10,6 +10,7 @@
     <icon>helixtoolkit.png</icon>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Provides custom 3D controls for netstandard and netcore based on SharpDX.</description>
+    <readme>..\README.md</readme>
     <tags>netstandard netcore SharpDX 3D DirectX</tags>
     <dependencies>
       <group targetFramework="netstandard2.0">
