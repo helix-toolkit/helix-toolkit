@@ -7,7 +7,7 @@
       <Nullable>enable</Nullable>
       <Description>Helix Toolkit is a collection of 3D components for .NET. This package is based on WPF and SharpDX.</Description>
       <PackageTags>3D Maths</PackageTags>
-      <PackageReadmeFile>../../README.md</PackageReadmeFile>
+      <PackageReadmeFile>README.md</PackageReadmeFile>
       <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
       <PublishRepositoryUrl>true</PublishRepositoryUrl>
       <IncludeSymbols>true</IncludeSymbols>
