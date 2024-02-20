@@ -10,7 +10,7 @@
     <icon>helixtoolkit.png</icon>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Provides custom controls for WPF and a scene graph based on SharpDX.</description>
-    <readme>..\README.md</readme>
+    <readme>README.md</readme>
     <tags>wpf SharpDX DirectX 3D</tags>
     <dependencies>
 	    <group targetFramework="net462">

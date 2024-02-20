@@ -10,7 +10,7 @@
     <icon>helixtoolkit.png</icon>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Provides custom 3D controls for WinUI based on SharpDX.</description>
-	<readme>..\README.md</readme>
+	<readme>README.md</readme>
     <tags>net5.0 WinUI Wpf SharpDX 3D DirectX</tags>
     <dependencies>
 	   <group targetFramework="net5.0-windows10.0.19041">

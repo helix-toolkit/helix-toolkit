@@ -10,7 +10,7 @@
     <icon>helixtoolkit.png</icon>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Provides custom controls and extensions for .net core WPF 3D.</description>
-    <readme>..\README.md</readme>
+    <readme>README.md</readme>
     <tags>wpf wpf3d 3D netcore</tags>
     <dependencies>
     </dependencies>
