@@ -7,6 +7,7 @@
     <Nullable>enable</Nullable>
     <Description>Helix Toolkit is a collection of 3D components for .NET. This package is based on AssimpNet. Provides Assimp Import/Export for HelixToolkit.</Description>
     <PackageTags>3D Assimp</PackageTags>
+    <PackageReadmeFile>../../README.md</PackageReadmeFile>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <IncludeSymbols>true</IncludeSymbols>
