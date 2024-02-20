@@ -324,34 +324,7 @@ internal abstract class MouseGestureHandler
     /// </returns>
     public Point3D? UnProject(Point p, Point3D position, Vector3D normal)
     {
-        //https://paulbourke.net/geometry/pointlineplane/
-        if (!this.Viewport.Point2DtoPoint3D(p, out Point3D pointNear, out Point3D pointFar))
-        {
-            return null;
-        }
-        Vector3D direction = pointFar - pointNear;
-        double dn = Vector3D.DotProduct(normal, direction);
-        if (dn.Equals(0))
-        {
-            return null;
-        }
-        double u = Vector3D.DotProduct(normal, position - pointNear) / dn;
-        var intersection = pointNear + (Math.Abs(u) * direction);
-        return intersection;
-    }
-
-    /// <summary>
-    /// Un projects a point from the screen (2D) to a point on the plane trough the camera target point.
-    /// </summary>
-    /// <param name="p">
-    /// The 2D point.
-    /// </param>
-    /// <returns>
-    /// A 3D point.
-    /// </returns>
-    public Point3D? UnProject(Point p)
-    {
-        return this.UnProject(p, this.CameraTarget, this.CameraLookDirection);
+        return this.Viewport.UnProject(p, position, normal);
     }
 
     /// <summary>
@@ -458,7 +431,7 @@ internal abstract class MouseGestureHandler
     private void SetMouseDownPoint(Point position)
     {
         this.MouseDownPoint = position;
-        this.MouseDownPoint3D = this.UnProject(this.MouseDownPoint);
+        this.MouseDownPoint3D = this.Viewport.UnProject(this.MouseDownPoint);
         NearestPointInCamera nearestPoint = new Closest3DPointHitTester(this.Controller.Viewport, this.Controller.RotataAroundClosestVertexComplexity)
             .CalculateMouseDownNearestPoint(position, Controller.SnapMouseDownPoint);
         this.MouseDownNearestPoint2D = nearestPoint.MouseDownNearestPoint2D;
