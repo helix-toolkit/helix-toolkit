@@ -1001,13 +1001,20 @@ public static class Viewport3DHelper
     /// </remarks>
     public static Point3D? UnProject(this Viewport3D viewport, Point p, Point3D position, Vector3D normal)
     {
-        var ray = GetRay(viewport, p);
-        if (ray is null)
+        // https://paulbourke.net/geometry/pointlineplane/
+        if (!viewport.Point2DtoPoint3D(p, out Point3D pointNear, out Point3D pointFar))
         {
             return null;
         }
-
-        return ray.PlaneIntersection(position, normal, out Point3D i) ? i : null;
+        Vector3D direction = pointFar - pointNear;
+        double dn = Vector3D.DotProduct(normal, direction);
+        if (dn.Equals(0))
+        {
+            return null;
+        }
+        double u = Vector3D.DotProduct(normal, position - pointNear) / dn;
+        Point3D intersection = pointNear + (Math.Abs(u) * direction);
+        return intersection;
     }
 
     /// <summary>
