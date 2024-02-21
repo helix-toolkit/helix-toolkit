@@ -9,7 +9,8 @@
     <Nullable>enable</Nullable>
     <UseWinUI>true</UseWinUI>
     <Description>Helix Toolkit is a collection of 3D components for .NET. This package is based on WinUI and SharpDX.</Description>
-    <PackageTags>3D WINUI DirectX SharpDX</PackageTags>
+    <PackageTags>3D WINUI DirectX SharpDX Visualization</PackageTags>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <IncludeSymbols>true</IncludeSymbols>

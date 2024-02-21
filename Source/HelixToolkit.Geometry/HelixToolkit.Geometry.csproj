@@ -6,7 +6,8 @@
       <ImplicitUsings>enable</ImplicitUsings>
       <Nullable>enable</Nullable>
       <Description>Helix Toolkit is a collection of 3D components for .NET.</Description>
-      <PackageTags>3D</PackageTags>
+      <PackageTags>3D Geometry Mesh</PackageTags>
+      <PackageReadmeFile>README.md</PackageReadmeFile>
       <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
       <PublishRepositoryUrl>true</PublishRepositoryUrl>
       <IncludeSymbols>true</IncludeSymbols>

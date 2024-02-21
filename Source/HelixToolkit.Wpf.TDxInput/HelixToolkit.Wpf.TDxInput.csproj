@@ -8,6 +8,7 @@
     <UseWPF>true</UseWPF>
     <Description>Helix Toolkit is a collection of 3D components for .NET. It includes a SpaceNavigator Decorator for WPF. This package is based on WPF and TDxInput.</Description>
     <PackageTags>3D WPF WPF3D input decorator SpaceDecorator TDx</PackageTags>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <IncludeSymbols>true</IncludeSymbols>
