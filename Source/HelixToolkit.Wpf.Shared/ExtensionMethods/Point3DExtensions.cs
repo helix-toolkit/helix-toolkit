@@ -49,7 +49,38 @@ namespace HelixToolkit.Wpf
         {
             return (p2 - p1).LengthSquared;
         }
+        /// <summary>
+        /// Calculates the distance from a point to a plane.
+        /// </summary>
+        /// <param name="point">The point used to calculate distance</param>
+        /// <param name="planePosition">The position of plane</param>
+        /// <param name="planeNormal">The normal vector of plane</param>
+        /// <returns>
+        /// The distance from given point to the given plane<br/>
+        /// Equal zero: Point on the plane<br/>
+        /// Greater than zero: The point is on the same side of the plane's normal vector<br/>
+        /// Less than zero: The point is on the opposite side of the plane's normal vector<br/>
+        /// </returns>
+        public static double DistanceToPlane(this Point3D point, Point3D planePosition, Vector3D planeNormal)
+        {
+            Vector3D planeToPoint = point - planePosition;
+            planeNormal.Normalize();
+            return Vector3D.DotProduct(planeToPoint,planeNormal);
+        }
 
+        /// <summary>
+        /// Calculates the projection of a point onto a plane.
+        /// </summary>
+        /// <param name="point">The point used to calculate projection</param>
+        /// <param name="planePosition">The position of plane</param>
+        /// <param name="planeNormal">The normal vector of plane</param>
+        /// <returns>The projection of a given point on a given plane.</returns>
+        public static Point3D ProjectOnPlane(this Point3D point, Point3D planePosition, Vector3D planeNormal)
+        {
+            double distance = DistanceToPlane(point, planePosition, planeNormal);
+            planeNormal.Normalize();
+            return point - distance * planeNormal;
+        }
         /// <summary>
         /// Convert a <see cref="Point3D"/> to a <see cref="Vector3D"/>.
         /// </summary>

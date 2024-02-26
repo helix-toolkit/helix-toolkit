@@ -35,6 +35,11 @@ namespace HelixToolkit.Wpf
         private readonly Pen pen2;
 
         /// <summary>
+        /// The brush to color inside the rectangle
+        /// </summary>
+        private readonly Brush fillBrush;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="RectangleAdorner"/> class.
         /// </summary>
         /// <param name="adornedElement">
@@ -58,6 +63,8 @@ namespace HelixToolkit.Wpf
         /// <param name="crossHairSize">
         /// Size of the cross hair.
         /// </param>
+        ///<exception cref="ArgumentNullException">
+        ///</exception>
         public RectangleAdorner(
             UIElement adornedElement,
             Rect rectangle,
@@ -66,7 +73,7 @@ namespace HelixToolkit.Wpf
             double thickness1 = 1.0,
             double thickness2 = 1.0,
             double crossHairSize = 10)
-            : this(adornedElement, rectangle, color1, color2, thickness1, thickness2, crossHairSize, DashStyles.Dash)
+            : this(adornedElement, rectangle, color1, color2, thickness1, thickness2, crossHairSize, DashStyles.Dash, null)
         {
         }
 
@@ -97,6 +104,11 @@ namespace HelixToolkit.Wpf
         /// <param name="dashStyle2">
         /// The dash style2.
         /// </param>
+        /// <param name="fillBrush">
+        /// The brush to color inside the rectangle
+        /// </param>
+        /// <exception cref="ArgumentNullException">
+        /// </exception>
         public RectangleAdorner(
             UIElement adornedElement,
             Rect rectangle,
@@ -105,7 +117,8 @@ namespace HelixToolkit.Wpf
             double thickness1,
             double thickness2,
             double crossHairSize,
-            DashStyle dashStyle2)
+            DashStyle dashStyle2,
+            Brush fillBrush = null)
             : base(adornedElement)
         {
             if (adornedElement == null)
@@ -135,6 +148,7 @@ namespace HelixToolkit.Wpf
             this.pen2 = new Pen(new SolidColorBrush(color2), thickness2 * dpiFactor);
             this.pen2.DashStyle = dashStyle2;
             this.crossHairSize = crossHairSize;
+            this.fillBrush = fillBrush;
         }
 
         /// <summary>
@@ -173,7 +187,7 @@ namespace HelixToolkit.Wpf
             guidelines.GuidelinesY.Add(my + halfPenWidth);
 
             dc.PushGuidelineSet(guidelines);*/
-            dc.DrawRectangle(null, this.pen, rect);
+            dc.DrawRectangle(this.fillBrush, this.pen, rect);
             dc.DrawRectangle(null, this.pen2, rect);
 
             if (this.crossHairSize > 0)

@@ -67,12 +67,12 @@ namespace ContourDemo
 
         private void view2_cameraChanged(object sender, RoutedEventArgs e)
         {
-            CameraHelper.Copy(view2.Camera, view1.Camera);
+            CameraHelper.CopyTo(view2.Camera, view1.Camera);
         }
 
         private void view1_cameraChanged(object sender, RoutedEventArgs e)
         {
-            CameraHelper.Copy(view1.Camera, view2.Camera);
+            CameraHelper.CopyTo(view1.Camera, view2.Camera);
         }
     }
 }

@@ -827,7 +827,7 @@ namespace HelixToolkit.Wpf
 
 #if !NETFX_CORE
         /// <summary>
-        /// Adds the edges of a bounding box as cylinders.
+        /// Adds the edges of a bounding box as pipes.
         /// </summary>
         /// <param name="boundingBox">
         /// The bounding box.
@@ -846,7 +846,7 @@ namespace HelixToolkit.Wpf
             var p6 = new Point3D((DoubleOrSingle)boundingBox.X + (DoubleOrSingle)boundingBox.SizeX, (DoubleOrSingle)boundingBox.Y + (DoubleOrSingle)boundingBox.SizeY, (DoubleOrSingle)boundingBox.Z + (DoubleOrSingle)boundingBox.SizeZ);
             var p7 = new Point3D((DoubleOrSingle)boundingBox.X + (DoubleOrSingle)boundingBox.SizeX, (DoubleOrSingle)boundingBox.Y, (DoubleOrSingle)boundingBox.Z + (DoubleOrSingle)boundingBox.SizeZ);
 
-            Action<Point3D, Point3D> addEdge = (c1, c2) => this.AddCylinder(c1, c2, diameter, 10);
+            Action<Point3D, Point3D> addEdge = (c1, c2) => this.AddPipe(c1, c2, 0, diameter, 10);
 
             addEdge(p0, p1);
             addEdge(p1, p2);
@@ -2019,11 +2019,11 @@ namespace HelixToolkit.Wpf
         /// <param name="thetaDiv">
         /// The number of divisions around the cylinders.
         /// </param>
-        public void AddPipes(IList<Vector3D> points, IList<int> edges, double diameter = 1, int thetaDiv = 32)
+        public void AddPipes(IList<Point3D> points, IList<int> edges, double diameter = 1, int thetaDiv = 32)
         {
             for (var i = 0; i < edges.Count - 1; i += 2)
             {
-                this.AddCylinder((Point3D)points[edges[i]], (Point3D)points[edges[i + 1]], diameter, thetaDiv);
+                this.AddCylinder(points[edges[i]], points[edges[i + 1]], diameter, thetaDiv);
             }
         }
         /// <summary>
@@ -4680,12 +4680,12 @@ namespace HelixToolkit.Wpf
                 return emptyGeometry;
             }
 
-            if (this.normals != null && this.positions.Count != this.normals.Count)
+            if (this.normals != null && this.normals.Count != this.positions.Count)
             {
                 throw new InvalidOperationException(WrongNumberOfNormals);
             }
 
-            if (this.textureCoordinates != null && this.positions.Count != this.textureCoordinates.Count)
+            if (this.textureCoordinates != null && this.textureCoordinates.Count != this.positions.Count)
             {
                 throw new InvalidOperationException(WrongNumberOfTextureCoordinates);
             }

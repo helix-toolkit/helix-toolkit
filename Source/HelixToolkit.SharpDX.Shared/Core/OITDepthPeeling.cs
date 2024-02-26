@@ -74,7 +74,7 @@ namespace HelixToolkit.UWP
                 minMaxZTarget1.CreateTextureView();
                 minMaxZTargets[0] = minMaxZTarget0;
                 minMaxZTargets[1] = minMaxZTarget1;
-                tex2DDesc.Format = Format.R8G8B8A8_UNorm;
+                tex2DDesc.Format = Format.B8G8R8A8_UNorm;
                 frontBlendingTarget = new ShaderResourceViewProxy(Device, tex2DDesc);
                 frontBlendingTarget.CreateRenderTargetView();
                 frontBlendingTarget.CreateTextureView();
@@ -96,8 +96,28 @@ namespace HelixToolkit.UWP
             {
                 var color = new Color4(0, 0, 0, 1);
                 deviceContext.ClearRenderTargetView(frontBlendingTarget, color);
-                color = new Color4(0, 0, 0, 0);
-                deviceContext.ClearRenderTargetView(backBlendingTarget, color);
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
+                if (ExternRenderParameter.RenderTargetView != null &&
+                    ExternRenderParameter.RenderTargetView.Length > 0 &&
+                    backBlendingTarget.Resource != null)
+                {
+                    if (ExternRenderParameter.IsMSAATexture)
+                    {
+
+                        deviceContext.ResolveSubresource(ExternRenderParameter.RenderTargetView[0].Resource, 0, backBlendingTarget.Resource, 0, Format.B8G8R8A8_UNorm);
+                    }
+                    else
+                    {
+
+                        deviceContext.CopyResource(ExternRenderParameter.RenderTargetView[0].Resource, backBlendingTarget.Resource);
+                    }
+                }
+                else
+                {
+                    color = new Color4(0, 0, 0, 0);
+                    deviceContext.ClearRenderTargetView(backBlendingTarget, color);
+                }
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
                 color = new Color4(-1, -1, 0, 0);
                 deviceContext.ClearRenderTargetView(minMaxZTargets[0], color);
             }

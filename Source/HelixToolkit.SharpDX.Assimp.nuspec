@@ -10,6 +10,7 @@
     <icon>helixtoolkit.png</icon>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Provides Assimp Import/Export for HelixToolkit.SharpDX.</description>
+    <readme>README.md</readme>
     <tags>netstandard netcore Wpf UWP SharpDX 3D DirectX Assimp</tags>
     <dependencies>
       <group targetFramework="net462">

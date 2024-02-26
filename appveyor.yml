@@ -65,8 +65,8 @@ deploy:
   api_key:
     secure: Ed/7hI7ap963N/sJk9GAj1FeaZ0ynQlG1sH2U7BtoW5ykGPKNr2q0ThLkBRY8JKh
   skip_symbols: false
-  symbol_server:           # remove to push symbols to SymbolSource.org
-  artifact: /.*\.nupkg/
+  symbol_server: https://www.myget.org/F/helixtoolkit-nightly/api/v2/package
+  artifact: /.*(\.|\.s)nupkg/
   on:
     APPVEYOR_REPO_NAME: helix-toolkit/helix-toolkit
     APPVEYOR_ACCOUNT_NAME: holance

@@ -159,7 +159,7 @@
     <Compile Include="Examples\PointsAndLinesBinding\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Examples\RectSelection\MainWindow.xaml.cs">
+    <Compile Include="Examples\Selection\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Examples\ScatterPlot\MainViewModel.cs" />
@@ -196,6 +196,11 @@
     <Compile Include="Workitems\Workitem10046\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
+    <Resource Include="Resources\simple3dModel.objz" />
+    <Resource Include="Resources\simple3dModel.obj" />
+    <Resource Include="Resources\simple3dModel.off" />
+    <Resource Include="Resources\simple3dModel.ply" />
+    <Resource Include="Resources\simple3dModel.stl" />
     <Resource Include="Images\TriangularizationDemo_small.png" />
     <Resource Include="Images\MvvmCameraDemo_small.png" />
     <Resource Include="Images\MvvmDemo_small.png" />
@@ -313,7 +318,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Examples\RectSelection\MainWindow.xaml">
+    <Page Include="Examples\Selection\MainWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -759,7 +764,7 @@
     <Resource Include="Images\CursorPositionDemo_small.png" />
     <Resource Include="Images\ExtrudedTextDemo_small.png" />
     <Resource Include="Images\PointsAndLinesBinding_small.png" />
-    <Resource Include="Images\RectSelection_small.png" />
+    <Resource Include="Images\Selection_small.png" />
     <Resource Include="Images\Workitem10054_small.png" />
     <Resource Include="Images\ParticleSystemDemo_small.png" />
     <Resource Include="Images\BuildingDemo_small.png" />

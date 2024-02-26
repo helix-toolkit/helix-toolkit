@@ -66,11 +66,13 @@
     <Compile Include="$(MSBuildThisFileDirectory)ExtensionMethods\AnimationExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ExtensionMethods\Matrix3DExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ExtensionMethods\Point3DExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ExtensionMethods\Rect3DExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ExtensionMethods\Vector3DExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Geometry\BoundingSphere.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Geometry\LineSegment.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Geometry\Mesh3D.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Geometry\Plane3D.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Geometry\PlaneIntersectionType.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Geometry\Ray3D.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Geometry\Triangle.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\AttachedProperties.cs" />
@@ -122,6 +124,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)MarkupExtensions\PerspectiveCameraExtension.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)MarkupExtensions\TranslateExtension.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Physics\VerletIntegrator.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SelectionCommands\CombinedSelectionCommand.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SelectionCommands\ModelsSelectedByPointEventArgs.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SelectionCommands\ModelsSelectedByRectangleEventArgs.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SelectionCommands\ModelsSelectedEventArgs.cs" />

@@ -3,7 +3,7 @@
 //   Copyright (c) 2014 Helix Toolkit contributors
 // </copyright>
 // <summary>
-//   Defines the type of material.
+//   A billboard text visual element.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -116,6 +116,12 @@ namespace HelixToolkit.Wpf
         public static readonly DependencyProperty MaterialTypeProperty =
             DependencyProperty.Register("MaterialType", typeof(MaterialType), typeof(BillboardTextVisual3D), new PropertyMetadata(MaterialType.Diffuse, VisualChanged));
 
+
+        /// <summary>
+        /// Identifies the <see cref="Angle"/> dependency property.
+        /// </summary>        
+        public static readonly DependencyProperty AngleProperty =
+            DependencyProperty.Register("AngleProperty", typeof(double), typeof(BillboardTextVisual3D), new UIPropertyMetadata(0.0, VisualChanged));
 
         /// <summary>
         /// Gets or sets the background.
@@ -282,7 +288,6 @@ namespace HelixToolkit.Wpf
             {
                 return (Thickness)this.GetValue(PaddingProperty);
             }
-
             set
             {
                 this.SetValue(PaddingProperty, value);
@@ -299,12 +304,32 @@ namespace HelixToolkit.Wpf
             {
                 return (string)this.GetValue(TextProperty);
             }
-
             set
             {
                 this.SetValue(TextProperty, value);
             }
         }
+
+        /// <summary>
+        /// The rotation angle of text clockwise, in degrees.
+        /// </summary>
+        public double Angle
+        {
+            get
+            {
+                return (double)this.GetValue(AngleProperty);
+            }
+            set
+            {
+                if (value != 0 && rotateTransform is null)
+                {
+                    rotateTransform = new RotateTransform();
+                }
+                this.SetValue(AngleProperty, value);
+            }
+        }
+
+        private RotateTransform rotateTransform = null;
 
         /// <summary>
         /// The visual appearance changed.
@@ -315,7 +340,6 @@ namespace HelixToolkit.Wpf
         {
             ((BillboardTextVisual3D)d).VisualChanged();
         }
-
         /// <summary>
         /// Updates the text block when the visual appearance changed.
         /// </summary>
@@ -328,12 +352,12 @@ namespace HelixToolkit.Wpf
             }
 
             var textBlock = new TextBlock(new Run(this.Text))
-                                {
-                                    Foreground = this.Foreground,
-                                    Background = this.Background,
-                                    FontWeight = this.FontWeight,
-                                    Padding = this.Padding
-                                };
+            {
+                Foreground = this.Foreground,
+                Background = this.Background,
+                FontWeight = this.FontWeight,
+                Padding = this.Padding
+            };
 
             if (this.FontFamily != null)
             {
@@ -348,19 +372,27 @@ namespace HelixToolkit.Wpf
             var element = this.BorderBrush != null
                               ? (FrameworkElement)
                                 new Border
-                                    {
-                                        BorderBrush = this.BorderBrush,
-                                        BorderThickness = this.BorderThickness,
-                                        Child = textBlock
-                                    }
+                                {
+                                    BorderBrush = this.BorderBrush,
+                                    BorderThickness = this.BorderThickness,
+                                    Child = textBlock
+                                }
                               : textBlock;
 
+            // Only prevent assign when angle == 0, it is equal origin value 
+            // https://stackoverflow.com/questions/10329298/performance-impact-of-applying-either-layouttransform-vs-rendertransform
+            if (Angle != 0 || (rotateTransform != null && rotateTransform.Angle != Angle))
+            {
+                rotateTransform.Angle = Angle;
+                element.LayoutTransform = rotateTransform;
+            }
             element.Measure(new Size(1000, 1000));
             element.Arrange(new Rect(element.DesiredSize));
-
+            element.RenderSize = element.DesiredSize;
             var rtb = new RenderTargetBitmap(
                 (int)element.ActualWidth + 1, (int)element.ActualHeight + 1, 96, 96, PixelFormats.Pbgra32);
             rtb.Render(element);
+            rtb.Freeze();
 
             var brush = new ImageBrush(rtb);
 

@@ -195,8 +195,6 @@ namespace HelixToolkit.UWP
                     return nodesWithPostEffect;
                 }
             }
-
-            public const int FrustumPartitionSize = 500;
             #endregion
         }
     }

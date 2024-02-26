@@ -6,11 +6,9 @@ using SharpDX;
 using SharpDX.Direct3D11;
 using System;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Runtime.CompilerServices;
 using System.Diagnostics;
 using Microsoft.Extensions.Logging;
-using System.Collections.Concurrent;
 #if DX11_1
 using Device = SharpDX.Direct3D11.Device1;
 using DeviceContext = SharpDX.Direct3D11.DeviceContext1;
@@ -44,8 +42,6 @@ namespace HelixToolkit.UWP
             private AsyncActionWaitable asyncTask;
             private AsyncActionWaitable getTriangleCountTask;
             private AsyncActionWaitable getPostEffectCoreTask;
-            private OrderablePartitioner<Tuple<int, int>> opaquePartitioner;
-            private OrderablePartitioner<Tuple<int, int>> transparentPartitioner;
             private Action FrustumTestAction;
             private int numRendered = 0;
             private readonly AsyncActionThread parallelThread = new AsyncActionThread();
@@ -186,8 +182,6 @@ namespace HelixToolkit.UWP
                         }
                         particleNodes.Sort();
                     }
-                    opaquePartitioner = opaqueNodes.Count > 0 ? Partitioner.Create(0, opaqueNodes.Count, FrustumPartitionSize) : null;
-                    transparentPartitioner = transparentNodes.Count > 0 ? Partitioner.Create(0, transparentNodes.Count, FrustumPartitionSize) : null;
                     SetupFrustumTestFunctions();
                 }
                 else
@@ -226,6 +220,7 @@ namespace HelixToolkit.UWP
             protected override void PreRender(bool invalidateSceneGraph, bool invalidatePerFrameRenderables)
             {
                 base.PreRender(invalidateSceneGraph, invalidatePerFrameRenderables);
+                parallelThread.Enabled = EnableParallelProcessing;
 
                 SeparateRenderables(RenderContext, invalidateSceneGraph, invalidatePerFrameRenderables);
                 if (invalidateSceneGraph)
@@ -347,14 +342,14 @@ namespace HelixToolkit.UWP
                 numRendered += renderer.RenderTransparent(RenderContext, transparentNodesInFrustum, ref renderParameter);
 
                 getPostEffectCoreTask?.Wait();
-                getPostEffectCoreTask = null;
+                RemoveAndDispose(ref getPostEffectCoreTask);
                 if (RenderConfiguration.FXAALevel != FXAALevel.None
                     || postEffectNodes.Count > 0 || globalEffectNodes.Count > 0)
                 {
                     renderer.RenderToPingPongBuffer(RenderContext, ref renderParameter);
                     renderParameter.IsMSAATexture = false;
                     renderParameter.CurrentTargetTexture = RenderBuffer.FullResPPBuffer.CurrentTexture;
-                    renderParameter.RenderTargetView[0] = RenderBuffer.FullResPPBuffer.CurrentRTV;                                 
+                    renderParameter.RenderTargetView[0] = RenderBuffer.FullResPPBuffer.CurrentRTV;
                 }
                 if (postEffectNodes.Count > 0)
                 {
@@ -397,7 +392,7 @@ namespace HelixToolkit.UWP
                         {
                             ++start;
                         }
-                    }                       
+                    }
                 }
                 renderer.RenderToBackBuffer(RenderContext, ref renderParameter);
                 numRendered += preProcNodes.Count + postEffectNodes.Count + screenSpacedNodes.Count;
@@ -411,7 +406,7 @@ namespace HelixToolkit.UWP
 
             private int DoDepthPrepass()
             {
-                renderer.ImmediateContext.ClearDepthStencilView(RenderBuffer.DepthStencilBufferNoMSAA, 
+                renderer.ImmediateContext.ClearDepthStencilView(RenderBuffer.DepthStencilBufferNoMSAA,
                     DepthStencilClearFlags.Depth | DepthStencilClearFlags.Stencil);
                 renderer.ImmediateContext.SetRenderTarget(RenderBuffer.DepthStencilBufferNoMSAA, null);
                 RenderContext.CustomPassName = DefaultPassNames.DepthPrepass;
@@ -428,9 +423,9 @@ namespace HelixToolkit.UWP
             protected override void PostRender()
             {
                 asyncTask?.Wait();
-                asyncTask = null;
+                RemoveAndDispose(ref asyncTask);
                 getTriangleCountTask?.Wait();
-                getTriangleCountTask = null;
+                RemoveAndDispose(ref getTriangleCountTask);
             }
 
             /// <summary>
@@ -501,7 +496,9 @@ namespace HelixToolkit.UWP
             protected override void OnStartD3D()
             {
                 base.OnStartD3D();
+#if !WINUI
                 parallelThread.Start();
+#endif
             }
 
             /// <summary>
@@ -513,10 +510,12 @@ namespace HelixToolkit.UWP
                 asyncTask?.Wait();
                 getTriangleCountTask?.Wait();
                 getPostEffectCoreTask?.Wait();
-                asyncTask = null;
-                getTriangleCountTask = null;
-                getPostEffectCoreTask = null;
+                RemoveAndDispose(ref asyncTask);
+                RemoveAndDispose(ref getTriangleCountTask);
+                RemoveAndDispose(ref getPostEffectCoreTask);
+#if !WINUI
                 parallelThread.Stop();
+#endif
                 Clear(true, true);
                 base.OnEndingD3D();
             }
@@ -536,14 +535,7 @@ namespace HelixToolkit.UWP
                 }
                 else
                 {
-                    if (opaqueNodes.Count < FrustumPartitionSize && transparentNodes.Count < FrustumPartitionSize)
-                    {
-                        FrustumTestAction = FrustumTestDefault;
-                    }
-                    else
-                    {
-                        FrustumTestAction = FrustumTestParallel;
-                    }
+                    FrustumTestAction = FrustumTestDefault;
                 }
             }
 
@@ -570,45 +562,6 @@ namespace HelixToolkit.UWP
                     if (transparentNodes.Items[i].IsInFrustum)
                     {
                         transparentNodesInFrustum.Add(transparentNodes.Items[i]);
-                    }
-                }
-            }
-
-            private void FrustumTestParallel()
-            {
-                var frustum = renderContext.BoundingFrustum;
-                if (opaquePartitioner != null)
-                {
-                    Parallel.ForEach(opaquePartitioner, (range) =>
-                    {
-                        for (var i = range.Item1; i < range.Item2; ++i)
-                        {
-                            opaqueNodes.Items[i].IsInFrustum = opaqueNodes.Items[i].TestViewFrustum(ref frustum);
-                        }
-                    });
-                    for (var i = 0; i < opaqueNodes.Count; ++i)
-                    {
-                        if (opaqueNodes.Items[i].IsInFrustum)
-                        {
-                            opaqueNodesInFrustum.Add(opaqueNodes.Items[i]);
-                        }
-                    }
-                }
-                if (transparentPartitioner != null)
-                {
-                    Parallel.ForEach(transparentPartitioner, (range) =>
-                    {
-                        for (var i = range.Item1; i < range.Item2; ++i)
-                        {
-                            transparentNodes.Items[i].IsInFrustum = transparentNodes.Items[i].TestViewFrustum(ref frustum);
-                        }
-                    });
-                    for (var i = 0; i < transparentNodes.Count; ++i)
-                    {
-                        if (transparentNodes.Items[i].IsInFrustum)
-                        {
-                            transparentNodesInFrustum.Add(transparentNodes.Items[i]);
-                        }
                     }
                 }
             }

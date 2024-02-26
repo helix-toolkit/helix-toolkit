@@ -3,7 +3,9 @@ The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
 using System;
-
+using System.Runtime.CompilerServices;
+using System.Collections.ObjectModel;
+using System.Collections.Generic;
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX
 #else
@@ -18,10 +20,9 @@ namespace HelixToolkit.UWP
     using Core2D;
     using Model.Scene;
     using Model.Scene2D;
-    using System.Collections.Generic;
+    using Utilities;
     using Shaders;
-    using System.Runtime.CompilerServices;
-    using System.Collections.ObjectModel;
+
 
     /// <summary>
     /// Used for static function overloading
@@ -147,16 +148,16 @@ namespace HelixToolkit.UWP
         public static readonly FastList<KeyValuePair<int, SceneNode>> EmptyRenderablePair = new FastList<KeyValuePair<int, SceneNode>>();
         public static readonly FastList<SceneNode> EmptyRenderable = new FastList<SceneNode>();
         public static readonly List<RenderCore> EmptyCore = new List<RenderCore>();
-        public static readonly ObservableCollection<SceneNode> EmptyRenderableArray = new ObservableCollection<SceneNode>();
-        public static readonly ReadOnlyObservableCollection<SceneNode> EmptyReadOnlyRenderableArray;
-        public static readonly ObservableCollection<SceneNode2D> EmptyRenderable2D = new ObservableCollection<SceneNode2D>();
-        public static readonly ReadOnlyObservableCollection<SceneNode2D> EmptyReadOnlyRenderable2DArray;
+        internal static readonly ObservableFastList<SceneNode> EmptyRenderableArray = new ObservableFastList<SceneNode>();
+        internal static readonly ReadOnlyObservableFastList<SceneNode> EmptyReadOnlyRenderableArray;
+        internal static readonly ObservableFastList<SceneNode2D> EmptyRenderable2D = new ObservableFastList<SceneNode2D>();
+        internal static readonly ReadOnlyObservableFastList<SceneNode2D> EmptyReadOnlyRenderable2DArray;
         public static readonly IList<RenderCore2D> EmptyCore2D = new RenderCore2D[0];
 
         static Constants()
         {
-            EmptyReadOnlyRenderableArray = new ReadOnlyObservableCollection<SceneNode>(EmptyRenderableArray);
-            EmptyReadOnlyRenderable2DArray = new ReadOnlyObservableCollection<SceneNode2D>(EmptyRenderable2D);
+            EmptyReadOnlyRenderableArray = new ReadOnlyObservableFastList<SceneNode>(EmptyRenderableArray);
+            EmptyReadOnlyRenderable2DArray = new ReadOnlyObservableFastList<SceneNode2D>(EmptyRenderable2D);
         }
     }
 }

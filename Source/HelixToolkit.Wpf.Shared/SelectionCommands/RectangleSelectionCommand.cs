@@ -35,6 +35,11 @@ namespace HelixToolkit.Wpf
         private RectangleAdorner rectangleAdorner;
 
         /// <summary>
+        /// The brush to color inside the rectangle
+        /// </summary>
+        public Brush FillRectangleBrush { get; set; }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="RectangleSelectionCommand" /> class.
         /// </summary>
         /// <param name="viewport">The viewport.</param>
@@ -167,7 +172,7 @@ namespace HelixToolkit.Wpf
 
             var adornerLayer = AdornerLayer.GetAdornerLayer(this.Viewport);
             if (adornerLayer == null) { return; }
-            this.rectangleAdorner = new RectangleAdorner(this.Viewport, this.selectionRect, Colors.LightGray, Colors.Black, 1, 1, 0, DashStyles.Dash);
+            this.rectangleAdorner = new RectangleAdorner(this.Viewport, this.selectionRect, Colors.LightGray, Colors.Black, 1, 1, 0, DashStyles.Dash, this.FillRectangleBrush);
             adornerLayer.Add(this.rectangleAdorner);
         }
     }

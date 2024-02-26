@@ -1,6 +1,7 @@
 root = true
 
 [*]
+file_header_template= The MIT License (MIT)\nCopyright (c) 2018 Helix Toolkit contributors\nSee the LICENSE file in the project root for more information.
 end_of_line = crlf
 insert_final_newline = false
 indent_style = space

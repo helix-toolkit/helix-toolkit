@@ -3,7 +3,7 @@
 //   Copyright (c) 2014 Helix Toolkit contributors
 // </copyright>
 // <summary>
-//   Represents a 3D ray.
+//   Represents a ray in three-dimensional space.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -12,7 +12,7 @@ namespace HelixToolkit.Wpf
     using System.Windows.Media.Media3D;
 
     /// <summary>
-    /// Represents a 3D ray.
+    /// Represents a ray in three-dimensional space.
     /// </summary>
     public class Ray3D
     {
@@ -147,15 +147,19 @@ namespace HelixToolkit.Wpf
         /// </returns>
         public bool PlaneIntersection(Point3D position, Vector3D normal, out Point3D intersection)
         {
-            // http://paulbourke.net/geometry/planeline/
+            // https://paulbourke.net/geometry/pointlineplane/
             double dn = Vector3D.DotProduct(normal, this.Direction);
             if (dn.Equals(0))
             {
                 intersection = default(Point3D);
                 return false;
             }
-
             double u = Vector3D.DotProduct(normal, position - this.origin) / dn;
+            if (u < 0)
+            {
+                intersection = default(Point3D);
+                return false;
+            }
             intersection = this.Origin + (u * this.direction);
             return true;
         }

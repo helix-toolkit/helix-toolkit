@@ -162,7 +162,8 @@ namespace HelixToolkit.UWP
                     RenderTargetWriteMask = ColorWriteMaskFlags.All
                 };
 
-                BSOITDP.IndependentBlendEnable = true;
+                BSOITDP.IndependentBlendEnable = true; 
+                BSOITDP.AlphaToCoverageEnable = false;
                 // Max blending
                 BSOITDP.RenderTarget[0] = new RenderTargetBlendDescription()
                 {
@@ -199,11 +200,11 @@ namespace HelixToolkit.UWP
                     DestinationAlphaBlend = BlendOption.One,
                     AlphaBlendOperation = BlendOperation.Add
                 };
-
+                BSOITDPMaxBlending.AlphaToCoverageEnable = false;
+                BSOITDPMaxBlending.IndependentBlendEnable = true;
                 // Max blending
                 for (int i = 0; i < 3; ++i)
                 {
-                    BSOITDPMaxBlending.IndependentBlendEnable = true;
                     BSOITDPMaxBlending.RenderTarget[i] = new RenderTargetBlendDescription()
                     {
                         IsBlendEnabled = true,
@@ -217,17 +218,8 @@ namespace HelixToolkit.UWP
                     };
                 }
 
-                BSOITDPFinal.RenderTarget[0] = new RenderTargetBlendDescription()
-                {
-                    IsBlendEnabled = true,
-                    RenderTargetWriteMask = ColorWriteMaskFlags.All,
-                    SourceBlend = BlendOption.One,
-                    DestinationBlend = BlendOption.SourceAlpha,
-                    BlendOperation = BlendOperation.Add,
-                    SourceAlphaBlend = BlendOption.One,
-                    DestinationAlphaBlend = BlendOption.One,
-                    AlphaBlendOperation = BlendOperation.Maximum
-                };
+                BSOITDPFinal = BSSourceAlways;
+                BSOITDPFinal.AlphaToCoverageEnable = false;
             }
         }
         /// <summary>
@@ -333,8 +325,8 @@ namespace HelixToolkit.UWP
                 StencilReadMask = 0,
                 BackFace = new DepthStencilOperationDescription()
                 {
-                    PassOperation = StencilOperation.Keep,
-                    Comparison = Comparison.Never,
+                    PassOperation = StencilOperation.Replace,
+                    Comparison = Comparison.Always,
                     DepthFailOperation = StencilOperation.Keep,
                     FailOperation = StencilOperation.Keep
                 },

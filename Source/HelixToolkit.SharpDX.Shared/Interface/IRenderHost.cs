@@ -475,5 +475,9 @@ namespace HelixToolkit.UWP
         /// <param name="clearBackBuffer">if set to <c>true</c> [clear back buffer].</param>
         /// <param name="clearDepthStencilBuffer">if set to <c>true</c> [clear depth stencil buffer].</param>
         void ClearRenderTarget(DeviceContextProxy context, bool clearBackBuffer, bool clearDepthStencilBuffer);
+        /// <summary>
+        /// Use separate thread to do non-rendering related tasks during render call.
+        /// </summary>
+        bool EnableParallelProcessing { set; get; }
     }
 }

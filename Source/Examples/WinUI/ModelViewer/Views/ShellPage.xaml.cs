@@ -1,4 +1,5 @@
-﻿using Microsoft.UI.Xaml;
+﻿using HelixToolkit.SharpDX.Core;
+using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
@@ -31,7 +32,13 @@ public sealed partial class ShellPage : Page
         App.MainWindow.ExtendsContentIntoTitleBar = true;
         App.MainWindow.SetTitleBar(AppTitleBar);
         App.MainWindow.Activated += MainWindow_Activated;
+        App.MainWindow.Closed += MainWindow_Closed;
         AppTitleBarText.Text = "AppDisplayName".GetLocalized();
+    }
+
+    private void MainWindow_Closed(object sender, WindowEventArgs args)
+    {
+        App.GetService<IEffectsManager>().Dispose();
     }
 
     private void OnLoaded(object sender, RoutedEventArgs e)
