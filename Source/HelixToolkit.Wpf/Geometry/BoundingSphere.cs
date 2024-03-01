@@ -5,7 +5,7 @@ namespace HelixToolkit.Wpf;
 /// <summary>
 /// Represents a bounding sphere.
 /// </summary>
-public sealed class BoundingSphere
+public readonly struct BoundingSphere
 {
     //// http://en.wikipedia.org/wiki/Sphere
     //// http://en.wikipedia.org/wiki/Bounding_sphere
@@ -19,12 +19,12 @@ public sealed class BoundingSphere
     /// <summary>
     /// The center.
     /// </summary>
-    private Point3D center;
+    private readonly Point3D center;
 
     /// <summary>
     /// The radius.
     /// </summary>
-    private double radius;
+    private readonly double radius;
 
     /// <summary>
     /// Initializes a new instance of the <see cref = "BoundingSphere" /> class.
@@ -58,11 +58,6 @@ public sealed class BoundingSphere
         {
             return this.center;
         }
-
-        set
-        {
-            this.center = value;
-        }
     }
 
     /// <summary>
@@ -74,11 +69,6 @@ public sealed class BoundingSphere
         get
         {
             return this.radius;
-        }
-
-        set
-        {
-            this.radius = value;
         }
     }
 
@@ -107,11 +97,9 @@ public sealed class BoundingSphere
     /// </returns>
     public static BoundingSphere CreateFromRect3D(Rect3D rect)
     {
-        return new BoundingSphere
-        {
-            Center = new Point3D(rect.X + (rect.SizeX * 0.5), rect.Y + (rect.SizeY * 0.5), rect.Z + (rect.SizeZ * 0.5)),
-            Radius = 0.5 * Math.Sqrt((rect.SizeX * rect.SizeX) + (rect.SizeY * rect.SizeY) + (rect.SizeZ * rect.SizeZ))
-        };
+        var center = new Point3D(rect.X + (rect.SizeX * 0.5), rect.Y + (rect.SizeY * 0.5), rect.Z + (rect.SizeZ * 0.5));
+        var radius = 0.5 * Math.Sqrt((rect.SizeX * rect.SizeX) + (rect.SizeY * rect.SizeY) + (rect.SizeZ * rect.SizeZ));
+        return new BoundingSphere(center, radius);
     }
 
     /// <summary>
@@ -146,7 +134,7 @@ public sealed class BoundingSphere
         var vector3 = vector * (1 / distance);
         var r1 = Math.Min(-original.radius, distance - additional.radius);
         var r2 = (Math.Max(original.radius, distance + additional.radius) - r1) * 0.5;
-        return new BoundingSphere { Center = original.Center + (vector3 * (r2 + r1)), Radius = r2 };
+        return new BoundingSphere(original.Center + (vector3 * (r2 + r1)), r2);
     }
 
     /// <summary>
