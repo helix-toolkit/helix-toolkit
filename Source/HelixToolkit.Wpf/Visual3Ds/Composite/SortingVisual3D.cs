@@ -1,6 +1,7 @@
 ﻿using System.Windows.Media.Media3D;
 using System.Windows.Media;
 using System.Windows;
+using HelixToolkit.Maths;
 
 namespace HelixToolkit.Wpf;
 
@@ -205,8 +206,8 @@ public class SortingVisual3D : RenderingModelVisual3D
                     d, cameraPos.DistanceTo(new Point3D(bounds.X, bounds.Y + bounds.SizeY, bounds.Z + bounds.SizeZ)));
                 return d;
             default:
-                var boundingSphere = BoundingSphere.CreateFromRect3D(bounds);
-                return boundingSphere.DistanceFrom(cameraPos);
+                var boundingSphere = HelixToolkit.Maths.BoundingSphere.FromBox(bounds.ToBoundingBox());
+                return boundingSphere.DistanceTo(cameraPos.ToVector3());
         }
     }
 
