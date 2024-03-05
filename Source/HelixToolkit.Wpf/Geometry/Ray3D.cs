@@ -99,9 +99,7 @@ public class Ray3D
     /// </returns>
     public Point3D GetNearest(Point3D p3)
     {
-        return this.origin
-               + (Vector3D.DotProduct(p3 - this.origin, this.direction) / this.direction.LengthSquared
-                  * this.direction);
+        return this.ToRay().GetNearest(p3.ToVector3()).ToWndPoint3D();
     }
 
     /// <summary>

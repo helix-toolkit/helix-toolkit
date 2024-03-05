@@ -287,6 +287,21 @@ namespace HelixToolkit.Maths
         }
 
         /// <summary>
+        /// Gets the point on the ray that is nearest the specified point.
+        /// </summary>
+        /// <param name="point">
+        /// The point.
+        /// </param>
+        /// <returns>
+        /// The nearest point on the ray.
+        /// </returns>
+        public Vector3 GetNearest(Vector3 point)
+        {
+            return this.Position
+                   + (Vector3.Dot(point - this.Position, this.Direction)
+                   / this.Direction.LengthSquared() * this.Direction);
+        }
+        /// <summary>
         /// Tests for equality between two objects.
         /// </summary>
         /// <param name="left">The first value to compare.</param>
