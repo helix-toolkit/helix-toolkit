@@ -21,7 +21,8 @@ public class Ray3DTests
         var ray = new Ray3D(new Point3D(0, 0, 0), new Vector3D(1, 2, 3));
         var p0 = new Point3D(0.1, 0.2, 0.3);
         var p = ray.GetNearest(p0);
-        Assert.AreEqual(0, p0.DistanceTo(p), 1e-12);
+        var d = p0.DistanceTo(p);
+        Assert.AreEqual(0, d, 1e-12);
     }
 
     [Test]
@@ -31,7 +32,8 @@ public class Ray3DTests
         var p0 = new Point3D(0.1, 2, 3);
         var pe = new Point3D(0.1, 0, 0);
         var p = ray.GetNearest(p0);
-        Assert.AreEqual(0, pe.DistanceTo(p), 1e-12);
+        var d = pe.DistanceTo(p);
+        Assert.AreEqual(0, d, 1e-12);
     }
 
     [Test]
