@@ -2,7 +2,7 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Windows.Media.Media3D;
 
-namespace HelixToolkit.Wpf.Tests.Helpers;
+namespace HelixToolkit.Wpf.Tests.ExtensionMethods;
 
 // ReSharper disable InconsistentNaming
 [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]

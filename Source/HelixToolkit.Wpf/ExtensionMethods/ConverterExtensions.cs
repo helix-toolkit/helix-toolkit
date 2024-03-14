@@ -3,7 +3,7 @@ using System.Windows;
 
 namespace HelixToolkit.Wpf;
 
-public static class Converter
+public static class ConverterExtensions
 {
     #region Array
     public static float[]? ToFloatArray(this double[]? array)
@@ -12,7 +12,10 @@ public static class Converter
         {
             return null;
         }
-
+        else if (array.Length == 0)
+        {
+            return Array.Empty<float>();
+        }
         var result = new float[array.Length];
 
         for (int i = 0; i < array.Length; i++)
@@ -29,7 +32,10 @@ public static class Converter
         {
             return null;
         }
-
+        else if (array.Length == 0)
+        {
+            return Array.Empty<double>();
+        }
         var result = new double[array.Length];
 
         for (int i = 0; i < array.Length; i++)
@@ -268,7 +274,7 @@ public static class Converter
     #endregion
 
     #region Collection
-    public static System.Windows.Media.Media3D.Vector3DCollection? ToWndVector3DCollection(IList<System.Numerics.Vector3>? collection)
+    public static System.Windows.Media.Media3D.Vector3DCollection? ToWndVector3DCollection( this IList<System.Numerics.Vector3>? collection)
     {
         if (collection is null)
         {
@@ -319,7 +325,7 @@ public static class Converter
         return newCollection;
     }
 
-    public static System.Windows.Media.Media3D.Point3DCollection? ToWndPoint3DCollection(IList<System.Numerics.Vector3>? collection)
+    public static System.Windows.Media.Media3D.Point3DCollection? ToWndPoint3DCollection(this IList<System.Numerics.Vector3>? collection)
     {
         if (collection is null)
         {
@@ -370,7 +376,7 @@ public static class Converter
         return newCollection;
     }
 
-    public static System.Windows.Media.PointCollection? ToWndPointCollection(IList<System.Numerics.Vector2>? collection)
+    public static System.Windows.Media.PointCollection? ToWndPointCollection(this IList<System.Numerics.Vector2>? collection)
     {
         if (collection is null)
         {
@@ -404,7 +410,7 @@ public static class Converter
         return newCollection;
     }
 
-    public static System.Windows.Media.Int32Collection? ToWndInt32Collection(IList<int>? collection)
+    public static System.Windows.Media.Int32Collection? ToWndInt32Collection(this IList<int>? collection)
     {
         if (collection is null)
         {
@@ -441,7 +447,7 @@ public static class Converter
         return newCollection;
     }
 
-    public static System.Windows.Media.DoubleCollection? ToWndDoubleCollection(IList<float>? collection)
+    public static System.Windows.Media.DoubleCollection? ToWndDoubleCollection(this IList<float>? collection)
     {
         if (collection is null)
         {

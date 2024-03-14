@@ -1,7 +1,7 @@
 ﻿using NUnit.Framework;
 using System.Diagnostics.CodeAnalysis;
 
-namespace HelixToolkit.Wpf.Tests;
+namespace HelixToolkit.Wpf.Tests.Helpers;
 
 // ReSharper disable InconsistentNaming
 [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
