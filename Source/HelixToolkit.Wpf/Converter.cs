@@ -1,4 +1,5 @@
 ﻿using System.Runtime.CompilerServices;
+using System.Windows;
 
 namespace HelixToolkit.Wpf;
 
@@ -33,7 +34,7 @@ public static class Converter
 
         for (int i = 0; i < array.Length; i++)
         {
-            result[i] = (double)(decimal)array[i];
+            result[i] = array[i];
         }
 
         return result;
@@ -43,7 +44,7 @@ public static class Converter
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static System.Windows.Point ToWndPoint(this System.Numerics.Vector2 vector)
     {
-        return new System.Windows.Point((double)(decimal)vector.X, (double)(decimal)vector.Y);
+        return new System.Windows.Point(vector.X, vector.Y);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -55,7 +56,7 @@ public static class Converter
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static System.Windows.Size ToWndSize(this System.Numerics.Vector2 vector)
     {
-        return new System.Windows.Size((double)(decimal)vector.X, (double)(decimal)vector.Y);
+        return new System.Windows.Size(vector.X, vector.Y);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -67,7 +68,7 @@ public static class Converter
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static System.Windows.Vector ToWndVector(this System.Numerics.Vector2 vector)
     {
-        return new System.Windows.Vector((double)(decimal)vector.X, (double)(decimal)vector.Y);
+        return new System.Windows.Vector(vector.X, vector.Y);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -81,7 +82,7 @@ public static class Converter
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static System.Windows.Media.Media3D.Point3D ToWndPoint3D(this System.Numerics.Vector3 vector)
     {
-        return new System.Windows.Media.Media3D.Point3D((double)(decimal)vector.X, (double)(decimal)vector.Y, (double)(decimal)vector.Z);
+        return new System.Windows.Media.Media3D.Point3D(vector.X, vector.Y, vector.Z);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -93,7 +94,7 @@ public static class Converter
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static System.Windows.Media.Media3D.Vector3D ToWndVector3D(this System.Numerics.Vector3 vector)
     {
-        return new System.Windows.Media.Media3D.Vector3D((double)(decimal)vector.X, (double)(decimal)vector.Y, (double)(decimal)vector.Z);
+        return new System.Windows.Media.Media3D.Vector3D(vector.X, vector.Y, vector.Z);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -105,7 +106,7 @@ public static class Converter
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static System.Windows.Media.Media3D.Size3D ToWndSize3D(this System.Numerics.Vector3 vector)
     {
-        return new System.Windows.Media.Media3D.Size3D((double)(decimal)vector.X, (double)(decimal)vector.Y, (double)(decimal)vector.Z);
+        return new System.Windows.Media.Media3D.Size3D(vector.X, vector.Y, vector.Z);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -119,7 +120,7 @@ public static class Converter
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static System.Windows.Media.Media3D.Point4D ToWnPoint4D(this System.Numerics.Vector4 vector)
     {
-        return new System.Windows.Media.Media3D.Point4D((double)(decimal)vector.X, (double)(decimal)vector.Y, (double)(decimal)vector.Z, (double)(decimal)vector.W);
+        return new System.Windows.Media.Media3D.Point4D(vector.X, vector.Y, vector.Z, vector.W);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -134,10 +135,10 @@ public static class Converter
     public static System.Windows.Media.Media3D.Matrix3D ToWndMatrix3D(this System.Numerics.Matrix4x4 matrix)
     {
         return new System.Windows.Media.Media3D.Matrix3D(
-            (double)(decimal)matrix.M11, (double)(decimal)matrix.M12, (double)(decimal)matrix.M13, (double)(decimal)matrix.M14,
-            (double)(decimal)matrix.M21, (double)(decimal)matrix.M22, (double)(decimal)matrix.M23, (double)(decimal)matrix.M24,
-            (double)(decimal)matrix.M31, (double)(decimal)matrix.M32, (double)(decimal)matrix.M32, (double)(decimal)matrix.M34,
-            (double)(decimal)matrix.M41, (double)(decimal)matrix.M42, (double)(decimal)matrix.M43, (double)(decimal)matrix.M44);
+            matrix.M11, matrix.M12, matrix.M13, matrix.M14,
+            matrix.M21, matrix.M22, matrix.M23, matrix.M24,
+            matrix.M31, matrix.M32, matrix.M32, matrix.M34,
+            matrix.M41, matrix.M42, matrix.M43, matrix.M44);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -451,7 +452,7 @@ public static class Converter
 
         for (int i = 0; i < collection.Count; i++)
         {
-            newCollection.Add((double)(decimal)collection[i]);
+            newCollection.Add((double)collection[i]);
         }
 
         return newCollection;
