@@ -360,6 +360,12 @@ public class HelixViewport3D : ItemsControl, IHelixViewport3D
         "IsMoveEnabled", typeof(bool), typeof(HelixViewport3D), new UIPropertyMetadata(true));
 
     /// <summary>
+    /// Identifies the <see cref="IsTopBottomViewReverseOriented"/> dependency property.
+    /// </summary>
+    public static readonly DependencyProperty IsTopBottomViewReverseOrientedProperty =
+        DependencyProperty.Register("IsTopBottomViewReverseOriented", typeof(bool), typeof(HelixViewport3D), new PropertyMetadata(false));
+
+    /// <summary>
     /// Identifies the <see cref="IsTopBottomViewOrientedToFrontBack"/> dependency property.
     /// </summary>
     public static readonly DependencyProperty IsTopBottomViewOrientedToFrontBackProperty =
@@ -1903,6 +1909,22 @@ public class HelixViewport3D : ItemsControl, IHelixViewport3D
         set
         {
             this.SetValue(IsMoveEnabledProperty, value);
+        }
+    }
+
+    /// <summary>
+    ///   Gets or sets a value indicating whether the top and bottom views reverse oriented.
+    /// </summary>
+    public bool IsTopBottomViewReverseOriented
+    {
+        get
+        {
+            return (bool)GetValue(IsTopBottomViewReverseOrientedProperty);
+        }
+
+        set
+        {
+            SetValue(IsTopBottomViewReverseOrientedProperty, value);
         }
     }
 
