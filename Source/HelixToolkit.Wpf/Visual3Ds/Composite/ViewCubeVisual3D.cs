@@ -91,6 +91,12 @@ public class ViewCubeVisual3D : ModelVisual3D
         "IsEnabled", typeof(bool), typeof(ViewCubeVisual3D), new UIPropertyMetadata(true));
 
     /// <summary>
+    /// Identifies the <see cref="IsTopBottomViewReverseOriented"/> dependency property.
+    /// </summary>
+    public static readonly DependencyProperty IsTopBottomViewReverseOrientedProperty =
+        DependencyProperty.Register("IsTopBottomViewReverseOriented", typeof(bool), typeof(ViewCubeVisual3D), new PropertyMetadata(false, VisualModelChanged));
+
+    /// <summary>
     /// Identifies the <see cref="IsTopBottomViewOrientedToFrontBack"/> dependency property.
     /// </summary>
     public static readonly DependencyProperty IsTopBottomViewOrientedToFrontBackProperty =
@@ -289,6 +295,22 @@ public class ViewCubeVisual3D : ModelVisual3D
         set
         {
             this.SetValue(IsEnabledProperty, value);
+        }
+    }
+
+    /// <summary>
+    ///   Gets or sets a value indicating whether the top and bottom views reverse oriented.
+    /// </summary>
+    public bool IsTopBottomViewReverseOriented
+    {
+        get
+        {
+            return (bool)GetValue(IsTopBottomViewReverseOrientedProperty);
+        }
+
+        set
+        {
+            SetValue(IsTopBottomViewReverseOrientedProperty, value);
         }
     }
 
@@ -492,15 +514,24 @@ public class ViewCubeVisual3D : ModelVisual3D
         AddCubeFace(cubeFaceModels[CubeFaces.Back], -frontVector, upVector, GetCubeFaceColor(CubeFaces.Back), BackText);
         AddCubeFace(cubeFaceModels[CubeFaces.Left], leftVector, upVector, GetCubeFaceColor(CubeFaces.Left), LeftText);
         AddCubeFace(cubeFaceModels[CubeFaces.Right], -leftVector, upVector, GetCubeFaceColor(CubeFaces.Right), RightText);
+
+       
+        Vector3D tempFrontVector = frontVector;
+        Vector3D tempLeftVector = leftVector;
+        if(IsTopBottomViewReverseOriented)
+        {
+            tempFrontVector = -frontVector;
+            tempLeftVector = -leftVector;
+        }
         if (IsTopBottomViewOrientedToFrontBack)
         {
-            AddCubeFace(cubeFaceModels[CubeFaces.Top], upVector, frontVector, GetCubeFaceColor(CubeFaces.Top), TopText);
-            AddCubeFace(cubeFaceModels[CubeFaces.Bottom], -upVector, -frontVector, GetCubeFaceColor(CubeFaces.Bottom), BottomText);
+            AddCubeFace(cubeFaceModels[CubeFaces.Top], upVector, tempFrontVector, GetCubeFaceColor(CubeFaces.Top), TopText);
+            AddCubeFace(cubeFaceModels[CubeFaces.Bottom], -upVector, -tempFrontVector, GetCubeFaceColor(CubeFaces.Bottom), BottomText);
         }
         else
         {
-            AddCubeFace(cubeFaceModels[CubeFaces.Top], upVector, leftVector, GetCubeFaceColor(CubeFaces.Top), TopText);
-            AddCubeFace(cubeFaceModels[CubeFaces.Bottom], -upVector, -leftVector, GetCubeFaceColor(CubeFaces.Bottom), BottomText);
+            AddCubeFace(cubeFaceModels[CubeFaces.Top], upVector, tempLeftVector, GetCubeFaceColor(CubeFaces.Top), TopText);
+            AddCubeFace(cubeFaceModels[CubeFaces.Bottom], -upVector, -tempLeftVector, GetCubeFaceColor(CubeFaces.Bottom), BottomText);
         }
     }
     private Brush GetCubeFaceColor(CubeFaces cubeFace)

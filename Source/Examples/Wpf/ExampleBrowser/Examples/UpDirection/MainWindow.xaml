@@ -20,6 +20,7 @@
         <StackPanel Grid.Column="0">
             <WrapPanel>
                 <CheckBox IsChecked="{Binding ElementName=viewport, Path=IsViewCubeEdgeClicksEnabled}">Enable Edge click</CheckBox>
+                <CheckBox  IsChecked="{Binding ElementName=viewport, Path=IsTopBottomViewReverseOriented}">IsTopBottomViewReverseOriented</CheckBox>
                 <CheckBox  IsChecked="{Binding ElementName=viewport, Path=IsTopBottomViewOrientedToFrontBack}">IsTopBottomViewOrientedToFrontBack</CheckBox>
             </WrapPanel>
             <WrapPanel>
