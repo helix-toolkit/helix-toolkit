@@ -1,9 +1,11 @@
-﻿using System.Globalization;
+﻿using System.ComponentModel;
+using System.Globalization;
 using System.Text;
 
 namespace HelixToolkit;
 
 [Serializable]
+[TypeConverter(typeof(Color4CollectionConverter))]
 public sealed class Color4Collection : FastList<Color4>
 {
     public Color4Collection()

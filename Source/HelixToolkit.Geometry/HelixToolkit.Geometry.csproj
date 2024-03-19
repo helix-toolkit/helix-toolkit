@@ -41,6 +41,6 @@
       <ProjectReference Include="..\HelixToolkit\HelixToolkit.csproj" />
     </ItemGroup>
 	<ItemGroup>
-		<Compile Include="..\GlobalUsing.cs"/>
+		<Compile Include="..\GlobalUsing.cs" />
 	</ItemGroup>
 </Project>

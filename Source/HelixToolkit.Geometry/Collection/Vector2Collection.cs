@@ -1,9 +1,11 @@
-﻿using System.Globalization;
+﻿using System.ComponentModel;
+using System.Globalization;
 using System.Text;
 
 namespace HelixToolkit;
 
 [Serializable]
+[TypeConverter(typeof(Vector2CollectionConverter))]
 public sealed class Vector2Collection : FastList<Vector2>
 {
     public Vector2Collection()

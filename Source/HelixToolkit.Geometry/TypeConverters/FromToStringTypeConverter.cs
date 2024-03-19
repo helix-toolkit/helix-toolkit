@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace HelixToolkit.SharpDX.Utilities;
+namespace HelixToolkit;
 
 public abstract class FromToStringTypeConverter : TypeConverter
 {
