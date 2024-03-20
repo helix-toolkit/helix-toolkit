@@ -1,9 +1,9 @@
 ﻿using System.ComponentModel;
 using System.Globalization;
 
-namespace HelixToolkit.SharpDX.Utilities;
+namespace HelixToolkit;
 
-public sealed class Vector3CollectionConverter : FromToStringTypeConverter
+public sealed class IntCollectionConverter : FromToStringTypeConverter
 {
     public override object? ConvertFrom(ITypeDescriptorContext? context, CultureInfo? culture, object value)
     {
@@ -14,7 +14,7 @@ public sealed class Vector3CollectionConverter : FromToStringTypeConverter
 
         if (value is string source)
         {
-            return Vector3Collection.Parse(source);
+            return IntCollection.Parse(source);
         }
 
         return base.ConvertFrom(context, culture, value);
@@ -22,7 +22,7 @@ public sealed class Vector3CollectionConverter : FromToStringTypeConverter
 
     public override object? ConvertTo(ITypeDescriptorContext? context, CultureInfo? culture, object? value, Type destinationType)
     {
-        if (destinationType != null && value is Vector3Collection instance)
+        if (destinationType != null && value is IntCollection instance)
         {
             if (destinationType == typeof(string))
             {

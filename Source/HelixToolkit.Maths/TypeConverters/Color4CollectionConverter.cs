@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Globalization;
 
-namespace HelixToolkit.SharpDX.Utilities;
+namespace HelixToolkit;
 
 public sealed class Color4CollectionConverter : FromToStringTypeConverter
 {

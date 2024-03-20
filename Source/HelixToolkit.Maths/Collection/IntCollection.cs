@@ -1,9 +1,11 @@
-﻿using System.Globalization;
+﻿using System.ComponentModel;
+using System.Globalization;
 using System.Text;
 
 namespace HelixToolkit;
 
 [Serializable]
+[TypeConverter(typeof(IntCollectionConverter))]
 public sealed class IntCollection : FastList<int>
 {
     public IntCollection()

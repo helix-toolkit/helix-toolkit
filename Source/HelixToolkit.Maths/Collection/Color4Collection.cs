@@ -1,38 +1,42 @@
-﻿using System.Globalization;
+﻿using HelixToolkit.Maths;
+using System.ComponentModel;
+using System.Globalization;
 using System.Text;
 
 namespace HelixToolkit;
 
 [Serializable]
-public sealed class Vector3Collection : FastList<Vector3>
+[TypeConverter(typeof(Color4CollectionConverter))]
+public sealed class Color4Collection : FastList<Color4>
 {
-    public Vector3Collection()
+    public Color4Collection()
     {
     }
 
-    public Vector3Collection(int capacity)
+    public Color4Collection(int capacity)
         : base(capacity)
     {
     }
 
-    public Vector3Collection(IEnumerable<Vector3> items)
+    public Color4Collection(IEnumerable<Color4> items)
         : base(items)
     {
     }
 
-    public static Vector3Collection Parse(string source)
+    public static Color4Collection Parse(string source)
     {
         IFormatProvider formatProvider = CultureInfo.InvariantCulture;
 
         var th = new TokenizerHelper(source, formatProvider);
-        var resource = new Vector3Collection();
+        var resource = new Color4Collection();
 
-        Vector3 value;
+        Color4 value;
 
         while (th.NextToken())
         {
-            value = new Vector3(
+            value = new Color4(
                 Convert.ToSingle(th.GetCurrentToken(), formatProvider),
+                Convert.ToSingle(th.NextTokenRequired(), formatProvider),
                 Convert.ToSingle(th.NextTokenRequired(), formatProvider),
                 Convert.ToSingle(th.NextTokenRequired(), formatProvider));
 
@@ -53,7 +57,7 @@ public sealed class Vector3Collection : FastList<Vector3>
         for (var i = 0; i < this.Count; i++)
         {
             //str.AppendFormat(provider, "{0:" + format + "}", this[i]);
-            str.AppendFormat(provider, "{0},{1},{2}", this[i].X, this[i].Y, this[i].Z);
+            str.AppendFormat(provider, "{0},{1},{2},{3}", this[i].Red, this[i].Green, this[i].Blue, this[i].Alpha);
             if (i != this.Count - 1)
             {
                 str.Append(' ');

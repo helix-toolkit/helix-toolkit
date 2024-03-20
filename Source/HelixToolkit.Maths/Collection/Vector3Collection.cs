@@ -1,39 +1,40 @@
-﻿using System.Globalization;
+﻿using System.ComponentModel;
+using System.Globalization;
 using System.Text;
 
 namespace HelixToolkit;
 
 [Serializable]
-public sealed class Color4Collection : FastList<Color4>
+[TypeConverter(typeof(Vector3CollectionConverter))]
+public sealed class Vector3Collection : FastList<Vector3>
 {
-    public Color4Collection()
+    public Vector3Collection()
     {
     }
 
-    public Color4Collection(int capacity)
+    public Vector3Collection(int capacity)
         : base(capacity)
     {
     }
 
-    public Color4Collection(IEnumerable<Color4> items)
+    public Vector3Collection(IEnumerable<Vector3> items)
         : base(items)
     {
     }
 
-    public static Color4Collection Parse(string source)
+    public static Vector3Collection Parse(string source)
     {
         IFormatProvider formatProvider = CultureInfo.InvariantCulture;
 
         var th = new TokenizerHelper(source, formatProvider);
-        var resource = new Color4Collection();
+        var resource = new Vector3Collection();
 
-        Color4 value;
+        Vector3 value;
 
         while (th.NextToken())
         {
-            value = new Color4(
+            value = new Vector3(
                 Convert.ToSingle(th.GetCurrentToken(), formatProvider),
-                Convert.ToSingle(th.NextTokenRequired(), formatProvider),
                 Convert.ToSingle(th.NextTokenRequired(), formatProvider),
                 Convert.ToSingle(th.NextTokenRequired(), formatProvider));
 
@@ -54,7 +55,7 @@ public sealed class Color4Collection : FastList<Color4>
         for (var i = 0; i < this.Count; i++)
         {
             //str.AppendFormat(provider, "{0:" + format + "}", this[i]);
-            str.AppendFormat(provider, "{0},{1},{2},{3}", this[i].Red, this[i].Green, this[i].Blue, this[i].Alpha);
+            str.AppendFormat(provider, "{0},{1},{2}", this[i].X, this[i].Y, this[i].Z);
             if (i != this.Count - 1)
             {
                 str.Append(' ');
