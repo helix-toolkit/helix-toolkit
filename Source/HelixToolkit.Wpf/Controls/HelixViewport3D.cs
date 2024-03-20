@@ -174,29 +174,12 @@ public class HelixViewport3D : ItemsControl, IHelixViewport3D
             "CoordinateSystemWidth", typeof(double), typeof(HelixViewport3D), new UIPropertyMetadata(100.0));
 
     /// <summary>
-    /// Identifies the CurrentPosition dependency property.
-    /// </summary>
-    public static readonly DependencyProperty CurrentPositionProperty =
-        DependencyProperty.Register(
-            "CurrentPosition",
-            typeof(Point3D),
-            typeof(HelixViewport3D),
-            new FrameworkPropertyMetadata(new Point3D(0, 0, 0)));
-
-    /// <summary>
-    /// Identifies the EnableCurrentPosition dependency property.
-    /// </summary>
-    public static readonly DependencyProperty EnableCurrentPositionProperty =
-        DependencyProperty.Register(
-            "EnableCurrentPosition", typeof(bool), typeof(HelixViewport3D), new UIPropertyMetadata(false));
-
-    /// <summary>
-    /// Identifies the <see cref="CalculateCursorPosition"/> dependency property.
+    /// Identifies the <see cref="EnableCursorPosition"/> dependency property.
     /// It enables (true) or disables (false) the calculation of the cursor position in the 3D Viewport
     /// </summary>
-    public static readonly DependencyProperty CalculateCursorPositionProperty =
+    public static readonly DependencyProperty EnableCursorPositionProperty =
         DependencyProperty.Register(
-            "CalculateCursorPosition", typeof(bool), typeof(HelixViewport3D), new UIPropertyMetadata(false));
+            "EnableCursorPosition", typeof(bool), typeof(HelixViewport3D), new UIPropertyMetadata(false));
 
     /// <summary>
     /// Identifies the <see cref="CursorPosition"/> dependency property.
@@ -1492,29 +1475,6 @@ public class HelixViewport3D : ItemsControl, IHelixViewport3D
     }
 
     /// <summary>
-    /// Gets or sets the current position.
-    /// </summary>
-    /// <value>
-    /// The current position.
-    /// </value>
-    /// <remarks>
-    /// The <see cref="CalculateCursorPosition" /> property must be set to true to enable updating of this property.
-    /// </remarks>
-    [Obsolete("CurrentPosition is now obsolete, please use CursorPosition instead", false)]
-    public Point3D CurrentPosition
-    {
-        get
-        {
-            return (Point3D)this.GetValue(CurrentPositionProperty);
-        }
-
-        set
-        {
-            this.SetValue(CurrentPositionProperty, value);
-        }
-    }
-
-    /// <summary>
     /// Gets or sets the debug info text.
     /// </summary>
     /// <value>
@@ -1553,41 +1513,21 @@ public class HelixViewport3D : ItemsControl, IHelixViewport3D
     }
 
     /// <summary>
-    /// Gets or sets a value indicating whether calculation of the <see cref="CurrentPosition" /> property is enabled.
-    /// </summary>
-    /// <value>
-    ///   <c>true</c> if calculation is enabled; otherwise, <c>false</c> .
-    /// </value>
-    [Obsolete("EnableCurrentPosition is now obsolete, please use CalculateCursorPosition instead", false)]
-    public bool EnableCurrentPosition
-    {
-        get
-        {
-            return this.CalculateCursorPosition;
-        }
-
-        set
-        {
-            this.CalculateCursorPosition = value;
-        }
-    }
-
-    /// <summary>
     /// Gets or sets a value indicating whether calculation of the <see cref="CursorPosition" /> properties is enabled.
     /// </summary>
     /// <value>
     ///   <c>true</c> if calculation is enabled; otherwise, <c>false</c> .
     /// </value>
-    public bool CalculateCursorPosition
+    public bool EnableCursorPosition
     {
         get
         {
-            return (bool)this.GetValue(CalculateCursorPositionProperty);
+            return (bool)this.GetValue(EnableCursorPositionProperty);
         }
 
         set
         {
-            this.SetValue(CalculateCursorPositionProperty, value);
+            this.SetValue(EnableCursorPositionProperty, value);
         }
     }
 
@@ -1598,7 +1538,7 @@ public class HelixViewport3D : ItemsControl, IHelixViewport3D
     /// The current cursor position.
     /// </value>
     /// <remarks>
-    /// The <see cref="CalculateCursorPosition" /> property must be set to true to enable updating of this property.
+    /// The <see cref="EnableCursorPosition" /> property must be set to true to enable updating of this property.
     /// </remarks>
     public Point3D? CursorPosition
     {
@@ -1620,7 +1560,7 @@ public class HelixViewport3D : ItemsControl, IHelixViewport3D
     /// The cursor plane position.
     /// </value>
     /// <remarks>
-    /// The <see cref="CalculateCursorPosition" /> property must be set to true to enable updating of this property.
+    /// The <see cref="EnableCursorPosition" /> property must be set to true to enable updating of this property.
     /// </remarks>
     public Point3D? CursorOnConstructionPlanePosition
     {
@@ -1680,7 +1620,7 @@ public class HelixViewport3D : ItemsControl, IHelixViewport3D
     /// The position of the model intersection.
     /// </value>
     /// <remarks>
-    /// The <see cref="CalculateCursorPosition" /> property must be set to <c>true</c> to enable updating of this property.
+    /// The <see cref="EnableCursorPosition" /> property must be set to <c>true</c> to enable updating of this property.
     /// </remarks>
     public Point3D? CursorOnElementPosition
     {
@@ -3645,7 +3585,7 @@ public class HelixViewport3D : ItemsControl, IHelixViewport3D
     {
         base.OnMouseMove(e);
 
-        if (this.CalculateCursorPosition)
+        if (this.EnableCursorPosition)
         {
             var pt = e.GetPosition(this);
             this.UpdateCursorPosition(pt);
@@ -3695,21 +3635,6 @@ public class HelixViewport3D : ItemsControl, IHelixViewport3D
         {
             this.CursorOnConstructionPlanePosition = null;
         }
-
-        // TODO: remove this code when the CurrentPosition property is removed
-#pragma warning disable 618
-        if (this.CursorOnElementPosition.HasValue)
-        {
-            this.CurrentPosition = this.CursorOnElementPosition.Value;
-        }
-        else
-        {
-            if (this.CursorPosition.HasValue)
-            {
-                this.CurrentPosition = this.CursorPosition.Value;
-            }
-        }
-#pragma warning restore 618
     }
 
     /// <summary>
