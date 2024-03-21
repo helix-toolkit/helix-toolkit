@@ -556,7 +556,7 @@ public class ViewCubeVisual3D : ModelVisual3D
                 _ => Brushes.White,
             };
         }
-        else // if (max == ModelUpDirection.X)
+        else // if (max == this.ModelUpDirection.X)
         {
             return cubeFace switch
             {
