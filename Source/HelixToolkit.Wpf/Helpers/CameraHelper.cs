@@ -465,58 +465,27 @@ public static class CameraHelper
     /// </param>
     public static void Reset(this Camera? camera)
     {
+        if (camera is null)
+        {
+            throw new ArgumentNullException(nameof(camera));
+        }
+        if (camera is not ProjectionCamera projectionCamera)
+        {
+            throw new NotSupportedException(nameof(camera));
+        }
+        projectionCamera.Position = new Point3D(2, 16, 20);
+        projectionCamera.LookDirection = new Vector3D(-2, -16, -20);
+        projectionCamera.UpDirection = new Vector3D(0, 0, 1);
+        projectionCamera.NearPlaneDistance = 0.1;
+        projectionCamera.FarPlaneDistance = double.PositiveInfinity;
         if (camera is PerspectiveCamera pcamera)
         {
-            Reset(pcamera);
+            pcamera.FieldOfView = 45;
         }
         else if (camera is OrthographicCamera ocamera)
         {
-            Reset(ocamera);
+            ocamera.Width = 40;
         }
-    }
-
-    /// <summary>
-    /// Resets the specified perspective camera.
-    /// </summary>
-    /// <param name="camera">
-    /// The camera.
-    /// </param>
-    /// <exception cref="ArgumentNullException"></exception>
-    public static void Reset(this PerspectiveCamera? camera)
-    {
-        if (camera is null)
-        {
-            throw new ArgumentNullException(nameof(camera));
-        }
-
-        camera.Position = new Point3D(2, 16, 20);
-        camera.LookDirection = new Vector3D(-2, -16, -20);
-        camera.UpDirection = new Vector3D(0, 0, 1);
-        camera.FieldOfView = 45;
-        camera.NearPlaneDistance = 0.1;
-        camera.FarPlaneDistance = double.PositiveInfinity;
-    }
-
-    /// <summary>
-    /// Resets the specified orthographic camera.
-    /// </summary>
-    /// <param name="camera">
-    /// The camera.
-    /// </param>
-    /// <exception cref="ArgumentNullException"></exception>
-    public static void Reset(this OrthographicCamera? camera)
-    {
-        if (camera is null)
-        {
-            throw new ArgumentNullException(nameof(camera));
-        }
-
-        camera.Position = new Point3D(2, 16, 20);
-        camera.LookDirection = new Vector3D(-2, -16, -20);
-        camera.UpDirection = new Vector3D(0, 0, 1);
-        camera.Width = 40;
-        camera.NearPlaneDistance = 0.1;
-        camera.FarPlaneDistance = double.PositiveInfinity;
     }
 
     /// <summary>

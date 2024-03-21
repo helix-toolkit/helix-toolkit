@@ -16,8 +16,8 @@
         <StackPanel DockPanel.Dock="Right"
                     Margin="10"
                     MaxWidth="170">
-            <CheckBox Content="Calculate Cursor Position"
-                      IsChecked="{Binding Path=CalculateCursorPosition, ElementName=view1}"
+            <CheckBox Content="Enable Cursor Position"
+                      IsChecked="{Binding Path=EnableCursorPosition, ElementName=view1}"
                       Margin="5" />
             <TextBlock  Margin="5"
                         TextWrapping="Wrap"
@@ -91,7 +91,7 @@
         </StackPanel>
         <Grid>
             <h:HelixViewport3D x:Name="view1"
-                               CalculateCursorPosition="True"
+                               EnableCursorPosition="True"
                                ShowCameraInfo="True">
                 <h:HelixViewport3D.DefaultCamera>
                     <PerspectiveCamera Position="100,100,100"
@@ -309,68 +309,6 @@
                                Background="Bisque" />
                 </Grid>
 
-                <Grid x:Name="Old_CurrentPositionBlock"
-                      HorizontalAlignment="Left"
-                      VerticalAlignment="Top"
-                      Margin="40,0,0,0"
-                      Background="LightGray"
-                      Opacity="1"
-                      IsHitTestVisible="True">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition></ColumnDefinition>
-                        <ColumnDefinition MinWidth="50"></ColumnDefinition>
-                        <ColumnDefinition></ColumnDefinition>
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition></RowDefinition>
-                        <RowDefinition></RowDefinition>
-                        <RowDefinition></RowDefinition>
-                        <RowDefinition></RowDefinition>
-                        <RowDefinition></RowDefinition>
-                    </Grid.RowDefinitions>
-                    <TextBlock Grid.Row="0"
-                               Grid.Column="0"
-                               Text="x"
-                               Margin="5,0,4,0" />
-                    <TextBox Grid.Row="0"
-                             Grid.Column="1"
-                             BorderThickness="0"
-                             TextAlignment="Right"
-                             Background="{Binding Path=Background, RelativeSource={RelativeSource TemplatedParent}}"
-                             Text="{Binding Path=CurrentPosition.X, ElementName=view1, StringFormat={}{0:f1}, FallbackValue=---}" />
-                    <TextBlock Grid.Row="1"
-                               Grid.Column="0"
-                               Text="y"
-                               Margin="5,0,4,0" />
-                    <TextBox Grid.Row="1"
-                             Grid.Column="1"
-                             BorderThickness="0"
-                             TextAlignment="Right"
-                             Background="{Binding Path=Background, RelativeSource={RelativeSource TemplatedParent}}"
-                             Text="{Binding Path=CurrentPosition.Y, ElementName=view1, StringFormat={}{0:f1}, FallbackValue=---}" />
-                    <TextBlock Grid.Row="2"
-                               Grid.Column="0"
-                               Text="z"
-                               Margin="5,0,4,0" />
-                    <TextBox Grid.Row="2"
-                             Grid.Column="1"
-                             BorderThickness="0"
-                             TextAlignment="Right"
-                             Background="{Binding Path=Background, RelativeSource={RelativeSource TemplatedParent}}"
-                             Text="{Binding Path=CurrentPosition.Z, ElementName=view1, StringFormat={}{0:f1}, FallbackValue=---}" />
-                    <TextBlock Grid.Row="3"
-                               Grid.Column="0"
-                               Grid.ColumnSpan="3"
-                               HorizontalAlignment="Center"
-                               Text="CurrentPosition"
-                               Background="BlanchedAlmond" />
-                    <TextBlock Grid.Row="4"
-                               Grid.Column="0"
-                               Grid.ColumnSpan="3"
-                               HorizontalAlignment="Center"
-                               Text="(obsolete)"
-                               Background="BlanchedAlmond" />
-                </Grid>
             </StackPanel>
         </Grid>
     </DockPanel>

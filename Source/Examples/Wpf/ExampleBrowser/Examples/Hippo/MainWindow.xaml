@@ -27,9 +27,7 @@
                     Value="Cursors\ZoomCursor.cur" />
             <Setter Property="PanCursor"
                     Value="Cursors\PanCursor.cur" />
-            <Setter Property="CurrentPosition"
-                    Value="{Binding CurrentPosition}" />
-            <Setter Property="EnableCurrentPosition"
+            <Setter Property="EnableCursorPosition"
                     Value="true" />
         </Style>
         <Style x:Key="NoButtonStyle"
@@ -216,7 +214,7 @@
                                 Width="60">
                         <TextBlock Text="x"
                                    Margin="0 0 4 0" />
-                        <TextBlock Text="{Binding CurrentPosition.X, StringFormat='{}{0:0.00}'}" />
+                        <TextBlock Text="{Binding ElementName=view3D, Path=CursorPosition.X, StringFormat='{}{0:0.00}'}" />
                     </StackPanel>
                 </StatusBarItem>
                 <StatusBarItem>
@@ -224,7 +222,7 @@
                                 Width="60">
                         <TextBlock Text="y"
                                    Margin="0 0 4 0" />
-                        <TextBlock Text="{Binding CurrentPosition.Y, StringFormat='{}{0:0.00}'}" />
+                        <TextBlock Text="{Binding ElementName=view3D, Path=CursorPosition.Y, StringFormat='{}{0:0.00}'}" />
                     </StackPanel>
                 </StatusBarItem>
                 <StatusBarItem>
@@ -232,7 +230,7 @@
                                 Width="60">
                         <TextBlock Text="z"
                                    Margin="0 0 4 0" />
-                        <TextBlock Text="{Binding CurrentPosition.Z, StringFormat='{}{0:0.00}'}" />
+                        <TextBlock Text="{Binding ElementName=view3D, Path=CursorPosition.Z, StringFormat='{}{0:0.00}'}" />
                     </StackPanel>
                 </StatusBarItem>
                 <Separator />
@@ -338,8 +336,7 @@
                     </Grid.Style>
                     <h:HelixViewport3D RotateGesture="Alt+RightClick"
                                        PanGesture="RightClick"
-                                       IsHeadLightEnabled="False"
-                                       CurrentPosition="{Binding CurrentPosition, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}">
+                                       IsHeadLightEnabled="False">
                         <h:HelixViewport3D.Camera>
                             <OrthographicCamera Position="0,0,80.22"
                                                 LookDirection="0,0,-80.22"
@@ -366,9 +363,8 @@
                                     Value="1" />
                         </Style>
                     </Grid.Style>
-                    <h:HelixViewport3D IsRotationEnabled="True"
-                                       Camera="{h:PerspectiveCamera 43.11,-74.67,49.78}"
-                                       CurrentPosition="{Binding CurrentPosition, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}">
+                    <h:HelixViewport3D IsRotationEnabled="True" Name="view3D"
+                                       Camera="{h:PerspectiveCamera 43.11,-74.67,49.78}">
                         <local:GridLines />
                         <ModelVisual3D>
                             <ModelVisual3D.Content>
@@ -389,8 +385,7 @@
                         </Style>
                     </Grid.Style>
                     <h:HelixViewport3D RotateGesture="Alt+RightClick"
-                                       PanGesture="RightClick"
-                                       CurrentPosition="{Binding CurrentPosition, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}">
+                                       PanGesture="RightClick">
                         <h:HelixViewport3D.Camera>
                             <OrthographicCamera Position="0,-80.22,0"
                                                 LookDirection="0,80.22,0"
@@ -421,8 +416,7 @@
                         </Style>
                     </Grid.Style>
                     <h:HelixViewport3D RotateGesture="Alt+RightClick"
-                                       PanGesture="RightClick"
-                                       CurrentPosition="{Binding CurrentPosition, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}">
+                                       PanGesture="RightClick">
                         <h:HelixViewport3D.Camera>
                             <OrthographicCamera Position="80.22,0,0"
                                                 LookDirection="-80.22,0,0"
