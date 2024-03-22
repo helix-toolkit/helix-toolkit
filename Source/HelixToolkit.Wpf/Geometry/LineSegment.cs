@@ -5,7 +5,7 @@ namespace HelixToolkit.Wpf;
 /// <summary>
 /// Represents a line segment in two-dimensional space.
 /// </summary>
-public readonly struct LineSegment
+public readonly struct LineSegment : IEquatable<LineSegment>
 {
     /// <summary>
     /// The first point of the line segment.
@@ -53,6 +53,11 @@ public readonly struct LineSegment
     }
 
     /// <summary>
+    /// Gets the length of this line segment.
+    /// </summary>
+    public double Length => (this.p2 - this.p1).Length;
+
+    /// <summary>
     /// Checks if there are any intersections of two line segments.
     /// </summary>
     /// <param name="a1">One vertex of line a.</param>
@@ -94,5 +99,25 @@ public readonly struct LineSegment
     public bool IntersectsWith(LineSegment other)
     {
         return AreLineSegmentsIntersecting(this.p1, this.p2, other.p1, other.p2);
+    }
+    public override bool Equals(object? obj)
+    {
+        return obj is LineSegment segment && this.Equals(segment);
+    }
+    public bool Equals(LineSegment other)
+    {
+        return this.p1.Equals(other.p1) && this.p2.Equals(other.p2);
+    }
+    public override int GetHashCode()
+    {
+        return p1.GetHashCode() ^ p2.GetHashCode();
+    }
+    public static bool operator ==(LineSegment left, LineSegment right)
+    {
+        return left.Equals(right);
+    }
+    public static bool operator !=(LineSegment left, LineSegment right)
+    {
+        return !(left == right);
     }
 }
