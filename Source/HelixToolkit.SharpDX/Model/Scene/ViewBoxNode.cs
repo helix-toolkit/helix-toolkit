@@ -66,7 +66,7 @@ public class ViewBoxNode : ScreenSpacedNode
         {
             if (Set(ref upDirection, value))
             {
-                UpdateModel(value);
+                UpdateModel();
             }
         }
         get
@@ -169,7 +169,7 @@ public class ViewBoxNode : ScreenSpacedNode
             Visible = false
         };
         this.AddChildNode(EdgeModel);
-        UpdateModel(UpDirection);
+        UpdateModel();
     }
 
     protected override bool OnAttach(IEffectsManager effectsManager)
@@ -185,10 +185,17 @@ public class ViewBoxNode : ScreenSpacedNode
                 }
                 else
                 {
+                    Color frontColor = GetCubeFaceColor(CubeFaces.Front);
+                    Color backColor = GetCubeFaceColor(CubeFaces.Back);
+                    Color leftColor = GetCubeFaceColor(CubeFaces.Left);
+                    Color rightColor = GetCubeFaceColor(CubeFaces.Right);
+                    Color upColor = GetCubeFaceColor(CubeFaces.Top);
+                    Color downColor = GetCubeFaceColor(CubeFaces.Bottom);
+
                     var model = BitmapExtensions.CreateViewBoxTexture(
                         effectsManager,
                         "F", "B", "L", "R", "U", "D",
-                        Color.Red, Color.Red, Color.Blue, Color.Blue, Color.Green, Color.Green,
+                        frontColor, backColor, leftColor, rightColor, upColor, downColor,
                         Color.White, Color.White, Color.White, Color.White, Color.White, Color.White);
 
                     material.DiffuseMap = model is null ? null : new TextureModel(model, true);
@@ -207,7 +214,7 @@ public class ViewBoxNode : ScreenSpacedNode
         if (isRightHanded != e)
         {
             isRightHanded = e;
-            UpdateModel(UpDirection);
+            UpdateModel();
         }
     }
 
@@ -217,10 +224,16 @@ public class ViewBoxNode : ScreenSpacedNode
             material.DiffuseMap = texture;
     }
 
-    protected void UpdateModel(Vector3 up)
+    protected void UpdateModel()
     {
-        var left = new Vector3(up.Y, up.Z, up.X);
-        var front = Vector3.Cross(left, up);
+        Vector3 up = Vector3.Normalize(this.UpDirection);
+        var left1 = new Vector3(up.Y, up.Z, up.X);
+        if (left1 == up)
+        {
+            left1 = Vector3.UnitY;
+        }
+        var front = Vector3.Normalize(Vector3.Cross(left1, up));
+        var left = Vector3.Normalize(Vector3.Cross(up, front));
         if (!isRightHanded)
         {
             front *= -1;
@@ -370,5 +383,49 @@ public class ViewBoxNode : ScreenSpacedNode
         {
             return false;
         }
+    }
+
+    private Color GetCubeFaceColor(CubeFaces cubeFace)
+    {
+        double max = Math.Max(Math.Max(this.UpDirection.X, this.UpDirection.Y), this.UpDirection.Z);
+        if (max == this.UpDirection.Y)
+        {
+            return cubeFace switch
+            {
+                CubeFaces.Front or CubeFaces.Back => Color.Blue,
+                CubeFaces.Left or CubeFaces.Right => Color.Red,
+                CubeFaces.Top or CubeFaces.Bottom => Color.Green,
+                _ => Color.White,
+            };
+        }
+        else if (max == this.UpDirection.Z)
+        {
+            return cubeFace switch
+            {
+                CubeFaces.Front or CubeFaces.Back => Color.Red,
+                CubeFaces.Left or CubeFaces.Right => Color.Green,
+                CubeFaces.Top or CubeFaces.Bottom => Color.Blue,
+                _ => Color.White,
+            };
+        }
+        else // if (max == this.UpDirection.X)
+        {
+            return cubeFace switch
+            {
+                CubeFaces.Front or CubeFaces.Back => Color.Green,
+                CubeFaces.Left or CubeFaces.Right => Color.Blue,
+                CubeFaces.Top or CubeFaces.Bottom => Color.Red,
+                _ => Color.White,
+            };
+        }
+    }
+    enum CubeFaces
+    {
+        Front = 0,
+        Back = 1,
+        Left = 2,
+        Right = 3,
+        Top = 4,
+        Bottom = 5,
     }
 }

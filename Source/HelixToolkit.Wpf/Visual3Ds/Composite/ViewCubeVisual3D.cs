@@ -125,7 +125,6 @@ public class ViewCubeVisual3D : ModelVisual3D
         DependencyProperty.Register("EnableEdgeClicks", typeof(bool), typeof(ViewCubeVisual3D), new PropertyMetadata(false, (d, e) =>
         {
             (d as ViewCubeVisual3D)?.EnableDisableEdgeClicks();
-            // (d as ViewCubeVisual3D1)?.UpdateVisuals();
         }));
     #endregion Dependency Properties
     #region Properties
@@ -356,7 +355,7 @@ public class ViewCubeVisual3D : ModelVisual3D
         get { return (bool)GetValue(EnableEdgeClicksProperty); }
         set { SetValue(EnableEdgeClicksProperty, value); }
     }
-    private double Overhang => 0.001 * Size;
+    private float overhang => 0.001f * (float)Size;
     #endregion Properties
     #region Fields
     /// <summary>
@@ -515,10 +514,10 @@ public class ViewCubeVisual3D : ModelVisual3D
         AddCubeFace(cubeFaceModels[CubeFaces.Left], leftVector, upVector, GetCubeFaceColor(CubeFaces.Left), LeftText);
         AddCubeFace(cubeFaceModels[CubeFaces.Right], -leftVector, upVector, GetCubeFaceColor(CubeFaces.Right), RightText);
 
-       
+
         Vector3D tempFrontVector = frontVector;
         Vector3D tempLeftVector = leftVector;
-        if(IsTopBottomViewReverseOriented)
+        if (IsTopBottomViewReverseOriented)
         {
             tempFrontVector = -frontVector;
             tempLeftVector = -leftVector;
@@ -557,7 +556,7 @@ public class ViewCubeVisual3D : ModelVisual3D
                 _ => Brushes.White,
             };
         }
-        else // if (max == ModelUpDirection.X)
+        else // if (max == this.ModelUpDirection.X)
         {
             return cubeFace switch
             {
@@ -606,12 +605,11 @@ public class ViewCubeVisual3D : ModelVisual3D
          */
 
         if (this.Size == 0) return;
-        double halfSize = this.Size / 2;
-        double sideWidthHeight = this.Size / 5;
+        float halfSize = (float)this.Size / 2f;
+        float sideWidthHeight = (float)this.Size / 5f;
 
-        var moveDistance = Math.Sqrt(2) * (sideWidthHeight / 2 - this.Overhang);
-        double squaredLength = this.Size - 2 * (sideWidthHeight - this.Overhang);
-
+        float moveDistance = (float)Math.Sqrt(2) * (sideWidthHeight / 2f - this.overhang);
+        float squaredLength = (float)this.Size - 2f * (sideWidthHeight - this.overhang);
 
         Point3D p0 = this.Center - (this.leftVector + this.frontVector + this.upVector) * halfSize;
         Point3D p1 = p0 + this.frontVector * this.Size;
@@ -692,9 +690,9 @@ public class ViewCubeVisual3D : ModelVisual3D
 
         if (this.Size == 0) return;
 
-        double halfSize = this.Size / 2;
-        double sideLength = this.Size / 5;
-        var moveDistance = Math.Sqrt(3) * (sideLength / 2 - this.Overhang);
+        float halfSize = (float)this.Size / 2;
+        float sideLength = (float)this.Size / 5;
+        float moveDistance = (float)Math.Sqrt(3) * (sideLength / 2 - this.overhang);
 
         Point3D p0 = this.Center - (this.leftVector + this.frontVector + this.upVector) * halfSize;
         Point3D p1 = p0 + this.frontVector * this.Size;
@@ -742,9 +740,9 @@ public class ViewCubeVisual3D : ModelVisual3D
     private void AddCubeFace(ModelUIElement3D element, Vector3D faceNormal, Vector3D upVector, Brush background, string text)
     {
         Material material = CreateTextMaterial(background, text);
-        double a = this.Size;
+        float a = (float)this.Size;
         var builder = new MeshBuilder(false, true);
-        builder.AddCubeFace(this.Center.ToVector3(), faceNormal.ToVector3(), upVector.ToVector3(), (float)a, (float)a, (float)a);
+        builder.AddCubeFace(this.Center.ToVector3(), faceNormal.ToVector3(), upVector.ToVector3(), a, a, a);
         MeshGeometry3D geometry = builder.ToMesh().ToWndMeshGeometry3D();
         geometry.Freeze();
         var model = new GeometryModel3D { Geometry = geometry, Material = material };
@@ -752,10 +750,10 @@ public class ViewCubeVisual3D : ModelVisual3D
 
         faceNormalUpVectors.Add(element, (faceNormal, upVector));
     }
-    private void AddCubeEdge(ModelUIElement3D element, Point3D center, double xLength, double yLength, double zLength, Vector3D faceNormal)
+    private void AddCubeEdge(ModelUIElement3D element, Point3D center, float xLength, float yLength, float zLength, Vector3D faceNormal)
     {
         var builder = new MeshBuilder(false, true);
-        builder.AddBox(center.ToVector3(), frontVector.ToVector3(), leftVector.ToVector3(), (float)xLength, (float)yLength, (float)zLength);
+        builder.AddBox(center.ToVector3(), frontVector.ToVector3(), leftVector.ToVector3(), xLength, yLength, zLength);
         MeshGeometry3D geometry = builder.ToMesh().ToWndMeshGeometry3D();
         geometry.Freeze();
         var model = new GeometryModel3D { Geometry = geometry, Material = MaterialHelper.CreateMaterial(edgeBrush) };
@@ -764,10 +762,10 @@ public class ViewCubeVisual3D : ModelVisual3D
         faceNormalUpVectors.Add(element, (faceNormal, upVector));
 
     }
-    void AddCubeCorner(ModelUIElement3D element, Point3D center, double sideLength, Vector3D faceNormal)
+    void AddCubeCorner(ModelUIElement3D element, Point3D center, float sideLength, Vector3D faceNormal)
     {
         var builder = new MeshBuilder(false, true);
-        builder.AddBox(center.ToVector3(), frontVector.ToVector3(), leftVector.ToVector3(), (float)sideLength, (float)sideLength, (float)sideLength);
+        builder.AddBox(center.ToVector3(), frontVector.ToVector3(), leftVector.ToVector3(), sideLength, sideLength, sideLength);
         MeshGeometry3D geometry = builder.ToMesh().ToWndMeshGeometry3D();
         geometry.Freeze();
         var model = new GeometryModel3D { Geometry = geometry, Material = MaterialHelper.CreateMaterial(cornerBrush) };
