@@ -223,47 +223,50 @@ public sealed class MeshBuilder
     /// </param>
     /// <param name="closed">
     /// Is the circle closed?
-    /// If true, the last point will not be at the same position than the first one.
+    /// If true, the last point will be in the same position as the first one.
     /// </param>
     /// <returns>
     /// A circle.
     /// </returns>
     public static IList<Vector2> GetCircle(int thetaDiv, bool closed = false)
     {
-        IList<Vector2>? circle = null;
-        // If the circle can't be found in one of the two caches
-        if ((!closed && !CircleCache.Value!.TryGetValue(thetaDiv, out circle)) ||
-            (closed && !ClosedCircleCache.Value!.TryGetValue(thetaDiv, out circle)))
+        Dictionary<int, IList<Vector2>>? cache = null;
+        IList<Vector2>? circle;
+        if (!IsCacheExists(ref cache, thetaDiv, closed, out circle))
         {
-            circle = new Vector2Collection();
-            // Add to the cache
-            if (!closed)
-            {
-                CircleCache.Value!.Add(thetaDiv, circle);
-            }
-            else
-            {
-                ClosedCircleCache.Value!.Add(thetaDiv, circle);
-            }
+            circle = new Vector2Collection(closed ? thetaDiv : thetaDiv + 1);
+            cache!.Add(thetaDiv, circle);
             // Determine the angle steps
-            var num = closed ? thetaDiv : thetaDiv - 1;
+            float angle = (float)Math.PI * 2f / thetaDiv;
             for (var i = 0; i < thetaDiv; i++)
             {
-                var theta = (float)Math.PI * 2 * ((float)i / num);
-                circle.Add(new Vector2((float)Math.Cos(theta), -(float)Math.Sin(theta)));
+                circle.Add(new Vector2((float)Math.Cos(i * angle), -(float)Math.Sin(i * angle)));
+            }
+            if (closed)
+            {
+                circle.Add(circle[0]);
             }
         }
         // Since Vector2Collection is not Freezable,
         // return new IList<Vector> to avoid manipulation of the Cached Values
-        IList<Vector2> result = new Vector2Collection();
         if (circle is not null)
         {
-            foreach (var point in circle)
-            {
-                result.Add(new Vector2(point.X, point.Y));
-            }
+            return new Vector2Collection(circle);
         }
-        return result;
+        return new Vector2Collection();
+
+        static bool IsCacheExists(ref Dictionary<int, IList<Vector2>>? cache, int thetaDiv, bool closed, out IList<Vector2>? circle)
+        {
+            if (closed)
+            {
+                cache = ClosedCircleCache.Value;
+            }
+            else
+            {
+                cache = CircleCache.Value;
+            }
+            return cache!.TryGetValue(thetaDiv, out circle);
+        }
     }
 
     /// <summary>
@@ -983,7 +986,7 @@ public sealed class MeshBuilder
 
         // Add Points
         var baseCenter = center - up * vectorDown;
-        var pentagonPoints = GetCircle(5, true);
+        var pentagonPoints = GetCircle(5, false);
         // Base Points
         var basePoints = new Vector3Collection();
         foreach (var point in pentagonPoints)
@@ -2808,7 +2811,7 @@ public sealed class MeshBuilder
     /// <param name="textureValues">The texture values.</param>
     public void AddSurfaceOfRevolution(
         Vector3 origin, Vector3 axis, IList<Vector2> section, IList<int> sectionIndices,
-        int thetaDiv = 37, IList<float>? textureValues = null)
+        int thetaDiv = 36, IList<float>? textureValues = null)
     {
         if (this.TextureCoordinates != null)
         {
@@ -2946,7 +2949,7 @@ public sealed class MeshBuilder
             // "normal" Torus (with a Circle as Cross-Section of the Torus
             else
             {
-                crossSectionPoints = GetCircle(phiDiv, true);
+                crossSectionPoints = GetCircle(phiDiv, false);
             }
             // Transform Crosssection to real Size
             crossSectionPoints = crossSectionPoints.Select(p => new Vector2(p.X * tubeDiameter * .5f, p.Y * tubeDiameter * .5f)).ToList();

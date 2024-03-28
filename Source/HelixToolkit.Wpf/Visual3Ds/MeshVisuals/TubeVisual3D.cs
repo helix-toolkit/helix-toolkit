@@ -118,16 +118,14 @@ public class TubeVisual3D : ExtrudedVisual3D
     protected void OnSectionChanged()
     {
         var pc = new PointCollection();
-        var circle = MeshBuilder.GetCircle(this.ThetaDiv);
-
+        var circle = MeshBuilder.GetCircle(this.ThetaDiv,false);
         // If Diameters is not set, create a unit circle
         // otherwise, create a circle with the specified diameter
         double r = this.Diameters != null ? 1 : this.Diameter / 2;
-        for (int j = 0; j < this.ThetaDiv; j++)
+        for (int j = 0; j < circle.Count; j++)
         {
             pc.Add(new Point(circle[j].X * r, circle[j].Y * r));
         }
-
         this.Section = pc;
 
         this.OnGeometryChanged();
