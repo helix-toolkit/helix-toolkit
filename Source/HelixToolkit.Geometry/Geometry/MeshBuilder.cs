@@ -3514,16 +3514,15 @@ public sealed class MeshBuilder
     /// <param name="backCap">
     /// Create a back Cap or not.
     /// </param>
-    public void AddTube(
-        IList<Vector3> path, IList<float>? values, IList<float>? diameters,
+    public void AddTube(IList<Vector3> path, IList<float>? values, IList<float>? diameters,
         IList<Vector2> section, bool isTubeClosed, bool isSectionClosed, bool frontCap = false, bool backCap = false)
     {
-        if (values != null && values.Count == 0)
+        if (values is not null && values.Count == 0)
         {
             ThrowHelper.ThrowInvalidOperationException(WrongNumberOfTextureCoordinates);
         }
 
-        if (diameters != null && diameters.Count == 0)
+        if (diameters is not null && diameters.Count == 0)
         {
             ThrowHelper.ThrowInvalidOperationException(WrongNumberOfDiameters);
         }
