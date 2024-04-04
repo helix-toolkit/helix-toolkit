@@ -79,6 +79,14 @@ public class HitTestResult : IComparable<HitTestResult>
         set; get;
     }
 
+    /// <summary>
+    /// Gets or sets the indice start location in indice list.
+    /// </summary>
+    /// <value>
+    /// The indice start location.
+    /// </value>
+    public int IndiceStartLocation { set; get; }
+
     public int CompareTo(HitTestResult? other)
     {
         if (other == null)
@@ -104,6 +112,7 @@ public class HitTestResult : IComparable<HitTestResult>
         Tag = result.Tag;
         Geometry = result.Geometry;
         TriangleIndices = result.TriangleIndices;
+        IndiceStartLocation = result.IndiceStartLocation;
     }
 
     /// <summary>
