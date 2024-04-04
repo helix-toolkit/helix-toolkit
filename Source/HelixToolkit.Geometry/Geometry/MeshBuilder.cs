@@ -234,7 +234,7 @@ public sealed class MeshBuilder
         IList<Vector2>? circle;
         if (!IsCacheExists(ref cache, thetaDiv, closed, out circle))
         {
-            circle = new Vector2Collection(closed ? thetaDiv : thetaDiv + 1);
+            circle = new Vector2Collection() { Capacity = closed ? thetaDiv + 1 : thetaDiv };
             cache!.Add(thetaDiv, circle);
             // Determine the angle steps
             float angle = (float)Math.PI * 2f / thetaDiv;
@@ -242,14 +242,14 @@ public sealed class MeshBuilder
             {
                 circle.Add(new Vector2((float)Math.Cos(i * angle), -(float)Math.Sin(i * angle)));
             }
-            if (closed)
+            if (closed && circle.Count > 0)
             {
                 circle.Add(circle[0]);
             }
         }
         // Since Vector2Collection is not Freezable,
         // return new IList<Vector> to avoid manipulation of the Cached Values
-        if (circle is not null)
+        if (circle is not null && circle.Count > 0)
         {
             return new Vector2Collection(circle);
         }
