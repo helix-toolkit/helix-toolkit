@@ -33,7 +33,6 @@ public partial class MainWindow : Window
         var path1 = new List<Point3D>() { new Point3D(1, 1, 0.1), new Point3D(1, 1, -0.2), new Point3D(1, 1, 0.0001) };
         var path2 = new List<Point3D>() { new Point3D(2, 2, 0.1), new Point3D(2, 2, -0.2), new Point3D(2, 2, 0.1) };
 
-        AddTube(path1, Colors.Green);
         AddTube(path1, Colors.Green, 0.1f, 2);
         AddTube(path2, Colors.Red, 0.1f, 2);
     }
