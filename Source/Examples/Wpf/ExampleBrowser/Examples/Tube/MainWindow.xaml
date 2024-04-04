@@ -34,14 +34,15 @@
                     Opacity="0.5">
             <Slider x:Name="diameterSlider"
                     Value="0.4"
-                    Minimum="0.1"
+                    Minimum="-1"
                     Maximum="1"
                     Width="150"
                     Margin="10" />
             <Slider x:Name="thetaDivSlider"
                     Value="20"
-                    Minimum="3"
+                    Minimum="-10"
                     Maximum="100"
+                    SmallChange="1"
                     Width="150"
                     Margin="10" />
         </StackPanel>
