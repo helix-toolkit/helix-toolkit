@@ -302,6 +302,7 @@ public class MeshGeometry3D : Geometry3D
                             result.NormalAtHit = n;// Vector3.TransformNormal(n, m).ToVector3D();
                             result.TriangleIndices = new System.Tuple<int, int, int>(Indices[index], Indices[index + 1], Indices[index + 2]);
                             result.Tag = index / 3;
+                            result.IndiceStartLocation = index / 3;
                             result.Geometry = this;
                             isHit = true;
                             if (ReturnMultipleHitsOnHitTest)

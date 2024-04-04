@@ -73,6 +73,7 @@ public class PointGeometry3D : Geometry3D
                     result.ModelHit = originalSource;
                     result.IsValid = true;
                     result.Tag = index;
+                    result.IndiceStartLocation = index;
                     result.Geometry = this;
                 }
 
