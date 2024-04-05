@@ -232,7 +232,7 @@ public sealed class MeshBuilder
     /// </returns>
     public static IList<Vector2> GetCircle(int thetaDiv, bool closed = false)
     {
-        if (thetaDiv <= 1)
+        if (thetaDiv < 2)
         {
             ThrowHelper.ThrowInvalidOperationException(WrongNumberOfDivisions);
         }
