@@ -32,19 +32,32 @@
                     HorizontalAlignment="Left"
                     VerticalAlignment="Bottom"
                     Opacity="0.5">
-            <Slider x:Name="diameterSlider"
-                    Value="0.4"
-                    Minimum="-1"
-                    Maximum="1"
-                    Width="150"
-                    Margin="10" />
-            <Slider x:Name="thetaDivSlider"
-                    Value="20"
-                    Minimum="-10"
-                    Maximum="100"
-                    SmallChange="1"
-                    Width="150"
-                    Margin="10" />
+            <WrapPanel>
+                <Slider x:Name="diameterSlider"
+                     Value="0.4"
+                     Minimum="-1"
+                     Maximum="1"
+                     Width="150"
+                     Margin="10" />
+                <TextBox 
+                     Text="{Binding ElementName=diameterSlider, Path=Value, StringFormat='{}{0:0.00}'}"
+                     VerticalAlignment="Center"
+                     Width="50"/>
+            </WrapPanel>
+            <WrapPanel>
+                <Slider x:Name="thetaDivSlider"
+                     Value="20"
+                     Minimum="-10"
+                     Maximum="100"
+                     SmallChange="1"
+                     Width="150"
+                     Margin="10" />
+                <TextBox 
+                    Text="{Binding ElementName=thetaDivSlider, Path=Value, StringFormat='{}{0:0.00}'}"
+                    VerticalAlignment="Center"
+                    Width="50"/>
+            </WrapPanel>
+
         </StackPanel>
     </Grid>
 </Window>

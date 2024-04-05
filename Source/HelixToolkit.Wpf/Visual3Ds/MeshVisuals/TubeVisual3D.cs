@@ -118,7 +118,7 @@ public class TubeVisual3D : ExtrudedVisual3D
     protected void OnSectionChanged()
     {
         var pc = new PointCollection();
-        var circle = MeshBuilder.GetCircle(this.ThetaDiv,false);
+        var circle = MeshBuilder.GetCircle(this.ThetaDiv, false);
         // If Diameters is not set, create a unit circle
         // otherwise, create a circle with the specified diameter
         double r = this.Diameters != null ? 1 : this.Diameter / 2;
@@ -139,7 +139,7 @@ public class TubeVisual3D : ExtrudedVisual3D
     /// </returns>
     protected override MeshGeometry3D? Tessellate()
     {
-        if (this.Path == null || this.Path.Count < 2)
+        if (this.Path == null || this.Path.Count < 2 || this.ThetaDiv < 2)
         {
             return null;
         }

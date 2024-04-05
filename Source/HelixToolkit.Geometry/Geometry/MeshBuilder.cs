@@ -37,8 +37,7 @@ public sealed class MeshBuilder
     /// <summary>
     /// 'All curves should have the same number of points' exception message.
     /// </summary>
-    private const string AllCurvesShouldHaveTheSameNumberOfPoints =
-        "All curves should have the same number of points";
+    private const string AllCurvesShouldHaveTheSameNumberOfPoints = "All curves should have the same number of points";
     /// <summary>
     /// 'Source mesh normals should not be null' exception message.
     /// </summary>
@@ -46,8 +45,7 @@ public sealed class MeshBuilder
     /// <summary>
     /// 'Source mesh texture coordinates should not be null' exception message.
     /// </summary>
-    private const string SourceMeshTextureCoordinatesShouldNotBeNull =
-        "Source mesh texture coordinates should not be null.";
+    private const string SourceMeshTextureCoordinatesShouldNotBeNull = "Source mesh texture coordinates should not be null.";
     /// <summary>
     /// 'Wrong number of diameters' exception message.
     /// </summary>
@@ -68,6 +66,10 @@ public sealed class MeshBuilder
     /// 'Wrong number of angles' exception message.
     /// </summary>
     private const string WrongNumberOfAngles = "Wrong number of angles.";
+    /// <summary>
+    /// 'Wrong number of divisions' exception message.
+    /// </summary>
+    private const string WrongNumberOfDivisions = "Wrong number of divisions.";
     /// <summary>
     /// The circle cache.
     /// </summary>
@@ -219,7 +221,7 @@ public sealed class MeshBuilder
     /// Gets a circle section (cached).
     /// </summary>
     /// <param name="thetaDiv">
-    /// The number of division.
+    /// The number of divisions.
     /// </param>
     /// <param name="closed">
     /// Is the circle closed?
@@ -230,11 +232,15 @@ public sealed class MeshBuilder
     /// </returns>
     public static IList<Vector2> GetCircle(int thetaDiv, bool closed = false)
     {
+        if (thetaDiv < 2)
+        {
+            ThrowHelper.ThrowInvalidOperationException(WrongNumberOfDivisions);
+        }
         Dictionary<int, IList<Vector2>>? cache = null;
         IList<Vector2>? circle;
         if (!IsCacheExists(ref cache, thetaDiv, closed, out circle))
         {
-            circle = new Vector2Collection(closed ? thetaDiv : thetaDiv + 1);
+            circle = new Vector2Collection() { Capacity = closed ? thetaDiv + 1 : thetaDiv };
             cache!.Add(thetaDiv, circle);
             // Determine the angle steps
             float angle = (float)Math.PI * 2f / thetaDiv;
@@ -242,14 +248,14 @@ public sealed class MeshBuilder
             {
                 circle.Add(new Vector2((float)Math.Cos(i * angle), -(float)Math.Sin(i * angle)));
             }
-            if (closed)
+            if (closed && circle.Count > 0)
             {
                 circle.Add(circle[0]);
             }
         }
         // Since Vector2Collection is not Freezable,
         // return new IList<Vector> to avoid manipulation of the Cached Values
-        if (circle is not null)
+        if (circle is not null && circle.Count > 0)
         {
             return new Vector2Collection(circle);
         }
