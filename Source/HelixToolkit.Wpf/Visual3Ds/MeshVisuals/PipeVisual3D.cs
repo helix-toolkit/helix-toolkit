@@ -138,6 +138,10 @@ public class PipeVisual3D : MeshElement3D
     /// </returns>
     protected override MeshGeometry3D? Tessellate()
     {
+        if (this.ThetaDiv < 2)
+        {
+            return null;
+        }
         var builder = new MeshBuilder(false, true);
         builder.AddPipe(this.Point1.ToVector3(), this.Point2.ToVector3(), (float)this.InnerDiameter, (float)this.Diameter, this.ThetaDiv);
         return builder.ToMesh().ToWndMeshGeometry3D();
