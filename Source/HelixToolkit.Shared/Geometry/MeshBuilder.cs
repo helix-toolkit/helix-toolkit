@@ -170,8 +170,7 @@ namespace HelixToolkit.Wpf
         /// <summary>
         /// 'All curves should have the same number of points' exception message.
         /// </summary>
-        private const string AllCurvesShouldHaveTheSameNumberOfPoints =
-            "All curves should have the same number of points";
+        private const string AllCurvesShouldHaveTheSameNumberOfPoints = "All curves should have the same number of points";
         /// <summary>
         /// 'Source mesh normals should not be null' exception message.
         /// </summary>
@@ -179,8 +178,7 @@ namespace HelixToolkit.Wpf
         /// <summary>
         /// 'Source mesh texture coordinates should not be null' exception message.
         /// </summary>
-        private const string SourceMeshTextureCoordinatesShouldNotBeNull =
-            "Source mesh texture coordinates should not be null.";
+        private const string SourceMeshTextureCoordinatesShouldNotBeNull = "Source mesh texture coordinates should not be null.";
         /// <summary>
         /// 'Wrong number of diameters' exception message.
         /// </summary>
@@ -201,6 +199,10 @@ namespace HelixToolkit.Wpf
         /// 'Wrong number of angles' exception message.
         /// </summary>
         private const string WrongNumberOfAngles = "Wrong number of angles.";
+        /// <summary>
+        /// 'Wrong number of divisions' exception message.
+        /// </summary>
+        private const string WrongNumberOfDivisions = "Wrong number of divisions.";
         /// <summary>
         /// The circle cache.
         /// </summary>
@@ -455,48 +457,58 @@ namespace HelixToolkit.Wpf
         /// Gets a circle section (cached).
         /// </summary>
         /// <param name="thetaDiv">
-        /// The number of division.
+        /// The number of divisions.
         /// </param>
         /// <param name="closed">
         /// Is the circle closed?
-        /// If true, the last point will not be at the same position than the first one.
+        /// If true, the last point will be in the same position as the first one.
         /// </param>
         /// <returns>
         /// A circle.
         /// </returns>
         public static IList<Point> GetCircle(int thetaDiv, bool closed = false)
         {
-            IList<Point> circle = null;
-            // If the circle can't be found in one of the two caches
-            if ((!closed && !CircleCache.Value.TryGetValue(thetaDiv, out circle)) ||
-                (closed && !ClosedCircleCache.Value.TryGetValue(thetaDiv, out circle)))
+            if (thetaDiv < 2)
             {
-                circle = new PointCollection();
-                // Add to the cache
-                if (!closed)
-                {
-                    CircleCache.Value.Add(thetaDiv, circle);
-                }
-                else
-                {
-                    ClosedCircleCache.Value.Add(thetaDiv, circle);
-                }
+                throw new InvalidOperationException(WrongNumberOfDivisions);
+            }
+            Dictionary<int, IList<Point>> cache = null;
+            IList<Point> circle;
+            if (!IsCacheExists(ref cache, thetaDiv, closed, out circle))
+            {
+                circle = new List<Point>() { Capacity = closed ? thetaDiv + 1 : thetaDiv };
+                cache!.Add(thetaDiv, circle);
                 // Determine the angle steps
-                var num = closed ? thetaDiv : thetaDiv - 1;
+                float angle = (float)Math.PI * 2f / thetaDiv;
                 for (var i = 0; i < thetaDiv; i++)
                 {
-                    var theta = (DoubleOrSingle)Math.PI * 2 * ((DoubleOrSingle)i / num);
-                    circle.Add(new Point((DoubleOrSingle)Math.Cos(theta), -(DoubleOrSingle)Math.Sin(theta)));
+                    circle.Add(new Point((float)Math.Cos(i * angle), -(float)Math.Sin(i * angle)));
+                }
+                if (closed && circle.Count > 0)
+                {
+                    circle.Add(circle[0]);
                 }
             }
             // Since Vector2Collection is not Freezable,
             // return new IList<Vector> to avoid manipulation of the Cached Values
-            IList<Point> result = new List<Point>();
-            foreach (var point in circle)
+            if (circle != null && circle.Count > 0)
             {
-                result.Add(new Point(point.X, point.Y));
+                return new List<Point>(circle);
             }
-            return result;
+            return new List<Point>();
+
+            static bool IsCacheExists(ref Dictionary<int, IList<Point>> cache, int thetaDiv, bool closed, out IList<Point> circle)
+            {
+                if (closed)
+                {
+                    cache = ClosedCircleCache.Value;
+                }
+                else
+                {
+                    cache = CircleCache.Value;
+                }
+                return cache!.TryGetValue(thetaDiv, out circle);
+            }
         }
         /// <summary>
         /// Gets a circle segment section.
@@ -1208,7 +1220,7 @@ namespace HelixToolkit.Wpf
 
             // Add Points
             var baseCenter = center - up * vectorDown;
-            var pentagonPoints = GetCircle(5, true);
+            var pentagonPoints = GetCircle(5, false);
             // Base Points
             var basePoints = new List<Point3D>();
             foreach (var point in pentagonPoints)
@@ -2976,7 +2988,7 @@ namespace HelixToolkit.Wpf
         /// <param name="textureValues">The texture values.</param>
         public void AddSurfaceOfRevolution(
             Point3D origin, Vector3D axis, IList<Point> section, IList<int> sectionIndices,
-            int thetaDiv = 37, IList<double> textureValues = null)
+            int thetaDiv = 36, IList<double> textureValues = null)
         {
             if (this.textureCoordinates != null && textureValues == null)
             {
@@ -3113,7 +3125,7 @@ namespace HelixToolkit.Wpf
                 // "normal" Torus (with a Circle as Cross-Section of the Torus
                 else
                 {
-                    crossSectionPoints = GetCircle(phiDiv, true);
+                    crossSectionPoints = GetCircle(phiDiv, false);
                 }
                 // Transform Crosssection to real Size
                 crossSectionPoints = crossSectionPoints.Select(p => new Point((DoubleOrSingle)p.X * (DoubleOrSingle)tubeDiameter * .5f, (DoubleOrSingle)p.Y * (DoubleOrSingle)tubeDiameter * .5f)).ToList();

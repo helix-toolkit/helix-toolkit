@@ -6,7 +6,7 @@
     <Grid>
         <h:HelixViewport3D Name="_Helix" ZoomExtentsWhenLoaded="True">
             <h:SunLight/>
-            <!--<h:TubeVisual3D Material="{h:Material Green}" Diameter="0.1" IsPathClosed="False" Path="1,1,0.1 1,1,-0.2 1,1,0.00001" ThetaDiv="3">
+            <!--<h:TubeVisual3D Material="{h:Material Green}" Diameter="0.1" IsPathClosed="False" Path="1,1,0.1 1,1,-0.2 1,1,0.00001" ThetaDiv="2">
                     <ModelVisual3D.Transform>
                     <TranslateTransform3D>
                         <TranslateTransform3D.OffsetX>
@@ -15,7 +15,7 @@
                     </TranslateTransform3D>
                 </ModelVisual3D.Transform>
             </h:TubeVisual3D>-->
-            <!--<h:TubeVisual3D Material="{h:Material Red}" Diameter="0.1" IsPathClosed="False" Path="1,1,0.1 1,1,-0.2 1,1,0.1" ThetaDiv="3">
+            <!--<h:TubeVisual3D Material="{h:Material Red}" Diameter="0.1" IsPathClosed="False" Path="1,1,0.1 1,1,-0.2 1,1,0.1" ThetaDiv="2">
             </h:TubeVisual3D>-->
         </h:HelixViewport3D>
     </Grid>
