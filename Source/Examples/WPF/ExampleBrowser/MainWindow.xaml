@@ -5,27 +5,46 @@
         Title="The Helix 3D Toolkit WPF example browser" 
         Height="800" 
         Width="480">
-    <ListBox 
-        ItemsSource="{Binding Examples}" 
-        BorderThickness="0" 
-        ScrollViewer.CanContentScroll="False" 
-        ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
-        MouseDoubleClick="ListBoxMouseDoubleClick" 
-        >
-        <ListBox.ItemTemplate>
-            <DataTemplate DataType="{x:Type ExampleBrowser:Example}">
-                <Grid Margin="6">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="128"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-                    <Image Source="{Binding Thumbnail}" Width="120" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-                    <StackPanel Grid.Column="1" VerticalAlignment="Top">
-                        <TextBlock Text="{Binding Title}" FontWeight="Bold" FontSize="14"/>
-                        <TextBlock Text="{Binding Description}" TextWrapping="Wrap"/>
-                    </StackPanel>
-                </Grid>
-            </DataTemplate>
-        </ListBox.ItemTemplate>
-    </ListBox>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="25"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="80"/>
+            </Grid.ColumnDefinitions>
+
+            <TextBox Grid.Column="0"
+                  x:Name="searchTxt"
+                  FontWeight="Bold"
+                  VerticalContentAlignment="Center"></TextBox>
+            <Button Grid.Column="1" IsDefault="True"
+                 Click="ButtonSearch_Click">Search</Button>
+        </Grid>
+        <ListBox 
+            Grid.Row="1"
+            ItemsSource="{Binding Examples}" 
+            BorderThickness="0" 
+            ScrollViewer.CanContentScroll="False" 
+            ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
+            MouseDoubleClick="ListBoxMouseDoubleClick">
+            <ListBox.ItemTemplate>
+                <DataTemplate DataType="{x:Type ExampleBrowser:Example}">
+                    <Grid Margin="6">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="128"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Image Source="{Binding Thumbnail}" Width="120" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                        <StackPanel Grid.Column="1" VerticalAlignment="Top">
+                            <TextBlock Text="{Binding Title}" FontWeight="Bold" FontSize="14"/>
+                            <TextBlock Text="{Binding Description}" TextWrapping="Wrap"/>
+                        </StackPanel>
+                    </Grid>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+    </Grid>
 </Window>
