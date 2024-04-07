@@ -125,6 +125,11 @@ namespace HelixToolkit.Wpf
         /// </summary>
         protected void OnSectionChanged()
         {
+            if (this.ThetaDiv < 2)
+            {
+                this.OnGeometryChanged();
+                return;
+            }
             var pc = new PointCollection();
             var circle = MeshBuilder.GetCircle(this.ThetaDiv, false);
 
@@ -149,7 +154,9 @@ namespace HelixToolkit.Wpf
         /// </returns>
         protected override MeshGeometry3D Tessellate()
         {
-            if (this.Path == null || this.Path.Count < 2 || this.ThetaDiv < 2)
+            if (this.Path is null || this.Path.Count < 2
+                || this.Section is null || this.Section.Count < 2
+                || this.ThetaDiv < 2)
             {
                 return null;
             }

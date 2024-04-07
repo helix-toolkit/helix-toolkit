@@ -479,10 +479,10 @@ namespace HelixToolkit.Wpf
                 circle = new List<Point>() { Capacity = closed ? thetaDiv + 1 : thetaDiv };
                 cache!.Add(thetaDiv, circle);
                 // Determine the angle steps
-                float angle = (float)Math.PI * 2f / thetaDiv;
+                DoubleOrSingle angle = (DoubleOrSingle)Math.PI * 2f / thetaDiv;
                 for (var i = 0; i < thetaDiv; i++)
                 {
-                    circle.Add(new Point((float)Math.Cos(i * angle), -(float)Math.Sin(i * angle)));
+                    circle.Add(new Point((DoubleOrSingle)Math.Cos(i * angle), -(DoubleOrSingle)Math.Sin(i * angle)));
                 }
                 if (closed && circle.Count > 0)
                 {
@@ -3692,6 +3692,22 @@ namespace HelixToolkit.Wpf
             IList<Point3D> path, IList<double> values, IList<double> diameters,
             IList<Point> section, bool isTubeClosed, bool isSectionClosed, bool frontCap = false, bool backCap = false)
         {
+            if (path is null)
+            {
+                throw new ArgumentNullException(nameof(path));
+            }
+            if (section is null)
+            {
+                throw new ArgumentNullException(nameof(section));
+            }
+
+            var pathLength = path.Count;
+            var sectionLength = section.Count;
+            if (pathLength < 2 || sectionLength < 2)
+            {
+                throw new InvalidOperationException(WrongNumberOfDivisions);
+            }
+
             if (values != null && values.Count == 0)
             {
                 throw new InvalidOperationException(WrongNumberOfTextureCoordinates);
@@ -3703,13 +3719,6 @@ namespace HelixToolkit.Wpf
             }
 
             var index0 = this.positions.Count;
-            var pathLength = path.Count;
-            var sectionLength = section.Count;
-            if (pathLength < 2 || sectionLength < 2)
-            {
-                return;
-            }
-
             var up = (path[1] - path[0]).FindAnyPerpendicular();
 
             var diametersCount = diameters != null ? diameters.Count : 0;
@@ -3835,6 +3844,22 @@ namespace HelixToolkit.Wpf
             IList<Point3D> path, IList<double> angles, IList<double> values, IList<double> diameters,
             IList<Point> section, Vector3D sectionXAxis, bool isTubeClosed, bool isSectionClosed, bool frontCap = false, bool backCap = false)
         {
+            if (path is null)
+            {
+                throw new ArgumentNullException(nameof(path));
+            }
+            if (section is null)
+            {
+                throw new ArgumentNullException(nameof(section));
+            }
+
+            var pathLength = path.Count;
+            var sectionLength = section.Count;
+            if (pathLength < 2 || sectionLength < 2)
+            {
+                throw new InvalidOperationException(WrongNumberOfDivisions);
+            }
+
             if (values != null && values.Count == 0)
             {
                 throw new InvalidOperationException(WrongNumberOfTextureCoordinates);
@@ -3849,15 +3874,12 @@ namespace HelixToolkit.Wpf
             {
                 throw new InvalidOperationException(WrongNumberOfAngles);
             }
-
-            var index0 = this.positions.Count;
-            var pathLength = path.Count;
-            var sectionLength = section.Count;
-            if (pathLength < 2 || sectionLength < 2)
+            if (sectionXAxis.Equals(default))
             {
-                return;
+                throw new InvalidOperationException(nameof(sectionXAxis));
             }
 
+            var index0 = this.positions.Count;
             var forward = path[1] - path[0];
             var right = sectionXAxis;
             var up = SharedFunctions.CrossProduct(ref forward, ref right);
