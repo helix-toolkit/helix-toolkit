@@ -22,10 +22,7 @@ namespace HelixToolkit.Wpf
         /// <returns>The center point of given Rect3D</returns>
         public static Point3D GetCenter(this Rect3D rect)
         {
-            return new Point3D(
-                rect.X + rect.SizeX / 2,
-                rect.Y + rect.SizeY / 2,
-                rect.Z + rect.SizeZ / 2);
+            return rect.Location + ((Vector3D)rect.Size) / 2;
         }
 
         /// <summary>
