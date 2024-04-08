@@ -3523,6 +3523,23 @@ public sealed class MeshBuilder
     public void AddTube(IList<Vector3> path, IList<float>? values, IList<float>? diameters,
         IList<Vector2> section, bool isTubeClosed, bool isSectionClosed, bool frontCap = false, bool backCap = false)
     {
+        if (path is null)
+        {
+            ThrowHelper.ThrowArgumentNullException(nameof(path));
+        }
+
+        if (section is null)
+        {
+            ThrowHelper.ThrowArgumentNullException(nameof(section));
+        }
+
+        var pathLength = path.Count;
+        var sectionLength = section.Count;
+        if (pathLength < 2 || sectionLength < 2)
+        {
+            ThrowHelper.ThrowInvalidOperationException(WrongNumberOfDivisions);
+        }
+
         if (values is not null && values.Count == 0)
         {
             ThrowHelper.ThrowInvalidOperationException(WrongNumberOfTextureCoordinates);
@@ -3534,17 +3551,10 @@ public sealed class MeshBuilder
         }
 
         var index0 = this.Positions.Count;
-        var pathLength = path.Count;
-        var sectionLength = section.Count;
-        if (pathLength < 2 || sectionLength < 2)
-        {
-            return;
-        }
-
         var up = (path[1] - path[0]).FindAnyPerpendicular();
 
-        var diametersCount = diameters != null ? diameters.Count : 0;
-        var valuesCount = values != null ? values.Count : 0;
+        var diametersCount = diameters is not null ? diameters.Count : 0;
+        var valuesCount = values is not null ? values.Count : 0;
 
         //*******************************
         //*** PROPOSED SOLUTION *********
@@ -3555,7 +3565,7 @@ public sealed class MeshBuilder
 
         for (var i = 0; i < pathLength; i++)
         {
-            var r = diameters != null ? diameters[i % diametersCount] / 2 : 1;
+            var r = diameters is not null ? diameters[i % diametersCount] / 2 : 1;
             var i0 = i > 0 ? i - 1 : i;
             var i1 = i + 1 < pathLength ? i + 1 : i;
             var forward = path[i1] - path[i0];
@@ -3596,14 +3606,14 @@ public sealed class MeshBuilder
                 var w = (section[j].X * u * r) + (section[j].Y * v * r);
                 var q = path[i] + w;
                 this.Positions.Add(q);
-                if (this.Normals != null)
+                if (this.Normals is not null)
                 {
                     w = Vector3.Normalize(w);
                     this.Normals.Add(w);
                 }
 
                 this.TextureCoordinates?.Add(
-                        values != null
+                        values is not null
                             ? new Vector2(values[i % valuesCount], (float)j / (sectionLength - 1))
                             : new Vector2());
             }
@@ -3662,50 +3672,59 @@ public sealed class MeshBuilder
     /// </param>
     public void AddTube(
         IList<Vector3> path, IList<float>? angles, IList<float>? values, IList<float>? diameters,
-        IList<Vector2>? section, Vector3 sectionXAxis, bool isTubeClosed, bool isSectionClosed, bool frontCap = false, bool backCap = false)
+        IList<Vector2> section, Vector3 sectionXAxis, bool isTubeClosed, bool isSectionClosed, bool frontCap = false, bool backCap = false)
     {
-        if (values != null && values.Count == 0)
+        if (path is null)
         {
-            ThrowHelper.ThrowInvalidOperationException(WrongNumberOfTextureCoordinates);
-        }
-
-        if (diameters != null && diameters.Count == 0)
-        {
-            ThrowHelper.ThrowInvalidOperationException(WrongNumberOfDiameters);
-        }
-
-        if (angles != null && angles.Count == 0)
-        {
-            ThrowHelper.ThrowInvalidOperationException(WrongNumberOfAngles);
+            ThrowHelper.ThrowArgumentNullException(nameof(path));
         }
 
         if (section is null)
         {
-            return;
+            ThrowHelper.ThrowArgumentNullException(nameof(section));
         }
 
-        var index0 = this.Positions.Count;
         var pathLength = path.Count;
         var sectionLength = section.Count;
         if (pathLength < 2 || sectionLength < 2)
         {
-            return;
+            ThrowHelper.ThrowInvalidOperationException(WrongNumberOfDivisions);
         }
 
+        if (values is not null && values.Count == 0)
+        {
+            ThrowHelper.ThrowInvalidOperationException(WrongNumberOfTextureCoordinates);
+        }
+
+        if (diameters is not null && diameters.Count == 0)
+        {
+            ThrowHelper.ThrowInvalidOperationException(WrongNumberOfDiameters);
+        }
+
+        if (angles is not null && angles.Count == 0)
+        {
+            ThrowHelper.ThrowInvalidOperationException(WrongNumberOfAngles);
+        }
+        if (sectionXAxis.Equals(default))
+        {
+            ThrowHelper.ThrowInvalidOperationException(nameof(sectionXAxis));
+        }
+
+        var index0 = this.Positions.Count;
         var forward = path[1] - path[0];
         var right = sectionXAxis;
         var up = Vector3.Cross(forward, right);
         up = Vector3.Normalize(up);
         right = Vector3.Normalize(right);
 
-        var diametersCount = diameters != null ? diameters.Count : 0;
-        var valuesCount = values != null ? values.Count : 0;
-        var anglesCount = angles != null ? angles.Count : 0;
+        var diametersCount = diameters is not null ? diameters.Count : 0;
+        var valuesCount = values is not null ? values.Count : 0;
+        var anglesCount = angles is not null ? angles.Count : 0;
 
         for (var i = 0; i < pathLength; i++)
         {
-            var radius = diameters != null ? diameters[i % diametersCount] / 2 : 1;
-            var theta = angles != null ? angles[i % anglesCount] : 0.0;
+            var radius = diameters is not null ? diameters[i % diametersCount] / 2 : 1;
+            var theta = angles is not null ? angles[i % anglesCount] : 0.0;
 
             var ct = (float)Math.Cos(theta);
             var st = (float)Math.Sin(theta);
@@ -3730,14 +3749,14 @@ public sealed class MeshBuilder
                 var w = (x * right * radius) + (y * up * radius);
                 var q = path[i] + w;
                 this.Positions.Add(q);
-                if (this.Normals != null)
+                if (this.Normals is not null)
                 {
                     w = Vector3.Normalize(w);
                     this.Normals.Add(w);
                 }
 
                 this.TextureCoordinates?.Add(
-                        values != null
+                        values is not null
                             ? new Vector2(values[i % valuesCount], (float)j / (sectionLength - 1))
                             : new Vector2());
             }
