@@ -55,7 +55,7 @@ namespace HelixToolkit.Wpf.SharpDX
             TranslationXGeometry = bd.ToMesh();
 
             bd = new MeshBuilder();
-            var circle = MeshBuilder.GetCircle(32, true);
+            var circle = MeshBuilder.GetCircle(32, false);
             var path = circle.Select(x => new Vector3(0, x.X, x.Y)).ToArray();
             bd.AddTube(path, 0.06, 8, true);
             RotationXGeometry = bd.ToMesh();

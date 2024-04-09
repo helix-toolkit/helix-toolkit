@@ -11,8 +11,31 @@
             <ht:TubeVisual3D Path="{Binding Ring3}" Diameter="{Binding Value, ElementName=diameterSlider}" ThetaDiv="{Binding Value, ElementName=thetaDivSlider}" IsPathClosed="True" Fill="Blue"/>
         </ht:HelixViewport3D>
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Bottom" Opacity="0.5" >
-            <Slider x:Name="diameterSlider" Value="0.4" Minimum="0.1" Maximum="1" Width="150" Margin="10"/>
-            <Slider x:Name="thetaDivSlider" Value="20" Minimum="3" Maximum="100" Width="150" Margin="10"/>
+            <WrapPanel>
+                <Slider x:Name="diameterSlider"
+                     Value="0.4"
+                     Minimum="-1"
+                     Maximum="1"
+                     Width="150"
+                     Margin="10" />
+                <TextBox 
+                     Text="{Binding ElementName=diameterSlider, Path=Value, StringFormat='{}{0:0.00}'}"
+                     VerticalAlignment="Center"
+                     Width="50"/>
+            </WrapPanel>
+            <WrapPanel>
+                <Slider x:Name="thetaDivSlider"
+                     Value="20"
+                     Minimum="-10"
+                     Maximum="100"
+                     SmallChange="1"
+                     Width="150"
+                     Margin="10" />
+                <TextBox 
+                    Text="{Binding ElementName=thetaDivSlider, Path=Value, StringFormat='{}{0:0.00}'}"
+                    VerticalAlignment="Center"
+                    Width="50"/>
+            </WrapPanel>
         </StackPanel>
     </Grid>
 </Window>

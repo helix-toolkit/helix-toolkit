@@ -28,16 +28,16 @@ namespace Workitem73
             var path1 = new List<Point3D>() { new Point3D(1,1,0.1), new Point3D(1,1,-0.2), new Point3D(1,1,0.0001) };
             var path2 = new List<Point3D>() { new Point3D(2,2,0.1), new Point3D(2,2,-0.2), new Point3D(2,2,0.1) };
 
-            AddTube(path1, Colors.Green);
-            AddTube(path2, Colors.Red);
+            AddTube(path1, Colors.Green, 0.1f, 2);
+            AddTube(path2, Colors.Red, 0.1f, 2);
         }
 
 
-        void AddTube(List<Point3D> path, Color color)
+        void AddTube(List<Point3D> path, Color color, float diameter, int thetaDiv, bool isTubeClosed = false)
         {
             var mb = new MeshBuilder();
 
-            mb.AddTube(path, 0.1, 3, false);
+            mb.AddTube(path, diameter, thetaDiv, isTubeClosed);
             var geom = new GeometryModel3D { Geometry = mb.ToMesh(true), Material = MaterialHelper.CreateMaterial(color) };          // create a model
             var model = new ModelVisual3D();
             model.Content = geom;

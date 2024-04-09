@@ -4,10 +4,89 @@
         xmlns:h="http://helix-toolkit.org/wpf"
         Title="Workitem 10054: TubeVisual3D" Height="600" Width="800">
     <Grid>
-        <h:HelixViewport3D ZoomExtentsWhenLoaded="True">
-            <h:SunLight/>
-            <h:TubeVisual3D Material="{h:Material Green}" Diameter="0.03" SectionXAxis="0,1,0" IsPathClosed="True" Path="-2.5,-2.5,0 2.5,-2.5,0 2.5,2.5,0 -2.5,2.5,0"/>
-            <h:TubeVisual3D Material="{h:Material Orange}" Diameter="0.03" IsPathClosed="True" Path="2.5,-2.5,2 2.5,2.5,2 -2.5,2.5,2 -2.5,-2.5,2"/>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="200"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <StackPanel Grid.Column="0">
+            <WrapPanel>
+                <TextBlock Text="Diameter"/>
+                <Slider x:Name="Diameter"
+                        Minimum="-2"
+                        Maximum="2"
+                        Value="0.1"
+                        SmallChange="0.01"
+                        Width="120"/>
+                <TextBox Text="{Binding ElementName=Diameter, Path=Value, StringFormat='{}{0:0.00}'}"
+                         Width="30"/>
+            </WrapPanel>
+
+            <CheckBox x:Name="IsPathClose"
+                          Content="IsPathClosed"
+                          IsChecked="True"/>
+            <CheckBox x:Name="IsSectionClosed"
+               Content="IsSectionClosed"
+               IsChecked="True"/>
+            <WrapPanel>
+                <TextBlock Text="ThetaDiv"/>
+                <Slider x:Name="ThetaDiv"
+                     Minimum="-10"
+                     Maximum="100"
+                     Value="36"
+                     SmallChange="1"
+                     Width="120"/>
+                <TextBox
+                    Text="{Binding ElementName=ThetaDiv, Path=Value, StringFormat='{}{0:0.00}'}"
+                    Width="30"/>
+            </WrapPanel>
+            <WrapPanel>
+                <TextBlock Text="Path1"/>
+                <TextBox x:Name="Path1"
+                         Text="-2.5,-2.5,0 2.5,-2.5,0 2.5,2.5,0 -2.5,2.5,0"
+                         Width="200"
+                         AcceptsReturn="True"
+                         TextWrapping="Wrap"/>
+            </WrapPanel>
+
+            <WrapPanel>
+                <TextBlock Text="Path2"/>
+                <TextBox x:Name="Path2"
+                         Text="2.5,-2.5,2 2.5,2.5,2 -2.5,2.5,2 -2.5,-2.5,2"
+                         Width="200"
+                         AcceptsReturn="True"
+                         TextWrapping="Wrap"/>
+            </WrapPanel>
+            <WrapPanel>
+                <TextBlock Text="Path3"/>
+                <TextBox x:Name="Path3"
+              Text="-2,0,2 2,0,2 2,0,-2 -2,0,-2"
+              Width="200"
+              AcceptsReturn="True"
+              TextWrapping="Wrap"/>
+            </WrapPanel>
+        </StackPanel>
+        <h:HelixViewport3D Grid.Column="1"
+            ZoomExtentsWhenLoaded="True">
+            <h:SunLight />
+            <h:TubeVisual3D Material="{h:Material Green}"
+                            Diameter="{Binding ElementName=Diameter, Path=Value}"
+                            SectionXAxis="0,1,0"
+                            IsPathClosed="{Binding ElementName=IsPathClose, Path=IsChecked}"
+                            Path="{Binding ElementName=Path1, Path=Text}"
+                            ThetaDiv="{Binding ElementName=ThetaDiv, Path=Value}"
+                            IsSectionClosed="{Binding ElementName=IsSectionClosed, Path=IsChecked}"/>
+            <h:TubeVisual3D Material="{h:Material Orange}"
+                            Diameter="{Binding ElementName=Diameter, Path=Value}"
+                            IsPathClosed="{Binding ElementName=IsPathClose, Path=IsChecked}"
+                            Path="{Binding ElementName=Path2, Path=Text}" 
+                            ThetaDiv="{Binding ElementName=ThetaDiv, Path=Value}"
+                            IsSectionClosed="{Binding ElementName=IsSectionClosed, Path=IsChecked}"/>
+            <h:TubeVisual3D Material="{h:Material Orange}"
+                            Diameter="{Binding ElementName=Diameter, Path=Value}"
+                            IsPathClosed="{Binding ElementName=IsPathClose, Path=IsChecked}"
+                            Path="{Binding ElementName=Path3, Path=Text}" 
+                            ThetaDiv="{Binding ElementName=ThetaDiv, Path=Value}"
+                            IsSectionClosed="{Binding ElementName=IsSectionClosed, Path=IsChecked}"/>
         </h:HelixViewport3D>
     </Grid>
 </Window>

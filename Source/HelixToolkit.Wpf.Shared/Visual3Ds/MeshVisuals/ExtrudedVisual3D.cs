@@ -65,7 +65,7 @@ namespace HelixToolkit.Wpf
             "Section",
             typeof(PointCollection),
             typeof(ExtrudedVisual3D),
-            new UIPropertyMetadata(new PointCollection(), GeometryChanged));
+            new UIPropertyMetadata(null, GeometryChanged));
 
         /// <summary>
         /// Identifies the <see cref="TextureCoordinates"/> dependency property.
@@ -224,7 +224,8 @@ namespace HelixToolkit.Wpf
         /// </returns>
         protected override MeshGeometry3D Tessellate()
         {
-            if (this.Path == null || this.Path.Count < 2)
+            if (this.Path is null || this.Path.Count < 2 
+                || this.Section is null || this.Section.Count < 2)
             {
                 return null;
             }

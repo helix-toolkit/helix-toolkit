@@ -146,6 +146,10 @@ namespace HelixToolkit.Wpf
         /// </returns>
         protected override MeshGeometry3D Tessellate()
         {
+            if (this.ThetaDiv < 2)
+            {
+                return null;
+            }
             var builder = new MeshBuilder(false, true);
             builder.AddPipe(this.Point1, this.Point2, this.InnerDiameter, this.Diameter, this.ThetaDiv);
             return builder.ToMesh();
