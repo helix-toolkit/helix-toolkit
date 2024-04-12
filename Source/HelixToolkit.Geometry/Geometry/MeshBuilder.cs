@@ -3523,6 +3523,42 @@ public sealed class MeshBuilder
     public void AddTube(IList<Vector3> path, IList<float>? values, IList<float>? diameters,
         IList<Vector2> section, bool isTubeClosed, bool isSectionClosed, bool frontCap = false, bool backCap = false)
     {
+        AddTube(path, null, values, diameters, section, isTubeClosed, isSectionClosed, frontCap, backCap);
+    }
+
+    /// <summary>
+    /// Adds a tube with a custom section.
+    /// </summary>
+    /// <param name="path">
+    /// A list of points defining the centers of the tube.
+    /// </param>
+    /// <param name="pathUps">
+    /// A list of vector defining up dir for each segments in paths.
+    /// </param>
+    /// <param name="values">
+    /// The texture coordinate X values (optional).
+    /// </param>
+    /// <param name="diameters">
+    /// The diameters (optional).
+    /// </param>
+    /// <param name="section">
+    /// The section to extrude along the tube path.
+    /// </param>
+    /// <param name="isTubeClosed">
+    /// If the tube is closed set to <c>true</c> .
+    /// </param>
+    /// <param name="isSectionClosed">
+    /// if set to <c>true</c> [is section closed].
+    /// </param>
+    /// <param name="frontCap">
+    /// Create a front Cap or not.
+    /// </param>
+    /// <param name="backCap">
+    /// Create a back Cap or not.
+    /// </param>
+    public void AddTube(IList<Vector3> path, IList<Vector3>? pathUps, IList<float>? values, IList<float>? diameters,
+        IList<Vector2> section, bool isTubeClosed, bool isSectionClosed, bool frontCap = false, bool backCap = false)
+    {
         if (path is null)
         {
             ThrowHelper.ThrowArgumentNullException(nameof(path));
@@ -3531,6 +3567,11 @@ public sealed class MeshBuilder
         if (section is null)
         {
             ThrowHelper.ThrowArgumentNullException(nameof(section));
+        }
+
+        if (pathUps is not null && path.Count != pathUps.Count)
+        {
+            ThrowHelper.ThrowInvalidOperationException("pathUps count must equal to path count.");
         }
 
         var pathLength = path.Count;
@@ -3551,7 +3592,7 @@ public sealed class MeshBuilder
         }
 
         var index0 = this.Positions.Count;
-        var up = (path[1] - path[0]).FindAnyPerpendicular();
+        var upRnd = (path[1] - path[0]).FindAnyPerpendicular();
 
         var diametersCount = diameters is not null ? diameters.Count : 0;
         var valuesCount = values is not null ? values.Count : 0;
@@ -3569,6 +3610,7 @@ public sealed class MeshBuilder
             var i0 = i > 0 ? i - 1 : i;
             var i1 = i + 1 < pathLength ? i + 1 : i;
             var forward = path[i1] - path[i0];
+            var up = pathUps is not null ? Vector3.Normalize(pathUps[i]) : upRnd;
             var right = Vector3.Cross(up, forward);
 
             up = Vector3.Cross(forward, right);
