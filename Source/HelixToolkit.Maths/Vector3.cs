@@ -449,6 +449,7 @@ namespace HelixToolkit.Maths
         /// </remarks>
         /// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> or <paramref name="destination"/> is <c>null</c>.</exception>
         /// <exception cref="ArgumentOutOfRangeException">Thrown when <paramref name="destination"/> is shorter in length than <paramref name="source"/>.</exception>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Orthogonalize(Vector3[] destination, params Vector3[] source)
         {
             //Uses the modified Gram-Schmidt process.
@@ -502,6 +503,7 @@ namespace HelixToolkit.Maths
         /// </remarks>
         /// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> or <paramref name="destination"/> is <c>null</c>.</exception>
         /// <exception cref="ArgumentOutOfRangeException">Thrown when <paramref name="destination"/> is shorter in length than <paramref name="source"/>.</exception>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Orthonormalize(Vector3[] destination, params Vector3[] source)
         {
             //Uses the modified Gram-Schmidt process.
@@ -550,6 +552,7 @@ namespace HelixToolkit.Maths
         /// This array may be the same array as <paramref name="source"/>.</param>
         /// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> or <paramref name="destination"/> is <c>null</c>.</exception>
         /// <exception cref="ArgumentOutOfRangeException">Thrown when <paramref name="destination"/> is shorter in length than <paramref name="source"/>.</exception>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Transform(Vector3[] source, ref Quaternion rotation, Vector3[] destination)
         {
             if (source == null)
@@ -660,6 +663,7 @@ namespace HelixToolkit.Maths
         /// <param name="destination">The array for which the transformed vectors are stored.</param>
         /// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> or <paramref name="destination"/> is <c>null</c>.</exception>
         /// <exception cref="ArgumentOutOfRangeException">Thrown when <paramref name="destination"/> is shorter in length than <paramref name="source"/>.</exception>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Transform(Vector3[] source, ref Matrix transform, Vector4[] destination)
         {
             if (source == null)
@@ -768,6 +772,7 @@ namespace HelixToolkit.Maths
         /// therefore makes the vector homogeneous. The homogeneous vector is often preferred when working
         /// with coordinates as the w component can safely be ignored.
         /// </remarks>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void TransformCoordinate(Vector3[] source, ref Matrix transform, Vector3[] destination)
         {
             if (source == null)
@@ -804,6 +809,7 @@ namespace HelixToolkit.Maths
         /// apply. This is often preferred for normal vectors as normals purely represent direction
         /// rather than location because normal vectors should not be translated.
         /// </remarks>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void TransformNormal(ref Vector3 normal, ref Matrix transform, out Vector3 result)
         {
             result = Vector3.TransformNormal(normal, transform);
@@ -820,6 +826,7 @@ namespace HelixToolkit.Maths
         /// apply. This is often preferred for normal vectors as normals purely represent direction
         /// rather than location because normal vectors should not be translated.
         /// </remarks>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector3 TransformNormal(this Vector3 normal, ref Matrix transform)
         {
             return Vector3.TransformNormal(normal, transform);
@@ -840,6 +847,7 @@ namespace HelixToolkit.Maths
         /// apply. This is often preferred for normal vectors as normals purely represent direction
         /// rather than location because normal vectors should not be translated.
         /// </remarks>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void TransformNormal(Vector3[] source, ref Matrix transform, Vector3[] destination)
         {
             if (source == null)
@@ -863,6 +871,7 @@ namespace HelixToolkit.Maths
             }
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Clamp(ref Vector3 value, ref Vector3 min, ref Vector3 max, out Vector3 result)
         {
             float x = Math.Max(min.X, Math.Min(value.X, max.X));
@@ -871,6 +880,7 @@ namespace HelixToolkit.Maths
             result = new Vector3(x, y, z);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector3 Clamp(this Vector3 value, Vector3 min, Vector3 max)
         {
             float x = Math.Max(min.X, Math.Min(value.X, max.X));
@@ -892,11 +902,13 @@ namespace HelixToolkit.Maths
             return float.IsNaN(vector.X) || float.IsNaN(vector.Y) || float.IsNaN(vector.Z);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool AnyInfinity(this Vector3 vector)
         {
             return float.IsInfinity(vector.X) || float.IsInfinity(vector.Y) || float.IsInfinity(vector.Z);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector3 FindAnyPerpendicular(this Vector3 value)
         {
             Vector3 n = Vector3.Normalize(value);
@@ -914,7 +926,10 @@ namespace HelixToolkit.Maths
         /// <param name="vector1">The first vector.</param>
         /// <param name="vector2">The second vector.</param>
         /// <returns>Angle (in radians) between the vectors.</returns>
-        /// <remarks>Note that the returned angle is never bigger than the constant <see cref="Math.PI"/>.</remarks>
+        /// <remarks>
+        /// Note that the returned angle is never bigger than the constant <see cref="Math.PI"/>.
+        /// </remarks>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static float AngleBetween(this Vector3 vector1, Vector3 vector2)
         {
             // Ref: https://github.com/opentk/opentk/blob/master/src/OpenTK.Mathematics/Vector/Vector3.cs
@@ -930,8 +945,11 @@ namespace HelixToolkit.Maths
         /// <param name="vector2">The second vector.</param>
         /// <param name="axis">The vector around which the other vectors are rotated.</param>
         /// <returns>Calculates the signed angle (in radians) between two vectors.</returns>
-        /// <remarks>The sign of the angle is positive in a counter-clockwise direction and negative in a clockwise direction
-        /// when viewed from the side specified by the axis</remarks>
+        /// <remarks>
+        /// The sign of the angle is positive in a counter-clockwise direction and negative in a clockwise direction
+        /// when viewed from the side specified by the axis.
+        /// </remarks>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static float SignedAngleBetween(this Vector3 vector1, Vector3 vector2, Vector3 axis)
         {
             // Ref: https://github.com/godotengine/godot/blob/master/core/math/vector3.h
@@ -949,6 +967,7 @@ namespace HelixToolkit.Maths
         /// <param name="axis">The axis of rotation.</param>
         /// <param name="angle">The angle to rotate by in radians.</param>
         /// <returns>The rotated vector.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector3 RotateAround(this in Vector3 source, in Vector3 target, in Vector3 axis, float angle)
         {
             // Ref: https://github.com/stride3d/stride/blob/master/sources/core/Stride.Core.Mathematics/Vector3.csv
