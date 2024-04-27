@@ -75,6 +75,18 @@ namespace HelixToolkit.Maths
         }
 
         /// <summary>
+        /// Returns the absolute angle in radians between two <see cref="Quaternion"/>/>
+        /// </summary>
+        /// <param name="source">The first <see cref="Quaternion"/></param>
+        /// <param name="other">The second <see cref="Quaternion"/></param>
+        /// <returns></returns>
+        public static float AngleBetween(this in Quaternion source, in Quaternion other)
+        {
+            // Ref: https://github.com/stride3d/stride/blob/master/sources/core/Stride.Core.Mathematics/Quaternion.cs
+            return (float)Math.Acos(Math.Min(Math.Abs(Quaternion.Dot(source, other)), 1f)) * 2f;
+        }
+
+        /// <summary>
         /// Gets the axis components of the quaternion.
         /// </summary>
         /// <value>The axis components of the quaternion.</value>
@@ -257,6 +269,34 @@ namespace HelixToolkit.Maths
         }
 
         /// <summary>
+        /// Rotates a Vector3 by the specified quaternion rotation.
+        /// </summary>
+        /// <param name="value">The quaternion.</param>
+        /// <param name="vector">The vector to rotate.</param>
+        public static void Rotate(Quaternion value,ref Vector3 vector)
+        {
+            // Ref: https://github.com/stride3d/stride/blob/master/sources/core/Stride.Core.Mathematics/Quaternion.cs
+            var pureQuaternion = new Quaternion(vector, 0);
+            pureQuaternion = Quaternion.Conjugate(value) * pureQuaternion * value;
+
+            vector.X = pureQuaternion.X;
+            vector.Y = pureQuaternion.Y;
+            vector.Z = pureQuaternion.Z;
+        }
+
+        /// <summary>
+        /// Rotates a Vector3 by the specified quaternion rotation.
+        /// </summary>
+        /// <param name="value">The quaternion.</param>
+        /// <param name="vector">The vector to rotate.</param>
+        /// <returns>A newly Vector3 rotated by the specified quaternion rotation.</returns>
+        public static Vector3 Rotate(this Quaternion value, Vector3 vector)
+        {
+            Rotate(value, ref vector);
+            return vector;
+        }
+
+        /// <summary>
         /// Creates a quaternion given a rotation and an axis.
         /// </summary>
         /// <param name="axis">The axis of rotation.</param>
@@ -290,6 +330,36 @@ namespace HelixToolkit.Maths
             //Quaternion result;
             //RotationAxis(ref axis, angle, out result);
             //return result;
+        }
+
+        /// <summary>
+        /// Computes a quaternion corresponding to the rotation transforming the vector <paramref name="source"/> to the vector <paramref name="target"/>.
+        /// </summary>
+        /// <param name="source">The source vector of the transformation.</param>
+        /// <param name="target">The target vector of the transformation.</param>
+        /// <returns>The resulting quaternion corresponding to the transformation of the source vector to the target vector.</returns>
+        public static Quaternion BetweenDirections(ref Vector3 source, ref Vector3 target)
+        {
+            // Ref: https://github.com/stride3d/stride/blob/master/sources/core/Stride.Core.Mathematics/Quaternion.cs
+            Quaternion result;
+            float norms = (float)Math.Sqrt(source.LengthSquared() * target.LengthSquared());
+            float real = norms + Vector3.Dot(source, target);
+            if (real < MathUtil.ZeroTolerance * norms)
+            {
+                // If source and target are exactly opposite, rotate 180 degrees around an arbitrary orthogonal axis.
+                // Axis normalisation can happen later, when we normalise the quaternion.
+                result = Math.Abs(source.X) > Math.Abs(source.Z)
+                    ? new Quaternion(-source.Y, source.X, 0.0f, 0.0f)
+                    : new Quaternion(0.0f, -source.Z, source.Y, 0.0f);
+            }
+            else
+            {
+                // Otherwise, build quaternion the standard way.
+                var axis = Vector3.Cross(source, target);
+                result = new Quaternion(axis, real);
+            }
+            return Quaternion.Normalize(result);
+
         }
 
         /// <summary>

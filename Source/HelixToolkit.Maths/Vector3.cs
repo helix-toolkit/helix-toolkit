@@ -909,27 +909,53 @@ namespace HelixToolkit.Maths
         }
 
         /// <summary>
-        /// Angles the between two vectors. Return Radians;
+        /// Calculates the angle (in radians) between two vectors.
         /// </summary>
-        /// <param name="vector1">The vector1.</param>
-        /// <param name="vector2">The vector2.</param>
-        /// <returns></returns>
+        /// <param name="vector1">The first vector.</param>
+        /// <param name="vector2">The second vector.</param>
+        /// <returns>Angle (in radians) between the vectors.</returns>
+        /// <remarks>Note that the returned angle is never bigger than the constant <see cref="Math.PI"/>.</remarks>
         public static float AngleBetween(this Vector3 vector1, Vector3 vector2)
         {
-            vector1 = Vector3.Normalize(vector1);
-            vector2 = Vector3.Normalize(vector2);
-            var ratio = Vector3.Dot(vector1, vector2);
-            float theta;
+            // Ref: https://github.com/opentk/opentk/blob/master/src/OpenTK.Mathematics/Vector/Vector3.cs
+            var dot = Vector3.Dot(vector1, vector2);
+            var cosAngle = MathUtil.Clamp(dot / (vector1.Length() * vector2.Length()), -1f, 1f);
+            return (float)Math.Acos(cosAngle);
+        }
 
-            if (ratio < 0)
-            {
-                theta = (float)(Math.PI - 2.0 * Math.Asin((-vector1 - vector2).Length() / 2.0));
-            }
-            else
-            {
-                theta = (float)(2.0 * Math.Asin((vector1 - vector2).Length() / 2.0));
-            }
-            return theta;
+        /// <summary>
+        /// Calculates the signed angle (in radians) between two vectors.
+        /// </summary>
+        /// <param name="vector1">The first vector.</param>
+        /// <param name="vector2">The second vector.</param>
+        /// <param name="axis">The vector around which the other vectors are rotated.</param>
+        /// <returns>Calculates the signed angle (in radians) between two vectors.</returns>
+        /// <remarks>The sign of the angle is positive in a counter-clockwise direction and negative in a clockwise direction
+        /// when viewed from the side specified by the axis</remarks>
+        public static float SignedAngleBetween(this Vector3 vector1, Vector3 vector2, Vector3 axis)
+        {
+            // Ref: https://github.com/godotengine/godot/blob/master/core/math/vector3.h
+            float unsignedAngle = Vector3Helper.AngleBetween(vector1, vector2);
+            Vector3 cross = Vector3.Cross(vector1, vector2);
+            float sign = Math.Sign(Vector3.Dot(axis, cross));
+            return sign * unsignedAngle;
+        }
+
+        /// <summary>
+        /// Rotates the source around the target by the rotation angle around the supplied axis. 
+        /// </summary>
+        /// <param name="source">The position to rotate.</param>
+        /// <param name="target">The point to rotate around.</param>
+        /// <param name="axis">The axis of rotation.</param>
+        /// <param name="angle">The angle to rotate by in radians.</param>
+        /// <returns>The rotated vector.</returns>
+        public static Vector3 RotateAround(this in Vector3 source, in Vector3 target, in Vector3 axis, float angle)
+        {
+            // Ref: https://github.com/stride3d/stride/blob/master/sources/core/Stride.Core.Mathematics/Vector3.csv
+            Vector3 local = source - target;
+            Quaternion q = Quaternion.CreateFromAxisAngle(axis, angle);
+            QuaternionHelper.Rotate(q, ref local);
+            return target + local;
         }
 
         /// <summary>
