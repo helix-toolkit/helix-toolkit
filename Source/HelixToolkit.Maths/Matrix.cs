@@ -2263,12 +2263,12 @@ namespace HelixToolkit.Maths
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Matrix4x4 Inverted(this Matrix4x4 matrix)
         {
-            if (Matrix4x4.Invert(matrix, out var result))
+            if (Matrix4x4.Invert(matrix, out Matrix4x4 result))
             {
                 return result;
             }
             logger.LogError("Matrix inversion has failed");
-            return Matrix4x4.Identity;
+            return new Matrix4x4();
         }
     }
 }
