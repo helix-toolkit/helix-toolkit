@@ -604,6 +604,11 @@ public class TextVisual3D : ModelVisual3D
         // http://www.ericsink.com/wpf3d/4_Text.html
     }
 
+    /// <summary>
+    /// Update directions when applying <see cref="Angle"/> value.
+    /// </summary>
+    /// <param name="textDirection"></param>
+    /// <param name="updirection"></param>
     private void UpdateDirectionsByRotationTransform(ref Vector3D textDirection, ref Vector3D updirection)
     {
         Vector3D n = Vector3D.CrossProduct(this.UpDirection, this.TextDirection);
