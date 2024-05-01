@@ -439,7 +439,7 @@ public class TextVisual3D : ModelVisual3D
         }
     }
 
-    private RotateTransform? rotateTransform = null;
+    private RotateTransform3D? rotateTransform = null;
 
     /// <summary>
     /// The visual changed.
@@ -493,18 +493,9 @@ public class TextVisual3D : ModelVisual3D
                             }
                           : textBlock;
 
-        // Only prevent assign when angle == 0, it is equal origin value 
-        // https://stackoverflow.com/questions/10329298/performance-impact-of-applying-either-layouttransform-vs-rendertransform
-        if (Angle != 0 || (rotateTransform != null && rotateTransform.Angle != Angle))
-        {
-            rotateTransform ??= new();
-            rotateTransform.Angle = Angle;
-            element.LayoutTransform = rotateTransform;
-        }
-
         element.Measure(new Size(1000, 1000));
         element.Arrange(new Rect(element.DesiredSize));
-        element.RenderSize = element.DesiredSize;
+        //element.RenderSize = element.DesiredSize;
 
         Material material;
         if (this.FontSize > 0)
@@ -526,6 +517,7 @@ public class TextVisual3D : ModelVisual3D
         var textDirection = this.TextDirection;
         var updirection = this.UpDirection;
         var height = this.Height;
+        UpdateDirectionsByRotationTransform(ref textDirection, ref updirection);
 
         // Set horizontal alignment factor
         var xa = -0.5;
@@ -609,7 +601,42 @@ public class TextVisual3D : ModelVisual3D
         }
 
         this.Content = new GeometryModel3D(mg, material);
+        // http://www.ericsink.com/wpf3d/4_Text.html
     }
 
-    // http://www.ericsink.com/wpf3d/4_Text.html
+    private void UpdateDirectionsByRotationTransform(ref Vector3D textDirection, ref Vector3D updirection)
+    {
+        Vector3D n = Vector3D.CrossProduct(this.UpDirection, this.TextDirection);
+        n.Normalize();
+        bool needUpdate = false;
+        if (rotateTransform is null && this.Angle != 0)
+        {
+            rotateTransform = new RotateTransform3D(new AxisAngleRotation3D(n, this.Angle), this.Position);
+            needUpdate = true;
+        }
+        else if (rotateTransform is not null)
+        {
+            if (rotateTransform.CenterX != this.Position.X
+                || rotateTransform.CenterY != this.Position.Y
+                || rotateTransform.CenterZ != this.Position.Z)
+            {
+                rotateTransform.CenterX = this.Position.X;
+                rotateTransform.CenterY = this.Position.Y;
+                rotateTransform.CenterZ = this.Position.Z;
+                needUpdate = true;
+            }
+            AxisAngleRotation3D axisAngle = (AxisAngleRotation3D)rotateTransform.Rotation;
+            if (axisAngle.Axis != n || axisAngle.Angle != this.Angle)
+            {
+                axisAngle.Axis = n;
+                axisAngle.Angle = this.Angle;
+                needUpdate = true;
+            }
+        }
+        if (rotateTransform is not null && needUpdate)
+        {
+            textDirection = rotateTransform.Transform(textDirection);
+            updirection = rotateTransform.Transform(updirection);
+        }
+    }
 }
