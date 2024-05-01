@@ -29,6 +29,8 @@ The MIT License (MIT)
 Copyright (c) 2007-2011 SlimDX Group
 The MIT License (MIT)
 */
+using Microsoft.Extensions.Logging;
+
 namespace HelixToolkit.Maths
 {
     /// <summary>
@@ -36,6 +38,7 @@ namespace HelixToolkit.Maths
     /// </summary>
     public static class MatrixHelper
     {
+        private static readonly ILogger logger = Logger.LogManager.Create(nameof(MatrixHelper));
         /// <summary>
         /// The size of the <see cref="Matrix"/> type, in bytes.
         /// </summary>
@@ -2249,6 +2252,23 @@ namespace HelixToolkit.Maths
         public static Matrix PsudoInvert(this Matrix viewMatrix)
         {
             return PsudoInvert(ref viewMatrix);
+        }
+
+        /// <summary>
+        /// Return inverted matrix if the operation succeeded.
+        /// Otherwise, return <see cref="Matrix4x4.Identity"/>
+        /// </summary>
+        /// <param name="matrix"></param>
+        /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Matrix4x4 Inverted(this Matrix4x4 matrix)
+        {
+            if (Matrix4x4.Invert(matrix, out Matrix4x4 result))
+            {
+                return result;
+            }
+            logger.LogError("Matrix inversion has failed");
+            return new Matrix4x4();
         }
     }
 }

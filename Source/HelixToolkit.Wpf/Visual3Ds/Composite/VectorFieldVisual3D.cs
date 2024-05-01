@@ -34,7 +34,7 @@ public class VectorFieldVisual3D : ModelVisual3D
         this.Positions = new Point3DCollection();
         this.Directions = new Vector3DCollection();
         this.Fill = Brushes.Blue;
-        this.ThetaDiv = 37;
+        this.ThetaDiv = 36;
         this.Diameter = 1;
         this.HeadLength = 2;
 

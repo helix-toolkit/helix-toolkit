@@ -3569,16 +3569,16 @@ public sealed class MeshBuilder
             ThrowHelper.ThrowArgumentNullException(nameof(section));
         }
 
-        if (pathUps is not null && path.Count != pathUps.Count)
-        {
-            ThrowHelper.ThrowInvalidOperationException("pathUps count must equal to path count.");
-        }
-
         var pathLength = path.Count;
         var sectionLength = section.Count;
         if (pathLength < 2 || sectionLength < 2)
         {
             ThrowHelper.ThrowInvalidOperationException(WrongNumberOfDivisions);
+        }
+
+        if (pathUps is not null && pathUps.Count != pathLength)
+        {
+            ThrowHelper.ThrowInvalidOperationException($"{nameof(pathUps)} count must equal to {nameof(path)} count.");
         }
 
         if (values is not null && values.Count == 0)
