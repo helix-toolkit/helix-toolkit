@@ -434,7 +434,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// The rotation angle of text clockwise, in degrees.
+        /// The rotation angle of the text in counter-clockwise, in degrees.
         /// </summary>
         public double Angle
         {
@@ -448,6 +448,9 @@ namespace HelixToolkit.Wpf
             }
         }
 
+        /// <summary>
+        /// WPF 3D is a right-handed system, which means that a positive angle value for a rotation results in a counter-clockwise rotation about the axis.
+        /// </summary>
         private RotateTransform3D rotateTransform = null;
 
         /// <summary>
@@ -619,15 +622,14 @@ namespace HelixToolkit.Wpf
         /// <param name="updirection"></param>
         private void UpdateDirectionsByRotationTransform(ref Vector3D textDirection, ref Vector3D updirection)
         {
-            Vector3D n = Vector3D.CrossProduct(this.UpDirection, this.TextDirection);
+            Vector3D n = Vector3D.CrossProduct(this.TextDirection, this.UpDirection);
             n.Normalize();
-            bool needUpdate = false;
-            if (rotateTransform is null && this.Angle != 0)
+            if (rotateTransform is null)
             {
-                rotateTransform = new RotateTransform3D(new AxisAngleRotation3D(n, this.Angle), this.Position);
-                needUpdate = true;
+                if (this.Angle != 0)
+                    rotateTransform = new RotateTransform3D(new AxisAngleRotation3D(n, this.Angle), this.Position);
             }
-            else if (rotateTransform != null)
+            else
             {
                 if (rotateTransform.CenterX != this.Position.X
                     || rotateTransform.CenterY != this.Position.Y
@@ -636,17 +638,15 @@ namespace HelixToolkit.Wpf
                     rotateTransform.CenterX = this.Position.X;
                     rotateTransform.CenterY = this.Position.Y;
                     rotateTransform.CenterZ = this.Position.Z;
-                    needUpdate = true;
                 }
                 AxisAngleRotation3D axisAngle = (AxisAngleRotation3D)rotateTransform.Rotation;
                 if (axisAngle.Axis != n || axisAngle.Angle != this.Angle)
                 {
                     axisAngle.Axis = n;
                     axisAngle.Angle = this.Angle;
-                    needUpdate = true;
                 }
             }
-            if (rotateTransform != null && needUpdate)
+            if (rotateTransform != null)
             {
                 textDirection = rotateTransform.Transform(textDirection);
                 updirection = rotateTransform.Transform(updirection);

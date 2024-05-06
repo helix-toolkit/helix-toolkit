@@ -311,7 +311,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// The rotation angle of text clockwise, in degrees.
+        /// The rotation angle of the text in counter-clockwise, in degrees.
         /// </summary>
         public double Angle
         {
@@ -321,10 +321,6 @@ namespace HelixToolkit.Wpf
             }
             set
             {
-                if (value != 0 && rotateTransform is null)
-                {
-                    rotateTransform = new RotateTransform();
-                }
                 this.SetValue(AngleProperty, value);
             }
         }
@@ -379,16 +375,26 @@ namespace HelixToolkit.Wpf
                                 }
                               : textBlock;
 
-            // Only prevent assign when angle == 0, it is equal origin value 
-            // https://stackoverflow.com/questions/10329298/performance-impact-of-applying-either-layouttransform-vs-rendertransform
-            if (Angle != 0 || (rotateTransform != null && rotateTransform.Angle != Angle))
+            /*
+             * In WPF 2D, rotates an object clockwise about a specified point in a 2-D x-y coordinate system.
+             * In WPF 3D is a right-handed system, which means that a positive angle value for a rotation results in a counter-clockwise rotation about the axis.
+             * So, to make consistent behavior with the default 3D coordinate system, a positive angle value for a rotation will rotate in a counter-clockwise
+             * 
+             * Only prevent assign when angle == 0, it is equal origin value 
+             * https://stackoverflow.com/questions/10329298/performance-impact-of-applying-either-layouttransform-vs-rendertransform
+             */
+            double angle = -this.Angle;
+            if (angle != 0 || (rotateTransform != null && rotateTransform.Angle != angle))
             {
-                rotateTransform.Angle = Angle;
+                rotateTransform ??= new RotateTransform();
+                rotateTransform.Angle = angle;
                 element.LayoutTransform = rotateTransform;
             }
+
             element.Measure(new Size(1000, 1000));
             element.Arrange(new Rect(element.DesiredSize));
             element.RenderSize = element.DesiredSize;
+
             var rtb = new RenderTargetBitmap(
                 (int)element.ActualWidth + 1, (int)element.ActualHeight + 1, 96, 96, PixelFormats.Pbgra32);
             rtb.Render(element);
