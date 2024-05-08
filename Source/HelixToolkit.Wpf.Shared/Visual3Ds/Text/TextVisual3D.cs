@@ -164,7 +164,7 @@ namespace HelixToolkit.Wpf
         /// </summary>        
         public static readonly DependencyProperty AngleProperty =
             DependencyProperty.Register(
-                "AngleProperty", 
+                "AngleProperty",
                 typeof(double),
                 typeof(TextVisual3D),
                 new UIPropertyMetadata(0.0, VisualChanged));
@@ -434,7 +434,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// The rotation angle of text clockwise, in degrees.
+        /// The rotation angle of the text in counter-clockwise, in degrees.
         /// </summary>
         public double Angle
         {
@@ -444,15 +444,14 @@ namespace HelixToolkit.Wpf
             }
             set
             {
-                if (value != 0 && rotateTransform is null)
-                {
-                    rotateTransform = new RotateTransform();
-                }
                 this.SetValue(AngleProperty, value);
             }
         }
 
-        private RotateTransform rotateTransform = null;
+        /// <summary>
+        /// WPF 3D is a right-handed system, which means that a positive angle value for a rotation results in a counter-clockwise rotation about the axis.
+        /// </summary>
+        private RotateTransform3D rotateTransform = null;
 
         /// <summary>
         /// The visual changed.
@@ -481,12 +480,12 @@ namespace HelixToolkit.Wpf
 
             // First we need a textblock containing the text of our label
             var textBlock = new TextBlock(new Run(this.Text))
-                                {
-                                    Foreground = this.Foreground,
-                                    Background = this.Background,
-                                    FontWeight = this.FontWeight,
-                                    Padding = this.Padding
-                                };
+            {
+                Foreground = this.Foreground,
+                Background = this.Background,
+                FontWeight = this.FontWeight,
+                Padding = this.Padding
+            };
             if (this.FontFamily != null)
             {
                 textBlock.FontFamily = this.FontFamily;
@@ -499,23 +498,16 @@ namespace HelixToolkit.Wpf
             var element = this.BorderBrush != null
                               ? (FrameworkElement)
                                 new Border
-                                    {
-                                        BorderBrush = this.BorderBrush,
-                                        BorderThickness = this.BorderThickness,
-                                        Child = textBlock
-                                    }
+                                {
+                                    BorderBrush = this.BorderBrush,
+                                    BorderThickness = this.BorderThickness,
+                                    Child = textBlock
+                                }
                               : textBlock;
 
-            // Only prevent assign when angle == 0, it is equal origin value 
-            // https://stackoverflow.com/questions/10329298/performance-impact-of-applying-either-layouttransform-vs-rendertransform
-            if (Angle != 0 || (rotateTransform != null && rotateTransform.Angle != Angle))
-            {
-                rotateTransform.Angle = Angle;
-                element.LayoutTransform = rotateTransform;
-            }
             element.Measure(new Size(1000, 1000));
             element.Arrange(new Rect(element.DesiredSize));
-            element.RenderSize = element.DesiredSize;
+            //element.RenderSize = element.DesiredSize;
 
             Material material;
             if (this.FontSize > 0)
@@ -537,7 +529,7 @@ namespace HelixToolkit.Wpf
             var textDirection = this.TextDirection;
             var updirection = this.UpDirection;
             var height = this.Height;
-
+            UpdateDirectionsByRotationTransform(ref textDirection, ref updirection);
             // Set horizontal alignment factor
             var xa = -0.5;
             if (this.HorizontalAlignment == HorizontalAlignment.Left)
@@ -620,8 +612,45 @@ namespace HelixToolkit.Wpf
             }
 
             this.Content = new GeometryModel3D(mg, material);
+            // http://www.ericsink.com/wpf3d/4_Text.html
         }
 
-        // http://www.ericsink.com/wpf3d/4_Text.html
+        /// <summary>
+        /// Update directions when applying <see cref="Angle"/> value.
+        /// </summary>
+        /// <param name="textDirection"></param>
+        /// <param name="updirection"></param>
+        private void UpdateDirectionsByRotationTransform(ref Vector3D textDirection, ref Vector3D updirection)
+        {
+            Vector3D n = Vector3D.CrossProduct(this.TextDirection, this.UpDirection);
+            n.Normalize();
+            if (rotateTransform is null)
+            {
+                if (this.Angle != 0)
+                    rotateTransform = new RotateTransform3D(new AxisAngleRotation3D(n, this.Angle), this.Position);
+            }
+            else
+            {
+                if (rotateTransform.CenterX != this.Position.X
+                    || rotateTransform.CenterY != this.Position.Y
+                    || rotateTransform.CenterZ != this.Position.Z)
+                {
+                    rotateTransform.CenterX = this.Position.X;
+                    rotateTransform.CenterY = this.Position.Y;
+                    rotateTransform.CenterZ = this.Position.Z;
+                }
+                AxisAngleRotation3D axisAngle = (AxisAngleRotation3D)rotateTransform.Rotation;
+                if (axisAngle.Axis != n || axisAngle.Angle != this.Angle)
+                {
+                    axisAngle.Axis = n;
+                    axisAngle.Angle = this.Angle;
+                }
+            }
+            if (rotateTransform != null)
+            {
+                textDirection = rotateTransform.Transform(textDirection);
+                updirection = rotateTransform.Transform(updirection);
+            }
+        }
     }
 }
