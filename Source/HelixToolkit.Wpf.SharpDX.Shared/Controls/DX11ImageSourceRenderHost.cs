@@ -88,7 +88,10 @@ namespace HelixToolkit.Wpf.SharpDX
                         surfaceD3D = new DX11ImageSource(EffectsManager.AdapterIndex);
                         surfaceD3D.IsFrontBufferAvailableChanged += SurfaceD3D_IsFrontBufferAvailableChanged;
                     }
-                    surfaceD3D.SetRenderTargetDX11(e.Texture.Resource as Texture2D);
+                    if (e.Texture != null && e.Texture.Resource is Texture2D tex2d)
+                    {
+                        surfaceD3D.SetRenderTargetDX11(tex2d);
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -101,7 +104,7 @@ namespace HelixToolkit.Wpf.SharpDX
                     ReinitializeEffectsManager();
                     return;
                 }
-                hasBackBuffer = e.Texture.Resource is Texture2D;
+                hasBackBuffer = e.Texture != null && e.Texture.Resource is Texture2D;          
                 OnImageSourceChanged(this, new DX11ImageSourceArgs(surfaceD3D));
                 if (hasBackBuffer)
                 {
