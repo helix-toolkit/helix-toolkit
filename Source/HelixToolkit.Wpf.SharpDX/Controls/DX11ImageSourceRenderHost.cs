@@ -64,7 +64,10 @@ public sealed class DX11ImageSourceRenderHost : DefaultRenderHost
                 surfaceD3D = new DX11ImageSource(EffectsManager?.AdapterIndex ?? 0);
                 surfaceD3D.IsFrontBufferAvailableChanged += SurfaceD3D_IsFrontBufferAvailableChanged;
             }
-            surfaceD3D.SetRenderTargetDX11(e.Texture.Resource as Texture2D);
+            if (e.Texture is not null && e.Texture.Resource is Texture2D tex2d)
+            {
+                surfaceD3D.SetRenderTargetDX11(tex2d);
+            }
         }
         catch (Exception ex)
         {
@@ -80,7 +83,7 @@ public sealed class DX11ImageSourceRenderHost : DefaultRenderHost
             ReinitializeEffectsManager();
             return;
         }
-        hasBackBuffer = e.Texture.Resource is Texture2D;
+        hasBackBuffer = e.Texture is not null && e.Texture.Resource is Texture2D;
         OnImageSourceChanged?.Invoke(this, new DX11ImageSourceArgs(surfaceD3D));
         if (hasBackBuffer)
         {
