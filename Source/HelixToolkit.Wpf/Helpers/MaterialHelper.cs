@@ -216,7 +216,7 @@ public static class MaterialHelper
             mg.Children.Add(new SpecularMaterial(new SolidColorBrush(Color.FromRgb(b, b, b)), specularPower));
         }
 
-        if (freeze)
+        if (freeze && mg.CanFreeze)
         {
             mg.Freeze();
         }

@@ -789,12 +789,7 @@ public class ViewCubeVisual3D : ModelVisual3D
                 Foreground = foreground,
             });
         grid.Arrange(new Rect(new Point(0, 0), new Size(25, 25)));
-
-        var bmp = new RenderTargetBitmap((int)grid.Width, (int)grid.Height, 96, 96, PixelFormats.Default);
-        bmp.Render(grid);
-        bmp.Freeze();
-        Material material = MaterialHelper.CreateMaterial(new ImageBrush(bmp));
-        material.Freeze();
+        Material material = MaterialHelper.CreateMaterial(new VisualBrush(grid));
         return material;
     }
     private void EnableDisableEdgeClicks()
