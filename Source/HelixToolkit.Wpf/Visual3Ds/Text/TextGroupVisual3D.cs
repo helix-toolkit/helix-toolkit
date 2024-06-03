@@ -6,6 +6,7 @@ using System.Windows.Media;
 using System.Windows;
 using System.Numerics;
 using HelixToolkit.Geometry;
+using System.Reflection;
 
 namespace HelixToolkit.Wpf;
 
@@ -362,6 +363,7 @@ public class TextGroupVisual3D : ModelVisual3D
         var rtb = new RenderTargetBitmap(pw, ph, 96, 96, PixelFormats.Pbgra32);
         rtb.Render(panel);
         rtb.Freeze();
+        (rtb.GetType().GetField("_renderTargetBitmap", BindingFlags.Instance | BindingFlags.NonPublic)?.GetValue(rtb) as IDisposable)?.Dispose(); //https://github.com/dotnet/wpf/issues/3067
         var ib = new ImageBrush(rtb)
         {
             Stretch = Stretch.Fill,

@@ -4,6 +4,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Media.Media3D;
 using System.Windows.Media;
 using System.Windows;
+using System.Reflection;
 
 namespace HelixToolkit.Wpf;
 
@@ -376,7 +377,7 @@ public class BillboardTextVisual3D : BillboardVisual3D, IBoundsIgnoredVisual3D
             (int)element.ActualWidth + 1, (int)element.ActualHeight + 1, 96, 96, PixelFormats.Pbgra32);
         rtb.Render(element);
         rtb.Freeze();
-
+        (rtb.GetType().GetField("_renderTargetBitmap", BindingFlags.Instance | BindingFlags.NonPublic)?.GetValue(rtb) as IDisposable)?.Dispose(); //https://github.com/dotnet/wpf/issues/3067
         var brush = new ImageBrush(rtb);
 
         if (this.MaterialType == MaterialType.Diffuse)
