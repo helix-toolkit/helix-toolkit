@@ -9,7 +9,7 @@ skip_commits:
     - '*.md'
     
 install:
-  - cinst gitversion.portable --version=4.0.0 -y
+  - choco install gitversion.portable --version=4.0.0 -y
 
 configuration: Release
 dotnet_csproj:
