@@ -398,9 +398,9 @@ public class ParticleSystem : RenderingModelVisual3D
             var rect = new Rectangle { Opacity = 1 - ((double)i / opacityLevels), Fill = this.Texture, Width = w, Height = h };
             rect.Arrange(new Rect(w * i, 0, w, h));
             bitmap.Render(rect);
-            bitmap.Freeze();
-            (bitmap.GetType().GetField("_renderTargetBitmap", BindingFlags.Instance | BindingFlags.NonPublic)?.GetValue(bitmap) as IDisposable)?.Dispose(); // https://github.com/dotnet/wpf/issues/3067
         }
+        bitmap.Freeze();
+        (bitmap.GetType().GetField("_renderTargetBitmap", BindingFlags.Instance | BindingFlags.NonPublic)?.GetValue(bitmap) as IDisposable)?.Dispose(); // https://github.com/dotnet/wpf/issues/3067
 
         var brush = new ImageBrush(bitmap) { ViewportUnits = BrushMappingMode.Absolute };
         brush.Freeze();
