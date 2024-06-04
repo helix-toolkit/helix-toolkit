@@ -9,7 +9,7 @@ skip_commits:
     - '*.md'
     
 install:
-  - cinst gitversion.portable --version=5.12.0 -y
+  - choco install gitversion.portable --version=5.12.0 -y
 
 environment:
   IGNORE_NORMALISATION_GIT_HEAD_MOVE: 1
