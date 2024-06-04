@@ -820,8 +820,7 @@ public static class Viewport3DHelper
                     pm.OffsetX = m - 1 - (i * 2);
                     pm.OffsetY = -(m - 1 - (j * 2));
                 }
-
-                if (originalCamera is PerspectiveCamera)
+                else if (originalCamera is PerspectiveCamera)
                 {
                     pm.M31 = -(m - 1 - (i * 2));
                     pm.M32 = m - 1 - (j * 2);
