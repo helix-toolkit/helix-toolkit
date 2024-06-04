@@ -9,6 +9,8 @@
 
 namespace HelixToolkit.Wpf
 {
+    using System.Reflection;
+    using System;
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Documents;
@@ -399,6 +401,7 @@ namespace HelixToolkit.Wpf
                 (int)element.ActualWidth + 1, (int)element.ActualHeight + 1, 96, 96, PixelFormats.Pbgra32);
             rtb.Render(element);
             rtb.Freeze();
+            (rtb.GetType().GetField("_renderTargetBitmap", BindingFlags.Instance | BindingFlags.NonPublic)?.GetValue(rtb) as IDisposable)?.Dispose(); //https://github.com/dotnet/wpf/issues/3067
 
             var brush = new ImageBrush(rtb);
 

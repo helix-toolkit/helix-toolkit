@@ -13,6 +13,7 @@ namespace HelixToolkit.Wpf
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
+    using System.Reflection;
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Markup;
@@ -845,9 +846,10 @@ namespace HelixToolkit.Wpf
                     var backgroundRectangle = new Rectangle { Width = partialBitmap.Width, Height = partialBitmap.Height, Fill = background };
                     backgroundRectangle.Arrange(new Rect(0, 0, backgroundRectangle.Width, backgroundRectangle.Height));
                     partialBitmap.Render(backgroundRectangle);
-
                     // render 3d
                     partialBitmap.Render(view);
+                    partialBitmap.Freeze();
+                    (partialBitmap.GetType().GetField("_renderTargetBitmap", BindingFlags.Instance | BindingFlags.NonPublic)?.GetValue(partialBitmap) as IDisposable)?.Dispose(); //https://github.com/dotnet/wpf/issues/3067
 
                     // copy to the target bitmap
                     CopyBitmap(partialBitmap, target, (int)(i * view.ActualWidth), (int)(j * view.ActualHeight));

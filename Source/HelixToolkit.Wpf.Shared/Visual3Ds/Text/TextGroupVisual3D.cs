@@ -12,6 +12,7 @@ namespace HelixToolkit.Wpf
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Reflection;
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Documents;
@@ -372,6 +373,7 @@ namespace HelixToolkit.Wpf
             var rtb = new RenderTargetBitmap(pw, ph, 96, 96, PixelFormats.Pbgra32);
             rtb.Render(panel);
             rtb.Freeze();
+            (rtb.GetType().GetField("_renderTargetBitmap", BindingFlags.Instance | BindingFlags.NonPublic)?.GetValue(rtb) as IDisposable)?.Dispose(); //https://github.com/dotnet/wpf/issues/3067
             var ib = new ImageBrush(rtb)
                          {
                              Stretch = Stretch.Fill,

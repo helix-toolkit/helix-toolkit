@@ -9,7 +9,9 @@
 
 namespace HelixToolkit.Wpf
 {
+    using System;
     using System.IO;
+    using System.Reflection;
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Media;
@@ -178,7 +180,6 @@ namespace HelixToolkit.Wpf
                 }
             }
 
-            var bmp = new RenderTargetBitmap(w, h, 96, 96, PixelFormats.Pbgra32);
             var rect = new Grid
             {
                 Background = brush,
@@ -187,7 +188,10 @@ namespace HelixToolkit.Wpf
                 LayoutTransform = new ScaleTransform(w, h)
             };
             rect.Arrange(new Rect(0, 0, w, h));
+            var bmp = new RenderTargetBitmap(w, h, 96, 96, PixelFormats.Pbgra32);
             bmp.Render(rect);
+            bmp.Freeze();
+            (bmp.GetType().GetField("_renderTargetBitmap", BindingFlags.Instance | BindingFlags.NonPublic)?.GetValue(bmp) as IDisposable)?.Dispose(); //https://github.com/dotnet/wpf/issues/3067
             return bmp;
         }
 
