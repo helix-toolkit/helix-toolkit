@@ -295,7 +295,8 @@ namespace HelixToolkit.UWP
                                  UV_TopLeft = new Vector2(rect.Left / imageWidth, rect.Top / imageHeight),
                                  UV_BottomRight = new Vector2(rect.Right / imageWidth, rect.Bottom / imageHeight),
                                  HorizontalAlignment = x.HorizontalAlignment,
-                                 VerticalAlignment = x.VerticalAlignment
+                                 VerticalAlignment = x.VerticalAlignment,
+                                 Scale = x.Scale,
                              };
                          }))
                         {
