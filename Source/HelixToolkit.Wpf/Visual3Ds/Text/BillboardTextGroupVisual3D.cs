@@ -557,6 +557,7 @@ public class BillboardTextGroupVisual3D : RenderingModelVisual3D, IBoundsIgnored
                 items,
                 this.CreateElement,
                 this.Background,
+                false,
                 out Dictionary<string, FrameworkElement> elementMap,
                 out Dictionary<FrameworkElement, Rect> elementPositions);
             material.Freeze();
