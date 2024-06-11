@@ -15,7 +15,7 @@ public class TextGroupVisual3DTests
 
         var material = TextGroupVisual3D.CreateTextMaterial(
             items, CreateElement,
-            Brushes.White,
+            Brushes.White, false,
             out Dictionary<string, FrameworkElement> elementMap,
             out Dictionary<FrameworkElement, Rect> elementPositions);
 
