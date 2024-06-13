@@ -25,7 +25,7 @@ namespace HelixToolkit.Wpf.Tests.Visual3Ds.Text
             Dictionary<FrameworkElement, Rect> elementPositions;
 
             var material = TextGroupVisual3D.CreateTextMaterial(
-                items, CreateElement, Brushes.White, out elementMap, out elementPositions);
+                items, CreateElement, Brushes.White, false, out elementMap, out elementPositions);
 
             Assert.NotNull(material);
 

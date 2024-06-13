@@ -524,16 +524,9 @@ namespace HelixToolkit.Wpf
             }
             else
             {
-                material = new DiffuseMaterial { Brush = new VisualBrush(element) };
+                material = new DiffuseMaterial(new VisualBrush(element));
             }
 
-            double width = element.ActualWidth / element.ActualHeight * this.Height;
-
-            var position = this.Position;
-            var textDirection = this.TextDirection;
-            var updirection = this.UpDirection;
-            var height = this.Height;
-            UpdateDirectionsByRotationTransform(ref textDirection, ref updirection);
             // Set horizontal alignment factor
             var xa = -0.5;
             if (this.HorizontalAlignment == HorizontalAlignment.Left)
@@ -556,16 +549,26 @@ namespace HelixToolkit.Wpf
                 ya = 0;
             }
 
+            var height = this.Height;
+            var position = this.Position;
+            var angle = this.Angle;
+            var textDirection = this.TextDirection;
+            var upDirection = this.UpDirection;
+            textDirection.Normalize();
+            upDirection.Normalize();
+            UpdateDirectionsByRotationTransform(ref rotateTransform, ref textDirection, ref upDirection, position, angle);
+
             // Since the parameter coming in was the center of the label,
             // we need to find the four corners
             // p0 is the lower left corner
             // p1 is the upper left
             // p2 is the lower right
             // p3 is the upper right
-            Point3D p0 = position + (xa * width) * textDirection + (ya * height) * updirection;
-            Point3D p1 = p0 + updirection * height;
+            double width = element.ActualWidth / element.ActualHeight * height;
+            Point3D p0 = position + (xa * width * textDirection) + (ya * height * upDirection);
+            Point3D p1 = p0 + upDirection * height;
             Point3D p2 = p0 + textDirection * width;
-            Point3D p3 = p0 + updirection * height + textDirection * width;
+            Point3D p3 = p0 + upDirection * height + textDirection * width;
 
             // Now build the geometry for the sign.  It's just a
             // rectangle made of two triangles, on each side.
@@ -615,45 +618,53 @@ namespace HelixToolkit.Wpf
                 mg.TextureCoordinates.Add(new Point(u0, 0));
             }
 
-            this.Content = new GeometryModel3D(mg, material);
+            GeometryModel3D model = new GeometryModel3D(mg, material);
+            if (model.CanFreeze)
+            {
+                model.Freeze();
+            }
+            this.Content = model;
             // http://www.ericsink.com/wpf3d/4_Text.html
         }
 
         /// <summary>
         /// Update directions when applying <see cref="Angle"/> value.
         /// </summary>
+        /// <param name="rotateTransform"></param>
         /// <param name="textDirection"></param>
-        /// <param name="updirection"></param>
-        private void UpdateDirectionsByRotationTransform(ref Vector3D textDirection, ref Vector3D updirection)
+        /// <param name="upDirection"></param>
+        /// <param name="position"></param>
+        /// <param name="angle"></param>
+        internal static void UpdateDirectionsByRotationTransform(ref RotateTransform3D rotateTransform, ref Vector3D textDirection, ref Vector3D upDirection, Point3D position, double angle)
         {
-            Vector3D n = Vector3D.CrossProduct(this.TextDirection, this.UpDirection);
+            Vector3D n = Vector3D.CrossProduct(textDirection, upDirection);
             n.Normalize();
             if (rotateTransform is null)
             {
-                if (this.Angle != 0)
-                    rotateTransform = new RotateTransform3D(new AxisAngleRotation3D(n, this.Angle), this.Position);
+                if (angle != 0)
+                    rotateTransform = new RotateTransform3D(new AxisAngleRotation3D(n, angle), position);
             }
             else
             {
-                if (rotateTransform.CenterX != this.Position.X
-                    || rotateTransform.CenterY != this.Position.Y
-                    || rotateTransform.CenterZ != this.Position.Z)
+                if (rotateTransform.CenterX != position.X
+                    || rotateTransform.CenterY != position.Y
+                    || rotateTransform.CenterZ != position.Z)
                 {
-                    rotateTransform.CenterX = this.Position.X;
-                    rotateTransform.CenterY = this.Position.Y;
-                    rotateTransform.CenterZ = this.Position.Z;
+                    rotateTransform.CenterX = position.X;
+                    rotateTransform.CenterY = position.Y;
+                    rotateTransform.CenterZ = position.Z;
                 }
                 AxisAngleRotation3D axisAngle = (AxisAngleRotation3D)rotateTransform.Rotation;
-                if (axisAngle.Axis != n || axisAngle.Angle != this.Angle)
+                if (axisAngle.Axis != n || axisAngle.Angle != angle)
                 {
                     axisAngle.Axis = n;
-                    axisAngle.Angle = this.Angle;
+                    axisAngle.Angle = angle;
                 }
             }
             if (rotateTransform != null)
             {
                 textDirection = rotateTransform.Transform(textDirection);
-                updirection = rotateTransform.Transform(updirection);
+                upDirection = rotateTransform.Transform(upDirection);
             }
         }
     }

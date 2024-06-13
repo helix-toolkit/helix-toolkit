@@ -567,7 +567,12 @@ namespace HelixToolkit.Wpf
                 Dictionary<string, FrameworkElement> elementMap;
                 Dictionary<FrameworkElement, Rect> elementPositions;
                 var material = TextGroupVisual3D.CreateTextMaterial(
-                    items, this.CreateElement, this.Background, out elementMap, out elementPositions);
+                    items,
+                    this.CreateElement,
+                    this.Background,
+                    false,
+                    out elementMap,
+                    out elementPositions);
                 material.Freeze();
 
                 var billboards = new List<Billboard>();
