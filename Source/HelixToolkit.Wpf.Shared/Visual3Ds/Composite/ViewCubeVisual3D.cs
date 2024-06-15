@@ -486,7 +486,6 @@ namespace HelixToolkit.Wpf
             CreateCubeEdges();
             CreateCubeCorners();
             CreateCircle();
-
         }
 
         /// <summary>
@@ -825,7 +824,12 @@ namespace HelixToolkit.Wpf
         }
         private Material CreateTextMaterial(Brush background, string text, Brush foreground = null)
         {
-            var grid = new Grid { Width = 25, Height = 25, Background = background };
+            var grid = new Grid()
+            {
+                Width = 25,
+                Height = 25,
+                Background = background
+            };
             if (foreground is null) foreground = Brushes.White;
             grid.Children.Add(
                 new TextBlock
@@ -838,7 +842,11 @@ namespace HelixToolkit.Wpf
                     Foreground = foreground,
                 });
             grid.Arrange(new Rect(new Point(0, 0), new Size(25, 25)));
-            Material material = MaterialHelper.CreateMaterial(new VisualBrush(grid));
+            Material material = new DiffuseMaterial(new VisualBrush(grid));
+            if (material.CanFreeze)
+            {
+                material.Freeze();
+            }
             return material;
         }
         private void EnableDisableEdgeClicks()

@@ -27,5 +27,10 @@ namespace HelixToolkit.Wpf
         /// </summary>
         /// <value>Up direction.</value>
         public Vector3D UpDirection { get; set; }
+
+        /// <summary>
+        /// The rotation angle of the text in counter-clockwise, in degrees.
+        /// </summary>
+        public double Angle { get; set; }
     }
 }
