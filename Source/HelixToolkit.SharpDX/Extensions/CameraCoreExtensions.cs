@@ -1,6 +1,5 @@
 ﻿using HelixToolkit.SharpDX.Cameras;
 using SharpDX;
-using System.Runtime.InteropServices.ComTypes;
 
 namespace HelixToolkit.SharpDX;
 
