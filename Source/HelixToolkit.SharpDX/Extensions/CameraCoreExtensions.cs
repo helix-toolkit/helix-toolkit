@@ -1,5 +1,6 @@
 ﻿using HelixToolkit.SharpDX.Cameras;
 using SharpDX;
+using System.Runtime.InteropServices.ComTypes;
 
 namespace HelixToolkit.SharpDX;
 
@@ -65,10 +66,10 @@ public static class CameraCoreExtensions
         var corners = boundingBox.GetCorners();
 
         var frustum = camera.CreateFrustum(aspectRatio);
-        var leftNormal = -frustum.Left.Normal;
-        var rightNormal = -frustum.Right.Normal;
-        var topNormal = -frustum.Top.Normal;
-        var bottomNormal = -frustum.Bottom.Normal;
+        var leftNormal = frustum.Left.Normal;
+        var rightNormal = frustum.Right.Normal;
+        var topNormal = frustum.Top.Normal;
+        var bottomNormal = frustum.Bottom.Normal;
 
         int leftMostPoint = -1, rightMostPoint = -1, topMostPoint = -1, bottomMostPoint = -1;
         for (int i = 0; i < corners.Length; i++)
@@ -103,7 +104,7 @@ public static class CameraCoreExtensions
         var boundPlane = PlaneHelper.Create(boundingBox.Center, cameraDir);
         var lookRay = new Ray(position, cameraDir);
         boundPlane.Intersects(ref lookRay, out float dist);
-        lookDir = cameraDir * dist;
+        lookDir = dist < 1e-6 ? (boundingBox.Center - position) : cameraDir * dist;
     }
     /// <summary>
     /// Ref: https://github.com/yasirkula/UnityRuntimePreviewGenerator/blob/7a3b44b07949f712010b680b9f2c499e5aa2ebc1/Plugins/RuntimePreviewGenerator/RuntimePreviewGenerator.cs#L347
