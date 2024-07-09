@@ -12,9 +12,9 @@ namespace HelixToolkit.Geometry;
 /// <para>
 /// High impact:
 /// Mesh animation—changing the individual vertices of a mesh on a per-frame basis—is not always efficient in
-/// Windows Presentation Foundation (WPF).  To minimize the performance impact of change notifications when
+/// Windows Presentation Foundation (WPF). To minimize the performance impact of change notifications when
 /// each vertex is modified, detach the mesh from the visual tree before performing per-vertex modification.
-/// Once the mesh has been modified, reattach it to the visual tree.  Also, try to minimize the size of meshes
+/// Once the mesh has been modified, reattach it to the visual tree. Also, try to minimize the size of meshes
 /// that will be animated in this way.
 /// </para>
 /// <para>
@@ -78,6 +78,8 @@ public sealed class MeshBuilder
     /// The closed circle cache.
     /// </summary>
     private static readonly ThreadLocal<Dictionary<int, IList<Vector2>>> ClosedCircleCache = new(() => new Dictionary<int, IList<Vector2>>());
+
+    private static readonly ThreadLocal<Dictionary<Vector2, IList<Vector2>>> RectangleCache = new(() => new Dictionary<Vector2, IList<Vector2>>());
     /// <summary>
     /// The unit sphere cache.
     /// </summary>
@@ -238,7 +240,7 @@ public sealed class MeshBuilder
         }
         Dictionary<int, IList<Vector2>>? cache = null;
         IList<Vector2>? circle;
-        if (!IsCacheExists(ref cache, thetaDiv, closed, out circle))
+        if (!TryGetCircleInCache(ref cache, thetaDiv, closed, out circle))
         {
             circle = new Vector2Collection() { Capacity = closed ? thetaDiv + 1 : thetaDiv };
             cache!.Add(thetaDiv, circle);
@@ -246,7 +248,7 @@ public sealed class MeshBuilder
             float angle = (float)Math.PI * 2f / thetaDiv;
             for (var i = 0; i < thetaDiv; i++)
             {
-                circle.Add(new Vector2((float)Math.Cos(i * angle), -(float)Math.Sin(i * angle)));
+                circle.Add(new Vector2(-(float)Math.Cos(i * angle), (float)Math.Sin(i * angle)));
             }
             if (closed && circle.Count > 0)
             {
@@ -261,7 +263,7 @@ public sealed class MeshBuilder
         }
         return new Vector2Collection();
 
-        static bool IsCacheExists(ref Dictionary<int, IList<Vector2>>? cache, int thetaDiv, bool closed, out IList<Vector2>? circle)
+        static bool TryGetCircleInCache(ref Dictionary<int, IList<Vector2>>? cache, int thetaDiv, bool closed, out IList<Vector2>? circle)
         {
             if (closed)
             {
@@ -280,20 +282,40 @@ public sealed class MeshBuilder
     /// </summary>
     /// <param name="thetaDiv">The number of division.</param>
     /// <param name="totalAngle">The angle of the circle segment.</param>
-    /// <param name="angleOffset">The angle-offset to use.</param>
+    /// <param name="angleOffset">The angle-offset to use,in radian.</param>
     /// <returns>
     /// A circle segment.
     /// </returns>
     public static IList<Vector2> GetCircleSegment(int thetaDiv, float totalAngle = 2 * (float)Math.PI, float angleOffset = 0)
     {
-        IList<Vector2> circleSegment = new Vector2Collection();
-        for (var i = 0; i < thetaDiv; i++)
+        int pointNumber = thetaDiv + 1;
+        IList<Vector2> circleSegment = new Vector2Collection(pointNumber);
+        for (var i = 0; i < pointNumber; i++)
         {
-            var theta = totalAngle * ((float)i / (thetaDiv - 1)) + angleOffset;
-            circleSegment.Add(new Vector2((float)Math.Cos(theta), (float)Math.Sin(theta)));
+            var theta = totalAngle * ((float)i / thetaDiv) + angleOffset;
+            circleSegment.Add(new Vector2(-(float)Math.Cos(theta), (float)Math.Sin(theta)));
         }
 
         return circleSegment;
+    }
+
+    public static IList<Vector2> GetRectangle(float width, float height)
+    {
+        IList<Vector2>? rectangle;
+        Vector2 cacheKey = new Vector2(width, height);
+        if (!RectangleCache.Value!.TryGetValue(cacheKey, out rectangle))
+        {
+            float halfWidth = width / 2f;
+            float halfHeight = height / 2f;
+            Vector2 topLeft = new Vector2(-halfWidth, halfHeight);
+            Vector2 topRight = new Vector2(halfWidth, halfHeight);
+            Vector2 bottomRight = new Vector2(halfWidth, -halfHeight);
+            Vector2 bottomLeft = new Vector2(-halfWidth, -halfHeight);
+            rectangle = new Vector2[] { topLeft, topRight, bottomRight, bottomLeft };
+
+            RectangleCache.Value!.Add(cacheKey, rectangle);
+        }
+        return new Vector2Collection(rectangle);
     }
 
     /// <summary>
