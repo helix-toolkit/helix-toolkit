@@ -45,7 +45,7 @@ namespace MeshBuilderSample
                 var profile = new Vector2[] { new Vector2(-3, 2), new Vector2(3, 2), new Vector2(3, -1), new Vector2(-3, -1) };
                 builder.AddTube(
                     new Vector3[] { new Vector3(), new Vector3(0, 0, 1) },
-                    null, null, profile,
+                    null, null, profile,null,
                     false, true);
 
                 return builder.ToMesh().ToWndMeshGeometry3D(true);
