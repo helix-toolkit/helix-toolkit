@@ -36,7 +36,7 @@ public class TubeVisual3D : ExtrudedVisual3D
     /// </summary>
     static TubeVisual3D()
     {
-        DiametersProperty.OverrideMetadata(typeof(TubeVisual3D), new UIPropertyMetadata(null, SectionChanged));
+        SectionScalesProperty.OverrideMetadata(typeof(TubeVisual3D), new UIPropertyMetadata(null, SectionChanged));
     }
 
     /// <summary>
@@ -126,7 +126,7 @@ public class TubeVisual3D : ExtrudedVisual3D
         var circle = MeshBuilder.GetCircle(this.ThetaDiv, false);
         // If Diameters is not set, create a unit circle
         // otherwise, create a circle with the specified diameter
-        double r = this.Diameters != null ? 1 : this.Diameter / 2;
+        double r = this.SectionScales != null ? 1 : this.Diameter / 2;
         for (int j = 0; j < circle.Count; j++)
         {
             pc.Add(new Point(circle[j].X * r, circle[j].Y * r));
@@ -173,7 +173,7 @@ public class TubeVisual3D : ExtrudedVisual3D
             this.Path.ToVector3Collection()!,
             this.Angles.ToFloatCollection(),
             this.TextureCoordinates?.ToFloatCollection(),
-            this.Diameters.ToFloatCollection(),
+            this.SectionScales.ToFloatCollection(),
             this.Section.ToVector2Collection(),
             sectionXAxis.ToVector3(),
             this.IsPathClosed,

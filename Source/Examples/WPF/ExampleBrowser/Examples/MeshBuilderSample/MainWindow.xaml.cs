@@ -44,7 +44,7 @@ namespace MeshBuilderSample
                 var builder = new MeshBuilder(true, true);
                 var profile = new Vector2[] { new Vector2(-3, 2), new Vector2(3, 2), new Vector2(3, -1), new Vector2(-3, -1) };
                 builder.AddTube(
-                    new Vector3[] { new Vector3(), new Vector3(0, 0, 1) }, new Vector3[] { Vector3.UnitY, Vector3.UnitY },
+                    new Vector3[] { new Vector3(), new Vector3(0, 0, 1) },
                     null, null, profile,
                     false, true);
 

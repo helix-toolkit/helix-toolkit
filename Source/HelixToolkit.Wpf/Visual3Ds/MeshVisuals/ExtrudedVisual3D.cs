@@ -14,10 +14,10 @@ namespace HelixToolkit.Wpf;
 public class ExtrudedVisual3D : MeshElement3D
 {
     /// <summary>
-    /// Identifies the <see cref="Diameters"/> dependency property.
+    /// Identifies the <see cref="SectionScales"/> dependency property.
     /// </summary>
-    public static readonly DependencyProperty DiametersProperty = DependencyProperty.Register(
-        "Diameters", typeof(DoubleCollection), typeof(ExtrudedVisual3D), new UIPropertyMetadata(null, GeometryChanged));
+    public static readonly DependencyProperty SectionScalesProperty = DependencyProperty.Register(
+        "SectionScales", typeof(DoubleCollection), typeof(ExtrudedVisual3D), new UIPropertyMetadata(null, GeometryChanged));
 
     /// <summary>
     /// Identifies the <see cref="SectionXAxis"/> dependency property.
@@ -75,19 +75,19 @@ public class ExtrudedVisual3D : MeshElement3D
     }
 
     /// <summary>
-    /// Gets or sets the diameters along the path.
+    /// Gets or sets the scales od the section along the path.
     /// </summary>
-    /// <value> The diameters. </value>
-    public DoubleCollection Diameters
+    /// <value> The section scales. </value>
+    public DoubleCollection SectionScales
     {
         get
         {
-            return (DoubleCollection)this.GetValue(DiametersProperty);
+            return (DoubleCollection)this.GetValue(SectionScalesProperty);
         }
 
         set
         {
-            this.SetValue(DiametersProperty, value);
+            this.SetValue(SectionScalesProperty, value);
         }
     }
 
@@ -244,7 +244,7 @@ public class ExtrudedVisual3D : MeshElement3D
             this.Path.ToVector3Collection()!,
             this.Angles?.ToFloatCollection(),
             this.TextureCoordinates?.ToFloatCollection(),
-            this.Diameters?.ToFloatCollection(),
+            this.SectionScales?.ToFloatCollection(),
             this.Section.ToVector2Collection(),
             sectionXAxis.ToVector3(),
             this.IsPathClosed,
