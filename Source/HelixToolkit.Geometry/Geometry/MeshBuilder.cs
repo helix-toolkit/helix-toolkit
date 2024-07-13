@@ -3515,12 +3515,12 @@ public sealed class MeshBuilder
     /// <param name="backCap">
     /// Create a back Cap or not.
     /// </param>
-    public void AddTube(IList<Vector3> path, float[]? values, float[]? diameters, int thetaDiv, bool isTubeClosed, bool frontCap = false, bool backCap = false)
+    public void AddTube(IList<Vector3> path, IList<float>? values, IList<float>? diameters, int thetaDiv, bool isTubeClosed, bool frontCap = false, bool backCap = false)
     {
         var circle = GetCircle(thetaDiv);
         if (diameters is not null)
         {
-            diameters = Array.ConvertAll(diameters, x => x / 2);
+            diameters = diameters.ToList().ConvertAll(x => x / 2);
         }
         this.AddTube(path, values, diameters, circle, null, isTubeClosed, true, frontCap, backCap);
     }
