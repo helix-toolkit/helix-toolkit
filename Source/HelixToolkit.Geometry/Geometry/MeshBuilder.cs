@@ -3481,10 +3481,10 @@ public sealed class MeshBuilder
     /// Set to true if the tube path is closed.
     /// </param>
     /// <param name="frontCap">
-    /// Generate front Cap.
+    /// Generate front Cap or not.
     /// </param>
     /// <param name="backCap">
-    /// Generate back Cap.
+    /// Generate back Cap or not.
     /// </param>
     public void AddTube(IList<Vector3> path, float diameter, int thetaDiv, bool isTubeClosed, bool frontCap = false, bool backCap = false)
     {
@@ -3522,7 +3522,7 @@ public sealed class MeshBuilder
         {
             diameters = Array.ConvertAll(diameters, x => x / 2);
         }
-        this.AddTube(path, values, diameters, circle, isTubeClosed, true, frontCap, backCap);
+        this.AddTube(path, values, diameters, circle, null, isTubeClosed, true, frontCap, backCap);
     }
 
 
@@ -3541,6 +3541,9 @@ public sealed class MeshBuilder
     /// <param name="section">
     /// The section to extrude along the tube path.
     /// </param>
+    /// / <param name="sectionXAxis">
+    /// The initial alignment of the x-axis of the section into the 3D viewport
+    /// </param>
     /// <param name="isTubeClosed">
     /// If the tube is closed set to <c>true</c> .
     /// </param>
@@ -3554,8 +3557,10 @@ public sealed class MeshBuilder
     /// Create a back Cap or not.
     /// </param>
     public void AddTube(IList<Vector3> path, IList<float>? values, IList<float>? sectionScales,
-        IList<Vector2> section, bool isTubeClosed, bool isSectionClosed, bool frontCap = false, bool backCap = false)
+        IList<Vector2> section, Vector3? sectionXAxis, bool isTubeClosed, bool isSectionClosed, bool frontCap = false, bool backCap = false)
     {
+        if (sectionXAxis is null || sectionXAxis.Equals(default))
+        {
         int pathLength = path.Count;
         int sectionLength = section.Count;
         if (pathLength < 2 || sectionLength < 2)
@@ -3569,8 +3574,9 @@ public sealed class MeshBuilder
             vecLeft1 = new Vector3(0, 0, 1);
         }
         Vector3 vecFront = Vector3.Cross(vecLeft1, dir);
-        Vector3 xAxis = Vector3.Normalize(vecFront);
-        AddTube(path, null, values, sectionScales, section, xAxis, isTubeClosed, isSectionClosed, frontCap, backCap);
+            sectionXAxis = Vector3.Normalize(vecFront);
+    }
+        AddTube(path, null, values, sectionScales, section, sectionXAxis.Value, isTubeClosed, isSectionClosed, frontCap, backCap);
     }
 
     /// <summary>
