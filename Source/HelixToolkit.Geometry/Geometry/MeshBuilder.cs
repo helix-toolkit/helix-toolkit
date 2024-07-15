@@ -47,9 +47,9 @@ public sealed class MeshBuilder
     /// </summary>
     private const string SourceMeshTextureCoordinatesShouldNotBeNull = "Source mesh texture coordinates should not be null.";
     /// <summary>
-    /// 'Wrong number of diameters' exception message.
+    /// 'Wrong number of scales' exception message.
     /// </summary>
-    private const string WrongNumberOfDiameters = "Wrong number of diameters.";
+    private const string WrongNumberOfScales = "Wrong number of scales.";
     /// <summary>
     /// 'Wrong number of positions' exception message.
     /// </summary>
@@ -3561,21 +3561,21 @@ public sealed class MeshBuilder
     {
         if (sectionXAxis is null || sectionXAxis.Equals(default))
         {
-        int pathLength = path.Count;
-        int sectionLength = section.Count;
-        if (pathLength < 2 || sectionLength < 2)
-        {
-            ThrowHelper.ThrowInvalidOperationException(WrongNumberOfDivisions);
-        }
-        Vector3 dir = path[1] - path[0];
-        Vector3 vecLeft1 = new Vector3(dir.Y, dir.Z, dir.X);
-        if (vecLeft1 == dir)
-        {
-            vecLeft1 = new Vector3(0, 0, 1);
-        }
-        Vector3 vecFront = Vector3.Cross(vecLeft1, dir);
+            int pathLength = path.Count;
+            int sectionLength = section.Count;
+            if (pathLength < 2 || sectionLength < 2)
+            {
+                ThrowHelper.ThrowInvalidOperationException(WrongNumberOfDivisions);
+            }
+            Vector3 dir = path[1] - path[0];
+            Vector3 vecLeft1 = new Vector3(dir.Y, dir.Z, dir.X);
+            if (vecLeft1 == dir)
+            {
+                vecLeft1 = new Vector3(0, 0, 1);
+            }
+            Vector3 vecFront = Vector3.Cross(vecLeft1, dir);
             sectionXAxis = Vector3.Normalize(vecFront);
-    }
+        }
         AddTube(path, null, values, sectionScales, section, sectionXAxis.Value, isTubeClosed, isSectionClosed, frontCap, backCap);
     }
 
@@ -3585,10 +3585,10 @@ public sealed class MeshBuilder
     /// <param name="path">
     /// A list of points defining the centers of the tube.
     /// </param>
-    /// <param name="angles">
+    /// <param name="sectionAngles">
     /// The rotation of the section as it moves along the path, in radian.
     /// </param>
-    /// <param name="values">
+    /// <param name="xTextureCoordinates">
     /// The texture coordinate X values (optional).
     /// </param>
     /// <param name="sectionScales">
@@ -3612,7 +3612,7 @@ public sealed class MeshBuilder
     /// <param name="backCap">
     /// Create a back Cap or not.
     /// </param>
-    public void AddTube(IList<Vector3> path, IList<float>? angles, IList<float>? values, IList<float>? sectionScales,
+    public void AddTube(IList<Vector3> path, IList<float>? sectionAngles, IList<float>? xTextureCoordinates, IList<float>? sectionScales,
        IList<Vector2> section, Vector3 sectionXAxis, bool isTubeClosed, bool isSectionClosed, bool frontCap = false, bool backCap = false)
     {
         if (path is null)
@@ -3632,17 +3632,17 @@ public sealed class MeshBuilder
             ThrowHelper.ThrowInvalidOperationException(WrongNumberOfDivisions);
         }
 
-        if (values is not null && values.Count == 0)
+        if (xTextureCoordinates is not null && xTextureCoordinates.Count == 0)
         {
             ThrowHelper.ThrowInvalidOperationException(WrongNumberOfTextureCoordinates);
         }
 
         if (sectionScales is not null && sectionScales.Count == 0)
         {
-            ThrowHelper.ThrowInvalidOperationException(WrongNumberOfDiameters);
+            ThrowHelper.ThrowInvalidOperationException(WrongNumberOfScales);
         }
 
-        if (angles is not null && angles.Count == 0)
+        if (sectionAngles is not null && sectionAngles.Count == 0)
         {
             ThrowHelper.ThrowInvalidOperationException(WrongNumberOfAngles);
         }
@@ -3661,6 +3661,8 @@ public sealed class MeshBuilder
             Quaternion totateToPreDir = QuaternionHelper.BetweenDirections(ref currentDir, ref preDir);
             preXAxis = Vector3.Normalize(Vector3.Transform(preXAxis, totateToPreDir));
         }
+        bool isOppositeDir = false;
+        int rowsPath = pathLength;
         for (int i = 0; i < pathLength; i++)
         {
             Vector3 currentP = path[i];
@@ -3690,13 +3692,17 @@ public sealed class MeshBuilder
             Vector3 planNormal = Vector3.Normalize(currentDir + preDir);
             if (planNormal.AnyUndefined())
             {
-                // Case currentDir and preDir are opposite directions
+                // Case currentDir and preDir are opposite directions, adding an extra plan section in same place but opposite side
+                isOppositeDir = !isOppositeDir;
+                if(isOppositeDir)
+                {
+                    currentDir = preDir;
+                }
                 planNormal = currentDir;
-                section = section.ToList().ConvertAll(x => -x);
             }
 
             float sectionScale = sectionScales is not null ? sectionScales[i % sectionScales.Count] : 1f;
-            float theta = angles is not null ? angles[i % angles.Count] : 0f;
+            float theta = sectionAngles is not null ? sectionAngles[i % sectionAngles.Count] : 0f;
 
             Quaternion q = QuaternionHelper.BetweenDirections(ref preDir, ref currentDir);
             Vector3 rotatedXAxis = Vector3.Normalize(Vector3.Transform(preXAxis, q));
@@ -3722,17 +3728,22 @@ public sealed class MeshBuilder
                         this.Normals.Add(Vector3.Normalize(intersect - currentP));
                     }
                     Vector2 textureCoordinate = Vector2.Zero;
-                    if (values is not null)
+                    if (xTextureCoordinates is not null)
                     {
-                        textureCoordinate = new Vector2(values[i % values.Count], (float)j / (sectionLength - 1));
+                        textureCoordinate = new Vector2(xTextureCoordinates[i % xTextureCoordinates.Count], (float)j / (sectionLength - 1));
                     }
                     this.TextureCoordinates?.Add(textureCoordinate);
                 }
             }
             preDir = currentDir;
             preXAxis = rotatedXAxis;
+            if(isOppositeDir)
+            {
+                i--;
+                rowsPath++;
+            }
         }
-        this.AddRectangularMeshTriangleIndices(index0, pathLength, sectionLength, isSectionClosed, isTubeClosed);
+        this.AddRectangularMeshTriangleIndices(index0, rowsPath, sectionLength, isSectionClosed, isTubeClosed);
         if (frontCap || backCap)
         {
             var normals = new Vector3[section.Count];
