@@ -3624,10 +3624,8 @@ public sealed class MeshBuilder
         {
             ThrowHelper.ThrowArgumentNullException(nameof(section));
         }
-
-        var pathLength = path.Count;
         var sectionLength = section.Count;
-        if (pathLength < 2 || sectionLength < 2)
+        if (path.Count < 2 || sectionLength < 2)
         {
             ThrowHelper.ThrowInvalidOperationException(WrongNumberOfDivisions);
         }
@@ -3651,42 +3649,43 @@ public sealed class MeshBuilder
         {
             ThrowHelper.ThrowInvalidOperationException(nameof(sectionXAxis));
         }
+
+        path = RemoveConsecutiveDuplicates(path);
+        if (path.Count < 2)
+        {
+            ThrowHelper.ThrowInvalidOperationException(WrongNumberOfDivisions);
+        }
         // Ref: https://songho.ca/opengl/gl_cylinder.html
         int index0 = this.Positions.Count;
         Vector3 currentDir = Vector3.Normalize(path[1] - path[0]);
-        Vector3 preDir = isTubeClosed ? Vector3.Normalize(path[0] - path[^1]) : currentDir;
+        Vector3 preDir = currentDir;
         Vector3 preXAxis = Vector3.Normalize(PlaneHelper.Create(Vector3.Zero, currentDir).Project(ref sectionXAxis));
         if (isTubeClosed)
         {
-            Quaternion totateToPreDir = QuaternionHelper.BetweenDirections(ref currentDir, ref preDir);
-            preXAxis = Vector3.Normalize(Vector3.Transform(preXAxis, totateToPreDir));
+            if (Vector3Helper.NearEqual(path[0], path[^1], new Vector3(MathUtil.ZeroTolerance)))
+            {
+                path.RemoveAt(path.Count - 1);
+            }
+            preDir = Vector3.Normalize(path[0] - path[^1]);
+            Quaternion rotateToPreDir = QuaternionHelper.BetweenDirections(ref currentDir, ref preDir);
+            preXAxis = Vector3.Normalize(Vector3.Transform(preXAxis, rotateToPreDir));
         }
         bool isOppositeDir = false;
+        int pathLength = path.Count;
         int rowsPath = pathLength;
         for (int i = 0; i < pathLength; i++)
         {
             Vector3 currentP = path[i];
-            int preIndex = i == 0 ? 0 : i - 1;
-            Vector3 preP = path[preIndex];
             if (i < pathLength - 1)
             {
-                Vector3 nextP = path[i + 1];
-                if (Vector3Helper.NearEqual(currentP, nextP, new Vector3(MathUtil.ZeroTolerance)))
-                {
-                    // Case currentP, nextP are duplicate, we have an issue when enable frontCap.
-                    continue;
-                }
-                currentDir = Vector3.Normalize(nextP - currentP);
+                currentDir = Vector3.Normalize(path[i + 1] - currentP);
             }
             else //last
             {
+                currentDir = preDir;
                 if (isTubeClosed)
                 {
                     currentDir = Vector3.Normalize(path[0] - currentP);
-                }
-                else
-                {
-                    currentDir = preDir;
                 }
             }
             Vector3 planNormal = Vector3.Normalize(currentDir + preDir);
@@ -3694,7 +3693,7 @@ public sealed class MeshBuilder
             {
                 // Case currentDir and preDir are opposite directions, adding an extra plan section in same place but opposite side
                 isOppositeDir = !isOppositeDir;
-                if(isOppositeDir)
+                if (isOppositeDir)
                 {
                     currentDir = preDir;
                 }
@@ -3737,14 +3736,14 @@ public sealed class MeshBuilder
             }
             preDir = currentDir;
             preXAxis = rotatedXAxis;
-            if(isOppositeDir)
+            if (isOppositeDir)
             {
                 i--;
                 rowsPath++;
             }
         }
         this.AddRectangularMeshTriangleIndices(index0, rowsPath, sectionLength, isSectionClosed, isTubeClosed);
-        if (frontCap || backCap)
+        if (!isTubeClosed && (frontCap || backCap))
         {
             var normals = new Vector3[section.Count];
             var fanTextures = new Vector2[section.Count];
@@ -3804,6 +3803,24 @@ public sealed class MeshBuilder
         }
         return mappingSection;
     }
+
+    private static IList<Vector3> RemoveConsecutiveDuplicates(IList<Vector3> list)
+    {
+        if (list.Count == 0)
+        {
+            return list;
+        }
+        List<Vector3> result = new List<Vector3> { list[0] };
+        for (int i = 1; i < list.Count; i++)
+        {
+            if (!Vector3Helper.NearEqual(list[i], list[i - 1], new Vector3(MathUtil.ZeroTolerance)))
+            {
+                result.Add(list[i]);
+            }
+        }
+        return result;
+    }
+
     #endregion Add Geometry
 
 
