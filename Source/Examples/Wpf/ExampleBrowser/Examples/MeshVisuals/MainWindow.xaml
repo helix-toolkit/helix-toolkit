@@ -136,7 +136,7 @@
                                      TopRadius="0.05"
                                      Fill="IndianRed"
                                      Visible="{Binding IsChecked, ElementName=TruncatedConeVisible}" />
-            <h:TubeVisual3D Path="-7 0 -0.45 -7 0.1 0 -7 0 0.45"
+            <h:TubeVisual3D Path="-7,0,0 -7 0 -0.45 -7 0.2 0 -7 0 0.45"
                             Diameter="0.1"
                             Fill="HotPink"
                             Visible="{Binding IsChecked, ElementName=TubeVisible}" />

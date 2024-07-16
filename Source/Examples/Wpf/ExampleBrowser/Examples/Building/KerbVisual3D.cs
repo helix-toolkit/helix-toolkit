@@ -75,6 +75,8 @@ public sealed class KerbVisual3D : UIElement3D
 
     private void AppearanceChanged()
     {
+        if (this.Positions.Count < 2)
+            return;
         var builder = new MeshBuilder(false, true);
 
         // hard code a kerb section

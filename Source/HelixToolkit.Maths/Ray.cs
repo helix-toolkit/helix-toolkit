@@ -256,11 +256,22 @@ namespace HelixToolkit.Maths
         /// </summary>
         /// <param name="planePosition">The plane position.</param>
         /// <param name="planeNormal">The plane normal.</param>
-        /// <param name="intersect"></param>
+        /// <param name="intersect">The point intersection</param>
         /// <returns></returns>
         public bool PlaneIntersection(Vector3 planePosition, Vector3 planeNormal, out Vector3 intersect)
         {
             Plane plane = PlaneHelper.Create(planePosition, planeNormal);
+            return Collision.RayIntersectsPlane(ref this, ref plane, out intersect);
+        }
+
+        /// <summary>
+        /// Planes the intersection.
+        /// </summary>
+        /// <param name="plane">The plane</param>
+        /// <param name="intersect">The point intersection</param>
+        /// <returns></returns>
+        public bool PlaneIntersection(Plane plane, out Vector3 intersect)
+        {
             return Collision.RayIntersectsPlane(ref this, ref plane, out intersect);
         }
         /// <summary>

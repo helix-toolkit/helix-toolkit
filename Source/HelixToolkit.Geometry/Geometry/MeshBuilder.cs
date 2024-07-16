@@ -12,9 +12,9 @@ namespace HelixToolkit.Geometry;
 /// <para>
 /// High impact:
 /// Mesh animation—changing the individual vertices of a mesh on a per-frame basis—is not always efficient in
-/// Windows Presentation Foundation (WPF).  To minimize the performance impact of change notifications when
+/// Windows Presentation Foundation (WPF). To minimize the performance impact of change notifications when
 /// each vertex is modified, detach the mesh from the visual tree before performing per-vertex modification.
-/// Once the mesh has been modified, reattach it to the visual tree.  Also, try to minimize the size of meshes
+/// Once the mesh has been modified, reattach it to the visual tree. Also, try to minimize the size of meshes
 /// that will be animated in this way.
 /// </para>
 /// <para>
@@ -47,9 +47,9 @@ public sealed class MeshBuilder
     /// </summary>
     private const string SourceMeshTextureCoordinatesShouldNotBeNull = "Source mesh texture coordinates should not be null.";
     /// <summary>
-    /// 'Wrong number of diameters' exception message.
+    /// 'Wrong number of scales' exception message.
     /// </summary>
-    private const string WrongNumberOfDiameters = "Wrong number of diameters.";
+    private const string WrongNumberOfScales = "Wrong number of scales.";
     /// <summary>
     /// 'Wrong number of positions' exception message.
     /// </summary>
@@ -78,6 +78,8 @@ public sealed class MeshBuilder
     /// The closed circle cache.
     /// </summary>
     private static readonly ThreadLocal<Dictionary<int, IList<Vector2>>> ClosedCircleCache = new(() => new Dictionary<int, IList<Vector2>>());
+
+    private static readonly ThreadLocal<Dictionary<Vector2, IList<Vector2>>> RectangleCache = new(() => new Dictionary<Vector2, IList<Vector2>>());
     /// <summary>
     /// The unit sphere cache.
     /// </summary>
@@ -218,7 +220,7 @@ public sealed class MeshBuilder
 
     #region Geometric Base Functions
     /// <summary>
-    /// Gets a circle section (cached).
+    /// Gets a unit circle section with radius = 1, (cached).
     /// </summary>
     /// <param name="thetaDiv">
     /// The number of divisions.
@@ -238,7 +240,7 @@ public sealed class MeshBuilder
         }
         Dictionary<int, IList<Vector2>>? cache = null;
         IList<Vector2>? circle;
-        if (!IsCacheExists(ref cache, thetaDiv, closed, out circle))
+        if (!TryGetCircleInCache(ref cache, thetaDiv, closed, out circle))
         {
             circle = new Vector2Collection() { Capacity = closed ? thetaDiv + 1 : thetaDiv };
             cache!.Add(thetaDiv, circle);
@@ -246,7 +248,7 @@ public sealed class MeshBuilder
             float angle = (float)Math.PI * 2f / thetaDiv;
             for (var i = 0; i < thetaDiv; i++)
             {
-                circle.Add(new Vector2((float)Math.Cos(i * angle), -(float)Math.Sin(i * angle)));
+                circle.Add(new Vector2(-(float)Math.Cos(i * angle), (float)Math.Sin(i * angle)));
             }
             if (closed && circle.Count > 0)
             {
@@ -261,7 +263,7 @@ public sealed class MeshBuilder
         }
         return new Vector2Collection();
 
-        static bool IsCacheExists(ref Dictionary<int, IList<Vector2>>? cache, int thetaDiv, bool closed, out IList<Vector2>? circle)
+        static bool TryGetCircleInCache(ref Dictionary<int, IList<Vector2>>? cache, int thetaDiv, bool closed, out IList<Vector2>? circle)
         {
             if (closed)
             {
@@ -276,24 +278,50 @@ public sealed class MeshBuilder
     }
 
     /// <summary>
-    /// Gets a circle segment section.
+    /// Gets a unit circle segment section with radius = 1.
     /// </summary>
     /// <param name="thetaDiv">The number of division.</param>
     /// <param name="totalAngle">The angle of the circle segment.</param>
-    /// <param name="angleOffset">The angle-offset to use.</param>
+    /// <param name="angleOffset">The angle-offset to use,in radian.</param>
     /// <returns>
     /// A circle segment.
     /// </returns>
     public static IList<Vector2> GetCircleSegment(int thetaDiv, float totalAngle = 2 * (float)Math.PI, float angleOffset = 0)
     {
-        IList<Vector2> circleSegment = new Vector2Collection();
-        for (var i = 0; i < thetaDiv; i++)
+        int pointNumber = thetaDiv + 1;
+        IList<Vector2> circleSegment = new Vector2Collection(pointNumber);
+        for (var i = 0; i < pointNumber; i++)
         {
-            var theta = totalAngle * ((float)i / (thetaDiv - 1)) + angleOffset;
-            circleSegment.Add(new Vector2((float)Math.Cos(theta), (float)Math.Sin(theta)));
+            var theta = totalAngle * ((float)i / thetaDiv) + angleOffset;
+            circleSegment.Add(new Vector2(-(float)Math.Cos(theta), (float)Math.Sin(theta)));
         }
 
         return circleSegment;
+    }
+
+    /// <summary>
+    /// Get a rectangle section, (cached).
+    /// </summary>
+    /// <param name="width">The width of rectangle.</param>
+    /// <param name="height">The height of rectangle.</param>
+    /// <returns></returns>
+    public static IList<Vector2> GetRectangle(float width, float height)
+    {
+        IList<Vector2>? rectangle;
+        Vector2 cacheKey = new Vector2(width, height);
+        if (!RectangleCache.Value!.TryGetValue(cacheKey, out rectangle))
+        {
+            float halfWidth = width / 2f;
+            float halfHeight = height / 2f;
+            Vector2 topLeft = new Vector2(-halfWidth, halfHeight);
+            Vector2 topRight = new Vector2(halfWidth, halfHeight);
+            Vector2 bottomRight = new Vector2(halfWidth, -halfHeight);
+            Vector2 bottomLeft = new Vector2(-halfWidth, -halfHeight);
+            rectangle = new Vector2[] { topLeft, topRight, bottomRight, bottomLeft };
+
+            RectangleCache.Value!.Add(cacheKey, rectangle);
+        }
+        return new Vector2Collection(rectangle);
     }
 
     /// <summary>
@@ -3438,7 +3466,33 @@ public sealed class MeshBuilder
     }
 
     /// <summary>
-    /// Adds a tube.
+    /// Adds a tube with circle section.
+    /// </summary>
+    /// <param name="path">
+    /// A list of points defining the centers of the tube.
+    /// </param>
+    /// <param name="diameter">
+    /// The diameter of the tube.
+    /// </param>
+    /// <param name="thetaDiv">
+    /// The number of divisions around the tube.
+    /// </param>
+    /// <param name="isTubeClosed">
+    /// Set to true if the tube path is closed.
+    /// </param>
+    /// <param name="frontCap">
+    /// Generate front Cap or not.
+    /// </param>
+    /// <param name="backCap">
+    /// Generate back Cap or not.
+    /// </param>
+    public void AddTube(IList<Vector3> path, float diameter, int thetaDiv, bool isTubeClosed, bool frontCap = false, bool backCap = false)
+    {
+        this.AddTube(path, null, new[] { diameter }, thetaDiv, isTubeClosed, frontCap, backCap);
+    }
+
+    /// <summary>
+    /// Adds a tube with circle section.
     /// </summary>
     /// <param name="path">
     /// A list of points defining the centers of the tube.
@@ -3461,37 +3515,16 @@ public sealed class MeshBuilder
     /// <param name="backCap">
     /// Create a back Cap or not.
     /// </param>
-    public void AddTube(IList<Vector3> path, float[]? values, float[]? diameters, int thetaDiv, bool isTubeClosed, bool frontCap = false, bool backCap = false)
+    public void AddTube(IList<Vector3> path, IList<float>? values, IList<float>? diameters, int thetaDiv, bool isTubeClosed, bool frontCap = false, bool backCap = false)
     {
         var circle = GetCircle(thetaDiv);
-        this.AddTube(path, values, diameters, circle, isTubeClosed, true, frontCap, backCap);
+        if (diameters is not null)
+        {
+            diameters = diameters.ToList().ConvertAll(x => x / 2);
+        }
+        this.AddTube(path, values, diameters, circle, null, isTubeClosed, true, frontCap, backCap);
     }
 
-    /// <summary>
-    /// Adds a tube.
-    /// </summary>
-    /// <param name="path">
-    /// A list of points defining the centers of the tube.
-    /// </param>
-    /// <param name="diameter">
-    /// The diameter of the tube.
-    /// </param>
-    /// <param name="thetaDiv">
-    /// The number of divisions around the tube.
-    /// </param>
-    /// <param name="isTubeClosed">
-    /// Set to true if the tube path is closed.
-    /// </param>
-    /// <param name="frontCap">
-    /// Generate front Cap.
-    /// </param>
-    /// <param name="backCap">
-    /// Generate back Cap.
-    /// </param>
-    public void AddTube(IList<Vector3> path, float diameter, int thetaDiv, bool isTubeClosed, bool frontCap = false, bool backCap = false)
-    {
-        this.AddTube(path, null, new[] { diameter }, thetaDiv, isTubeClosed, frontCap, backCap);
-    }
 
     /// <summary>
     /// Adds a tube with a custom section.
@@ -3502,11 +3535,14 @@ public sealed class MeshBuilder
     /// <param name="values">
     /// The texture coordinate X values (optional).
     /// </param>
-    /// <param name="diameters">
-    /// The diameters (optional).
+    /// <param name="sectionScales">
+    /// The scales of the section (optional).
     /// </param>
     /// <param name="section">
     /// The section to extrude along the tube path.
+    /// </param>
+    /// / <param name="sectionXAxis">
+    /// The initial alignment of the x-axis of the section into the 3D viewport
     /// </param>
     /// <param name="isTubeClosed">
     /// If the tube is closed set to <c>true</c> .
@@ -3520,10 +3556,27 @@ public sealed class MeshBuilder
     /// <param name="backCap">
     /// Create a back Cap or not.
     /// </param>
-    public void AddTube(IList<Vector3> path, IList<float>? values, IList<float>? diameters,
-        IList<Vector2> section, bool isTubeClosed, bool isSectionClosed, bool frontCap = false, bool backCap = false)
+    public void AddTube(IList<Vector3> path, IList<float>? values, IList<float>? sectionScales,
+        IList<Vector2> section, Vector3? sectionXAxis, bool isTubeClosed, bool isSectionClosed, bool frontCap = false, bool backCap = false)
     {
-        AddTube(path, null, values, diameters, section, isTubeClosed, isSectionClosed, frontCap, backCap);
+        if (sectionXAxis is null || sectionXAxis.Equals(default))
+        {
+            int pathLength = path.Count;
+            int sectionLength = section.Count;
+            if (pathLength < 2 || sectionLength < 2)
+            {
+                ThrowHelper.ThrowInvalidOperationException(WrongNumberOfDivisions);
+            }
+            Vector3 dir = path[1] - path[0];
+            Vector3 vecLeft1 = new Vector3(dir.Y, dir.Z, dir.X);
+            if (vecLeft1 == dir)
+            {
+                vecLeft1 = new Vector3(0, 0, 1);
+            }
+            Vector3 vecFront = Vector3.Cross(vecLeft1, dir);
+            sectionXAxis = Vector3.Normalize(vecFront);
+        }
+        AddTube(path, null, values, sectionScales, section, sectionXAxis.Value, isTubeClosed, isSectionClosed, frontCap, backCap);
     }
 
     /// <summary>
@@ -3532,17 +3585,20 @@ public sealed class MeshBuilder
     /// <param name="path">
     /// A list of points defining the centers of the tube.
     /// </param>
-    /// <param name="pathUps">
-    /// A list of vector defining up dir for each segments in paths.
+    /// <param name="sectionAngles">
+    /// The rotation of the section as it moves along the path, in radian.
     /// </param>
-    /// <param name="values">
+    /// <param name="xTextureCoordinates">
     /// The texture coordinate X values (optional).
     /// </param>
-    /// <param name="diameters">
-    /// The diameters (optional).
+    /// <param name="sectionScales">
+    /// The scales of the section (optional).
     /// </param>
     /// <param name="section">
     /// The section to extrude along the tube path.
+    /// </param>
+    /// / <param name="sectionXAxis">
+    /// The initial alignment of the x-axis of the section into the 3D viewport
     /// </param>
     /// <param name="isTubeClosed">
     /// If the tube is closed set to <c>true</c> .
@@ -3556,8 +3612,8 @@ public sealed class MeshBuilder
     /// <param name="backCap">
     /// Create a back Cap or not.
     /// </param>
-    public void AddTube(IList<Vector3> path, IList<Vector3>? pathUps, IList<float>? values, IList<float>? diameters,
-        IList<Vector2> section, bool isTubeClosed, bool isSectionClosed, bool frontCap = false, bool backCap = false)
+    public void AddTube(IList<Vector3> path, IList<float>? sectionAngles, IList<float>? xTextureCoordinates, IList<float>? sectionScales,
+       IList<Vector2> section, Vector3 sectionXAxis, bool isTubeClosed, bool isSectionClosed, bool frontCap = false, bool backCap = false)
     {
         if (path is null)
         {
@@ -3568,244 +3624,126 @@ public sealed class MeshBuilder
         {
             ThrowHelper.ThrowArgumentNullException(nameof(section));
         }
-
-        var pathLength = path.Count;
         var sectionLength = section.Count;
-        if (pathLength < 2 || sectionLength < 2)
+        if (path.Count < 2 || sectionLength < 2)
         {
             ThrowHelper.ThrowInvalidOperationException(WrongNumberOfDivisions);
         }
 
-        if (pathUps is not null && pathUps.Count != pathLength)
-        {
-            ThrowHelper.ThrowInvalidOperationException($"{nameof(pathUps)} count must equal to {nameof(path)} count.");
-        }
-
-        if (values is not null && values.Count == 0)
+        if (xTextureCoordinates is not null && xTextureCoordinates.Count == 0)
         {
             ThrowHelper.ThrowInvalidOperationException(WrongNumberOfTextureCoordinates);
         }
 
-        if (diameters is not null && diameters.Count == 0)
+        if (sectionScales is not null && sectionScales.Count == 0)
         {
-            ThrowHelper.ThrowInvalidOperationException(WrongNumberOfDiameters);
+            ThrowHelper.ThrowInvalidOperationException(WrongNumberOfScales);
         }
 
-        var index0 = this.Positions.Count;
-        var upRnd = (path[1] - path[0]).FindAnyPerpendicular();
-
-        var diametersCount = diameters is not null ? diameters.Count : 0;
-        var valuesCount = values is not null ? values.Count : 0;
-
-        //*******************************
-        //*** PROPOSED SOLUTION *********
-        var lastUp = new Vector3();
-        var lastForward = new Vector3();
-        //*** PROPOSED SOLUTION *********
-        //*******************************
-
-        for (var i = 0; i < pathLength; i++)
-        {
-            var r = diameters is not null ? diameters[i % diametersCount] / 2 : 1;
-            var i0 = i > 0 ? i - 1 : i;
-            var i1 = i + 1 < pathLength ? i + 1 : i;
-            var forward = path[i1] - path[i0];
-            var up = pathUps is not null ? Vector3.Normalize(pathUps[i]) : upRnd;
-            var right = Vector3.Cross(up, forward);
-
-            up = Vector3.Cross(forward, right);
-            up = Vector3.Normalize(up);
-            right = Vector3.Normalize(right);
-            var u = right;
-            var v = up;
-
-            //*******************************
-            //*** PROPOSED SOLUTION *********
-            // ** I think this will work because if path[n-1] is same point, 
-            // ** it is always a reflection of the current move
-            // ** so reversing the last move vector should work?
-            //*******************************
-            if (u.AnyUndefined() || v.AnyUndefined())
-            {
-                forward = lastForward;
-                forward *= -1;
-                up = lastUp;
-                //** Please verify that negation of "up" is correct here
-                up *= -1;
-                right = Vector3.Cross(up, forward);
-                up = Vector3.Normalize(up);
-                right = Vector3.Normalize(right);
-                u = right;
-                v = up;
-            }
-            lastForward = forward;
-            lastUp = up;
-
-            //*** PROPOSED SOLUTION *********
-            //*******************************
-            for (var j = 0; j < sectionLength; j++)
-            {
-                var w = (section[j].X * u * r) + (section[j].Y * v * r);
-                var q = path[i] + w;
-                this.Positions.Add(q);
-                if (this.Normals is not null)
-                {
-                    w = Vector3.Normalize(w);
-                    this.Normals.Add(w);
-                }
-
-                this.TextureCoordinates?.Add(
-                        values is not null
-                            ? new Vector2(values[i % valuesCount], (float)j / (sectionLength - 1))
-                            : new Vector2());
-            }
-        }
-
-        this.AddRectangularMeshTriangleIndices(index0, pathLength, sectionLength, isSectionClosed, isTubeClosed);
-
-        if (frontCap || backCap)
-        {
-            var normals = new Vector3[section.Count];
-            var fanTextures = new Vector2[section.Count];
-            var count = path.Count;
-            if (backCap)
-            {
-                var circleBack = Positions.Skip(Positions.Count - section.Count).Take(section.Count).Reverse().ToArray();
-                var normal = path[count - 1] - path[count - 2];
-                normal = Vector3.Normalize(normal);
-                for (var i = 0; i < normals.Length; ++i)
-                {
-                    normals[i] = normal;
-                }
-                this.AddTriangleFan(circleBack, normals, fanTextures);
-            }
-            if (frontCap)
-            {
-                var circleFront = Positions.Take(section.Count).ToArray();
-                var normal = path[0] - path[1];
-                normal = Vector3.Normalize(normal);
-
-                for (var i = 0; i < normals.Length; ++i)
-                {
-                    normals[i] = normal;
-                }
-                this.AddTriangleFan(circleFront, normals, fanTextures);
-            }
-        }
-    }
-
-    /// <summary>
-    /// Adds a tube with a custom section.
-    /// </summary>
-    /// <param name="path">A list of points defining the centers of the tube.</param>
-    /// <param name="angles">The rotation of the section as it moves along the path</param>
-    /// <param name="values">The texture coordinate X values (optional).</param>
-    /// <param name="diameters">The diameters (optional).</param>
-    /// <param name="section">The section to extrude along the tube path.</param>
-    /// <param name="sectionXAxis">The initial alignment of the x-axis of the section into the
-    /// 3D viewport</param>
-    /// <param name="isTubeClosed">If the tube is closed set to <c>true</c> .</param>
-    /// <param name="isSectionClosed">if set to <c>true</c> [is section closed].</param>
-    /// <param name="frontCap">
-    /// Create a front Cap or not.
-    /// </param>
-    /// <param name="backCap">
-    /// Create a back Cap or not.
-    /// </param>
-    public void AddTube(
-        IList<Vector3> path, IList<float>? angles, IList<float>? values, IList<float>? diameters,
-        IList<Vector2> section, Vector3 sectionXAxis, bool isTubeClosed, bool isSectionClosed, bool frontCap = false, bool backCap = false)
-    {
-        if (path is null)
-        {
-            ThrowHelper.ThrowArgumentNullException(nameof(path));
-        }
-
-        if (section is null)
-        {
-            ThrowHelper.ThrowArgumentNullException(nameof(section));
-        }
-
-        var pathLength = path.Count;
-        var sectionLength = section.Count;
-        if (pathLength < 2 || sectionLength < 2)
-        {
-            ThrowHelper.ThrowInvalidOperationException(WrongNumberOfDivisions);
-        }
-
-        if (values is not null && values.Count == 0)
-        {
-            ThrowHelper.ThrowInvalidOperationException(WrongNumberOfTextureCoordinates);
-        }
-
-        if (diameters is not null && diameters.Count == 0)
-        {
-            ThrowHelper.ThrowInvalidOperationException(WrongNumberOfDiameters);
-        }
-
-        if (angles is not null && angles.Count == 0)
+        if (sectionAngles is not null && sectionAngles.Count == 0)
         {
             ThrowHelper.ThrowInvalidOperationException(WrongNumberOfAngles);
         }
+
         if (sectionXAxis.Equals(default))
         {
             ThrowHelper.ThrowInvalidOperationException(nameof(sectionXAxis));
         }
 
-        var index0 = this.Positions.Count;
-        var forward = path[1] - path[0];
-        var right = sectionXAxis;
-        var up = Vector3.Cross(forward, right);
-        up = Vector3.Normalize(up);
-        right = Vector3.Normalize(right);
-
-        var diametersCount = diameters is not null ? diameters.Count : 0;
-        var valuesCount = values is not null ? values.Count : 0;
-        var anglesCount = angles is not null ? angles.Count : 0;
-
-        for (var i = 0; i < pathLength; i++)
+        path = RemoveConsecutiveDuplicates(path);
+        if (path.Count < 2)
         {
-            var radius = diameters is not null ? diameters[i % diametersCount] / 2 : 1;
-            var theta = angles is not null ? angles[i % anglesCount] : 0.0;
-
-            var ct = (float)Math.Cos(theta);
-            var st = (float)Math.Sin(theta);
-
-            var i0 = i > 0 ? i - 1 : i;
-            var i1 = i + 1 < pathLength ? i + 1 : i;
-
-            forward = path[i1] - path[i0];
-            right = Vector3.Cross(up, forward);
-            if (right.LengthSquared() > 1e-6f)
+            ThrowHelper.ThrowInvalidOperationException(WrongNumberOfDivisions);
+        }
+        // Ref: https://songho.ca/opengl/gl_cylinder.html
+        int index0 = this.Positions.Count;
+        Vector3 currentDir = Vector3.Normalize(path[1] - path[0]);
+        Vector3 preDir = currentDir;
+        Vector3 preXAxis = Vector3.Normalize(PlaneHelper.Create(Vector3.Zero, currentDir).Project(ref sectionXAxis));
+        if (isTubeClosed)
+        {
+            if (Vector3Helper.NearEqual(path[0], path[^1], new Vector3(MathUtil.ZeroTolerance)))
             {
-                up = Vector3.Cross(forward, right);
+                path.RemoveAt(path.Count - 1);
+            }
+            preDir = Vector3.Normalize(path[0] - path[^1]);
+            Quaternion rotateToPreDir = QuaternionHelper.BetweenDirections(ref currentDir, ref preDir);
+            preXAxis = Vector3.Normalize(Vector3.Transform(preXAxis, rotateToPreDir));
+        }
+        bool isOppositeDir = false;
+        int pathLength = path.Count;
+        int rowsPath = pathLength;
+        for (int i = 0; i < pathLength; i++)
+        {
+            Vector3 currentP = path[i];
+            if (i < pathLength - 1)
+            {
+                currentDir = Vector3.Normalize(path[i + 1] - currentP);
+            }
+            else //last
+            {
+                currentDir = preDir;
+                if (isTubeClosed)
+                {
+                    currentDir = Vector3.Normalize(path[0] - currentP);
+                }
+            }
+            Vector3 planNormal = Vector3.Normalize(currentDir + preDir);
+            if (planNormal.AnyUndefined())
+            {
+                // Case currentDir and preDir are opposite directions, adding an extra plan section in same place but opposite side
+                isOppositeDir = !isOppositeDir;
+                if (isOppositeDir)
+                {
+                    currentDir = preDir;
+                }
+                planNormal = currentDir;
             }
 
-            up = Vector3.Normalize(up);
-            right = Vector3.Normalize(right);
-            for (var j = 0; j < sectionLength; j++)
+            float sectionScale = sectionScales is not null ? sectionScales[i % sectionScales.Count] : 1f;
+            float theta = sectionAngles is not null ? sectionAngles[i % sectionAngles.Count] : 0f;
+
+            Quaternion q = QuaternionHelper.BetweenDirections(ref preDir, ref currentDir);
+            Vector3 rotatedXAxis = Vector3.Normalize(Vector3.Transform(preXAxis, q));
+            Vector3Collection newSection = CreateSectionByDirection(section, rotatedXAxis, currentP, currentDir, theta, sectionScale);
+
+            // Project sections points to plan by path direction
+            Plane plane = PlaneHelper.Create(currentP, planNormal);
+            for (int j = 0; j < sectionLength; j++)
             {
-                var x = (section[j].X * ct) - (section[j].Y * st);
-                var y = (section[j].X * st) + (section[j].Y * ct);
-
-                var w = (x * right * radius) + (y * up * radius);
-                var q = path[i] + w;
-                this.Positions.Add(q);
-                if (this.Normals is not null)
+                Ray ray = new Ray(newSection[j], -currentDir);
+                bool isIntersect = ray.PlaneIntersection(plane, out Vector3 intersect);
+                if (!isIntersect)
                 {
-                    w = Vector3.Normalize(w);
-                    this.Normals.Add(w);
+                    Ray reverseRay = new Ray(newSection[j], currentDir);
+                    isIntersect = reverseRay.PlaneIntersection(plane, out intersect);
                 }
+                if (isIntersect)
+                {
+                    this.Positions.Add(intersect);
 
-                this.TextureCoordinates?.Add(
-                        values is not null
-                            ? new Vector2(values[i % valuesCount], (float)j / (sectionLength - 1))
-                            : new Vector2());
+                    if (this.Normals is not null)
+                    {
+                        this.Normals.Add(Vector3.Normalize(intersect - currentP));
+                    }
+                    Vector2 textureCoordinate = Vector2.Zero;
+                    if (xTextureCoordinates is not null)
+                    {
+                        textureCoordinate = new Vector2(xTextureCoordinates[i % xTextureCoordinates.Count], (float)j / (sectionLength - 1));
+                    }
+                    this.TextureCoordinates?.Add(textureCoordinate);
+                }
+            }
+            preDir = currentDir;
+            preXAxis = rotatedXAxis;
+            if (isOppositeDir)
+            {
+                i--;
+                rowsPath++;
             }
         }
-
-        this.AddRectangularMeshTriangleIndices(index0, pathLength, sectionLength, isSectionClosed, isTubeClosed);
-        if (frontCap || backCap && path.Count > 1)
+        this.AddRectangularMeshTriangleIndices(index0, rowsPath, sectionLength, isSectionClosed, isTubeClosed);
+        if (!isTubeClosed && (frontCap || backCap))
         {
             var normals = new Vector3[section.Count];
             var fanTextures = new Vector2[section.Count];
@@ -3835,6 +3773,54 @@ public sealed class MeshBuilder
             }
         }
     }
+
+    /// <summary>
+    /// Apply 2D section on to a direction in 3D
+    /// </summary>
+    /// <param name="section"></param>
+    /// <param name="sectionXAxis"></param>
+    /// <param name="origin"></param>
+    /// <param name="direction"></param>
+    /// <param name="angle"></param>
+    /// <param name="sectionScale"></param>
+    /// <returns></returns>
+    private static Vector3Collection CreateSectionByDirection(IList<Vector2> section, Vector3 sectionXAxis, Vector3 origin, Vector3 direction, float angle = 0, float sectionScale = 1)
+    {
+        int sectioCount = section.Count;
+        Vector3Collection mappingSection = new Vector3Collection(sectioCount);
+        Vector3 dir = Vector3.Normalize(direction);
+        Vector3 right = Vector3.Normalize(sectionXAxis);
+
+        Quaternion quaternion = Quaternion.CreateFromAxisAngle(dir, angle);
+        Vector3 rotatedRight = Vector3.Transform(right, quaternion);
+        Vector3 v = Vector3.Normalize(Vector3.Cross(dir, rotatedRight));
+        Vector3 u = Vector3.Normalize(Vector3.Cross(v, dir));
+        for (int i = 0; i < sectioCount; i++)
+        {
+            var w = (section[i].X * u * sectionScale) + (section[i].Y * v * sectionScale);
+            var p = origin + w;
+            mappingSection.Add(p);
+        }
+        return mappingSection;
+    }
+
+    private static IList<Vector3> RemoveConsecutiveDuplicates(IList<Vector3> list)
+    {
+        if (list.Count == 0)
+        {
+            return list;
+        }
+        List<Vector3> result = new List<Vector3> { list[0] };
+        for (int i = 1; i < list.Count; i++)
+        {
+            if (!Vector3Helper.NearEqual(list[i], list[i - 1], new Vector3(MathUtil.ZeroTolerance)))
+            {
+                result.Add(list[i]);
+            }
+        }
+        return result;
+    }
+
     #endregion Add Geometry
 
 

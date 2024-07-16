@@ -925,7 +925,7 @@ namespace HelixToolkit.Maths
         /// </summary>
         /// <param name="vector1">The first vector.</param>
         /// <param name="vector2">The second vector.</param>
-        /// <returns>Angle (in radians) between the vectors.</returns>
+        /// <returns>The angle (in radians) between the vectors.</returns>
         /// <remarks>
         /// Note that the returned angle is never bigger than the constant <see cref="Math.PI"/>.
         /// </remarks>
@@ -944,7 +944,7 @@ namespace HelixToolkit.Maths
         /// <param name="vector1">The first vector.</param>
         /// <param name="vector2">The second vector.</param>
         /// <param name="axis">The vector around which the other vectors are rotated.</param>
-        /// <returns>Calculates the signed angle (in radians) between two vectors.</returns>
+        /// <returns>The signed angle (in radians) between two vectors.</returns>
         /// <remarks>
         /// The sign of the angle is positive in a counter-clockwise direction and negative in a clockwise direction
         /// when viewed from the side specified by the axis.
@@ -953,9 +953,10 @@ namespace HelixToolkit.Maths
         public static float SignedAngleBetween(this Vector3 vector1, Vector3 vector2, Vector3 axis)
         {
             // Ref: https://github.com/godotengine/godot/blob/master/core/math/vector3.h
+            // https://github.com/Unity-Technologies/UnityCsReference/blob/master/Runtime/Export/Math/Vector3.cs
             float unsignedAngle = Vector3Helper.AngleBetween(vector1, vector2);
             Vector3 cross = Vector3.Cross(vector1, vector2);
-            float sign = Math.Sign(Vector3.Dot(axis, cross));
+            int sign = Vector3.Dot(axis, cross) < 0f ? -1 : 1;
             return sign * unsignedAngle;
         }
 

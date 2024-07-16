@@ -8,24 +8,86 @@
         mc:Ignorable="d"
         Title="MeshBuilderSample" Height="450" Width="800">
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition />
-        </Grid.RowDefinitions>
-       
-        <h:HelixViewport3D Grid.Row="1"
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="200"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <StackPanel Grid.Row="0" Grid.Column="0">
+            <Expander IsExpanded="True"  Header="Tube">
+                <GroupBox Header="MeshBuilder.AddTube()">
+                    <StackPanel>
+                        <VirtualizingStackPanel>
+                            <TextBlock>Section (Vector2)</TextBlock>
+                            <ComboBox IsEditable="True" Width="180" SelectedIndex="0" x:Name="tubeSection">
+                                <ComboBoxItem>Circle section</ComboBoxItem>
+                                <ComboBoxItem>Rectangle section</ComboBoxItem>
+                                <ComboBoxItem>Off-center rectangle section</ComboBoxItem>
+                                <ComboBoxItem>Polygon section</ComboBoxItem>
+                            </ComboBox>
+                        </VirtualizingStackPanel>
+                        <VirtualizingStackPanel>
+                            <TextBlock>SectionXAxis (Vector3)</TextBlock>
+                            <TextBox x:Name="tubeSectionXAxis">1,0,0</TextBox>
+                        </VirtualizingStackPanel>
+                        <CheckBox x:Name="tubeIsSectionClose">Is Section Close</CheckBox>
+                        <VirtualizingStackPanel>
+                            <TextBlock>Paths (Vector3)</TextBlock>
+                            <ComboBox IsEditable="True" Width="180" SelectedIndex="0" x:Name="tubePaths">
+                                <ComboBoxItem>0,0,0 0,0,10</ComboBoxItem>
+                                <ComboBoxItem>0,0,0 0,0,-10</ComboBoxItem>
+                                <ComboBoxItem>0,0,0 10,0,0</ComboBoxItem>
+                                <ComboBoxItem>0,0,0 -10,0,0</ComboBoxItem>
+                                <ComboBoxItem>0,0,0 0,10,0</ComboBoxItem>
+                                <ComboBoxItem>0,0,0 0,-10,0</ComboBoxItem>
+                                <ComboBoxItem>~~~~~~~~~~~~</ComboBoxItem>
+                                <ComboBoxItem>0,0,0 5,10,15</ComboBoxItem>
+                                <ComboBoxItem>0,0,0 0,0,10 0,0,5</ComboBoxItem>
+                                <ComboBoxItem>0,0,0 0,0,10 0,0,-5</ComboBoxItem>
+                                <ComboBoxItem>0,0,0 0,0,-10 0,0,5</ComboBoxItem>
+                                <ComboBoxItem>0,0,0 0,0,10 0,0,-5 10,10,-5</ComboBoxItem>
+                                <ComboBoxItem>~~~~~~~~~~~~</ComboBoxItem>
+                                <ComboBoxItem>1,1,0 1,1,10 -5,-3,10</ComboBoxItem>
+                                <ComboBoxItem>1,1,0 1,1,10 -5,-3,10 -5,5,7 -10,5,4</ComboBoxItem>
+                            </ComboBox>
+                        </VirtualizingStackPanel>
+                        <CheckBox x:Name="tubeIsTubeClose">Is Tube Close</CheckBox>
+                        <VirtualizingStackPanel>
+                            <TextBlock>Section angles (float)</TextBlock>
+                            <TextBox x:Name="tubeSectionAngles"></TextBox>
+                        </VirtualizingStackPanel>
+                        <VirtualizingStackPanel>
+                            <TextBlock>Section Scales (float)</TextBlock>
+                            <TextBox x:Name="tubeSectionScales"></TextBox>
+                        </VirtualizingStackPanel>
+
+                        <VirtualizingStackPanel>
+                            <TextBlock>xTextureCoordinates (float)</TextBlock>
+                            <TextBox x:Name="tubexTextureCoordinates"></TextBox>
+                        </VirtualizingStackPanel>
+                        <VirtualizingStackPanel>
+                            <TextBlock>Caps</TextBlock>
+                            <CheckBox x:Name="tubeFrontCap">Front cap</CheckBox>
+                            <CheckBox x:Name="tubeBackCap">Back cap</CheckBox>
+                        </VirtualizingStackPanel>
+                        <Button Click="Tube_Click">Apply</Button>
+                    </StackPanel>
+                </GroupBox>
+            </Expander>
+        </StackPanel>
+
+
+        <h:HelixViewport3D Grid.Row="1" Grid.Column="1"
+                           x:Name="hx" x:FieldModifier="public"
                            ShowCoordinateSystem="True">
             <h:DefaultLights />
-            <h:CoordinateSystemVisual3D/>
             <h:GridLinesVisual3D Fill="Gray" />
             <h:MeshGeometryVisual3D Transform="{h:Translate 6,0,-0.5}"
                              MeshGeometry="{Binding GlassGeometry}"
                              Fill="White"
                              Visible="{Binding IsChecked, ElementName=MeshVisible}" />
-            <h:MeshGeometryVisual3D
-                   MeshGeometry="{Binding Tube}"
-                   Fill="White"
-                   Visible="{Binding IsChecked, ElementName=MeshVisible}" />
+            <h:MeshGeometryVisual3D x:Name="meshVisual3D"
+                                    Fill="Red">
+            </h:MeshGeometryVisual3D>
         </h:HelixViewport3D>
     </Grid>
 </Window>
