@@ -3244,7 +3244,7 @@ public sealed class MeshBuilder
             this.Normals.Add(w);
         }
 
-        this.TriangleIndices.Add(i0 + 0);
+        this.TriangleIndices.Add(i0);
         this.TriangleIndices.Add(i0 + 1);
         this.TriangleIndices.Add(i0 + 2);
     }

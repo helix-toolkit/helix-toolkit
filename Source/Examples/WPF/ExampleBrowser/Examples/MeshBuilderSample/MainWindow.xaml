@@ -13,6 +13,27 @@
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         <StackPanel Grid.Row="0" Grid.Column="0">
+            <Expander IsExpanded="True"  Header="Triangle">
+                <GroupBox Header="MeshBuilder.AddTriangle()">
+                    <StackPanel>
+                        <VirtualizingStackPanel>
+                            <TextBlock>Points: p0,p1,p2 (Vector3)</TextBlock>
+                            <ComboBox IsEditable="True" Width="180" SelectedIndex="0" x:Name="trianglePoints">
+                                <ComboBoxItem>0,0,0 1,0,0 0,1,0</ComboBoxItem>
+                            </ComboBox>
+                        </VirtualizingStackPanel>
+                        <VirtualizingStackPanel>
+                            <TextBlock TextWrapping="WrapWithOverflow">Texture coordinate: uv0,uv1,uv2 (Vector2)</TextBlock>
+                            <ComboBox IsEditable="True" Width="180" SelectedIndex="0" x:Name="triangleTextures">
+                                <ComboBoxItem></ComboBoxItem>
+                                <ComboBoxItem>0,0 1,0 0,1</ComboBoxItem>
+                            </ComboBox>
+                        </VirtualizingStackPanel>
+                        <CheckBox x:Name="triangleUseTexttureMat">Use Textture material</CheckBox>
+                        <Button Click="AddTriangle_Click">Apply</Button>
+                    </StackPanel>
+                </GroupBox>
+            </Expander>
             <Expander IsExpanded="True"  Header="Tube">
                 <GroupBox Header="MeshBuilder.AddTube()">
                     <StackPanel>
@@ -71,7 +92,7 @@
                             <CheckBox x:Name="tubeFrontCap">Front cap</CheckBox>
                             <CheckBox x:Name="tubeBackCap">Back cap</CheckBox>
                         </VirtualizingStackPanel>
-                        <Button Click="Tube_Click">Apply</Button>
+                        <Button Click="AddTube_Click">Apply</Button>
                     </StackPanel>
                 </GroupBox>
             </Expander>
@@ -89,6 +110,7 @@
                              Visible="{Binding IsChecked, ElementName=MeshVisible}" />
             <h:MeshGeometryVisual3D x:Name="meshVisual3D">
             </h:MeshGeometryVisual3D>
+            <ModelVisual3D x:Name="triangleVisual3D"></ModelVisual3D>
         </h:HelixViewport3D>
     </Grid>
 </Window>

@@ -40,8 +40,21 @@ namespace MeshBuilderSample
                 return builder.ToMesh().ToWndMeshGeometry3D(true);
             }
         }
-
-        private void Tube_Click(object sender, RoutedEventArgs e)
+        private Material GetMaterial(bool useTexture)
+        {
+            Brush brush;
+            if (useTexture)
+            {
+                brush = new ImageBrush(new BitmapImage(new Uri("pack://application:,,,/Examples/MeshBuilderSample/TextureTestImage.png", UriKind.RelativeOrAbsolute)));
+            }
+            else
+            {
+                brush = Brushes.Green;
+            }
+            return new DiffuseMaterial(brush);
+        }
+        #region Tube
+        private void AddTube_Click(object sender, RoutedEventArgs e)
         {
             try
             {
@@ -114,21 +127,14 @@ namespace MeshBuilderSample
                     frontCap: isFrontCap,
                     backCap: isBackCap);
                 meshVisual3D.MeshGeometry = builder.ToMesh().ToWndMeshGeometry3D();
-                if (string.IsNullOrEmpty(tubexTextureCoordinates.Text))
-                {
-                meshVisual3D.Material = new DiffuseMaterial(Brushes.Green);
-            }
-                else
-                {
-                    var img = new ImageBrush(new BitmapImage(new Uri("pack://application:,,,/Examples/MeshBuilderSample/TextureTestImage.png", UriKind.RelativeOrAbsolute)));
-                    meshVisual3D.Material = new DiffuseMaterial(img);
-                }
+
+                bool useTextureMat = !string.IsNullOrEmpty(tubexTextureCoordinates.Text);
+                meshVisual3D.Material = GetMaterial(useTextureMat);
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.ToString());
             }
-
         }
         private IList<Vector2> GetOffCenterRectangle()
         {
@@ -152,5 +158,46 @@ namespace MeshBuilderSample
 
             return wavy;
         }
+        #endregion
+        #region Triangle
+        private void AddTriangle_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                Vector3[] points = Array.Empty<Vector3>();
+                if (!string.IsNullOrEmpty(trianglePoints.Text))
+                {
+                    points = Vector3DCollection.Parse(trianglePoints.Text).ToVector3Collection().ToArray();
+                }
+                Vector2[]? textures = null;
+                if (!string.IsNullOrEmpty(triangleTextures.Text))
+                {
+                    textures = VectorCollection.Parse(triangleTextures.Text).ToVector2Collection().ToArray();
+                }
+
+                var builder = new MeshBuilder(true, true);
+                if (points is not null && textures is null)
+                {
+                    builder.AddTriangle(points[0], points[1], points[2]);
+                }
+                else if (points is not null && textures is not null)
+                {
+                    builder.AddTriangle(points[0], points[1], points[2], textures[0], textures[1], textures[2]);
+                }
+                else
+                {
+                    // builder.AddTriangle(vertexIndices);
+                }
+                var mesh = builder.ToMesh().ToWndMeshGeometry3D();
+                GeometryModel3D g = new GeometryModel3D(mesh, GetMaterial(triangleUseTexttureMat.IsChecked == true));
+                triangleVisual3D.Content = g;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
+
+        }
+        #endregion
     }
 }
