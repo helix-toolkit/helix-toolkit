@@ -62,6 +62,10 @@ namespace MeshBuilderSample
                 {
                     section = GetPolygon();
                 }
+                else if (tubeSection.Text.Equals("Wavy section", StringComparison.CurrentCultureIgnoreCase))
+                {
+                    section = GetWavy();
+                }
                 else if (!string.IsNullOrEmpty(tubeSection.Text))
                 {
                     section = PointCollection.Parse(tubeSection.Text).ToVector2Collection();
@@ -105,13 +109,20 @@ namespace MeshBuilderSample
                     sectionScales: sectionsScales, 
                     section: section,
                     sectionXAxis: sectionXAxis.Value,
-                    isTubeClosed:isTubeClose,
-                    isSectionClosed:isSectionClose,
+                    isTubeClosed: isTubeClose,
+                    isSectionClosed: isSectionClose,
                     frontCap: isFrontCap,
                     backCap: isBackCap);
                 meshVisual3D.MeshGeometry = builder.ToMesh().ToWndMeshGeometry3D();
+                if (string.IsNullOrEmpty(tubexTextureCoordinates.Text))
+                {
                 meshVisual3D.Material = new DiffuseMaterial(Brushes.Green);
-                meshVisual3D.BackMaterial = new DiffuseMaterial(Brushes.Orange);
+            }
+                else
+                {
+                    var img = new ImageBrush(new BitmapImage(new Uri("pack://application:,,,/Examples/MeshBuilderSample/TextureTestImage.png", UriKind.RelativeOrAbsolute)));
+                    meshVisual3D.Material = new DiffuseMaterial(img);
+                }
             }
             catch (Exception ex)
             {
@@ -128,6 +139,18 @@ namespace MeshBuilderSample
         {
             IList<Vector2> rect = new Vector2[] { new Vector2(-1, 2), new Vector2(1, 2), new Vector2(3, 0), new Vector2(0, -3), new Vector2(-1, -3), new Vector2(-2, -1), new Vector2(0, 0) };
             return rect;
+        }
+        private IList<Vector2> GetWavy()
+        {
+            int number = 36;
+            IList<Vector2> wavy = new Vector2[number];
+            float unitRad = 2 * (float)Math.PI / number;
+            for (int i = 0; i < number; i++)
+            {
+                wavy[i] = new Vector2(i * unitRad, (float)Math.Sin(unitRad * i));
+            }
+
+            return wavy;
         }
     }
 }

@@ -23,6 +23,7 @@
                                 <ComboBoxItem>Rectangle section</ComboBoxItem>
                                 <ComboBoxItem>Off-center rectangle section</ComboBoxItem>
                                 <ComboBoxItem>Polygon section</ComboBoxItem>
+                                <ComboBoxItem>Wavy section</ComboBoxItem>
                             </ComboBox>
                         </VirtualizingStackPanel>
                         <VirtualizingStackPanel>
@@ -45,6 +46,7 @@
                                 <ComboBoxItem>0,0,0 0,0,10 0,0,-5</ComboBoxItem>
                                 <ComboBoxItem>0,0,0 0,0,-10 0,0,5</ComboBoxItem>
                                 <ComboBoxItem>0,0,0 0,0,10 0,0,-5 10,10,-5</ComboBoxItem>
+                                <ComboBoxItem>0,1,0 0,1,5 0,1,5 0,1,10 0,1,10</ComboBoxItem>
                                 <ComboBoxItem>~~~~~~~~~~~~</ComboBoxItem>
                                 <ComboBoxItem>1,1,0 1,1,10 -5,-3,10</ComboBoxItem>
                                 <ComboBoxItem>1,1,0 1,1,10 -5,-3,10 -5,5,7 -10,5,4</ComboBoxItem>
@@ -85,8 +87,7 @@
                              MeshGeometry="{Binding GlassGeometry}"
                              Fill="White"
                              Visible="{Binding IsChecked, ElementName=MeshVisible}" />
-            <h:MeshGeometryVisual3D x:Name="meshVisual3D"
-                                    Fill="Red">
+            <h:MeshGeometryVisual3D x:Name="meshVisual3D">
             </h:MeshGeometryVisual3D>
         </h:HelixViewport3D>
     </Grid>

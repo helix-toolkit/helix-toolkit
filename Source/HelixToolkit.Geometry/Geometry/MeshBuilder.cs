@@ -2084,7 +2084,7 @@ public sealed class MeshBuilder
         //// |               |
         //// |               |
         //// +---------------+
-        //// origin               p1
+        //// origin           p1
         var uv0 = new Vector2(0, 0);
         var uv1 = new Vector2(1, 0);
         var uv2 = new Vector2(1, 1);
@@ -2130,7 +2130,7 @@ public sealed class MeshBuilder
         //// |               |
         //// |               |
         //// +---------------+
-        //// origin               p1
+        //// origin           p1
         var i0 = this.Positions.Count;
 
         this.Positions.Add(p0);
@@ -2204,7 +2204,7 @@ public sealed class MeshBuilder
             ThrowHelper.ThrowInvalidOperationException(WrongNumberOfTextureCoordinates);
         }
 
-        Debug.Assert(quadPositions.Count > 0 && quadPositions.Count % 4 == 0, "Wrong number of positions.");
+        Debug.Assert(quadPositions.Count > 0 && quadPositions.Count % 4 == 0, WrongNumberOfPositions);
 
         var index0 = this.Positions.Count;
         foreach (var p in quadPositions)
@@ -3729,7 +3729,7 @@ public sealed class MeshBuilder
                     Vector2 textureCoordinate = Vector2.Zero;
                     if (xTextureCoordinates is not null)
                     {
-                        textureCoordinate = new Vector2(xTextureCoordinates[i % xTextureCoordinates.Count], (float)j / (sectionLength - 1));
+                        textureCoordinate = new Vector2(xTextureCoordinates[i % xTextureCoordinates.Count], -(float)j / (sectionLength - 1));
                     }
                     this.TextureCoordinates?.Add(textureCoordinate);
                 }
