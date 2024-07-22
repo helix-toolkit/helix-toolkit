@@ -3705,7 +3705,7 @@ public sealed class MeshBuilder
 
             Quaternion q = QuaternionHelper.BetweenDirections(ref preDir, ref currentDir);
             Vector3 rotatedXAxis = Vector3.Normalize(Vector3.Transform(preXAxis, q));
-            Vector3Collection newSection = CreateSectionByDirection(section, rotatedXAxis, currentP, currentDir, theta, sectionScale);
+            Vector3Collection newSection = CreateSectionPerpendicularToDirection(section, rotatedXAxis, currentP, currentDir, theta, sectionScale);
 
             // Project sections points to plan by path direction
             Plane plane = PlaneHelper.Create(currentP, planNormal);
@@ -3784,7 +3784,7 @@ public sealed class MeshBuilder
     /// <param name="angle"></param>
     /// <param name="sectionScale"></param>
     /// <returns></returns>
-    private static Vector3Collection CreateSectionByDirection(IList<Vector2> section, Vector3 sectionXAxis, Vector3 origin, Vector3 direction, float angle = 0, float sectionScale = 1)
+    private static Vector3Collection CreateSectionPerpendicularToDirection(IList<Vector2> section, Vector3 sectionXAxis, Vector3 origin, Vector3 direction, float angle = 0, float sectionScale = 1)
     {
         int sectioCount = section.Count;
         Vector3Collection mappingSection = new Vector3Collection(sectioCount);

@@ -168,6 +168,31 @@ namespace HelixToolkit.Maths
         }
 
         /// <summary>
+        /// Tests whether one 2D vector is near another 2D vector.
+        /// </summary>
+        /// <param name="left">The left vector.</param>
+        /// <param name="right">The right vector.</param>
+        /// <param name="epsilon">The epsilon.</param>
+        /// <returns><c>true</c> if left and right are near another 2D, <c>false</c> otherwise</returns>
+        public static bool NearEqual(Vector2 left, Vector2 right, Vector2 epsilon)
+        {
+            return NearEqual(ref left, ref right, ref epsilon);
+        }
+
+        /// <summary>
+        /// Tests whether one 2D vector is near another 2D vector.
+        /// </summary>
+        /// <param name="left">The left vector.</param>
+        /// <param name="right">The right vector.</param>
+        /// <param name="epsilon">The epsilon.</param>
+        /// <returns><c>true</c> if left and right are near another 2D, <c>false</c> otherwise</returns>
+        public static bool NearEqual(ref Vector2 left, ref Vector2 right, ref Vector2 epsilon)
+        {
+            return MathUtil.WithinEpsilon(left.X, right.X, epsilon.X) 
+                && MathUtil.WithinEpsilon(left.Y, right.Y, epsilon.Y);
+        }
+
+        /// <summary>
         /// Saturates this instance in the range [0,1]
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
