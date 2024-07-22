@@ -376,6 +376,20 @@ public static class ConverterExtensions
         return newCollection;
     }
 
+    public static HelixToolkit.Vector2Collection? ToVector2Collection(this System.Windows.Media.VectorCollection? collection)
+    {
+        if (collection is null)
+        {
+            return null;
+        }
+        var newCollection = new HelixToolkit.Vector2Collection(collection.Count);
+        for (int i = 0; i < collection.Count; i++)
+        {
+            newCollection.Add(collection[i].ToVector2());
+        }
+        return newCollection;
+    }
+
     public static System.Windows.Media.PointCollection? ToWndPointCollection(this IList<System.Numerics.Vector2>? collection)
     {
         if (collection is null)
@@ -409,7 +423,7 @@ public static class ConverterExtensions
 
         return newCollection;
     }
-
+ 
     public static System.Windows.Media.Int32Collection? ToWndInt32Collection(this IList<int>? collection)
     {
         if (collection is null)

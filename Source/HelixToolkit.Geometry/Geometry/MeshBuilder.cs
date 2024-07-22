@@ -2084,7 +2084,7 @@ public sealed class MeshBuilder
         //// |               |
         //// |               |
         //// +---------------+
-        //// origin               p1
+        //// origin           p1
         var uv0 = new Vector2(0, 0);
         var uv1 = new Vector2(1, 0);
         var uv2 = new Vector2(1, 1);
@@ -2130,7 +2130,7 @@ public sealed class MeshBuilder
         //// |               |
         //// |               |
         //// +---------------+
-        //// origin               p1
+        //// origin           p1
         var i0 = this.Positions.Count;
 
         this.Positions.Add(p0);
@@ -2204,7 +2204,7 @@ public sealed class MeshBuilder
             ThrowHelper.ThrowInvalidOperationException(WrongNumberOfTextureCoordinates);
         }
 
-        Debug.Assert(quadPositions.Count > 0 && quadPositions.Count % 4 == 0, "Wrong number of positions.");
+        Debug.Assert(quadPositions.Count > 0 && quadPositions.Count % 4 == 0, WrongNumberOfPositions);
 
         var index0 = this.Positions.Count;
         foreach (var p in quadPositions)
@@ -2254,14 +2254,14 @@ public sealed class MeshBuilder
     {
         Guard.IsNotNull(points);
 
-        var index0 = this.Positions.Count;
+        int index0 = this.Positions.Count;
 
-        foreach (var pt in points)
+        foreach (Vector3 pt in points)
         {
             this.Positions.Add(pt);
         }
 
-        var rows = points.Count / columns;
+        int rows = points.Count / columns;
 
         this.AddRectangularMeshTriangleIndices(index0, rows, columns);
         if (this.Normals != null)
@@ -2295,12 +2295,12 @@ public sealed class MeshBuilder
     {
         Guard.IsNotNull(points);
 
-        var rows = points.GetUpperBound(0) + 1;
-        var columns = points.GetUpperBound(1) + 1;
-        var index0 = this.Positions.Count;
-        for (var i = 0; i < rows; i++)
+        int rows = points.GetUpperBound(0) + 1;
+        int columns = points.GetUpperBound(1) + 1;
+        int index0 = this.Positions.Count;
+        for (int i = 0; i < rows; i++)
         {
-            for (var j = 0; j < columns; j++)
+            for (int j = 0; j < columns; j++)
             {
                 this.Positions.Add(points[i, j]);
             }
@@ -2317,9 +2317,9 @@ public sealed class MeshBuilder
         {
             if (texCoords != null)
             {
-                for (var i = 0; i < rows; i++)
+                for (int i = 0; i < rows; i++)
                 {
-                    for (var j = 0; j < columns; j++)
+                    for (int j = 0; j < columns; j++)
                     {
                         this.TextureCoordinates.Add(texCoords[i, j]);
                     }
@@ -2348,14 +2348,14 @@ public sealed class MeshBuilder
     {
         Guard.IsNotNull(points);
 
-        var index0 = this.Positions.Count;
+        int index0 = this.Positions.Count;
 
-        foreach (var pt in points)
+        foreach (Vector3 pt in points)
         {
             this.Positions.Add(pt);
         }
 
-        var rows = points.Count / columns;
+        int rows = points.Count / columns;
 
         if (flipTriangles)
         {
@@ -2402,16 +2402,16 @@ public sealed class MeshBuilder
         }
 
         // index0
-        var index0 = this.Positions.Count;
+        int index0 = this.Positions.Count;
 
         // positions
-        var stepy = height / (rows - 1);
-        var stepx = width / (columns - 1);
+        float stepx = width / (columns - 1);
+        float stepy = height / (rows - 1);
         //rows++;
         //columns++;
-        for (var y = 0; y < rows; y++)
+        for (int y = 0; y < rows; y++)
         {
-            for (var x = 0; x < columns; x++)
+            for (int x = 0; x < columns; x++)
             {
                 this.Positions.Add(new Vector3(x * stepx, y * stepy, 0));
             }
@@ -2459,29 +2459,29 @@ public sealed class MeshBuilder
             return;
         }
 
-        for (var i = 0; i < rows; i++)
+        for (int i = 0; i < rows; i++)
         {
-            var i1 = i + 1;
+            int i1 = i + 1;
             if (i1 == rows)
             {
                 i1--;
             }
 
-            var i0 = i1 - 1;
-            for (var j = 0; j < columns; j++)
+            int i0 = i1 - 1;
+            for (int j = 0; j < columns; j++)
             {
-                var j1 = j + 1;
+                int j1 = j + 1;
                 if (j1 == columns)
                 {
                     j1--;
                 }
 
-                var j0 = j1 - 1;
-                var u = Vector3.Subtract(
+                int j0 = j1 - 1;
+                Vector3 u = Vector3.Subtract(
                     this.Positions[index0 + (i1 * columns) + j0], this.Positions[index0 + (i0 * columns) + j0]);
-                var v = Vector3.Subtract(
+                Vector3 v = Vector3.Subtract(
                     this.Positions[index0 + (i0 * columns) + j1], this.Positions[index0 + (i0 * columns) + j0]);
-                var normal = Vector3.Cross(u, v);
+                Vector3 normal = Vector3.Cross(u, v);
                 normal = Vector3.Normalize(normal);
                 this.Normals.Add(normal);
             }
@@ -2510,13 +2510,13 @@ public sealed class MeshBuilder
             return;
         }
 
-        for (var i = 0; i < rows; i++)
+        for (int i = 0; i < rows; i++)
         {
-            var v = flipRowsAxis ? (1 - (float)i / (rows - 1)) : (float)i / (rows - 1);
+            float v = flipRowsAxis ? (1 - (float)i / (rows - 1)) : (float)i / (rows - 1);
 
-            for (var j = 0; j < columns; j++)
+            for (int j = 0; j < columns; j++)
             {
-                var u = flipColumnsAxis ? (1 - (float)j / (columns - 1)) : (float)j / (columns - 1);
+                float u = flipColumnsAxis ? (1 - (float)j / (columns - 1)) : (float)j / (columns - 1);
                 this.TextureCoordinates.Add(new Vector2(u, v));
             }
         }
@@ -2539,11 +2539,11 @@ public sealed class MeshBuilder
     /// </param>
     public void AddRectangularMeshTriangleIndices(int index0, int rows, int columns, bool isSpherical = false)
     {
-        for (var i = 0; i < rows - 1; i++)
+        for (int i = 0; i < rows - 1; i++)
         {
-            for (var j = 0; j < columns - 1; j++)
+            for (int j = 0; j < columns - 1; j++)
             {
-                var ij = (i * columns) + j;
+                int ij = (i * columns) + j;
                 if (!isSpherical || i > 0)
                 {
                     this.TriangleIndices.Add(index0 + ij);
@@ -2582,8 +2582,8 @@ public sealed class MeshBuilder
     public void AddRectangularMeshTriangleIndices(
         int index0, int rows, int columns, bool rowsClosed, bool columnsClosed)
     {
-        var m2 = rows - 1;
-        var n2 = columns - 1;
+        int m2 = rows - 1;
+        int n2 = columns - 1;
         if (columnsClosed)
         {
             m2++;
@@ -2594,14 +2594,14 @@ public sealed class MeshBuilder
             n2++;
         }
 
-        for (var i = 0; i < m2; i++)
+        for (int i = 0; i < m2; i++)
         {
-            for (var j = 0; j < n2; j++)
+            for (int j = 0; j < n2; j++)
             {
-                var i00 = index0 + (i * columns) + j;
-                var i01 = index0 + (i * columns) + ((j + 1) % columns);
-                var i10 = index0 + (((i + 1) % rows) * columns) + j;
-                var i11 = index0 + (((i + 1) % rows) * columns) + ((j + 1) % columns);
+                int i00 = index0 + (i * columns) + j;
+                int i01 = index0 + (i * columns) + ((j + 1) % columns);
+                int i10 = index0 + (((i + 1) % rows) * columns) + j;
+                int i11 = index0 + (((i + 1) % rows) * columns) + ((j + 1) % columns);
                 this.TriangleIndices.Add(i00);
                 this.TriangleIndices.Add(i11);
                 this.TriangleIndices.Add(i01);
@@ -2630,11 +2630,11 @@ public sealed class MeshBuilder
     /// </param>
     private void AddRectangularMeshTriangleIndicesFlipped(int index0, int rows, int columns, bool isSpherical = false)
     {
-        for (var i = 0; i < rows - 1; i++)
+        for (int i = 0; i < rows - 1; i++)
         {
-            for (var j = 0; j < columns - 1; j++)
+            for (int j = 0; j < columns - 1; j++)
             {
-                var ij = (i * columns) + j;
+                int ij = (i * columns) + j;
                 if (!isSpherical || i > 0)
                 {
                     this.TriangleIndices.Add(index0 + ij);
@@ -2673,17 +2673,17 @@ public sealed class MeshBuilder
         var b = (float)Math.Sqrt(2.0 / (5.0 - Math.Sqrt(5.0)));
 
         var icosahedronIndices = new[]
-            {
-                    1, 4, 0, 4, 9, 0, 4, 5, 9, 8, 5, 4, 1, 8, 4, 1, 10, 8, 10, 3, 8, 8, 3, 5, 3, 2, 5, 3, 7, 2, 3, 10, 7,
-                    10, 6, 7, 6, 11, 7, 6, 0, 11, 6, 1, 0, 10, 1, 6, 11, 0, 9, 2, 11, 9, 5, 2, 9, 11, 2, 7
-                };
+        {
+            1, 4, 0, 4, 9, 0, 4, 5, 9, 8, 5, 4, 1, 8, 4, 1, 10, 8, 10, 3, 8, 8, 3, 5, 3, 2, 5, 3, 7, 2, 3, 10, 7,
+            10, 6, 7, 6, 11, 7, 6, 0, 11, 6, 1, 0, 10, 1, 6, 11, 0, 9, 2, 11, 9, 5, 2, 9, 11, 2, 7
+        };
 
         var icosahedronVertices = new[]
-            {
-                    new Vector3(-a, 0, b), new Vector3(a, 0, b), new Vector3(-a, 0, -b), new Vector3(a, 0, -b),
-                    new Vector3(0, b, a), new Vector3(0, b, -a), new Vector3(0, -b, a), new Vector3(0, -b, -a),
-                    new Vector3(b, a, 0), new Vector3(-b, a, 0), new Vector3(b, -a, 0), new Vector3(-b, -a, 0)
-                };
+        {
+            new Vector3(-a, 0, b), new Vector3(a, 0, b), new Vector3(-a, 0, -b), new Vector3(a, 0, -b),
+            new Vector3(0, b, a), new Vector3(0, b, -a), new Vector3(0, -b, a), new Vector3(0, -b, -a),
+            new Vector3(b, a, 0), new Vector3(-b, a, 0), new Vector3(b, -a, 0), new Vector3(-b, -a, 0)
+        };
 
         if (shareVertices)
         {
@@ -3171,7 +3171,7 @@ public sealed class MeshBuilder
     /// <param name="vertexIndices">The vertex indices.</param>
     public void AddTriangle(IList<int> vertexIndices)
     {
-        for (var i = 0; i < 3; i++)
+        for (int i = 0; i < 3; i++)
         {
             this.TriangleIndices.Add(vertexIndices[i]);
         }
@@ -3191,9 +3191,9 @@ public sealed class MeshBuilder
     /// </param>
     public void AddTriangle(Vector3 p0, Vector3 p1, Vector3 p2)
     {
-        var uv0 = new Vector2(0, 0);
-        var uv1 = new Vector2(1, 0);
-        var uv2 = new Vector2(0, 1);
+        Vector2 uv0 = new Vector2(0, 0);
+        Vector2 uv1 = new Vector2(1, 0);
+        Vector2 uv2 = new Vector2(0, 1);
         this.AddTriangle(p0, p1, p2, uv0, uv1, uv2);
     }
 
@@ -3220,7 +3220,7 @@ public sealed class MeshBuilder
     /// </param>
     public void AddTriangle(Vector3 p0, Vector3 p1, Vector3 p2, Vector2 uv0, Vector2 uv1, Vector2 uv2)
     {
-        var i0 = this.Positions.Count;
+        int i0 = this.Positions.Count;
 
         this.Positions.Add(p0);
         this.Positions.Add(p1);
@@ -3235,16 +3235,16 @@ public sealed class MeshBuilder
 
         if (this.Normals != null)
         {
-            var p10 = p1 - p0;
-            var p20 = p2 - p0;
-            var w = Vector3.Cross(p10, p20);
+            Vector3 p10 = p1 - p0;
+            Vector3 p20 = p2 - p0;
+            Vector3 w = Vector3.Cross(p10, p20);
             w = Vector3.Normalize(w);
             this.Normals.Add(w);
             this.Normals.Add(w);
             this.Normals.Add(w);
         }
 
-        this.TriangleIndices.Add(i0 + 0);
+        this.TriangleIndices.Add(i0);
         this.TriangleIndices.Add(i0 + 1);
         this.TriangleIndices.Add(i0 + 2);
     }
@@ -3257,7 +3257,7 @@ public sealed class MeshBuilder
     /// </param>
     public void AddTriangleFan(IList<int> vertices)
     {
-        for (var i = 0; i + 2 < vertices.Count; i++)
+        for (int i = 0; i + 2 < vertices.Count; i++)
         {
             this.TriangleIndices.Add(vertices[0]);
             this.TriangleIndices.Add(vertices[i + 1]);
@@ -3294,15 +3294,15 @@ public sealed class MeshBuilder
         if (fanPositions.Count < 3)
             return;
 
-        var index0 = this.Positions.Count;
-        foreach (var p in fanPositions)
+        int index0 = this.Positions.Count;
+        foreach (Vector3 p in fanPositions)
         {
             this.Positions.Add(p);
         }
 
         if (this.TextureCoordinates != null && fanTextureCoordinates != null)
         {
-            foreach (var tc in fanTextureCoordinates)
+            foreach (Vector2 tc in fanTextureCoordinates)
             {
                 this.TextureCoordinates.Add(tc);
             }
@@ -3310,14 +3310,14 @@ public sealed class MeshBuilder
 
         if (this.Normals != null && fanNormals != null)
         {
-            foreach (var n in fanNormals)
+            foreach (Vector3 n in fanNormals)
             {
                 this.Normals.Add(n);
             }
         }
 
-        var indexEnd = this.Positions.Count;
-        for (var i = index0; i + 2 < indexEnd; i++)
+        int indexEnd = this.Positions.Count;
+        for (int i = index0; i + 2 < indexEnd; i++)
         {
             this.TriangleIndices.Add(index0);
             this.TriangleIndices.Add(i + 1);
@@ -3366,15 +3366,15 @@ public sealed class MeshBuilder
             ThrowHelper.ThrowInvalidOperationException(WrongNumberOfTextureCoordinates);
         }
 
-        var index0 = this.Positions.Count;
-        foreach (var p in trianglePositions)
+        int index0 = this.Positions.Count;
+        foreach (Vector3 p in trianglePositions)
         {
             this.Positions.Add(p);
         }
 
         if (this.TextureCoordinates != null && triangleTextureCoordinates != null)
         {
-            foreach (var tc in triangleTextureCoordinates)
+            foreach (Vector2 tc in triangleTextureCoordinates)
             {
                 this.TextureCoordinates.Add(tc);
             }
@@ -3382,14 +3382,14 @@ public sealed class MeshBuilder
 
         if (this.Normals != null && triangleNormals != null)
         {
-            foreach (var n in triangleNormals)
+            foreach (Vector3 n in triangleNormals)
             {
                 this.Normals.Add(n);
             }
         }
 
-        var indexEnd = this.Positions.Count;
-        for (var i = index0; i < indexEnd; i++)
+        int indexEnd = this.Positions.Count;
+        for (int i = index0; i < indexEnd; i++)
         {
             this.TriangleIndices.Add(i);
         }
@@ -3434,8 +3434,8 @@ public sealed class MeshBuilder
             ThrowHelper.ThrowInvalidOperationException(WrongNumberOfTextureCoordinates);
         }
 
-        var index0 = this.Positions.Count;
-        for (var i = 0; i < stripPositions.Count; i++)
+        int index0 = this.Positions.Count;
+        for (int i = 0; i < stripPositions.Count; i++)
         {
             this.Positions.Add(stripPositions[i]);
             if (this.Normals != null && stripNormals != null)
@@ -3449,8 +3449,8 @@ public sealed class MeshBuilder
             }
         }
 
-        var indexEnd = this.Positions.Count;
-        for (var i = index0; i + 2 < indexEnd; i += 2)
+        int indexEnd = this.Positions.Count;
+        for (int i = index0; i + 2 < indexEnd; i += 2)
         {
             this.TriangleIndices.Add(i);
             this.TriangleIndices.Add(i + 1);
@@ -3705,7 +3705,7 @@ public sealed class MeshBuilder
 
             Quaternion q = QuaternionHelper.BetweenDirections(ref preDir, ref currentDir);
             Vector3 rotatedXAxis = Vector3.Normalize(Vector3.Transform(preXAxis, q));
-            Vector3Collection newSection = CreateSectionByDirection(section, rotatedXAxis, currentP, currentDir, theta, sectionScale);
+            Vector3Collection newSection = CreateSectionPerpendicularToDirection(section, rotatedXAxis, currentP, currentDir, theta, sectionScale);
 
             // Project sections points to plan by path direction
             Plane plane = PlaneHelper.Create(currentP, planNormal);
@@ -3745,15 +3745,15 @@ public sealed class MeshBuilder
         this.AddRectangularMeshTriangleIndices(index0, rowsPath, sectionLength, isSectionClosed, isTubeClosed);
         if (!isTubeClosed && (frontCap || backCap))
         {
-            var normals = new Vector3[section.Count];
-            var fanTextures = new Vector2[section.Count];
-            var count = path.Count;
+            Vector3[] normals = new Vector3[section.Count];
+            Vector2[] fanTextures = new Vector2[section.Count];
+            int count = path.Count;
             if (backCap)
             {
-                var circleBack = Positions.Skip(Positions.Count - section.Count).Take(section.Count).Reverse().ToArray();
-                var normal = path[count - 1] - path[count - 2];
+                Vector3[] circleBack = Positions.Skip(Positions.Count - section.Count).Take(section.Count).Reverse().ToArray();
+                Vector3 normal = path[count - 1] - path[count - 2];
                 normal = Vector3.Normalize(normal);
-                for (var i = 0; i < normals.Length; ++i)
+                for (int i = 0; i < normals.Length; ++i)
                 {
                     normals[i] = normal;
                 }
@@ -3761,11 +3761,11 @@ public sealed class MeshBuilder
             }
             if (frontCap)
             {
-                var circleFront = Positions.Take(section.Count).ToArray();
-                var normal = path[0] - path[1];
+                Vector3[] circleFront = Positions.Take(section.Count).ToArray();
+                Vector3 normal = path[0] - path[1];
                 normal = Vector3.Normalize(normal);
 
-                for (var i = 0; i < normals.Length; ++i)
+                for (int i = 0; i < normals.Length; ++i)
                 {
                     normals[i] = normal;
                 }
@@ -3784,7 +3784,7 @@ public sealed class MeshBuilder
     /// <param name="angle"></param>
     /// <param name="sectionScale"></param>
     /// <returns></returns>
-    private static Vector3Collection CreateSectionByDirection(IList<Vector2> section, Vector3 sectionXAxis, Vector3 origin, Vector3 direction, float angle = 0, float sectionScale = 1)
+    private static Vector3Collection CreateSectionPerpendicularToDirection(IList<Vector2> section, Vector3 sectionXAxis, Vector3 origin, Vector3 direction, float angle = 0, float sectionScale = 1)
     {
         int sectioCount = section.Count;
         Vector3Collection mappingSection = new Vector3Collection(sectioCount);
