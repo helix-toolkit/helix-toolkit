@@ -3729,7 +3729,7 @@ public sealed class MeshBuilder
                     Vector2 textureCoordinate = Vector2.Zero;
                     if (xTextureCoordinates is not null)
                     {
-                        textureCoordinate = new Vector2(xTextureCoordinates[i % xTextureCoordinates.Count], -(float)j / (sectionLength - 1));
+                        textureCoordinate = new Vector2(xTextureCoordinates[i % xTextureCoordinates.Count], (float)j / (sectionLength - 1));
                     }
                     this.TextureCoordinates?.Add(textureCoordinate);
                 }
