@@ -3,6 +3,7 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows;
+using System.Windows.Media.Media3D;
 
 namespace HelixToolkit.Wpf;
 
@@ -90,8 +91,8 @@ public sealed class RectangleSelectionCommand : SelectionCommand
     {
         this.HideRectangle();
 
-        var res = this.Viewport.FindHits(this.selectionRect, this.SelectionHitMode);
-        var selectedModels = res.Select(hit => hit.Model).ToList();
+        IEnumerable<RectangleHitResult> res = this.Viewport.FindHits(this.selectionRect, this.SelectionHitMode);
+        List<Model3D?> selectedModels = res.Select(hit => hit.Model).ToList();
 
         // We do not handle the point selection, unless no models are selected.
         // If no models are selected, we clear the existing selection.
@@ -101,7 +102,7 @@ public sealed class RectangleSelectionCommand : SelectionCommand
         }
 
         this.OnModelsSelected(new ModelsSelectedByRectangleEventArgs(selectedModels, this.selectionRect));
-        var selectedVisuals = res.Select(hit => hit.Visual).ToList();
+        List<Visual3D?> selectedVisuals = res.Select(hit => hit.Visual).ToList();
         this.OnVisualsSelected(new VisualsSelectedByRectangleEventArgs(selectedVisuals, this.selectionRect));
     }
 

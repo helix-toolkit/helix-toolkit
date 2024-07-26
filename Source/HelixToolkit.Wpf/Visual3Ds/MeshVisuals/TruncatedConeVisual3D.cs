@@ -49,7 +49,7 @@ public class TruncatedConeVisual3D : MeshElement3D
     /// Identifies the <see cref="ThetaDiv"/> dependency property.
     /// </summary>
     public static readonly DependencyProperty ThetaDivProperty = DependencyProperty.Register(
-        "ThetaDiv", typeof(int), typeof(TruncatedConeVisual3D), new PropertyMetadata(35, GeometryChanged));
+        "ThetaDiv", typeof(int), typeof(TruncatedConeVisual3D), new PropertyMetadata(36, GeometryChanged));
 
     /// <summary>
     /// Identifies the <see cref="TopCap"/> dependency property.
