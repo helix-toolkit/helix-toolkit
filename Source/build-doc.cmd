@@ -10,6 +10,6 @@ echo Update docfx
 dotnet tool update docfx --tool-path packages --verbosity quiet
 
 echo Build documentation
-rem packages\docfx init -q -o Documentation
+rem packages\docfx init -y -o Documentation
 packages\docfx Documentation\docfx.json %DOCFX_SERVE%
 

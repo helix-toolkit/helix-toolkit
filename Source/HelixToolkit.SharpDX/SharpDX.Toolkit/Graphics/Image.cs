@@ -116,7 +116,7 @@ public sealed class Image : Component
     /// </summary>
     /// <param name="arrayOrZSliceIndex">For 3D image, the parameter is the Z slice, otherwise it is an index into the texture array.</param>
     /// <param name="mipmap">The mipmap.</param>
-    /// <returns>A <see cref="pixelBufferArray"/>.</returns>
+    /// <returns>A <see cref="PixelBufferArray"/>.</returns>
     /// <exception cref="System.ArgumentException">If arrayOrZSliceIndex or mipmap are out of range.</exception>
     public PixelBuffer GetPixelBuffer(int arrayOrZSliceIndex, int mipmap)
     {
@@ -148,7 +148,7 @@ public sealed class Image : Component
     /// <param name="arrayIndex">Index into the texture array. Must be set to 0 for 3D images.</param>
     /// <param name="zIndex">Z index for 3D image. Must be set to 0 for all 1D/2D images.</param>
     /// <param name="mipmap">The mipmap.</param>
-    /// <returns>A <see cref="pixelBufferArray"/>.</returns>
+    /// <returns>A <see cref="PixelBufferArray"/>.</returns>
     /// <exception cref="System.ArgumentException">If arrayIndex, zIndex or mipmap are out of range.</exception>
     public PixelBuffer GetPixelBuffer(int arrayIndex, int zIndex, int mipmap)
     {
