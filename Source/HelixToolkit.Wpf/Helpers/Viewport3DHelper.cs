@@ -132,7 +132,7 @@ public static class Viewport3DHelper
     /// <param name="filterCallback">The method that represents the hit test filter callback value./></param>
     /// <param name="resultCallback">The method that represents the hit test result callback value.</param>
     /// <returns> List of hits, sorted with the nearest hit first.</returns>
-    public static IList<HitResult>? FindHits(this Viewport3D viewport, Point position, HitTestFilterCallback? filterCallback = null, HitTestResultCallback? resultCallback = null)
+    public static IList<PointHitResult>? FindHits(this Viewport3D viewport, Point position, HitTestFilterCallback? filterCallback = null, HitTestResultCallback? resultCallback = null)
     {
         if (viewport is null)
         {
@@ -143,7 +143,7 @@ public static class Viewport3DHelper
             ThrowHelper.ThrowArgumentNullException(nameof(viewport.Camera));
         }
 
-        List<HitResult> result = new List<HitResult>();
+        List<PointHitResult> result = new List<PointHitResult>();
         Point3D cameraPosition = new Point3D();
         if (viewport.Camera is ProjectionCamera projectionCamera)
         {
@@ -168,7 +168,7 @@ public static class Viewport3DHelper
                     Point3D position = GetGlobalHitPosition(rayHit, viewport);
                     Vector3D normalHit = GetNormalHit(rayHit) ?? new Vector3D(0, 0, 1);
                     double distance = (cameraPosition - position).Length;
-                    HitResult hitResult = new HitResult(rayHit, distance, position, normalHit);
+                    PointHitResult hitResult = new PointHitResult(rayHit, distance, position, normalHit);
                     result.Add(hitResult);
                 }
             }
@@ -1324,107 +1324,6 @@ public static class Viewport3DHelper
             if (group != null)
             {
                 SearchFor(group.Children, type, output);
-            }
-        }
-    }
-
-    /// <summary>
-    /// Represents a rectangle hit result.
-    /// </summary>
-    public sealed class RectangleHitResult
-    {
-        /// <summary>
-        /// Gets the hit model.
-        /// </summary>
-        public Model3D? Model { get; }
-
-        /// <summary>
-        /// Gets the hit visual.
-        /// </summary>
-        public Visual3D? Visual { get; }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="RectangleHitResult" /> class.
-        /// </summary>
-        /// <param name="model">The hit model.</param>
-        /// <param name="visual">The hit visual.</param>
-        public RectangleHitResult(Model3D? model, Visual3D? visual)
-        {
-            this.Model = model;
-            this.Visual = visual;
-        }
-    }
-
-    /// <summary>
-    /// A hit result.
-    /// </summary>
-    public sealed class HitResult
-    {
-        public HitResult(RayMeshGeometry3DHitTestResult? rayHit, double distance, Point3D position, Vector3D normal)
-        {
-            this.RayHit = rayHit;
-            this.Distance = distance;
-            this.Position = position;
-            this.Normal = normal;
-        }
-
-        /// <summary>
-        /// Gets the distance.
-        /// </summary>
-        /// <value>The distance.</value>
-        public double Distance { get; }
-
-        /// <summary>
-        /// Gets the mesh.
-        /// </summary>
-        /// <value>The mesh.</value>
-        public MeshGeometry3D? Mesh
-        {
-            get
-            {
-                return this.RayHit?.MeshHit;
-            }
-        }
-
-        /// <summary>
-        /// Gets the model.
-        /// </summary>
-        /// <value>The model.</value>
-        public Model3D? Model
-        {
-            get
-            {
-                return this.RayHit?.ModelHit;
-            }
-        }
-
-        /// <summary>
-        /// Gets the normal.
-        /// </summary>
-        /// <value>The normal.</value>
-        public Vector3D Normal { get; }
-
-        /// <summary>
-        /// Gets the position.
-        /// </summary>
-        /// <value>The position.</value>
-        public Point3D Position { get; }
-
-        /// <summary>
-        /// Gets the ray hit.
-        /// </summary>
-        /// <value>The ray hit.</value>
-        public RayMeshGeometry3DHitTestResult? RayHit { get; }
-
-        /// <summary>
-        /// Gets the visual.
-        /// </summary>
-        /// <value>The visual.</value>
-        public Visual3D? Visual
-        {
-            get
-            {
-                return this.RayHit?.VisualHit;
             }
         }
     }
