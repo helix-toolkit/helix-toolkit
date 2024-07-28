@@ -35,6 +35,9 @@ build:
   publish_nuget_symbols: true
   use_snupkg_format: true
   verbosity: minimal
+
+test_script:
+- Source\run-tests.cmd
     
 deploy:
   provider: NuGet
