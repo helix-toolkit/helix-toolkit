@@ -1821,13 +1821,13 @@ public sealed class MeshBuilder
     /// <param name="innerDiameter">
     /// The inner diameter.
     /// </param>
-    /// <param name="diameter">
+    /// <param name="outerDiameter">
     /// The outer diameter.
     /// </param>
     /// <param name="thetaDiv">
     /// The number of divisions around the pipe.
     /// </param>
-    public void AddPipe(Vector3 point1, Vector3 point2, float innerDiameter, float diameter, int thetaDiv)
+    public void AddPipe(Vector3 point1, Vector3 point2, float innerDiameter, float outerDiameter, int thetaDiv)
     {
         var dir = point2 - point1;
 
@@ -1837,8 +1837,8 @@ public sealed class MeshBuilder
         var pc = new Vector2Collection
                 {
                     new Vector2(0, innerDiameter / 2),
-                    new Vector2(0, diameter / 2),
-                    new Vector2(height, diameter / 2),
+                    new Vector2(0, outerDiameter / 2),
+                    new Vector2(height, outerDiameter / 2),
                     new Vector2(height, innerDiameter / 2)
                 };
 
@@ -3715,7 +3715,7 @@ public sealed class MeshBuilder
                 bool isIntersect = ray.PlaneIntersection(plane, out Vector3 intersect);
                 if (!isIntersect)
                 {
-                    Ray reverseRay = new Ray(newSection[j], currentDir);
+                    Ray reverseRay = Ray.Reverse(ray);;
                     isIntersect = reverseRay.PlaneIntersection(plane, out intersect);
                 }
                 if (isIntersect)

@@ -501,7 +501,7 @@ public class TextVisual3D : ModelVisual3D
         element.Arrange(new Rect(element.DesiredSize));
         //element.RenderSize = element.DesiredSize;
 
-        Material material;
+        Brush brush;
         if (this.FontSize > 0)
         {
             var rtb = new RenderTargetBitmap(
@@ -510,12 +510,13 @@ public class TextVisual3D : ModelVisual3D
             rtb.Freeze();
             (rtb.GetType().GetField("_renderTargetBitmap", BindingFlags.Instance | BindingFlags.NonPublic)?.GetValue(rtb) as IDisposable)?.Dispose(); //https://github.com/dotnet/wpf/issues/3067
 
-            material = new DiffuseMaterial(new ImageBrush(rtb));
+            brush = new ImageBrush(rtb);
         }
         else
         {
-            material = new DiffuseMaterial(new VisualBrush(element));
+            brush = new VisualBrush(element);
         }
+        Material material = new DiffuseMaterial(brush);
 
         // Set horizontal alignment factor
         var xa = -0.5;
