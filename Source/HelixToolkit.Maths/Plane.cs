@@ -37,7 +37,7 @@ namespace HelixToolkit.Maths
     public static class PlaneHelper
     {
         /// <summary>
-        /// Gets the plane.
+        /// Create a plane from a specific origin and normal.
         /// </summary>
         /// <param name="point">The point.</param>
         /// <param name="normal">The normal.</param>
@@ -668,10 +668,12 @@ namespace HelixToolkit.Maths
         }
 
         /// <summary>
-        /// Return a new plane facing the opposite direction
+        /// Create a new plane facing the opposite direction
         /// </summary>
         /// <param name="plane">The <see cref="Plane"/></param>
-        /// <returns></returns>
+        /// <returns>
+        /// A new plane facing the opposite direction
+        /// </returns>
         public static Plane Flip(ref Plane plane)
         {
             return new Plane(-plane.Normal, -plane.D);

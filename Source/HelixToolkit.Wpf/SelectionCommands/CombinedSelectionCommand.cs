@@ -40,6 +40,11 @@ public sealed class CombinedSelectionCommand : SelectionCommand
     public Brush? FillRectangleBrush { get; set; }
 
     /// <summary>
+    /// The size of selection point.
+    /// </summary>
+    public Size PointSize { get; set; }
+
+    /// <summary>
     /// Initializes a new instance of the <see cref="RectangleSelectionCommand" /> class.
     /// </summary>
     /// <param name="viewport">The viewport.</param>
@@ -105,7 +110,15 @@ public sealed class CombinedSelectionCommand : SelectionCommand
 
         if (IsPointSelection())
         {
-            HandlePointSelection();
+            if (PointSize.Equals(default))
+            {
+                HandlePointSelection();
+            }
+            else
+            {
+                this.selectionRect.Inflate(this.PointSize.Width / 2, this.PointSize.Height / 2);
+                HandleRectangleSelection();
+            }
         }
         else
         {

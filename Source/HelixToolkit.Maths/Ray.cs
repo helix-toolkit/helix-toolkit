@@ -274,6 +274,43 @@ namespace HelixToolkit.Maths
         {
             return Collision.RayIntersectsPlane(ref this, ref plane, out intersect);
         }
+
+        /// <summary>
+        /// Gets the point on the ray that is nearest the specified point.
+        /// </summary>
+        /// <param name="point">
+        /// The point.
+        /// </param>
+        /// <returns>
+        /// The nearest point on the ray.
+        /// </returns>
+        public Vector3 GetNearest(Vector3 point)
+        {
+            return this.Position
+                   + (Vector3.Dot(point - this.Position, this.Direction)
+                   / this.Direction.LengthSquared() * this.Direction);
+        }
+
+        /// <summary>
+        /// Create a new instance of the <see cref="Ray"/> struct.
+        /// </summary>
+        /// <param name="position">The position in three dimensional space of the origin of the ray.</param>
+        /// <param name="direction">The normalized direction of the ray.</param>
+        public static Ray Create(Vector3 position, Vector3 direction)
+        {
+            return new Ray(position, direction);
+        }
+
+        /// <summary>
+        /// Reverse a ray in the opposite direction
+        /// </summary>
+        /// <param name="ray">The ray</param>
+        /// <returns>A new ray in the reversed direction</returns>
+        public static Ray Reverse(Ray ray)
+        {
+            return new Ray(ray.Position, -ray.Direction);
+        }
+
         /// <summary>
         /// Calculates a world space <see cref="Ray"/> from 2d screen coordinates.
         /// </summary>
@@ -297,21 +334,6 @@ namespace HelixToolkit.Maths
             return new Ray(nearPoint, direction);
         }
 
-        /// <summary>
-        /// Gets the point on the ray that is nearest the specified point.
-        /// </summary>
-        /// <param name="point">
-        /// The point.
-        /// </param>
-        /// <returns>
-        /// The nearest point on the ray.
-        /// </returns>
-        public Vector3 GetNearest(Vector3 point)
-        {
-            return this.Position
-                   + (Vector3.Dot(point - this.Position, this.Direction)
-                   / this.Direction.LengthSquared() * this.Direction);
-        }
         /// <summary>
         /// Tests for equality between two objects.
         /// </summary>
