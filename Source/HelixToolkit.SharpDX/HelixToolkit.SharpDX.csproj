@@ -29,7 +29,7 @@
     <EmbeddedResource Include="Textures\arial.fnt">
       <LogicalName>HelixToolkit.SharpDX.Resources.%(Filename)%(Extension)</LogicalName>
     </EmbeddedResource>
-    <EmbeddedResource Include="..\HelixToolkit.Native.ShaderBuilder\bin\$(Configuration)\net6.0\**\*.cso" LinkBase="Resources">
+    <EmbeddedResource Include="..\HelixToolkit.Native.ShaderBuilder\bin\$(Configuration)\net8.0\**\*.cso" LinkBase="Resources">
       <LogicalName>HelixToolkit.SharpDX.Resources.%(Filename)%(Extension)</LogicalName>
     </EmbeddedResource>
   </ItemGroup>
