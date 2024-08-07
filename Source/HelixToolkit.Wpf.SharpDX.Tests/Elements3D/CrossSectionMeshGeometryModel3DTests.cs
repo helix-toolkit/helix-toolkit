@@ -2,6 +2,7 @@
 using HelixToolkit.Maths;
 using HelixToolkit.SharpDX;
 using NUnit.Framework;
+using NUnit.Framework.Legacy;
 using System.Numerics;
 using System.Reflection;
 
@@ -31,8 +32,8 @@ class CrossSectionMeshGeometryModel3DTests
         var geometryModel3D = GetGeometryModel3D();
         var hitContext = new HitTestContext(viewport.RenderContext, ref ray);
         geometryModel3D.HitTest(hitContext, ref hits);
-        Assert.AreEqual(1, hits.Count);
-        Assert.AreEqual(new Vector3(0.5f, 0, 0), hits[0].PointHit);
+        ClassicAssert.AreEqual(1, hits.Count);
+        ClassicAssert.AreEqual(new Vector3(0.5f, 0, 0), hits[0].PointHit);
     }
 
     [TestCaseSource(nameof(GetPlanes))]
@@ -45,8 +46,8 @@ class CrossSectionMeshGeometryModel3DTests
         var hits = new List<HitTestResult>();
         var hitContext = new HitTestContext(viewport.RenderContext, ref ray);
         geometryModel3D.HitTest(hitContext, ref hits);
-        Assert.AreEqual(1, hits.Count);
-        Assert.AreEqual(new Vector3(-0.5f, 0, 0), hits[0].PointHit);
+        ClassicAssert.AreEqual(1, hits.Count);
+        ClassicAssert.AreEqual(new Vector3(-0.5f, 0, 0), hits[0].PointHit);
     }
 
     /// <summary>

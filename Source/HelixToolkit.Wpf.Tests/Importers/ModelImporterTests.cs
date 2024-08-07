@@ -1,4 +1,5 @@
 ﻿using NUnit.Framework;
+using NUnit.Framework.Legacy;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Windows.Media.Media3D;
@@ -31,6 +32,6 @@ public class ModelImporterTests
             countVertices += mesh.Positions.Count;
         });
 
-        Assert.AreEqual(17, countVertices);
+        ClassicAssert.AreEqual(17, countVertices);
     }
 }

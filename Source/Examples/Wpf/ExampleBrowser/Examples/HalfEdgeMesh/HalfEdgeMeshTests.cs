@@ -28,9 +28,9 @@ public class HalfEdgeMeshTests
         var vertices = new[] { new Point3D(0, 0, 0), new Point3D(1, 0, 0), new Point3D(1, 1, 0), new Point3D(0, 1, 0) };
         var mesh = new HalfEdgeMesh(vertices);
         mesh.AddFace(0, 1, 2);
-        Assert.AreEqual(1, mesh.Faces.Count);
-        Assert.AreEqual(3, mesh.Edges.Count);
-        Assert.AreEqual(4, mesh.Vertices.Count);
+        ClassicAssert.AreEqual(1, mesh.Faces.Count);
+        ClassicAssert.AreEqual(3, mesh.Edges.Count);
+        ClassicAssert.AreEqual(4, mesh.Vertices.Count);
     }
 
     [Test]
@@ -39,9 +39,9 @@ public class HalfEdgeMeshTests
         var vertices = new[] { new Point3D(0, 0, 0), new Point3D(1, 0, 0), new Point3D(1, 1, 0), new Point3D(0, 1, 0) };
         var mesh = new HalfEdgeMesh(vertices);
         mesh.AddFace(0, 1, 2, 3);
-        Assert.AreEqual(1, mesh.Faces.Count);
-        Assert.AreEqual(4, mesh.Edges.Count);
-        Assert.AreEqual(4, mesh.Vertices.Count);
+        ClassicAssert.AreEqual(1, mesh.Faces.Count);
+        ClassicAssert.AreEqual(4, mesh.Edges.Count);
+        ClassicAssert.AreEqual(4, mesh.Vertices.Count);
     }
 
     [Test, ExpectedException]
@@ -58,9 +58,9 @@ public class HalfEdgeMeshTests
     {
         var mesh = CreateTriangulatedQuadMesh();
         var oe = mesh.Vertices[2].OutgoingEdges.ToList();
-        Assert.AreEqual(2, oe.Count);
-        Assert.AreEqual(2, oe[0].Index);
-        Assert.AreEqual(3, oe[1].Index);
+        ClassicAssert.AreEqual(2, oe.Count);
+        ClassicAssert.AreEqual(2, oe[0].Index);
+        ClassicAssert.AreEqual(3, oe[1].Index);
     }
 
     [Test]
@@ -68,9 +68,9 @@ public class HalfEdgeMeshTests
     {
         var mesh = CreateTriangulatedQuadMesh();
         var oe = mesh.Vertices[2].IncomingEdges.ToList();
-        Assert.AreEqual(2, oe.Count);
-        Assert.AreEqual(1, oe[0].Index);
-        Assert.AreEqual(5, oe[1].Index);
+        ClassicAssert.AreEqual(2, oe.Count);
+        ClassicAssert.AreEqual(1, oe[0].Index);
+        ClassicAssert.AreEqual(5, oe[1].Index);
     }
 
     private static HalfEdgeMesh CreateTriangulatedQuadMesh()

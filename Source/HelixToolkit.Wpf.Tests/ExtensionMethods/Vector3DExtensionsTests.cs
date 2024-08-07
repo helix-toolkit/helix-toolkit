@@ -1,4 +1,5 @@
 ﻿using NUnit.Framework;
+using NUnit.Framework.Legacy;
 using System.Diagnostics.CodeAnalysis;
 using System.Windows.Media.Media3D;
 
@@ -14,8 +15,8 @@ public class Vector3DExtensionsTests
     {
         var v = new Vector3D(1, 0, 0);
         var p = v.FindAnyPerpendicular();
-        Assert.AreEqual(new Vector3D(0, 0, -1), p);
-        Assert.AreEqual(new Vector3D(1, 0, 0), v); // check that the input vector is unchanged
+        ClassicAssert.AreEqual(new Vector3D(0, 0, -1), p);
+        ClassicAssert.AreEqual(new Vector3D(1, 0, 0), v); // check that the input vector is unchanged
     }
 
     [Test]
@@ -23,8 +24,8 @@ public class Vector3DExtensionsTests
     {
         var v = new Vector3D(1e-100, 0, 0);
         var p = v.FindAnyPerpendicular();
-        Assert.AreEqual(new Vector3D(0, 0, -1), p);
-        Assert.AreEqual(new Vector3D(1e-100, 0, 0), v); // check that the input vector is unchanged
+        ClassicAssert.AreEqual(new Vector3D(0, 0, -1), p);
+        ClassicAssert.AreEqual(new Vector3D(1e-100, 0, 0), v); // check that the input vector is unchanged
     }
 
     [Test]
@@ -32,8 +33,8 @@ public class Vector3DExtensionsTests
     {
         var v = new Vector3D(1e-100, 1e100, 0);
         var p = v.FindAnyPerpendicular();
-        Assert.AreEqual(new Vector3D(0, 0, 1), p);
-        Assert.AreEqual(new Vector3D(1e-100, 1e100, 0), v); // check that the input vector is unchanged
+        ClassicAssert.AreEqual(new Vector3D(0, 0, 1), p);
+        ClassicAssert.AreEqual(new Vector3D(1e-100, 1e100, 0), v); // check that the input vector is unchanged
     }
 
     [Test]
@@ -42,7 +43,7 @@ public class Vector3DExtensionsTests
         var v = new Vector3D(0, 0, 0);
         var p = v.FindAnyPerpendicular();
         Assert.That(p.IsUndefined());
-        Assert.AreEqual(new Vector3D(0, 0, 0), v); // check that the input vector is unchanged
+        ClassicAssert.AreEqual(new Vector3D(0, 0, 0), v); // check that the input vector is unchanged
     }
 
     [Test]
@@ -57,6 +58,6 @@ public class Vector3DExtensionsTests
     public void ToPoint3D_GivenAVector_ReturnsCorrectPoint()
     {
         var v = new Vector3D(1, 2, 3);
-        Assert.AreEqual(new Point3D(1, 2, 3), v.ToWndPoint3D());
+        ClassicAssert.AreEqual(new Point3D(1, 2, 3), v.ToWndPoint3D());
     }
 }

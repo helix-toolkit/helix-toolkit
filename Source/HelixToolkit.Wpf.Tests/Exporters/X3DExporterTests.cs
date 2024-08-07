@@ -32,7 +32,7 @@ public class X3DExporterTests : ExporterTests
             }
 
             var result = this.Validate(path);
-            Assert.IsNull(result, result);
+            Assert.That(result, Is.Null);
         }
         finally
         {

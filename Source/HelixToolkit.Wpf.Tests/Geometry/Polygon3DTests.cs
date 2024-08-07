@@ -1,5 +1,6 @@
 ﻿using HelixToolkit.Geometry;
 using NUnit.Framework;
+using NUnit.Framework.Legacy;
 using System.Diagnostics.CodeAnalysis;
 using System.Numerics;
 using System.Windows;
@@ -54,14 +55,14 @@ public class Polygon3DTests
         p.Points.Add(new Vector3(1, 1, 4));
         p.Points.Add(new Vector3(0, 1, 4));
         var p2 = p.Flatten();
-        Assert.AreEqual(4, p2.Points.Count);
-        Assert.AreEqual(new Point(0, 0), p2.Points[0].ToWndPoint());
-        Assert.AreEqual(new Point(1, 0), p2.Points[1].ToWndPoint());
-        Assert.AreEqual(new Point(1, 1), p2.Points[2].ToWndPoint());
-        Assert.AreEqual(new Point(0, 1), p2.Points[3].ToWndPoint());
+        ClassicAssert.AreEqual(4, p2.Points.Count);
+        ClassicAssert.AreEqual(new Point(0, 0), p2.Points[0].ToWndPoint());
+        ClassicAssert.AreEqual(new Point(1, 0), p2.Points[1].ToWndPoint());
+        ClassicAssert.AreEqual(new Point(1, 1), p2.Points[2].ToWndPoint());
+        ClassicAssert.AreEqual(new Point(0, 1), p2.Points[3].ToWndPoint());
         var tri = p2.Triangulate();
         Assert.That(tri, Is.Not.Null);
-        Assert.AreEqual(6, tri.Count);
+        ClassicAssert.AreEqual(6, tri.Count);
     }
 
     [Test]
@@ -73,10 +74,10 @@ public class Polygon3DTests
         p.Points.Add(new Vector3(1, 1, 4.01f));
         p.Points.Add(new Vector3(0, 1, 4.01f));
         var p2 = p.Flatten();
-        Assert.AreEqual(4, p2.Points.Count);
+        ClassicAssert.AreEqual(4, p2.Points.Count);
         var tri = p2.Triangulate();
         Assert.That(tri, Is.Not.Null);
-        Assert.AreEqual(6, tri.Count);
+        ClassicAssert.AreEqual(6, tri.Count);
     }
 
     [Test]

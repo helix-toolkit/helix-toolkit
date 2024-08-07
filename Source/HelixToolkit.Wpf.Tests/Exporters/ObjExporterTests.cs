@@ -1,5 +1,6 @@
 ﻿using HelixToolkit.Geometry;
 using NUnit.Framework;
+using NUnit.Framework.Legacy;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Numerics;
@@ -159,7 +160,7 @@ f 1/1 2/2 3/3
 
 ";
 
-            Assert.AreEqual(expectedObj.Replace("\r\n", "\n"), contentObj.Replace("\r\n", "\n"));
+            ClassicAssert.AreEqual(expectedObj.Replace("\r\n", "\n"), contentObj.Replace("\r\n", "\n"));
 
             string contentMtl = File.ReadAllText(mtlPath);
         }
@@ -207,8 +208,8 @@ f 1/1 2/2 3/3
         var model3D = (GeometryModel3D)modelGroup.Children[0];
         var modelMesh = (MeshGeometry3D)model3D.Geometry;
 
-        Assert.AreEqual(originalMesh.Positions[0], modelMesh.Positions[0]);
-        Assert.AreEqual(originalMesh.Normals[0], modelMesh.Normals[0]);
+        ClassicAssert.AreEqual(originalMesh.Positions[0], modelMesh.Positions[0]);
+        ClassicAssert.AreEqual(originalMesh.Normals[0], modelMesh.Normals[0]);
     }
 
     [Test]
@@ -247,8 +248,8 @@ f 1/1 2/2 3/3
         var model3D = (GeometryModel3D)modelGroup.Children[0];
         var modelMesh = (MeshGeometry3D)model3D.Geometry;
 
-        Assert.AreEqual(originalMesh.Positions[0], modelMesh.Positions[0]);
-        Assert.AreEqual(originalMesh.Normals[0], modelMesh.Normals[0]);
+        ClassicAssert.AreEqual(originalMesh.Positions[0], modelMesh.Positions[0]);
+        ClassicAssert.AreEqual(originalMesh.Normals[0], modelMesh.Normals[0]);
     }
 
     [Test]
@@ -287,7 +288,7 @@ f 1/1 2/2 3/3
         var model3D = (GeometryModel3D)modelGroup.Children[0];
         var modelMesh = (MeshGeometry3D)model3D.Geometry;
 
-        Assert.AreEqual(originalMesh.Positions[0], modelMesh.Positions[0]);
-        Assert.AreEqual(originalMesh.Normals[0], modelMesh.Normals[0]);
+        ClassicAssert.AreEqual(originalMesh.Positions[0], modelMesh.Positions[0]);
+        ClassicAssert.AreEqual(originalMesh.Normals[0], modelMesh.Normals[0]);
     }
 }
