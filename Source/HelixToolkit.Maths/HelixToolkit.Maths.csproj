@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-      <TargetFrameworks>net6.0;net48;netstandard2.0</TargetFrameworks>
-      <LangVersion>11.0</LangVersion>
+      <TargetFrameworks>net8.0;net6.0;net48;netstandard2.0</TargetFrameworks>
+      <LangVersion>12.0</LangVersion>
       <ImplicitUsings>enable</ImplicitUsings>
       <Nullable>enable</Nullable>
       <Description>Helix Toolkit is a collection of 3D components for .NET. This package is based on WPF and SharpDX.</Description>
@@ -18,7 +18,11 @@
       <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
   </PropertyGroup>
     <ItemGroup>
-        <PackageReference Condition="'$(CI)' == 'True'" Include="Microsoft.SourceLink.GitHub" Version="1.1.1">
+      <PackageReference Include="PolySharp" Version="1.14.1">
+        <PrivateAssets>all</PrivateAssets>
+        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      </PackageReference>
+      <PackageReference Condition="'$(CI)' == 'True'" Include="Microsoft.SourceLink.GitHub" Version="1.1.1">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
