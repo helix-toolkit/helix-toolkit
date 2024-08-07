@@ -210,7 +210,7 @@ namespace HelixToolkit.SharpDX.Model
                 int vtx_offset = 0;
                 for (int n = 0; n < draw_data.CmdListsCount; n++)
                 {
-                    var cmd_list = draw_data.CmdListsRange[n];
+                    var cmd_list = draw_data.CmdLists[n];
                     for (int cmd_i = 0; cmd_i < cmd_list.CmdBuffer.Size; cmd_i++)
                     {
                         var pcmd = &(((ImDrawCmd*)cmd_list.CmdBuffer.Data)[cmd_i]);
@@ -258,7 +258,7 @@ namespace HelixToolkit.SharpDX.Model
                     var ptr = dataBox.DataPointer;
                     for (int i = 0; i < data.CmdListsCount; i++)
                     {
-                        var cmd_list = data.CmdListsRange[i];
+                        var cmd_list = data.CmdLists[i];
                         int vCount = cmd_list.VtxBuffer.Size * sizeof(ImDrawVert);
                         ptr = UnsafeHelper.Write(ptr, (IntPtr)cmd_list.VtxBuffer.Data, 0, vCount);
                     }
@@ -268,7 +268,7 @@ namespace HelixToolkit.SharpDX.Model
                     var ptr = dataBox.DataPointer;
                     for (int i = 0; i < data.CmdListsCount; i++)
                     {
-                        var cmd_list = data.CmdListsRange[i];
+                        var cmd_list = data.CmdLists[i];
                         int iCount = cmd_list.IdxBuffer.Size * sizeof(ushort);
                         ptr = UnsafeHelper.Write(ptr, (IntPtr)cmd_list.IdxBuffer.Data, 0, iCount);
                     }

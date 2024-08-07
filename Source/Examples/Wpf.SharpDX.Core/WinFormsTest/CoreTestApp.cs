@@ -611,7 +611,7 @@ namespace WinFormsTest
         private void Window_KeyDown(object sender, KeyEventArgs e)
         {
             var io = ImGui.GetIO();
-            io.KeysDown[e.KeyValue] = true;
+            io.KeysData[e.KeyValue].Down = 1;
             io.KeyShift = e.Shift;
             io.KeyCtrl = e.Control;
             io.KeyAlt = e.Alt;
@@ -620,7 +620,7 @@ namespace WinFormsTest
         private void Window_KeyUp(object sender, KeyEventArgs e)
         {
             var io = ImGui.GetIO();
-            io.KeysDown[e.KeyValue] = false;
+            io.KeysData[e.KeyValue].Down = 0;
             io.KeyShift = e.Shift;
             io.KeyCtrl = e.Control;
             io.KeyAlt = e.Alt;
