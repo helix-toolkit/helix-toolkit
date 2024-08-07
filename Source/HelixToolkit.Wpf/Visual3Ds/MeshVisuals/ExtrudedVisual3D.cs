@@ -245,7 +245,7 @@ public class ExtrudedVisual3D : MeshElement3D
             this.Angles?.ToFloatCollection(),
             this.TextureCoordinates?.ToFloatCollection(),
             this.SectionScales?.ToFloatCollection(),
-            this.Section.ToVector2Collection(),
+            this.Section.ToVector2Collection()!,
             sectionXAxis.ToVector3(),
             this.IsPathClosed,
             this.IsSectionClosed);
