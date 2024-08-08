@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net6.0;net48;netstandard2.0</TargetFrameworks>
-    <LangVersion>11.0</LangVersion>
+    <TargetFrameworks>net8.0;net6.0;net48;netstandard2.0</TargetFrameworks>
+    <LangVersion>12.0</LangVersion>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <Description>Helix Toolkit is a collection of 3D components for .NET. This package is based on SharpDX.</Description>
@@ -29,7 +29,7 @@
     <EmbeddedResource Include="Textures\arial.fnt">
       <LogicalName>HelixToolkit.SharpDX.Resources.%(Filename)%(Extension)</LogicalName>
     </EmbeddedResource>
-    <EmbeddedResource Include="..\HelixToolkit.Native.ShaderBuilder\bin\$(Configuration)\net6.0\**\*.cso" LinkBase="Resources">
+    <EmbeddedResource Include="..\HelixToolkit.Native.ShaderBuilder\bin\$(Configuration)\net8.0\**\*.cso" LinkBase="Resources">
       <LogicalName>HelixToolkit.SharpDX.Resources.%(Filename)%(Extension)</LogicalName>
     </EmbeddedResource>
   </ItemGroup>
@@ -39,8 +39,8 @@
     <PackageReference Include="CommunityToolkit.Diagnostics" Version="8.2.2" />
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
     <PackageReference Include="Cyotek.Drawing.BitmapFont" Version="2.0.4" />
-    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.8.0" />
-    <PackageReference Include="PolySharp" Version="1.13.2">
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.10.0" />
+    <PackageReference Include="PolySharp" Version="1.14.1">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>

@@ -1,4 +1,5 @@
 ﻿using NUnit.Framework;
+using NUnit.Framework.Legacy;
 using System.Diagnostics.CodeAnalysis;
 using System.Windows.Media.Media3D;
 using System.Windows.Media;
@@ -27,10 +28,10 @@ public class StlReaderTests
         var r = new StLReader();
         var model = r.Read(@"Models\stl\bottle.stl");
         Assert.That(model, Is.Not.Null);
-        Assert.AreEqual("FLIRIS", r.Header);
-        Assert.AreEqual(1, model.Children.Count);
+        ClassicAssert.AreEqual("FLIRIS", r.Header);
+        ClassicAssert.AreEqual(1, model.Children.Count);
         var m0 = (MeshGeometry3D)((GeometryModel3D)model.Children[0]).Geometry;
-        Assert.AreEqual(1240, m0.TriangleIndices.Count / 3);
+        ClassicAssert.AreEqual(1240, m0.TriangleIndices.Count / 3);
     }
 
     [Test]
@@ -40,11 +41,11 @@ public class StlReaderTests
         r.DefaultMaterial = MaterialHelper.CreateMaterial(Colors.Aqua);
         var model = r.Read(@"Models\stl\bottle.stl");
         Assert.That(model, Is.Not.Null);
-        Assert.AreEqual(1, model.Children.Count);
+        ClassicAssert.AreEqual(1, model.Children.Count);
         var gm0 = (GeometryModel3D)model.Children[0];
         var m0 = (MaterialGroup)gm0.Material;
         var dm = (DiffuseMaterial)m0.Children[0];
-        Assert.AreEqual(Colors.Aqua, ((SolidColorBrush)dm.Brush).Color);
+        ClassicAssert.AreEqual(Colors.Aqua, ((SolidColorBrush)dm.Brush).Color);
     }
 
     [Test]
@@ -54,10 +55,10 @@ public class StlReaderTests
         var r = new StLReader();
         var model = r.Read(@"Models\stl\binary\bottle.stl");
         Assert.That(model, Is.Not.Null);
-        Assert.AreEqual("VCG", r.Header);
-        Assert.AreEqual(1, model.Children.Count);
+        ClassicAssert.AreEqual("VCG", r.Header);
+        ClassicAssert.AreEqual(1, model.Children.Count);
         var m0 = (MeshGeometry3D)((GeometryModel3D)model.Children[0]).Geometry;
-        Assert.AreEqual(1240, m0.TriangleIndices.Count / 3);
+        ClassicAssert.AreEqual(1240, m0.TriangleIndices.Count / 3);
     }
 
     [Test]
@@ -66,9 +67,9 @@ public class StlReaderTests
         var r = new StLReader();
         var model = r.Read(@"Models\stl\teapot.stl");
         Assert.That(model, Is.Not.Null);
-        Assert.AreEqual(1, model.Children.Count);
+        ClassicAssert.AreEqual(1, model.Children.Count);
         var m0 = (MeshGeometry3D)((GeometryModel3D)model.Children[0]).Geometry;
-        Assert.AreEqual(2016, m0.TriangleIndices.Count / 3);
+        ClassicAssert.AreEqual(2016, m0.TriangleIndices.Count / 3);
     }
 
     [Test]
@@ -77,9 +78,9 @@ public class StlReaderTests
         var r = new StLReader();
         var model = r.Read(@"Models\stl\magnolia.stl");
         Assert.That(model, Is.Not.Null);
-        Assert.AreEqual(1, model.Children.Count);
+        ClassicAssert.AreEqual(1, model.Children.Count);
         var m0 = (MeshGeometry3D)((GeometryModel3D)model.Children[0]).Geometry;
-        Assert.AreEqual(1247, m0.TriangleIndices.Count / 3);
+        ClassicAssert.AreEqual(1247, m0.TriangleIndices.Count / 3);
     }
 
     [Test]
@@ -88,9 +89,9 @@ public class StlReaderTests
         var r = new StLReader();
         var model = r.Read(@"Models\stl\sphere.stl");
         Assert.That(model, Is.Not.Null);
-        Assert.AreEqual(1, model.Children.Count);
+        ClassicAssert.AreEqual(1, model.Children.Count);
         var m0 = (MeshGeometry3D)((GeometryModel3D)model.Children[0]).Geometry;
-        Assert.AreEqual(228, m0.TriangleIndices.Count / 3);
+        ClassicAssert.AreEqual(228, m0.TriangleIndices.Count / 3);
     }
 
     [Test]
@@ -100,11 +101,11 @@ public class StlReaderTests
         var r = new StLReader();
         var model = r.Read(@"Models\stl\cube.stl");
         Assert.That(model, Is.Not.Null);
-        Assert.AreEqual(1, model.Children.Count);
+        ClassicAssert.AreEqual(1, model.Children.Count);
         var m0 = (MeshGeometry3D)((GeometryModel3D)model.Children[0]).Geometry;
 
         // Expects 6 quad faces => 12 triangles
-        Assert.AreEqual(12, m0.TriangleIndices.Count / 3);
+        ClassicAssert.AreEqual(12, m0.TriangleIndices.Count / 3);
     }
 
     [Test]
@@ -118,8 +119,8 @@ public class StlReaderTests
         }
 
         Assert.That(model, Is.Not.Null);
-        Assert.AreEqual(1, model.Children.Count);
+        ClassicAssert.AreEqual(1, model.Children.Count);
         var m0 = (MeshGeometry3D)((GeometryModel3D)model.Children[0]).Geometry;
-        Assert.AreEqual(1240, m0.TriangleIndices.Count / 3);
+        ClassicAssert.AreEqual(1240, m0.TriangleIndices.Count / 3);
     }
 }

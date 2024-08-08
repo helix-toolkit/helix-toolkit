@@ -2,6 +2,7 @@
 using HelixToolkit.SharpDX;
 using HelixToolkit.SharpDX.Model;
 using NUnit.Framework;
+using NUnit.Framework.Legacy;
 using System.IO;
 using System.Numerics;
 using System.Text;
@@ -32,15 +33,15 @@ class ObjReaderTests
         var objects = _objReader.Read(@"Models\obj\cornell_box\cornell_box.obj");
 
         Assert.That(objects, Is.Not.Null);
-        Assert.AreEqual(9, objects.Count);
+        ClassicAssert.AreEqual(9, objects.Count);
 
         var floorGeometry = objects[0].Geometry as MeshGeometry3D;
 
         Assert.That(floorGeometry, Is.Not.Null);
         Assert.That(floorGeometry.Positions, Is.Not.Null);
-        Assert.AreEqual(4, floorGeometry.Positions.Count);
+        ClassicAssert.AreEqual(4, floorGeometry.Positions.Count);
         Assert.That(floorGeometry.Normals, Is.Not.Null);
-        Assert.AreEqual(4, floorGeometry.Normals.Count);
+        ClassicAssert.AreEqual(4, floorGeometry.Normals.Count);
     }
 
 
@@ -50,7 +51,7 @@ class ObjReaderTests
         var model = _objReader.Read(@"Models\obj\obj_format_tests\face_relative_vertices.obj");
 
         Assert.That(model, Is.Not.Null);
-        Assert.AreEqual(1, model.Count);
+        ClassicAssert.AreEqual(1, model.Count);
         Assert.That(model[0].Geometry, Is.Not.Null);
         var geometry = (MeshGeometry3D)model[0].Geometry;
         Assert.That(geometry, Is.Not.Null);
@@ -64,7 +65,7 @@ class ObjReaderTests
         var model = _objReader.Read(@"Models\obj\obj_format_tests\simple_triangle_with_normals.obj");
 
         Assert.That(model, Is.Not.Null);
-        Assert.AreEqual(1, model.Count);
+        ClassicAssert.AreEqual(1, model.Count);
         Assert.That(model[0].Geometry, Is.Not.Null);
         var geometry = (MeshGeometry3D)model[0].Geometry;
         Assert.That(geometry, Is.Not.Null);
@@ -78,7 +79,7 @@ class ObjReaderTests
         var model = _objReader.Read(@"Models\obj\obj_format_tests\face_relative_vertex_normals.obj");
 
         Assert.That(model, Is.Not.Null);
-        Assert.AreEqual(1, model.Count);
+        ClassicAssert.AreEqual(1, model.Count);
         Assert.That(model[0].Geometry, Is.Not.Null);
         var geometry = (MeshGeometry3D)model[0].Geometry;
         Assert.That(geometry, Is.Not.Null);
@@ -92,7 +93,7 @@ class ObjReaderTests
         var model = _objReader.Read(@"Models\obj\obj_format_tests\simple_triangle_with_texture.obj");
 
         Assert.That(model, Is.Not.Null);
-        Assert.AreEqual(1, model.Count);
+        ClassicAssert.AreEqual(1, model.Count);
         Assert.That(model[0].Geometry, Is.Not.Null);
         var geometry = (MeshGeometry3D)model[0].Geometry;
         Assert.That(geometry, Is.Not.Null);
@@ -106,7 +107,7 @@ class ObjReaderTests
         var model = _objReader.Read(@"Models\obj\obj_format_tests\face_relative_texture_vertices.obj");
 
         Assert.That(model, Is.Not.Null);
-        Assert.AreEqual(1, model.Count);
+        ClassicAssert.AreEqual(1, model.Count);
         Assert.That(model[0].Geometry, Is.Not.Null);
         var geometry = (MeshGeometry3D)model[0].Geometry;
         Assert.That(geometry, Is.Not.Null);
@@ -120,7 +121,7 @@ class ObjReaderTests
         var model = _objReader.Read(@"Models\obj\obj_format_tests\simple_triangle.obj");
 
         Assert.That(model, Is.Not.Null);
-        Assert.AreEqual(1, model.Count);
+        ClassicAssert.AreEqual(1, model.Count);
         Assert.That(model[0].Geometry, Is.Not.Null);
         var geometry = model[0].Geometry;
         Assert.That(geometry, Is.Not.Null);
@@ -134,7 +135,7 @@ class ObjReaderTests
         var model = _objReader.Read(@"Models\obj\obj_format_tests\line_continuation_single.obj");
 
         Assert.That(model, Is.Not.Null);
-        Assert.AreEqual(1, model.Count);
+        ClassicAssert.AreEqual(1, model.Count);
         Assert.That(model[0].Geometry, Is.Not.Null);
         var geometry = model[0].Geometry;
         Assert.That(geometry, Is.Not.Null);
@@ -148,7 +149,7 @@ class ObjReaderTests
         var model = _objReader.Read(@"Models\obj\obj_format_tests\line_continuation_multiple_breaks.obj");
 
         Assert.That(model, Is.Not.Null);
-        Assert.AreEqual(1, model.Count);
+        ClassicAssert.AreEqual(1, model.Count);
         Assert.That(model[0].Geometry, Is.Not.Null);
         var geometry = model[0].Geometry;
         Assert.That(geometry, Is.Not.Null);
@@ -162,7 +163,7 @@ class ObjReaderTests
         var model = _objReader.Read(@"Models\obj\obj_format_tests\line_continuation_empty_continuation.obj");
 
         Assert.That(model, Is.Not.Null);
-        Assert.AreEqual(1, model.Count);
+        ClassicAssert.AreEqual(1, model.Count);
         Assert.That(model[0].Geometry, Is.Not.Null);
         var geometry = model[0].Geometry;
         Assert.That(geometry, Is.Not.Null);
@@ -176,7 +177,7 @@ class ObjReaderTests
         var model = _objReader.Read(@"Models\obj\obj_format_tests\line_continuation_empty_line.obj");
 
         Assert.That(model, Is.Not.Null);
-        Assert.AreEqual(1, model.Count);
+        ClassicAssert.AreEqual(1, model.Count);
         Assert.That(model[0].Geometry, Is.Not.Null);
         var geometry = model[0].Geometry;
         Assert.That(geometry, Is.Not.Null);
@@ -190,7 +191,7 @@ class ObjReaderTests
         var model = _objReader.Read(@"Models\obj\obj_format_tests\line_continuation_comment.obj");
 
         Assert.That(model, Is.Not.Null);
-        Assert.AreEqual(1, model.Count);
+        ClassicAssert.AreEqual(1, model.Count);
         Assert.That(model[0].Geometry, Is.Not.Null);
         var geometry = model[0].Geometry;
         Assert.That(geometry, Is.Not.Null);
@@ -253,12 +254,12 @@ f 4/4 3/5 2/6
             Assert.That(mesh.Positions, Is.Not.Null);
             Assert.That(mesh.TextureCoordinates, Is.Not.Null);
 
-            Assert.AreEqual(6, mesh.Indices.Count);
-            Assert.AreEqual(6, mesh.Positions.Count);
-            Assert.AreEqual(6, mesh.TextureCoordinates.Count);
+            ClassicAssert.AreEqual(6, mesh.Indices.Count);
+            ClassicAssert.AreEqual(6, mesh.Positions.Count);
+            ClassicAssert.AreEqual(6, mesh.TextureCoordinates.Count);
 
-            CollectionAssert.AreEqual(expectedPositions, mesh.Positions);
-            CollectionAssert.AreEqual(expectedTextureCoordinates, mesh.TextureCoordinates);
+            Assert.That(mesh.Positions, Is.EqualTo(expectedPositions).AsCollection);
+            Assert.That(mesh.TextureCoordinates, Is.EqualTo(expectedTextureCoordinates).AsCollection);
         }
     }
 
@@ -316,16 +317,16 @@ f 4/4 3/5 2/6
             Assert.That(mesh.Indices, Is.Not.Null);
             Assert.That(mesh.Positions, Is.Not.Null);
             Assert.That(mesh.TextureCoordinates, Is.Not.Null);
-            Assert.AreEqual(6, mesh.Indices.Count);
-            Assert.AreEqual(6, mesh.Positions.Count);
-            Assert.AreEqual(6, mesh.TextureCoordinates.Count);
+            ClassicAssert.AreEqual(6, mesh.Indices.Count);
+            ClassicAssert.AreEqual(6, mesh.Positions.Count);
+            ClassicAssert.AreEqual(6, mesh.TextureCoordinates.Count);
 
-            Assert.AreEqual(6, mesh.Indices.Count);
-            Assert.AreEqual(6, mesh.Positions.Count);
-            Assert.AreEqual(6, mesh.TextureCoordinates.Count);
+            ClassicAssert.AreEqual(6, mesh.Indices.Count);
+            ClassicAssert.AreEqual(6, mesh.Positions.Count);
+            ClassicAssert.AreEqual(6, mesh.TextureCoordinates.Count);
 
-            CollectionAssert.AreEqual(expectedPositions, mesh.Positions);
-            CollectionAssert.AreEqual(expectedTextureCoordinates, mesh.TextureCoordinates);
+            Assert.That(mesh.Positions, Is.EqualTo(expectedPositions).AsCollection);
+            Assert.That(mesh.TextureCoordinates, Is.EqualTo(expectedTextureCoordinates).AsCollection);
         }
     }
 
@@ -455,12 +456,12 @@ map_bump " + tempTexBump + @"
 
     public void Compare(Stream s1, Stream s2)
     {
-        Assert.AreEqual(s1.Length, s2.Length);
+        ClassicAssert.AreEqual(s1.Length, s2.Length);
         s2.Position = 0;
         s1.Position = 0;
         for (int i = 0; i < s1.Length; ++i)
         {
-            Assert.AreEqual(s1.ReadByte(), s2.ReadByte());
+            ClassicAssert.AreEqual(s1.ReadByte(), s2.ReadByte());
         }
     }
 
@@ -491,7 +492,7 @@ Kd 0 0 0
 ");
 
             var model = _objReader.Read(tempObj);
-            Assert.AreEqual(new Color4(1, 1, 1, 1), _objReader.Materials["TestMaterial"].Diffuse.ToColor4());
+            ClassicAssert.AreEqual(new Color4(1, 1, 1, 1), _objReader.Materials["TestMaterial"].Diffuse.ToColor4());
         }
         finally
         {

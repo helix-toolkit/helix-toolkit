@@ -1,5 +1,6 @@
 ﻿using HelixToolkit.Geometry;
 using NUnit.Framework;
+using NUnit.Framework.Legacy;
 using System.Diagnostics.CodeAnalysis;
 using System.Numerics;
 
@@ -49,11 +50,11 @@ public class MeshBuilderTests
         {
             Assert.That(mb.HasNormals);
             Assert.That(mb.Normals, Is.Not.Null);
-            Assert.AreEqual(4, mb.Normals!.Count);
+            ClassicAssert.AreEqual(4, mb.Normals!.Count);
 
             foreach (var normal in mb.Normals)
             {
-                Assert.AreEqual(new Vector3(0, 0, 1), normal);
+                ClassicAssert.AreEqual(new Vector3(0, 0, 1), normal);
             }
         });
     }
@@ -62,8 +63,8 @@ public class MeshBuilderTests
     public void AddInvalidPolygon()
     {
         var meshBuilder = new MeshBuilder(false, false);
-        Assert.AreEqual(0, meshBuilder.Positions.Count);
-        Assert.AreEqual(0, meshBuilder.TriangleIndices.Count);
+        ClassicAssert.AreEqual(0, meshBuilder.Positions.Count);
+        ClassicAssert.AreEqual(0, meshBuilder.TriangleIndices.Count);
         var p = new List<Vector2>
                 {
                     new(0, 0),
@@ -71,8 +72,8 @@ public class MeshBuilderTests
                 };
 
         meshBuilder.AddPolygon(p, new Vector3(0, 1, 0), new Vector3(1, 0, 0), new Vector3(0, 0, 0));
-        Assert.AreEqual(0, meshBuilder.Positions.Count);
-        Assert.AreEqual(0, meshBuilder.TriangleIndices.Count);
+        ClassicAssert.AreEqual(0, meshBuilder.Positions.Count);
+        ClassicAssert.AreEqual(0, meshBuilder.TriangleIndices.Count);
 
         var p3 = new List<Vector3>
                 {
@@ -80,16 +81,16 @@ public class MeshBuilderTests
                     new(1, 1, 0),
                 };
         meshBuilder.AddPolygon(p3);
-        Assert.AreEqual(0, meshBuilder.Positions.Count);
-        Assert.AreEqual(0, meshBuilder.TriangleIndices.Count);
+        ClassicAssert.AreEqual(0, meshBuilder.Positions.Count);
+        ClassicAssert.AreEqual(0, meshBuilder.TriangleIndices.Count);
     }
 
     [Test]
     public void AddValidPolygon()
     {
         var meshBuilder = new MeshBuilder(false, false);
-        Assert.AreEqual(0, meshBuilder.Positions.Count);
-        Assert.AreEqual(0, meshBuilder.TriangleIndices.Count);
+        ClassicAssert.AreEqual(0, meshBuilder.Positions.Count);
+        ClassicAssert.AreEqual(0, meshBuilder.TriangleIndices.Count);
         var p = new List<Vector2>
                 {
                     new(0, 0),
@@ -98,8 +99,8 @@ public class MeshBuilderTests
                 };
 
         meshBuilder.AddPolygon(p, new Vector3(0, 1, 0), new Vector3(1, 0, 0), new Vector3(0, 0, 0));
-        Assert.AreEqual(3, meshBuilder.Positions.Count);
-        Assert.AreEqual(3, meshBuilder.TriangleIndices.Count);
+        ClassicAssert.AreEqual(3, meshBuilder.Positions.Count);
+        ClassicAssert.AreEqual(3, meshBuilder.TriangleIndices.Count);
 
         var p3 = new List<Vector3>
                 {
@@ -108,7 +109,7 @@ public class MeshBuilderTests
                     new(2, 2, 0),
                 };
         meshBuilder.AddPolygon(p3);
-        Assert.AreEqual(6, meshBuilder.Positions.Count);
-        Assert.AreEqual(6, meshBuilder.TriangleIndices.Count);
+        ClassicAssert.AreEqual(6, meshBuilder.Positions.Count);
+        ClassicAssert.AreEqual(6, meshBuilder.TriangleIndices.Count);
     }
 }

@@ -1,5 +1,6 @@
 ﻿using HelixToolkit.Geometry;
 using NUnit.Framework;
+using NUnit.Framework.Legacy;
 using System.Windows;
 
 namespace HelixToolkit.Wpf.Tests.Geometry;
@@ -22,8 +23,8 @@ public class CuttingEarsTriangulatorTests
         };
         var result = CuttingEarsTriangulator.Triangulate(polygon.ToVector2Collection()!);
         Assert.That(result, Is.Not.Null);
-        Assert.AreEqual(5 * 3, result.Count);
-        Assert.AreEqual(new[] { 0, 1, 2, 3, 4, 5, 6, 0, 2, 3, 5, 6, 6, 2, 3 }, result);
+        ClassicAssert.AreEqual(5 * 3, result.Count);
+        ClassicAssert.AreEqual(new[] { 0, 1, 2, 3, 4, 5, 6, 0, 2, 3, 5, 6, 6, 2, 3 }, result);
     }
 
     [Test]
@@ -42,7 +43,7 @@ public class CuttingEarsTriangulatorTests
                               };
         var result = CuttingEarsTriangulator.Triangulate(polygon.ToVector2Collection()!);
         Assert.That(result, Is.Not.Null);
-        Assert.AreEqual(6 * 3, result.Count);
-        Assert.AreEqual(new[] { 0, 1, 2, 4, 5, 6, 0, 2, 3, 4, 6, 7, 7, 0, 3, 3, 4, 7 }, result);
+        ClassicAssert.AreEqual(6 * 3, result.Count);
+        ClassicAssert.AreEqual(new[] { 0, 1, 2, 4, 5, 6, 0, 2, 3, 4, 6, 7, 7, 0, 3, 3, 4, 7 }, result);
     }
 }

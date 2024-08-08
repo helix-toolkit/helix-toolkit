@@ -1,5 +1,6 @@
 ﻿using HelixToolkit.SharpDX;
 using NUnit.Framework;
+using NUnit.Framework.Legacy;
 using System.Numerics;
 using System.IO;
 using System.Windows.Media.Media3D;
@@ -56,7 +57,7 @@ f 1/1 2/2 3/3
 
 ";
 
-            Assert.AreEqual(expectedObj.Replace("\r\n", "\n"), contentObj.Replace("\r\n", "\n"));
+            ClassicAssert.AreEqual(expectedObj.Replace("\r\n", "\n"), contentObj.Replace("\r\n", "\n"));
 
             string contentMtl = File.ReadAllText(mtlPath);
         }

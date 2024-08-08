@@ -1,5 +1,6 @@
 ﻿using HelixToolkit.SharpDX.Model.Scene;
 using NUnit.Framework;
+using NUnit.Framework.Legacy;
 using System.Numerics;
 using HelixToolkit.Maths;
 using HelixToolkit.Geometry;
@@ -28,7 +29,7 @@ public class SceneNodeTests
         var hits = new List<HitTestResult>();
         var sceneNode = SceneNodeTests.GetNode();
         sceneNode.HitTest(new HitTestContext(viewport.RenderContext, ref ray), ref hits);
-        Assert.AreEqual(1, hits.Count);
-        Assert.AreEqual(new Vector3(0.5f, 0, 0), hits[0].PointHit);
+        ClassicAssert.AreEqual(1, hits.Count);
+        ClassicAssert.AreEqual(new Vector3(0.5f, 0, 0), hits[0].PointHit);
     }
 }

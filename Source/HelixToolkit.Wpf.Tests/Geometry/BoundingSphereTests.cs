@@ -1,8 +1,7 @@
 ﻿using HelixToolkit.Maths;
 using NUnit.Framework;
+using NUnit.Framework.Legacy;
 using System.Numerics;
-using System.Reflection;
-using System.Windows.Media.Media3D;
 
 namespace HelixToolkit.Wpf.Tests.Geometry;
 
@@ -17,10 +16,10 @@ public class BoundingSphereTests
         var ray = new Ray(p, sphere.Center - p);
         Assert.That(sphere.Intersects(ray, out Vector3[]? result));
         Assert.That(result, Is.Not.Null);
-        Assert.AreEqual(sphere.Radius, Vector3.Distance(sphere.Center, result[0]), 1e-5, "Point 1 is not on sphere.");
-        Assert.AreEqual(0, Vector3.Distance(ray.GetNearest(result[0]), result[0]), 1e-6, "Point 1" + result[0] + " is not on ray.");
-        Assert.AreEqual(sphere.Radius, Vector3.Distance(sphere.Center, result[1]), 1e-5, "Point 2 is not on sphere.");
-        Assert.AreEqual(0, Vector3.Distance(ray.GetNearest(result[1]), result[1]), 1e-6, "Point 2 " + result[1] + " is not on ray.");
+        ClassicAssert.AreEqual(sphere.Radius, Vector3.Distance(sphere.Center, result[0]), 1e-5, "Point 1 is not on sphere.");
+        ClassicAssert.AreEqual(0, Vector3.Distance(ray.GetNearest(result[0]), result[0]), 1e-6, "Point 1" + result[0] + " is not on ray.");
+        ClassicAssert.AreEqual(sphere.Radius, Vector3.Distance(sphere.Center, result[1]), 1e-5, "Point 2 is not on sphere.");
+        ClassicAssert.AreEqual(0, Vector3.Distance(ray.GetNearest(result[1]), result[1]), 1e-6, "Point 2 " + result[1] + " is not on ray.");
         Assert.That(Vector3.Distance(ray.Position, result[0]), Is.LessThan(Vector3.Distance(ray.Position, result[1])), "The points should be sorted by distance from ray origin.");
     }
 
@@ -31,9 +30,9 @@ public class BoundingSphereTests
         var ray = new Ray(sphere.Center + new Vector3(0.1f, 0.08f, 0.03f), new Vector3(1, 0.99f, 0.87f));
         Assert.That(sphere.Intersects(ray, out Vector3[]? result));
         Assert.That(result, Is.Not.Null);
-        Assert.AreEqual(1, result.Length, "Number of intersections should be 1");
-        Assert.AreEqual(sphere.Radius, Vector3.Distance(sphere.Center, result[0]), 1e-6, "Point is not on sphere.");
-        Assert.AreEqual(0, ray.ToRay3D().GetNearest(result[0].ToWndPoint3D()).DistanceTo(result[0].ToWndPoint3D()), 1e-6, "Point is not on ray.");
+        ClassicAssert.AreEqual(1, result.Length, "Number of intersections should be 1");
+        ClassicAssert.AreEqual(sphere.Radius, Vector3.Distance(sphere.Center, result[0]), 1e-6, "Point is not on sphere.");
+        ClassicAssert.AreEqual(0, ray.ToRay3D().GetNearest(result[0].ToWndPoint3D()).DistanceTo(result[0].ToWndPoint3D()), 1e-6, "Point is not on ray.");
     }
 
     [Test]
@@ -43,9 +42,9 @@ public class BoundingSphereTests
         var ray = new Ray(sphere.Center + new Vector3(0f, 0f, sphere.Radius), new Vector3(1f, 0.99f, 0.87f));
         Assert.That(sphere.Intersects(ray, out Vector3[]? result));
         Assert.That(result, Is.Not.Null);
-        Assert.AreEqual(1, result.Length, "Number of intersections should be 1");
-        Assert.AreEqual(sphere.Radius, Vector3.Distance(sphere.Center, result[0]), 1e-6, "Point is not on sphere.");
-        Assert.AreEqual(0, ray.ToRay3D().GetNearest(result[0].ToWndPoint3D()).DistanceTo(result[0].ToWndPoint3D()), 1e-6, "Point is not on ray.");
+        ClassicAssert.AreEqual(1, result.Length, "Number of intersections should be 1");
+        ClassicAssert.AreEqual(sphere.Radius, Vector3.Distance(sphere.Center, result[0]), 1e-6, "Point is not on sphere.");
+        ClassicAssert.AreEqual(0, ray.ToRay3D().GetNearest(result[0].ToWndPoint3D()).DistanceTo(result[0].ToWndPoint3D()), 1e-6, "Point is not on ray.");
     }
 
     [Test]
@@ -55,11 +54,11 @@ public class BoundingSphereTests
         var ray = new Ray(sphere.Center + new Vector3(0f, 0f, sphere.Radius), new Vector3(0.01f, 0.09f, -0.87f));
         Assert.That(sphere.Intersects(ray, out Vector3[]? result));
         Assert.That(result, Is.Not.Null);
-        Assert.AreEqual(2, result.Length, "Number of intersections should be 1");
-        Assert.AreEqual(sphere.Radius, Vector3.Distance(sphere.Center, result[0]), 1e-6, "Point 1 is not on sphere.");
-        Assert.AreEqual(0, ray.ToRay3D().GetNearest(result[0].ToWndPoint3D()).DistanceTo(result[0].ToWndPoint3D()), 1e-6, "Point 1 is not on ray.");
-        Assert.AreEqual(sphere.Radius, Vector3.Distance(sphere.Center, result[1]), 1e-6, "Point 2 is not on sphere.");
-        Assert.AreEqual(0, ray.ToRay3D().GetNearest(result[1].ToWndPoint3D()).DistanceTo(result[1].ToWndPoint3D()), 1e-6, "Point 2 is not on ray.");
+        ClassicAssert.AreEqual(2, result.Length, "Number of intersections should be 1");
+        ClassicAssert.AreEqual(sphere.Radius, Vector3.Distance(sphere.Center, result[0]), 1e-6, "Point 1 is not on sphere.");
+        ClassicAssert.AreEqual(0, ray.ToRay3D().GetNearest(result[0].ToWndPoint3D()).DistanceTo(result[0].ToWndPoint3D()), 1e-6, "Point 1 is not on ray.");
+        ClassicAssert.AreEqual(sphere.Radius, Vector3.Distance(sphere.Center, result[1]), 1e-6, "Point 2 is not on sphere.");
+        ClassicAssert.AreEqual(0, ray.ToRay3D().GetNearest(result[1].ToWndPoint3D()).DistanceTo(result[1].ToWndPoint3D()), 1e-6, "Point 2 is not on ray.");
     }
 
     [Test]
@@ -81,8 +80,8 @@ public class BoundingSphereTests
         var ray = new Ray(p, p2 - p);
         Assert.That(sphere.Intersects(ray, out Vector3[]? result), "No intersection");
         Assert.That(result, Is.Not.Null);
-        Assert.AreEqual(1, result.Length, "One intersection");
-        Assert.AreEqual(sphere.Radius, Vector3.Distance(result[0], sphere.Center), 1e-8);
-        Assert.AreEqual(0, Vector3.Distance(ray.GetNearest(result[0]), result[0]), 1e-5, "Point 1 is not on ray.");
+        ClassicAssert.AreEqual(1, result.Length, "One intersection");
+        ClassicAssert.AreEqual(sphere.Radius, Vector3.Distance(result[0], sphere.Center), 1e-8);
+        ClassicAssert.AreEqual(0, Vector3.Distance(ray.GetNearest(result[0]), result[0]), 1e-5, "Point 1 is not on ray.");
     }
 }
