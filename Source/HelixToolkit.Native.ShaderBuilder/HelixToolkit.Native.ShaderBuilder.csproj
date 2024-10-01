@@ -350,7 +350,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="JeremyAnsel.HLSL.Targets" Version="2.0.25" />
+    <PackageReference Include="JeremyAnsel.HLSL.Targets" Version="2.0.26" />
   </ItemGroup>
 
 </Project>
