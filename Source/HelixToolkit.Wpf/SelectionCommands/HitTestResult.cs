@@ -54,7 +54,7 @@ namespace HelixToolkit.Wpf
         {
             get
             {
-                return this.RayHit?.ModelHit;
+                return this.RayHit.ModelHit;
             }
         }
 
@@ -66,7 +66,7 @@ namespace HelixToolkit.Wpf
         {
             get
             {
-                return this.RayHit?.VisualHit;
+                return this.RayHit.VisualHit;
             }
         }
         /// <summary>
@@ -79,11 +79,11 @@ namespace HelixToolkit.Wpf
         /// Gets the mesh.
         /// </summary>
         /// <value>The mesh.</value>
-        public MeshGeometry3D? Mesh
+        public MeshGeometry3D Mesh
         {
             get
             {
-                return this.RayHit?.MeshHit;
+                return this.RayHit.MeshHit;
             }
         }
 
@@ -103,9 +103,9 @@ namespace HelixToolkit.Wpf
         /// Gets the ray hit.
         /// </summary>
         /// <value>The ray hit.</value>
-        public RayMeshGeometry3DHitTestResult? RayHit { get; }
+        public RayMeshGeometry3DHitTestResult RayHit { get; }
 
-        public PointHitResult(RayMeshGeometry3DHitTestResult? rayHit, double distance, Point3D position, Vector3D normal)
+        public PointHitResult(RayMeshGeometry3DHitTestResult rayHit, double distance, Point3D position, Vector3D normal)
         {
             this.RayHit = rayHit;
             this.Distance = distance;
