@@ -120,8 +120,17 @@ namespace HelixToolkit.UWP
                     outputMap = null;
                     return ImagePackReturnCode.DeviceFailed;
                 }
+                if (ItemArray != null)
+                {
+                    foreach (var item in ItemArray)
+                    {
+                        if (item.Value is IDisposable disposable)
+                        {
+                            disposable.Dispose();
+                        }
+                    }
+                }
                 ItemArray = GetArray(items);
-
                 requirePow2 = requirePowerOfTwo;
                 requireSquare = requireSquareImage;
                 OutputWidth = maximumWidth;
@@ -283,7 +292,16 @@ namespace HelixToolkit.UWP
                 {
                     if (disposing)
                     {
-                        // TODO: dispose managed state (managed objects).
+                        if (ItemArray != null)
+                        {
+                            foreach (var item in ItemArray)
+                            {
+                                if (item.Value is IDisposable disposable)
+                                {
+                                    disposable.Dispose();
+                                }
+                            }
+                        }
                     }
 
                     // TODO: free unmanaged resources (unmanaged objects) and override a finalizer below.
