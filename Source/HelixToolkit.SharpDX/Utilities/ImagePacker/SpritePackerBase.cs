@@ -100,6 +100,16 @@ public abstract class SpritePackerBase<T, E> : IDisposable
             outputMap = null;
             return ImagePackReturnCode.DeviceFailed;
         }
+        if (ItemArray is not null)
+        {
+            foreach (var item in ItemArray)
+            {
+                if (item.Value is IDisposable disposable)
+                {
+                    disposable.Dispose();
+                }
+            }
+        }
         ItemArray = GetArray(items);
 
         requirePow2 = requirePowerOfTwo;
@@ -263,7 +273,16 @@ public abstract class SpritePackerBase<T, E> : IDisposable
         {
             if (disposing)
             {
-                // TODO: dispose managed state (managed objects).
+                if (ItemArray is not null)
+                {
+                    foreach (var item in ItemArray)
+                    {
+                        if (item.Value is IDisposable disposable)
+                        {
+                            disposable.Dispose();
+                        }
+                    }
+                }
             }
 
             // TODO: free unmanaged resources (unmanaged objects) and override a finalizer below.
