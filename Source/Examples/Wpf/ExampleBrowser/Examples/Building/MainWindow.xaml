@@ -69,7 +69,8 @@
                            Background="LightGray"
                            IsHeadLightEnabled="True"
                            ZoomAroundMouseDownPoint="True"
-                           RotateAroundMouseDownPoint="True">
+                           RotateAroundMouseDownPoint="True"
+                           ShowCameraInfo="True">
             <ModelVisual3D>
                 <local:HouseVisual3D />
                 <local:HouseVisual3D Transform="{h:Translate 40,0,0}" />
