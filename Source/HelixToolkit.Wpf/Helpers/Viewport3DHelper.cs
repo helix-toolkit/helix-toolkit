@@ -208,7 +208,7 @@ public static class Viewport3DHelper
             return hitResults.Select(x => new RectangleHitResult(x.Model, x.Visual));
         }
 
-        List<RectangleHitResult> results = new List<RectangleHitResult>();
+        var results = new List<RectangleHitResult>();
         viewport.Children.Traverse<GeometryModel3D>(
             (model, visual, transform) =>
             {
