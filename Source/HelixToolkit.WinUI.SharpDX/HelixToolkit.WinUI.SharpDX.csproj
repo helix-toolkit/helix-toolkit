@@ -2,6 +2,7 @@
   <PropertyGroup>
     <TargetFrameworks>net8.0-windows10.0.19041.0;net6.0-windows10.0.19041.0</TargetFrameworks>
     <TargetPlatformMinVersion>10.0.17763.0</TargetPlatformMinVersion>
+    <WindowsSdkPackageVersion>10.0.19041.38</WindowsSdkPackageVersion>
     <RootNamespace>HelixToolkit.WinUI.SharpDX</RootNamespace>
     <RuntimeIdentifiers>win-x86;win-x64;win-arm64</RuntimeIdentifiers>
     <LangVersion>12.0</LangVersion>
@@ -19,6 +20,7 @@
     <ContinuousIntegrationBuild Condition="'$(CI)' == 'True'">true</ContinuousIntegrationBuild>
     <DefineConstants>$(DefineConstants);WINUI</DefineConstants>
     <IsPackable>true</IsPackable>
+    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
   </PropertyGroup>
 
   <ItemGroup>
