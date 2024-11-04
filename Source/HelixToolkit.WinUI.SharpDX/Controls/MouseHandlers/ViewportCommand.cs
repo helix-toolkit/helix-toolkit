@@ -12,7 +12,7 @@ public class ViewportCommand : ICommand
 {
     private static readonly Dictionary<ViewportCommands.Id, ViewportCommand> Commands = new();
 
-    public event EventHandler? CanExecuteChanged;
+    public event EventHandler? CanExecuteChanged { add { } remove { } }
 
     public Action<object?>? ExecuteHandler { get; set; }
 

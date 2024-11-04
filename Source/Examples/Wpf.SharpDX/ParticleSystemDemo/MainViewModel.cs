@@ -240,7 +240,7 @@ public partial class MainViewModel : DemoCore.BaseViewModel
         LoadTexture(SelectedTextureIndex);
         var meshBuilder = new MeshBuilder();
         meshBuilder.AddSphere(new Vector3(0, 0, 0), 0.5f, 16, 16);
-        Model = meshBuilder.ToMeshGeometry3D();
+        model = meshBuilder.ToMeshGeometry3D();
         Camera = new PerspectiveCamera()
         {
             Position = new Media3D.Point3D(0, 0, 20),

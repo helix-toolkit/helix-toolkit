@@ -56,7 +56,7 @@ public class MainViewModel : DemoCore.BaseViewModel
         this.Model = meshGeometry;
 
         // Create Billboard Text
-        float offset = 4.5f;
+        //float offset = 4.5f;
         float scale = 0.8f;
         //            Text3D.TextInfo.Add(new TextInfo("Origin", new Vector3(0,0,0)) { Foreground = SharpDX.Color.Red, Scale = scale * 2 });
         //            Text3D.TextInfo.Add(new TextInfo("1", new Vector3(1,0,0)) { Foreground = SharpDX.Color.Blue, Scale = scale * 2 });

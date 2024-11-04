@@ -3612,7 +3612,7 @@ public sealed class MeshBuilder
     /// <param name="backCap">
     /// Create a back Cap or not.
     /// </param>
-    public void AddTube(IList<Vector3> path, IList<float>? sectionAngles, IList<float>? xTextureCoordinates, IList<float>? sectionScales,
+    public void AddTube(IList<Vector3>? path, IList<float>? sectionAngles, IList<float>? xTextureCoordinates, IList<float>? sectionScales,
        IList<Vector2> section, Vector3 sectionXAxis, bool isTubeClosed, bool isSectionClosed, bool frontCap = false, bool backCap = false)
     {
         if (path is null)

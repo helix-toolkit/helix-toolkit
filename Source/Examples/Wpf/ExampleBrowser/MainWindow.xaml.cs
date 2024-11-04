@@ -106,7 +106,7 @@ public partial class MainWindow : Window
             {
                 if (!string.IsNullOrEmpty(textSearch))
                 {
-                    string lowerTextSearch = textSearch.ToLower();
+                    string lowerTextSearch = textSearch!.ToLower();
                     if (!string.IsNullOrEmpty(ea.Title) && ea.Title.ToLower().Contains(lowerTextSearch)
                         || !string.IsNullOrEmpty(ea.Description) && ea.Description.ToLower().Contains(lowerTextSearch))
                         yield return new Example(type, ea.Title, ea.Description);

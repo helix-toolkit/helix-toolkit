@@ -102,7 +102,7 @@ public sealed class KerbVisual3D : UIElement3D
         }
 
         // create the extruded geometry
-        builder.AddTube(this.Positions.ToVector3Collection()!, null, values, null, section.ToVector2Collection(), new Vector3(1, 0, 0), false, false);
+        builder.AddTube(this.Positions.ToVector3Collection()!, null, values, null, section.ToVector2Collection()!, new Vector3(1, 0, 0), false, false);
 
         this.kerbModel.Geometry = builder.ToMesh().ToWndMeshGeometry3D();
     }

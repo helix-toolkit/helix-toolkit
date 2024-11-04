@@ -21,6 +21,7 @@
     <EnableNETAnalyzers>true</EnableNETAnalyzers>
     <AnalysisMode>Default</AnalysisMode>
     <!--<AnalysisMode>All</AnalysisMode>-->
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
 
   <ItemGroup>
@@ -47,7 +48,7 @@
   </ItemGroup>
 
   <PropertyGroup>
-    <NoWarn>MC1000;NU1701;CS1591;NU5104;NUnit2005;CA1069;CA1401;CA2253;CA2254;MC3074</NoWarn>
+    <NoWarn>MC1000;NU1701;CS1591;NU5104;NUnit2005;CA1069;CA1401;CA2253;CA2254;MC3074;CS0618</NoWarn>
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
