@@ -87,7 +87,7 @@ public partial class MainViewModel : DemoCore.BaseViewModel
         var reader = new ObjReader();
         List<Object3D> objModel = reader.Read(@"./Media/CornellBox-Glossy.obj") ?? new List<Object3D>();
 
-        this.ModelGeometry = new ObservableElement3DCollection();
+        this.modelGeometry = new ObservableElement3DCollection();
         foreach (var model in objModel.Select(x => new MeshGeometryModel3D()
         {
             Geometry = x.Geometry as MeshGeometry3D,
@@ -98,7 +98,7 @@ public partial class MainViewModel : DemoCore.BaseViewModel
         }
 
         // model trafos
-        this.ModelTransform = new Media3D.TranslateTransform3D(0, 0, 0);
+        this.modelTransform = new Media3D.TranslateTransform3D(0, 0, 0);
     }
 
     private static Material? GetMaterialFromMaterialCore(PhongMaterialCore? material)

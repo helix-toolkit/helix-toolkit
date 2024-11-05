@@ -115,9 +115,9 @@ public partial class MainViewModel : DemoCore.BaseViewModel
         DirectionalLightDirection = new Vector3D(-2, -5, -2);
 
         // floor plane grid
-        Grid = LineBuilder.GenerateGrid(new Vector3(0, 1, 0), -5, 5, -5, 5);
+        grid = LineBuilder.GenerateGrid(new Vector3(0, 1, 0), -5, 5, -5, 5);
         GridColor = Colors.Black;
-        GridTransform = new Media3D.TranslateTransform3D(0, -3, 0);
+        gridTransform = new Media3D.TranslateTransform3D(0, -3, 0);
 
         // scene model3d
         var b1 = new MeshBuilder();
@@ -128,33 +128,33 @@ public partial class MainViewModel : DemoCore.BaseViewModel
         meshGeometry.Colors = meshGeometry.TextureCoordinates is null 
             ? null 
             : new Color4Collection(meshGeometry.TextureCoordinates.Select(x => x.ToColor4(1f, 1f)));
-        Model = meshGeometry;
+        model = meshGeometry;
 
         // lines model3d
         var e1 = new LineBuilder();
         e1.AddBox(new Vector3(0, 0, 0), 1, 0.5, 2);
-        Lines = e1.ToLineGeometry3D();
+        lines = e1.ToLineGeometry3D();
 
         var textBuilder = new MeshBuilder();
         textBuilder.ExtrudeText("HelixToolkit.SharpDX", "Arial", System.Windows.FontStyles.Normal, System.Windows.FontWeights.Bold,
             14, new Vector3(1, 0, 0), new Vector3(0, 0, 0), new Vector3(0, 0, 1));
-        TextModel = textBuilder.ToMeshGeometry3D();
+        textModel = textBuilder.ToMeshGeometry3D();
 
         // model trafos
-        Model1Transform = new Media3D.TranslateTransform3D(0, 0, 0);
-        Model2Transform = new Media3D.TranslateTransform3D(-2, 0, 0);
-        Model3Transform = new Media3D.TranslateTransform3D(+2, 0, 0);
-        Model4Transform = new Media3D.TranslateTransform3D(-8, 0, -5);
+        model1Transform = new Media3D.TranslateTransform3D(0, 0, 0);
+        model2Transform = new Media3D.TranslateTransform3D(-2, 0, 0);
+        model3Transform = new Media3D.TranslateTransform3D(+2, 0, 0);
+        model4Transform = new Media3D.TranslateTransform3D(-8, 0, -5);
 
         // model materials
-        RedMaterial = PhongMaterials.Red;
-        GreenMaterial = PhongMaterials.Green;
-        BlueMaterial = PhongMaterials.Blue;
+        redMaterial = PhongMaterials.Red;
+        greenMaterial = PhongMaterials.Green;
+        blueMaterial = PhongMaterials.Blue;
         //var diffColor = this.RedMaterial.DiffuseColor;
         //diffColor.Alpha = 0.5f;
         //this.RedMaterial.DiffuseColor = diffColor;   
 
-        Points = new PointGeometry3D();
+        points = new PointGeometry3D();
         var ptPos = new Vector3Collection();
         var ptIdx = new IntCollection();
 
@@ -173,7 +173,7 @@ public partial class MainViewModel : DemoCore.BaseViewModel
         Points.Positions = ptPos;
         Points.Indices = ptIdx;
 
-        Text = new BillboardText3D();
+        text = new BillboardText3D();
         int numRows = 11;
         int numColumns = 11;
         string[] texts = new string[]
@@ -200,7 +200,7 @@ public partial class MainViewModel : DemoCore.BaseViewModel
             }
         }
 
-        Billboard1Model = new BillboardSingleText3D()
+        billboard1Model = new BillboardSingleText3D()
         {
             TextInfo = new TextInfo("Model 1", new Vector3(0, 1, 0)) { Angle = 0 },
             FontColor = Colors.Blue.ToColor4(),
@@ -212,7 +212,7 @@ public partial class MainViewModel : DemoCore.BaseViewModel
 
         var background = Colors.Blue;
         background.A = (byte)120;
-        Billboard2Model = new BillboardSingleText3D()
+        billboard2Model = new BillboardSingleText3D()
         {
             TextInfo = new TextInfo("Model 2", new Vector3(2, 1, 0)) { Angle = -(float)Math.PI / 3 },
             FontSize = 12,
@@ -223,7 +223,7 @@ public partial class MainViewModel : DemoCore.BaseViewModel
         };
         background = Colors.Purple;
         background.A = (byte)50;
-        Billboard3Model = new BillboardSingleText3D(2, 0.8f)
+        billboard3Model = new BillboardSingleText3D(2, 0.8f)
         {
             TextInfo = new TextInfo("Model 3", new Vector3(-2, 1, 0)) { Angle = -(float)Math.PI / 6 },
             FontSize = 12,
@@ -235,7 +235,7 @@ public partial class MainViewModel : DemoCore.BaseViewModel
         };
 
         //BillboardImageModel = new BillboardSingleImage3D(CreateBitmapSample()) { MaskColor = Color.Black };
-        BillboardImageModel = new BillboardSingleImage3D(CreatePNGSample(), 1, 1)
+        billboardImageModel = new BillboardSingleImage3D(CreatePNGSample(), 1, 1)
         {
             Angle = -(float)Math.PI / 5,
             Center = new Vector3(2, 2, 0)

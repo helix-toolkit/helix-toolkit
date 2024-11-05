@@ -100,7 +100,7 @@ public partial class MainViewModel : DemoCore.BaseViewModel
         // ----------------------------------------------
         // ----------------------------------------------
         // scene model3d
-        this.ModelMaterial = PhongMaterials.Silver;
+        this.modelMaterial = PhongMaterials.Silver;
 
         // ----------------------------------------------
         // floor model3d
@@ -108,8 +108,8 @@ public partial class MainViewModel : DemoCore.BaseViewModel
         b2.AddBox(new Vector3(0.0f, 0, 0.0f), 150, 1, 150, BoxFaces.All);
         b2.AddBox(new Vector3(0, 25, 70), 150, 50, 20);
         b2.AddBox(new Vector3(0, 25, -70), 150, 50, 20);
-        this.Floor = b2.ToMeshGeometry3D();
-        this.FloorMaterial = PhongMaterials.Bisque;
+        this.floor = b2.ToMeshGeometry3D();
+        this.floorMaterial = PhongMaterials.Bisque;
         this.FloorMaterial.DiffuseMap = TextureModel.Create(new System.Uri(@"TextureCheckerboard2.jpg", System.UriKind.RelativeOrAbsolute).ToString());
         this.FloorMaterial.NormalMap = TextureModel.Create(new System.Uri(@"TextureCheckerboard2_dot3.jpg", System.UriKind.RelativeOrAbsolute).ToString());
 
@@ -134,17 +134,17 @@ public partial class MainViewModel : DemoCore.BaseViewModel
             }
         }
 
-        Model = MeshGeometry3D.Merge(caritems);
+        model = MeshGeometry3D.Merge(caritems);
 
-        ModelTransform = new Media3D.RotateTransform3D() { Rotation = new Media3D.AxisAngleRotation3D(new Vector3D(1, 0, 0), -90) };
+        modelTransform = new Media3D.RotateTransform3D() { Rotation = new Media3D.AxisAngleRotation3D(new Vector3D(1, 0, 0), -90) };
 
-        Instances = new Matrix[6];
+        instances = new Matrix[6];
         for (int i = 0; i < Instances.Length; ++i)
         {
             Instances[i] = Matrix.CreateTranslation(new Vector3(15 * i - 30, 15 * (i % 2) - 30, 0));
         }
 
-        OutlineInstances = new Matrix[6];
+        outlineInstances = new Matrix[6];
         for (int i = 0; i < Instances.Length; ++i)
         {
             OutlineInstances[i] = Matrix.CreateTranslation(new Vector3(15 * i - 30, 15 * (i % 2), 0));
