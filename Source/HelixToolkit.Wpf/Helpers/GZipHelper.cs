@@ -22,7 +22,7 @@ public static class GZipHelper
         using (var infile = File.OpenRead(source))
         {
             input = new byte[infile.Length];
-            infile.Read(input, 0, input.Length);
+            _ = infile.Read(input, 0, input.Length);
         }
 
         var dest = Path.ChangeExtension(source, ext + "z");
