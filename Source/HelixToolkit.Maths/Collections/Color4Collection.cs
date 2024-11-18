@@ -1,7 +1,5 @@
 ﻿using HelixToolkit.Maths;
 using System.ComponentModel;
-using System.Globalization;
-using System.Text;
 
 namespace HelixToolkit;
 
@@ -29,16 +27,15 @@ public sealed class Color4Collection : FastList<Color4>
 
         var th = new TokenizerHelper(source, formatProvider);
         var resource = new Color4Collection();
-
         Color4 value;
 
         while (th.NextToken())
         {
             value = new Color4(
-                Convert.ToSingle(th.GetCurrentToken(), formatProvider),
-                Convert.ToSingle(th.NextTokenRequired(), formatProvider),
-                Convert.ToSingle(th.NextTokenRequired(), formatProvider),
-                Convert.ToSingle(th.NextTokenRequired(), formatProvider));
+                NumericHelpers.ParseSingle(th.GetCurrentToken(), formatProvider),
+                NumericHelpers.ParseSingle(th.NextTokenRequired(), formatProvider),
+                NumericHelpers.ParseSingle(th.NextTokenRequired(), formatProvider),
+                NumericHelpers.ParseSingle(th.NextTokenRequired(), formatProvider));
 
             resource.Add(value);
         }
@@ -53,17 +50,27 @@ public sealed class Color4Collection : FastList<Color4>
             return string.Empty;
         }
 
-        var str = new StringBuilder();
+        var builder = new DefaultInterpolatedStringHandler(this.Count * 4 - 1, this.Count * 4, provider);
+        Color4 value;
+
         for (var i = 0; i < this.Count; i++)
         {
-            //str.AppendFormat(provider, "{0:" + format + "}", this[i]);
-            str.AppendFormat(provider, "{0},{1},{2},{3}", this[i].Red, this[i].Green, this[i].Blue, this[i].Alpha);
+            value = this[i];
+
+            builder.AppendFormatted(value.Red);
+            builder.AppendLiteral(",");
+            builder.AppendFormatted(value.Green);
+            builder.AppendLiteral(",");
+            builder.AppendFormatted(value.Blue);
+            builder.AppendLiteral(",");
+            builder.AppendFormatted(value.Alpha);
+
             if (i != this.Count - 1)
             {
-                str.Append(' ');
+                builder.AppendLiteral(" ");
             }
         }
 
-        return str.ToString();
+        return builder.ToStringAndClear();
     }
 }

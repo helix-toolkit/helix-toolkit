@@ -27,10 +27,10 @@ public sealed class ColorConverter : FromToStringTypeConverter
             catch (FormatException) { }
             var th = new TokenizerHelper(source, CultureInfo.InvariantCulture);
             var result = new Color(
-                Convert.ToSingle(th.NextTokenRequired(), CultureInfo.InvariantCulture),
-                Convert.ToSingle(th.NextTokenRequired(), CultureInfo.InvariantCulture),
-                Convert.ToSingle(th.NextTokenRequired(), CultureInfo.InvariantCulture),
-                Convert.ToSingle(th.NextTokenRequired(), CultureInfo.InvariantCulture));
+                NumericHelpers.ParseSingle(th.NextTokenRequired(), CultureInfo.InvariantCulture),
+                NumericHelpers.ParseSingle(th.NextTokenRequired(), CultureInfo.InvariantCulture),
+                NumericHelpers.ParseSingle(th.NextTokenRequired(), CultureInfo.InvariantCulture),
+                NumericHelpers.ParseSingle(th.NextTokenRequired(), CultureInfo.InvariantCulture));
             return result;
         }
         else if (value is System.Windows.Media.Color color)

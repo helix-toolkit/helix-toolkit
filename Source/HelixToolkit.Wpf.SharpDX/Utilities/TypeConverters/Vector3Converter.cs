@@ -47,9 +47,9 @@ public sealed class Vector3Converter : FromToStringTypeConverter
             {
                 var th = new TokenizerHelper(source, CultureInfo.InvariantCulture);
                 var result = new Vector3(
-                    Convert.ToSingle(th.NextTokenRequired(), CultureInfo.InvariantCulture),
-                    Convert.ToSingle(th.NextTokenRequired(), CultureInfo.InvariantCulture),
-                    Convert.ToSingle(th.NextTokenRequired(), CultureInfo.InvariantCulture));
+                    NumericHelpers.ParseSingle(th.NextTokenRequired(), CultureInfo.InvariantCulture),
+                    NumericHelpers.ParseSingle(th.NextTokenRequired(), CultureInfo.InvariantCulture),
+                    NumericHelpers.ParseSingle(th.NextTokenRequired(), CultureInfo.InvariantCulture));
                 return result;
             }
         }

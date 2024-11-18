@@ -1,6 +1,4 @@
 ﻿using System.ComponentModel;
-using System.Globalization;
-using System.Text;
 
 namespace HelixToolkit;
 
@@ -28,15 +26,14 @@ public sealed class Vector3Collection : FastList<Vector3>
 
         var th = new TokenizerHelper(source, formatProvider);
         var resource = new Vector3Collection();
-
         Vector3 value;
 
         while (th.NextToken())
         {
             value = new Vector3(
-                Convert.ToSingle(th.GetCurrentToken(), formatProvider),
-                Convert.ToSingle(th.NextTokenRequired(), formatProvider),
-                Convert.ToSingle(th.NextTokenRequired(), formatProvider));
+                NumericHelpers.ParseSingle(th.GetCurrentToken(), formatProvider),
+                NumericHelpers.ParseSingle(th.NextTokenRequired(), formatProvider),
+                NumericHelpers.ParseSingle(th.NextTokenRequired(), formatProvider));
 
             resource.Add(value);
         }
@@ -51,17 +48,25 @@ public sealed class Vector3Collection : FastList<Vector3>
             return string.Empty;
         }
 
-        var str = new StringBuilder();
+        var builder = new DefaultInterpolatedStringHandler(this.Count * 3 - 1, this.Count * 3, provider);
+        Vector3 value;
+
         for (var i = 0; i < this.Count; i++)
         {
-            //str.AppendFormat(provider, "{0:" + format + "}", this[i]);
-            str.AppendFormat(provider, "{0},{1},{2}", this[i].X, this[i].Y, this[i].Z);
+            value = this[i];
+
+            builder.AppendFormatted(value.X);
+            builder.AppendLiteral(",");
+            builder.AppendFormatted(value.Y);
+            builder.AppendLiteral(",");
+            builder.AppendFormatted(value.Z);
+
             if (i != this.Count - 1)
             {
-                str.Append(' ');
+                builder.AppendLiteral(" ");
             }
         }
 
-        return str.ToString();
+        return builder.ToStringAndClear();
     }
 }
