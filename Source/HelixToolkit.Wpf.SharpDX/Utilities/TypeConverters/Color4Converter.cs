@@ -41,10 +41,10 @@ public sealed class Color4Converter : FromToStringTypeConverter
             {
                 var th = new TokenizerHelper(source, CultureInfo.InvariantCulture);
                 var result = new Color4(
-                    Convert.ToSingle(th.NextTokenRequired(), CultureInfo.InvariantCulture),
-                    Convert.ToSingle(th.NextTokenRequired(), CultureInfo.InvariantCulture),
-                    Convert.ToSingle(th.NextTokenRequired(), CultureInfo.InvariantCulture),
-                    Convert.ToSingle(th.NextTokenRequired(), CultureInfo.InvariantCulture));
+                    NumericHelpers.ParseSingle(th.NextTokenRequired(), CultureInfo.InvariantCulture),
+                    NumericHelpers.ParseSingle(th.NextTokenRequired(), CultureInfo.InvariantCulture),
+                    NumericHelpers.ParseSingle(th.NextTokenRequired(), CultureInfo.InvariantCulture),
+                    NumericHelpers.ParseSingle(th.NextTokenRequired(), CultureInfo.InvariantCulture));
                 return result;
             }
 
