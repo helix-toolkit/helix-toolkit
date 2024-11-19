@@ -5,6 +5,18 @@
 #include "..\Common\Common.hlsl"
 void makeLine(out float4 points[4], in float4 posA, in float4 posB, in float width)
 {
+	if (posA.w * posB.w < 0)
+	{
+		if (posA.w < 0)
+		{
+			posA = lerp(posA, posB, -posA.w / (posB.w - posA.w));
+		}
+		else
+		{
+			posB = lerp(posB, posA, -posB.w / (posA.w - posB.w));
+		}
+
+	}
     // Bring A and B in window space
     float2 Aw = projToWindow(posA);
     float2 Bw = projToWindow(posB);
@@ -15,10 +27,10 @@ void makeLine(out float4 points[4], in float4 posA, in float4 posB, in float wid
     float2 binormal = width * float2(tangent.y, -tangent.x);
     
     // Compute the corners of the ribbon in window space
-    float2 A1w = (Aw + binormal);
-    float2 A2w = (Aw - binormal);
-    float2 B1w = (Bw + binormal);
-    float2 B2w = (Bw - binormal);
+	float2 A1w = Aw + binormal;
+	float2 A2w = Aw - binormal;
+	float2 B1w = Bw + binormal;
+	float2 B2w = Bw - binormal;
 
     // bring back corners in projection frame
     points[0] = windowToProj(A1w, posA.z, posA.w);
