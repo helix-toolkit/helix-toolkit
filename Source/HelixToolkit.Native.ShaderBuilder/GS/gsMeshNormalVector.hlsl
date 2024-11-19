@@ -5,6 +5,19 @@
 #include"..\Common\Common.hlsl"
 void makeLine(out float4 points[4], in float4 posA, in float4 posB, in float width)
 {
+	// Clipping
+    if (posA.w * posB.w < 0)
+    {
+        if (posA.w < 0)
+        {
+            posA = lerp(posA, posB, -posA.w / (posB.w - posA.w));
+        }
+        else
+        {
+            posB = lerp(posB, posA, -posB.w / (posA.w - posB.w));
+        }
+
+    }
     // Bring A and B in window space
     float2 Aw = projToWindow(posA);
     float2 Bw = projToWindow(posB);
