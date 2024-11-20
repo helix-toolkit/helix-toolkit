@@ -1,6 +1,4 @@
 ﻿using System.ComponentModel;
-using System.Globalization;
-using System.Text;
 
 namespace HelixToolkit;
 
@@ -28,14 +26,13 @@ public sealed class Vector2Collection : FastList<Vector2>
 
         var th = new TokenizerHelper(source, formatProvider);
         var resource = new Vector2Collection();
-
         Vector2 value;
 
         while (th.NextToken())
         {
             value = new Vector2(
-                Convert.ToSingle(th.GetCurrentToken(), formatProvider),
-                Convert.ToSingle(th.NextTokenRequired(), formatProvider));
+                NumericHelpers.ParseSingle(th.GetCurrentToken(), formatProvider),
+                NumericHelpers.ParseSingle(th.NextTokenRequired(), formatProvider));
 
             resource.Add(value);
         }
@@ -50,17 +47,23 @@ public sealed class Vector2Collection : FastList<Vector2>
             return string.Empty;
         }
 
-        var str = new StringBuilder();
+        var builder = new DefaultInterpolatedStringHandler(this.Count * 2 - 1, this.Count * 2, provider);
+        Vector2 value;
+
         for (var i = 0; i < this.Count; i++)
         {
-            //str.AppendFormat(provider, "{0:" + format + "}", this[i]);
-            str.AppendFormat(provider, "{0},{1}", this[i].X, this[i].Y);
+            value = this[i];
+
+            builder.AppendFormatted(value.X);
+            builder.AppendLiteral(",");
+            builder.AppendFormatted(value.Y);
+
             if (i != this.Count - 1)
             {
-                str.Append(' ');
+                builder.AppendLiteral(" ");
             }
         }
 
-        return str.ToString();
+        return builder.ToStringAndClear();
     }
 }

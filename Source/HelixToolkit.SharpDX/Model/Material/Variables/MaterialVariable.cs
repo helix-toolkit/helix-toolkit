@@ -309,7 +309,7 @@ public abstract class MaterialVariable : DisposeObject
 #if DEBUG
             throw new ArgumentException($"Variable not found in constant buffer {materialCB?.Name}. Variable = {name}");
 #else
-                    logger.LogWarning("Variable not found in constant buffer {0}. Variable = {1}", materialCB.Name, name);
+                    logger.LogWarning("Variable not found in constant buffer {0}. Variable = {1}", materialCB?.Name, name);
 #endif
         }
     }

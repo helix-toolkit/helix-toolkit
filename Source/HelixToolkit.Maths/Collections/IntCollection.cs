@@ -1,6 +1,4 @@
 ﻿using System.ComponentModel;
-using System.Globalization;
-using System.Text;
 
 namespace HelixToolkit;
 
@@ -25,11 +23,13 @@ public sealed class IntCollection : FastList<int>
     public static IntCollection Parse(string source)
     {
         IFormatProvider formatProvider = CultureInfo.InvariantCulture;
+
         var th = new TokenizerHelper(source, formatProvider);
         var resource = new IntCollection();
+
         while (th.NextToken())
         {
-            var value = Convert.ToInt32(th.GetCurrentToken(), formatProvider);
+            int value = NumericHelpers.ParseInt32(th.GetCurrentToken(), formatProvider);
             resource.Add(value);
         }
 
@@ -40,19 +40,23 @@ public sealed class IntCollection : FastList<int>
     {
         if (this.Count == 0)
         {
-            return String.Empty;
+            return string.Empty;
         }
 
-        var str = new StringBuilder();
+        var builder = new DefaultInterpolatedStringHandler(this.Count - 1, this.Count, provider);
+
         for (var i = 0; i < this.Count; i++)
         {
-            str.AppendFormat(provider, "{0:" + format + "}", this[i]);
+            int value = this[i];
+
+            builder.AppendFormatted(value);
+
             if (i != this.Count - 1)
             {
-                str.Append(' ');
+                builder.AppendLiteral(" ");
             }
         }
 
-        return str.ToString();
+        return builder.ToStringAndClear();
     }
 }

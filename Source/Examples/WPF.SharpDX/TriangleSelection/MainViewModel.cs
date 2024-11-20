@@ -32,8 +32,8 @@ namespace TriangleSelection
             EffectsManager = new DefaultEffectsManager();
             var meshbuilder = new MeshBuilder();
             meshbuilder.AddSphere(Vector3.Zero, 10);
-            SphereMesh = meshbuilder.ToMeshGeometry3D();
-            SelectionMesh = new MeshGeometry3D()
+            sphereMesh = meshbuilder.ToMeshGeometry3D();
+            selectionMesh = new MeshGeometry3D()
             {
                 Positions = SphereMesh.Positions,
                 Normals = SphereMesh.Normals,

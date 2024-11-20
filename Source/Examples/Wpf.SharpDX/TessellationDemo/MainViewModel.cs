@@ -111,11 +111,11 @@ public partial class MainViewModel : DemoCore.BaseViewModel
 
         // ---------------------------------------------
         // model trafo
-        this.DefaultTransform = new Media3D.TranslateTransform3D(0, -0, 0);
+        this.defaultTransform = new Media3D.TranslateTransform3D(0, -0, 0);
 
         // ---------------------------------------------
         // model material
-        this.DefaultMaterial = new PhongMaterial
+        this.defaultMaterial = new PhongMaterial
         {
             AmbientColor = Colors.Gray.ToColor4(),
             DiffuseColor = Colors.Red.ToColor4(), // Colors.LightGray,
@@ -133,15 +133,15 @@ public partial class MainViewModel : DemoCore.BaseViewModel
          MeshFaces.Default : MeshFaces.QuadPatches);
         // ---------------------------------------------
         // floor plane grid
-        this.Grid = LineBuilder.GenerateGrid(10);
+        this.grid = LineBuilder.GenerateGrid(10);
         this.GridColor = Colors.Black;
-        this.GridTransform = new Media3D.TranslateTransform3D(-5, -4, -5);
+        this.gridTransform = new Media3D.TranslateTransform3D(-5, -4, -5);
 
         var builder = new MeshBuilder(true, true, true);
         builder.AddBox(new Vector3(0, -5, 0), 60, 0.5f, 60, BoxFaces.All);
-        FloorModel = builder.ToMeshGeometry3D();
+        floorModel = builder.ToMeshGeometry3D();
 
-        Instances = new Matrix[] { Matrix.Identity, 
+        instances = new Matrix[] { Matrix.Identity, 
             Matrix.CreateTranslation(10, 0, 10), 
             Matrix.CreateTranslation(-10, 0, 10), 
             Matrix.CreateTranslation(10, 0, -10), 

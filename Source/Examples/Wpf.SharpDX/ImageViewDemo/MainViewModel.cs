@@ -65,16 +65,16 @@ public partial class MainViewModel : DemoCore.BaseViewModel
         this.DirectionalLightDirection = new Vector3D(-0, -0, -10);
 
         // floor plane grid
-        this.Grid = LineBuilder.GenerateGrid(Vector3.UnitZ, -5, 5, -5, 5);
+        this.grid = LineBuilder.GenerateGrid(Vector3.UnitZ, -5, 5, -5, 5);
         this.GridColor = Color.Black;
-        this.GridTransform = new Media3D.TranslateTransform3D(0, 0, 0);
+        this.gridTransform = new Media3D.TranslateTransform3D(0, 0, 0);
 
         // plane
         var b2 = new MeshBuilder();
         b2.AddBox(new Vector3(0, 0, 0), 10, 10, 0, BoxFaces.PositiveZ);
-        this.Plane = b2.ToMeshGeometry3D();
-        this.PlaneMaterial = PhongMaterials.Blue;
-        this.PlaneTransform = new Media3D.TranslateTransform3D(-0, -0, -0);
+        this.plane = b2.ToMeshGeometry3D();
+        this.planeMaterial = PhongMaterials.Blue;
+        this.planeTransform = new Media3D.TranslateTransform3D(-0, -0, -0);
         //this.PlaneMaterial.ReflectiveColor = Color.Black;
         this.PlaneTransform = new Media3D.TranslateTransform3D(0, 0, 0);
     }

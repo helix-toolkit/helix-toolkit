@@ -18,7 +18,7 @@ class CanvasMock : IRenderCanvas
         set; get;
     }
 
-    public event EventHandler<RelayExceptionEventArgs>? ExceptionOccurred;
+    public event EventHandler<RelayExceptionEventArgs>? ExceptionOccurred { add { } remove { } }
 
     public CanvasMock()
     {

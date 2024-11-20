@@ -8,26 +8,39 @@
 //--------------------------------------------------------------------------------------
 void makeLine(out float4 points[4], in float4 posA, in float4 posB, in float width)
 {
+	// Clipping
+	if (posA.w * posB.w < 0)
+	{
+		if (posA.w < 0)
+		{
+			posA = lerp(posA, posB, -posA.w / (posB.w - posA.w));
+		}
+		else
+		{
+			posB = lerp(posB, posA, -posB.w / (posA.w - posB.w));
+		}
+
+	}
     // Bring A and B in window space
-    float2 Aw = projToWindow(posA);
-    float2 Bw = projToWindow(posB);
+	float2 Aw = projToWindow(posA);
+	float2 Bw = projToWindow(posB);
 
     // Compute tangent and binormal of line AB in window space
     // Binormal is scaled by line width 
-    float2 tangent = normalize(Bw.xy - Aw.xy);
-    float2 binormal = width * DpiScale * float2(tangent.y, -tangent.x);
+	float2 tangent = normalize(Bw.xy - Aw.xy);
+	float2 binormal = width * DpiScale * float2(tangent.y, -tangent.x);
     
     // Compute the corners of the ribbon in window space
-    float2 A1w = Aw - binormal;
-    float2 A2w = Aw + binormal;
-    float2 B1w = Bw - binormal;
-    float2 B2w = Bw + binormal;
+	float2 A1w = Aw - binormal;
+	float2 A2w = Aw + binormal;
+	float2 B1w = Bw - binormal;
+	float2 B2w = Bw + binormal;
 
     // bring back corners in projection frame
-    points[1] = windowToProj(A1w, posA.z, posA.w);
-    points[0] = windowToProj(A2w, posA.z, posA.w);
-    points[3] = windowToProj(B1w, posB.z, posB.w);
-    points[2] = windowToProj(B2w, posB.z, posB.w);
+	points[1] = windowToProj(A1w, posA.z, posA.w);
+	points[0] = windowToProj(A2w, posA.z, posA.w);
+	points[3] = windowToProj(B1w, posB.z, posB.w);
+	points[2] = windowToProj(B2w, posB.z, posB.w);
 }
 
 void makeLineNonFixed(out float4 points[4], in float4 posA, in float4 posB, in float width)
@@ -64,8 +77,8 @@ void main(line GSInputPS input[2], inout TriangleStream<PSInputPS> outStream)
 		
     float4 lineCorners[4] = { (float4) 0, (float4) 0, (float4) 0, (float4) 0 };
     float texX = length(input[0].wp.xyz - input[1].wp.xyz) / max(1e-5, pTextureScale);
-    if(fixedSize)
-        makeLine(lineCorners, input[0].p, input[1].p, pfParams.x);
+	if (fixedSize)
+		makeLine(lineCorners, input[0].p, input[1].p, pfParams.x);		
     else
         makeLineNonFixed(lineCorners, mul(input[0].wp, mView), mul(input[1].wp, mView), pfParams.x);
     output.vEye = input[0].vEye;

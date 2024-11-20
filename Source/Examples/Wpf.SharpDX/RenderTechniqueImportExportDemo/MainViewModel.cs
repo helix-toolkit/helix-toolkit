@@ -59,11 +59,11 @@ public partial class MainViewModel : DemoCore.BaseViewModel
 
         if (string.IsNullOrEmpty(technique))
         {
-            EffectsManager?.ExportTechniquesAsBinary(path);
+            EffectsManager?.ExportTechniquesAsBinary(path!);
         }
         else
         {
-            EffectsManager?.ExportTechniqueAsBinary(technique, path);
+            EffectsManager?.ExportTechniqueAsBinary(technique, path!);
         }
     }
 
@@ -83,7 +83,7 @@ public partial class MainViewModel : DemoCore.BaseViewModel
         }
         var manager = EffectsManager;
         EffectsManager = null;
-        manager?.ImportTechniques(path, true);
+        manager?.ImportTechniques(path!, true);
         EffectsManager = manager;
         TechniqueList.Clear();
 

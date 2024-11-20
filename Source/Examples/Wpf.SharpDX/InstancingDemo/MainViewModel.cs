@@ -116,14 +116,14 @@ public partial class MainViewModel : DemoCore.BaseViewModel
         Lines.Colors = Lines.Positions is null ? null : new Color4Collection(Enumerable.Repeat(Colors.White.ToColor4(), Lines.Positions.Count));
 
         // model trafo
-        ModelTransform = Media3D.Transform3D.Identity;// new Media3D.RotateTransform3D(new Media3D.AxisAngleRotation3D(new Vector3D(0, 0, 1), 45));
+        modelTransform = Media3D.Transform3D.Identity;// new Media3D.RotateTransform3D(new Media3D.AxisAngleRotation3D(new Vector3D(0, 0, 1), 45));
 
         // model material
         ModelMaterial = PhongMaterials.White;
         ModelMaterial.DiffuseMap = TextureModel.Create(new System.Uri(@"TextureCheckerboard2.jpg", System.UriKind.RelativeOrAbsolute).ToString());
         ModelMaterial.NormalMap = TextureModel.Create(new System.Uri(@"TextureCheckerboard2_dot3.jpg", System.UriKind.RelativeOrAbsolute).ToString());
 
-        BillboardModel = new BillboardSingleImage3D(ModelMaterial.DiffuseMap, 20, 20);
+        billboardModel = new BillboardSingleImage3D(ModelMaterial.DiffuseMap, 20, 20);
         Texture = TextureModel.Create("Cubemap_Grandcanyon.dds");
         CreateModels();
         timer.Interval = TimeSpan.FromMilliseconds(30);

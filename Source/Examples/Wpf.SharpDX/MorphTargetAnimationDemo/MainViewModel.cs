@@ -46,7 +46,7 @@ public partial class MainViewModel : DemoCore.BaseViewModel
     public MainViewModel()
     {
         EffectsManager = new DefaultEffectsManager();
-        ModelGroup = new SceneNodeGroupModel3D();
+        modelGroup = new SceneNodeGroupModel3D();
 
         //Test importing
         Importer importer = new();

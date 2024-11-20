@@ -167,12 +167,12 @@ namespace MeshBuilderSample
                 Vector3[] points = Array.Empty<Vector3>();
                 if (!string.IsNullOrEmpty(trianglePoints.Text))
                 {
-                    points = Vector3DCollection.Parse(trianglePoints.Text).ToVector3Collection().ToArray();
+                    points = Vector3DCollection.Parse(trianglePoints.Text).ToVector3Collection()!.ToArray();
                 }
                 Vector2[]? textures = null;
                 if (!string.IsNullOrEmpty(triangleTextures.Text))
                 {
-                    textures = VectorCollection.Parse(triangleTextures.Text).ToVector2Collection().ToArray();
+                    textures = VectorCollection.Parse(triangleTextures.Text).ToVector2Collection()!.ToArray();
                 }
 
                 var builder = new MeshBuilder(true, true);

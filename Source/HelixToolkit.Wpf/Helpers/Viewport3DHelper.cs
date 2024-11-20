@@ -130,9 +130,8 @@ public static class Viewport3DHelper
     /// <param name="viewport">The viewport.</param>
     /// <param name="position">The position.</param>
     /// <param name="filterCallback">The method that represents the hit test filter callback value./></param>
-    /// <param name="resultCallback">The method that represents the hit test result callback value.</param>
     /// <returns> List of hits, sorted with the nearest hit first.</returns>
-    public static IList<PointHitResult>? FindHits(this Viewport3D viewport, Point position, HitTestFilterCallback? filterCallback = null, HitTestResultCallback? resultCallback = null)
+    public static IList<PointHitResult> FindHits(this Viewport3D viewport, Point position, HitTestFilterCallback? filterCallback = null)
     {
         if (viewport is null)
         {
@@ -154,12 +153,12 @@ public static class Viewport3DHelper
             Matrix3D inversedViewMatrix = matrixCamera.ViewMatrix.Inverse();
             cameraPosition = new Point3D(inversedViewMatrix.OffsetX, inversedViewMatrix.OffsetY, inversedViewMatrix.OffsetZ);
         }
-        resultCallback ??= DefaultResultCallback;
         var pointHitTestParamrters = new PointHitTestParameters(position);
-        VisualTreeHelper.HitTest(viewport, filterCallback, resultCallback, pointHitTestParamrters);
-        return result.OrderBy(k => k.Distance).ToList();
+        VisualTreeHelper.HitTest(viewport, filterCallback, DefaultHitTestResultBehaviorCallback, pointHitTestParamrters);
+        result.Sort((x, y) => x.Distance.CompareTo(y.Distance));
+        return result;
 
-        HitTestResultBehavior DefaultResultCallback(HitTestResult hit)
+        HitTestResultBehavior DefaultHitTestResultBehaviorCallback(HitTestResult hit)
         {
             if (hit is RayMeshGeometry3DHitTestResult rayHit)
             {
@@ -205,13 +204,7 @@ public static class Viewport3DHelper
         if (rectangle.Size.Equals(default)
            || HelixToolkit.Maths.MathUtil.IsZero((float)rectangle.Width) && HelixToolkit.Maths.MathUtil.IsZero((float)rectangle.Height))
         {
-            var hitResults = FindHits(viewport, rectangle.BottomLeft);
-
-            if (hitResults is null)
-            {
-                return new List<RectangleHitResult>();
-            }
-
+            IList<PointHitResult> hitResults = FindHits(viewport, rectangle.BottomLeft);
             return hitResults.Select(x => new RectangleHitResult(x.Model, x.Visual));
         }
 

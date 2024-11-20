@@ -246,22 +246,22 @@ public partial class MainViewModel : DemoCore.BaseViewModel
         this.Light4Attenuation = new Vector3D(0.1f, 0.02f, 0.0f);
 
         this.Light1Direction = new Vector3D(0, -10, -10);
-        this.Light1Transform = new TranslateTransform3D(-Light1Direction);
-        this.Light1DirectionTransform = CreateAnimatedTransform2(-Light1Direction, new Vector3D(0, 1, -1), 36);
+        this.light1Transform = new TranslateTransform3D(-Light1Direction);
+        this.light1DirectionTransform = CreateAnimatedTransform2(-Light1Direction, new Vector3D(0, 1, -1), 36);
 
-        this.Light2Transform = CreateAnimatedTransform1(new Vector3D(-100, 50, 0), new Vector3D(0, 0, 1), 3);
-        this.Light3Transform = CreateAnimatedTransform1(new Vector3D(0, 50, 100), new Vector3D(0, 1, 0), 5);
+        this.light2Transform = CreateAnimatedTransform1(new Vector3D(-100, 50, 0), new Vector3D(0, 0, 1), 3);
+        this.light3Transform = CreateAnimatedTransform1(new Vector3D(0, 50, 100), new Vector3D(0, 1, 0), 5);
 
         this.Light4Direction = new Vector3D(0, -100, 0);
-        this.Light4Transform = new TranslateTransform3D(-Light4Direction);
-        this.Light4DirectionTransform = CreateAnimatedTransform2(-Light4Direction, new Vector3D(1, 0, 0), 48);
+        this.light4Transform = new TranslateTransform3D(-Light4Direction);
+        this.light4DirectionTransform = CreateAnimatedTransform2(-Light4Direction, new Vector3D(1, 0, 0), 48);
 
         // ----------------------------------------------
         // light model3d
         var sphere = new MeshBuilder();
         sphere.AddSphere(new Vector3(0, 0, 0), 4);
         Sphere = sphere.ToMeshGeometry3D();
-        this.LightModelMaterial = new PhongMaterial
+        this.lightModelMaterial = new PhongMaterial
         {
             AmbientColor = Colors.Gray.ToColor4(),
             DiffuseColor = Colors.Gray.ToColor4(),
@@ -285,7 +285,7 @@ public partial class MainViewModel : DemoCore.BaseViewModel
         transGroup.Children.Add(rotateTransform);
         rotateTransform.BeginAnimation(Media3D.RotateTransform3D.RotationProperty, rotateAnimation);
         transGroup.Children.Add(new Media3D.TranslateTransform3D(0, 60, 0));
-        ModelTransform = transGroup;
+        modelTransform = transGroup;
     }
 
     private void LoadLander()

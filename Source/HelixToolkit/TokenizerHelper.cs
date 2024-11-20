@@ -70,7 +70,7 @@ public sealed class TokenizerHelper
         }
     }
 
-    public string? GetCurrentToken()
+    public ReadOnlySpan<char> GetCurrentToken()
     {
         // if no current token, return null 
         if (this.currentTokenIndex < 0)
@@ -78,7 +78,7 @@ public sealed class TokenizerHelper
             return null;
         }
 
-        return this.str.Substring(this.currentTokenIndex, this.currentTokenLength);
+        return this.str.AsSpan(this.currentTokenIndex, this.currentTokenLength);
     }
 
     /// <summary> 
@@ -105,7 +105,7 @@ public sealed class TokenizerHelper
     /// Advances to the NextToken, throwing an exception if not present
     /// </summary>
     /// <returns>The next token found</returns>
-    public string? NextTokenRequired()
+    public ReadOnlySpan<char> NextTokenRequired()
     {
         if (!NextToken(false))
         {
@@ -119,7 +119,7 @@ public sealed class TokenizerHelper
     /// Advances to the NextToken, throwing an exception if not present 
     /// </summary> 
     /// <returns>The next token found</returns>
-    public string? NextTokenRequired(bool allowQuotedToken)
+    public ReadOnlySpan<char> NextTokenRequired(bool allowQuotedToken)
     {
         if (!NextToken(allowQuotedToken))
         {

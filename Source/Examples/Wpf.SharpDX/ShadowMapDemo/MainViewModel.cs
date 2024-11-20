@@ -123,7 +123,7 @@ public partial class MainViewModel : DemoCore.BaseViewModel
             UpDirection = new Vector3D(0, 1, 0)
         };
 
-        Camera1 = new PerspectiveCamera
+        camera1 = new PerspectiveCamera
         {
             Position = new Point3D(0, 5, 0),
             LookDirection = new Vector3D(0, -1, 0),
@@ -137,27 +137,27 @@ public partial class MainViewModel : DemoCore.BaseViewModel
         var b1 = new MeshBuilder();
         b1.AddSphere(new Vector3(0, 0, 0), 0.5f);
         b1.AddBox(new Vector3(0, 0, 0), 1, 0.25f, 2, BoxFaces.All);
-        Model = b1.ToMeshGeometry3D();
-        Instances = new[] { Matrix.CreateTranslation(0, 0, -1.5f), Matrix.CreateTranslation(0, 0, 1.5f) };
+        model = b1.ToMeshGeometry3D();
+        instances = new[] { Matrix.CreateTranslation(0, 0, -1.5f), Matrix.CreateTranslation(0, 0, 1.5f) };
 
         var b2 = new MeshBuilder();
         b2.AddBox(new Vector3(0, 0, 0), 10, 0, 10, BoxFaces.PositiveY);
-        Plane = b2.ToMeshGeometry3D();
-        PlaneTransform = new Media3D.TranslateTransform3D(-0, -2, -0);
-        GrayMaterial = PhongMaterials.Indigo;
+        plane = b2.ToMeshGeometry3D();
+        planeTransform = new Media3D.TranslateTransform3D(-0, -2, -0);
+        grayMaterial = PhongMaterials.Indigo;
 
         // lines model3d            
-        Lines = LineBuilder.GenerateBoundingBox(Model);
+        lines = LineBuilder.GenerateBoundingBox(Model);
         //this.PropertyChanged += MainViewModel_PropertyChanged;
         // model trafos
-        Model1Transform = new Media3D.TranslateTransform3D(0, 0, 0);
-        Model2Transform = new Media3D.TranslateTransform3D(-2, 0, 0);
-        Model3Transform = new Media3D.TranslateTransform3D(+2, 0, 0);
+        model1Transform = new Media3D.TranslateTransform3D(0, 0, 0);
+        model2Transform = new Media3D.TranslateTransform3D(-2, 0, 0);
+        model3Transform = new Media3D.TranslateTransform3D(+2, 0, 0);
 
         // model materials
-        RedMaterial = PhongMaterials.Glass;
-        GreenMaterial = PhongMaterials.Green;
-        BlueMaterial = PhongMaterials.Blue;
+        redMaterial = PhongMaterials.Glass;
+        greenMaterial = PhongMaterials.Green;
+        blueMaterial = PhongMaterials.Blue;
         GrayMaterial.RenderShadowMap = RedMaterial.RenderShadowMap = GreenMaterial.RenderShadowMap = BlueMaterial.RenderShadowMap = true;
         //var b3 = new MeshBuilder();
         //b3.AddBox(new Vector3(), 0.3f, 0.3f, 0.3f, BoxFaces.All);

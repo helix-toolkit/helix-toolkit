@@ -29,7 +29,8 @@ GSInputPS main(VSInputPS input)
 	output.p = mul(output.wp, mViewProjection);
     // Allow to quickly change blending mode and do linear blending
     output.c = (1 - pEnableBlending) * input.c * pColor + pEnableBlending * (pBlendingFactor * input.c + (1 - pBlendingFactor) * pColor);
-    input.c * pColor;
+
+	
 	return output;
 }
 
