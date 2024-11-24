@@ -1,6 +1,5 @@
 ﻿using HelixToolkit.SharpDX;
 using HelixToolkit.SharpDX.Model.Scene;
-using HelixToolkit.Wpf.SharpDX.Converters;
 using HelixToolkit.Wpf.SharpDX.Elements2D;
 using HelixToolkit.Wpf.SharpDX.Model;
 using System.Windows;

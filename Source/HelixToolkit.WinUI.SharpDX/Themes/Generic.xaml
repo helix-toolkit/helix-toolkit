@@ -3,11 +3,10 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:controls="using:HelixToolkit.WinUI.SharpDX"
                     xmlns:controls1="using:HelixToolkit.WinUI.SharpDX.Controls"
-                    xmlns:converters="using:HelixToolkit.WinUI.SharpDX.Converters"
                     xmlns:local="using:HelixToolkit.WinUI.SharpDX">
 
-    <converters:BoolToVisibilityConverter x:Key="boolToVisibilityConverter" />
-    <converters:EmptyStringToVisibilityConverter x:Key="emptyStringToVisibilityConverter" />
+    <controls:BoolToVisibilityConverter x:Key="boolToVisibilityConverter" />
+    <controls:EmptyStringToVisibilityConverter x:Key="emptyStringToVisibilityConverter" />
 
     <local:HelixItemsControl xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                              xmlns:local="using:HelixToolkit.WinUI.SharpDX.Controls"
