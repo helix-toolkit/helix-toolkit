@@ -1,10 +1,23 @@
-﻿using Microsoft.UI.Xaml.Data;
+﻿#if WINUI
+using Microsoft.UI.Xaml.Data;
+#else
+using System.Globalization;
+using System.Windows;
+using System.Windows.Data;
+#endif
 
-namespace HelixToolkit.WinUI.SharpDX.Converters;
+#if WINUI
+namespace HelixToolkit.WinUI.SharpDX;
+#else
+namespace HelixToolkit.Wpf.SharpDX;
+#endif
 
 /// <summary>
 /// A not-null reference to Visibility value converter.
 /// </summary>
+#if WPF
+[ValueConversion(typeof(object), typeof(Visibility))]
+#endif
 public sealed class NotNullToVisibilityConverter : IValueConverter
 {
     /// <summary>
@@ -20,7 +33,11 @@ public sealed class NotNullToVisibilityConverter : IValueConverter
     /// </summary>
     public bool Inverted { get; set; }
 
+#if WINUI
     public object? Convert(object? value, Type targetType, object? parameter, string language)
+#else
+    public object? Convert(object? value, Type targetType, object parameter, CultureInfo culture)
+#endif
     {
         if (targetType == typeof(Visibility))
         {
@@ -36,7 +53,11 @@ public sealed class NotNullToVisibilityConverter : IValueConverter
         return null;
     }
 
+#if WINUI
     public object? ConvertBack(object? value, Type targetType, object? parameter, string language)
+#else
+    public object ConvertBack(object? value, Type targetType, object parameter, CultureInfo culture)
+#endif
     {
         throw new NotImplementedException();
     }

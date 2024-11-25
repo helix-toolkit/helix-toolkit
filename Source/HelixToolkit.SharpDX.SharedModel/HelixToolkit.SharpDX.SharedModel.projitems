@@ -19,6 +19,9 @@
     <Compile Include="$(MSBuildThisFileDirectory)Camera\ProjectionCamera.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\HelixItemsControl.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\ModelContainer3DX.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Converters\BoolToVisibilityConverter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Converters\EmptyStringToVisibilityConverter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Converters\NotNullToVisibilityConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\CommonExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\MaterialExtension.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\Media3DExtension.cs" />
