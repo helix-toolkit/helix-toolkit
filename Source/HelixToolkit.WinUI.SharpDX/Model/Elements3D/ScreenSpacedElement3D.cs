@@ -25,7 +25,7 @@ public abstract class ScreenSpacedElement3D : GroupModel3D
         new PropertyMetadata(-0.8,
             (d, e) =>
             {
-                if (d is Element3DCore element && element.SceneNode is ScreenSpacedNode node)
+                if (d is Element3DCore { SceneNode: ScreenSpacedNode node })
                 {
                     node.RelativeScreenLocationX = (float)(double)e.NewValue;
                 }
@@ -38,7 +38,7 @@ public abstract class ScreenSpacedElement3D : GroupModel3D
         new PropertyMetadata(-0.8,
             (d, e) =>
             {
-                if (d is Element3DCore element && element.SceneNode is ScreenSpacedNode node)
+                if (d is Element3DCore { SceneNode: ScreenSpacedNode node })
                 {
                     node.RelativeScreenLocationY = (float)(double)e.NewValue;
                 }
@@ -51,7 +51,7 @@ public abstract class ScreenSpacedElement3D : GroupModel3D
         new PropertyMetadata(1.0,
             (d, e) =>
             {
-                if (d is Element3DCore element && element.SceneNode is ScreenSpacedNode node)
+                if (d is Element3DCore { SceneNode: ScreenSpacedNode node })
                 {
                     node.SizeScale = (float)(double)e.NewValue;
                 }
@@ -70,7 +70,7 @@ public abstract class ScreenSpacedElement3D : GroupModel3D
         DependencyProperty.Register("Mode", typeof(ScreenSpacedMode), typeof(ScreenSpacedElement3D), new PropertyMetadata(ScreenSpacedMode.RelativeScreenSpaced,
             (d, e) =>
             {
-                if (d is Element3DCore element && element.SceneNode is ScreenSpacedNode node)
+                if (d is Element3DCore { SceneNode: ScreenSpacedNode node })
                 {
                     node.Mode = (ScreenSpacedMode)e.NewValue;
                 }
@@ -93,9 +93,9 @@ public abstract class ScreenSpacedElement3D : GroupModel3D
     public static readonly DependencyProperty AbsolutePosition3DProperty =
         DependencyProperty.Register("AbsolutePosition3D", typeof(Point3D), typeof(ScreenSpacedElement3D), new PropertyMetadata(new Point3D(), (d, e) =>
         {
-            if (d is Element3DCore element && element.SceneNode is ScreenSpacedNode node)
+            if (d is Element3DCore { SceneNode: ScreenSpacedNode node })
             {
-                node.AbsolutePosition3D = (Point3D)e.NewValue;
+                node.AbsolutePosition3D = ((Point3D)e.NewValue).ToVector3();
             }
         }));
 
@@ -116,6 +116,24 @@ public abstract class ScreenSpacedElement3D : GroupModel3D
                 node.NearPlane = (float)e.NewValue;
             }
         }));
+
+    /// <summary>
+    /// Gets or sets a value indicating whether [enable mover].
+    /// </summary>
+    /// <value>
+    ///   <c>true</c> if [enable mover]; otherwise, <c>false</c>.
+    /// </value>
+    public bool EnableMover
+    {
+        get
+        {
+            return (bool)GetValue(EnableMoverProperty);
+        }
+        set
+        {
+            SetValue(EnableMoverProperty, value);
+        }
+    }
 
     /// <summary>
     /// Relative Location X on screen. Range from -1~1
@@ -170,8 +188,14 @@ public abstract class ScreenSpacedElement3D : GroupModel3D
     /// </value>
     public ScreenSpacedMode Mode
     {
-        get { return (ScreenSpacedMode)GetValue(ModeProperty); }
-        set { SetValue(ModeProperty, value); }
+        get
+        {
+            return (ScreenSpacedMode)GetValue(ModeProperty);
+        }
+        set
+        {
+            SetValue(ModeProperty, value);
+        }
     }
 
     /// <summary>
@@ -200,8 +224,14 @@ public abstract class ScreenSpacedElement3D : GroupModel3D
     /// </value>
     public Point3D AbsolutePosition3D
     {
-        get { return (Point3D)GetValue(AbsolutePosition3DProperty); }
-        set { SetValue(AbsolutePosition3DProperty, value); }
+        get
+        {
+            return (Point3D)GetValue(AbsolutePosition3DProperty);
+        }
+        set
+        {
+            SetValue(AbsolutePosition3DProperty, value);
+        }
     }
 
     /// <summary>
@@ -247,9 +277,10 @@ public abstract class ScreenSpacedElement3D : GroupModel3D
             n.RelativeScreenLocationX = (float)this.RelativeScreenLocationX;
             n.RelativeScreenLocationY = (float)this.RelativeScreenLocationY;
             n.SizeScale = (float)this.SizeScale;
+            n.AbsolutePosition3D = AbsolutePosition3D.ToVector3();
             n.Mode = Mode;
-            n.AbsolutePosition3D = AbsolutePosition3D;
         }
         base.AssignDefaultValuesToSceneNode(node);
     }
+
 }

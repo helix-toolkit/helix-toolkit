@@ -1,6 +1,10 @@
 ﻿using HelixToolkit.SharpDX.Model.Scene;
 
+#if WINUI
 namespace HelixToolkit.WinUI.SharpDX;
+#else
+namespace HelixToolkit.Wpf.SharpDX;
+#endif
 
 public class SortingGroupModel3D : GroupModel3D
 {
@@ -12,8 +16,14 @@ public class SortingGroupModel3D : GroupModel3D
     /// </value>
     public bool EnableSorting
     {
-        get { return (bool)GetValue(EnableSortingProperty); }
-        set { SetValue(EnableSortingProperty, value); }
+        get
+        {
+            return (bool)GetValue(EnableSortingProperty);
+        }
+        set
+        {
+            SetValue(EnableSortingProperty, value);
+        }
     }
 
     /// <summary>
@@ -22,12 +32,11 @@ public class SortingGroupModel3D : GroupModel3D
     public static readonly DependencyProperty EnableSortingProperty =
         DependencyProperty.Register("EnableSorting", typeof(bool), typeof(SortingGroupModel3D), new PropertyMetadata(true, (d, e) =>
         {
-            if (d is Element3D element && element.SceneNode is SortingGroupNode node)
+            if (d is Element3D { SceneNode: SortingGroupNode node })
             {
                 node.EnableSorting = (bool)e.NewValue;
             }
         }));
-
 
     /// <summary>
     /// Gets or sets the sorting interval by milliseconds. Default is 500ms
@@ -37,8 +46,14 @@ public class SortingGroupModel3D : GroupModel3D
     /// </value>
     public int SortingInterval
     {
-        get { return (int)GetValue(SortingIntervalProperty); }
-        set { SetValue(SortingIntervalProperty, value); }
+        get
+        {
+            return (int)GetValue(SortingIntervalProperty);
+        }
+        set
+        {
+            SetValue(SortingIntervalProperty, value);
+        }
     }
 
     /// <summary>
@@ -47,12 +62,11 @@ public class SortingGroupModel3D : GroupModel3D
     public static readonly DependencyProperty SortingIntervalProperty =
         DependencyProperty.Register("SortingInterval", typeof(int), typeof(SortingGroupModel3D), new PropertyMetadata(500, (d, e) =>
         {
-            if (d is Element3D element && element.SceneNode is SortingGroupNode node)
+            if (d is Element3D { SceneNode: SortingGroupNode node })
             {
                 node.SortingInterval = (int)e.NewValue;
             }
         }));
-
 
     /// <summary>
     /// Gets or sets a value indicating whether [sort transparent only].
@@ -62,8 +76,14 @@ public class SortingGroupModel3D : GroupModel3D
     /// </value>
     public bool SortTransparentOnly
     {
-        get { return (bool)GetValue(SortTransparentOnlyProperty); }
-        set { SetValue(SortTransparentOnlyProperty, value); }
+        get
+        {
+            return (bool)GetValue(SortTransparentOnlyProperty);
+        }
+        set
+        {
+            SetValue(SortTransparentOnlyProperty, value);
+        }
     }
 
     /// <summary>
@@ -72,7 +92,7 @@ public class SortingGroupModel3D : GroupModel3D
     public static readonly DependencyProperty SortTransparentOnlyProperty =
         DependencyProperty.Register("SortTransparentOnly", typeof(bool), typeof(SortingGroupModel3D), new PropertyMetadata(true, (d, e) =>
         {
-            if (d is Element3D element && element.SceneNode is SortingGroupNode node)
+            if (d is Element3D { SceneNode: SortingGroupNode node })
             {
                 node.SortTransparentOnly = (bool)e.NewValue;
             }
@@ -86,8 +106,14 @@ public class SortingGroupModel3D : GroupModel3D
     /// </value>
     public SortingMethod SortingMethod
     {
-        get { return (SortingMethod)GetValue(SortingMethodProperty); }
-        set { SetValue(SortingMethodProperty, value); }
+        get
+        {
+            return (SortingMethod)GetValue(SortingMethodProperty);
+        }
+        set
+        {
+            SetValue(SortingMethodProperty, value);
+        }
     }
 
     /// <summary>
@@ -96,7 +122,7 @@ public class SortingGroupModel3D : GroupModel3D
     public static readonly DependencyProperty SortingMethodProperty =
         DependencyProperty.Register("SortingMethod", typeof(SortingMethod), typeof(SortingGroupModel3D), new PropertyMetadata(SortingMethod.BoundingBoxCorners, (d, e) =>
         {
-            if (d is Element3D element && element.SceneNode is SortingGroupNode node)
+            if (d is Element3D { SceneNode: SortingGroupNode node })
             {
                 node.SortingMethod = (SortingMethod)e.NewValue;
             }

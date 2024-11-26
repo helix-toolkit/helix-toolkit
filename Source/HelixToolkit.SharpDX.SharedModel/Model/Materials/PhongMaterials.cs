@@ -1,6 +1,10 @@
 ﻿using SharpDX;
 
+#if WINUI
 namespace HelixToolkit.WinUI.SharpDX;
+#else
+namespace HelixToolkit.Wpf.SharpDX;
+#endif
 
 /// <summary>
 /// 

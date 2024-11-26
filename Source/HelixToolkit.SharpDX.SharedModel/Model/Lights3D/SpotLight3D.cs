@@ -1,7 +1,15 @@
 ﻿using HelixToolkit.SharpDX.Model.Scene;
+#if WINUI
+using HelixToolkit.WinUI.SharpDX.Model;
+#else
 using HelixToolkit.Wpf.SharpDX.Model;
+#endif
 
+#if WINUI
+namespace HelixToolkit.WinUI.SharpDX;
+#else
 namespace HelixToolkit.Wpf.SharpDX;
+#endif
 
 public sealed class SpotLight3D : PointLight3D
 {
