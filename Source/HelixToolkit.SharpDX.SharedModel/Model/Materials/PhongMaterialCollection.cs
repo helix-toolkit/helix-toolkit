@@ -1,6 +1,10 @@
 ﻿using System.Collections.ObjectModel;
 
+#if WINUI
+namespace HelixToolkit.WinUI.SharpDX;
+#else
 namespace HelixToolkit.Wpf.SharpDX;
+#endif
 
 public class PhongMaterialCollection : ObservableCollection<PhongMaterial>
 {
@@ -21,6 +25,7 @@ public class PhongMaterialCollection : ObservableCollection<PhongMaterial>
         Add(PhongMaterials.Green);
         Add(PhongMaterials.Indigo);
         Add(PhongMaterials.Jade);
+        Add(PhongMaterials.Gray);
         Add(PhongMaterials.LightGray);
         Add(PhongMaterials.MediumGray);
         Add(PhongMaterials.Obsidian);

@@ -8,7 +8,16 @@ using System.Windows.Data;
 namespace HelixToolkit.Wpf.SharpDX;
 
 /// <summary>
-/// Base class for screen space rendering, such as Coordinate System or ViewBox
+/// ScreenSpacedElement3D uses a fixed camera to render model (Mainly used for view box and coordinate system rendering) onto screen which is separated from viewport camera.
+/// <para>
+/// Default fix camera is perspective camera with FOV 45 degree and camera distance = 20. Look direction is always looking at (0,0,0).
+/// </para>
+/// <para>
+/// User must properly scale the model to fit into the camera frustum. The usual maximum size is from (5,5,5) to (-5,-5,-5) bounding box.
+/// </para>
+/// <para>
+/// User can use <see cref="ScreenSpacedNode.SizeScale"/> to scale the size of the rendering.
+/// </para>
 /// </summary>
 public abstract class ScreenSpacedElement3D : GroupModel3D
 {
@@ -70,6 +79,17 @@ public abstract class ScreenSpacedElement3D : GroupModel3D
                 }
             }));
 
+    // Using a DependencyProperty as the backing store for CameraType.  This enables animation, styling, binding, etc...
+    public static readonly DependencyProperty CameraTypeProperty =
+        DependencyProperty.Register("CameraType", typeof(ScreenSpacedCameraType), typeof(ScreenSpacedElement3D), new PropertyMetadata(ScreenSpacedCameraType.Auto,
+            (d, e) =>
+            {
+                if (d is Element3DCore element && element.SceneNode is ScreenSpacedNode node)
+                {
+                    node.CameraType = (ScreenSpacedCameraType)e.NewValue;
+                }
+            }));
+
     /// <summary>
     /// The absolute position3 d property
     /// </summary>
@@ -79,6 +99,24 @@ public abstract class ScreenSpacedElement3D : GroupModel3D
             if (d is Element3DCore { SceneNode: ScreenSpacedNode node })
             {
                 node.AbsolutePosition3D = ((Point3D)e.NewValue).ToVector3();
+            }
+        }));
+
+    public static readonly DependencyProperty FarPlaneDistanceProperty =
+        DependencyProperty.Register("FarPlaneDistance", typeof(double), typeof(ScreenSpacedElement3D), new PropertyMetadata(1e3, (d, e) =>
+        {
+            if (d is Element3DCore element && element.SceneNode is ScreenSpacedNode node)
+            {
+                node.FarPlane = (float)e.NewValue;
+            }
+        }));
+
+    public static readonly DependencyProperty NearPlaneDistanceProperty =
+        DependencyProperty.Register("NearPlaneDistance", typeof(double), typeof(ScreenSpacedElement3D), new PropertyMetadata(1e-2, (d, e) =>
+        {
+            if (d is Element3DCore element && element.SceneNode is ScreenSpacedNode node)
+            {
+                node.NearPlane = (float)e.NewValue;
             }
         }));
 
@@ -161,6 +199,25 @@ public abstract class ScreenSpacedElement3D : GroupModel3D
             SetValue(ModeProperty, value);
         }
     }
+
+    /// <summary>
+    /// Only being used when <see cref="Mode"/> is RelativeScreenSpaced
+    /// </summary>
+    /// <value>
+    /// The type of the camera.
+    /// </value>
+    public ScreenSpacedCameraType CameraType
+    {
+        get
+        {
+            return (ScreenSpacedCameraType)GetValue(CameraTypeProperty);
+        }
+        set
+        {
+            SetValue(CameraTypeProperty, value);
+        }
+    }
+
     /// <summary>
     /// Gets or sets the absolute position in 3d. Use by <see cref="Mode"/> = <see cref="ScreenSpacedMode.AbsolutePosition3D"/>
     /// </summary>
@@ -176,6 +233,42 @@ public abstract class ScreenSpacedElement3D : GroupModel3D
         set
         {
             SetValue(AbsolutePosition3DProperty, value);
+        }
+    }
+
+    /// <summary>
+    /// Gets or sets the far plane distance.
+    /// </summary>
+    /// <value>
+    /// The far plane distance.
+    /// </value>
+    public double FarPlaneDistance
+    {
+        get
+        {
+            return (double)GetValue(FarPlaneDistanceProperty);
+        }
+        set
+        {
+            SetValue(FarPlaneDistanceProperty, value);
+        }
+    }
+
+    /// <summary>
+    /// Gets or sets the near plane distance.
+    /// </summary>
+    /// <value>
+    /// The near plane distance.
+    /// </value>
+    public double NearPlaneDistance
+    {
+        get
+        {
+            return (double)GetValue(NearPlaneDistanceProperty);
+        }
+        set
+        {
+            SetValue(NearPlaneDistanceProperty, value);
         }
     }
 
