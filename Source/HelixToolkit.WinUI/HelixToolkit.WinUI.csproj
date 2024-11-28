@@ -1,7 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <TargetFramework>net5.0-windows10.0.19041</TargetFramework>
+        <TargetFramework>net6.0-windows10.0.19041</TargetFramework>
         <TargetPlatformMinVersion>10.0.17763.0</TargetPlatformMinVersion>
+        <LangVersion>9.0</LangVersion>
         <RootNamespace>HelixToolkit.WinUI</RootNamespace>
         <RuntimeIdentifiers>win10-x86;win10-x64</RuntimeIdentifiers>
         <UseWinUI>true</UseWinUI>
@@ -41,7 +42,7 @@
           <PrivateAssets>all</PrivateAssets>
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.1.1" />
+        <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.6.241114003" />
         <PackageReference Include="SharpDX" Version="4.2.0" />
         <PackageReference Include="SharpDX.D3DCompiler" Version="4.2.0" />
         <PackageReference Include="SharpDX.Direct2D1" Version="4.2.0" />
