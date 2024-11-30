@@ -11,7 +11,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D;
 /// <summary>
 /// 
 /// </summary>
-/// <seealso cref="HelixToolkit.Wpf.SharpDX.Elements2D.ScreenSpacePositionMoverBase" />
+/// <seealso cref="ScreenSpacePositionMoverBase" />
 public class ScreenSpacePositionMover : ScreenSpacePositionMoverBase
 {
     private readonly Button2D MoveLeftTop;

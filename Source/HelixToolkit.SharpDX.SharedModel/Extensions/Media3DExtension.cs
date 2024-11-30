@@ -126,6 +126,7 @@ public static class Media3DExtension
         return new Vector4((float)matrix.OffsetX, (float)matrix.OffsetY, (float)matrix.OffsetZ, (float)matrix.M44);
     }
 
+#endif
     public static Matrix3x3 ToMatrix3x3(this UIMatrix m)
     {
         return new Matrix3x3((float)m.M11, (float)m.M12, 0, (float)m.M21, (float)m.M22, 0f, (float)m.OffsetX, (float)m.OffsetY, 1f);
@@ -135,6 +136,7 @@ public static class Media3DExtension
         return new Matrix3x2((float)m.M11, (float)m.M12, (float)m.M21, (float)m.M22, (float)m.OffsetX, (float)m.OffsetY);
     }
 
+#if WPF
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Matrix3D ToMatrix3D(this Matrix m)
     {

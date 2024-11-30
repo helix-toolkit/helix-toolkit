@@ -1,7 +1,6 @@
 ﻿using D2D = SharpDX.Direct2D1;
 using SharpDX.Mathematics.Interop;
 
-
 #if WINUI
 using Media = Microsoft.UI.Xaml.Media;
 #else
@@ -265,7 +264,12 @@ public static class CommonExtensions
         };
     }
 
-#if WPF
+#if WINUI
+    public static D2D.DashStyle ToD2DDashStyle(this D2D.DashStyle style)
+    {
+        return style;
+    }
+#else
     public static D2D.DashStyle ToD2DDashStyle(this Media.DashStyle? style)
     {
         if (style is null)
@@ -295,7 +299,6 @@ public static class CommonExtensions
         }
     }
 #endif
-
     public static global::SharpDX.DirectWrite.TextAlignment ToD2DTextAlignment(this TextAlignment alignment)
     {
         return alignment switch

@@ -81,7 +81,7 @@ public class CameraController : IDisposable
     /// <summary>
     /// Gets ActualCamera.
     /// </summary>
-    public ProjectionCamera? ActualCamera
+    public Camera? ActualCamera
     {
         set; get;
     }
@@ -90,7 +90,7 @@ public class CameraController : IDisposable
     /// Gets or sets the default camera (used when resetting the view).
     /// </summary>
     /// <value> The default camera. </value>
-    public ProjectionCamera? DefaultCamera
+    public Camera? DefaultCamera
     {
         set; get;
     }
@@ -1008,7 +1008,7 @@ public class CameraController : IDisposable
 
         this.PushCameraSetting();
 
-        if (this.DefaultCamera != null)
+        if (this.DefaultCamera != null && this.ActualCamera is not null)
         {
             this.DefaultCamera.CopyTo(this.ActualCamera);
         }
