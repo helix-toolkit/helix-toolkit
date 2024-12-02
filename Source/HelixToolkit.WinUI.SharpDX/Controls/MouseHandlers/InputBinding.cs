@@ -59,4 +59,14 @@ public class InputBinding : DependencyObject
         get => this.gesture;
         set => this.gesture = value;
     }
+
+    protected InputBinding()
+    {
+    }
+
+    public InputBinding(ICommand command, InputGesture gesture)
+    {
+        this.Command = command;
+        this.gesture = gesture;
+    }
 }

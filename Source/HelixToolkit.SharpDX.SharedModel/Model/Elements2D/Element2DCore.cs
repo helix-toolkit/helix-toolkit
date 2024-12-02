@@ -176,6 +176,16 @@ public abstract partial class Element2DCore : FrameworkContentElement, IDisposab
 #endif
 
 
+#if WINUI
+    protected internal void AddLogicalChild(object child)
+    {
+    }
+
+    protected internal void RemoveLogicalChild(object child)
+    {
+    }
+#endif
+
     public static implicit operator SceneNode2D(Element2DCore e)
     {
         return e.SceneNode;

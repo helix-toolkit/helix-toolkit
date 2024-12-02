@@ -132,6 +132,14 @@ public partial class Viewport3DX : Control, IViewport3DX, IDisposable
     private TouchDevice? touchDownDevice;
 
     /// <summary>
+    /// Gets or sets the render host internal.
+    /// </summary>
+    /// <value>
+    /// The render host internal.
+    /// </value>
+    protected IRenderHost? renderHostInternal;
+
+    /// <summary>
     /// The view cube.
     /// </summary>
     private ScreenSpacedElement3D? viewCube;
@@ -263,8 +271,17 @@ public partial class Viewport3DX : Control, IViewport3DX, IDisposable
 
     private Overlay Overlay2D { get; } = new Overlay() { EnableBitmapCache = true };
     private bool enableMouseButtonHitTest = true;
+    internal CameraController CameraController { get { return cameraController; } }
     private ContentPresenter? hostPresenter;
     private List<HitTestResult> hits = new();
+
+    /// <summary>
+    /// Gets or sets the shared model container internal.
+    /// </summary>
+    /// <value>
+    /// The shared model container internal.
+    /// </value>
+    protected IModelContainer? SharedModelContainerInternal { private set; get; } = null;
 
     /// <summary>
     /// Occurs when each render frame finished rendering. Called directly from RenderHost after each frame. 

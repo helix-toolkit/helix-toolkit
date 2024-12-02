@@ -149,9 +149,30 @@ public partial class Viewport3DX : Control, IViewport3DX
     private readonly ViewBoxModel3D viewCube = new();
     private readonly CoordinateSystemModel3D coordinateSystem = new();
     private readonly CameraController cameraController;
+
+    /// <summary>
+    /// The orthographic camera.
+    /// </summary>
+    private readonly Camera orthographicCamera;
+
+    /// <summary>
+    /// The perspective camera.
+    /// </summary>
+    private readonly Camera perspectiveCamera;
+
     internal CameraController CameraController { get { return cameraController; } }
     private ContentPresenter? hostPresenter;
     private ItemsControl? itemsContainer;
+
+    /// <summary>
+    /// Gets or sets the shared model container internal.
+    /// </summary>
+    /// <value>
+    /// The shared model container internal.
+    /// </value>
+    protected IModelContainer? SharedModelContainerInternal { private set; get; } = null;
+
+
     /// <summary>
     /// The nearest valid result during a hit test.
     /// </summary>
@@ -177,8 +198,15 @@ public partial class Viewport3DX : Control, IViewport3DX
         this.Loaded += Viewport3DXLoaded;
         this.Unloaded += Viewport3DX_Unloaded;
         cameraController = new CameraController(this);
+
+        this.perspectiveCamera = new PerspectiveCamera();
+        this.orthographicCamera = new OrthographicCamera();
+        this.perspectiveCamera.Reset();
+        this.orthographicCamera.Reset();
+
+        this.Camera = this.Orthographic ? this.orthographicCamera : this.perspectiveCamera;
+
         InitCameraController();
-        Camera = new PerspectiveCamera() { Position = new Vector3(0, 0, -10), LookDirection = new Vector3(0, 0, 10), UpDirection = new Vector3(0, 1, 0) };
         InputController = new InputController();
         SetupBindings();
     }
@@ -587,6 +615,31 @@ public partial class Viewport3DX : Control, IViewport3DX
         base.OnPointerWheelChanged(e);
     }
 
+    /// <summary>
+    /// The UseDefaultGestures property changed.
+    /// </summary>
+    private void UseDefaultGesturesChanged()
+    {
+        if (this.UseDefaultGestures)
+        {
+            this.SetDefaultGestures();
+        }
+        else
+        {
+            this.InputBindings.Clear();
+        }
+    }
+
+    /// <summary>
+    /// Sets the default gestures.
+    /// </summary>
+    private void SetDefaultGestures()
+    {
+        this.InputBindings.Clear();
+
+        // todo
+    }
+
     private bool ViewBoxHitTest(Point p)
     {
         if (Camera is not ProjectionCamera camera)
@@ -754,6 +807,58 @@ public partial class Viewport3DX : Control, IViewport3DX
         CameraController.OnTimeStep(timeStamp.Ticks);
         this.FrameRate = Math.Round(renderHostInternal?.RenderStatistics?.FPSStatistics.AverageFrequency ?? 0, 2);
         this.RenderDetailOutput = renderHostInternal?.RenderStatistics?.GetDetailString() ?? string.Empty;
+    }
+
+    /// <summary>
+    /// Handles changes in the camera properties.
+    /// </summary>
+    private void CameraPropertyChanged(DependencyPropertyChangedEventArgs e)
+    {
+        if (e.NewValue != e.OldValue)
+        {
+            if (CameraController.ActualCamera != null)
+            {
+                CameraController.ActualCamera.CameraInternal.PropertyChanged -= CameraInternal_PropertyChanged;
+            }
+            CameraController.ActualCamera = e.NewValue == null ?
+                (Orthographic ? orthographicCamera : perspectiveCamera as Camera) : e.NewValue as Camera;
+            if (CameraController.ActualCamera != null)
+            {
+                CameraController.ActualCamera.CameraInternal.PropertyChanged += CameraInternal_PropertyChanged;
+            }
+        }
+    }
+
+    /// <summary>
+    /// Called when the camera type is changed.
+    /// </summary>
+    private void OrthographicChanged()
+    {
+        var oldCamera = this.Camera;
+        if (this.Orthographic)
+        {
+            this.Camera = this.orthographicCamera;
+        }
+        else
+        {
+            this.Camera = this.perspectiveCamera;
+        }
+
+        if (oldCamera is IProjectionCameraModel projectionCamera)
+        {
+            projectionCamera.CopyTo(this.Camera);
+        }
+    }
+
+    /// <summary>
+    /// Handles the change of the effects manager.
+    /// </summary>
+    private void EffectsManagerPropertyChanged()
+    {
+        if (this.renderHostInternal != null)
+        {
+            this.renderHostInternal.EffectsManager = this.EffectsManager;
+        }
     }
 
     /// <summary>
