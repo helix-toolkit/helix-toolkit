@@ -2,6 +2,7 @@
     <PropertyGroup>
         <TargetFramework>net6.0-windows10.0.19041</TargetFramework>
         <TargetPlatformMinVersion>10.0.17763.0</TargetPlatformMinVersion>
+        <WindowsSdkPackageVersion>10.0.19041.38</WindowsSdkPackageVersion>
         <LangVersion>9.0</LangVersion>
         <RootNamespace>HelixToolkit.WinUI</RootNamespace>
         <RuntimeIdentifiers>win10-x86;win10-x64</RuntimeIdentifiers>
