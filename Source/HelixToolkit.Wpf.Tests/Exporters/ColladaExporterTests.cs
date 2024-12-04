@@ -21,7 +21,8 @@ public class ColladaExporterTests : ExporterTests
     [Test]
     public void Export_SimpleModel_ValidOutput()
     {
-        string path = "temp.dae";
+        string temp = Path.GetTempFileName();
+        string path = temp + "_temp.dae";
 
         try
         {
@@ -38,6 +39,9 @@ public class ColladaExporterTests : ExporterTests
         {
             if (File.Exists(path))
                 File.Delete(path);
+
+            if (File.Exists(temp))
+                File.Delete(temp);
         }
     }
 
