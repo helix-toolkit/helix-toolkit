@@ -1,12 +1,11 @@
-﻿using HelixToolkit.SharpDX.Model.Scene2D;
-using SharpDX;
-using HelixToolkit.SharpDX;
-using HorizontalAlignment = System.Windows.HorizontalAlignment;
-using VerticalAlignment = System.Windows.VerticalAlignment;
-using Thickness = System.Windows.Thickness;
-using Visibility = System.Windows.Visibility;
+﻿using HelixToolkit.SharpDX;
+using HelixToolkit.SharpDX.Model.Scene2D;
 
+#if WINUI
+namespace HelixToolkit.WinUI.SharpDX.Elements2D;
+#else
 namespace HelixToolkit.Wpf.SharpDX.Elements2D;
+#endif
 
 /// <summary>
 /// 
@@ -27,30 +26,30 @@ public class ScreenSpacePositionMover : ScreenSpacePositionMoverBase
     {
         MoveLeftTop = new MoverButton2D()
         {
-            HorizontalAlignment = HorizontalAlignment.Left,
-            VerticalAlignment = VerticalAlignment.Top,
-            BorderThickness = new Thickness(2, 0, 0, 2)
+            HorizontalAlignment = UIHorizontalAlignment.Left,
+            VerticalAlignment = UIVerticalAlignment.Top,
+            BorderThickness = new UIThickness(2, 0, 0, 2)
         };
 
         MoveRightTop = new MoverButton2D()
         {
-            HorizontalAlignment = HorizontalAlignment.Right,
-            VerticalAlignment = VerticalAlignment.Top,
-            BorderThickness = new Thickness(2, 2, 0, 0)
+            HorizontalAlignment = UIHorizontalAlignment.Right,
+            VerticalAlignment = UIVerticalAlignment.Top,
+            BorderThickness = new UIThickness(2, 2, 0, 0)
         };
 
         MoveLeftBottom = new MoverButton2D()
         {
-            HorizontalAlignment = HorizontalAlignment.Left,
-            VerticalAlignment = VerticalAlignment.Bottom,
-            BorderThickness = new Thickness(0, 0, 2, 2)
+            HorizontalAlignment = UIHorizontalAlignment.Left,
+            VerticalAlignment = UIVerticalAlignment.Bottom,
+            BorderThickness = new UIThickness(0, 0, 2, 2)
         };
 
         MoveRightBottom = new MoverButton2D()
         {
-            HorizontalAlignment = HorizontalAlignment.Right,
-            VerticalAlignment = VerticalAlignment.Bottom,
-            BorderThickness = new Thickness(0, 2, 2, 0)
+            HorizontalAlignment = UIHorizontalAlignment.Right,
+            VerticalAlignment = UIVerticalAlignment.Bottom,
+            BorderThickness = new UIThickness(0, 2, 2, 0)
         };
 
         buttons[0] = MoveLeftTop;
@@ -63,7 +62,11 @@ public class ScreenSpacePositionMover : ScreenSpacePositionMoverBase
 
         foreach (var b in buttons)
         {
-            b.Visibility = Visibility.Hidden;
+#if WINUI
+            b.Visibility = UIVisibility.Collapsed;
+#else
+            b.Visibility = UIVisibility.Hidden;
+#endif
             Children.Add(b);
         }
 
@@ -105,7 +108,7 @@ public class ScreenSpacePositionMover : ScreenSpacePositionMoverBase
                 {
                     foreach (Button2D b in Buttons)
                     {
-                        b.Visibility = System.Windows.Visibility.Visible;
+                        b.Visibility = UIVisibility.Visible;
                     }
                 }
                 return base.OnHitTest(ref mousePoint, out hitResult);
@@ -116,7 +119,11 @@ public class ScreenSpacePositionMover : ScreenSpacePositionMoverBase
                 {
                     foreach (Button2D b in Buttons)
                     {
-                        b.Visibility = System.Windows.Visibility.Hidden;
+#if WINUI
+                        b.Visibility = UIVisibility.Collapsed;
+#else
+                        b.Visibility = UIVisibility.Hidden;
+#endif
                     }
                 }
                 return false;

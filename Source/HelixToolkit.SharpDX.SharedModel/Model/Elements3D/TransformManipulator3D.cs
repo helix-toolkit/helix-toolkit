@@ -441,21 +441,15 @@ public class TransformManipulator3D : GroupElement3D
         translationX = new MeshGeometryModel3D() { Geometry = TranslationXGeometry, Material = DiffuseMaterials.Red, CullMode = CullMode.Back, PostEffects = "ManipulatorXRayGrid" };
         translationY = new MeshGeometryModel3D() { Geometry = TranslationXGeometry, Material = DiffuseMaterials.Green, CullMode = CullMode.Back, PostEffects = "ManipulatorXRayGrid" };
         translationZ = new MeshGeometryModel3D() { Geometry = TranslationXGeometry, Material = DiffuseMaterials.Blue, CullMode = CullMode.Back, PostEffects = "ManipulatorXRayGrid" };
+
 #if WINUI
         translationY.HxTransform3D = rotationYMatrix;
         translationZ.HxTransform3D = rotationZMatrix;
-        translationX.OnMouse3DDown += Translation_Mouse3DDown;
-        translationY.OnMouse3DDown += Translation_Mouse3DDown;
-        translationZ.OnMouse3DDown += Translation_Mouse3DDown;
-        translationX.OnMouse3DMove += Translation_Mouse3DMove;
-        translationY.OnMouse3DMove += Translation_Mouse3DMove;
-        translationZ.OnMouse3DMove += Translation_Mouse3DMove;
-        translationX.OnMouse3DUp += Manipulation_Mouse3DUp;
-        translationY.OnMouse3DUp += Manipulation_Mouse3DUp;
-        translationZ.OnMouse3DUp += Manipulation_Mouse3DUp;
 #else
         translationY.Transform = new Media3D.MatrixTransform3D(rotationYMatrix.ToMatrix3D());
         translationZ.Transform = new Media3D.MatrixTransform3D(rotationZMatrix.ToMatrix3D());
+#endif
+
         translationX.Mouse3DDown += Translation_Mouse3DDown;
         translationY.Mouse3DDown += Translation_Mouse3DDown;
         translationZ.Mouse3DDown += Translation_Mouse3DDown;
@@ -465,33 +459,26 @@ public class TransformManipulator3D : GroupElement3D
         translationX.Mouse3DUp += Manipulation_Mouse3DUp;
         translationY.Mouse3DUp += Manipulation_Mouse3DUp;
         translationZ.Mouse3DUp += Manipulation_Mouse3DUp;
-#endif
 
         translationGroup = new GroupModel3D();
         translationGroup.Children.Add(translationX);
         translationGroup.Children.Add(translationY);
         translationGroup.Children.Add(translationZ);
         ctrlGroup.Children.Add(translationGroup);
-        #endregion
+#endregion
         #region Rotation Models
         rotationX = new MeshGeometryModel3D() { Geometry = RotationXGeometry, Material = DiffuseMaterials.Red, CullMode = CullMode.Back, PostEffects = "ManipulatorXRayGrid" };
         rotationY = new MeshGeometryModel3D() { Geometry = RotationXGeometry, Material = DiffuseMaterials.Green, CullMode = CullMode.Back, PostEffects = "ManipulatorXRayGrid" };
         rotationZ = new MeshGeometryModel3D() { Geometry = RotationXGeometry, Material = DiffuseMaterials.Blue, CullMode = CullMode.Back, PostEffects = "ManipulatorXRayGrid" };
+
 #if WINUI
         rotationY.HxTransform3D = rotationYMatrix;
         rotationZ.HxTransform3D = rotationZMatrix;
-        rotationX.OnMouse3DDown += Rotation_Mouse3DDown;
-        rotationY.OnMouse3DDown += Rotation_Mouse3DDown;
-        rotationZ.OnMouse3DDown += Rotation_Mouse3DDown;
-        rotationX.OnMouse3DMove += Rotation_Mouse3DMove;
-        rotationY.OnMouse3DMove += Rotation_Mouse3DMove;
-        rotationZ.OnMouse3DMove += Rotation_Mouse3DMove;
-        rotationX.OnMouse3DUp += Manipulation_Mouse3DUp;
-        rotationY.OnMouse3DUp += Manipulation_Mouse3DUp;
-        rotationZ.OnMouse3DUp += Manipulation_Mouse3DUp;
 #else
         rotationY.Transform = new Media3D.MatrixTransform3D(rotationYMatrix.ToMatrix3D());
         rotationZ.Transform = new Media3D.MatrixTransform3D(rotationZMatrix.ToMatrix3D());
+#endif
+
         rotationX.Mouse3DDown += Rotation_Mouse3DDown;
         rotationY.Mouse3DDown += Rotation_Mouse3DDown;
         rotationZ.Mouse3DDown += Rotation_Mouse3DDown;
@@ -501,7 +488,6 @@ public class TransformManipulator3D : GroupElement3D
         rotationX.Mouse3DUp += Manipulation_Mouse3DUp;
         rotationY.Mouse3DUp += Manipulation_Mouse3DUp;
         rotationZ.Mouse3DUp += Manipulation_Mouse3DUp;
-#endif
 
         rotationGroup = new GroupModel3D();
         rotationGroup.Children.Add(rotationX);
@@ -513,21 +499,15 @@ public class TransformManipulator3D : GroupElement3D
         scaleX = new MeshGeometryModel3D() { Geometry = ScalingGeometry, Material = DiffuseMaterials.Red, CullMode = CullMode.Back, PostEffects = "ManipulatorXRayGrid" };
         scaleY = new MeshGeometryModel3D() { Geometry = ScalingGeometry, Material = DiffuseMaterials.Green, CullMode = CullMode.Back, PostEffects = "ManipulatorXRayGrid" };
         scaleZ = new MeshGeometryModel3D() { Geometry = ScalingGeometry, Material = DiffuseMaterials.Blue, CullMode = CullMode.Back, PostEffects = "ManipulatorXRayGrid" };
+
 #if WINUI
         scaleY.HxTransform3D = rotationYMatrix;
         scaleZ.HxTransform3D = rotationZMatrix;
-        scaleX.OnMouse3DDown += Scaling_Mouse3DDown;
-        scaleY.OnMouse3DDown += Scaling_Mouse3DDown;
-        scaleZ.OnMouse3DDown += Scaling_Mouse3DDown;
-        scaleX.OnMouse3DMove += Scaling_Mouse3DMove;
-        scaleY.OnMouse3DMove += Scaling_Mouse3DMove;
-        scaleZ.OnMouse3DMove += Scaling_Mouse3DMove;
-        scaleX.OnMouse3DUp += Manipulation_Mouse3DUp;
-        scaleY.OnMouse3DUp += Manipulation_Mouse3DUp;
-        scaleZ.OnMouse3DUp += Manipulation_Mouse3DUp;
 #else
         scaleY.Transform = new Media3D.MatrixTransform3D(rotationYMatrix.ToMatrix3D());
         scaleZ.Transform = new Media3D.MatrixTransform3D(rotationZMatrix.ToMatrix3D());
+#endif
+
         scaleX.Mouse3DDown += Scaling_Mouse3DDown;
         scaleY.Mouse3DDown += Scaling_Mouse3DDown;
         scaleZ.Mouse3DDown += Scaling_Mouse3DDown;
@@ -537,7 +517,6 @@ public class TransformManipulator3D : GroupElement3D
         scaleX.Mouse3DUp += Manipulation_Mouse3DUp;
         scaleY.Mouse3DUp += Manipulation_Mouse3DUp;
         scaleZ.Mouse3DUp += Manipulation_Mouse3DUp;
-#endif
 
         scaleGroup = new GroupModel3D();
         scaleGroup.Children.Add(scaleX);
@@ -552,11 +531,7 @@ public class TransformManipulator3D : GroupElement3D
             DimmingFactor = 0.5,
             BlendingFactor = 0.8,
             GridDensity = 4,
-#if WINUI
             GridColor = UIColors.Gray
-#else
-            GridColor = UIColors.Gray
-#endif
         };
 
         if (xrayEffect.SceneNode is NodePostEffectXRayGrid node)

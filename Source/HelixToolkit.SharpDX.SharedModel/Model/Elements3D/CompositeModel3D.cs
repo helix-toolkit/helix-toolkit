@@ -1,15 +1,27 @@
 ﻿using HelixToolkit.SharpDX;
 using HelixToolkit.SharpDX.Model.Scene;
 using System.Collections.Specialized;
+#if WINUI
+using Microsoft.UI.Xaml.Markup;
+#else
 using System.Windows;
 using System.Windows.Markup;
+#endif
 
+#if WINUI
+namespace HelixToolkit.WinUI.SharpDX;
+#else
 namespace HelixToolkit.Wpf.SharpDX;
+#endif
 
 /// <summary>
 ///     Represents a composite Model3D.
 /// </summary>
+#if WINUI
+[ContentProperty(Name = "Children")]
+#else
 [ContentProperty("Children")]
+#endif
 public class CompositeModel3D : Element3D, IHitable, ISelectable, IMouse3D
 {
     public static readonly DependencyProperty IsSelectedProperty =

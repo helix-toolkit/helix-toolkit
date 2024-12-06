@@ -1,10 +1,22 @@
 ﻿using HelixToolkit.SharpDX.Model.Scene;
+#if WINUI
+using Microsoft.UI.Xaml.Markup;
+#else
 using System.Windows;
 using System.Windows.Markup;
+#endif
 
+#if WINUI
+namespace HelixToolkit.WinUI.SharpDX;
+#else
 namespace HelixToolkit.Wpf.SharpDX;
+#endif
 
+#if WINUI
+[ContentProperty(Name = "Content")]
+#else
 [ContentProperty("Content")]
+#endif
 public class Element3DPresenter : Element3D
 {
     /// <summary>
@@ -64,8 +76,10 @@ public class Element3DPresenter : Element3D
     {
         if (Content != null)
         {
+#if WPF
             RemoveLogicalChild(Content);
             AddLogicalChild(Content);
+#endif
         }
     }
 }

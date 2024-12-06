@@ -1,5 +1,6 @@
 ﻿using HelixToolkit.SharpDX;
 #if WINUI
+using HelixToolkit.WinUI.SharpDX.Elements2D;
 using Microsoft.UI;
 using Microsoft.UI.Xaml.Media;
 #else
@@ -150,7 +151,6 @@ public partial class Viewport3DX
                 viewport.CameraController.ChangeFieldOfViewCursor = (UICursor)e.NewValue;
             }));
 
-#if WPF
     /// <summary>
     /// The content 2d property
     /// </summary>
@@ -171,7 +171,6 @@ public partial class Viewport3DX
                 viewport.Overlay2D.Children.Add(elementNew);
             }
         }));
-#endif
 
     /// <summary>
     /// The coordinate system color X property
@@ -1702,7 +1701,6 @@ public partial class Viewport3DX
         }
     }
 
-#if WPF
     /// <summary>
     /// Gets or sets the content2d.
     /// </summary>
@@ -1720,7 +1718,6 @@ public partial class Viewport3DX
             SetValue(Content2DProperty, value);
         }
     }
-#endif
 
     /// <summary>
     /// Gets or sets the coordinate system color X.
