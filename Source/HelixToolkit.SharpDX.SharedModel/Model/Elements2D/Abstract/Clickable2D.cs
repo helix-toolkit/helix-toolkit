@@ -1,9 +1,16 @@
 ﻿using HelixToolkit.SharpDX.Model.Scene2D;
 using System.Diagnostics;
-using System.Windows;
 using System.Windows.Input;
+#if WINUI
+#else
+using System.Windows;
+#endif
 
+#if WINUI
+namespace HelixToolkit.WinUI.SharpDX.Elements2D;
+#else
 namespace HelixToolkit.Wpf.SharpDX.Elements2D;
+#endif
 
 public abstract class Clickable2D : Border2D
 {
@@ -26,38 +33,51 @@ public abstract class Clickable2D : Border2D
     #endregion
 
     #region Events
+#if WPF
     public static readonly RoutedEvent Clicked2DEvent =
         EventManager.RegisterRoutedEvent("Clicked2D", RoutingStrategy.Bubble, typeof(Mouse2DRoutedEventHandler), typeof(Clickable2D));
+
+    public static readonly RoutedEvent DoubleClicked2DEvent =
+        EventManager.RegisterRoutedEvent("DoubleClicked2D", RoutingStrategy.Bubble, typeof(Mouse2DRoutedEventHandler), typeof(Clickable2D));
+
+#endif
 
     public event Mouse2DRoutedEventHandler Clicked2D
     {
         add
         {
+#if WPF
             AddHandler(Clicked2DEvent, value);
+#endif
         }
         remove
         {
+#if WPF
             RemoveHandler(Clicked2DEvent, value);
+#endif
         }
     }
-
-    public static readonly RoutedEvent DoubleClicked2DEvent =
-        EventManager.RegisterRoutedEvent("DoubleClicked2D", RoutingStrategy.Bubble, typeof(Mouse2DRoutedEventHandler), typeof(Clickable2D));
 
     public event Mouse2DRoutedEventHandler DoubleClicked2D
     {
         add
         {
+#if WPF
             AddHandler(DoubleClicked2DEvent, value);
+#endif
         }
         remove
         {
+#if WPF
             RemoveHandler(DoubleClicked2DEvent, value);
+#endif
         }
     }
     #endregion
 
+#if WPF
     private long lastClickedTime = 0;
+#endif
 
     public Clickable2D()
     {
@@ -83,6 +103,7 @@ public abstract class Clickable2D : Border2D
 
     private void Clickable2D_MouseDown2D(object? sender, Mouse2DEventArgs e)
     {
+#if WPF
         if (e.InputArgs is TouchEventArgs || (e.InputArgs is MouseEventArgs m && m.LeftButton == MouseButtonState.Pressed))
         {
             long time = e.InputArgs.Timestamp;
@@ -103,5 +124,6 @@ public abstract class Clickable2D : Border2D
             }
             lastClickedTime = time;
         }
+#endif
     }
 }

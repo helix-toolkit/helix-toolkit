@@ -10,7 +10,7 @@ namespace HelixToolkit.WinUI.SharpDX;
 /// </summary>
 /// <seealso cref="Element3DCore" />
 [TemplatePart(Name = "PART_Container", Type = typeof(ContentPresenter))]
-public abstract class Element3D : Element3DCore
+public abstract class Element3D : Element3DCore, IVisible
 {
     #region Dependency Properties
     /// <summary>
@@ -197,25 +197,25 @@ public abstract class Element3D : Element3DCore
     //}
 
     #region Events
-    public event EventHandler<MouseDown3DEventArgs>? OnMouse3DDown;
+    public event EventHandler<MouseDown3DEventArgs>? Mouse3DDown;
 
-    public event EventHandler<MouseUp3DEventArgs>? OnMouse3DUp;
+    public event EventHandler<MouseUp3DEventArgs>? Mouse3DUp;
 
-    public event EventHandler<MouseMove3DEventArgs>? OnMouse3DMove;
+    public event EventHandler<MouseMove3DEventArgs>? Mouse3DMove;
 
     internal void RaiseMouseDownEvent(HitTestResult hitTestResult, Point p, Viewport3DX? viewport = null, PointerRoutedEventArgs? originalInputEventArgs = null)
     {
-        OnMouse3DDown?.Invoke(this, new MouseDown3DEventArgs(hitTestResult, p, viewport, originalInputEventArgs));
+        Mouse3DDown?.Invoke(this, new MouseDown3DEventArgs(hitTestResult, p, viewport, originalInputEventArgs));
     }
 
     internal void RaiseMouseUpEvent(HitTestResult hitTestResult, Point p, Viewport3DX? viewport = null, PointerRoutedEventArgs? originalInputEventArgs = null)
     {
-        OnMouse3DUp?.Invoke(this, new MouseUp3DEventArgs(hitTestResult, p, viewport, originalInputEventArgs));
+        Mouse3DUp?.Invoke(this, new MouseUp3DEventArgs(hitTestResult, p, viewport, originalInputEventArgs));
     }
 
     internal void RaiseMouseMoveEvent(HitTestResult hitTestResult, Point p, Viewport3DX? viewport = null, PointerRoutedEventArgs? originalInputEventArgs = null)
     {
-        OnMouse3DMove?.Invoke(this, new MouseMove3DEventArgs(hitTestResult, p, viewport, originalInputEventArgs));
+        Mouse3DMove?.Invoke(this, new MouseMove3DEventArgs(hitTestResult, p, viewport, originalInputEventArgs));
     }
     #endregion
 }

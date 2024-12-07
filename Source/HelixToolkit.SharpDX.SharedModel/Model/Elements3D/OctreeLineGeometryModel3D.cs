@@ -1,6 +1,10 @@
 ﻿using HelixToolkit.SharpDX;
 
+#if WINUI
+namespace HelixToolkit.WinUI.SharpDX;
+#else
 namespace HelixToolkit.Wpf.SharpDX;
+#endif
 
 public class OctreeLineGeometryModel3D : CompositeModel3D
 {
@@ -94,7 +98,7 @@ public class OctreeLineGeometryModel3D : CompositeModel3D
 
     private void CreateOctreeLines()
     {
-        if (Octree != null && Visibility == System.Windows.Visibility.Visible && IsRendering)
+        if (Octree != null && Visibility == UIVisibility.Visible && IsRendering)
         {
             OctreeVisual.Geometry = Octree.CreateOctreeLineModel();
             OctreeVisual.Color = LineColor;
@@ -107,7 +111,7 @@ public class OctreeLineGeometryModel3D : CompositeModel3D
 
     private void OctreeLineGeometryModel3D_OnHit(object? sender, EventArgs args)
     {
-        if (sender is IOctreeBasic node && node.HitPathBoundingBoxes.Count > 0 && Visibility == System.Windows.Visibility.Visible && IsRendering)
+        if (sender is IOctreeBasic node && node.HitPathBoundingBoxes.Count > 0 && Visibility == UIVisibility.Visible && IsRendering)
         {
             HitVisual.Geometry = node.HitPathBoundingBoxes.CreatePathLines();
             HitVisual.Color = HitLineColor;

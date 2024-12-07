@@ -1,17 +1,4 @@
 ﻿using Scene2D = HelixToolkit.SharpDX.Model.Scene2D;
-#if WINUI
-using UIHorizontalAlignment = Microsoft.UI.Xaml.HorizontalAlignment;
-using UIVerticalAlignment = Microsoft.UI.Xaml.VerticalAlignment;
-using UIVisibility = Microsoft.UI.Xaml.Visibility;
-using UIThickness = Microsoft.UI.Xaml.Thickness;
-using UIOrientation = Microsoft.UI.Xaml.Controls.Orientation;
-#else
-using UIHorizontalAlignment = System.Windows.HorizontalAlignment;
-using UIVerticalAlignment = System.Windows.VerticalAlignment;
-using UIVisibility = System.Windows.Visibility;
-using UIThickness = System.Windows.Thickness;
-using UIOrientation = System.Windows.Controls.Orientation;
-#endif
 
 #if WINUI
 namespace HelixToolkit.WinUI.SharpDX.Extensions;

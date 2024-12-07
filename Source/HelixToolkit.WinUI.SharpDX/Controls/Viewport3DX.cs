@@ -3,6 +3,7 @@ using HelixToolkit.SharpDX.Cameras;
 using HelixToolkit.SharpDX.Model.Scene;
 using HelixToolkit.SharpDX.Model.Scene2D;
 using HelixToolkit.SharpDX.Utilities;
+using HelixToolkit.WinUI.SharpDX.Elements2D;
 using Microsoft.UI.Input;
 using Microsoft.UI.Xaml.Data;
 using Microsoft.UI.Xaml.Markup;
@@ -160,6 +161,7 @@ public partial class Viewport3DX : Control, IViewport3DX
     /// </summary>
     private readonly Camera perspectiveCamera;
 
+    private Overlay Overlay2D { get; } = new Overlay() { EnableBitmapCache = true };
     internal CameraController CameraController { get { return cameraController; } }
     private ContentPresenter? hostPresenter;
     private ItemsControl? itemsContainer;
