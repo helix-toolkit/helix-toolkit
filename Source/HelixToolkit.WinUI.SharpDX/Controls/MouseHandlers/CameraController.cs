@@ -8,7 +8,7 @@ using PointerDeviceType = Microsoft.UI.Input.PointerDeviceType;
 
 namespace HelixToolkit.WinUI.SharpDX;
 
-public class CameraController : IDisposable
+public class CameraController
 {
     private InputController? inputController;
 
@@ -1140,7 +1140,6 @@ public class CameraController : IDisposable
     }
 
     private float prevScale = 1;
-    private bool disposedValue;
 
     /// <summary>
     /// Called when the <see cref="E:System.Windows.UIElement.ManipulationDelta"/> event occurs.
@@ -1659,25 +1658,5 @@ public class CameraController : IDisposable
             this.StopAnimations();
             this.ResetCamera();
         }
-    }
-
-    protected virtual void Dispose(bool disposing)
-    {
-        if (!disposedValue)
-        {
-            if (disposing)
-            {
-            }
-
-            // TODO: free unmanaged resources (unmanaged objects) and override finalizer
-            // TODO: set large fields to null
-            disposedValue = true;
-        }
-    }
-
-    public void Dispose()
-    {
-        // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
-        Dispose(disposing: true);
     }
 }

@@ -32,6 +32,8 @@ global using FrameworkContentElement = Microsoft.UI.Xaml.FrameworkElement;
 global using FrameworkControl = Microsoft.UI.Xaml.Controls.Control;
 global using Animatable = Microsoft.UI.Xaml.DependencyObject;
 global using Freezable = Microsoft.UI.Xaml.DependencyObject;
+global using UIInputEventArgs = Microsoft.UI.Xaml.Input.PointerRoutedEventArgs;
+global using InputEventArgs = Microsoft.UI.Xaml.Input.PointerRoutedEventArgs;
 global using IRenderCanvas = HelixToolkit.WinUI.SharpDX.HelixToolkitRenderPanel;
 #else
 //global using System.Windows;
@@ -62,4 +64,5 @@ global using FrameworkContentElement = System.Windows.FrameworkContentElement;
 global using FrameworkControl = System.Windows.FrameworkContentElement;
 global using Animatable = System.Windows.Media.Animation.Animatable;
 global using Freezable = System.Windows.Freezable;
+global using UIInputEventArgs = System.Windows.Input.InputEventArgs;
 #endif

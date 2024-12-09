@@ -11,9 +11,7 @@ using Device = SharpDX.Direct3D11.Device1;
 using DeviceContext = SharpDX.Direct3D11.DeviceContext1;
 
 #if WINUI
-using HelixToolkit.WinUI.SharpDX.Controls;
 #else
-using HelixToolkit.Wpf.SharpDX.Controls;
 using HelixToolkit.Wpf.SharpDX.Utilities;
 #endif
 

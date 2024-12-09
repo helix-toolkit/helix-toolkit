@@ -24,6 +24,9 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D;
 #endif
 public class Panel2D : Element2D
 {
+#if WINUI
+    new
+#endif
     public Brush Background
     {
         get
@@ -36,6 +39,9 @@ public class Panel2D : Element2D
         }
     }
 
+#if WINUI
+    new
+#endif
     public static readonly DependencyProperty BackgroundProperty =
         DependencyProperty.Register("Background", typeof(Brush), typeof(Panel2D), new PropertyMetadata(new SolidColorBrush(Colors.Transparent)));
 

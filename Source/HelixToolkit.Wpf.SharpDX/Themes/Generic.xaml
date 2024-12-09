@@ -1,14 +1,15 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:hx="clr-namespace:HelixToolkit.Wpf.SharpDX"
-                    xmlns:hx2D="clr-namespace:HelixToolkit.Wpf.SharpDX.Elements2D"
-                    xmlns:hxControl="clr-namespace:HelixToolkit.Wpf.SharpDX.Controls">
+                    xmlns:hx2D="clr-namespace:HelixToolkit.Wpf.SharpDX.Elements2D">
 
     <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter" />
     <hx:NotNullToVisibilityConverter x:Key="NotNullToVisibilityConverter" />
 
     <Style TargetType="{x:Type hx:Viewport3DX}">
         <Setter Property="Background"
+                Value="Black" />
+        <Setter Property="BackgroundColor"
                 Value="Black" />
         <Setter Property="Template">
             <Setter.Value>
@@ -21,7 +22,7 @@
                                           HorizontalAlignment="Stretch"
                                           VerticalAlignment="Stretch"
                                           DataContext="{TemplateBinding DataContext}" />
-                        <hxControl:HelixItemsControl x:Name="PART_Items">
+                        <hx:HelixItemsControl x:Name="PART_Items">
                             <hx:ViewBoxModel3D x:Name="PART_ViewCube"
                                                EnableEdgeClick="{TemplateBinding IsViewCubeEdgeClicksEnabled}"
                                                EnableMover="{TemplateBinding IsViewCubeMoverEnabled}"
@@ -69,7 +70,7 @@
                                                   Visibility="{TemplateBinding SubTitle,
                                                                  Converter={StaticResource NotNullToVisibilityConverter}}" />
                             </hx2D:StackPanel2D>
-                        </hxControl:HelixItemsControl>
+                        </hx:HelixItemsControl>
                         <!--  Message TextBox  -->
                         <TextBox Margin="6"
                                  HorizontalAlignment="Center"

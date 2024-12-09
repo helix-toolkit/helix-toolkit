@@ -24,6 +24,9 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D;
 
 public class Border2D : ContentElement2D
 {
+#if WINUI
+    new
+#endif
     public double CornerRadius
     {
         get
@@ -36,6 +39,9 @@ public class Border2D : ContentElement2D
         }
     }
 
+#if WINUI
+    new
+#endif
     public static readonly DependencyProperty CornerRadiusProperty =
         DependencyProperty.Register("CornerRadius", typeof(double), typeof(Border2D), new PropertyMetadata(0.0,
             (d, e) =>
@@ -46,6 +52,9 @@ public class Border2D : ContentElement2D
                 }
             }));
 
+#if WINUI
+    new
+#endif
     public Thickness Padding
     {
         get
@@ -58,6 +67,9 @@ public class Border2D : ContentElement2D
         }
     }
 
+#if WINUI
+    new
+#endif
     public static readonly DependencyProperty PaddingProperty =
         DependencyProperty.Register("Padding", typeof(Thickness), typeof(Border2D), new PropertyMetadata(new Thickness(0, 0, 0, 0),
             (d, e) =>
@@ -69,6 +81,9 @@ public class Border2D : ContentElement2D
             }));
 
     #region Stroke properties
+#if WINUI
+    new
+#endif
     public static readonly DependencyProperty BorderBrushProperty
         = DependencyProperty.Register("BorderBrush", typeof(Brush), typeof(Border2D), new PropertyMetadata(new SolidColorBrush(UIColors.Black),
             (d, e) =>
@@ -79,6 +94,9 @@ public class Border2D : ContentElement2D
                 }
             }));
 
+#if WINUI
+    new
+#endif
     public Brush BorderBrush
     {
         set
@@ -245,6 +263,9 @@ public class Border2D : ContentElement2D
         }
     }
 
+#if WINUI
+    new
+#endif
     public static readonly DependencyProperty BorderThicknessProperty
         = DependencyProperty.Register("BorderThickness", typeof(Thickness), typeof(Border2D),
             new PropertyMetadata(new Thickness(0, 0, 0, 0), (d, e) =>
@@ -255,6 +276,9 @@ public class Border2D : ContentElement2D
                 }
             }));
 
+#if WINUI
+    new
+#endif
     public Thickness BorderThickness
     {
         set
