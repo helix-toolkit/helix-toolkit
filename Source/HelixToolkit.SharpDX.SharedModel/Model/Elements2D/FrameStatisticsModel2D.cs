@@ -17,6 +17,9 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D;
 
 public class FrameStatisticsModel2D : Element2D
 {
+#if WINUI
+    new
+#endif
     public static readonly DependencyProperty ForegroundProperty
         = DependencyProperty.Register("Foreground", typeof(Brush), typeof(FrameStatisticsModel2D),
     new PropertyMetadata(new SolidColorBrush(UIColors.Black), (d, e) =>
@@ -27,6 +30,9 @@ public class FrameStatisticsModel2D : Element2D
         }
     }));
 
+#if WINUI
+    new
+#endif
     public Brush? Foreground
     {
         set
@@ -39,6 +45,9 @@ public class FrameStatisticsModel2D : Element2D
         }
     }
 
+#if WINUI
+    new
+#endif
     public static readonly DependencyProperty BackgroundProperty
         = DependencyProperty.Register("Background", typeof(Brush), typeof(FrameStatisticsModel2D),
             new PropertyMetadata(new SolidColorBrush(UIColor.FromArgb(64, 32, 32, 32)), (d, e) =>
@@ -49,6 +58,9 @@ public class FrameStatisticsModel2D : Element2D
                 }
             }));
 
+#if WINUI
+    new
+#endif
     public Brush? Background
     {
         set

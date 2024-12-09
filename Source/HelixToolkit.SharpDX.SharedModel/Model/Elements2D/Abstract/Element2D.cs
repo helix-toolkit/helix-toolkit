@@ -442,7 +442,17 @@ public abstract class Element2D : Element2DCore, ITransformable2D, IHitable2D
     #region Events
     public delegate void Mouse2DRoutedEventHandler(object? sender, Mouse2DEventArgs e);
 
-#if WPF
+#if WINUI
+    public static readonly RoutedEvent MouseDown2DEvent = PointerPressedEvent;
+
+    public static readonly RoutedEvent MouseUp2DEvent = PointerReleasedEvent;
+
+    public static readonly RoutedEvent MouseMove2DEvent = PointerMovedEvent;
+
+    public static readonly RoutedEvent MouseEnter2DEvent = PointerEnteredEvent;
+
+    public static readonly RoutedEvent MouseLeave2DEvent = PointerExitedEvent;
+#else
     public static readonly RoutedEvent MouseDown2DEvent =
         EventManager.RegisterRoutedEvent("MouseDown2D", RoutingStrategy.Bubble, typeof(Mouse2DRoutedEventHandler), typeof(Element2D));
 
@@ -546,19 +556,17 @@ public abstract class Element2D : Element2DCore, ITransformable2D, IHitable2D
         this.MouseLeave2D += Element2D_MouseLeave2D;
     }
 
-    protected virtual void Element2D_MouseLeave2D(object? sender, RoutedEventArgs e)
+    private void Element2D_MouseEnter2D(object? sender, RoutedEventArgs e)
     {
-        if (!IsAttached)
-        {
-            return;
-        }
-        IsMouseOver = false;
-#if DEBUGMOUSEEVENT
-        Console.WriteLine("Element2D_MouseLeave2D");
-#endif
+        OnMouseEnter2D(e as Mouse2DEventArgs);
     }
 
-    protected virtual void Element2D_MouseEnter2D(object? sender, RoutedEventArgs e)
+    private void Element2D_MouseLeave2D(object? sender, RoutedEventArgs e)
+    {
+        OnMouseLeave2D(e as Mouse2DEventArgs);
+    }
+
+    public virtual void OnMouseEnter2D(Mouse2DEventArgs? e)
     {
         if (!IsAttached)
         {
@@ -567,6 +575,18 @@ public abstract class Element2D : Element2DCore, ITransformable2D, IHitable2D
         IsMouseOver = true;
 #if DEBUGMOUSEEVENT
         Console.WriteLine("Element2D_MouseEnter2D");
+#endif
+    }
+
+    public virtual void OnMouseLeave2D(Mouse2DEventArgs? e)
+    {
+        if (!IsAttached)
+        {
+            return;
+        }
+        IsMouseOver = false;
+#if DEBUGMOUSEEVENT
+        Console.WriteLine("Element2D_MouseLeave2D");
 #endif
     }
 

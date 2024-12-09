@@ -39,7 +39,7 @@ public class TextModel2D : Element2D, ITextBlock
                 }
             }));
 
-    public string? Text
+    public string Text
     {
         set
         {
@@ -47,11 +47,14 @@ public class TextModel2D : Element2D, ITextBlock
         }
         get
         {
-            return (string?)GetValue(TextProperty);
+            return (string)GetValue(TextProperty);
         }
     }
 
 
+#if WINUI
+    new
+#endif
     public static readonly DependencyProperty ForegroundProperty
         = DependencyProperty.Register("Foreground", typeof(Brush), typeof(TextModel2D),
             new PropertyMetadata(new SolidColorBrush(Colors.Black), (d, e) =>
@@ -62,6 +65,9 @@ public class TextModel2D : Element2D, ITextBlock
                 }
             }));
 
+#if WINUI
+    new
+#endif
     public Brush Foreground
     {
         set
@@ -74,6 +80,9 @@ public class TextModel2D : Element2D, ITextBlock
         }
     }
 
+#if WINUI
+    new
+#endif
     public static readonly DependencyProperty BackgroundProperty
         = DependencyProperty.Register("Background", typeof(Brush), typeof(TextModel2D),
             new PropertyMetadata(null, (d, e) =>
@@ -84,6 +93,9 @@ public class TextModel2D : Element2D, ITextBlock
                 }
             }));
 
+#if WINUI
+    new
+#endif
     public Brush Background
     {
         set
@@ -96,6 +108,9 @@ public class TextModel2D : Element2D, ITextBlock
         }
     }
 
+#if WINUI
+    new
+#endif
     public static readonly DependencyProperty FontSizeProperty
         = DependencyProperty.Register("FontSize", typeof(int), typeof(TextModel2D),
             new PropertyMetadata(12, (d, e) =>
@@ -106,6 +121,9 @@ public class TextModel2D : Element2D, ITextBlock
                 }
             }));
 
+#if WINUI
+    new
+#endif
     public int FontSize
     {
         set
@@ -118,6 +136,9 @@ public class TextModel2D : Element2D, ITextBlock
         }
     }
 
+#if WINUI
+    new
+#endif
     public static readonly DependencyProperty FontWeightProperty
         = DependencyProperty.Register("FontWeight", typeof(FontWeight), typeof(TextModel2D),
             new PropertyMetadata(FontWeights.Normal, (d, e) =>
@@ -128,6 +149,9 @@ public class TextModel2D : Element2D, ITextBlock
                 }
             }));
 
+#if WINUI
+    new
+#endif
     public FontWeight FontWeight
     {
         set
@@ -140,6 +164,9 @@ public class TextModel2D : Element2D, ITextBlock
         }
     }
 
+#if WINUI
+    new
+#endif
     public static readonly DependencyProperty FontStyleProperty
         = DependencyProperty.Register("FontStyle", typeof(UIFontStyle), typeof(TextModel2D),
             new PropertyMetadata(UIFontStyles.Normal, (d, e) =>
@@ -150,6 +177,9 @@ public class TextModel2D : Element2D, ITextBlock
                 }
             }));
 
+#if WINUI
+    new
+#endif
     public FontStyle FontStyle
     {
         set
@@ -238,6 +268,9 @@ public class TextModel2D : Element2D, ITextBlock
     /// <value>
     /// The font family.
     /// </value>
+#if WINUI
+    new
+#endif
     public string? FontFamily
     {
         get
@@ -252,6 +285,9 @@ public class TextModel2D : Element2D, ITextBlock
     /// <summary>
     /// The font family property
     /// </summary>
+#if WINUI
+    new
+#endif
     public static readonly DependencyProperty FontFamilyProperty =
         DependencyProperty.Register("FontFamily", typeof(string), typeof(TextModel2D), new PropertyMetadata(DefaultFont, (d, e) =>
         {

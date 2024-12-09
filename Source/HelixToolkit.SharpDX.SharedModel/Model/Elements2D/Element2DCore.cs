@@ -11,7 +11,9 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D;
 /// <summary>
 /// External Wrapper core to be used for different platform
 /// </summary>
-public abstract partial class Element2DCore : FrameworkContentElement, IDisposable
+/// todo
+//public abstract partial class Element2DCore : FrameworkContentElement, IDisposable
+public abstract partial class Element2DCore : FrameworkControl, IDisposable
 {
     public sealed class SceneNode2DCreatedEventArgs : EventArgs
     {
@@ -136,6 +138,7 @@ public abstract partial class Element2DCore : FrameworkContentElement, IDisposab
     {
     }
     #endregion
+
     #region Events        
     /// <summary>
     /// Occurs when [on scene node created]. Make sure to hook up this event at the top of constructor of class, otherwise may miss the event.
@@ -154,26 +157,20 @@ public abstract partial class Element2DCore : FrameworkContentElement, IDisposab
     }
 
 #if WINUI
-    public new void InvalidateMeasure()
-    {
-        SceneNode.InvalidateMeasure();
-    }
-
-    public new void InvalidateArrange()
-    {
-        SceneNode.InvalidateArrange();
-    }
-#else
+    new
+#endif
     public void InvalidateMeasure()
     {
         SceneNode.InvalidateMeasure();
     }
 
+#if WINUI
+    new
+#endif
     public void InvalidateArrange()
     {
         SceneNode.InvalidateArrange();
     }
-#endif
 
     public static implicit operator SceneNode2D(Element2DCore e)
     {

@@ -56,7 +56,7 @@ public abstract class ContentElement2D : Element2D
             {
                 var element = new TextModel2D()
                 {
-                    Text = e.NewValue?.ToString()
+                    Text = e.NewValue?.ToString() ?? string.Empty
                 };
 
                 model.AddLogicalChild(element);
@@ -80,6 +80,9 @@ public abstract class ContentElement2D : Element2D
         }
     }
 
+#if WINUI
+    new
+#endif
     public static readonly DependencyProperty BackgroundProperty
         = DependencyProperty.Register("Background", typeof(Brush), typeof(ContentElement2D),
             new PropertyMetadata(new SolidColorBrush(UIColors.Transparent),
@@ -92,6 +95,9 @@ public abstract class ContentElement2D : Element2D
                 }
             }));
 
+#if WINUI
+    new
+#endif
     public Brush Background
     {
         set
@@ -104,10 +110,16 @@ public abstract class ContentElement2D : Element2D
         }
     }
 
+#if WINUI
+    new
+#endif
     public static readonly DependencyProperty ForegroundProperty
         = DependencyProperty.Register("Foreground", typeof(Brush), typeof(ContentElement2D),
     new PropertyMetadata(new SolidColorBrush(UIColors.Black)));
 
+#if WINUI
+    new
+#endif
     public Brush Foreground
     {
         set
@@ -120,6 +132,9 @@ public abstract class ContentElement2D : Element2D
         }
     }
 
+#if WINUI
+    new
+#endif
     public HorizontalAlignment HorizontalContentAlignment
     {
         get
@@ -132,6 +147,9 @@ public abstract class ContentElement2D : Element2D
         }
     }
 
+#if WINUI
+    new
+#endif
     public static readonly DependencyProperty HorizontalContentAlignmentProperty =
         DependencyProperty.Register("HorizontalContentAlignment", typeof(HorizontalAlignment), typeof(ContentElement2D),
             new PropertyMetadata(HorizontalAlignment.Center, (d, e) =>
@@ -142,6 +160,9 @@ public abstract class ContentElement2D : Element2D
                 }
             }));
 
+#if WINUI
+    new
+#endif
     public VerticalAlignment VerticalContentAlignment
     {
         get
@@ -154,6 +175,9 @@ public abstract class ContentElement2D : Element2D
         }
     }
 
+#if WINUI
+    new
+#endif
     public static readonly DependencyProperty VerticalContentAlignmentProperty =
         DependencyProperty.Register("VerticalContentAlignment", typeof(VerticalAlignment), typeof(ContentElement2D),
             new PropertyMetadata(VerticalAlignment.Center, (d, e) =>

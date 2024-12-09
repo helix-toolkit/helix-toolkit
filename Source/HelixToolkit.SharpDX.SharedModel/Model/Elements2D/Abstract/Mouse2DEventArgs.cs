@@ -1,5 +1,6 @@
 ﻿using HelixToolkit.SharpDX;
 #if WINUI
+using Microsoft.UI.Input;
 #else
 using System.Windows;
 using System.Windows.Input;
@@ -13,6 +14,13 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D;
 
 public class Mouse2DEventArgs : RoutedEventArgs
 {
+#if WINUI
+    public RoutedEvent RoutedEvent
+    {
+        get; private set;
+    }
+#endif
+
     public HitTest2DResult? HitTest2DResult
     {
         get; private set;
@@ -38,6 +46,10 @@ public class Mouse2DEventArgs : RoutedEventArgs
         : base(routedEvent, source)
 #endif
     {
+#if WINUI
+        this.RoutedEvent = routedEvent;
+#endif
+
         this.HitTest2DResult = hitTestResult;
         this.Position = position;
         this.Viewport = viewport;
@@ -49,6 +61,10 @@ public class Mouse2DEventArgs : RoutedEventArgs
         : base(routedEvent, source)
 #endif
     {
+#if WINUI
+        this.RoutedEvent = routedEvent;
+#endif
+
         this.Viewport = viewport;
     }
 }

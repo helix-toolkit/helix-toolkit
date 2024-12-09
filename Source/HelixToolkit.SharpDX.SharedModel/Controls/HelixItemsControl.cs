@@ -4,9 +4,9 @@ using System.Windows;
 #endif
 
 #if WINUI
-namespace HelixToolkit.WinUI.SharpDX.Controls;
+namespace HelixToolkit.WinUI.SharpDX;
 #else
-namespace HelixToolkit.Wpf.SharpDX.Controls;
+namespace HelixToolkit.Wpf.SharpDX;
 #endif
 
 public class HelixItemsControl : ItemsControl

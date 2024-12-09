@@ -29,6 +29,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Converters\EmptyStringToVisibilityConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Converters\NotNullToVisibilityConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\CommonExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Extensions\Geometry3DExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\MaterialExtension.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\Media3DExtension.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\TypeConvertExtensions.cs" />
@@ -36,7 +37,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Model\Elements2D\Abstract\Clickable2D.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Elements2D\Abstract\ContentElement2D.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Elements2D\Abstract\Element2D.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Model\Elements2D\Abstract\InputEventArgs.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Elements2D\Abstract\Mouse2DEventArgs.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Elements2D\Abstract\MoverButton2D.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Elements2D\Abstract\ScreenSpaceMoveDirArgs.cs" />
@@ -65,6 +65,10 @@
     <Compile Include="$(MSBuildThisFileDirectory)Model\Elements3D\Abstract\Element3DCore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Elements3D\Abstract\GeometryModel3D.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Elements3D\Abstract\MaterialGeometryModel3D.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Elements3D\Abstract\Mouse3DEventArgs.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Elements3D\Abstract\MouseDown3DEventArgs.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Elements3D\Abstract\MouseMove3DEventArgs.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Elements3D\Abstract\MouseUp3DEventArgs.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Elements3D\AxisPlaneGridModel3D.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Elements3D\BatchedMeshGeometryModel3D.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Elements3D\BillboardTextModel3D.cs" />

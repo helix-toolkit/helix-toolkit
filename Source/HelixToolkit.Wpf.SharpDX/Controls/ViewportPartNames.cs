@@ -1,4 +1,4 @@
-﻿namespace HelixToolkit.WinUI.SharpDX;
+﻿namespace HelixToolkit.Wpf.SharpDX;
 
 /// <summary>
 /// 
@@ -9,6 +9,11 @@ public static class ViewportPartNames
     /// The canvas part name.
     /// </summary>
     public const string PartCanvas = "PART_Canvas";
+
+    /// <summary>
+    /// The adorner layer part name.
+    /// </summary>
+    public const string PartAdornerLayer = "PART_AdornerLayer";
 
     /// <summary>
     /// The coordinate view part name.
