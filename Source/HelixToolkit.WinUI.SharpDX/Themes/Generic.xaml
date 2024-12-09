@@ -102,7 +102,6 @@
                                                HorizontalAlignment="Left"
                                                VerticalAlignment="Top"
                                                Background="{TemplateBinding TitleBackground}"
-                                               EnableBitmapCache="True"
                                                IsHitTestVisible="False"
                                                Orientation="Vertical">
                                 <hx2D:TextModel2D FontFamily="{TemplateBinding TitleFontFamily}"
