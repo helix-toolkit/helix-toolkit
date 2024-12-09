@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Window x:Class="D2DScreenMenuDemo.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:hx="using:HelixToolkit.WinUI.SharpDX"
+        xmlns:hx2D="using:HelixToolkit.WinUI.SharpDX.Elements2D"
+        xmlns:local="using:D2DScreenMenuDemo"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Title="D2DScreenMenuDemo">
+    <Grid x:Name="ContentArea">
+        <Grid.DataContext>
+            <local:MainViewModel x:Name="ViewModel" />
+        </Grid.DataContext>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+            </Grid.RowDefinitions>
+            <StackPanel Orientation="Horizontal"
+                        Grid.Row="0"
+                        Background="AntiqueWhite">
+                <CheckBox IsChecked="{x:Bind view1.EnableDpiScale}"
+                          HorizontalAlignment="Left"
+                          VerticalAlignment="Center">High Dpi</CheckBox>
+                <TextBlock Margin="25,0,0,0">Test Binding:</TextBlock>
+                <TextBox x:Name="tb"
+                         Width="200"
+                         VerticalContentAlignment="Center"
+                         Text="Btn 3" />
+            </StackPanel>
+            <hx:Viewport3DX Name="view1"
+                            Grid.Row="1"
+                            Camera="{x:Bind ViewModel.Camera}"
+                            EffectsManager="{x:Bind ViewModel.EffectsManager}"
+                            EnableDesignModeRendering="False">
+                <hx:DirectionalLight3D Direction="{x:Bind ViewModel.VM3D.Light1Direction}"
+                                       Color="{x:Bind ViewModel.VM3D.Light1Color}" />
+                <hx:DirectionalLight3D Direction="{x:Bind ViewModel.VM3D.Light2Direction}"
+                                       Color="{x:Bind ViewModel.VM3D.Light2Color}" />
+                <hx:DirectionalLight3D Direction="{x:Bind ViewModel.VM3D.Light3Direction}"
+                                       Color="{x:Bind ViewModel.VM3D.Light3Color}" />
+                <hx:MeshGeometryModel3D CullMode="Back"
+                                        Geometry="{x:Bind ViewModel.VM3D.Model}"
+                                        Material="{x:Bind ViewModel.VM3D.ModelMaterial}" />
+                <hx:Viewport3DX.Content2D>
+                    <hx2D:Panel2D>
+                        <hx2D:StackPanel2D Orientation="Vertical">
+                            <hx2D:StackPanel2D Margin="10,20"
+                                               HorizontalAlignment="Left"
+                                               VerticalAlignment="Top">
+                                <hx2D:TextModel2D HorizontalAlignment="Center"
+                                                  VerticalAlignment="Center"
+                                                  Text="{x:Bind ViewModel.VM2D.Text}" />
+                                <hx2D:TextModel2D HorizontalAlignment="Left"
+                                                  VerticalAlignment="Top"
+                                                  Text="{x:Bind ViewModel.VM2D.Text}" />
+                                <hx2D:TextModel2D HorizontalAlignment="Center"
+                                                  VerticalAlignment="Center"
+                                                  Text="{x:Bind ViewModel.VM2D.Text}" />
+                                <hx2D:TextModel2D HorizontalAlignment="Right"
+                                                  VerticalAlignment="Bottom"
+                                                  Text="{x:Bind ViewModel.VM2D.Text}" />
+                                <hx2D:Button2D Margin="10"
+                                               VerticalAlignment="Center">Button 1</hx2D:Button2D>
+                                <hx2D:Button2D Margin="10"
+                                               VerticalAlignment="Center">Button 2</hx2D:Button2D>
+                            </hx2D:StackPanel2D>
+                            <hx2D:StackPanel2D Margin="10"
+                                               HorizontalAlignment="Right"
+                                               VerticalAlignment="Top"
+                                               Orientation="Vertical">
+                                <hx2D:StackPanel2D VerticalAlignment="Center"
+                                                   Orientation="Horizontal">
+                                    <hx2D:Button2D Margin="10"
+                                                   VerticalAlignment="Center"
+                                                   Width="60"
+                                                   Height="30"
+                                                   Content2D="{x:Bind tb.Text, Mode=OneWay}" />
+                                    <hx2D:Button2D Margin="10"
+                                                   VerticalAlignment="Center"
+                                                   Width="60"
+                                                   Height="30">Button 4</hx2D:Button2D>
+                                </hx2D:StackPanel2D>
+                                <hx2D:Button2D Margin="10"
+                                               HorizontalAlignment="Center">Button4</hx2D:Button2D>
+                                <hx2D:Button2D Margin="10"
+                                               HorizontalAlignment="Center">Button5</hx2D:Button2D>
+                                <hx2D:EllipseModel2D Width="20"
+                                                     Height="20"
+                                                     Fill="AliceBlue"
+                                                     Stroke="Red"
+                                                     StrokeThickness="1" />
+                            </hx2D:StackPanel2D>
+                        </hx2D:StackPanel2D>
+
+                        <hx2D:EllipseModel2D Width="50"
+                                             Height="20"
+                                             Fill="Green"
+                                             Stroke="Red"
+                                             StrokeThickness="2" />
+                        <hx2D:ImageModel2D VerticalAlignment="Center"
+                                           HorizontalAlignment="Center"
+                                           Width="100"
+                                           Height="100"
+                                           ImageStream="{x:Bind ViewModel.VM2D.ImageStream}" />
+                    </hx2D:Panel2D>
+                </hx:Viewport3DX.Content2D>
+            </hx:Viewport3DX>
+        </Grid>
+    </Grid>
+</Window>

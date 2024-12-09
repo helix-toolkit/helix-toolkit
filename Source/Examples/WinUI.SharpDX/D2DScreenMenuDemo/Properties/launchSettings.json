@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "D2DScreenMenuDemo (Package)": {
+      "commandName": "MsixPackage"
+    },
+    "D2DScreenMenuDemo (Unpackaged)": {
+      "commandName": "Project"
+    }
+  }
+}
