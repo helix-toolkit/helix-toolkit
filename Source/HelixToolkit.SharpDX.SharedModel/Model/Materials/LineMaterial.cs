@@ -3,10 +3,13 @@ using HelixToolkit.SharpDX.Model;
 using HelixToolkit.SharpDX.Shaders;
 using SharpDX.Direct3D11;
 
-#if WINUI
+#if false
+#elif WINUI
 namespace HelixToolkit.WinUI.SharpDX;
-#else
+#elif WPF
 namespace HelixToolkit.Wpf.SharpDX;
+#else
+#error Unknown framework
 #endif
 
 public class LineMaterial : Material
@@ -330,7 +333,9 @@ public class LineMaterial : Material
         };
     }
 
-#if WPF
+#if false
+#elif WINUI
+#elif WPF
     protected override Freezable CreateInstanceCore()
     {
         return new LineMaterial()
@@ -348,5 +353,7 @@ public class LineMaterial : Material
             FixedSize = FixedSize
         };
     }
+#else
+#error Unknown framework
 #endif
 }

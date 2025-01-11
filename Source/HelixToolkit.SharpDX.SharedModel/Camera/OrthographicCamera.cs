@@ -1,9 +1,12 @@
 ﻿using HelixToolkit.SharpDX.Cameras;
 
-#if WINUI
+#if false
+#elif WINUI
 namespace HelixToolkit.WinUI.SharpDX;
-#else
+#elif WPF
 namespace HelixToolkit.Wpf.SharpDX;
+#else
+#error Unknown framework
 #endif
 
 /// <summary>
@@ -127,10 +130,14 @@ public class OrthographicCamera : ProjectionCamera, IOrthographicCameraModel
         LookDirection = lookDir.ToVector3D();
     }
 
-#if WPF
+#if false
+#elif WINUI
+#elif WPF
     protected override Freezable CreateInstanceCore()
     {
         return new OrthographicCamera();
     }
+#else
+#error Unknown framework
 #endif
 }

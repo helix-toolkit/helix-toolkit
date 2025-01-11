@@ -1,15 +1,21 @@
 ﻿using HelixToolkit.SharpDX;
 using HelixToolkit.SharpDX.Model.Scene;
-#if WINUI
+#if false
+#elif WINUI
 using HelixToolkit.WinUI.SharpDX.Model;
-#else
+#elif WPF
 using HelixToolkit.Wpf.SharpDX.Model;
+#else
+#error Unknown framework
 #endif
 
-#if WINUI
+#if false
+#elif WINUI
 namespace HelixToolkit.WinUI.SharpDX;
-#else
+#elif WPF
 namespace HelixToolkit.Wpf.SharpDX;
+#else
+#error Unknown framework
 #endif
 
 /// <summary>

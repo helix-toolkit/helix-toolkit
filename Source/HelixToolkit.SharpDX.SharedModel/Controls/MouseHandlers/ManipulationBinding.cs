@@ -1,13 +1,19 @@
 ﻿using System.Windows.Input;
-#if WINUI
-#else
+#if false
+#elif WINUI
+#elif WPF
 using System.ComponentModel;
+#else
+#error Unknown framework
 #endif
 
-#if WINUI
+#if false
+#elif WINUI
 namespace HelixToolkit.WinUI.SharpDX;
-#else
+#elif WPF
 namespace HelixToolkit.Wpf.SharpDX;
+#else
+#error Unknown framework
 #endif
 
 /// <summary>
@@ -20,8 +26,12 @@ public class ManipulationBinding : InputBinding
     /// </summary>
     public int FingerCount => (this.Gesture as ManipulationGesture)?.FingerCount ?? 0;
 
-#if WPF
+#if false
+#elif WINUI
+#elif WPF
     [TypeConverter(typeof(ManipulationGestureConverter))]
+#else
+#error Unknown framework
 #endif
     public override InputGesture? Gesture
     {

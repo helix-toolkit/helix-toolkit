@@ -1,22 +1,31 @@
-﻿#if WINUI
-#else
+﻿#if false
+#elif WINUI
+#elif WPF
 using System.Windows;
+#else
+#error Unknown framework
 #endif
 
-#if WINUI
+#if false
+#elif WINUI
 namespace HelixToolkit.WinUI.SharpDX;
-#else
+#elif WPF
 namespace HelixToolkit.Wpf.SharpDX;
+#else
+#error Unknown framework
 #endif
 
 public class HelixItemsControl : ItemsControl
 {
     public HelixItemsControl()
     {
-#if WINUI
+#if false
+#elif WINUI
         ManipulationMode = ManipulationModes.None;
-#else
+#elif WPF
         Focusable = false;
+#else
+#error Unknown framework
 #endif
         IsHitTestVisible = false;
         this.DefaultStyleKey = typeof(HelixItemsControl);

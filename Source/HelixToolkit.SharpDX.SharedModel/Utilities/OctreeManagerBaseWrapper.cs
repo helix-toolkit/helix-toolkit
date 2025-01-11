@@ -1,15 +1,21 @@
 ﻿using HelixToolkit.SharpDX;
 
-#if WINUI
+#if false
+#elif WINUI
 using Windows.UI.Core;
-#else
+#elif WPF
 using System.Windows.Threading;
+#else
+#error Unknown framework
 #endif
 
-#if WINUI
+#if false
+#elif WINUI
 namespace HelixToolkit.WinUI.SharpDX;
-#else
+#elif WPF
 namespace HelixToolkit.Wpf.SharpDX;
+#else
+#error Unknown framework
 #endif
 
 /// <summary>
@@ -209,10 +215,13 @@ public abstract class OctreeManagerBaseWrapper : FrameworkContentElement, IOctre
             return (int)GetValue(MinObjectSizeToSplitProperty);
         }
     }
-#if WINUI
+#if false
+#elif WINUI
     private IAsyncAction? octreeOpt;
-#else
+#elif WPF
     private DispatcherOperation? octreeOpt;
+#else
+#error Unknown framework
 #endif
     private bool enableOctreeOutput = false;
     private IOctreeManager? manager;
@@ -232,7 +241,8 @@ public abstract class OctreeManagerBaseWrapper : FrameworkContentElement, IOctre
                 manager = OnCreateManager();
                 manager.OnOctreeCreated += (s, e) =>
                 {
-#if WINUI
+#if false
+#elif WINUI
                     if (octreeOpt != null && octreeOpt.Status != AsyncStatus.Completed)
                     {
                         octreeOpt?.Cancel();
@@ -245,7 +255,7 @@ public abstract class OctreeManagerBaseWrapper : FrameworkContentElement, IOctre
                             this.Octree = e.Octree;
                         });
                     }
-#else
+#elif WPF
                     if (octreeOpt != null && octreeOpt.Status == DispatcherOperationStatus.Pending)
                     {
                         octreeOpt.Abort();
@@ -259,6 +269,8 @@ public abstract class OctreeManagerBaseWrapper : FrameworkContentElement, IOctre
                                 this.Octree = e.Octree;
                             }));
                     }
+#else
+#error Unknown framework
 #endif
                 };
             }

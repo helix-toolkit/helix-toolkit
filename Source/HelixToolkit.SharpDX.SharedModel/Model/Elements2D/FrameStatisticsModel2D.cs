@@ -1,24 +1,34 @@
 ﻿using HelixToolkit.SharpDX;
 using HelixToolkit.SharpDX.Model.Scene2D;
 
-#if WINUI
+#if false
+#elif WINUI
 using HelixToolkit.WinUI.SharpDX.Extensions;
 using Microsoft.UI.Xaml.Media;
-#else
+#elif WPF
 using HelixToolkit.Wpf.SharpDX.Extensions;
 using System.Windows.Media;
+#else
+#error Unknown framework
 #endif
 
-#if WINUI
+#if false
+#elif WINUI
 namespace HelixToolkit.WinUI.SharpDX.Elements2D;
-#else
+#elif WPF
 namespace HelixToolkit.Wpf.SharpDX.Elements2D;
+#else
+#error Unknown framework
 #endif
 
 public class FrameStatisticsModel2D : Element2D
 {
-#if WINUI
+#if false
+#elif WINUI
     new
+#elif WPF
+#else
+#error Unknown framework
 #endif
     public static readonly DependencyProperty ForegroundProperty
         = DependencyProperty.Register("Foreground", typeof(Brush), typeof(FrameStatisticsModel2D),
@@ -30,8 +40,12 @@ public class FrameStatisticsModel2D : Element2D
         }
     }));
 
-#if WINUI
+#if false
+#elif WINUI
     new
+#elif WPF
+#else
+#error Unknown framework
 #endif
     public Brush? Foreground
     {
@@ -45,8 +59,12 @@ public class FrameStatisticsModel2D : Element2D
         }
     }
 
-#if WINUI
+#if false
+#elif WINUI
     new
+#elif WPF
+#else
+#error Unknown framework
 #endif
     public static readonly DependencyProperty BackgroundProperty
         = DependencyProperty.Register("Background", typeof(Brush), typeof(FrameStatisticsModel2D),
@@ -58,8 +76,12 @@ public class FrameStatisticsModel2D : Element2D
                 }
             }));
 
-#if WINUI
+#if false
+#elif WINUI
     new
+#elif WPF
+#else
+#error Unknown framework
 #endif
     public Brush? Background
     {

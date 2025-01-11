@@ -1,7 +1,8 @@
 ﻿using HelixToolkit.SharpDX;
 using HelixToolkit.SharpDX.Model.Scene2D;
 using UIBindable = System.ComponentModel.BindableAttribute;
-#if WINUI
+#if false
+#elif WINUI
 using HelixToolkit.WinUI.SharpDX.Core2D;
 using HelixToolkit.WinUI.SharpDX.Extensions;
 using Microsoft.UI.Xaml.Data;
@@ -9,7 +10,7 @@ using Microsoft.UI.Xaml.Markup;
 using Microsoft.UI.Xaml.Media;
 using HorizontalAlignment = Microsoft.UI.Xaml.HorizontalAlignment;
 using VerticalAlignment = Microsoft.UI.Xaml.VerticalAlignment;
-#else
+#elif WPF
 using HelixToolkit.Wpf.SharpDX.Core2D;
 using HelixToolkit.Wpf.SharpDX.Extensions;
 using System.Windows;
@@ -18,18 +19,26 @@ using System.Windows.Markup;
 using System.Windows.Media;
 using HorizontalAlignment = System.Windows.HorizontalAlignment;
 using VerticalAlignment = System.Windows.VerticalAlignment;
+#else
+#error Unknown framework
 #endif
 
-#if WINUI
+#if false
+#elif WINUI
 namespace HelixToolkit.WinUI.SharpDX.Elements2D;
-#else
+#elif WPF
 namespace HelixToolkit.Wpf.SharpDX.Elements2D;
+#else
+#error Unknown framework
 #endif
 
-#if WINUI
+#if false
+#elif WINUI
 [ContentProperty(Name = "Content2D")]
-#else
+#elif WPF
 [ContentProperty("Content2D")]
+#else
+#error Unknown framework
 #endif
 public abstract class ContentElement2D : Element2D
 {
@@ -80,8 +89,12 @@ public abstract class ContentElement2D : Element2D
         }
     }
 
-#if WINUI
+#if false
+#elif WINUI
     new
+#elif WPF
+#else
+#error Unknown framework
 #endif
     public static readonly DependencyProperty BackgroundProperty
         = DependencyProperty.Register("Background", typeof(Brush), typeof(ContentElement2D),
@@ -95,8 +108,12 @@ public abstract class ContentElement2D : Element2D
                 }
             }));
 
-#if WINUI
+#if false
+#elif WINUI
     new
+#elif WPF
+#else
+#error Unknown framework
 #endif
     public Brush Background
     {
@@ -110,15 +127,23 @@ public abstract class ContentElement2D : Element2D
         }
     }
 
-#if WINUI
+#if false
+#elif WINUI
     new
+#elif WPF
+#else
+#error Unknown framework
 #endif
     public static readonly DependencyProperty ForegroundProperty
         = DependencyProperty.Register("Foreground", typeof(Brush), typeof(ContentElement2D),
     new PropertyMetadata(new SolidColorBrush(UIColors.Black)));
 
-#if WINUI
+#if false
+#elif WINUI
     new
+#elif WPF
+#else
+#error Unknown framework
 #endif
     public Brush Foreground
     {
@@ -132,8 +157,12 @@ public abstract class ContentElement2D : Element2D
         }
     }
 
-#if WINUI
+#if false
+#elif WINUI
     new
+#elif WPF
+#else
+#error Unknown framework
 #endif
     public HorizontalAlignment HorizontalContentAlignment
     {
@@ -147,8 +176,12 @@ public abstract class ContentElement2D : Element2D
         }
     }
 
-#if WINUI
+#if false
+#elif WINUI
     new
+#elif WPF
+#else
+#error Unknown framework
 #endif
     public static readonly DependencyProperty HorizontalContentAlignmentProperty =
         DependencyProperty.Register("HorizontalContentAlignment", typeof(HorizontalAlignment), typeof(ContentElement2D),
@@ -160,8 +193,12 @@ public abstract class ContentElement2D : Element2D
                 }
             }));
 
-#if WINUI
+#if false
+#elif WINUI
     new
+#elif WPF
+#else
+#error Unknown framework
 #endif
     public VerticalAlignment VerticalContentAlignment
     {
@@ -175,8 +212,12 @@ public abstract class ContentElement2D : Element2D
         }
     }
 
-#if WINUI
+#if false
+#elif WINUI
     new
+#elif WPF
+#else
+#error Unknown framework
 #endif
     public static readonly DependencyProperty VerticalContentAlignmentProperty =
         DependencyProperty.Register("VerticalContentAlignment", typeof(VerticalAlignment), typeof(ContentElement2D),

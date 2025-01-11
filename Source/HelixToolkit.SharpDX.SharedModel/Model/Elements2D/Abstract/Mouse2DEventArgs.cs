@@ -1,24 +1,34 @@
 ﻿using HelixToolkit.SharpDX;
-#if WINUI
+#if false
+#elif WINUI
 using Microsoft.UI.Input;
-#else
+#elif WPF
 using System.Windows;
 using System.Windows.Input;
+#else
+#error Unknown framework
 #endif
 
-#if WINUI
+#if false
+#elif WINUI
 namespace HelixToolkit.WinUI.SharpDX.Elements2D;
-#else
+#elif WPF
 namespace HelixToolkit.Wpf.SharpDX.Elements2D;
+#else
+#error Unknown framework
 #endif
 
 public class Mouse2DEventArgs : RoutedEventArgs
 {
-#if WINUI
+#if false
+#elif WINUI
     public RoutedEvent RoutedEvent
     {
         get; private set;
     }
+#elif WPF
+#else
+#error Unknown framework
 #endif
 
     public HitTest2DResult? HitTest2DResult
@@ -42,12 +52,20 @@ public class Mouse2DEventArgs : RoutedEventArgs
     }
 
     public Mouse2DEventArgs(RoutedEvent routedEvent, object? source, HitTest2DResult? hitTestResult, Point position, Viewport3DX? viewport = null, InputEventArgs? inputArgs = null)
-#if WPF
+#if false
+#elif WINUI
+#elif WPF
         : base(routedEvent, source)
+#else
+#error Unknown framework
 #endif
     {
-#if WINUI
+#if false
+#elif WINUI
         this.RoutedEvent = routedEvent;
+#elif WPF
+#else
+#error Unknown framework
 #endif
 
         this.HitTest2DResult = hitTestResult;
@@ -57,12 +75,20 @@ public class Mouse2DEventArgs : RoutedEventArgs
     }
 
     public Mouse2DEventArgs(RoutedEvent routedEvent, object? source, Viewport3DX? viewport = null)
-#if WPF
+#if false
+#elif WINUI
+#elif WPF
         : base(routedEvent, source)
+#else
+#error Unknown framework
 #endif
     {
-#if WINUI
+#if false
+#elif WINUI
         this.RoutedEvent = routedEvent;
+#elif WPF
+#else
+#error Unknown framework
 #endif
 
         this.Viewport = viewport;

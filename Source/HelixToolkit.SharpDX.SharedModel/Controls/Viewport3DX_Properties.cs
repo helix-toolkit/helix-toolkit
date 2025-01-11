@@ -1,20 +1,26 @@
 ﻿using HelixToolkit.SharpDX;
-#if WINUI
+#if false
+#elif WINUI
 using HelixToolkit.WinUI.SharpDX.Elements2D;
 using Microsoft.UI;
 using Microsoft.UI.Xaml.Media;
-#else
+#elif WPF
 using HelixToolkit.Wpf.SharpDX.Controls;
 using HelixToolkit.Wpf.SharpDX.Elements2D;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
+#else
+#error Unknown framework
 #endif
 
-#if WINUI
+#if false
+#elif WINUI
 namespace HelixToolkit.WinUI.SharpDX;
-#else
+#elif WPF
 namespace HelixToolkit.Wpf.SharpDX;
+#else
+#error Unknown framework
 #endif
 
 /// <summary>
@@ -487,12 +493,16 @@ public partial class Viewport3DX
                 }
             }));
 
-#if WPF
+#if false
+#elif WINUI
+#elif WPF
     /// <summary>
     /// The enable swap chain rendering property
     /// </summary>
     public static readonly DependencyProperty EnableSwapChainRenderingProperty
         = DependencyProperty.Register("EnableSwapChainRendering", typeof(bool), typeof(Viewport3DX), new PropertyMetadata(false));
+#else
+#error Unknown framework
 #endif
 
     /// <summary>
@@ -567,11 +577,15 @@ public partial class Viewport3DX
                 return;
             }
 
-#if WPF
+#if false
+#elif WINUI
+#elif WPF
             if (viewport.hostPresenter != null && viewport.hostPresenter.Content is DPFSurfaceSwapChain surface)
             {
                 surface.IncreaseFPS = (bool)e.NewValue;
             }
+#else
+#error Unknown framework
 #endif
         }));
 
@@ -601,7 +615,8 @@ public partial class Viewport3DX
     public static readonly DependencyProperty InfoForegroundProperty = DependencyProperty.Register(
         "InfoForeground", typeof(Brush), typeof(Viewport3DX), new PropertyMetadata(new SolidColorBrush(UIColors.Blue)));
 
-#if WINUI
+#if false
+#elif WINUI
     /// <summary>
     /// The mouse input controller property
     /// </summary>
@@ -615,6 +630,9 @@ public partial class Viewport3DX
 
             viewport.CameraController.InputController = e.NewValue == null ? new InputController() : e.NewValue as InputController;
         }));
+#elif WPF
+#else
+#error Unknown framework
 #endif
 
     /// <summary>
@@ -2214,7 +2232,9 @@ public partial class Viewport3DX
         }
     }
 
-#if WPF
+#if false
+#elif WINUI
+#elif WPF
     /// <summary>
     /// <para>Use HwndHost as rendering surface, swapchain for rendering. Much faster than using D3DImage.</para> 
     /// <para>Drawbacks: The rendering surface will cover all WPF controls in the same Viewport region. Move controls out of viewport region to solve this problem.</para>
@@ -2232,6 +2252,8 @@ public partial class Viewport3DX
             return (bool)GetValue(EnableSwapChainRenderingProperty);
         }
     }
+#else
+#error Unknown framework
 #endif
 
     /// <summary>
@@ -2413,7 +2435,8 @@ public partial class Viewport3DX
         }
     }
 
-#if WINUI
+#if false
+#elif WINUI
     /// <summary>
     /// Gets or sets the mouse input controller.
     /// </summary>
@@ -2431,6 +2454,9 @@ public partial class Viewport3DX
             return (InputController)GetValue(InputControllerProperty);
         }
     }
+#elif WPF
+#else
+#error Unknown framework
 #endif
 
     /// <summary>

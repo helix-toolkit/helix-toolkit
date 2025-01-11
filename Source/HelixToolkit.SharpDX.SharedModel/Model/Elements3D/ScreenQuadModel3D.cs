@@ -3,22 +3,32 @@ using HelixToolkit.SharpDX.Model.Scene;
 using HelixToolkit.SharpDX.Shaders;
 using SharpDX.Direct3D11;
 
-#if WINUI
+#if false
+#elif WINUI
 using System.Runtime.Versioning;
+#elif WPF
 #else
+#error Unknown framework
 #endif
 
-#if WINUI
+#if false
+#elif WINUI
 namespace HelixToolkit.WinUI.SharpDX;
-#else
+#elif WPF
 namespace HelixToolkit.Wpf.SharpDX;
+#else
+#error Unknown framework
 #endif
 
 /// <summary>
 /// 
 /// </summary>
-#if WINUI
+#if false
+#elif WINUI
 [SupportedOSPlatform("windows")]
+#elif WPF
+#else
+#error Unknown framework
 #endif
 public class ScreenQuadModel3D : Element3D
 {

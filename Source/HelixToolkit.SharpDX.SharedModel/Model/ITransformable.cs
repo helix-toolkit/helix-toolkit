@@ -1,13 +1,19 @@
 ﻿using HelixToolkit.SharpDX;
-#if WINUI
+#if false
+#elif WINUI
 using Microsoft.UI.Xaml.Media.Media3D;
+#elif WPF
 #else
+#error Unknown framework
 #endif
 
-#if WINUI
+#if false
+#elif WINUI
 namespace HelixToolkit.WinUI.SharpDX;
-#else
+#elif WPF
 namespace HelixToolkit.Wpf.SharpDX;
+#else
+#error Unknown framework
 #endif
 
 public interface ITransformable : ITransform

@@ -1,30 +1,44 @@
-﻿#if WINUI
+﻿#if false
+#elif WINUI
 using Microsoft.UI.Xaml.Media;
-#else
+#elif WPF
 using System.Windows;
 using System.Windows.Media;
+#else
+#error Unknown framework
 #endif
 
-#if WINUI
+#if false
+#elif WINUI
 namespace HelixToolkit.WinUI.SharpDX.Elements2D;
-#else
+#elif WPF
 namespace HelixToolkit.Wpf.SharpDX.Elements2D;
+#else
+#error Unknown framework
 #endif
 
 public class Button2D : Clickable2D
 {
     static Button2D()
     {
-#if WPF
+#if false
+#elif WINUI
+#elif WPF
         DefaultStyleKeyProperty.OverrideMetadata(
             typeof(Button2D), new FrameworkPropertyMetadata(typeof(Button2D)));
+#else
+#error Unknown framework
 #endif
     }
 
     public Button2D()
     {
-#if WINUI
+#if false
+#elif WINUI
         DefaultStyleKey = typeof(Button2D);
+#elif WPF
+#else
+#error Unknown framework
 #endif
 
         SetDefaultStyle();
@@ -32,7 +46,8 @@ public class Button2D : Clickable2D
 
     private void SetDefaultStyle()
     {
-#if WINUI
+#if false
+#elif WINUI
         var backgroupColor = System.Drawing.SystemColors.ControlDark;
         var backgroupUIColor = UIColor.FromArgb(backgroupColor.A, backgroupColor.R, backgroupColor.G, backgroupColor.B);
         this.Background = new SolidColorBrush(backgroupUIColor);
@@ -43,18 +58,26 @@ public class Button2D : Clickable2D
 
         this.CornerRadius = 2;
         this.BorderThickness = new UIThickness(0, 0, 0, 0);
+#elif WPF
+#else
+#error Unknown framework
 #endif
     }
 
-#if WINUI
+#if false
+#elif WINUI
     private Brush? _previousBackgroundBrush;
+#elif WPF
+#else
+#error Unknown framework
 #endif
 
     protected override void OnMouseOverChanged(bool newValue, bool oldValue)
     {
         base.OnMouseOverChanged(newValue, oldValue);
 
-#if WINUI
+#if false
+#elif WINUI
         if (newValue)
         {
             this._previousBackgroundBrush = this.Background;
@@ -70,6 +93,9 @@ public class Button2D : Clickable2D
                 this.Background = this._previousBackgroundBrush;
             }
         }
+#elif WPF
+#else
+#error Unknown framework
 #endif
     }
 }

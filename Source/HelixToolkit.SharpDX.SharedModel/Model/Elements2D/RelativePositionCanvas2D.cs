@@ -1,14 +1,20 @@
 ﻿using HelixToolkit.SharpDX.Model.Scene2D;
-#if WINUI
+#if false
+#elif WINUI
 using HelixToolkit.WinUI.SharpDX.Core2D;
-#else
+#elif WPF
 using HelixToolkit.Wpf.SharpDX.Core2D;
+#else
+#error Unknown framework
 #endif
 
-#if WINUI
+#if false
+#elif WINUI
 namespace HelixToolkit.WinUI.SharpDX.Elements2D;
-#else
+#elif WPF
 namespace HelixToolkit.Wpf.SharpDX.Elements2D;
+#else
+#error Unknown framework
 #endif
 
 /// <summary>

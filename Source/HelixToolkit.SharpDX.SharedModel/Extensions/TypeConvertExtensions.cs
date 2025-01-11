@@ -1,9 +1,12 @@
 ﻿using Scene2D = HelixToolkit.SharpDX.Model.Scene2D;
 
-#if WINUI
+#if false
+#elif WINUI
 namespace HelixToolkit.WinUI.SharpDX.Extensions;
-#else
+#elif WPF
 namespace HelixToolkit.Wpf.SharpDX.Extensions;
+#else
+#error Unknown framework
 #endif
 
 public static class TypeConvertExtensions
@@ -13,8 +16,12 @@ public static class TypeConvertExtensions
         return v switch
         {
             UIVisibility.Collapsed => Scene2D.Visibility.Collapsed,
-#if WPF
+#if false
+#elif WINUI
+#elif WPF
             UIVisibility.Hidden => Scene2D.Visibility.Hidden,
+#else
+#error Unknown framework
 #endif
             UIVisibility.Visible => Scene2D.Visibility.Visible,
             _ => Scene2D.Visibility.Visible,

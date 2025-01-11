@@ -1,24 +1,31 @@
 ﻿using D2D = SharpDX.Direct2D1;
 using SharpDX.Mathematics.Interop;
 
-#if WINUI
+#if false
+#elif WINUI
 using Media = Microsoft.UI.Xaml.Media;
-#else
+#elif WPF
 using System.Windows;
 using Media = System.Windows.Media;
+#else
+#error Unknown framework
 #endif
 
-#if WINUI
+#if false
+#elif WINUI
 namespace HelixToolkit.WinUI.SharpDX.Extensions;
-#else
+#elif WPF
 namespace HelixToolkit.Wpf.SharpDX.Extensions;
+#else
+#error Unknown framework
 #endif
 
 public static class CommonExtensions
 {
     public static global::SharpDX.DirectWrite.FontWeight ToDXFontWeight(this FontWeight fontWeight)
     {
-#if WINUI
+#if false
+#elif WINUI
         var w = fontWeight.Weight;
         if (w == FontWeights.Black.Weight)
         {
@@ -64,7 +71,7 @@ public static class CommonExtensions
         {
             return global::SharpDX.DirectWrite.FontWeight.Normal;
         }
-#else
+#elif WPF
         if (fontWeight == FontWeights.Black)
         {
             return global::SharpDX.DirectWrite.FontWeight.Black;
@@ -133,12 +140,15 @@ public static class CommonExtensions
         {
             return global::SharpDX.DirectWrite.FontWeight.Normal;
         }
+#else
+#error Unknown framework
 #endif
     }
 
     public static global::SharpDX.DirectWrite.FontStyle ToDXFontStyle(this FontStyle style)
     {
-#if WINUI
+#if false
+#elif WINUI
         if (style == FontStyle.Italic)
         {
             return global::SharpDX.DirectWrite.FontStyle.Italic;
@@ -155,7 +165,7 @@ public static class CommonExtensions
         {
             return global::SharpDX.DirectWrite.FontStyle.Normal;
         }
-#else
+#elif WPF
         if (style == FontStyles.Italic)
         {
             return global::SharpDX.DirectWrite.FontStyle.Italic;
@@ -172,6 +182,8 @@ public static class CommonExtensions
         {
             return global::SharpDX.DirectWrite.FontStyle.Normal;
         }
+#else
+#error Unknown framework
 #endif
     }
 
@@ -215,7 +227,9 @@ public static class CommonExtensions
                 )
                 );
         }
-#if WPF
+#if false
+#elif WINUI
+#elif WPF
         else if (brush is Media.RadialGradientBrush radial)
         {
             return new D2D.RadialGradientBrush(target,
@@ -234,6 +248,8 @@ public static class CommonExtensions
                     radial.SpreadMethod.ToD2DExtendMode()
                 ));
         }
+#else
+#error Unknown framework
 #endif
         else
         {
@@ -264,12 +280,13 @@ public static class CommonExtensions
         };
     }
 
-#if WINUI
+#if false
+#elif WINUI
     public static D2D.DashStyle ToD2DDashStyle(this D2D.DashStyle style)
     {
         return style;
     }
-#else
+#elif WPF
     public static D2D.DashStyle ToD2DDashStyle(this Media.DashStyle? style)
     {
         if (style is null)
@@ -298,6 +315,8 @@ public static class CommonExtensions
             return D2D.DashStyle.Solid;
         }
     }
+#else
+#error Unknown framework
 #endif
     public static global::SharpDX.DirectWrite.TextAlignment ToD2DTextAlignment(this TextAlignment alignment)
     {

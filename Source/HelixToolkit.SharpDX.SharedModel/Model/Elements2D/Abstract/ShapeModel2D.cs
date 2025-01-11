@@ -1,21 +1,27 @@
 ﻿using HelixToolkit.SharpDX;
 using HelixToolkit.SharpDX.Model.Scene2D;
-#if WINUI
+#if false
+#elif WINUI
 using HelixToolkit.WinUI.SharpDX.Core2D;
 using HelixToolkit.WinUI.SharpDX.Extensions;
 using Microsoft.UI.Xaml.Media;
 using DashStyle = SharpDX.Direct2D1.DashStyle;
 using DashStyles = SharpDX.Direct2D1.DashStyle;
-#else
+#elif WPF
 using HelixToolkit.Wpf.SharpDX.Core2D;
 using HelixToolkit.Wpf.SharpDX.Extensions;
 using System.Windows.Media;
+#else
+#error Unknown framework
 #endif
 
-#if WINUI
+#if false
+#elif WINUI
 namespace HelixToolkit.WinUI.SharpDX.Elements2D;
-#else
+#elif WPF
 namespace HelixToolkit.Wpf.SharpDX.Elements2D;
+#else
+#error Unknown framework
 #endif
 
 public abstract class ShapeModel2D : Element2D

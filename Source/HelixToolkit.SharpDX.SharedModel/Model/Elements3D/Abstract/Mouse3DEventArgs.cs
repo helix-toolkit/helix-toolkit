@@ -1,18 +1,28 @@
 ﻿using HelixToolkit.SharpDX;
-#if WINUI
-#else
+#if false
+#elif WINUI
+#elif WPF
 using System.Windows;
+#else
+#error Unknown framework
 #endif
 
-#if WINUI
+#if false
+#elif WINUI
 namespace HelixToolkit.WinUI.SharpDX;
-#else
+#elif WPF
 namespace HelixToolkit.Wpf.SharpDX;
+#else
+#error Unknown framework
 #endif
 
 public abstract class Mouse3DEventArgs
-#if WPF
+#if false
+#elif WINUI
+#elif WPF
     : RoutedEventArgs
+#else
+#error Unknown framework
 #endif
 {
     public HitTestResult? HitTestResult { get; private set; }
@@ -31,21 +41,32 @@ public abstract class Mouse3DEventArgs
         get; private set;
     }
 
-#if WINUI
+#if false
+#elif WINUI
     private bool handled;
+#elif WPF
+#else
+#error Unknown framework
 #endif
 
-#if WPF
+#if false
+#elif WINUI
+#elif WPF
     new
+#else
+#error Unknown framework
 #endif
     public bool Handled
     { // not overridable
         get
         {
-#if WINUI
+#if false
+#elif WINUI
             return handled;
-#else
+#elif WPF
             return base.Handled;
+#else
+#error Unknown framework
 #endif
         }
         set
@@ -53,19 +74,25 @@ public abstract class Mouse3DEventArgs
             if (OriginalInputEventArgs != null)
                 OriginalInputEventArgs.Handled = value; // ensuring that the original input event is also marked as Handled
 
-#if WINUI
+#if false
+#elif WINUI
             handled = value;
-#else
+#elif WPF
             base.Handled = value;
+#else
+#error Unknown framework
 #endif
         }
     }
 
-#if WINUI
+#if false
+#elif WINUI
     public Mouse3DEventArgs(HitTestResult? hitTestResult, Point position, Viewport3DX? viewport = null, UIInputEventArgs? originalInputEventArgs = null)
-#else
+#elif WPF
     public Mouse3DEventArgs(RoutedEvent routedEvent, object? source, HitTestResult? hitTestResult, Point position, Viewport3DX? viewport = null, UIInputEventArgs? originalInputEventArgs = null)
         : base(routedEvent, source)
+#else
+#error Unknown framework
 #endif
     {
         this.HitTestResult = hitTestResult;
