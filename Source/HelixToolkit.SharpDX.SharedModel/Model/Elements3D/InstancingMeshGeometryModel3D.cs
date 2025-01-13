@@ -1,16 +1,22 @@
 ﻿using HelixToolkit.SharpDX;
 using HelixToolkit.SharpDX.Model.Scene;
 
-#if WINUI
+#if false
+#elif WINUI
 using HelixToolkit.WinUI.SharpDX.Model;
-#else
+#elif WPF
 using HelixToolkit.Wpf.SharpDX.Model;
+#else
+#error Unknown framework
 #endif
 
-#if WINUI
+#if false
+#elif WINUI
 namespace HelixToolkit.WinUI.SharpDX;
-#else
+#elif WPF
 namespace HelixToolkit.Wpf.SharpDX;
+#else
+#error Unknown framework
 #endif
 
 public class InstancingMeshGeometryModel3D : MeshGeometryModel3D
@@ -39,13 +45,14 @@ public class InstancingMeshGeometryModel3D : MeshGeometryModel3D
                 return;
             }
 
-#if WINUI
+#if false
+#elif WINUI
             d.AttachChild(null);
             if(e.NewValue is Element3D elem)
             {
                 d.AttachChild(elem);
             }
-#else
+#elif WPF
             if (e.OldValue != null)
             {
                 d.RemoveLogicalChild(e.OldValue);
@@ -55,6 +62,8 @@ public class InstancingMeshGeometryModel3D : MeshGeometryModel3D
             {
                 d.AddLogicalChild(e.NewValue);
             }
+#else
+#error Unknown framework
 #endif
             if (d.SceneNode is InstancingMeshNode node)
             {
@@ -124,7 +133,8 @@ public class InstancingMeshGeometryModel3D : MeshGeometryModel3D
         return new InstancingMeshNode();
     }
 
-#if WINUI
+#if false
+#elif WINUI
     protected override void OnApplyTemplate()
     {
         base.OnApplyTemplate();
@@ -133,5 +143,8 @@ public class InstancingMeshGeometryModel3D : MeshGeometryModel3D
             AttachChild(elem);
         }
     }
+#elif WPF
+#else
+#error Unknown framework
 #endif
 }

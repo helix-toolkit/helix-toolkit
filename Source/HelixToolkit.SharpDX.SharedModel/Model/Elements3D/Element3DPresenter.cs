@@ -1,21 +1,30 @@
 ﻿using HelixToolkit.SharpDX.Model.Scene;
-#if WINUI
+#if false
+#elif WINUI
 using Microsoft.UI.Xaml.Markup;
-#else
+#elif WPF
 using System.Windows;
 using System.Windows.Markup;
+#else
+#error Unknown framework
 #endif
 
-#if WINUI
+#if false
+#elif WINUI
 namespace HelixToolkit.WinUI.SharpDX;
-#else
+#elif WPF
 namespace HelixToolkit.Wpf.SharpDX;
+#else
+#error Unknown framework
 #endif
 
-#if WINUI
+#if false
+#elif WINUI
 [ContentProperty(Name = "Content")]
-#else
+#elif WPF
 [ContentProperty("Content")]
+#else
+#error Unknown framework
 #endif
 public class Element3DPresenter : Element3D
 {
@@ -76,9 +85,13 @@ public class Element3DPresenter : Element3D
     {
         if (Content != null)
         {
-#if WPF
+#if false
+#elif WINUI
+#elif WPF
             RemoveLogicalChild(Content);
             AddLogicalChild(Content);
+#else
+#error Unknown framework
 #endif
         }
     }

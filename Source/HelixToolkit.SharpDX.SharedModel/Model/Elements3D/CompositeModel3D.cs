@@ -1,26 +1,35 @@
 ﻿using HelixToolkit.SharpDX;
 using HelixToolkit.SharpDX.Model.Scene;
 using System.Collections.Specialized;
-#if WINUI
+#if false
+#elif WINUI
 using Microsoft.UI.Xaml.Markup;
-#else
+#elif WPF
 using System.Windows;
 using System.Windows.Markup;
+#else
+#error Unknown framework
 #endif
 
-#if WINUI
+#if false
+#elif WINUI
 namespace HelixToolkit.WinUI.SharpDX;
-#else
+#elif WPF
 namespace HelixToolkit.Wpf.SharpDX;
+#else
+#error Unknown framework
 #endif
 
 /// <summary>
 ///     Represents a composite Model3D.
 /// </summary>
-#if WINUI
+#if false
+#elif WINUI
 [ContentProperty(Name = "Children")]
-#else
+#elif WPF
 [ContentProperty("Children")]
+#else
+#error Unknown framework
 #endif
 public class CompositeModel3D : Element3D, IHitable, ISelectable, IMouse3D
 {

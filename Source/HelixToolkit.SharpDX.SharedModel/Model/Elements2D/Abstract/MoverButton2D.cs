@@ -1,14 +1,20 @@
-﻿#if WINUI
+﻿#if false
+#elif WINUI
 using Microsoft.UI.Xaml.Media;
-#else
+#elif WPF
 using System.Windows;
 using System.Windows.Media;
+#else
+#error Unknown framework
 #endif
 
-#if WINUI
+#if false
+#elif WINUI
 namespace HelixToolkit.WinUI.SharpDX.Elements2D;
-#else
+#elif WPF
 namespace HelixToolkit.Wpf.SharpDX.Elements2D;
+#else
+#error Unknown framework
 #endif
 
 /// <summary>
@@ -19,9 +25,13 @@ public sealed class MoverButton2D : Button2D
 {
     static MoverButton2D()
     {
-#if WPF
+#if false
+#elif WINUI
+#elif WPF
         DefaultStyleKeyProperty.OverrideMetadata(
             typeof(MoverButton2D), new FrameworkPropertyMetadata(typeof(MoverButton2D)));
+#else
+#error Unknown framework
 #endif
     }
 
@@ -34,7 +44,8 @@ public sealed class MoverButton2D : Button2D
 
     private void SetDefaultStyle()
     {
-#if WINUI
+#if false
+#elif WINUI
         var backgroupUIColor = UIColors.Transparent;
         this.Background = new SolidColorBrush(backgroupUIColor);
 
@@ -44,18 +55,26 @@ public sealed class MoverButton2D : Button2D
         this.BorderThickness = new UIThickness(2, 2, 2, 2);
         this.BorderBrush = new SolidColorBrush(UIColor.FromArgb(255, 255, 125, 0));
         this.Margin = new Thickness(8, 8, 8, 8);
+#elif WPF
+#else
+#error Unknown framework
 #endif
     }
 
-#if WINUI
+#if false
+#elif WINUI
     private Brush? _previousBackgroundBrush;
+#elif WPF
+#else
+#error Unknown framework
 #endif
 
     protected override void OnMouseOverChanged(bool newValue, bool oldValue)
     {
         base.OnMouseOverChanged(newValue, oldValue);
 
-#if WINUI
+#if false
+#elif WINUI
         if (newValue)
         {
             this._previousBackgroundBrush = this.Background;
@@ -70,6 +89,9 @@ public sealed class MoverButton2D : Button2D
                 this.Background = this._previousBackgroundBrush;
             }
         }
+#elif WPF
+#else
+#error Unknown framework
 #endif
     }
 }

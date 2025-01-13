@@ -6,7 +6,8 @@ global using Matrix3x2 = System.Numerics.Matrix3x2;
 global using Plane = System.Numerics.Plane;
 global using Quaternion = System.Numerics.Quaternion;
 global using HelixToolkit.Maths;
-#if WINUI
+#if false
+#elif WINUI
 global using Microsoft.UI.Text;
 global using Microsoft.UI.Xaml;
 global using Microsoft.UI.Xaml.Controls;
@@ -35,7 +36,7 @@ global using Freezable = Microsoft.UI.Xaml.DependencyObject;
 global using UIInputEventArgs = Microsoft.UI.Xaml.Input.PointerRoutedEventArgs;
 global using InputEventArgs = Microsoft.UI.Xaml.Input.PointerRoutedEventArgs;
 global using IRenderCanvas = HelixToolkit.WinUI.SharpDX.HelixToolkitRenderPanel;
-#else
+#elif WPF
 //global using System.Windows;
 //global using System.Windows.Controls;
 global using DependencyProperty = System.Windows.DependencyProperty;
@@ -65,4 +66,6 @@ global using FrameworkControl = System.Windows.FrameworkContentElement;
 global using Animatable = System.Windows.Media.Animation.Animatable;
 global using Freezable = System.Windows.Freezable;
 global using UIInputEventArgs = System.Windows.Input.InputEventArgs;
+#else
+#error Unknown framework
 #endif

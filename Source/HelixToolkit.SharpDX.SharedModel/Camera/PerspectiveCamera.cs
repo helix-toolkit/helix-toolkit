@@ -1,9 +1,12 @@
 ﻿using HelixToolkit.SharpDX.Cameras;
 
-#if WINUI
+#if false
+#elif WINUI
 namespace HelixToolkit.WinUI.SharpDX;
-#else
+#elif WPF
 namespace HelixToolkit.Wpf.SharpDX;
+#else
+#error Unknown framework
 #endif
 
 /// <summary>
@@ -61,10 +64,14 @@ public class PerspectiveCamera : ProjectionCamera, IPerspectiveCameraModel
         camera.NearPlaneDistance = (float)this.NearPlaneDistance;
     }
 
-#if WPF
+#if false
+#elif WINUI
+#elif WPF
     protected override Freezable CreateInstanceCore()
     {
         return new PerspectiveCamera();
     }
+#else
+#error Unknown framework
 #endif
 }

@@ -1,15 +1,21 @@
 ﻿using HelixToolkit.SharpDX.Model.Scene2D;
 using System.Diagnostics;
 using System.Windows.Input;
-#if WINUI
-#else
+#if false
+#elif WINUI
+#elif WPF
 using System.Windows;
+#else
+#error Unknown framework
 #endif
 
-#if WINUI
+#if false
+#elif WINUI
 namespace HelixToolkit.WinUI.SharpDX.Elements2D;
-#else
+#elif WPF
 namespace HelixToolkit.Wpf.SharpDX.Elements2D;
+#else
+#error Unknown framework
 #endif
 
 public abstract class Clickable2D : Border2D
@@ -33,27 +39,39 @@ public abstract class Clickable2D : Border2D
     #endregion
 
     #region Events
-#if WPF
+#if false
+#elif WINUI
+#elif WPF
     public static readonly RoutedEvent Clicked2DEvent =
         EventManager.RegisterRoutedEvent("Clicked2D", RoutingStrategy.Bubble, typeof(Mouse2DRoutedEventHandler), typeof(Clickable2D));
 
     public static readonly RoutedEvent DoubleClicked2DEvent =
         EventManager.RegisterRoutedEvent("DoubleClicked2D", RoutingStrategy.Bubble, typeof(Mouse2DRoutedEventHandler), typeof(Clickable2D));
 
+#else
+#error Unknown framework
 #endif
 
     public event Mouse2DRoutedEventHandler Clicked2D
     {
         add
         {
-#if WPF
+#if false
+#elif WINUI
+#elif WPF
             AddHandler(Clicked2DEvent, value);
+#else
+#error Unknown framework
 #endif
         }
         remove
         {
-#if WPF
+#if false
+#elif WINUI
+#elif WPF
             RemoveHandler(Clicked2DEvent, value);
+#else
+#error Unknown framework
 #endif
         }
     }
@@ -62,21 +80,33 @@ public abstract class Clickable2D : Border2D
     {
         add
         {
-#if WPF
+#if false
+#elif WINUI
+#elif WPF
             AddHandler(DoubleClicked2DEvent, value);
+#else
+#error Unknown framework
 #endif
         }
         remove
         {
-#if WPF
+#if false
+#elif WINUI
+#elif WPF
             RemoveHandler(DoubleClicked2DEvent, value);
+#else
+#error Unknown framework
 #endif
         }
     }
     #endregion
 
-#if WPF
+#if false
+#elif WINUI
+#elif WPF
     private long lastClickedTime = 0;
+#else
+#error Unknown framework
 #endif
 
     public Clickable2D()
@@ -103,7 +133,9 @@ public abstract class Clickable2D : Border2D
 
     private void Clickable2D_MouseDown2D(object? sender, Mouse2DEventArgs e)
     {
-#if WPF
+#if false
+#elif WINUI
+#elif WPF
         if (e.InputArgs is TouchEventArgs || (e.InputArgs is MouseEventArgs m && m.LeftButton == MouseButtonState.Pressed))
         {
             long time = e.InputArgs.Timestamp;
@@ -124,6 +156,8 @@ public abstract class Clickable2D : Border2D
             }
             lastClickedTime = time;
         }
+#else
+#error Unknown framework
 #endif
     }
 }

@@ -1,10 +1,13 @@
 ﻿using HelixToolkit.SharpDX;
 using HelixToolkit.SharpDX.Model.Scene2D;
 
-#if WINUI
+#if false
+#elif WINUI
 namespace HelixToolkit.WinUI.SharpDX.Elements2D;
-#else
+#elif WPF
 namespace HelixToolkit.Wpf.SharpDX.Elements2D;
+#else
+#error Unknown framework
 #endif
 
 /// <summary>
@@ -62,10 +65,13 @@ public class ScreenSpacePositionMover : ScreenSpacePositionMoverBase
 
         foreach (var b in buttons)
         {
-#if WINUI
+#if false
+#elif WINUI
             b.Visibility = UIVisibility.Collapsed;
-#else
+#elif WPF
             b.Visibility = UIVisibility.Hidden;
+#else
+#error Unknown framework
 #endif
             Children.Add(b);
         }
@@ -119,10 +125,13 @@ public class ScreenSpacePositionMover : ScreenSpacePositionMoverBase
                 {
                     foreach (Button2D b in Buttons)
                     {
-#if WINUI
+#if false
+#elif WINUI
                         b.Visibility = UIVisibility.Collapsed;
-#else
+#elif WPF
                         b.Visibility = UIVisibility.Hidden;
+#else
+#error Unknown framework
 #endif
                     }
                 }

@@ -5,15 +5,21 @@ using SharpDX;
 using SharpDX.Direct3D11;
 using System.ComponentModel;
 
-#if WINUI
-#else
+#if false
+#elif WINUI
+#elif WPF
 using HelixToolkit.Wpf.SharpDX.Utilities;
+#else
+#error Unknown framework
 #endif
 
-#if WINUI
+#if false
+#elif WINUI
 namespace HelixToolkit.WinUI.SharpDX;
-#else
+#elif WPF
 namespace HelixToolkit.Wpf.SharpDX;
+#else
+#error Unknown framework
 #endif
 
 public class DiffuseMaterial : Material
@@ -35,8 +41,12 @@ public class DiffuseMaterial : Material
     /// Gets or sets the diffuse color for the material.
     /// For details see: http://msdn.microsoft.com/en-us/library/windows/desktop/bb147175(v=vs.85).aspx
     /// </summary>
-#if WPF
+#if false
+#elif WINUI
+#elif WPF
     [TypeConverter(typeof(Color4Converter))]
+#else
+#error Unknown framework
 #endif
     public Color4 DiffuseColor
     {
@@ -270,10 +280,14 @@ public class DiffuseMaterial : Material
         };
     }
 
-#if WPF
+#if false
+#elif WINUI
+#elif WPF
     protected override Freezable CreateInstanceCore()
     {
         return CloneMaterial();
     }
+#else
+#error Unknown framework
 #endif
 }

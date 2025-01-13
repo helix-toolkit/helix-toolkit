@@ -1,19 +1,25 @@
 ﻿using HelixToolkit.SharpDX;
-#if WINUI
+#if false
+#elif WINUI
 using HelixToolkit.WinUI.SharpDX.Core2D;
 using HelixToolkit.WinUI.SharpDX.Extensions;
 using Media = Microsoft.UI.Xaml.Media;
-#else
+#elif WPF
 using HelixToolkit.Wpf.SharpDX.Core2D;
 using HelixToolkit.Wpf.SharpDX.Extensions;
 using System.Windows;
 using Media = System.Windows.Media;
+#else
+#error Unknown framework
 #endif
 
-#if WINUI
+#if false
+#elif WINUI
 namespace HelixToolkit.WinUI.SharpDX.Elements2D;
-#else
+#elif WPF
 namespace HelixToolkit.Wpf.SharpDX.Elements2D;
+#else
+#error Unknown framework
 #endif
 
 public abstract class Element2D : Element2DCore, ITransformable2D, IHitable2D
@@ -22,8 +28,12 @@ public abstract class Element2D : Element2DCore, ITransformable2D, IHitable2D
     /// <summary>
     /// 
     /// </summary>
-#if WINUI
+#if false
+#elif WINUI
     new
+#elif WPF
+#else
+#error Unknown framework
 #endif
     public static readonly DependencyProperty VisibilityProperty =
         DependencyProperty.Register("Visibility", typeof(Visibility), typeof(Element2D), new PropertyMetadata(Visibility.Visible,
@@ -38,8 +48,12 @@ public abstract class Element2D : Element2DCore, ITransformable2D, IHitable2D
     /// <summary>
     /// 
     /// </summary>
-#if WINUI
+#if false
+#elif WINUI
     new
+#elif WPF
+#else
+#error Unknown framework
 #endif
     public Visibility Visibility
     {
@@ -53,8 +67,12 @@ public abstract class Element2D : Element2DCore, ITransformable2D, IHitable2D
         }
     }
 
-#if WINUI
+#if false
+#elif WINUI
     new
+#elif WPF
+#else
+#error Unknown framework
 #endif
     public static readonly DependencyProperty IsHitTestVisibleProperty =
         DependencyProperty.Register("IsHitTestVisible", typeof(bool), typeof(Element2D), new PropertyMetadata(true,
@@ -66,8 +84,12 @@ public abstract class Element2D : Element2DCore, ITransformable2D, IHitable2D
                 }
             }));
 
-#if WINUI
+#if false
+#elif WINUI
     new
+#elif WPF
+#else
+#error Unknown framework
 #endif
     public bool IsHitTestVisible
     {
@@ -84,8 +106,12 @@ public abstract class Element2D : Element2DCore, ITransformable2D, IHitable2D
     /// <summary>
     /// The is mouse over2 d property
     /// </summary>
-#if WPF
+#if false
+#elif WINUI
+#elif WPF
     new
+#else
+#error Unknown framework
 #endif
     public static readonly DependencyProperty IsMouseOverProperty =
         DependencyProperty.Register("IsMouseOver", typeof(bool), typeof(Element2D),
@@ -105,8 +131,12 @@ public abstract class Element2D : Element2DCore, ITransformable2D, IHitable2D
     /// <value>
     ///   <c>true</c> if this instance is mouse over2 d; otherwise, <c>false</c>.
     /// </value>
-#if WPF
+#if false
+#elif WINUI
+#elif WPF
     new
+#else
+#error Unknown framework
 #endif
     public bool IsMouseOver
     {
@@ -120,8 +150,12 @@ public abstract class Element2D : Element2DCore, ITransformable2D, IHitable2D
         }
     }
 
-#if WINUI
+#if false
+#elif WINUI
     new
+#elif WPF
+#else
+#error Unknown framework
 #endif
     public static readonly DependencyProperty WidthProperty = DependencyProperty.Register("Width", typeof(double), typeof(Element2D),
         new PropertyMetadata(double.PositiveInfinity,
@@ -133,8 +167,12 @@ public abstract class Element2D : Element2DCore, ITransformable2D, IHitable2D
                 }
             }));
 
-#if WINUI
+#if false
+#elif WINUI
     new
+#elif WPF
+#else
+#error Unknown framework
 #endif
     public double Width
     {
@@ -148,8 +186,12 @@ public abstract class Element2D : Element2DCore, ITransformable2D, IHitable2D
         }
     }
 
-#if WINUI
+#if false
+#elif WINUI
     new
+#elif WPF
+#else
+#error Unknown framework
 #endif
     public static readonly DependencyProperty HeightProperty = DependencyProperty.Register("Height", typeof(double), typeof(Element2D),
         new PropertyMetadata(double.PositiveInfinity,
@@ -161,8 +203,12 @@ public abstract class Element2D : Element2DCore, ITransformable2D, IHitable2D
                 }
             }));
 
-#if WINUI
+#if false
+#elif WINUI
     new
+#elif WPF
+#else
+#error Unknown framework
 #endif
     public double Height
     {
@@ -264,8 +310,12 @@ public abstract class Element2D : Element2DCore, ITransformable2D, IHitable2D
         }
     }
 
-#if WINUI
+#if false
+#elif WINUI
     new
+#elif WPF
+#else
+#error Unknown framework
 #endif
     public HorizontalAlignment HorizontalAlignment
     {
@@ -279,8 +329,12 @@ public abstract class Element2D : Element2DCore, ITransformable2D, IHitable2D
         }
     }
 
-#if WINUI
+#if false
+#elif WINUI
     new
+#elif WPF
+#else
+#error Unknown framework
 #endif
     public static readonly DependencyProperty HorizontalAlignmentProperty =
         DependencyProperty.Register("HorizontalAlignment", typeof(HorizontalAlignment), typeof(Element2D),
@@ -293,8 +347,12 @@ public abstract class Element2D : Element2DCore, ITransformable2D, IHitable2D
                     }
                 }));
 
-#if WINUI
+#if false
+#elif WINUI
     new
+#elif WPF
+#else
+#error Unknown framework
 #endif
     public VerticalAlignment VerticalAlignment
     {
@@ -308,8 +366,12 @@ public abstract class Element2D : Element2DCore, ITransformable2D, IHitable2D
         }
     }
 
-#if WINUI
+#if false
+#elif WINUI
     new
+#elif WPF
+#else
+#error Unknown framework
 #endif
     public static readonly DependencyProperty VerticalAlignmentProperty =
         DependencyProperty.Register("VerticalAlignment", typeof(VerticalAlignment), typeof(Element2D),
@@ -322,8 +384,12 @@ public abstract class Element2D : Element2DCore, ITransformable2D, IHitable2D
                     }
                 }));
 
-#if WINUI
+#if false
+#elif WINUI
     new
+#elif WPF
+#else
+#error Unknown framework
 #endif
     public Thickness Margin
     {
@@ -337,8 +403,12 @@ public abstract class Element2D : Element2DCore, ITransformable2D, IHitable2D
         }
     }
 
-#if WINUI
+#if false
+#elif WINUI
     new
+#elif WPF
+#else
+#error Unknown framework
 #endif
     public static readonly DependencyProperty MarginProperty =
         DependencyProperty.Register("Margin", typeof(Thickness), typeof(Element2D), new PropertyMetadata(new Thickness(),
@@ -350,7 +420,8 @@ public abstract class Element2D : Element2DCore, ITransformable2D, IHitable2D
                 }
             }));
 
-#if WINUI
+#if false
+#elif WINUI
     public static readonly DependencyProperty TransformProperty =
         DependencyProperty.Register("Transform", typeof(Media.Transform), typeof(Element2D), new PropertyMetadata(new Media.MatrixTransform { Matrix = Media.Matrix.Identity }, (d, e) =>
         {
@@ -359,7 +430,7 @@ public abstract class Element2D : Element2DCore, ITransformable2D, IHitable2D
                 core.SceneNode.ModelMatrix = e.NewValue == null ? Matrix3x2.Identity : ((Media.MatrixTransform)e.NewValue).Matrix.ToMatrix3x2();
             }
         }));
-#else
+#elif WPF
     public static readonly DependencyProperty TransformProperty =
         DependencyProperty.Register("Transform", typeof(Media.Transform), typeof(Element2D), new PropertyMetadata(Media.Transform.Identity, (d, e) =>
         {
@@ -368,6 +439,8 @@ public abstract class Element2D : Element2DCore, ITransformable2D, IHitable2D
                 core.SceneNode.ModelMatrix = e.NewValue == null ? Matrix3x2.Identity : ((Media.Transform)e.NewValue).Value.ToMatrix3x2();
             }
         }));
+#else
+#error Unknown framework
 #endif
 
     /// <summary>
@@ -386,8 +459,12 @@ public abstract class Element2D : Element2DCore, ITransformable2D, IHitable2D
         }
     }
 
-#if WINUI
+#if false
+#elif WINUI
     new
+#elif WPF
+#else
+#error Unknown framework
 #endif
     public Point RenderTransformOrigin
     {
@@ -401,8 +478,12 @@ public abstract class Element2D : Element2DCore, ITransformable2D, IHitable2D
         }
     }
 
-#if WINUI
+#if false
+#elif WINUI
     new
+#elif WPF
+#else
+#error Unknown framework
 #endif
     public static readonly DependencyProperty RenderTransformOriginProperty =
         DependencyProperty.Register("RenderTransformOrigin", typeof(Point), typeof(Element2D), new PropertyMetadata(new Point(0.5, 0.5),
@@ -437,12 +518,13 @@ public abstract class Element2D : Element2DCore, ITransformable2D, IHitable2D
                     }
                 }));
 
-    #endregion
+#endregion
 
     #region Events
     public delegate void Mouse2DRoutedEventHandler(object? sender, Mouse2DEventArgs e);
 
-#if WINUI
+#if false
+#elif WINUI
     public static readonly RoutedEvent MouseDown2DEvent = PointerPressedEvent;
 
     public static readonly RoutedEvent MouseUp2DEvent = PointerReleasedEvent;
@@ -452,7 +534,7 @@ public abstract class Element2D : Element2DCore, ITransformable2D, IHitable2D
     public static readonly RoutedEvent MouseEnter2DEvent = PointerEnteredEvent;
 
     public static readonly RoutedEvent MouseLeave2DEvent = PointerExitedEvent;
-#else
+#elif WPF
     public static readonly RoutedEvent MouseDown2DEvent =
         EventManager.RegisterRoutedEvent("MouseDown2D", RoutingStrategy.Bubble, typeof(Mouse2DRoutedEventHandler), typeof(Element2D));
 
@@ -467,20 +549,30 @@ public abstract class Element2D : Element2DCore, ITransformable2D, IHitable2D
 
     public static readonly RoutedEvent MouseLeave2DEvent =
         EventManager.RegisterRoutedEvent("MouseLeave2D", RoutingStrategy.Bubble, typeof(Mouse2DRoutedEventHandler), typeof(Element2D));
+#else
+#error Unknown framework
 #endif
 
     public event Mouse2DRoutedEventHandler MouseDown2D
     {
         add
         {
-#if WPF
+#if false
+#elif WINUI
+#elif WPF
             AddHandler(MouseDown2DEvent, value);
+#else
+#error Unknown framework
 #endif
         }
         remove
         {
-#if WPF
+#if false
+#elif WINUI
+#elif WPF
             RemoveHandler(MouseDown2DEvent, value);
+#else
+#error Unknown framework
 #endif
         }
     }
@@ -489,14 +581,22 @@ public abstract class Element2D : Element2DCore, ITransformable2D, IHitable2D
     {
         add
         {
-#if WPF
+#if false
+#elif WINUI
+#elif WPF
             AddHandler(MouseUp2DEvent, value);
+#else
+#error Unknown framework
 #endif
         }
         remove
         {
-#if WPF
+#if false
+#elif WINUI
+#elif WPF
             RemoveHandler(MouseUp2DEvent, value);
+#else
+#error Unknown framework
 #endif
         }
     }
@@ -505,14 +605,22 @@ public abstract class Element2D : Element2DCore, ITransformable2D, IHitable2D
     {
         add
         {
-#if WPF
+#if false
+#elif WINUI
+#elif WPF
             AddHandler(MouseMove2DEvent, value);
+#else
+#error Unknown framework
 #endif
         }
         remove
         {
-#if WPF
+#if false
+#elif WINUI
+#elif WPF
             RemoveHandler(MouseMove2DEvent, value);
+#else
+#error Unknown framework
 #endif
         }
     }
@@ -521,14 +629,22 @@ public abstract class Element2D : Element2DCore, ITransformable2D, IHitable2D
     {
         add
         {
-#if WPF
+#if false
+#elif WINUI
+#elif WPF
             AddHandler(MouseEnter2DEvent, value);
+#else
+#error Unknown framework
 #endif
         }
         remove
         {
-#if WPF
+#if false
+#elif WINUI
+#elif WPF
             RemoveHandler(MouseEnter2DEvent, value);
+#else
+#error Unknown framework
 #endif
         }
     }
@@ -537,18 +653,26 @@ public abstract class Element2D : Element2DCore, ITransformable2D, IHitable2D
     {
         add
         {
-#if WPF
+#if false
+#elif WINUI
+#elif WPF
             AddHandler(MouseLeave2DEvent, value);
+#else
+#error Unknown framework
 #endif
         }
         remove
         {
-#if WPF
+#if false
+#elif WINUI
+#elif WPF
             RemoveHandler(MouseLeave2DEvent, value);
+#else
+#error Unknown framework
 #endif
         }
     }
-    #endregion
+#endregion
 
     public Element2D()
     {

@@ -10,15 +10,21 @@ using System.ComponentModel;
 using Device = SharpDX.Direct3D11.Device1;
 using DeviceContext = SharpDX.Direct3D11.DeviceContext1;
 
-#if WINUI
-#else
+#if false
+#elif WINUI
+#elif WPF
 using HelixToolkit.Wpf.SharpDX.Utilities;
+#else
+#error Unknown framework
 #endif
 
-#if WINUI
+#if false
+#elif WINUI
 namespace HelixToolkit.WinUI.SharpDX;
-#else
+#elif WPF
 namespace HelixToolkit.Wpf.SharpDX;
+#else
+#error Unknown framework
 #endif
 
 /// <summary>
@@ -374,8 +380,12 @@ public class ModelContainer3DX : HelixItemsControl, IModelContainer
     /// The color of the clear.
     /// </value>
     /// <exception cref="NotImplementedException"></exception>
-#if WPF
+#if false
+#elif WINUI
+#elif WPF
     [TypeConverter(typeof(Color4Converter))]
+#else
+#error Unknown framework
 #endif
     public Color4 ClearColor
     {

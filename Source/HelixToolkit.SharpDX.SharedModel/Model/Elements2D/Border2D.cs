@@ -1,31 +1,41 @@
 ﻿using HelixToolkit.SharpDX;
 using HelixToolkit.SharpDX.Model.Scene2D;
-#if WINUI
+#if false
+#elif WINUI
 using HelixToolkit.WinUI.SharpDX.Core2D;
 using HelixToolkit.WinUI.SharpDX.Extensions;
 using Microsoft.UI.Xaml.Media;
 using Thickness = Microsoft.UI.Xaml.Thickness;
 using DashStyle = SharpDX.Direct2D1.DashStyle;
 using DashStyles = SharpDX.Direct2D1.DashStyle;
-#else
+#elif WPF
 using HelixToolkit.Wpf.SharpDX.Core2D;
 using HelixToolkit.Wpf.SharpDX.Extensions;
 using System.Windows.Media;
 using Thickness = System.Windows.Thickness;
 using DashStyle = System.Windows.Media.DashStyle;
 using DashStyles = System.Windows.Media.DashStyles;
+#else
+#error Unknown framework
 #endif
 
-#if WINUI
+#if false
+#elif WINUI
 namespace HelixToolkit.WinUI.SharpDX.Elements2D;
-#else
+#elif WPF
 namespace HelixToolkit.Wpf.SharpDX.Elements2D;
+#else
+#error Unknown framework
 #endif
 
 public class Border2D : ContentElement2D
 {
-#if WINUI
+#if false
+#elif WINUI
     new
+#elif WPF
+#else
+#error Unknown framework
 #endif
     public double CornerRadius
     {
@@ -39,8 +49,12 @@ public class Border2D : ContentElement2D
         }
     }
 
-#if WINUI
+#if false
+#elif WINUI
     new
+#elif WPF
+#else
+#error Unknown framework
 #endif
     public static readonly DependencyProperty CornerRadiusProperty =
         DependencyProperty.Register("CornerRadius", typeof(double), typeof(Border2D), new PropertyMetadata(0.0,
@@ -52,8 +66,12 @@ public class Border2D : ContentElement2D
                 }
             }));
 
-#if WINUI
+#if false
+#elif WINUI
     new
+#elif WPF
+#else
+#error Unknown framework
 #endif
     public Thickness Padding
     {
@@ -67,8 +85,12 @@ public class Border2D : ContentElement2D
         }
     }
 
-#if WINUI
+#if false
+#elif WINUI
     new
+#elif WPF
+#else
+#error Unknown framework
 #endif
     public static readonly DependencyProperty PaddingProperty =
         DependencyProperty.Register("Padding", typeof(Thickness), typeof(Border2D), new PropertyMetadata(new Thickness(0, 0, 0, 0),
@@ -81,8 +103,12 @@ public class Border2D : ContentElement2D
             }));
 
     #region Stroke properties
-#if WINUI
+#if false
+#elif WINUI
     new
+#elif WPF
+#else
+#error Unknown framework
 #endif
     public static readonly DependencyProperty BorderBrushProperty
         = DependencyProperty.Register("BorderBrush", typeof(Brush), typeof(Border2D), new PropertyMetadata(new SolidColorBrush(UIColors.Black),
@@ -94,8 +120,12 @@ public class Border2D : ContentElement2D
                 }
             }));
 
-#if WINUI
+#if false
+#elif WINUI
     new
+#elif WPF
+#else
+#error Unknown framework
 #endif
     public Brush BorderBrush
     {
@@ -263,8 +293,12 @@ public class Border2D : ContentElement2D
         }
     }
 
-#if WINUI
+#if false
+#elif WINUI
     new
+#elif WPF
+#else
+#error Unknown framework
 #endif
     public static readonly DependencyProperty BorderThicknessProperty
         = DependencyProperty.Register("BorderThickness", typeof(Thickness), typeof(Border2D),
@@ -276,8 +310,12 @@ public class Border2D : ContentElement2D
                 }
             }));
 
-#if WINUI
+#if false
+#elif WINUI
     new
+#elif WPF
+#else
+#error Unknown framework
 #endif
     public Thickness BorderThickness
     {

@@ -3,10 +3,13 @@ using HelixToolkit.SharpDX.Shaders;
 using SharpDX;
 using SharpDX.Direct3D11;
 
-#if WINUI
+#if false
+#elif WINUI
 namespace HelixToolkit.WinUI.SharpDX;
-#else
+#elif WPF
 namespace HelixToolkit.Wpf.SharpDX;
+#else
+#error Unknown framework
 #endif
 
 public abstract class VolumeTextureMaterialBase : Material, IVolumeTextureMaterial

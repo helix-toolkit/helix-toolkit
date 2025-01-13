@@ -1,29 +1,38 @@
 ﻿using HelixToolkit.SharpDX;
 using HelixToolkit.SharpDX.Model.Scene2D;
-#if WINUI
+#if false
+#elif WINUI
 using HelixToolkit.WinUI.SharpDX.Core2D;
 using HelixToolkit.WinUI.SharpDX.Extensions;
 using Microsoft.UI;
 using Microsoft.UI.Xaml.Markup;
 using Microsoft.UI.Xaml.Media;
-#else
+#elif WPF
 using HelixToolkit.Wpf.SharpDX.Core2D;
 using HelixToolkit.Wpf.SharpDX.Extensions;
 using System.Windows;
 using System.Windows.Markup;
 using System.Windows.Media;
+#else
+#error Unknown framework
 #endif
 
-#if WINUI
+#if false
+#elif WINUI
 namespace HelixToolkit.WinUI.SharpDX.Elements2D;
-#else
+#elif WPF
 namespace HelixToolkit.Wpf.SharpDX.Elements2D;
+#else
+#error Unknown framework
 #endif
 
-#if WINUI
+#if false
+#elif WINUI
 [ContentProperty(Name = "Text")]
-#else
+#elif WPF
 [ContentProperty("Text")]
+#else
+#error Unknown framework
 #endif
 public class TextModel2D : Element2D, ITextBlock
 {
@@ -51,9 +60,12 @@ public class TextModel2D : Element2D, ITextBlock
         }
     }
 
-
-#if WINUI
+#if false
+#elif WINUI
     new
+#elif WPF
+#else
+#error Unknown framework
 #endif
     public static readonly DependencyProperty ForegroundProperty
         = DependencyProperty.Register("Foreground", typeof(Brush), typeof(TextModel2D),
@@ -65,8 +77,12 @@ public class TextModel2D : Element2D, ITextBlock
                 }
             }));
 
-#if WINUI
+#if false
+#elif WINUI
     new
+#elif WPF
+#else
+#error Unknown framework
 #endif
     public Brush Foreground
     {
@@ -80,8 +96,12 @@ public class TextModel2D : Element2D, ITextBlock
         }
     }
 
-#if WINUI
+#if false
+#elif WINUI
     new
+#elif WPF
+#else
+#error Unknown framework
 #endif
     public static readonly DependencyProperty BackgroundProperty
         = DependencyProperty.Register("Background", typeof(Brush), typeof(TextModel2D),
@@ -93,8 +113,12 @@ public class TextModel2D : Element2D, ITextBlock
                 }
             }));
 
-#if WINUI
+#if false
+#elif WINUI
     new
+#elif WPF
+#else
+#error Unknown framework
 #endif
     public Brush Background
     {
@@ -108,8 +132,12 @@ public class TextModel2D : Element2D, ITextBlock
         }
     }
 
-#if WINUI
+#if false
+#elif WINUI
     new
+#elif WPF
+#else
+#error Unknown framework
 #endif
     public static readonly DependencyProperty FontSizeProperty
         = DependencyProperty.Register("FontSize", typeof(int), typeof(TextModel2D),
@@ -121,8 +149,12 @@ public class TextModel2D : Element2D, ITextBlock
                 }
             }));
 
-#if WINUI
+#if false
+#elif WINUI
     new
+#elif WPF
+#else
+#error Unknown framework
 #endif
     public int FontSize
     {
@@ -136,8 +168,12 @@ public class TextModel2D : Element2D, ITextBlock
         }
     }
 
-#if WINUI
+#if false
+#elif WINUI
     new
+#elif WPF
+#else
+#error Unknown framework
 #endif
     public static readonly DependencyProperty FontWeightProperty
         = DependencyProperty.Register("FontWeight", typeof(FontWeight), typeof(TextModel2D),
@@ -149,8 +185,12 @@ public class TextModel2D : Element2D, ITextBlock
                 }
             }));
 
-#if WINUI
+#if false
+#elif WINUI
     new
+#elif WPF
+#else
+#error Unknown framework
 #endif
     public FontWeight FontWeight
     {
@@ -164,8 +204,12 @@ public class TextModel2D : Element2D, ITextBlock
         }
     }
 
-#if WINUI
+#if false
+#elif WINUI
     new
+#elif WPF
+#else
+#error Unknown framework
 #endif
     public static readonly DependencyProperty FontStyleProperty
         = DependencyProperty.Register("FontStyle", typeof(UIFontStyle), typeof(TextModel2D),
@@ -177,8 +221,12 @@ public class TextModel2D : Element2D, ITextBlock
                 }
             }));
 
-#if WINUI
+#if false
+#elif WINUI
     new
+#elif WPF
+#else
+#error Unknown framework
 #endif
     public FontStyle FontStyle
     {
@@ -229,10 +277,13 @@ public class TextModel2D : Element2D, ITextBlock
     /// <value>
     /// The text alignment.
     /// </value>
-#if WINUI
+#if false
+#elif WINUI
     public new FlowDirection FlowDirection
-#else
+#elif WPF
     public FlowDirection FlowDirection
+#else
+#error Unknown framework
 #endif
     {
         get
@@ -248,10 +299,13 @@ public class TextModel2D : Element2D, ITextBlock
     /// <summary>
     /// The text alignment property
     /// </summary>
-#if WINUI
+#if false
+#elif WINUI
     public static readonly new DependencyProperty FlowDirectionProperty =
-#else
+#elif WPF
     public static readonly DependencyProperty FlowDirectionProperty =
+#else
+#error Unknown framework
 #endif
         DependencyProperty.Register("FlowDirection", typeof(FlowDirection), typeof(TextModel2D), new PropertyMetadata(FlowDirection.LeftToRight, (d, e) =>
         {
@@ -268,8 +322,12 @@ public class TextModel2D : Element2D, ITextBlock
     /// <value>
     /// The font family.
     /// </value>
-#if WINUI
+#if false
+#elif WINUI
     new
+#elif WPF
+#else
+#error Unknown framework
 #endif
     public string? FontFamily
     {
@@ -285,8 +343,12 @@ public class TextModel2D : Element2D, ITextBlock
     /// <summary>
     /// The font family property
     /// </summary>
-#if WINUI
+#if false
+#elif WINUI
     new
+#elif WPF
+#else
+#error Unknown framework
 #endif
     public static readonly DependencyProperty FontFamilyProperty =
         DependencyProperty.Register("FontFamily", typeof(string), typeof(TextModel2D), new PropertyMetadata(DefaultFont, (d, e) =>

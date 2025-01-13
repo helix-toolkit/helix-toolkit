@@ -1,15 +1,21 @@
 ﻿using HelixToolkit.SharpDX.Model.Scene2D;
 using System.IO;
-#if WINUI
+#if false
+#elif WINUI
 using HelixToolkit.WinUI.SharpDX.Core2D;
-#else
+#elif WPF
 using HelixToolkit.Wpf.SharpDX.Core2D;
+#else
+#error Unknown framework
 #endif
 
-#if WINUI
+#if false
+#elif WINUI
 namespace HelixToolkit.WinUI.SharpDX.Elements2D;
-#else
+#elif WPF
 namespace HelixToolkit.Wpf.SharpDX.Elements2D;
+#else
+#error Unknown framework
 #endif
 
 /// <summary>
@@ -56,10 +62,13 @@ public class ImageModel2D : Element2D
     /// <value>
     /// The opacity.
     /// </value>
-#if WINUI
+#if false
+#elif WINUI
     public new double Opacity
-#else
+#elif WPF
     public double Opacity
+#else
+#error Unknown framework
 #endif
     {
         get
@@ -75,10 +84,13 @@ public class ImageModel2D : Element2D
     /// <summary>
     /// The opacity property
     /// </summary>
-#if WINUI
+#if false
+#elif WINUI
     public static readonly new DependencyProperty OpacityProperty =
-#else
+#elif WPF
     public static readonly DependencyProperty OpacityProperty =
+#else
+#error Unknown framework
 #endif
     DependencyProperty.Register("Opacity", typeof(double), typeof(ImageModel2D), new PropertyMetadata(1.0, (d, e) =>
         {

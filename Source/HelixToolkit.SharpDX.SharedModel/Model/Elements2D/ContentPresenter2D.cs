@@ -1,23 +1,32 @@
 ﻿using HelixToolkit.SharpDX.Model.Scene2D;
 using System.ComponentModel;
-#if WINUI
+#if false
+#elif WINUI
 using HelixToolkit.WinUI.SharpDX.Core2D;
 using Microsoft.UI.Xaml.Markup;
-#else
+#elif WPF
 using HelixToolkit.Wpf.SharpDX.Core2D;
 using System.Windows.Markup;
+#else
+#error Unknown framework
 #endif
 
-#if WINUI
+#if false
+#elif WINUI
 namespace HelixToolkit.WinUI.SharpDX.Elements2D;
-#else
+#elif WPF
 namespace HelixToolkit.Wpf.SharpDX.Elements2D;
+#else
+#error Unknown framework
 #endif
 
-#if WINUI
+#if false
+#elif WINUI
 [ContentProperty(Name = "Content")]
-#else
+#elif WPF
 [ContentProperty("Content")]
+#else
+#error Unknown framework
 #endif
 public class ContentPresenter2D : Element2D
 {

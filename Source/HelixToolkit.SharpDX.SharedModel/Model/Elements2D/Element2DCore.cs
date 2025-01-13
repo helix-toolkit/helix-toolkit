@@ -2,10 +2,13 @@
 using HelixToolkit.SharpDX.Model.Scene2D;
 using SharpDX;
 
-#if WINUI
+#if false
+#elif WINUI
 namespace HelixToolkit.WinUI.SharpDX.Core2D;
-#else
+#elif WPF
 namespace HelixToolkit.Wpf.SharpDX.Core2D;
+#else
+#error Unknown framework
 #endif
 
 /// <summary>
@@ -84,7 +87,8 @@ public abstract partial class Element2DCore : FrameworkControl, IDisposable
 
     private void SceneNode_OnDetached(object? sender, EventArgs e)
     {
-#if WINUI
+#if false
+#elif WINUI
         if (Dispatcher != null)
         {
             if (Dispatcher.HasThreadAccess)
@@ -93,7 +97,7 @@ public abstract partial class Element2DCore : FrameworkControl, IDisposable
             }
         }
 
-#else
+#elif WPF
         if (this.Dispatcher != null && this.Dispatcher.Thread.IsAlive)
         {
             if (this.Dispatcher.CheckAccess())
@@ -105,6 +109,8 @@ public abstract partial class Element2DCore : FrameworkControl, IDisposable
                 Dispatcher.Invoke(() => { OnDetached(); });
             }
         }
+#else
+#error Unknown framework
 #endif
     }
 
@@ -156,16 +162,24 @@ public abstract partial class Element2DCore : FrameworkControl, IDisposable
         SceneNode.InvalidateRender();
     }
 
-#if WINUI
+#if false
+#elif WINUI
     new
+#elif WPF
+#else
+#error Unknown framework
 #endif
     public void InvalidateMeasure()
     {
         SceneNode.InvalidateMeasure();
     }
 
-#if WINUI
+#if false
+#elif WINUI
     new
+#elif WPF
+#else
+#error Unknown framework
 #endif
     public void InvalidateArrange()
     {

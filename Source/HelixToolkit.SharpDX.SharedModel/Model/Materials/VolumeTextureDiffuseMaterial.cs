@@ -1,9 +1,12 @@
 ﻿using HelixToolkit.SharpDX.Model;
 
-#if WINUI
+#if false
+#elif WINUI
 namespace HelixToolkit.WinUI.SharpDX;
-#else
+#elif WPF
 namespace HelixToolkit.Wpf.SharpDX;
+#else
+#error Unknown framework
 #endif
 
 /// <summary>
@@ -69,7 +72,9 @@ public sealed class VolumeTextureDiffuseMaterial : VolumeTextureMaterialBase
         };
     }
 
-#if WPF
+#if false
+#elif WINUI
+#elif WPF
     protected override Freezable CreateInstanceCore()
     {
         return new VolumeTextureDiffuseMaterial()
@@ -86,5 +91,7 @@ public sealed class VolumeTextureDiffuseMaterial : VolumeTextureMaterialBase
             EnablePlaneAlignment = EnablePlaneAlignment,
         };
     }
+#else
+#error Unknown framework
 #endif
 }

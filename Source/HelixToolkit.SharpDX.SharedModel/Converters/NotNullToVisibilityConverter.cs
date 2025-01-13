@@ -1,22 +1,32 @@
-﻿#if WINUI
+﻿#if false
+#elif WINUI
 using Microsoft.UI.Xaml.Data;
-#else
+#elif WPF
 using System.Globalization;
 using System.Windows;
 using System.Windows.Data;
+#else
+#error Unknown framework
 #endif
 
-#if WINUI
+#if false
+#elif WINUI
 namespace HelixToolkit.WinUI.SharpDX;
-#else
+#elif WPF
 namespace HelixToolkit.Wpf.SharpDX;
+#else
+#error Unknown framework
 #endif
 
 /// <summary>
 /// A not-null reference to Visibility value converter.
 /// </summary>
-#if WPF
+#if false
+#elif WINUI
+#elif WPF
 [ValueConversion(typeof(object), typeof(Visibility))]
+#else
+#error Unknown framework
 #endif
 public sealed class NotNullToVisibilityConverter : IValueConverter
 {
@@ -33,10 +43,13 @@ public sealed class NotNullToVisibilityConverter : IValueConverter
     /// </summary>
     public bool Inverted { get; set; }
 
-#if WINUI
+#if false
+#elif WINUI
     public object? Convert(object? value, Type targetType, object? parameter, string language)
-#else
+#elif WPF
     public object? Convert(object? value, Type targetType, object parameter, CultureInfo culture)
+#else
+#error Unknown framework
 #endif
     {
         if (targetType == typeof(Visibility))
@@ -53,10 +66,13 @@ public sealed class NotNullToVisibilityConverter : IValueConverter
         return null;
     }
 
-#if WINUI
+#if false
+#elif WINUI
     public object? ConvertBack(object? value, Type targetType, object? parameter, string language)
-#else
+#elif WPF
     public object ConvertBack(object? value, Type targetType, object parameter, CultureInfo culture)
+#else
+#error Unknown framework
 #endif
     {
         throw new NotImplementedException();

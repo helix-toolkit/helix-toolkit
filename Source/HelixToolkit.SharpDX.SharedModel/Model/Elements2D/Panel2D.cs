@@ -2,30 +2,43 @@
 using System.Collections;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
-#if WINUI
+#if false
+#elif WINUI
 using Microsoft.UI;
 using Microsoft.UI.Xaml.Markup;
 using Microsoft.UI.Xaml.Media;
-#else
+#elif WPF
 using System.Windows.Markup;
 using System.Windows.Media;
+#else
+#error Unknown framework
 #endif
 
-#if WINUI
+#if false
+#elif WINUI
 namespace HelixToolkit.WinUI.SharpDX.Elements2D;
-#else
+#elif WPF
 namespace HelixToolkit.Wpf.SharpDX.Elements2D;
+#else
+#error Unknown framework
 #endif
 
-#if WINUI
+#if false
+#elif WINUI
 [ContentProperty(Name = "Children")]
-#else
+#elif WPF
 [ContentProperty("Children")]
+#else
+#error Unknown framework
 #endif
 public class Panel2D : Element2D
 {
-#if WINUI
+#if false
+#elif WINUI
     new
+#elif WPF
+#else
+#error Unknown framework
 #endif
     public Brush Background
     {
@@ -39,8 +52,12 @@ public class Panel2D : Element2D
         }
     }
 
-#if WINUI
+#if false
+#elif WINUI
     new
+#elif WPF
+#else
+#error Unknown framework
 #endif
     public static readonly DependencyProperty BackgroundProperty =
         DependencyProperty.Register("Background", typeof(Brush), typeof(Panel2D), new PropertyMetadata(new SolidColorBrush(Colors.Transparent)));
