@@ -346,10 +346,8 @@ namespace HelixToolkit.UWP
             if (AdapterIndex == -1)
             {
                 var adapterIndex = -1;
-                using (var adapter = GetBestAdapter(out adapterIndex))
-                {
-                    Initialize(adapterIndex);
-                }
+                GetBestAdapter(out adapterIndex);
+                Initialize(adapterIndex);
             }
             else
             {
@@ -409,6 +407,8 @@ namespace HelixToolkit.UWP
 #else
             device = new global::SharpDX.Direct3D11.Device(DriverType.Hardware, DeviceCreationFlags.BgraSupport, FeatureLevel.Level_10_1);
 #endif
+            RemoveAndDispose(ref adapter);
+
             logger.LogInformation("Direct3D device initilized. DriverType: {0}; FeatureLevel: {1}", DriverType, device.FeatureLevel);
 
             #region Initial Internal Pools
@@ -539,72 +539,90 @@ namespace HelixToolkit.UWP
         /// 
         /// </summary>
         /// <returns></returns>
-        private Adapter GetBestAdapter(out int bestAdapterIndex)
+        private void GetBestAdapter(out int bestAdapterIndex)
         {
-            using (var f = new Factory1())
+            using var f = new Factory1();
+            bestAdapterIndex = -1;
+            ulong bestVideoMemory = 0;
+            ulong bestSystemMemory = 0;
+            Adapter[] adapters = f.Adapters;
+            logger.LogInformation("Trying to get best adapter. Number of adapters: {0}", adapters.Length);
+            ulong MByte = 1024 * 1024;
+            for (int adapterIndex = 0; adapterIndex < adapters.Length; adapterIndex++)
             {
-                Adapter bestAdapter = null;
-                bestAdapterIndex = -1;
-                var adapterIndex = -1;
-                ulong bestVideoMemory = 0;
-                ulong bestSystemMemory = 0;
-                logger.LogInformation("Trying to get best adapter. Number of adapters: {0}", f.Adapters.Length);
-                ulong MByte = 1024 * 1024;
-                foreach (var item in f.Adapters)
-                {
-                    adapterIndex++;
-                    logger.LogInformation($"Adapter {adapterIndex}: Description: {item.Description.Description}; " +
-                        $"VendorId: {item.Description.VendorId}; " +
-                        $"Video Mem: {item.Description.DedicatedVideoMemory.ToUInt64() / MByte} MB; " +
-                        $"System Mem: {item.Description.DedicatedSystemMemory.ToUInt64() / MByte} MB; " +
-                        $"Shared Mem: {item.Description.SharedSystemMemory.ToUInt64() / MByte} MB; " +
-                        $"Num Outputs: {item.Outputs.Length}");
-                    // not skip the render only WARP device
-                    if (item.Description.VendorId != 0x1414 || item.Description.DeviceId != 0x8c)
-                    {
-                        // Windows 10 fix
-                        if (item.Outputs == null || item.Outputs.Length == 0)
-                        {
-                            continue;
-                        }
-                    }
+                Adapter item = adapters[adapterIndex];
 
-                    var level = global::SharpDX.Direct3D11.Device.GetSupportedFeatureLevel(item);
-                    logger.LogInformation("Feature Level: {0}", level);
-                    if (level < MinimumFeatureLevel)
+                Output[] outputs = item.Outputs;
+                int outputsLength = outputs.Length;
+                for (int i = 0; i < outputs.Length; i++)
+                {
+                    outputs[i]?.Dispose();
+                }
+
+                logger.LogInformation($"Adapter {adapterIndex}: Description: {item.Description.Description}; " +
+                    $"VendorId: {item.Description.VendorId}; " +
+                    $"Video Mem: {item.Description.DedicatedVideoMemory.ToUInt64() / MByte} MB; " +
+                    $"System Mem: {item.Description.DedicatedSystemMemory.ToUInt64() / MByte} MB; " +
+                    $"Shared Mem: {item.Description.SharedSystemMemory.ToUInt64() / MByte} MB; " +
+                    $"Num Outputs: {outputsLength}");
+                // not skip the render only WARP device
+                if (item.Description.VendorId != 0x1414 || item.Description.DeviceId != 0x8c)
+                {
+                    // Windows 10 fix
+                    if (outputsLength == 0)
                     {
                         continue;
                     }
-
-                    var videoMemory = item.Description.DedicatedVideoMemory.ToUInt64();
-                    var systemMemory = item.Description.DedicatedSystemMemory.ToUInt64();
-
-                    if ((bestAdapter == null) || (videoMemory > bestVideoMemory) || ((videoMemory == bestVideoMemory) && (systemMemory > bestSystemMemory)))
-                    {
-                        bestAdapter = item;
-                        bestAdapterIndex = adapterIndex;
-                        bestVideoMemory = videoMemory;
-                        bestSystemMemory = systemMemory;
-                    }
                 }
-                logger.LogInformation("Best Adapter: {0}", bestAdapterIndex);
-                return bestAdapter;
+
+                var level = global::SharpDX.Direct3D11.Device.GetSupportedFeatureLevel(item);
+                logger.LogInformation("Feature Level: {0}", level);
+                if (level < MinimumFeatureLevel)
+                {
+                    continue;
+                }
+
+                var videoMemory = item.Description.DedicatedVideoMemory.ToUInt64();
+                var systemMemory = item.Description.DedicatedSystemMemory.ToUInt64();
+
+                if ((bestAdapterIndex == -1) || (videoMemory > bestVideoMemory) || ((videoMemory == bestVideoMemory) && (systemMemory > bestSystemMemory)))
+                {
+                    bestAdapterIndex = adapterIndex;
+                    bestVideoMemory = videoMemory;
+                    bestSystemMemory = systemMemory;
+                }
             }
+
+            for (int adapterIndex = 0; adapterIndex < adapters.Length; adapterIndex++)
+            {
+                adapters[adapterIndex]?.Dispose();
+            }
+
+            logger.LogInformation("Best Adapter: {0}", bestAdapterIndex);
         }
 
         private Adapter GetAdapter(ref int index)
         {
-            using (var f = new Factory1())
+            using var f = new Factory1();
+            Adapter[] adapters = f.Adapters;
+            if (adapters.Length <= index || index < 0)
             {
-                if (f.Adapters.Length <= index || index < 0)
-                {
-                    return GetBestAdapter(out index);
-                }
-                else
-                {
-                    return f.Adapters[index];
-                }
+                GetBestAdapter(out index);
             }
+
+            Adapter adapter = index == -1 ? null : adapters[index];
+
+            for (int adapterIndex = 0; adapterIndex < adapters.Length; adapterIndex++)
+            {
+                if (adapterIndex == index)
+                {
+                    continue;
+                }
+
+                adapters[adapterIndex]?.Dispose();
+            }
+
+            return adapter;
         }
         /// <summary>
         /// Gets the technique.

@@ -1,6 +1,7 @@
 ﻿using SharpDX;
 using SharpDX.Direct2D1;
 using SharpDX.DirectWrite;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -16,7 +17,7 @@ namespace HelixToolkit.UWP
 {
     namespace Utilities.ImagePacker
     {
-        public struct TextLayoutInfo
+        public sealed class TextLayoutInfo : IDisposable
         {
             public readonly TextLayout TextLayout;
             public readonly Color4 Foreground;
@@ -29,6 +30,34 @@ namespace HelixToolkit.UWP
                 Background = background;
                 Padding = padding;
             }
+
+            #region IDisposable Support
+            private bool disposedValue = false; // To detect redundant calls
+
+            void Dispose(bool disposing)
+            {
+                if (!disposedValue)
+                {
+                    TextLayout.Dispose();
+                    disposedValue = true;
+                }
+            }
+
+            // TODO: override a finalizer only if Dispose(bool disposing) above has code to free unmanaged resources.
+            // ~ImagePacker() {
+            //   // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
+            //   Dispose(false);
+            // }
+
+            // This code added to correctly implement the disposable pattern.
+            public void Dispose()
+            {
+                // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
+                Dispose(true);
+                // TODO: uncomment the following line if the finalizer is overridden above.
+                // GC.SuppressFinalize(this);
+            }
+            #endregion
         }
         /// <summary>
         /// Draw and pack a list of <see cref="TextInfoExt"/> into a single large bitmap

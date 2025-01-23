@@ -102,6 +102,12 @@ namespace HelixToolkit.Wpf
             "IsEnabled", typeof(bool), typeof(ViewCubeVisual3D), new UIPropertyMetadata(true));
 
         /// <summary>
+        /// Identifies the <see cref="IsTopBottomViewReverseOriented"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty IsTopBottomViewReverseOrientedProperty =
+            DependencyProperty.Register("IsTopBottomViewReverseOriented", typeof(bool), typeof(ViewCubeVisual3D), new PropertyMetadata(false, VisualModelChanged));
+
+        /// <summary>
         /// Identifies the <see cref="IsTopBottomViewOrientedToFrontBack"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty IsTopBottomViewOrientedToFrontBackProperty =
@@ -304,6 +310,22 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
+        ///   Gets or sets a value indicating whether the top and bottom views reverse oriented.
+        /// </summary>
+        public bool IsTopBottomViewReverseOriented
+        {
+            get
+            {
+                return (bool)GetValue(IsTopBottomViewReverseOrientedProperty);
+            }
+
+            set
+            {
+                SetValue(IsTopBottomViewReverseOrientedProperty, value);
+            }
+        }
+
+        /// <summary>
         ///   Gets or sets a value indicating whether the top and bottom views are oriented to front and back.
         /// </summary>
         public bool IsTopBottomViewOrientedToFrontBack
@@ -359,7 +381,6 @@ namespace HelixToolkit.Wpf
         private readonly ModelUIElement3D[] cubeEdgeModels = new ModelUIElement3D[12];//3*4=12 edges of cube;
         private readonly ModelUIElement3D[] cubeCornerModels = new ModelUIElement3D[8];//8 corners of cube
         private readonly PieSliceVisual3D circle = new PieSliceVisual3D();
-
 
         private readonly SolidColorBrush edgeBrush = Brushes.Silver;
         private readonly SolidColorBrush highlightBrush = Brushes.CornflowerBlue;
@@ -464,7 +485,6 @@ namespace HelixToolkit.Wpf
             CreateCubeEdges();
             CreateCubeCorners();
             CreateCircle();
-
         }
 
         /// <summary>
@@ -507,15 +527,23 @@ namespace HelixToolkit.Wpf
             AddCubeFace(cubeFaceModels[CubeFaces.Back], -frontVector, upVector, GetCubeFaceColor(CubeFaces.Back), BackText);
             AddCubeFace(cubeFaceModels[CubeFaces.Left], leftVector, upVector, GetCubeFaceColor(CubeFaces.Left), LeftText);
             AddCubeFace(cubeFaceModels[CubeFaces.Right], -leftVector, upVector, GetCubeFaceColor(CubeFaces.Right), RightText);
+
+            Vector3D tempFrontVector = frontVector;
+            Vector3D tempLeftVector = leftVector;
+            if (IsTopBottomViewReverseOriented)
+            {
+                tempFrontVector = -frontVector;
+                tempLeftVector = -leftVector;
+            }
             if (IsTopBottomViewOrientedToFrontBack)
             {
-                AddCubeFace(cubeFaceModels[CubeFaces.Top], upVector, frontVector, GetCubeFaceColor(CubeFaces.Top), TopText);
-                AddCubeFace(cubeFaceModels[CubeFaces.Bottom], -upVector, -frontVector, GetCubeFaceColor(CubeFaces.Bottom), BottomText);
+                AddCubeFace(cubeFaceModels[CubeFaces.Top], upVector, tempFrontVector, GetCubeFaceColor(CubeFaces.Top), TopText);
+                AddCubeFace(cubeFaceModels[CubeFaces.Bottom], -upVector, -tempFrontVector, GetCubeFaceColor(CubeFaces.Bottom), BottomText);
             }
             else
             {
-                AddCubeFace(cubeFaceModels[CubeFaces.Top], upVector, leftVector, GetCubeFaceColor(CubeFaces.Top), TopText);
-                AddCubeFace(cubeFaceModels[CubeFaces.Bottom], -upVector, -leftVector, GetCubeFaceColor(CubeFaces.Bottom), BottomText);
+                AddCubeFace(cubeFaceModels[CubeFaces.Top], upVector, tempLeftVector, GetCubeFaceColor(CubeFaces.Top), TopText);
+                AddCubeFace(cubeFaceModels[CubeFaces.Bottom], -upVector, -tempLeftVector, GetCubeFaceColor(CubeFaces.Bottom), BottomText);
             }
         }
         private Brush GetCubeFaceColor(CubeFaces cubeFace)
@@ -795,7 +823,12 @@ namespace HelixToolkit.Wpf
         }
         private Material CreateTextMaterial(Brush background, string text, Brush foreground = null)
         {
-            var grid = new Grid { Width = 25, Height = 25, Background = background };
+            var grid = new Grid()
+            {
+                Width = 25,
+                Height = 25,
+                Background = background
+            };
             if (foreground is null) foreground = Brushes.White;
             grid.Children.Add(
                 new TextBlock
@@ -808,12 +841,11 @@ namespace HelixToolkit.Wpf
                     Foreground = foreground,
                 });
             grid.Arrange(new Rect(new Point(0, 0), new Size(25, 25)));
-
-            var bmp = new RenderTargetBitmap((int)grid.Width, (int)grid.Height, 96, 96, PixelFormats.Default);
-            bmp.Render(grid);
-            bmp.Freeze();
-            var material = MaterialHelper.CreateMaterial(new ImageBrush(bmp));
-            material.Freeze();
+            Material material = new DiffuseMaterial(new VisualBrush(grid));
+            if (material.CanFreeze)
+            {
+                material.Freeze();
+            }
             return material;
         }
         private void EnableDisableEdgeClicks()

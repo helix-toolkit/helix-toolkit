@@ -196,6 +196,14 @@
     <Compile Include="Workitems\Workitem10046\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Workitems\Workitem73\MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+    </Compile>
+    <Resource Include="Images\Workitem73_small.png" />
+    <Page Include="Workitems\Workitem73\MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Resource Include="Resources\simple3dModel.objz" />
     <Resource Include="Resources\simple3dModel.obj" />
     <Resource Include="Resources\simple3dModel.off" />

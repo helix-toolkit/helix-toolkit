@@ -12,6 +12,7 @@ namespace HelixToolkit.Wpf
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Reflection;
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Documents;
@@ -59,7 +60,7 @@ namespace HelixToolkit.Wpf
         /// Identifies the <see cref="FontSize"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty FontSizeProperty = DependencyProperty.Register(
-            "FontSize", typeof(double), typeof(TextGroupVisual3D), new UIPropertyMetadata(10.0, VisualChanged));
+            "FontSize", typeof(double), typeof(TextGroupVisual3D), new UIPropertyMetadata(0.0, VisualChanged));
 
         /// <summary>
         /// Identifies the <see cref="FontWeight"/> dependency property.
@@ -86,7 +87,7 @@ namespace HelixToolkit.Wpf
         /// Identifies the <see cref="IsDoubleSided"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty IsDoubleSidedProperty = DependencyProperty.Register(
-            "IsDoubleSided", typeof(bool), typeof(TextGroupVisual3D), new UIPropertyMetadata(false, VisualChanged));
+            "IsDoubleSided", typeof(bool), typeof(TextGroupVisual3D), new UIPropertyMetadata(true, VisualChanged));
 
         /// <summary>
         /// Identifies the <see cref="IsFlipped"/> dependency property.
@@ -327,6 +328,7 @@ namespace HelixToolkit.Wpf
         /// <param name="items">The items.</param>
         /// <param name="createElement">The create element.</param>
         /// <param name="background">The background.</param>
+        /// <param name="useVisualBrush">Create a text material using <see cref="VisualBrush"/></param>
         /// <param name="elementMap">The element map.</param>
         /// <param name="elementPositions">The element positions.</param>
         /// <returns>A text material.</returns>
@@ -334,6 +336,7 @@ namespace HelixToolkit.Wpf
             IEnumerable<TextItem> items,
             Func<string, FrameworkElement> createElement,
             Brush background,
+            bool useVisualBrush,
             out Dictionary<string, FrameworkElement> elementMap,
             out Dictionary<FrameworkElement, Rect> elementPositions)
         {
@@ -368,10 +371,16 @@ namespace HelixToolkit.Wpf
                 elementPositions[element] = new Rect(x / pw, y / ph, (x2 - x) / pw, (y2 - y) / ph);
             }
 
+            if (useVisualBrush)
+            {
+                return new DiffuseMaterial(new VisualBrush(panel));
+            }
+
             // Create the bitmap
             var rtb = new RenderTargetBitmap(pw, ph, 96, 96, PixelFormats.Pbgra32);
             rtb.Render(panel);
             rtb.Freeze();
+            (rtb.GetType().GetField("_renderTargetBitmap", BindingFlags.Instance | BindingFlags.NonPublic)?.GetValue(rtb) as IDisposable)?.Dispose(); //https://github.com/dotnet/wpf/issues/3067
             var ib = new ImageBrush(rtb)
                          {
                              Stretch = Stretch.Fill,
@@ -392,7 +401,7 @@ namespace HelixToolkit.Wpf
                 return mg;
             }
 
-            return new DiffuseMaterial(ib) { Color = Colors.White };
+            return new DiffuseMaterial(ib);
         }
 
         /// <summary>
@@ -488,12 +497,11 @@ namespace HelixToolkit.Wpf
             var group = new Model3DGroup();
             while (items.Count > 0)
             {
-                Dictionary<string, FrameworkElement> elementMap;
-                Dictionary<FrameworkElement, Rect> elementPositions;
-                var material = CreateTextMaterial(items, this.CreateElement, this.Background, out elementMap, out elementPositions);
+                var material = CreateTextMaterial(items, this.CreateElement, this.Background, this.FontSize <= 0, out Dictionary<string, FrameworkElement> elementMap, out Dictionary<FrameworkElement, Rect> elementPositions);
 
                 var builder = new MeshBuilder(false, true);
                 var addedChildren = new List<SpatialTextItem>();
+                RotateTransform3D rotateTransform = null;
                 foreach (var item in items)
                 {
                     var element = elementMap[item.Text];
@@ -539,11 +547,16 @@ namespace HelixToolkit.Wpf
                     }
 
                     var position = item.Position;
+                    var height = this.Height;
                     var textDirection = item.TextDirection;
                     var upDirection = item.UpDirection;
-                    var height = this.Height;
-                    var width = this.Height / element.ActualHeight * element.ActualWidth;
-                    var p0 = position + ((xa * width) * textDirection) + ((ya * height) * upDirection);
+                    var angle = item.Angle;
+                    textDirection.Normalize();
+                    upDirection.Normalize();
+                    TextVisual3D.UpdateDirectionsByRotationTransform(ref rotateTransform, ref textDirection, ref upDirection, position, angle);
+
+                    var width = element.ActualWidth / element.ActualHeight * height;
+                    var p0 = position + (xa * width * textDirection) + (ya * height * upDirection);
                     var p1 = p0 + (textDirection * width);
                     var p2 = p0 + (upDirection * height) + (textDirection * width);
                     var p3 = p0 + (upDirection * height);
@@ -565,7 +578,10 @@ namespace HelixToolkit.Wpf
                     items.Remove(c);
                 }
             }
-
+            if (group.CanFreeze)
+            {
+                group.Freeze();
+            }
             this.Content = group;
         }
     }

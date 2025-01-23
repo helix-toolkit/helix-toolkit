@@ -9,6 +9,8 @@
 
 namespace HelixToolkit.Wpf
 {
+    using System.Reflection;
+    using System;
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Documents;
@@ -164,7 +166,7 @@ namespace HelixToolkit.Wpf
         /// </summary>        
         public static readonly DependencyProperty AngleProperty =
             DependencyProperty.Register(
-                "AngleProperty", 
+                "AngleProperty",
                 typeof(double),
                 typeof(TextVisual3D),
                 new UIPropertyMetadata(0.0, VisualChanged));
@@ -434,7 +436,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// The rotation angle of text clockwise, in degrees.
+        /// The rotation angle of the text in counter-clockwise, in degrees.
         /// </summary>
         public double Angle
         {
@@ -444,15 +446,14 @@ namespace HelixToolkit.Wpf
             }
             set
             {
-                if (value != 0 && rotateTransform is null)
-                {
-                    rotateTransform = new RotateTransform();
-                }
                 this.SetValue(AngleProperty, value);
             }
         }
 
-        private RotateTransform rotateTransform = null;
+        /// <summary>
+        /// WPF 3D is a right-handed system, which means that a positive angle value for a rotation results in a counter-clockwise rotation about the axis.
+        /// </summary>
+        private RotateTransform3D rotateTransform = null;
 
         /// <summary>
         /// The visual changed.
@@ -481,12 +482,12 @@ namespace HelixToolkit.Wpf
 
             // First we need a textblock containing the text of our label
             var textBlock = new TextBlock(new Run(this.Text))
-                                {
-                                    Foreground = this.Foreground,
-                                    Background = this.Background,
-                                    FontWeight = this.FontWeight,
-                                    Padding = this.Padding
-                                };
+            {
+                Foreground = this.Foreground,
+                Background = this.Background,
+                FontWeight = this.FontWeight,
+                Padding = this.Padding
+            };
             if (this.FontFamily != null)
             {
                 textBlock.FontFamily = this.FontFamily;
@@ -499,23 +500,16 @@ namespace HelixToolkit.Wpf
             var element = this.BorderBrush != null
                               ? (FrameworkElement)
                                 new Border
-                                    {
-                                        BorderBrush = this.BorderBrush,
-                                        BorderThickness = this.BorderThickness,
-                                        Child = textBlock
-                                    }
+                                {
+                                    BorderBrush = this.BorderBrush,
+                                    BorderThickness = this.BorderThickness,
+                                    Child = textBlock
+                                }
                               : textBlock;
 
-            // Only prevent assign when angle == 0, it is equal origin value 
-            // https://stackoverflow.com/questions/10329298/performance-impact-of-applying-either-layouttransform-vs-rendertransform
-            if (Angle != 0 || (rotateTransform != null && rotateTransform.Angle != Angle))
-            {
-                rotateTransform.Angle = Angle;
-                element.LayoutTransform = rotateTransform;
-            }
             element.Measure(new Size(1000, 1000));
             element.Arrange(new Rect(element.DesiredSize));
-            element.RenderSize = element.DesiredSize;
+            //element.RenderSize = element.DesiredSize;
 
             Material material;
             if (this.FontSize > 0)
@@ -524,19 +518,14 @@ namespace HelixToolkit.Wpf
                     (int)element.ActualWidth + 1, (int)element.ActualHeight + 1, 96, 96, PixelFormats.Pbgra32);
                 rtb.Render(element);
                 rtb.Freeze();
+                (rtb.GetType().GetField("_renderTargetBitmap", BindingFlags.Instance | BindingFlags.NonPublic)?.GetValue(rtb) as IDisposable)?.Dispose(); //https://github.com/dotnet/wpf/issues/3067
+
                 material = new DiffuseMaterial(new ImageBrush(rtb));
             }
             else
             {
-                material = new DiffuseMaterial { Brush = new VisualBrush(element) };
+                material = new DiffuseMaterial(new VisualBrush(element));
             }
-
-            double width = element.ActualWidth / element.ActualHeight * this.Height;
-
-            var position = this.Position;
-            var textDirection = this.TextDirection;
-            var updirection = this.UpDirection;
-            var height = this.Height;
 
             // Set horizontal alignment factor
             var xa = -0.5;
@@ -560,16 +549,26 @@ namespace HelixToolkit.Wpf
                 ya = 0;
             }
 
+            var height = this.Height;
+            var position = this.Position;
+            var angle = this.Angle;
+            var textDirection = this.TextDirection;
+            var upDirection = this.UpDirection;
+            textDirection.Normalize();
+            upDirection.Normalize();
+            UpdateDirectionsByRotationTransform(ref rotateTransform, ref textDirection, ref upDirection, position, angle);
+
             // Since the parameter coming in was the center of the label,
             // we need to find the four corners
             // p0 is the lower left corner
             // p1 is the upper left
             // p2 is the lower right
             // p3 is the upper right
-            Point3D p0 = position + (xa * width) * textDirection + (ya * height) * updirection;
-            Point3D p1 = p0 + updirection * height;
+            double width = element.ActualWidth / element.ActualHeight * height;
+            Point3D p0 = position + (xa * width * textDirection) + (ya * height * upDirection);
+            Point3D p1 = p0 + upDirection * height;
             Point3D p2 = p0 + textDirection * width;
-            Point3D p3 = p0 + updirection * height + textDirection * width;
+            Point3D p3 = p0 + upDirection * height + textDirection * width;
 
             // Now build the geometry for the sign.  It's just a
             // rectangle made of two triangles, on each side.
@@ -619,9 +618,54 @@ namespace HelixToolkit.Wpf
                 mg.TextureCoordinates.Add(new Point(u0, 0));
             }
 
-            this.Content = new GeometryModel3D(mg, material);
+            GeometryModel3D model = new GeometryModel3D(mg, material);
+            if (model.CanFreeze)
+            {
+                model.Freeze();
+            }
+            this.Content = model;
+            // http://www.ericsink.com/wpf3d/4_Text.html
         }
 
-        // http://www.ericsink.com/wpf3d/4_Text.html
+        /// <summary>
+        /// Update directions when applying <see cref="Angle"/> value.
+        /// </summary>
+        /// <param name="rotateTransform"></param>
+        /// <param name="textDirection"></param>
+        /// <param name="upDirection"></param>
+        /// <param name="position"></param>
+        /// <param name="angle"></param>
+        internal static void UpdateDirectionsByRotationTransform(ref RotateTransform3D rotateTransform, ref Vector3D textDirection, ref Vector3D upDirection, Point3D position, double angle)
+        {
+            Vector3D n = Vector3D.CrossProduct(textDirection, upDirection);
+            n.Normalize();
+            if (rotateTransform is null)
+            {
+                if (angle != 0)
+                    rotateTransform = new RotateTransform3D(new AxisAngleRotation3D(n, angle), position);
+            }
+            else
+            {
+                if (rotateTransform.CenterX != position.X
+                    || rotateTransform.CenterY != position.Y
+                    || rotateTransform.CenterZ != position.Z)
+                {
+                    rotateTransform.CenterX = position.X;
+                    rotateTransform.CenterY = position.Y;
+                    rotateTransform.CenterZ = position.Z;
+                }
+                AxisAngleRotation3D axisAngle = (AxisAngleRotation3D)rotateTransform.Rotation;
+                if (axisAngle.Axis != n || axisAngle.Angle != angle)
+                {
+                    axisAngle.Axis = n;
+                    axisAngle.Angle = angle;
+                }
+            }
+            if (rotateTransform != null)
+            {
+                textDirection = rotateTransform.Transform(textDirection);
+                upDirection = rotateTransform.Transform(upDirection);
+            }
+        }
     }
 }

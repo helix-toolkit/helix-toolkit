@@ -14,6 +14,7 @@ namespace HelixToolkit.Wpf
     using System.Data;
     using System.Diagnostics;
     using System.Linq;
+    using System.Reflection;
     using System.Windows;
     using System.Windows.Media;
     using System.Windows.Media.Imaging;
@@ -413,7 +414,9 @@ namespace HelixToolkit.Wpf
                 rect.Arrange(new Rect(w * i, 0, w, h));
                 bitmap.Render(rect);
             }
-
+            bitmap.Freeze();
+            (bitmap.GetType().GetField("_renderTargetBitmap", BindingFlags.Instance | BindingFlags.NonPublic)?.GetValue(bitmap) as IDisposable)?.Dispose(); // https://github.com/dotnet/wpf/issues/3067
+           
             var brush = new ImageBrush(bitmap) { ViewportUnits = BrushMappingMode.Absolute };
             brush.Freeze();
             var material = new DiffuseMaterial(brush) { AmbientColor = Colors.White };

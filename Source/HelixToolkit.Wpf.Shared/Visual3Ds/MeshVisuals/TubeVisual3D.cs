@@ -125,13 +125,18 @@ namespace HelixToolkit.Wpf
         /// </summary>
         protected void OnSectionChanged()
         {
+            if (this.ThetaDiv < 2)
+            {
+                this.OnGeometryChanged();
+                return;
+            }
             var pc = new PointCollection();
-            var circle = MeshBuilder.GetCircle(this.ThetaDiv);
+            var circle = MeshBuilder.GetCircle(this.ThetaDiv, false);
 
             // If Diameters is not set, create a unit circle
             // otherwise, create a circle with the specified diameter
             double r = this.Diameters != null ? 1 : this.Diameter / 2;
-            for (int j = 0; j < this.ThetaDiv; j++)
+            for (int j = 0; j < circle.Count; j++)
             {
                 pc.Add(new Point(circle[j].X * r, circle[j].Y * r));
             }
@@ -149,7 +154,9 @@ namespace HelixToolkit.Wpf
         /// </returns>
         protected override MeshGeometry3D Tessellate()
         {
-            if (this.Path == null || this.Path.Count < 2)
+            if (this.Path is null || this.Path.Count < 2
+                || this.Section is null || this.Section.Count < 2
+                || this.ThetaDiv < 2)
             {
                 return null;
             }
