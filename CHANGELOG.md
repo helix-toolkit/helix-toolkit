@@ -1,7 +1,68 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
-## [2.25.0] Pre-Release
+## [2.26.0] Pre-release
+
+### Added
+
+1. Allow AddTube function to accept optional up vectors for path segments. (WPF)
+   
+1. Add MeshBuilderSample into Examples.Wpf (WPF)
+   
+1. Adds Triangle selection demo in sharpdx. (SharpDX)
+   
+1. Add IsTopBottomViewReverseOriented property for Wpf.HelixViewport3D (WPF)
+   
+1. Allow set point size in HelixToolkit.Wpf.CombinedSelectionCommand (Wpf)
+   
+1. Support Angle property for TextGroupVisual3D (WPF)
+
+1. Added missing scale to ToBillboardImage3D. (WPF)
+
+1. Add TypeConverter to collections (WPF)
+
+### Improvement
+
+1. Reimplement MeshBuilder.AddTube (MeshBuilder)
+   
+### Bug Fix
+
+1. Fix memory leak in EffectManager (SharpDX)
+
+1. Fix line width changed when line is out of camera frustum. (SharpDX)
+
+1. Fix memory leak in image packer. (SharpDX)
+
+1. Remove HitTestResultCallback in Viewport3DHelper.FindHits(), remove nullable types (WPF)
+
+1. Fix zoom extend. (SharpDX)
+
+1. Fix Dispose wrong position of RenderTargetBitmap in Wpf.ParticleSystem. (WPF)
+
+1. Fixed memory leaks when using RenderTargetBitmap (Wpf)
+
+1. Fix null reference exception in DX11ImageSourceRenderHost. (Wpf.SharpDX)
+
+1. Fix HelixToolkit.Wpf.TextVisual3D display wrong size when apply Angle!=0 (WPF)
+
+1. Fix MeshBuilder.GetCircle, Add search box in Wpf ExampleBrowser. (WPF)
+
+1. Fix MeshBuilder.GetCircle() OutOfRangeExeption when thetaDiv <=0. (MeshBuilder)
+
+1. Fix MeshBuilder.GetCircle (MeshBuilder)
+
+1. Fixed ViewBoxNode wrong color axis face in Helix.Wpf.SharpDX (SharpDX)
+
+1. Remove obsolete memmber in Wpf.HelixViewport3D (WPF)
+
+1. Change Wpf.Converter to Wpf.ConverterExtensions. (WPF)
+
+1. Fix float to double conversion. (MeshBuilder)
+
+1. Delete HelixToolkit.Wpf.BoundingSphere (WPF)
+
+
+## [2.25.0] 2024-2-27
 
 ### Added
 1. Add CombinedSelectionCommand. (WPF)

@@ -382,7 +382,6 @@ namespace HelixToolkit.Wpf
         private readonly ModelUIElement3D[] cubeCornerModels = new ModelUIElement3D[8];//8 corners of cube
         private readonly PieSliceVisual3D circle = new PieSliceVisual3D();
 
-
         private readonly SolidColorBrush edgeBrush = Brushes.Silver;
         private readonly SolidColorBrush highlightBrush = Brushes.CornflowerBlue;
 
