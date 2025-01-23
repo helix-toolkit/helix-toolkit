@@ -507,9 +507,15 @@ namespace HelixToolkit.Wpf
                                 }
                               : textBlock;
 
+            // Only prevent assign when angle == 0, it is equal origin value 
+            // https://stackoverflow.com/questions/10329298/performance-impact-of-applying-either-layouttransform-vs-rendertransform
+            if (Angle != 0 || (rotateTransform != null && rotateTransform.Angle != Angle))
+            {
+                rotateTransform.Angle = Angle;
+                element.LayoutTransform = rotateTransform;
+            }
             element.Measure(new Size(1000, 1000));
             element.Arrange(new Rect(element.DesiredSize));
-            //element.RenderSize = element.DesiredSize;
 
             Material material;
             if (this.FontSize > 0)

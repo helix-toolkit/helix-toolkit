@@ -103,6 +103,7 @@ Please use the following template to report bugs.
 - Sample Code:
 
 ## News
+
 #### 2024-02-27
 [v2.25.0](https://github.com/helix-toolkit/helix-toolkit/releases/tag/v2.25.0) releases are available on nuget. [Release Note](/CHANGELOG.md)
 - [WPF](https://www.nuget.org/packages/HelixToolkit.Wpf/2.25.0)

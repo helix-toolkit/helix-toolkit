@@ -73,6 +73,7 @@ namespace HelixToolkit.UWP
             var corners = boundingBox.GetCorners();
 
             var frustum = camera.CreateFrustum(aspectRatio);
+
             var leftNormal = frustum.Left.Normal;
             var rightNormal = frustum.Right.Normal;
             var topNormal = frustum.Top.Normal;
