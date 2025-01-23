@@ -17,6 +17,10 @@ All notable changes to this project will be documented in this file.
    
 1. Support Angle property for TextGroupVisual3D (WPF)
 
+1. Added missing scale to ToBillboardImage3D. (WPF)
+
+1. Add TypeConverter to collections (WPF)
+
 ### Improvement
 
 1. Reimplement MeshBuilder.AddTube (MeshBuilder)
@@ -32,8 +36,6 @@ All notable changes to this project will be documented in this file.
 1. Remove HitTestResultCallback in Viewport3DHelper.FindHits(), remove nullable types (WPF)
 
 1. Fix zoom extend. (SharpDX)
-
-1. Added missing scale to ToBillboardImage3D. (WPF)
 
 1. Fix Dispose wrong position of RenderTargetBitmap in Wpf.ParticleSystem. (WPF)
 
@@ -52,8 +54,6 @@ All notable changes to this project will be documented in this file.
 1. Fixed ViewBoxNode wrong color axis face in Helix.Wpf.SharpDX (SharpDX)
 
 1. Remove obsolete memmber in Wpf.HelixViewport3D (WPF)
-
-1. Add TypeConverter to collections (WPF)
 
 1. Change Wpf.Converter to Wpf.ConverterExtensions. (WPF)
 
