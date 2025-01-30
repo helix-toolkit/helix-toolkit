@@ -1,25 +1,25 @@
 #ifndef VSPARTICLE_HLSL
 #define VSPARTICLE_HLSL
 #define PARTICLE
-#include"..\Common\CommonBuffers.hlsl"
-#include"..\Common\DataStructs.hlsl"
+#include "..\Common\CommonBuffers.hlsl"
+#include "..\Common\DataStructs.hlsl"
 
 //--------------------------------------------------------------------------------
 ParticleGS_INPUT main(in ParticleVS_INPUT input, in uint vertexid : SV_VertexID)
 {
 	ParticleGS_INPUT output;
 	Particle p = SimulationState[vertexid];
-    float4 pos = float4(p.position, 1);
+    float4 pos = mul(float4(p.position, 1), mWorld);
     if (bHasInstances)
     {
         matrix mInstance =
         {
-            input.mr0.x, input.mr1.x, input.mr2.x, input.mr3.x, // row 1
-			input.mr0.y, input.mr1.y, input.mr2.y, input.mr3.y, // row 2
-			input.mr0.z, input.mr1.z, input.mr2.z, input.mr3.z, // row 3
-			input.mr0.w, input.mr1.w, input.mr2.w, input.mr3.w, // row 4
+            input.mr0,
+			input.mr1,
+			input.mr2,
+			input.mr3
         };
-        pos = mul(mInstance, pos);
+        pos = mul(pos, mInstance);
     }
     output.position = pos.xyz;
 	output.energy = p.energy;

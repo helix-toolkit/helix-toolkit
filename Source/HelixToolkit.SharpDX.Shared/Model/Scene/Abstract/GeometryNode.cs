@@ -625,7 +625,7 @@ namespace HelixToolkit.UWP
                         var idx = 0;
                         foreach (var modelMatrix in InstanceBuffer.Elements)
                         {
-                            if (OnHitTest(context, modelMatrix * TotalModelMatrixInternal, ref hits))
+                            if (OnHitTest(context, TotalModelMatrixInternal * modelMatrix, ref hits))
                             {
                                 hit = true;
                                 var lastHit = hits[hits.Count - 1];

@@ -2,14 +2,15 @@
 #define VSMESHWIREFRAME_HLSL
 
 #define MESH
-#include"..\Common\Common.hlsl"
-#include"..\Common\DataStructs.hlsl"
+#include "..\Common\Common.hlsl"
+#include "..\Common\DataStructs.hlsl"
 #pragma pack_matrix( row_major )
 
 PSWireframeInput main(VSInput input)
 {
-    float4 inputp = input.p;
-    float3 inputn = input.n;
+	PSWireframeInput output = (PSWireframeInput) 0;
+	float4 inputp = mul(input.p, mWorld);
+	float3 inputn = normalize(mul(input.n, (float3x3) mWorld));
 
     if (bInvertNormal)
     {
@@ -26,24 +27,20 @@ PSWireframeInput main(VSInput input)
 			input.mr2,
 			input.mr3
         };
-        inputp = mul(input.p, mInstance);
+        inputp = mul(inputp, mInstance);
         inputn = mul(inputn, (float3x3) mInstance);
     }
 
-	//set position into world space	
-    inputp = mul(inputp, mWorld);
 
     if (bHasDisplacementMap)
     {
         float2 t = mul(float2x4(uvTransformR1, uvTransformR2), float4(input.t, 0, 1)).xy;
-	    //set normal for interpolation	
-        inputn = normalize(mul(inputn, (float3x3) mWorld));
         const float mipInterval = 20;
         float mipLevel = clamp((distance(inputp.xyz, vEyePos) - mipInterval) / mipInterval, 0, 6);
         float3 h = texDisplacementMap.SampleLevel(samplerDisplace, t, mipLevel);
         inputp.xyz += inputn * mul(h, displacementMapScaleMask.xyz);
     }
-    PSWireframeInput output = (PSWireframeInput)0;
+
 	//set position into clip space	
     output.p = mul(inputp, mViewProjection);
     output.z = length(vEyePos - inputp.xyz);

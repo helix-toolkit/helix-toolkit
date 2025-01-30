@@ -1,8 +1,8 @@
 #ifndef VSBILLBOARD_HLSL
 #define VSBILLBOARD_HLSL
 #define POINTLINE
-#include"..\Common\DataStructs.hlsl"
-#include"..\Common\Common.hlsl"
+#include "..\Common\DataStructs.hlsl"
+#include "..\Common\Common.hlsl"
 #pragma pack_matrix( row_major )
 #if !defined(INSTANCINGPARAM)
 GSInputBT main(VSInputBT input)
@@ -12,7 +12,7 @@ GSInputBT main(VSInputBTInstancing input)
 #endif
 {
     GSInputBT output = (GSInputBT) 0;
-    output.p = input.p;
+	output.p = mul(input.p, mWorld);
     output.background = input.background;
     output.foreground = input.foreground;
     output.t0 = input.t0;
@@ -21,6 +21,8 @@ GSInputBT main(VSInputBTInstancing input)
     output.offTL = input.offTL;
     output.offBL = input.offBL;
     output.offTR = input.offTR;
+
+	
     if (bHasInstances)
     {
         matrix mInstance =
@@ -30,7 +32,7 @@ GSInputBT main(VSInputBTInstancing input)
 			input.mr2,
 			input.mr3
         };
-        output.p = mul(input.p, mInstance);
+		output.p = mul(output.p, mInstance);
         output.offTL = input.offTL * mInstance._m00_m11; // 2d scaling x
         output.offBR = input.offBR * mInstance._m00_m11; // 2d scaling x
         output.offBL = input.offBL * mInstance._m00_m11;
@@ -38,15 +40,14 @@ GSInputBT main(VSInputBTInstancing input)
 #if defined(INSTANCINGPARAM)
         if (bHasInstanceParams)
         {
-            output.t0 = mad(input.tScale, input.t0, input.tOffset);
-            output.t3 = mad(input.tScale, input.t3, input.tOffset);
+            output.t0 = mad(input.tScale, output.t0, input.tOffset);
+            output.t3 = mad(input.tScale, output.t3, input.tOffset);
             output.background = input.background * input.diffuseC;
         }
 #endif
-    }
-	// Translate position into clip space
-    float4 ndcPosition = mul(output.p, mWorld);
-    output.p = mul(ndcPosition, mView);
+	}
+
+	output.p = mul(output.p, mView);
     return output;
 }
 
