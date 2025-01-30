@@ -2,8 +2,8 @@
 #define dsMESHTriTESSELLATION_HLSL
 
 #define MESH
-#include"..\Common\CommonBuffers.hlsl"
-#include"..\Common\DataStructs.hlsl"
+#include "..\Common\CommonBuffers.hlsl"
+#include "..\Common\DataStructs.hlsl"
 
 #pragma pack_matrix( row_major )
 
@@ -77,11 +77,9 @@ PSInput main(HSConstantDataOutput input, float3 barycentricCoords : SV_DomainLoc
     {
         output.sp = mul(output.wp, mul(vLightView, vLightProjection));
     }
-    output.p = mul(output.p, mView);
-    output.p = mul(output.p, mProjection);
+    output.p = mul(output.p, mViewProjection);
 
-	// --- interpolated normals    
-    output.n = normalize(mul(output.n, (float3x3) mWorld));
+
 
     if (bHasNormalMap)
     {
@@ -90,9 +88,6 @@ PSInput main(HSConstantDataOutput input, float3 barycentricCoords : SV_DomainLoc
 			    // Compute tangent-space
             output.t1 = normalize(inputPatch[0].t1 * barycentricCoords.z + inputPatch[1].t1 * barycentricCoords.x + inputPatch[2].t1 * barycentricCoords.y);
             output.t2 = normalize(inputPatch[0].t2 * barycentricCoords.z + inputPatch[1].t2 * barycentricCoords.x + inputPatch[2].t2 * barycentricCoords.y);
-		    // transform the tangents by the world matrix and normalize
-            output.t1 = normalize(mul(output.t1, (float3x3) mWorld));
-            output.t2 = normalize(mul(output.t2, (float3x3) mWorld));
         }
     }
     return output;

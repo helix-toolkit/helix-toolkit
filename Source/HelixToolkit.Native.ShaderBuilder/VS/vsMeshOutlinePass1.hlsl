@@ -2,23 +2,22 @@
 #define VSMESHOUTLINEP1_HLSL
 
 #define MESH
-#include"..\Common\Common.hlsl"
-#include"..\Common\DataStructs.hlsl"
-#include"vsMeshDefault.hlsl"
+#include "..\Common\Common.hlsl"
+#include "..\Common\DataStructs.hlsl"
+#include "vsMeshDefault.hlsl"
 #pragma pack_matrix( row_major )
 
 float4 VSMeshOutlineP1(VSInput input) : SV_POSITION
 {
     PSInput output = (PSInput) 0;
-    float4 inputp = input.p + float4(input.n * 0.1f, 0);
-    float3 inputn = input.n;
-    float3 inputt1 = input.t1;
-    float3 inputt2 = input.t2;
+	output.p = mul(input.p + float4(input.n * 0.1f, 0), mWorld);
+	output.n = normalize(mul(input.n, (float3x3) mWorld));
+
     if (bInvertNormal)
     {
-        inputn = -inputn;
-    }
-
+		output.n = -output.n;
+	}
+	
 	// compose instance matrix
     if (bHasInstances)
     {
@@ -29,15 +28,10 @@ float4 VSMeshOutlineP1(VSInput input) : SV_POSITION
 			input.mr2,
 			input.mr3
         };
-        inputp = mul(input.p, mInstance);
-        inputn = mul(inputn, (float3x3) mInstance);
-    }
-
-	//set position into world space	
-    output.p = mul(inputp, mWorld);
-
-	//set normal for interpolation	
-    output.n = normalize(mul(inputn, (float3x3) mWorld));
+		output.p = mul(output.p, mInstance);
+		output.n = normalize(mul(output.n, (float3x3) mInstance));
+	}
+	
 
     if (bHasDisplacementMap)
     {
