@@ -17,6 +17,9 @@ SSAOIn main(VSInputBatched input)
 SSAOIn main(VSInput input)
 #endif
 {
+    SSAOIn output = (SSAOIn) 0;	
+	output.pos = mul(input.p, mWorld);
+	output.normal = normalize(mul(input.n, (float3x3) mWorld));
     #if !defined(BATCHED)
 	// compose instance matrix
     if (bHasInstances)
@@ -28,16 +31,16 @@ SSAOIn main(VSInput input)
 			input.mr2,
 			input.mr3
         };
-        input.p = mul(input.p, mInstance);
-        input.n = mul(input.n, (float3x3) mInstance);
-    }
+		output.pos = mul(output.pos, mInstance);
+		output.normal = normalize(mul(output.normal, (float3x3) mInstance));
+
+	}
     #endif
 
-    float4 pv = mul(input.p, mul(mWorld, mView));
-    SSAOIn output = (SSAOIn) 0;
+	float4 pv = mul(output.pos, mView);
+
 	//set position into world space	
-    output.pos = mul(input.p, mul(mWorld, mViewProjection));
-    output.normal = normalize(mul(input.n, (float3x3) mWorld));
+	output.pos = mul(output.pos, mViewProjection);
     output.depth = pv.z;
     return output;
 }

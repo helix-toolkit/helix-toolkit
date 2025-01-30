@@ -614,7 +614,7 @@ public abstract class GeometryNode : SceneNode, IHitable, IThrowingShadow, IInst
                 {
                     foreach (var modelMatrix in InstanceBuffer.Elements)
                     {
-                        if (OnHitTest(context, modelMatrix * TotalModelMatrixInternal, ref hits))
+                        if (OnHitTest(context, TotalModelMatrixInternal * modelMatrix, ref hits))
                         {
                             hit = true;
                             var lastHit = hits[^1];
