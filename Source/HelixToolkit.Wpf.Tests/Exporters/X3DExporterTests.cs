@@ -21,7 +21,8 @@ public class X3DExporterTests : ExporterTests
     [Test]
     public void Export_SimpleModel_ValidOutput()
     {
-        string path = "temp.x3d";
+        string temp = Path.GetTempFileName();
+        string path = temp + "_temp.x3d";
 
         try
         {
@@ -38,6 +39,9 @@ public class X3DExporterTests : ExporterTests
         {
             if (File.Exists(path))
                 File.Delete(path);
+
+            if (File.Exists(temp))
+                File.Delete(temp);
         }
     }
 

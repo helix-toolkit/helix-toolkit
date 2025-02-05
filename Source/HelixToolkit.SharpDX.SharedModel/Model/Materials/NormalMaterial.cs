@@ -1,9 +1,12 @@
 ﻿using HelixToolkit.SharpDX.Model;
 
-#if WINUI
+#if false
+#elif WINUI
 namespace HelixToolkit.WinUI.SharpDX;
-#else
+#elif WPF
 namespace HelixToolkit.Wpf.SharpDX;
+#else
+#error Unknown framework
 #endif
 
 /// <summary>
@@ -32,7 +35,9 @@ public sealed class NormalMaterial : Material
         return NormalMaterialCore.Core;
     }
 
-#if WPF
+#if false
+#elif WINUI
+#elif WPF
     protected override Freezable CreateInstanceCore()
     {
         return new NormalMaterial()
@@ -40,5 +45,7 @@ public sealed class NormalMaterial : Material
             Name = Name
         };
     }
+#else
+#error Unknown framework
 #endif
 }

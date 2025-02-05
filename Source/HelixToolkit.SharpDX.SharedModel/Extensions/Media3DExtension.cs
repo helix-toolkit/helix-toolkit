@@ -2,10 +2,13 @@
 using SharpDX.Mathematics.Interop;
 using System.Runtime.CompilerServices;
 
-#if WINUI
+#if false
+#elif WINUI
 namespace HelixToolkit.WinUI.SharpDX;
-#else
+#elif WPF
 namespace HelixToolkit.Wpf.SharpDX;
+#else
+#error Unknown framework
 #endif
 
 public static class Media3DExtension
@@ -79,7 +82,9 @@ public static class Media3DExtension
         //return System.Windows.Media.Color.FromScRgb(color.Alpha, color.Red, color.Green, color.Blue);
     }
 
-#if WPF
+#if false
+#elif WINUI
+#elif WPF
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Vector3 ToVector3(this Point3D point)
     {
@@ -125,6 +130,9 @@ public static class Media3DExtension
         var matrix = trafo.Value;
         return new Vector4((float)matrix.OffsetX, (float)matrix.OffsetY, (float)matrix.OffsetZ, (float)matrix.M44);
     }
+#else
+#error Unknown framework
+#endif
 
     public static Matrix3x3 ToMatrix3x3(this UIMatrix m)
     {
@@ -135,6 +143,9 @@ public static class Media3DExtension
         return new Matrix3x2((float)m.M11, (float)m.M12, (float)m.M21, (float)m.M22, (float)m.OffsetX, (float)m.OffsetY);
     }
 
+#if false
+#elif WINUI
+#elif WPF
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Matrix3D ToMatrix3D(this Matrix m)
     {
@@ -218,5 +229,7 @@ public static class Media3DExtension
         g.Children.Add(t1);
         return g;
     }
+#else
+#error Unknown framework
 #endif
 }

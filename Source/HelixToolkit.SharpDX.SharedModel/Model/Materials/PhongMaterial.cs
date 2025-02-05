@@ -6,15 +6,21 @@ using System.ComponentModel;
 using System.Runtime.Serialization;
 using HelixToolkit.SharpDX.Shaders;
 
-#if WINUI
-#else
+#if false
+#elif WINUI
+#elif WPF
 using HelixToolkit.Wpf.SharpDX.Utilities;
+#else
+#error Unknown framework
 #endif
 
-#if WINUI
+#if false
+#elif WINUI
 namespace HelixToolkit.WinUI.SharpDX;
-#else
+#elif WPF
 namespace HelixToolkit.Wpf.SharpDX;
+#else
+#error Unknown framework
 #endif
 
 /// <summary>
@@ -458,8 +464,12 @@ public partial class PhongMaterial : Material
     /// Gets or sets a color that represents how the material reflects System.Windows.Media.Media3D.AmbientLight.
     /// For details see: http://msdn.microsoft.com/en-us/library/windows/desktop/bb147175(v=vs.85).aspx
     /// </summary>
-#if WPF
+#if false
+#elif WINUI
+#elif WPF
     [TypeConverter(typeof(Color4Converter))]
+#else
+#error Unknown framework
 #endif
     public Color4 AmbientColor
     {
@@ -477,8 +487,12 @@ public partial class PhongMaterial : Material
     /// Gets or sets the diffuse color for the material.
     /// For details see: http://msdn.microsoft.com/en-us/library/windows/desktop/bb147175(v=vs.85).aspx
     /// </summary>
-#if WPF
+#if false
+#elif WINUI
+#elif WPF
     [TypeConverter(typeof(Color4Converter))]
+#else
+#error Unknown framework
 #endif
     public Color4 DiffuseColor
     {
@@ -496,8 +510,12 @@ public partial class PhongMaterial : Material
     /// Gets or sets the emissive color for the material.
     /// For details see: http://msdn.microsoft.com/en-us/library/windows/desktop/bb147175(v=vs.85).aspx
     /// </summary>
-#if WPF
+#if false
+#elif WINUI
+#elif WPF
     [TypeConverter(typeof(Color4Converter))]
+#else
+#error Unknown framework
 #endif
     public Color4 EmissiveColor
     {
@@ -514,8 +532,12 @@ public partial class PhongMaterial : Material
     /// <summary>
     /// A fake parameter for reflectivity of the environment map
     /// </summary>
-#if WPF
+#if false
+#elif WINUI
+#elif WPF
     [TypeConverter(typeof(Color4Converter))]
+#else
+#error Unknown framework
 #endif
     public Color4 ReflectiveColor
     {
@@ -533,8 +555,12 @@ public partial class PhongMaterial : Material
     /// Gets or sets the specular color for the material.
     /// For details see: http://msdn.microsoft.com/en-us/library/windows/desktop/bb147175(v=vs.85).aspx
     /// </summary>
-#if WPF
+#if false
+#elif WINUI
+#elif WPF
     [TypeConverter(typeof(Color4Converter))]
+#else
+#error Unknown framework
 #endif
     public Color4 SpecularColor
     {
@@ -677,8 +703,12 @@ public partial class PhongMaterial : Material
         }
     }
 
-#if WPF
+#if false
+#elif WINUI
+#elif WPF
     [TypeConverter(typeof(Vector4Converter))]
+#else
+#error Unknown framework
 #endif
     public Vector4 DisplacementMapScaleMask
     {
@@ -1042,11 +1072,15 @@ public partial class PhongMaterial : Material
         };
     }
 
-#if WPF
+#if false
+#elif WINUI
+#elif WPF
     protected override Freezable CreateInstanceCore()
     {
         return CloneMaterial();
     }
+#else
+#error Unknown framework
 #endif
 
     protected override MaterialCore OnCreateCore()

@@ -6,7 +6,8 @@ global using Matrix3x2 = System.Numerics.Matrix3x2;
 global using Plane = System.Numerics.Plane;
 global using Quaternion = System.Numerics.Quaternion;
 global using HelixToolkit.Maths;
-#if WINUI
+#if false
+#elif WINUI
 global using Microsoft.UI.Text;
 global using Microsoft.UI.Xaml;
 global using Microsoft.UI.Xaml.Controls;
@@ -17,13 +18,25 @@ global using Vector3D = System.Numerics.Vector3;
 global using Point3D = System.Numerics.Vector3;
 global using Size3D = System.Numerics.Vector3;
 global using Point = Windows.Foundation.Point;
+global using UIMatrix = Microsoft.UI.Xaml.Media.Matrix;
 global using UIColor = Windows.UI.Color;
 global using UIColors = Microsoft.UI.Colors;
+global using UICursor = Windows.UI.Core.CoreCursorType;
+global using UIFontStyle = Windows.UI.Text.FontStyle;
+global using UIFontStyles = Windows.UI.Text.FontStyle;
+global using UIVisibility = Microsoft.UI.Xaml.Visibility;
+global using UIHorizontalAlignment = Microsoft.UI.Xaml.HorizontalAlignment;
+global using UIVerticalAlignment = Microsoft.UI.Xaml.VerticalAlignment;
+global using UIThickness = Microsoft.UI.Xaml.Thickness;
+global using UIOrientation = Microsoft.UI.Xaml.Controls.Orientation;
 global using FrameworkContentElement = Microsoft.UI.Xaml.FrameworkElement;
 global using FrameworkControl = Microsoft.UI.Xaml.Controls.Control;
 global using Animatable = Microsoft.UI.Xaml.DependencyObject;
 global using Freezable = Microsoft.UI.Xaml.DependencyObject;
-#else
+global using UIInputEventArgs = Microsoft.UI.Xaml.Input.PointerRoutedEventArgs;
+global using InputEventArgs = Microsoft.UI.Xaml.Input.PointerRoutedEventArgs;
+global using IRenderCanvas = HelixToolkit.WinUI.SharpDX.HelixToolkitRenderPanel;
+#elif WPF
 //global using System.Windows;
 //global using System.Windows.Controls;
 global using DependencyProperty = System.Windows.DependencyProperty;
@@ -40,8 +53,19 @@ global using Point = System.Windows.Point;
 global using UIMatrix = System.Windows.Media.Matrix;
 global using UIColor = System.Windows.Media.Color;
 global using UIColors = System.Windows.Media.Colors;
+global using UICursor = System.Windows.Input.Cursor;
+global using UIFontStyle = System.Windows.FontStyle;
+global using UIFontStyles = System.Windows.FontStyles;
+global using UIVisibility = System.Windows.Visibility;
+global using UIHorizontalAlignment = System.Windows.HorizontalAlignment;
+global using UIVerticalAlignment = System.Windows.VerticalAlignment;
+global using UIThickness = System.Windows.Thickness;
+global using UIOrientation = System.Windows.Controls.Orientation;
 global using FrameworkContentElement = System.Windows.FrameworkContentElement;
 global using FrameworkControl = System.Windows.FrameworkContentElement;
 global using Animatable = System.Windows.Media.Animation.Animatable;
 global using Freezable = System.Windows.Freezable;
+global using UIInputEventArgs = System.Windows.Input.InputEventArgs;
+#else
+#error Unknown framework
 #endif

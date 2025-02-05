@@ -24,17 +24,14 @@ public class ItemsModel3D : CompositeModel3D
         "ItemTemplate", typeof(DataTemplate), typeof(ItemsModel3D), new PropertyMetadata(null));
 
     /// <summary>
-    ///     The items source property
+    /// ItemsSource for binding to collection. Please use ObservableElement3DCollection for observable, otherwise may cause memory leak.
     /// </summary>
     public static readonly DependencyProperty ItemsSourceProperty = DependencyProperty.Register(
-        "ItemsSource",
-        typeof(IEnumerable),
-        typeof(ItemsModel3D),
-        new PropertyMetadata(null, (s, e) =>
+        "ItemsSource", typeof(IEnumerable), typeof(ItemsModel3D), new PropertyMetadata(null, (s, e) =>
         {
             if (s is ItemsModel3D itemsModel && itemsModel.IsAttached)
             {
-                itemsModel.ItemsSourceChanged(e.NewValue as IEnumerable);
+                itemsModel.OnItemsSourceChanged(e.NewValue as IEnumerable);
             }
         }));
 
@@ -68,11 +65,11 @@ public class ItemsModel3D : CompositeModel3D
     /// <value>
     ///     The item template.
     /// </value>
-    public DataTemplate ItemTemplate
+    public DataTemplate? ItemTemplate
     {
         get
         {
-            return (DataTemplate)this.GetValue(ItemTemplateProperty);
+            return (DataTemplate?)this.GetValue(ItemTemplateProperty);
         }
         set
         {
@@ -86,11 +83,11 @@ public class ItemsModel3D : CompositeModel3D
     /// <value>
     ///     The items source.
     /// </value>
-    public IEnumerable ItemsSource
+    public IEnumerable? ItemsSource
     {
         get
         {
-            return (IEnumerable)this.GetValue(ItemsSourceProperty);
+            return (IEnumerable?)this.GetValue(ItemsSourceProperty);
         }
         set
         {
@@ -98,7 +95,7 @@ public class ItemsModel3D : CompositeModel3D
         }
     }
 
-    public IOctreeManagerWrapper OctreeManager
+    public IOctreeManagerWrapper? OctreeManager
     {
         set
         {
@@ -106,17 +103,11 @@ public class ItemsModel3D : CompositeModel3D
         }
         get
         {
-            return (IOctreeManagerWrapper)GetValue(OctreeManagerProperty);
+            return (IOctreeManagerWrapper?)GetValue(OctreeManagerProperty);
         }
     }
 
-    private IOctreeBasic? Octree
-    {
-        get
-        {
-            return (SceneNode as GroupNode)?.OctreeManager?.Octree;
-        }
-    }
+    private IOctreeBasic? Octree => (SceneNode as GroupNode)?.OctreeManager?.Octree;
 
     private readonly Dictionary<object, Element3D> elementDict = new();
     private IEnumerable? itemsSourceInternal;
@@ -131,7 +122,7 @@ public class ItemsModel3D : CompositeModel3D
     {
         if (ItemsSource != null)
         {
-            ItemsSourceChanged(ItemsSource);
+            OnItemsSourceChanged(ItemsSource);
         }
     }
 
@@ -139,11 +130,11 @@ public class ItemsModel3D : CompositeModel3D
     {
         if (itemsSourceInternal != null)
         {
-            ItemsSourceChanged(null);
+            OnItemsSourceChanged(null);
         }
     }
 
-    private void ItemsSourceChanged(IEnumerable? itemsSource)
+    private void OnItemsSourceChanged(IEnumerable? itemsSource)
     {
         if (itemsSourceInternal == itemsSource)
         { return; }

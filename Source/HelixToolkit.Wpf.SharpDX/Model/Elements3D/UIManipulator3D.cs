@@ -1,7 +1,5 @@
-﻿using HelixToolkit.SharpDX;
-using HelixToolkit.Wpf.SharpDX.Model;
+﻿using HelixToolkit.Wpf.SharpDX.Model;
 using HelixToolkit.Wpf.SharpDX.Utilities;
-using SharpDX;
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Data;

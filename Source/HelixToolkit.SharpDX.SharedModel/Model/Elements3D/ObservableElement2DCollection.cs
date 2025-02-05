@@ -2,16 +2,22 @@
 using System.Collections.Specialized;
 using System.ComponentModel;
 
-#if WINUI
+#if false
+#elif WINUI
 using HelixToolkit.WinUI.SharpDX.Elements2D;
-#else
+#elif WPF
 using HelixToolkit.Wpf.SharpDX.Elements2D;
+#else
+#error Unknown framework
 #endif
 
-#if WINUI
+#if false
+#elif WINUI
 namespace HelixToolkit.WinUI.SharpDX;
-#else
+#elif WPF
 namespace HelixToolkit.Wpf.SharpDX;
+#else
+#error Unknown framework
 #endif
 
 public class ObservableElement2DCollection : ObservableCollection<Element2D>

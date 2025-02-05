@@ -9,15 +9,9 @@ namespace HelixToolkit.Wpf.SharpDX;
 [TypeConverter(typeof(ManipulationGestureConverter))]
 public class ManipulationGesture : InputGesture
 {
-    public ManipulationAction ManipulationAction
-    {
-        get;
-    }
+    public ManipulationAction ManipulationAction { get; }
 
-    public int FingerCount
-    {
-        get;
-    }
+    public int FingerCount { get; }
 
     public ManipulationGesture(ManipulationAction manipulationAction)
     {

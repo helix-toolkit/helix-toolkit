@@ -68,7 +68,7 @@ internal class ZoomHandler : MouseGestureHandler
     {
         base.Started(e);
         this.zoomPoint = new Point(this.Controller.Viewport.ActualWidth / 2, this.Controller.Viewport.ActualHeight / 2);
-        this.zoomPoint3D = this.Camera?.Target ?? new Vector3();
+        this.zoomPoint3D = this.Camera?.CameraInternal.Target ?? new Vector3();
 
         if (this.Controller.ZoomAroundMouseDownPoint && this.MouseDownNearestPoint3D != null)
         {
@@ -95,7 +95,7 @@ internal class ZoomHandler : MouseGestureHandler
             return;
         }
 
-        this.Zoom(delta, this.Camera.Target);
+        this.Zoom(delta, this.Camera.CameraInternal.Target);
     }
 
     /// <summary>

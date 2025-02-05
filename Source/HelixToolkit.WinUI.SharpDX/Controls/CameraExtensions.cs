@@ -231,7 +231,7 @@ public static class CameraExtensions
     /// <param name="animationTime">
     /// The animation time.
     /// </param>
-    public static void ChangeDirection(this ProjectionCamera camera, Vector3 newLookDir, Vector3 newUpDirection, double animationTime)
+    public static void ChangeDirection(this Camera camera, Vector3 newLookDir, Vector3 newUpDirection, double animationTime)
     {
         var target = camera.Position + camera.LookDirection;
         var length = camera.LookDirection.Length();
@@ -248,7 +248,7 @@ public static class CameraExtensions
     /// <param name="dest">
     /// The destination camera.
     /// </param>
-    public static void CopyTo(this Camera source, Camera? dest)
+    public static void CopyTo(this ICameraModel source, Camera? dest)
     {
         var projectionDest = dest as ProjectionCamera;
         if (source is not ProjectionCamera projectionSource || projectionDest == null)

@@ -5,6 +5,8 @@
         {
           "files": [
             "HelixToolkit/**.csproj",
+            "HelixToolkit.Maths/**.csproj",
+            "HelixToolkit.Geometry/**.csproj",
             "HelixToolkit.Assimp/**.csproj",
             "HelixToolkit.Wpf/**.csproj",
             "HelixToolkit.Wpf.TDxInput/**.csproj",

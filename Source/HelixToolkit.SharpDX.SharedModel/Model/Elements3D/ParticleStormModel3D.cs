@@ -5,18 +5,24 @@ using static HelixToolkit.SharpDX.Core.ParticleRenderCore;
 using SharpDX;
 using SharpDX.Direct3D11;
 
-#if WINUI
+#if false
+#elif WINUI
 using HelixToolkit.WinUI.SharpDX.Model;
-#else
+#elif WPF
 using HelixToolkit.Wpf.SharpDX.Model;
 using System.Windows;
 using Rect3D = System.Windows.Media.Media3D.Rect3D;
+#else
+#error Unknown framework
 #endif
 
-#if WINUI
+#if false
+#elif WINUI
 namespace HelixToolkit.WinUI.SharpDX;
-#else
+#elif WPF
 namespace HelixToolkit.Wpf.SharpDX;
+#else
+#error Unknown framework
 #endif
 
 public class ParticleStormModel3D : Element3D
@@ -91,7 +97,8 @@ public class ParticleStormModel3D : Element3D
         }
     }
 
-#if WINUI
+#if false
+#elif WINUI
     public static readonly DependencyProperty ParticleBoundsProperty = DependencyProperty.Register("ParticleBounds", typeof(BoundingBox), typeof(ParticleStormModel3D),
         new PropertyMetadata(new BoundingBox(new Vector3(-50, -50, -50), new Vector3(50, 50, 50)),
         (d, e) =>
@@ -115,7 +122,7 @@ public class ParticleStormModel3D : Element3D
             return (BoundingBox)GetValue(ParticleBoundsProperty);
         }
     }
-#else
+#elif WPF
     public static readonly DependencyProperty ParticleBoundsProperty = DependencyProperty.Register("ParticleBounds", typeof(Rect3D), typeof(ParticleStormModel3D),
     new PropertyMetadata(new Rect3D(0, 0, 0, 100, 100, 100),
         (d, e) =>
@@ -139,6 +146,8 @@ public class ParticleStormModel3D : Element3D
             return (Rect3D)GetValue(ParticleBoundsProperty);
         }
     }
+#else
+#error Unknown framework
 #endif
 
     public static readonly DependencyProperty EmitterRadiusProperty = DependencyProperty.Register("EmitterRadius", typeof(double), typeof(ParticleStormModel3D),
@@ -782,18 +791,21 @@ public class ParticleStormModel3D : Element3D
             c.DestAlphaBlend = DestAlphaBlend;
             c.SampleMask = SampleMask;
             c.BlendColor = BlendColor.ToColor4();
-#if WINUI
+#if false
+#elif WINUI
             c.EmitterLocation = EmitterLocation;
             c.ConsumerLocation = ConsumerLocation;
             c.InitAcceleration = Acceleration;
             c.DomainBoundMax = ParticleBounds.Maximum;
             c.DomainBoundMin = ParticleBounds.Minimum;
-#else
+#elif WPF
             c.EmitterLocation = EmitterLocation.ToVector3();
             c.ConsumerLocation = ConsumerLocation.ToVector3();
             c.InitAcceleration = Acceleration.ToVector3();
             c.DomainBoundMax = new Vector3((float)(ParticleBounds.SizeX / 2 + ParticleBounds.Location.X), (float)(ParticleBounds.SizeY / 2 + ParticleBounds.Location.Y), (float)(ParticleBounds.SizeZ / 2 + ParticleBounds.Location.Z));
             c.DomainBoundMin = new Vector3((float)(ParticleBounds.Location.X - ParticleBounds.SizeX / 2), (float)(ParticleBounds.Location.Y - ParticleBounds.SizeY / 2), (float)(ParticleBounds.Location.Z - ParticleBounds.SizeZ / 2));
+#else
+#error Unknown framework
 #endif
         }
     }

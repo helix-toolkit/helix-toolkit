@@ -5,17 +5,30 @@ using System.Collections.Specialized;
 
 namespace HelixToolkit.WinUI.SharpDX;
 
-public class ItemsModel3D : Element3D, IHitable
+/// <summary>
+///     Represents a model that can be used to present a collection of items. supports generating child items by a
+///     <see cref="DataTemplate" />.
+/// </summary>
+/// <remarks>
+///     Use the ItemsSource property to specify the collection to use to generate the content of your ItemsControl. You can set the ItemsSource
+///     property to any type that implements IEnumerable. ItemsSource is typically used to display a data collection or to bind an
+///     ItemsControl to a collection object.
+/// </remarks>
+public class ItemsModel3D : CompositeModel3D
 {
+    /// <summary>
+    ///     The item template property
+    /// </summary>
+    public static readonly DependencyProperty ItemTemplateProperty = DependencyProperty.Register(
+        "ItemTemplate", typeof(DataTemplate), typeof(ItemsModel3D), new PropertyMetadata(null));
+
     /// <summary>
     /// ItemsSource for binding to collection. Please use ObservableElement3DCollection for observable, otherwise may cause memory leak.
     /// </summary>
-    public static readonly DependencyProperty ItemsSourceProperty =
-        DependencyProperty.Register("ItemsSource", typeof(IEnumerable), typeof(ItemsModel3D),
-            new PropertyMetadata(null,
-                (d, e) =>
+    public static readonly DependencyProperty ItemsSourceProperty = DependencyProperty.Register(
+        "ItemsSource", typeof(IEnumerable), typeof(ItemsModel3D), new PropertyMetadata(null, (s, e) =>
                 {
-                    if (d is ItemsModel3D itemsModel && itemsModel.IsAttached)
+                    if (s is ItemsModel3D itemsModel && itemsModel.IsAttached)
                     {
                         itemsModel.OnItemsSourceChanged(e.NewValue as IEnumerable);
                     }
@@ -45,32 +58,23 @@ public class ItemsModel3D : Element3D, IHitable
             }
         }));
 
-    public static readonly DependencyProperty AlwaysHittableProperty =
-        DependencyProperty.Register("AlwaysHittable", typeof(bool), typeof(ItemsModel3D), new PropertyMetadata(false, (d, e) =>
-        {
-            if (d is ItemsModel3D model)
-            {
-                model.SceneNode.AlwaysHittable = (bool)e.NewValue;
-            }
-        }));
-
+    /// <summary>
+    ///     Gets or sets the <see cref="DataTemplate" /> used to display each item.
+    /// </summary>
+    /// <value>
+    ///     The item template.
+    /// </value>
     public DataTemplate? ItemTemplate
     {
         get
         {
-            return (DataTemplate?)GetValue(ItemTemplateProperty);
+            return (DataTemplate?)this.GetValue(ItemTemplateProperty);
         }
         set
         {
-            SetValue(ItemTemplateProperty, value);
+            this.SetValue(ItemTemplateProperty, value);
         }
     }
-
-    // Using a DependencyProperty as the backing store for ItemTemplate.  This enables animation, styling, binding, etc...
-    public static readonly DependencyProperty ItemTemplateProperty =
-        DependencyProperty.Register("ItemTemplate", typeof(DataTemplate), typeof(ItemsModel3D), new PropertyMetadata(null));
-
-
 
     public DataTemplateSelector ItemTemplateSelector
     {
@@ -89,13 +93,23 @@ public class ItemsModel3D : Element3D, IHitable
         DependencyProperty.Register("ItemTemplateSelector", typeof(DataTemplateSelector), typeof(ItemsModel3D), new PropertyMetadata(new DataTemplateSelector()));
 
     /// <summary>
-    /// ItemsSource for binding to collection. Please use ObservableElement3DCollection for observable, otherwise may cause memory leak.
+    ///     Gets or sets a collection used to generate the content of the <see cref="ItemsModel3D" />.
     /// </summary>
+    /// <value>
+    ///     The items source.
+    /// </value>
     public IEnumerable? ItemsSource
     {
-        get { return (IEnumerable?)this.GetValue(ItemsSourceProperty); }
-        set { this.SetValue(ItemsSourceProperty, value); }
+        get
+        {
+            return (IEnumerable?)this.GetValue(ItemsSourceProperty);
+        }
+        set
+        {
+            this.SetValue(ItemsSourceProperty, value);
+        }
     }
+
     public IOctreeManagerWrapper? OctreeManager
     {
         set
@@ -107,40 +121,12 @@ public class ItemsModel3D : Element3D, IHitable
             return (IOctreeManagerWrapper?)GetValue(OctreeManagerProperty);
         }
     }
-    /// <summary>
-    /// Gets or sets a value indicating whether [always hittable].
-    /// </summary>
-    /// <value>
-    ///   <c>true</c> if [always hittable]; otherwise, <c>false</c>.
-    /// </value>
-    public bool AlwaysHittable
-    {
-        get
-        {
-            return (bool)GetValue(AlwaysHittableProperty);
-        }
-        set
-        {
-            SetValue(AlwaysHittableProperty, value);
-        }
-    }
 
     private IOctreeBasic? Octree => (SceneNode as GroupNode)?.OctreeManager?.Octree;
 
-    /// <summary>
-    /// Gets the children.
-    /// </summary>
-    /// <value>
-    /// The children.
-    /// </value>
-    public ObservableElement3DCollection Children
-    {
-        get;
-    } = new ObservableElement3DCollection();
-
     private readonly ItemsControl itemsControl = new();
 
-    private IEnumerable? itemsSourceInternal = null;
+    private IEnumerable? itemsSourceInternal;
 
     public ItemCollection Items => itemsControl.Items;
 
@@ -400,24 +386,6 @@ public class ItemsModel3D : Element3D, IHitable
         else
         {
             throw new InvalidOperationException("Cannot create a Model3D from ItemTemplate.");
-        }
-    }
-
-    private void S_CollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
-    {
-        if (e.OldItems != null)
-        {
-            foreach (Element3D item in e.OldItems)
-            {
-                Children.Remove(item);
-            }
-        }
-        if (e.NewItems != null)
-        {
-            foreach (Element3D item in e.NewItems)
-            {
-                Children.Add(item);
-            }
         }
     }
 

@@ -1,15 +1,21 @@
 ﻿using HelixToolkit.SharpDX;
 using HelixToolkit.SharpDX.Model;
 
-#if WINUI
-#else
+#if false
+#elif WINUI
+#elif WPF
 using System.Windows;
+#else
+#error Unknown framework
 #endif
 
-#if WINUI
+#if false
+#elif WINUI
 namespace HelixToolkit.WinUI.SharpDX;
-#else
+#elif WPF
 namespace HelixToolkit.Wpf.SharpDX;
+#else
+#error Unknown framework
 #endif
 
 public class PointMaterial : Material
@@ -300,7 +306,9 @@ public class PointMaterial : Material
         };
     }
 
-#if WPF
+#if false
+#elif WINUI
+#elif WPF
     protected override Freezable CreateInstanceCore()
     {
         return new PointMaterial()
@@ -308,5 +316,7 @@ public class PointMaterial : Material
             Name = Name
         };
     }
+#else
+#error Unknown framework
 #endif
 }

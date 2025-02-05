@@ -5,8 +5,33 @@
 /// </summary>
 public static class ViewportPartNames
 {
-    public const string PART_RenderTarget = "PART_RenderTarget";
-    public const string PART_CoordinateGroup = "PART_CoordinateGroup";
-    public const string PART_HostPresenter = "PART_HostPresenter";
-    public const string PART_ItemsContainer = "PART_ItemsContainer";
+    /// <summary>
+    /// The canvas part name.
+    /// </summary>
+    public const string PartCanvas = "PART_Canvas";
+
+    /// <summary>
+    /// The coordinate view part name.
+    /// </summary>
+    public const string PartCoordinateView = "PART_CoordinateView";
+
+    /// <summary>
+    /// The view cube part name.
+    /// </summary>
+    public const string PartViewCube = "PART_ViewCube";
+
+    /// <summary>
+    /// The frame statistic view part name
+    /// </summary>
+    public const string PartFrameStatisticView = "PART_FrameStatisticView";
+
+    /// <summary>
+    /// The part title view
+    /// </summary>
+    public const string PartTitleView = "PART_TitleView";
+
+    /// <summary>
+    /// The part items used to inherit datacontext for children
+    /// </summary>
+    public const string PartItems = "PART_Items";
 }

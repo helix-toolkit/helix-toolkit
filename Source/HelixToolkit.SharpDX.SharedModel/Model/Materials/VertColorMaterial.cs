@@ -1,9 +1,12 @@
 ﻿using HelixToolkit.SharpDX.Model;
 
-#if WINUI
+#if false
+#elif WINUI
 namespace HelixToolkit.WinUI.SharpDX;
-#else
+#elif WPF
 namespace HelixToolkit.Wpf.SharpDX;
+#else
+#error Unknown framework
 #endif
 
 /// <summary>
@@ -24,7 +27,9 @@ public sealed class VertColorMaterial : Material
     {
     }
 
-#if WPF
+#if false
+#elif WINUI
+#elif WPF
     protected override Freezable CreateInstanceCore()
     {
         return new VertColorMaterial()
@@ -32,5 +37,7 @@ public sealed class VertColorMaterial : Material
             Name = Name
         };
     }
+#else
+#error Unknown framework
 #endif
 }

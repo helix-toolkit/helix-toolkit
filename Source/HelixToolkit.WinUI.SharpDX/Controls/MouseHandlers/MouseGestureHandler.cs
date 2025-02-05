@@ -48,7 +48,7 @@ internal abstract class MouseGestureHandler
     /// Gets the camera.
     /// </summary>
     /// <value>The camera.</value>
-    protected ProjectionCamera? Camera
+    protected Camera? Camera
     {
         get
         {
@@ -284,7 +284,7 @@ internal abstract class MouseGestureHandler
             return null;
         }
 
-        return this.UnProject(p, this.Camera.Target, this.Camera.LookDirection);
+        return this.UnProject(p, this.Camera.CameraInternal.Target, this.Camera.LookDirection);
     }
 
     /// <summary>

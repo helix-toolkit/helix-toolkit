@@ -2,16 +2,21 @@
 using HelixToolkit.SharpDX.Model.Scene2D;
 using SharpDX;
 
-#if WINUI
+#if false
+#elif WINUI
 namespace HelixToolkit.WinUI.SharpDX.Core2D;
-#else
+#elif WPF
 namespace HelixToolkit.Wpf.SharpDX.Core2D;
+#else
+#error Unknown framework
 #endif
 
 /// <summary>
 /// External Wrapper core to be used for different platform
 /// </summary>
-public abstract partial class Element2DCore : FrameworkContentElement, IDisposable
+/// todo
+//public abstract partial class Element2DCore : FrameworkContentElement, IDisposable
+public abstract partial class Element2DCore : FrameworkControl, IDisposable
 {
     public sealed class SceneNode2DCreatedEventArgs : EventArgs
     {
@@ -82,7 +87,8 @@ public abstract partial class Element2DCore : FrameworkContentElement, IDisposab
 
     private void SceneNode_OnDetached(object? sender, EventArgs e)
     {
-#if WINUI
+#if false
+#elif WINUI
         if (Dispatcher != null)
         {
             if (Dispatcher.HasThreadAccess)
@@ -91,7 +97,7 @@ public abstract partial class Element2DCore : FrameworkContentElement, IDisposab
             }
         }
 
-#else
+#elif WPF
         if (this.Dispatcher != null && this.Dispatcher.Thread.IsAlive)
         {
             if (this.Dispatcher.CheckAccess())
@@ -103,6 +109,8 @@ public abstract partial class Element2DCore : FrameworkContentElement, IDisposab
                 Dispatcher.Invoke(() => { OnDetached(); });
             }
         }
+#else
+#error Unknown framework
 #endif
     }
 
@@ -136,6 +144,7 @@ public abstract partial class Element2DCore : FrameworkContentElement, IDisposab
     {
     }
     #endregion
+
     #region Events        
     /// <summary>
     /// Occurs when [on scene node created]. Make sure to hook up this event at the top of constructor of class, otherwise may miss the event.
@@ -153,28 +162,29 @@ public abstract partial class Element2DCore : FrameworkContentElement, IDisposab
         SceneNode.InvalidateRender();
     }
 
-#if WINUI
-    public new void InvalidateMeasure()
-    {
-        SceneNode.InvalidateMeasure();
-    }
-
-    public new void InvalidateArrange()
-    {
-        SceneNode.InvalidateArrange();
-    }
+#if false
+#elif WINUI
+    new
+#elif WPF
 #else
+#error Unknown framework
+#endif
     public void InvalidateMeasure()
     {
         SceneNode.InvalidateMeasure();
     }
 
+#if false
+#elif WINUI
+    new
+#elif WPF
+#else
+#error Unknown framework
+#endif
     public void InvalidateArrange()
     {
         SceneNode.InvalidateArrange();
     }
-#endif
-
 
     public static implicit operator SceneNode2D(Element2DCore e)
     {

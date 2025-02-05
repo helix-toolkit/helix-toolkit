@@ -9,7 +9,7 @@ public class ClickableNode2D : BorderNode2D
         hitResult = null;
         if (LayoutBoundWithTransform.Contains(mousePoint))
         {
-            if (!base.OnHitTest(ref mousePoint, out hitResult))
+            //if (!base.OnHitTest(ref mousePoint, out hitResult))
             {
                 hitResult = new HitTest2DResult(WrapperSource);
             }

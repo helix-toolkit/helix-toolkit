@@ -2,16 +2,22 @@
 using HelixToolkit.SharpDX.Model.Scene;
 using SharpDX;
 
-#if WINUI
+#if false
+#elif WINUI
 using HelixToolkit.WinUI.SharpDX.Model;
-#else
+#elif WPF
 using HelixToolkit.Wpf.SharpDX.Model;
+#else
+#error Unknown framework
 #endif
 
-#if WINUI
+#if false
+#elif WINUI
 namespace HelixToolkit.WinUI.SharpDX;
-#else
+#elif WPF
 namespace HelixToolkit.Wpf.SharpDX;
+#else
+#error Unknown framework
 #endif
 
 /// <summary>
@@ -56,11 +62,7 @@ public class CrossSectionMeshGeometryModel3D : MeshGeometryModel3D
     /// Defines the CrossSectionColorProperty
     /// </summary>
     public static readonly DependencyProperty CrossSectionColorProperty = DependencyProperty.Register("CrossSectionColor", typeof(UIColor), typeof(CrossSectionMeshGeometryModel3D),
-#if WINUI
-            new PropertyMetadata(Microsoft.UI.Colors.Firebrick,
-#else
                 new PropertyMetadata(UIColors.Firebrick,
-#endif
        (d, e) =>
        {
            if (d is Element3DCore { SceneNode: CrossSectionMeshNode node })

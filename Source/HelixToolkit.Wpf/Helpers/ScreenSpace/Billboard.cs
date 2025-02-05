@@ -11,37 +11,37 @@ public sealed class Billboard
     /// <summary>
     /// The position
     /// </summary>
-    internal Point3D Position;
+    internal readonly Point3D Position;
 
     /// <summary>
     /// The relative left position (screen coordinates).
     /// </summary>
-    internal double Left;
+    internal readonly double Left;
 
     /// <summary>
     /// The relative right position (screen coordinates).
     /// </summary>
-    internal double Right;
+    internal readonly double Right;
 
     /// <summary>
     /// The relative top position (screen coordinates).
     /// </summary>
-    internal double Top;
+    internal readonly double Top;
 
     /// <summary>
     /// The relative bottom position (screen coordinates).
     /// </summary>
-    internal double Bottom;
+    internal readonly double Bottom;
 
     /// <summary>
     /// The depth offset in normalized units
     /// </summary>
-    internal double DepthOffset;
+    internal readonly double DepthOffset;
 
     /// <summary>
     /// The depth offset in model (world) units
     /// </summary>
-    internal double WorldDepthOffset;
+    internal readonly double WorldDepthOffset;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="Billboard" /> class.

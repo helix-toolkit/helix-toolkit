@@ -11,8 +11,7 @@ float4 mr1 : TEXCOORD2,
 float4 mr2 : TEXCOORD3,
 float4 mr3 : TEXCOORD4) : SV_Position
 {
-    float4 output = (float4) 0;
-    output = pos;
+	float4 output = mul(pos, mWorld);
 	// compose instance matrix
     if (bHasInstances)
     {
@@ -23,11 +22,11 @@ float4 mr3 : TEXCOORD4) : SV_Position
 			mr2,
 			mr3
         };
-        output = mul(pos, mInstance);
-    }
+		output = mul(output, mInstance);
+	}
 
 	//set position into world space	
-    output = mul(output, mul(mWorld, mViewProjection));
+    output = mul(output, mViewProjection);
     return output;
 }
 #endif
