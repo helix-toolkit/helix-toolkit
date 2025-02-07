@@ -17,9 +17,9 @@
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{A5A43C5B-DE2A-4C0C-9213-0A381AF9435A};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <UnitTestPlatformVersion Condition="'$(UnitTestPlatformVersion)' == ''">$(VisualStudioVersion)</UnitTestPlatformVersion>
-    <PackageCertificateThumbprint>049375F1DE96A3B8D502CFAF9FC767F21C379FD6</PackageCertificateThumbprint>
+    <PackageCertificateThumbprint>B109A55BA4D3DC63B3500D554F69898F49CEFB8A</PackageCertificateThumbprint>
     <AppxPackageSigningEnabled>True</AppxPackageSigningEnabled>
-    <PackageCertificateKeyFile>../HelixToolkit.UWP.TemporaryKey.pfx</PackageCertificateKeyFile>
+    <PackageCertificateKeyFile>HelixToolkit.UWP.Tests_TemporaryKey.pfx</PackageCertificateKeyFile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <DebugSymbols>true</DebugSymbols>
@@ -141,7 +141,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="HelixToolkit.UWP.TemporaryKey.pfx" />
+    <None Include="HelixToolkit.UWP.Tests_TemporaryKey.pfx" />
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
