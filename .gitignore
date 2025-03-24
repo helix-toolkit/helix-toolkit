@@ -203,4 +203,5 @@ FakesAssemblies/
 !Models/obj/
 !Models/obj/**/*.obj
 !/Source/Examples/WPF/ExampleBrowser/Resources/simple3dModel.obj
+!/Components/SRTM.dll
 

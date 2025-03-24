@@ -53,7 +53,7 @@ public class MapTexture : TerrainTexture
     /// <param name="mesh">
     /// The mesh.
     /// </param>
-    public override void Calculate(TerrainModel model, MeshGeometry3D mesh)
+    public override void Calculate(ITerrainModel model, MeshGeometry3D mesh)
     {
         var texcoords = new PointCollection();
         foreach (var p in mesh.Positions)

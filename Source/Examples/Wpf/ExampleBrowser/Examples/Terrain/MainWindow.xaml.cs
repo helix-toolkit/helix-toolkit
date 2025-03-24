@@ -1,28 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
+﻿using System.Windows;
+
+using ExampleBrowser.Examples.Terrain.ViewModels;
 
 namespace Terrain;
 
 /// <summary>
 /// Interaction logic for MainWindow.xaml
 /// </summary>
-[ExampleBrowser.Example("Terrain", "Rendering a terrain loaded from a .bt file.")]
+[ExampleBrowser.Example("Terrain", "Rendering a terrain loaded from different terrain files (.bt, .hgt).")]
 public partial class MainWindow : Window
 {
+    private readonly MainWindowViewModel _viewModel = new MainWindowViewModel();
+
     public MainWindow()
     {
         this.InitializeComponent();
+
+        this.DataContext = _viewModel;
         this.Loaded += this.MainWindowLoaded;
     }
 

@@ -109,6 +109,9 @@
     <Reference Include="Petzold.Media3D">
       <HintPath>..\..\..\..\Components\Petzold.Media3D.dll</HintPath>
     </Reference>
+    <Reference Include="SRTM">
+      <HintPath>..\..\..\..\Components\SRTM.dll</HintPath>
+    </Reference>
     <Reference Include="Triangle">
       <HintPath>..\..\..\..\Components\Triangle.dll</HintPath>
     </Reference>
@@ -123,6 +126,12 @@
     </None>
     <None Remove="Examples\Voxels\MyModel.xml" />
     <None Update="Examples\Terrain\Models\crater_0513.btz">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Examples\Terrain\Models\N43E042.hgt.zip">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Examples\Terrain\Models\N43W123.hgt.zip">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
