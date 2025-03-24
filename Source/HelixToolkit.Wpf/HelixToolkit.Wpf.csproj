@@ -59,11 +59,18 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="System.IO.Compression" Version="4.3.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\HelixToolkit.Geometry\HelixToolkit.Geometry.csproj" />
     <ProjectReference Include="..\HelixToolkit\HelixToolkit.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="SRTM">
+      <HintPath>..\..\Components\SRTM.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>
