@@ -2,7 +2,9 @@
 using System.IO;
 using System.Text;
 using System.Windows.Media.Media3D;
+
 using CommunityToolkit.Diagnostics;
+
 using HelixToolkit.Geometry;
 
 namespace HelixToolkit.Wpf;
@@ -19,7 +21,7 @@ namespace HelixToolkit.Wpf;
 /// The .btz format is a gzip compressed version of the .bt format.
 ///  </para>
 /// </remarks>
-public class TerrainModel
+public class TerrainModel : ITerrainModel
 {
     /// <summary>
     /// Gets or sets the bottom.
@@ -86,6 +88,11 @@ public class TerrainModel
     /// </summary>
     /// <value>The width.</value>
     public int Width { get; set; }
+
+    /// <summary>
+    /// Gets the lod.
+    /// </summary>
+    public int Lod => 2;
 
     /// <summary>
     /// Creates the 3D model of the terrain.

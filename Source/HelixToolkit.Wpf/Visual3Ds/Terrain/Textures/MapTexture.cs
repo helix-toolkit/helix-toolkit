@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using System.Windows.Media.Media3D;
 
 namespace HelixToolkit.Wpf;
@@ -18,6 +19,17 @@ public class MapTexture : TerrainTexture
     public MapTexture(string source)
     {
         this.Material = MaterialHelper.CreateImageMaterial(source, 1);
+    }
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="MapTexture"/> class.
+    /// </summary>
+    /// <param name="image">
+    /// The bitmap image.
+    /// </param>
+    public MapTexture(BitmapImage image)
+    {
+        this.Material = MaterialHelper.CreateImageMaterial(image, 1);
     }
 
     /// <summary>
@@ -53,7 +65,7 @@ public class MapTexture : TerrainTexture
     /// <param name="mesh">
     /// The mesh.
     /// </param>
-    public override void Calculate(TerrainModel model, MeshGeometry3D mesh)
+    public override void Calculate(ITerrainModel model, MeshGeometry3D mesh)
     {
         var texcoords = new PointCollection();
         foreach (var p in mesh.Positions)
