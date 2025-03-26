@@ -110,7 +110,7 @@ namespace HelixToolkit.UWP
             }
 
             public VolumeRenderCore()
-                : base(RenderType.Opaque)
+                : base(RenderType.Particle)
             {
                 modelCB = AddComponent(new ConstantBufferComponent(new ConstantBufferDescription(DefaultBufferNames.VolumeModelCB,
                     VolumeParamsStruct.SizeInBytes)));
