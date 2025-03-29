@@ -1,7 +1,15 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
-## [2.26.0] Pre-release
+## [2.27.0]
+
+### Bug Fix
+
+1. Fix instancing matrix calculation order. (SharpDX)
+
+1. Fix volume rendering not working.
+
+## [2.26.0]
 
 ### Added
 
