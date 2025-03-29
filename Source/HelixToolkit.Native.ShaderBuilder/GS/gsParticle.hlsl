@@ -31,7 +31,7 @@ void main(point ParticleGS_INPUT input[1], inout TriangleStream<ParticlePS_INPUT
     float3 vEye = vEyePos - input[0].position.xyz;
     float z = length(vEye); //Use wp for camera->vertex direction
 	//// Transform to view space
-	float4 viewposition = mul(mul(float4(input[0].position, 1.0f), mWorld), mView);
+	float4 viewposition = mul(float4(input[0].position, 1.0f), mView);
 	float2 texScale = float2(1.0f / max(1, NumTexCol), 1.0f / max(1, NumTexRow));
 	if (AnimateByEnergyLevel)
 	{

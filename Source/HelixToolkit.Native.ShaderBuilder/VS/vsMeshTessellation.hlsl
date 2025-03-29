@@ -2,8 +2,8 @@
 #define VSMESHTESSELLATION_HLSL
 
 #define MESH
-#include"..\Common\CommonBuffers.hlsl"
-#include"..\Common\DataStructs.hlsl"
+#include "..\Common\CommonBuffers.hlsl"
+#include "..\Common\DataStructs.hlsl"
 #pragma pack_matrix( row_major )
 
 //--------------------------------------------------------------------------------------
@@ -18,14 +18,15 @@ HSInput main(VSInstancingInput input)
 #endif
 {
     HSInput output = (HSInput) 0;
-    float4 inputp = input.p;
-    float3 inputn = input.n;
-    float3 inputt1 = input.t1;
-    float3 inputt2 = input.t2;
+	float4 inputp = mul(input.p, mWorld);
+	float3 inputn = mul(input.n, (float3x3) mWorld);
+	float3 inputt1 = mul(input.t1, (float3x3) mWorld);
+	float3 inputt2 = mul(input.t2, (float3x3) mWorld);
     if (bInvertNormal)
     {
         inputn = -inputn;
     }
+
     if (bHasInstances)
     {
         matrix mInstance =
@@ -35,7 +36,7 @@ HSInput main(VSInstancingInput input)
 			input.mr2,
 			input.mr3
         };
-        inputp = mul(input.p, mInstance);
+		inputp = mul(inputp, mInstance);
         inputn = mul(inputn, (float3x3) mInstance);
         if (bHasNormalMap)
         {
@@ -69,7 +70,7 @@ HSInput main(VSInstancingInput input)
     }
 #endif
 
-    output.p = mul(inputp, mWorld).xyz;
+    output.p = inputp.xyz;
     output.n = inputn;
     output.t1 = inputt1;
     output.t2 = inputt2;

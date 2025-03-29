@@ -2,14 +2,14 @@
 #define VSMESHSHADOW_HLSL
 
 #define MESHSIMPLE
-#include"..\Common\Common.hlsl"
-#include"..\Common\DataStructs.hlsl"
+#include "..\Common\Common.hlsl"
+#include "..\Common\DataStructs.hlsl"
 #pragma pack_matrix( row_major )
 
 PSShadow main(VSInput input)
 {
     PSShadow output = (PSShadow)0;
-	output.p = input.p;
+	output.p = mul(input.p, mWorld);
 	// compose instance matrix
     if (bHasInstances)
     {
@@ -24,7 +24,7 @@ PSShadow main(VSInput input)
     }
 
 	//set position into world space	
-    output.p = mul(output.p, mul(mWorld, mul(vLightView, vLightProjection)));
+    output.p = mul(output.p, mul(vLightView, vLightProjection));
     return output;
 }
 #endif

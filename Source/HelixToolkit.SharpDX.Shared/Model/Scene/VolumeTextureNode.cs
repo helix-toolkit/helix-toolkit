@@ -56,10 +56,6 @@ namespace HelixToolkit.UWP
 
             private MaterialVariable materialVariable;
 
-            public VolumeTextureNode()
-            {
-                RenderType = RenderType.Transparent;
-            }
 
             protected override bool OnAttach(IEffectsManager effectsManager)
             {
