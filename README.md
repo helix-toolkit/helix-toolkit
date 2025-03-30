@@ -56,25 +56,28 @@ FXAA, Order Independant Transparent Rendering, Particle system, Tessellation.
 
 #### 4. [Wiki](https://github.com/helix-toolkit/helix-toolkit/wiki) and useful [External Resources](https://github.com/helix-toolkit/helix-toolkit/wiki/External-References) on Computer Graphics.
 
-## HelixToolkit Library Structure
-
-### WPF Internal 3D Engine (DirectX9)
+## HelixToolkit Package Dependencies
 
 ```mermaid
-graph TD
-    hx[HelixToolkit] --> hxWpf[HelixToolkit.Wpf]
-    wpf[WPF Framework] --> hxWpf
-```
+flowchart TD
+ subgraph s1["DirectX 11 Engine"]
+        n6["HelixToolkit.SharpDX"]
+        n7["HelixToolkit.SharpDX.Assimp"]
+        n8["HelixToolkit.Wpf.SharpDX"]
+        n9["HelixToolkit.WinUI.SharpDX"]
+  end
+ subgraph s2["WPF 3D Engine"]
+        n10["HelixToolkit.Wpf"]
+        n11["HelixToolkit.Wpf.TDxInput"]
+  end
+    hx["HelixToolkit"] --> n1["HelixToolkit.Maths"]
+    n1 --> n2["HelixToolkit.Geometry"]
+    n6 --> n7 & n8 & n9
+    n10 --> n11
+    n2 --> s2
+    n2 --> s1
 
-### HelixToolkit DirectX11 Engine
-
-```mermaid
-graph TD
-    hx[HelixToolkit] --> hxdx[HelixToolkit.SharpDX]
-    dx11[DirectX11 Engine] --> hxdx
-    hxdx --> hxAssimp[HelixToolkit.SharpDX.Assimp]
-    hxdx --> hxWpf[HelixToolkit.Wpf.SharpDX]
-    hxdx --> hxWinUI[HelixToolkit.WinUI.SharpDX]
+    n2@{ shape: rect}
 ```
 
 ## Bug Report
