@@ -87,20 +87,20 @@ Please use the following template to report bugs.
 - Sample Code:
 
 ## News
-#### 2025-01-23
-[v2.26.0](https://github.com/helix-toolkit/helix-toolkit/releases/tag/v2.26.0) releases are available on nuget. [Release Note](/CHANGELOG.md)
+#### 2025-03-30
+[v2.27.0](https://github.com/helix-toolkit/helix-toolkit/releases/tag/v2.27.0) releases are available on nuget. [Release Note](/CHANGELOG.md)
 
 :bangbang: This is the final release of HelixToolkit v2. Moving forward, our focus will shift to the development of v3.
 
-- [WPF](https://www.nuget.org/packages/HelixToolkit.Wpf/2.26.0)
-- [Core.WPF](https://www.nuget.org/packages/HelixToolkit.Core.Wpf/2.26.0)
-- [WPF.Input](https://www.nuget.org/packages/HelixToolkit.Wpf.Input/2.26.0)
-- [WPF.SharpDX](https://www.nuget.org/packages/HelixToolkit.Wpf.SharpDX/2.26.0)
-- [UWP](https://www.nuget.org/packages/HelixToolkit.UWP/2.26.0)
-- [SharpDX.Core](https://www.nuget.org/packages/HelixToolkit.SharpDX.Core/2.26.0)
-- [SharpDX.Core.Wpf](https://www.nuget.org/packages/HelixToolkit.SharpDX.Core.Wpf/2.26.0)
-- [WinUI](https://www.nuget.org/packages/HelixToolkit.WinUI/2.26.0)
-- [SharpDX.Assimp](https://www.nuget.org/packages/HelixToolkit.SharpDX.Assimp/2.26.0)
+- [WPF](https://www.nuget.org/packages/HelixToolkit.Wpf/2.27.0)
+- [Core.WPF](https://www.nuget.org/packages/HelixToolkit.Core.Wpf/2.27.0)
+- [WPF.Input](https://www.nuget.org/packages/HelixToolkit.Wpf.Input/2.27.0)
+- [WPF.SharpDX](https://www.nuget.org/packages/HelixToolkit.Wpf.SharpDX/2.27.0)
+- [UWP](https://www.nuget.org/packages/HelixToolkit.UWP/2.27.0)
+- [SharpDX.Core](https://www.nuget.org/packages/HelixToolkit.SharpDX.Core/2.27.0)
+- [SharpDX.Core.Wpf](https://www.nuget.org/packages/HelixToolkit.SharpDX.Core.Wpf/2.27.0)
+- [WinUI](https://www.nuget.org/packages/HelixToolkit.WinUI/2.27.0)
+- [SharpDX.Assimp](https://www.nuget.org/packages/HelixToolkit.SharpDX.Assimp/2.27.0)
 
 #### Changes (Please refer to [Release Note](https://github.com/helix-toolkit/helix-toolkit/blob/master/CHANGELOG.md) for details)
 
