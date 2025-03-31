@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFrameworks>net8.0;net6.0;net48</TargetFrameworks>
@@ -34,7 +34,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\HelixToolkit.SharpDX.Assimp\HelixToolkit.SharpDX.Assimp.csproj" />
+    <ProjectReference Include="..\HelixToolkit.Geometry\HelixToolkit.Geometry.csproj" />
   </ItemGroup>
 
 </Project>

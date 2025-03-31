@@ -15,6 +15,12 @@ public class ColladaExporterTests : ExporterTests
     {
         string dir = Path.GetDirectoryName(typeof(ColladaExporterTests).Assembly.Location) ?? "";
         dir = Path.Combine(dir!, string.Concat(Enumerable.Repeat("..\\", 5)));
+
+        if (Path.GetFullPath(dir).EndsWith("Source\\", StringComparison.OrdinalIgnoreCase))
+        {
+            dir = Path.Combine(dir, "..\\");
+        }
+
         Directory.SetCurrentDirectory(dir);
     }
 
