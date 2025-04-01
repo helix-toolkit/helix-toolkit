@@ -172,6 +172,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HelixToolkit.Geometry.Tests
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HelixToolkit.Maths.Tests", "HelixToolkit.Maths.Tests\HelixToolkit.Maths.Tests.csproj", "{616C5296-272F-48B6-B6B9-D5E8DE0E9AA3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HelixToolkit.Perf", "HelixToolkit.Perf\HelixToolkit.Perf.csproj", "{58202322-86B7-1459-6ADF-020747A92DCB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -1440,6 +1442,22 @@ Global
 		{616C5296-272F-48B6-B6B9-D5E8DE0E9AA3}.Release|x64.Build.0 = Release|Any CPU
 		{616C5296-272F-48B6-B6B9-D5E8DE0E9AA3}.Release|x86.ActiveCfg = Release|Any CPU
 		{616C5296-272F-48B6-B6B9-D5E8DE0E9AA3}.Release|x86.Build.0 = Release|Any CPU
+		{58202322-86B7-1459-6ADF-020747A92DCB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{58202322-86B7-1459-6ADF-020747A92DCB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{58202322-86B7-1459-6ADF-020747A92DCB}.Debug|ARM64.ActiveCfg = Debug|Any CPU
+		{58202322-86B7-1459-6ADF-020747A92DCB}.Debug|ARM64.Build.0 = Debug|Any CPU
+		{58202322-86B7-1459-6ADF-020747A92DCB}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{58202322-86B7-1459-6ADF-020747A92DCB}.Debug|x64.Build.0 = Debug|Any CPU
+		{58202322-86B7-1459-6ADF-020747A92DCB}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{58202322-86B7-1459-6ADF-020747A92DCB}.Debug|x86.Build.0 = Debug|Any CPU
+		{58202322-86B7-1459-6ADF-020747A92DCB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{58202322-86B7-1459-6ADF-020747A92DCB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{58202322-86B7-1459-6ADF-020747A92DCB}.Release|ARM64.ActiveCfg = Release|Any CPU
+		{58202322-86B7-1459-6ADF-020747A92DCB}.Release|ARM64.Build.0 = Release|Any CPU
+		{58202322-86B7-1459-6ADF-020747A92DCB}.Release|x64.ActiveCfg = Release|Any CPU
+		{58202322-86B7-1459-6ADF-020747A92DCB}.Release|x64.Build.0 = Release|Any CPU
+		{58202322-86B7-1459-6ADF-020747A92DCB}.Release|x86.ActiveCfg = Release|Any CPU
+		{58202322-86B7-1459-6ADF-020747A92DCB}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

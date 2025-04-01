@@ -661,6 +661,5 @@ namespace HelixToolkit.Maths
                 TransformNormal(ref source[i], ref transform, out destination[i]);
             }
         }
-
     }
 }

@@ -305,19 +305,14 @@ namespace HelixToolkit.Maths
         /// <exception cref="ArgumentNullException">Thrown when <paramref name="points"/> is <c>null</c>.</exception>
         public static void FromPoints(Vector3[] points, out BoundingBox result)
         {
+#if NET6_0_OR_GREATER
+            ArgumentNullException.ThrowIfNull(points, nameof(points));
+#else
             if (points == null)
-            {
                 throw new ArgumentNullException(nameof(points));
-            }
+#endif
 
-            Vector3 min = new(float.MaxValue);
-            Vector3 max = new(float.MinValue);
-
-            for (int i = 0; i < points.Length; ++i)
-            {
-                min = Vector3.Min(min, points[i]);
-                max = Vector3.Max(max, points[i]);
-            }
+            points.MinMax(out var min, out var max);
 
             result = new BoundingBox(min, max);
         }
@@ -330,21 +325,8 @@ namespace HelixToolkit.Maths
         /// <exception cref="ArgumentNullException">Thrown when <paramref name="points"/> is <c>null</c>.</exception>
         public static BoundingBox FromPoints(Vector3[] points)
         {
-            if (points == null)
-            {
-                throw new ArgumentNullException(nameof(points));
-            }
-
-            Vector3 min = new(float.MaxValue);
-            Vector3 max = new(float.MinValue);
-
-            for (int i = 0; i < points.Length; ++i)
-            {
-                min = Vector3.Min(min, points[i]);
-                max = Vector3.Max(max, points[i]);
-            }
-
-            return new BoundingBox(min, max);
+            FromPoints(points, out BoundingBox result);
+            return result;
         }
 
         /// <summary>

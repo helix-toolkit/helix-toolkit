@@ -29,6 +29,8 @@ The MIT License (MIT)
 Copyright (c) 2007-2011 SlimDX Group
 The MIT License (MIT)
 */
+using System.Diagnostics;
+
 namespace HelixToolkit.Maths
 {
     /// <summary>
@@ -422,37 +424,6 @@ namespace HelixToolkit.Maths
             {
                 destination[i] = Vector4.Transform(source[i], rotation);
             }
-            //float x = rotation.X + rotation.X;
-            //float y = rotation.Y + rotation.Y;
-            //float z = rotation.Z + rotation.Z;
-            //float wx = rotation.W * x;
-            //float wy = rotation.W * y;
-            //float wz = rotation.W * z;
-            //float xx = rotation.X * x;
-            //float xy = rotation.X * y;
-            //float xz = rotation.X * z;
-            //float yy = rotation.Y * y;
-            //float yz = rotation.Y * z;
-            //float zz = rotation.Z * z;
-
-            //float num1 = ((1.0f - yy) - zz);
-            //float num2 = (xy - wz);
-            //float num3 = (xz + wy);
-            //float num4 = (xy + wz);
-            //float num5 = ((1.0f - xx) - zz);
-            //float num6 = (yz - wx);
-            //float num7 = (xz - wy);
-            //float num8 = (yz + wx);
-            //float num9 = ((1.0f - xx) - yy);
-
-            //for (int i = 0; i < source.Length; ++i)
-            //{
-            //    destination[i] = new Vector4(
-            //        ((source[i].X * num1) + (source[i].Y * num2)) + (source[i].Z * num3),
-            //        ((source[i].X * num4) + (source[i].Y * num5)) + (source[i].Z * num6),
-            //        ((source[i].X * num7) + (source[i].Y * num8)) + (source[i].Z * num9),
-            //        source[i].W);
-            //}
         }
 
         /// <summary>
@@ -465,11 +436,6 @@ namespace HelixToolkit.Maths
         public static void Transform(ref Vector4 vector, ref Matrix transform, out Vector4 result)
         {
             result = Vector4.Transform(vector, transform);
-            //new Vector4(
-            //(vector.X * transform.M11) + (vector.Y * transform.M21) + (vector.Z * transform.M31) + (vector.W * transform.M41),
-            //(vector.X * transform.M12) + (vector.Y * transform.M22) + (vector.Z * transform.M32) + (vector.W * transform.M42),
-            //(vector.X * transform.M13) + (vector.Y * transform.M23) + (vector.Z * transform.M33) + (vector.W * transform.M43),
-            //(vector.X * transform.M14) + (vector.Y * transform.M24) + (vector.Z * transform.M34) + (vector.W * transform.M44));
         }
         /// <summary>
         /// Transforms a 4D vector by the given <see cref="Matrix"/>.
@@ -480,11 +446,6 @@ namespace HelixToolkit.Maths
         public static Vector4 Transform(this Vector4 vector, ref Matrix transform)
         {
             return Vector4.Transform(vector, transform);
-            //new Vector4(
-            //(vector.X * transform.M11) + (vector.Y * transform.M21) + (vector.Z * transform.M31) + (vector.W * transform.M41),
-            //(vector.X * transform.M12) + (vector.Y * transform.M22) + (vector.Z * transform.M32) + (vector.W * transform.M42),
-            //(vector.X * transform.M13) + (vector.Y * transform.M23) + (vector.Z * transform.M33) + (vector.W * transform.M43),
-            //(vector.X * transform.M14) + (vector.Y * transform.M24) + (vector.Z * transform.M34) + (vector.W * transform.M44));
         }
         /// <summary>
         /// Transforms an array of 4D vectors by the given <see cref="Matrix"/>.
@@ -495,7 +456,7 @@ namespace HelixToolkit.Maths
         /// This array may be the same array as <paramref name="source"/>.</param>
         /// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> or <paramref name="destination"/> is <c>null</c>.</exception>
         /// <exception cref="ArgumentOutOfRangeException">Thrown when <paramref name="destination"/> is shorter in length than <paramref name="source"/>.</exception>
-        public static void Transform(Vector4[] source, ref Matrix transform, Vector4[] destination)
+        public static void Transform(this Vector4[] source, ref Matrix transform, Vector4[] destination)
         {
             if (source == null)
             {
@@ -511,12 +472,51 @@ namespace HelixToolkit.Maths
             {
                 throw new ArgumentOutOfRangeException(nameof(destination), "The destination array must be of same length or larger length than the source array.");
             }
+            var i = 0;
+#if NET6_0_OR_GREATER
+            if (MathSettings.EnableSIMD)
+            {
+                if (Sse.IsSupported)
+                {
+                    // Load matrix rows into Vector128 vectors
+                    Vector128<float> row0X = Vector128.Create(transform.M11, transform.M12, transform.M13, transform.M14);
+                    Vector128<float> row1X = Vector128.Create(transform.M21, transform.M22, transform.M23, transform.M24);
+                    Vector128<float> row2X = Vector128.Create(transform.M31, transform.M32, transform.M33, transform.M34);
+                    Vector128<float> row3X = Vector128.Create(transform.M41, transform.M42, transform.M43, transform.M44);
+                    unsafe
+                    {
+                        fixed(void* dst = destination)
+                        {
+                            float* dstPtr = (float*)dst;
+                            for (; i < source.Length; i++, dstPtr += 4)
+                            {
+                                ref Vector4 vector = ref source[i];
 
-            for (int i = 0; i < source.Length; ++i)
+                                // Broadcast vector components into Vector128 vectors
+                                Vector128<float> vX = Vector128.Create(vector.X);
+                                Vector128<float> vY = Vector128.Create(vector.Y);
+                                Vector128<float> vZ = Vector128.Create(vector.Z);
+                                Vector128<float> vW = Vector128.Create(vector.W);
+
+                                // Multiply vector components with matrix rows
+                                vX = Sse.Multiply(vX, row0X);
+                                vY = Sse.Multiply(vY, row1X);
+                                vZ = Sse.Multiply(vZ, row2X);
+                                vW = Sse.Multiply(vW, row3X);
+
+                                // Perform horizontal addition to get the dot products
+                                Vector128<float> rowResults = Sse.Add(Sse.Add(vX, vY), Sse.Add(vZ, vW));
+                                Sse.Store(dstPtr, rowResults);
+                            }
+                        }
+                    }
+                }
+            }
+#endif
+            for (; i < source.Length; ++i)
             {
                 Transform(ref source[i], ref transform, out destination[i]);
             }
         }
-
     }
 }
