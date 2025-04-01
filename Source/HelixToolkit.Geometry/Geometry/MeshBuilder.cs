@@ -73,17 +73,17 @@ public sealed class MeshBuilder
     /// <summary>
     /// The circle cache.
     /// </summary>
-    private static readonly ThreadLocal<Dictionary<int, IList<Vector2>>> CircleCache = new(() => new Dictionary<int, IList<Vector2>>());
+    private static readonly ThreadLocal<Dictionary<int, IList<Vector2>>> CircleCache = new(() => []);
     /// <summary>
     /// The closed circle cache.
     /// </summary>
-    private static readonly ThreadLocal<Dictionary<int, IList<Vector2>>> ClosedCircleCache = new(() => new Dictionary<int, IList<Vector2>>());
+    private static readonly ThreadLocal<Dictionary<int, IList<Vector2>>> ClosedCircleCache = new(() => []);
 
-    private static readonly ThreadLocal<Dictionary<Vector2, IList<Vector2>>> RectangleCache = new(() => new Dictionary<Vector2, IList<Vector2>>());
+    private static readonly ThreadLocal<Dictionary<Vector2, IList<Vector2>>> RectangleCache = new(() => []);
     /// <summary>
     /// The unit sphere cache.
     /// </summary>
-    private static readonly ThreadLocal<Dictionary<int, MeshGeometry3D>> UnitSphereCache = new(() => new Dictionary<int, MeshGeometry3D>());
+    private static readonly ThreadLocal<Dictionary<int, MeshGeometry3D>> UnitSphereCache = new(() => []);
 
     #endregion Static and Const
 
@@ -92,11 +92,11 @@ public sealed class MeshBuilder
     /// <summary>
     /// The positions.
     /// </summary>
-    public Vector3Collection Positions { get; set; } = new();
+    public Vector3Collection Positions { get; set; } = [];
     /// <summary>
     /// The triangle indices.
     /// </summary>
-    public IntCollection TriangleIndices { get; set; } = new();
+    public IntCollection TriangleIndices { get; set; } = [];
     /// <summary>
     /// The normal vectors.
     /// </summary>
@@ -141,7 +141,7 @@ public sealed class MeshBuilder
         {
             if (value && this.Normals is null)
             {
-                this.Normals = new Vector3Collection();
+                this.Normals = [];
             }
             if (!value)
             {
@@ -165,7 +165,7 @@ public sealed class MeshBuilder
         {
             if (value && this.TextureCoordinates is null)
             {
-                this.TextureCoordinates = new Vector2Collection();
+                this.TextureCoordinates = [];
             }
             if (!value)
             {
@@ -203,16 +203,16 @@ public sealed class MeshBuilder
     {
         if (generateNormals)
         {
-            this.Normals = new();
+            this.Normals = [];
         }
         if (generateTexCoords)
         {
-            this.TextureCoordinates = new();
+            this.TextureCoordinates = [];
         }
         if (tangentSpace)
         {
-            this.Tangents = new();
-            this.BiTangents = new();
+            this.Tangents = [];
+            this.BiTangents = [];
         }
     }
     #endregion Constructors
@@ -239,8 +239,7 @@ public sealed class MeshBuilder
             ThrowHelper.ThrowInvalidOperationException(WrongNumberOfDivisions);
         }
         Dictionary<int, IList<Vector2>>? cache = null;
-        IList<Vector2>? circle;
-        if (!TryGetCircleInCache(ref cache, thetaDiv, closed, out circle))
+        if (!TryGetCircleInCache(ref cache, thetaDiv, closed, out IList<Vector2>? circle))
         {
             circle = new Vector2Collection() { Capacity = closed ? thetaDiv + 1 : thetaDiv };
             cache!.Add(thetaDiv, circle);
@@ -257,22 +256,11 @@ public sealed class MeshBuilder
         }
         // Since Vector2Collection is not Freezable,
         // return new IList<Vector> to avoid manipulation of the Cached Values
-        if (circle is not null && circle.Count > 0)
-        {
-            return new Vector2Collection(circle);
-        }
-        return new Vector2Collection();
+        return circle is not null && circle.Count > 0 ? [.. circle] : [];
 
         static bool TryGetCircleInCache(ref Dictionary<int, IList<Vector2>>? cache, int thetaDiv, bool closed, out IList<Vector2>? circle)
         {
-            if (closed)
-            {
-                cache = ClosedCircleCache.Value;
-            }
-            else
-            {
-                cache = CircleCache.Value;
-            }
+            cache = closed ? ClosedCircleCache.Value : CircleCache.Value;
             return cache!.TryGetValue(thetaDiv, out circle);
         }
     }
@@ -289,7 +277,7 @@ public sealed class MeshBuilder
     public static IList<Vector2> GetCircleSegment(int thetaDiv, float totalAngle = 2 * (float)Math.PI, float angleOffset = 0)
     {
         int pointNumber = thetaDiv + 1;
-        IList<Vector2> circleSegment = new Vector2Collection(pointNumber);
+        var circleSegment = new Vector2Collection(pointNumber);
         for (var i = 0; i < pointNumber; i++)
         {
             var theta = totalAngle * ((float)i / thetaDiv) + angleOffset;
@@ -307,21 +295,20 @@ public sealed class MeshBuilder
     /// <returns></returns>
     public static IList<Vector2> GetRectangle(float width, float height)
     {
-        IList<Vector2>? rectangle;
-        Vector2 cacheKey = new Vector2(width, height);
-        if (!RectangleCache.Value!.TryGetValue(cacheKey, out rectangle))
+        Vector2 cacheKey = new(width, height);
+        if (!RectangleCache.Value!.TryGetValue(cacheKey, out IList<Vector2>? rectangle))
         {
             float halfWidth = width / 2f;
             float halfHeight = height / 2f;
-            Vector2 topLeft = new Vector2(-halfWidth, halfHeight);
-            Vector2 topRight = new Vector2(halfWidth, halfHeight);
-            Vector2 bottomRight = new Vector2(halfWidth, -halfHeight);
-            Vector2 bottomLeft = new Vector2(-halfWidth, -halfHeight);
-            rectangle = new Vector2[] { topLeft, topRight, bottomRight, bottomLeft };
+            Vector2 topLeft = new(-halfWidth, halfHeight);
+            Vector2 topRight = new(halfWidth, halfHeight);
+            Vector2 bottomRight = new(halfWidth, -halfHeight);
+            Vector2 bottomLeft = new(-halfWidth, -halfHeight);
+            rectangle = [topLeft, topRight, bottomRight, bottomLeft];
 
             RectangleCache.Value!.Add(cacheKey, rectangle);
         }
-        return new Vector2Collection(rectangle);
+        return [.. rectangle];
     }
 
     /// <summary>
@@ -335,9 +322,9 @@ public sealed class MeshBuilder
     /// </returns>
     private static MeshGeometry3D GetUnitSphere(int subdivisions)
     {
-        if (UnitSphereCache.Value!.ContainsKey(subdivisions))
+        if (UnitSphereCache.Value!.TryGetValue(subdivisions, out MeshGeometry3D? value))
         {
-            return UnitSphereCache.Value[subdivisions];
+            return value;
         }
 
         var mb = new MeshBuilder(false, false);
@@ -364,11 +351,8 @@ public sealed class MeshBuilder
     /// <param name="normals">The calcualted Normals.</param>
     private static void ComputeNormals(IList<Vector3> positions, IList<int> triangleIndices, out IList<Vector3> normals)
     {
-        normals = new Vector3Collection(positions.Count);
-        for (var i = 0; i < positions.Count; i++)
-        {
-            normals.Add(Vector3.Zero);
-        }
+        var result = new Vector3Collection(positions.Count);
+        result.Resize(positions.Count, true);
         for (var t = 0; t < triangleIndices.Count; t += 3)
         {
             var i1 = triangleIndices[t];
@@ -385,15 +369,13 @@ public sealed class MeshBuilder
             p2 = Vector3.Normalize(p2);
             var a = (float)Math.Acos(Vector3.Dot(p1, p2));
             n = Vector3.Normalize(n);
-            normals[i1] += (a * n);
-            normals[i2] += (a * n);
-            normals[i3] += (a * n);
+            var v = a * n;
+            result[i1] += v;
+            result[i2] += v;
+            result[i3] += v;
         }
-        for (var i = 0; i < normals.Count; i++)
-        {
-            //Cannot use normals[i].normalize() if using Media3D.Vector3DCollection. Does not change the internal value in Vector3DCollection.
-            normals[i] = Vector3.Normalize(normals[i]);
-        }
+        MeshGeometryHelper.NormalizeInPlace(result);
+        normals = result;
     }
 
     /// <summary>
@@ -439,9 +421,9 @@ public sealed class MeshBuilder
     public static void ComputeTangents(IList<Vector3>? positions, IList<Vector3>? normals, IList<Vector2>? textureCoordinates, IList<int> triangleIndices,
         out IList<Vector3> tangents, out IList<Vector3> bitangents)
     {
-        positions ??= new Vector3Collection();
-        normals ??= new Vector3Collection();
-        textureCoordinates ??= new Vector2Collection();
+        positions ??= [];
+        normals ??= [];
+        textureCoordinates ??= [];
 
         var tan1 = new Vector3[positions.Count];
         for (var t = 0; t < triangleIndices.Count; t += 3)
@@ -496,9 +478,9 @@ public sealed class MeshBuilder
     public static void ComputeTangentsQuads(IList<Vector3>? positions, IList<Vector3>? normals, IList<Vector2>? textureCoordinates, IList<int> indices,
         out IList<Vector3> tangents, out IList<Vector3> bitangents)
     {
-        positions ??= new Vector3Collection();
-        normals ??= new Vector3Collection();
-        textureCoordinates ??= new Vector2Collection();
+        positions ??= [];
+        normals ??= [];
+        textureCoordinates ??= [];
 
         var tan1 = new Vector3[positions.Count];
         for (var t = 0; t < indices.Count; t += 4)
@@ -1092,9 +1074,9 @@ public sealed class MeshBuilder
 
         // Add Faces
         // Base Polygon
-        this.AddPolygonByTriangulation(this.Positions.Skip(positionsCount).Take(5).Select((p, i) => i).ToList());
+        this.AddPolygonByTriangulation([.. this.Positions.Skip(positionsCount).Take(5).Select((p, i) => i)]);
         // Top Polygon
-        this.AddPolygonByTriangulation(this.Positions.Skip(positionsCount + 15).Select((p, i) => 15 + i).ToList());
+        this.AddPolygonByTriangulation([.. this.Positions.Skip(positionsCount + 15).Select((p, i) => 15 + i)]);
         // SidePolygons
         for (var i = 0; i < 5; i++)
         {
@@ -1108,13 +1090,13 @@ public sealed class MeshBuilder
             this.AddPolygonByTriangulation(pIndices);
 
             // Polygon two
-            pIndices = new IntCollection {
+            pIndices = [
                     i + 15 + positionsCount,
                     i + 10 + positionsCount,
                     (5 - i + 2) % 5 + 5 + positionsCount,
                     (i + 1) % 5 + 10 + positionsCount,
                     (i + 1) % 5 + 15 + positionsCount
-                };
+                ];
             this.AddPolygonByTriangulation(pIndices);
         }
     }
@@ -1274,17 +1256,17 @@ public sealed class MeshBuilder
     {
         var positions = new Vector3[]
         {
-                new Vector3(0,0,1),
-                new Vector3(0,1,1),
-                new Vector3(1,1,1),
-                new Vector3(1,0,1),
+                new(0,0,1),
+                new(0,1,1),
+                new(1,1,1),
+                new(1,0,1),
         };
         var normals = new Vector3[]
         {
-                new Vector3(0,0,1),
-                new Vector3(0,0,1),
-                new Vector3(0,0,1),
-                new Vector3(0,0,1),
+                new(0,0,1),
+                new(0,0,1),
+                new(0,0,1),
+                new(0,0,1),
         };
         var i0 = this.Positions.Count;
         var indices = new int[]
@@ -1294,10 +1276,10 @@ public sealed class MeshBuilder
         };
         var texcoords = new Vector2[]
         {
-                new Vector2(0,1),
-                new Vector2(1,1),
-                new Vector2(1,0),
-                new Vector2(0,0),
+                new(0,1),
+                new(1,1),
+                new(1,0),
+                new(0,0),
         };
 
         foreach (var position in positions)
@@ -1331,10 +1313,10 @@ public sealed class MeshBuilder
     {
         var positions = new Vector3[]
         {
-                new Vector3(0,1,0), //p1
-                new Vector3(0,0,0), //p0                
-                new Vector3(1,0,0), //p3
-                new Vector3(1,1,0), //p2
+                new(0,1,0), //p1
+                new(0,0,0), //p0                
+                new(1,0,0), //p3
+                new(1,1,0), //p2
         };
         var normals = new Vector3[]
         {
@@ -1352,10 +1334,10 @@ public sealed class MeshBuilder
         };
         var texcoords = new Vector2[]
         {
-                new Vector2(0,1),
-                new Vector2(1,1),
-                new Vector2(1,0),
-                new Vector2(0,0),
+                new(0,1),
+                new(1,1),
+                new(1,0),
+                new(0,0),
         };
 
         foreach (var position in positions)
@@ -1388,17 +1370,17 @@ public sealed class MeshBuilder
     {
         var positions = new Vector3[]
         {
-                new Vector3(1,0,0), //p0
-                new Vector3(1,0,1), //p1
-                new Vector3(1,1,1), //p2   
-                new Vector3(1,1,0), //p3                             
+                new(1,0,0), //p0
+                new(1,0,1), //p1
+                new(1,1,1), //p2   
+                new(1,1,0), //p3                             
         };
         var normals = new Vector3[]
         {
-                new Vector3(1,0,0),
-                new Vector3(1,0,0),
-                new Vector3(1,0,0),
-                new Vector3(1,0,0),
+                new(1,0,0),
+                new(1,0,0),
+                new(1,0,0),
+                new(1,0,0),
         };
 
         var i0 = this.Positions.Count;
@@ -1409,10 +1391,10 @@ public sealed class MeshBuilder
         };
         var texcoords = new Vector2[]
         {
-                new Vector2(0,1),
-                new Vector2(1,1),
-                new Vector2(1,0),
-                new Vector2(0,0),
+                new(0,1),
+                new(1,1),
+                new(1,0),
+                new(0,0),
         };
 
         foreach (var position in positions)
@@ -1445,10 +1427,10 @@ public sealed class MeshBuilder
     {
         var positions = new Vector3[]
         {
-                new Vector3(0,0,1), //p1
-                new Vector3(0,0,0), //p0                
-                new Vector3(0,1,0), //p3 
-                new Vector3(0,1,1), //p2               
+                new(0,0,1), //p1
+                new(0,0,0), //p0                
+                new(0,1,0), //p3 
+                new(0,1,1), //p2               
         };
         var normals = new Vector3[]
         {
@@ -1466,10 +1448,10 @@ public sealed class MeshBuilder
         };
         var texcoords = new Vector2[]
         {
-                new Vector2(0,1),
-                new Vector2(1,1),
-                new Vector2(1,0),
-                new Vector2(0,0),
+                new(0,1),
+                new(1,1),
+                new(1,0),
+                new(0,0),
         };
 
         foreach (var position in positions)
@@ -1503,17 +1485,17 @@ public sealed class MeshBuilder
     {
         var positions = new Vector3[]
         {
-                new Vector3(1,1,0), //p3  
-                new Vector3(1,1,1), //p2  
-                new Vector3(0,1,1), //p1
-                new Vector3(0,1,0), //p0
+                new(1,1,0), //p3  
+                new(1,1,1), //p2  
+                new(0,1,1), //p1
+                new(0,1,0), //p0
         };
         var normals = new Vector3[]
         {
-                new Vector3(0,1,0),
-                new Vector3(0,1,0),
-                new Vector3(0,1,0),
-                new Vector3(0,1,0),
+                new(0,1,0),
+                new(0,1,0),
+                new(0,1,0),
+                new(0,1,0),
         };
 
         var i0 = this.Positions.Count;
@@ -1524,10 +1506,10 @@ public sealed class MeshBuilder
         };
         var texcoords = new Vector2[]
         {
-                new Vector2(0,1),
-                new Vector2(1,1),
-                new Vector2(1,0),
-                new Vector2(0,0),
+                new(0,1),
+                new(1,1),
+                new(1,0),
+                new(0,0),
         };
 
         foreach (var position in positions)
@@ -1561,10 +1543,10 @@ public sealed class MeshBuilder
     {
         var positions = new Vector3[]
         {
-                new Vector3(0,0,0), //p0
-                new Vector3(0,0,1), //p1
-                new Vector3(1,0,1), //p2
-                new Vector3(1,0,0), //p3
+                new(0,0,0), //p0
+                new(0,0,1), //p1
+                new(1,0,1), //p2
+                new(1,0,0), //p3
         };
         var normals = new Vector3[]
         {
@@ -1582,10 +1564,10 @@ public sealed class MeshBuilder
         };
         var texcoords = new Vector2[]
         {
-                new Vector2(0,1),
-                new Vector2(1,1),
-                new Vector2(1,0),
-                new Vector2(0,0),
+                new(0,1),
+                new(1,1),
+                new(1,0),
+                new(0,0),
         };
 
         foreach (var position in positions)
@@ -2986,7 +2968,7 @@ public sealed class MeshBuilder
                 crossSectionPoints = GetCircle(phiDiv, false);
             }
             // Transform Crosssection to real Size
-            crossSectionPoints = crossSectionPoints.Select(p => new Vector2(p.X * tubeDiameter * .5f, p.Y * tubeDiameter * .5f)).ToList();
+            crossSectionPoints = [.. crossSectionPoints.Select(p => new Vector2(p.X * tubeDiameter * .5f, p.Y * tubeDiameter * .5f))];
             // Transform the Cross-Section Points to 3D Space
             var crossSection3DPoints = crossSectionPoints.Select(p => new Vector3(p.X, 0, p.Y)).ToList();
 
@@ -3144,10 +3126,10 @@ public sealed class MeshBuilder
 
                 // Add top Cap by creating a List of Vertex-Indices
                 // and using them to create a Triangle-Fan
-                verts = new FastList<int>
-                {
+                verts =
+                [
                     phiDiv - 1 + positionsCount
-                };
+                ];
                 for (var i = 0; i < thetaDiv; i++)
                 {
                     if (i == 0)
@@ -3191,9 +3173,9 @@ public sealed class MeshBuilder
     /// </param>
     public void AddTriangle(Vector3 p0, Vector3 p1, Vector3 p2)
     {
-        Vector2 uv0 = new Vector2(0, 0);
-        Vector2 uv1 = new Vector2(1, 0);
-        Vector2 uv2 = new Vector2(0, 1);
+        Vector2 uv0 = new(0, 0);
+        Vector2 uv1 = new(1, 0);
+        Vector2 uv2 = new(0, 1);
         this.AddTriangle(p0, p1, p2, uv0, uv1, uv2);
     }
 
@@ -3488,7 +3470,7 @@ public sealed class MeshBuilder
     /// </param>
     public void AddTube(IList<Vector3> path, float diameter, int thetaDiv, bool isTubeClosed, bool frontCap = false, bool backCap = false)
     {
-        this.AddTube(path, null, new[] { diameter }, thetaDiv, isTubeClosed, frontCap, backCap);
+        this.AddTube(path, null, [diameter], thetaDiv, isTubeClosed, frontCap, backCap);
     }
 
     /// <summary>
@@ -3568,7 +3550,7 @@ public sealed class MeshBuilder
                 ThrowHelper.ThrowInvalidOperationException(WrongNumberOfDivisions);
             }
             Vector3 dir = path[1] - path[0];
-            Vector3 vecLeft1 = new Vector3(dir.Y, dir.Z, dir.X);
+            Vector3 vecLeft1 = new(dir.Y, dir.Z, dir.X);
             if (vecLeft1 == dir)
             {
                 vecLeft1 = new Vector3(0, 0, 1);
@@ -3711,7 +3693,7 @@ public sealed class MeshBuilder
             Plane plane = PlaneHelper.Create(currentP, planNormal);
             for (int j = 0; j < sectionLength; j++)
             {
-                Ray ray = new Ray(newSection[j], -currentDir);
+                Ray ray = new(newSection[j], -currentDir);
                 bool isIntersect = ray.PlaneIntersection(plane, out Vector3 intersect);
                 if (!isIntersect)
                 {
@@ -3722,10 +3704,7 @@ public sealed class MeshBuilder
                 {
                     this.Positions.Add(intersect);
 
-                    if (this.Normals is not null)
-                    {
-                        this.Normals.Add(Vector3.Normalize(intersect - currentP));
-                    }
+                    this.Normals?.Add(Vector3.Normalize(intersect - currentP));
                     Vector2 textureCoordinate = Vector2.Zero;
                     if (xTextureCoordinates is not null)
                     {
@@ -3750,7 +3729,7 @@ public sealed class MeshBuilder
             int count = path.Count;
             if (backCap)
             {
-                Vector3[] circleBack = Positions.Skip(Positions.Count - section.Count).Take(section.Count).Reverse().ToArray();
+                Vector3[] circleBack = [.. Positions.Skip(Positions.Count - section.Count).Take(section.Count).Reverse()];
                 Vector3 normal = path[count - 1] - path[count - 2];
                 normal = Vector3.Normalize(normal);
                 for (int i = 0; i < normals.Length; ++i)
@@ -3761,7 +3740,7 @@ public sealed class MeshBuilder
             }
             if (frontCap)
             {
-                Vector3[] circleFront = Positions.Take(section.Count).ToArray();
+                Vector3[] circleFront = [.. Positions.Take(section.Count)];
                 Vector3 normal = path[0] - path[1];
                 normal = Vector3.Normalize(normal);
 
@@ -3787,7 +3766,7 @@ public sealed class MeshBuilder
     private static Vector3Collection CreateSectionPerpendicularToDirection(IList<Vector2> section, Vector3 sectionXAxis, Vector3 origin, Vector3 direction, float angle = 0, float sectionScale = 1)
     {
         int sectioCount = section.Count;
-        Vector3Collection mappingSection = new Vector3Collection(sectioCount);
+        Vector3Collection mappingSection = new(sectioCount);
         Vector3 dir = Vector3.Normalize(direction);
         Vector3 right = Vector3.Normalize(sectionXAxis);
 
@@ -3810,7 +3789,7 @@ public sealed class MeshBuilder
         {
             return list;
         }
-        List<Vector3> result = new List<Vector3> { list[0] };
+        List<Vector3> result = [list[0]];
         for (int i = 1; i < list.Count; i++)
         {
             if (!Vector3Helper.NearEqual(list[i], list[i - 1], new Vector3(MathUtil.ZeroTolerance)))
@@ -4400,12 +4379,12 @@ public sealed class MeshBuilder
 
     public void Reset()
     {
-        Positions = new();
+        Positions = [];
         Normals = null;
         TextureCoordinates = null;
         Tangents = null;
         BiTangents = null;
-        TriangleIndices = new();
+        TriangleIndices = [];
     }
     #endregion Helper Functions
 
@@ -4502,7 +4481,7 @@ public sealed class MeshBuilder
     public void AppendSphere(Vector3 center, float radius = 1, int thetaSteps = 64, int phiSteps = 64)
     {
         AppendSphere(center, radius, thetaSteps, phiSteps,
-            out var pos, out var nor, out var tcoord, out List<int> tind);
+            out var pos, out var nor, out var tcoord, out var tind);
 
         int i0 = this.Positions.Count;
         this.Positions.AddRange(pos);
@@ -4512,12 +4491,12 @@ public sealed class MeshBuilder
     }
 
     private static void AppendSphere(Vector3 center, float radius, int thetaSteps, int phiSteps,
-        out IList<Vector3> positions, out IList<Vector3> normals, out IList<Vector2> textureCoordinates, out List<int> triangleIndices)
+        out IList<Vector3> positions, out IList<Vector3> normals, out IList<Vector2> textureCoordinates, out IList<int> triangleIndices)
     {
         positions = new Vector3Collection();
         normals = new Vector3Collection();
         textureCoordinates = new Vector2Collection();
-        triangleIndices = new();
+        triangleIndices = new IntCollection();
 
         float dt = DegToRad(360.0f) / thetaSteps;
         float dp = DegToRad(180.0f) / phiSteps;
