@@ -18,6 +18,12 @@ class MeshGeometryModel3DTests
     {
         string dir = Path.GetDirectoryName(typeof(MeshGeometryModel3DTests).Assembly.Location) ?? "";
         dir = Path.Combine(dir!, string.Concat(Enumerable.Repeat("..\\", 5)));
+
+        if (Path.GetFullPath(dir).EndsWith("Source\\", StringComparison.OrdinalIgnoreCase))
+        {
+            dir = Path.Combine(dir, "..\\");
+        }
+
         Directory.SetCurrentDirectory(dir);
     }
 

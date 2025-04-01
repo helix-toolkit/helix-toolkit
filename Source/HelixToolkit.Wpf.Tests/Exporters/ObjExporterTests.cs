@@ -18,13 +18,20 @@ public class ObjExporterTests : ExporterTests
     {
         string dir = Path.GetDirectoryName(typeof(ObjExporterTests).Assembly.Location) ?? "";
         dir = Path.Combine(dir!, string.Concat(Enumerable.Repeat("..\\", 5)));
+
+        if (Path.GetFullPath(dir).EndsWith("Source\\", StringComparison.OrdinalIgnoreCase))
+        {
+            dir = Path.Combine(dir, "..\\");
+        }
+
         Directory.SetCurrentDirectory(dir);
     }
 
     [Test]
     public void ShouldThrowExceptionIfMaterialsFileIsNotSpecified()
     {
-        string path = "temp.obj";
+        string temp = Path.GetTempFileName();
+        string path = temp + "temp.obj";
 
         try
         {
@@ -38,14 +45,17 @@ public class ObjExporterTests : ExporterTests
         {
             if (File.Exists(path))
                 File.Delete(path);
+
+            File.Delete(temp);
         }
     }
 
     [Test]
     public void Export_SimpleModel_ValidOutput()
     {
-        string path = "temp.obj";
-        string mtlPath = Path.ChangeExtension(path, ".mtl");
+        string temp = Path.GetTempFileName();
+        string path = temp + "temp.obj";
+        string mtlPath = temp + "temp.mtl";
 
         try
         {
@@ -62,14 +72,17 @@ public class ObjExporterTests : ExporterTests
 
             if (File.Exists(mtlPath))
                 File.Delete(mtlPath);
+
+            File.Delete(temp);
         }
     }
 
     [Test]
     public void Export_BoxWithGradientTexture_TextureExportedAsPng()
     {
-        var path = "box_gradient_png.obj";
-        var mtlPath = Path.ChangeExtension(path, ".mtl");
+        string temp = Path.GetTempFileName();
+        var path = temp + "box_gradient_png.obj";
+        var mtlPath = temp + "box_gradient_png.mtl";
 
         try
         {
@@ -87,16 +100,25 @@ public class ObjExporterTests : ExporterTests
             if (File.Exists(mtlPath))
                 File.Delete(mtlPath);
 
-            if (File.Exists("mat1.png"))
-                File.Delete("mat1.png");
+            try
+            {
+                if (File.Exists("mat1.png"))
+                    File.Delete("mat1.png");
+            }
+            catch (IOException)
+            {
+            }
+
+            File.Delete(temp);
         }
     }
 
     [Test]
     public void Export_BoxWithGradientTexture_TextureExportedAsJpg()
     {
-        var path = "box_gradient_jpg.obj";
-        var mtlPath = Path.ChangeExtension(path, ".mtl");
+        string temp = Path.GetTempFileName();
+        var path = temp + "box_gradient_jpg.obj";
+        var mtlPath = temp + "box_gradient_jpg.mtl";
 
         try
         {
@@ -114,8 +136,16 @@ public class ObjExporterTests : ExporterTests
             if (File.Exists(mtlPath))
                 File.Delete(mtlPath);
 
-            if (File.Exists("mat1.jpg"))
-                File.Delete("mat1.jpg");
+            try
+            {
+                if (File.Exists("mat1.jpg"))
+                    File.Delete("mat1.jpg");
+            }
+            catch (IOException)
+            {
+            }
+
+            File.Delete(temp);
         }
     }
 
@@ -134,7 +164,8 @@ public class ObjExporterTests : ExporterTests
         var viewport = new HelixViewport3D();
         viewport.Items.Add(mesh);
 
-        string temp = Path.GetTempPath();
+        string temp = Path.GetTempFileName();
+        string tempName = Path.GetFileName(temp);
         var objPath = temp + "model.obj";
         var mtlPath = temp + "model.mtl";
 
@@ -143,7 +174,7 @@ public class ObjExporterTests : ExporterTests
             viewport.Export(objPath);
 
             string contentObj = File.ReadAllText(objPath);
-            string expectedObj = @"mtllib ./model.mtl
+            string expectedObj = @"mtllib ./" + tempName + @"model.mtl
 o object1
 g group1
 usemtl mat1
@@ -171,6 +202,8 @@ f 1/1 2/2 3/3
 
             if (File.Exists(mtlPath))
                 File.Delete(mtlPath);
+
+            File.Delete(temp);
         }
     }
 
