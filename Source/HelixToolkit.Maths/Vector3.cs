@@ -957,7 +957,7 @@ namespace HelixToolkit.Maths
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector3 Clamp(this Vector3 value, Vector3 min, Vector3 max)
         {
-            Clamp(ref value, ref min, ref max, out Vector3 result);
+            Clamp(ref value, ref min, ref max, out var result);
             return result;
         }
 

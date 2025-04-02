@@ -518,5 +518,34 @@ namespace HelixToolkit.Maths
                 Transform(ref source[i], ref transform, out destination[i]);
             }
         }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void Clamp(ref Vector4 value, ref Vector4 min, ref Vector4 max, out Vector4 result)
+        {
+#if NET6_0_OR_GREATER
+            if (MathSettings.EnableSIMD && Sse.IsSupported)
+            {
+                Vector128<float> min128 = Vector128.Create(min.X, min.Y, min.Z, min.W);
+                Vector128<float> max128 = Vector128.Create(max.X, max.Y, max.Z, min.W);
+                Vector128<float> value128 = Vector128.Create(value.X, value.Y, value.Z, value.W);
+                value128 = Sse.Max(value128, min128);
+                value128 = Sse.Min(value128, max128);
+                result = new Vector4(value128.GetElement(0), value128.GetElement(1), value128.GetElement(2), value128.GetElement(3));
+                return;
+            }
+#endif
+            float x = Math.Max(min.X, Math.Min(value.X, max.X));
+            float y = Math.Max(min.Y, Math.Min(value.Y, max.Y));
+            float z = Math.Max(min.Z, Math.Min(value.Z, max.Z));
+            float w = Math.Max(min.W, Math.Min(value.W, max.W));
+            result = new Vector4(x, y, z, w);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Vector4 Clamp(this Vector4 value, Vector4 min, Vector4 max)
+        {
+            Clamp(ref value, ref min, ref max, out var result);
+            return result;
+        }
     }
 }
