@@ -12,7 +12,7 @@
   <ItemGroup>
     <ProjectReference Include="..\HelixToolkit.Geometry\HelixToolkit.Geometry.csproj" />
     <ProjectReference Include="..\HelixToolkit.Maths\HelixToolkit.Maths.csproj" />
-    <ProjectReference Include="..\HelixToolkit.Tests\HelixToolkit.Tests.csproj" />
+    <ProjectReference Include="..\HelixToolkit.Tests.Common\HelixToolkit.Tests.Common.csproj" />
   </ItemGroup>
 
 </Project>

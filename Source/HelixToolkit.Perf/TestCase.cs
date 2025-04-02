@@ -15,4 +15,20 @@ sealed class TestCase
     {
         Tests.Add(new TestCase(name, action));
     }
+
+    public static void RunAll()
+    {
+        foreach (var test in Tests)
+        {
+            MathSettings.EnableSIMD = true;
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine($"---------Running: {test.Name}---------");
+            Console.ForegroundColor = ConsoleColor.White;
+            Perf.Profile(test.Name, test.Action);
+            MathSettings.EnableSIMD = false;
+            Perf.Profile(test.Name, test.Action);
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine($"---------End: {test.Name}---------\n\n");
+        }
+    }
 }
