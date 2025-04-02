@@ -936,6 +936,18 @@ namespace HelixToolkit.Maths
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Clamp(ref Vector3 value, ref Vector3 min, ref Vector3 max, out Vector3 result)
         {
+#if NET6_0_OR_GREATER
+            if (MathSettings.EnableSIMD && Sse.IsSupported)
+            {
+                Vector128<float> min128 = Vector128.Create(min.X, min.Y, min.Z, float.NegativeInfinity);
+                Vector128<float> max128 = Vector128.Create(max.X, max.Y, max.Z, float.PositiveInfinity);
+                Vector128<float> value128 = Vector128.Create(value.X, value.Y, value.Z, 0);
+                value128 = Sse.Max(value128, min128);
+                value128 = Sse.Min(value128, max128);
+                result = new Vector3(value128.GetElement(0), value128.GetElement(1), value128.GetElement(2));
+                return;
+            }
+#endif
             float x = Math.Max(min.X, Math.Min(value.X, max.X));
             float y = Math.Max(min.Y, Math.Min(value.Y, max.Y));
             float z = Math.Max(min.Z, Math.Min(value.Z, max.Z));
@@ -945,10 +957,8 @@ namespace HelixToolkit.Maths
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector3 Clamp(this Vector3 value, Vector3 min, Vector3 max)
         {
-            float x = Math.Max(min.X, Math.Min(value.X, max.X));
-            float y = Math.Max(min.Y, Math.Min(value.Y, max.Y));
-            float z = Math.Max(min.Z, Math.Min(value.Z, max.Z));
-            return new Vector3(x, y, z);
+            Clamp(ref value, ref min, ref max, out Vector3 result);
+            return result;
         }
 
         /// <summary>
