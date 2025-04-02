@@ -212,56 +212,7 @@ namespace HelixToolkit.Maths
         /// </exception>
         public static void FromPoints(Vector3[] points, int start, int count, out BoundingSphere result)
         {
-            if (points == null)
-            {
-                throw new ArgumentNullException(nameof(points));
-            }
-
-            // Check that start is in the correct range
-            if (start < 0 || start >= points.Length)
-            {
-                throw new ArgumentOutOfRangeException(nameof(start), start, string.Format("Must be in the range [0, {0}]", points.Length - 1));
-            }
-
-            // Check that count is in the correct range
-            if (count < 0 || (start + count) > points.Length)
-            {
-                throw new ArgumentOutOfRangeException(nameof(count), count, string.Format("Must be in the range <= {0}", points.Length));
-            }
-
-            int upperEnd = start + count;
-
-            //Find the center of all points.
-            Vector3 center = Vector3.Zero;
-            for (int i = start; i < upperEnd; ++i)
-            {
-                center += points[i];
-            }
-
-            //This is the center of our sphere.
-            center /= (float)count;
-
-            //Find the radius of the sphere
-            float radius = 0f;
-            for (int i = start; i < upperEnd; ++i)
-            {
-                //We are doing a relative distance comparison to find the maximum distance
-                //from the center of our sphere.
-                float distance = Vector3.DistanceSquared(center, points[i]);
-                
-
-                if (distance > radius)
-                {
-                    radius = distance;
-                }
-            }
-
-            //Find the real distance from the DistanceSquared.
-            radius = (float)Math.Sqrt(radius);
-
-            //Construct the sphere.
-            result.Center = center;
-            result.Radius = radius;
+            result = points.GetBoundingSphere(start, count);
         }
 
         /// <summary>
@@ -271,11 +222,6 @@ namespace HelixToolkit.Maths
         /// <param name="result">When the method completes, contains the newly constructed bounding sphere.</param>
         public static void FromPoints(Vector3[] points, out BoundingSphere result)
         {
-            if (points == null)
-            {
-                throw new ArgumentNullException(nameof(points));
-            }
-
             FromPoints(points, 0, points.Length, out result);
         }
 
