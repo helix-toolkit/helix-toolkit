@@ -12,4 +12,16 @@ branches:
     is-release-branch: false
     is-mainline: false
     pre-release-weight: 0
+    
+  release:
+    regex: ^release
+    tag: beta
+    increment: Minor
+    is-release-branch: false
+    is-mainline: false
 
+  main:
+    regex: ^main
+    mode: ContinuousDeployment
+    is-release-branch: true
+    is-mainline: true
