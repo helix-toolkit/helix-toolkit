@@ -28,7 +28,7 @@
             }
         }
 
-        public static  void TransformNormal(int size, int iteration)
+        public static void TransformNormal(int size, int iteration)
         {
             var data = new Vector3[size];
             for (int i = 0; i < size; i++)
@@ -41,6 +41,20 @@
             for (int iter = 0; iter < iteration; ++iter)
             {
                 data.TransformNormal(ref transform, result);
+            }
+        }
+
+        public static void GetCentroidTest(int size, int iteration)
+        {
+            var data = new Vector3[size];
+
+            for (int iter = 0; iter < iteration; ++iter)
+            {
+                for (int i = 0; i < size; i++)
+                {
+                    data[i] = Utils.GetRandomVector3();
+                }
+                var _ = data.GetCentroid();
             }
         }
     }

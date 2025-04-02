@@ -19,23 +19,15 @@
             int upperEnd = start + count;
 
             //Find the center of all points.
-            Vector3 center = Vector3.Zero;
-            for (int i = start; i < upperEnd; ++i)
-            {
-                center += points[i];
-            }
-
-            //This is the center of our sphere.
-            center /= (float)count;
+            Vector3 center = points.GetCentroid(start, count);
 
             //Find the radius of the sphere
             float radius = 0f;
             for (int i = start; i < upperEnd; ++i)
             {
                 //We are doing a relative distance comparison to find the maximum distance
-                //from the center of our sphere.
-                Vector3 p = points[i];
-                float distance = Vector3.DistanceSquared(center, p);
+                //from the center of our sphere
+                float distance = Vector3.DistanceSquared(center, points[i]);
 
                 if (distance > radius)
                 {

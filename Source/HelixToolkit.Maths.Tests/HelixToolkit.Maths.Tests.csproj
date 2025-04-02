@@ -35,6 +35,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\HelixToolkit.Maths\HelixToolkit.Maths.csproj" />
+    <ProjectReference Include="..\HelixToolkit.Tests.Common\HelixToolkit.Tests.Common.csproj" />
   </ItemGroup>
 
 </Project>

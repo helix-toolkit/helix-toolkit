@@ -864,18 +864,4 @@ public static class MeshGeometryHelper
             }
         }
     }
-
-    public static Vector3 GetCentroid(this IList<Vector3> vertices)
-    {
-        if (vertices.Count == 0)
-        {
-            return default;
-        }
-        var centroid = vertices[0];
-        for (var i = 1; i < vertices.Count; i++)
-        {
-            centroid += (vertices[i] - centroid) / (i + 1);
-        }
-        return centroid;
-    }
 }

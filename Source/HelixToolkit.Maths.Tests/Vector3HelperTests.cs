@@ -95,5 +95,36 @@ namespace HelixToolkit.Maths.Tests
                 }
             }
         }
+
+        [TestCase(1, 100)]
+        [TestCase(3, 100)]
+        [TestCase(5, 100)]
+        [TestCase(7, 100)]
+        [TestCase(11, 100)]
+        [TestCase(1001, 100)]
+        [TestCase(10001, 10)]
+        [TestCase(101233, 10)]
+        public void GetCentroidTest(int size, int iteration)
+        {
+            var data = new Vector3[size];
+
+            for (int iter = 0; iter < iteration; ++iter)
+            {
+                for (int i = 0; i < size; i++)
+                {
+                    data[i] = Utils.GetRandomVector3();
+                }
+                var centroid = data.GetCentroid();
+                var expected = Vector3.Zero;
+                for (int i = 0; i < size; i++)
+                {
+                    expected += data[i];
+                }
+                expected /= size;
+                ClassicAssert.AreEqual(expected.X, centroid.X, 1e-5);
+                ClassicAssert.AreEqual(expected.Y, centroid.Y, 1e-5);
+                ClassicAssert.AreEqual(expected.Z, centroid.Z, 1e-5);
+            }
+        }
     }
 }

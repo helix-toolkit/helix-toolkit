@@ -38,6 +38,10 @@ static void AddTestCases()
     TestCase.Add(nameof(Vector3Tester.TransformNormal), () =>
     {
         Vector3Tester.TransformNormal(Settings.DataSetSize, Settings.Iteration);
+    }); 
+    TestCase.Add(nameof(Vector3Tester.GetCentroidTest), () =>
+    {
+        Vector3Tester.GetCentroidTest(Settings.DataSetSize, Settings.Iteration);
     });
     TestCase.Add(nameof(Vector4Tester.Transform), () =>
     {
