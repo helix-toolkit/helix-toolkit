@@ -885,7 +885,7 @@ namespace HelixToolkit.Maths
         /// rather than location because normal vectors should not be translated.
         /// </remarks>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void TransformNormal(Vector3[] source, ref Matrix transform, Vector3[] destination)
+        public static void TransformNormal(this Vector3[] source, ref Matrix transform, Vector3[] destination)
         {
             if (source == null)
             {

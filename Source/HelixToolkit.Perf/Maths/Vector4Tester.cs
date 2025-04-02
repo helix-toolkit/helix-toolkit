@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace HelixToolkit.Perf.Maths
+﻿namespace HelixToolkit.Perf.Maths
 {
     internal static class Vector4Tester
     {
-        public static void Transform(int size, int iteration = 10000)
+        public static void Transform(int size, int iteration)
         {
             var data = new Vector4[size];
             for (int i = 0; i < size; i++)

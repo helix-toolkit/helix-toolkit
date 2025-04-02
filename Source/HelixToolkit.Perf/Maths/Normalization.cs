@@ -4,7 +4,7 @@ namespace HelixToolkit.Perf.Maths
 {
     internal static class Normalization
     {
-        public static void NormalizeInPlaceTest(int size, int iterations = 10000)
+        public static void NormalizeInPlaceTest(int size, int iterations)
         {
             var positions = new Vector3Collection(size);
 

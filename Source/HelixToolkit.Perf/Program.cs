@@ -25,19 +25,22 @@ static void AddTestCases()
 {
     TestCase.Add(nameof(Normalization.NormalizeInPlaceTest), () =>
     {
-        Normalization.NormalizeInPlaceTest(1000000);
+        Normalization.NormalizeInPlaceTest(Settings.DataSetSize, Settings.Iteration);
     });
     TestCase.Add(nameof(Vector3Tester.MinMax), () =>
     {
-        Vector3Tester.MinMax(1000000);
+        Vector3Tester.MinMax(Settings.DataSetSize, Settings.Iteration);
     });
     TestCase.Add(nameof(Vector3Tester.TransformCoordinate), () =>
     {
-        Vector3Tester.TransformCoordinate(1000000);
+        Vector3Tester.TransformCoordinate(Settings.DataSetSize, Settings.Iteration);
     });
-
+    TestCase.Add(nameof(Vector3Tester.TransformNormal), () =>
+    {
+        Vector3Tester.TransformNormal(Settings.DataSetSize, Settings.Iteration);
+    });
     TestCase.Add(nameof(Vector4Tester.Transform), () =>
     {
-        Vector4Tester.Transform(1000000);
+        Vector4Tester.Transform(Settings.DataSetSize, Settings.Iteration);
     });
 }
