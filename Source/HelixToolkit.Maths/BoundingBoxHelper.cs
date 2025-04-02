@@ -16,14 +16,7 @@
             {
                 return new BoundingBox();
             }
-            Vector3 min = new(float.MaxValue);
-            Vector3 max = new(float.MinValue);
-            foreach (Vector3 p in points)
-            {
-                Vector3 point = p;
-                min = min.Min(ref point);
-                max = max.Max(ref point);
-            }
+            points.MinMax(out var min, out var max);
             Vector3 diff = max - min;
             return diff.AnySmallerOrEqual(0.0001f) // Avoid bound too small on one dimension.
                ? new BoundingBox(min - new Vector3(0.1f), max + new Vector3(0.1f))

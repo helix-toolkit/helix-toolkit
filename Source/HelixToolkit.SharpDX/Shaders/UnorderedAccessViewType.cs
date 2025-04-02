@@ -6,5 +6,6 @@ public enum UnorderedAccessViewType
     ConsumeStructured,
     RWByteAddress,
     RWStructuredWithCounter,
+    RWStructured,
     RWTyped
 };

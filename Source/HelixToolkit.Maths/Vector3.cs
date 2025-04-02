@@ -773,7 +773,7 @@ namespace HelixToolkit.Maths
         /// with coordinates as the w component can safely be ignored.
         /// </remarks>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void TransformCoordinate(Vector3[] source, ref Matrix transform, Vector3[] destination)
+        public static void TransformCoordinate(this IList<Vector3> source, ref Matrix transform, IList<Vector3> destination)
         {
             if (source == null)
             {
@@ -785,14 +785,47 @@ namespace HelixToolkit.Maths
                 throw new ArgumentNullException(nameof(destination));
             }
 
-            if (destination.Length < source.Length)
+            if (destination.Count < source.Count)
             {
                 throw new ArgumentOutOfRangeException(nameof(destination), "The destination array must be of same length or larger length than the source array.");
             }
-
-            for (int i = 0; i < source.Length; ++i)
+            int i = 0;
+#if NET6_0_OR_GREATER
+            if (MathSettings.EnableSIMD)
             {
-                TransformCoordinate(ref source[i], ref transform, out destination[i]);
+                if (Sse.IsSupported)
+                {
+                    // Load matrix rows into Vector128 vectors
+                    Vector128<float> row0X = Vector128.Create(transform.M11, transform.M12, transform.M13, transform.M14);
+                    Vector128<float> row1X = Vector128.Create(transform.M21, transform.M22, transform.M23, transform.M24);
+                    Vector128<float> row2X = Vector128.Create(transform.M31, transform.M32, transform.M33, transform.M34);
+                    Vector128<float> row3X = Vector128.Create(transform.M41, transform.M42, transform.M43, transform.M44);
+
+                    for (; i < source.Count; i++)
+                    {
+                        // Broadcast vector components into Vector128 vectors
+                        Vector128<float> vX = Vector128.Create(source[i].X);
+                        Vector128<float> vY = Vector128.Create(source[i].Y);
+                        Vector128<float> vZ = Vector128.Create(source[i].Z);
+
+                        // Multiply vector components with matrix rows
+                        vX = Sse.Multiply(vX, row0X);
+                        vY = Sse.Multiply(vY, row1X);
+                        vZ = Sse.Multiply(vZ, row2X);
+                        Vector128<float> vW = row3X;
+
+                        // Perform horizontal addition to get the dot products
+                        Vector128<float> rowResults = Sse.Add(Sse.Add(vX, vY), Sse.Add(vZ, vW));
+                        vW = Sse.Shuffle(rowResults, rowResults, 0xFF);
+                        rowResults = Sse.Divide(rowResults, vW);
+                        destination[i] = new Vector3(rowResults.GetElement(0), rowResults.GetElement(1), rowResults.GetElement(2));
+                    }
+                }
+            }
+#endif
+            for (; i < source.Count; ++i)
+            {
+                destination[i] = source[i].TransformCoordinate(ref transform);
             }
         }
 
@@ -848,7 +881,7 @@ namespace HelixToolkit.Maths
         /// rather than location because normal vectors should not be translated.
         /// </remarks>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void TransformNormal(Vector3[] source, ref Matrix transform, Vector3[] destination)
+        public static void TransformNormal(this IList<Vector3> source, ref Matrix transform, IList<Vector3> destination)
         {
             if (source == null)
             {
@@ -860,20 +893,61 @@ namespace HelixToolkit.Maths
                 throw new ArgumentNullException(nameof(destination));
             }
 
-            if (destination.Length < source.Length)
+            if (destination.Count < source.Count)
             {
                 throw new ArgumentOutOfRangeException(nameof(destination), "The destination array must be of same length or larger length than the source array.");
             }
-
-            for (int i = 0; i < source.Length; ++i)
+            int i = 0;
+#if NET6_0_OR_GREATER
+            if (MathSettings.EnableSIMD)
             {
-                TransformNormal(ref source[i], ref transform, out destination[i]);
+                if (Sse.IsSupported)
+                {
+                    // Load matrix rows into Vector128 vectors
+                    Vector128<float> row0X = Vector128.Create(transform.M11, transform.M12, transform.M13, transform.M14);
+                    Vector128<float> row1X = Vector128.Create(transform.M21, transform.M22, transform.M23, transform.M24);
+                    Vector128<float> row2X = Vector128.Create(transform.M31, transform.M32, transform.M33, transform.M34);
+
+                    for (; i < source.Count; ++i)
+                    {
+                        // Broadcast vector components into Vector128 vectors
+                        Vector128<float> vX = Vector128.Create(source[i].X);
+                        Vector128<float> vY = Vector128.Create(source[i].Y);
+                        Vector128<float> vZ = Vector128.Create(source[i].Z);
+
+                        // Multiply vector components with matrix rows
+                        Vector128<float> mulX = Sse.Multiply(vX, row0X);
+                        Vector128<float> mulY = Sse.Multiply(vY, row1X);
+                        Vector128<float> mulZ = Sse.Multiply(vZ, row2X);
+
+                        // Perform horizontal addition to get the dot products
+                        Vector128<float> rowResults = Sse.Add(Sse.Add(mulX, mulY), mulZ);
+                        destination[i] = new Vector3(rowResults.GetElement(0), rowResults.GetElement(1), rowResults.GetElement(2));
+                    }
+                }
+            }
+#endif
+            for (; i < source.Count; ++i)
+            {
+                destination[i] = source[i].TransformNormal(ref transform);
             }
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Clamp(ref Vector3 value, ref Vector3 min, ref Vector3 max, out Vector3 result)
         {
+#if NET6_0_OR_GREATER
+            if (MathSettings.EnableSIMD && Sse.IsSupported)
+            {
+                Vector128<float> min128 = Vector128.Create(min.X, min.Y, min.Z, float.NegativeInfinity);
+                Vector128<float> max128 = Vector128.Create(max.X, max.Y, max.Z, float.PositiveInfinity);
+                Vector128<float> value128 = Vector128.Create(value.X, value.Y, value.Z, 0);
+                value128 = Sse.Max(value128, min128);
+                value128 = Sse.Min(value128, max128);
+                result = new Vector3(value128.GetElement(0), value128.GetElement(1), value128.GetElement(2));
+                return;
+            }
+#endif
             float x = Math.Max(min.X, Math.Min(value.X, max.X));
             float y = Math.Max(min.Y, Math.Min(value.Y, max.Y));
             float z = Math.Max(min.Z, Math.Min(value.Z, max.Z));
@@ -883,10 +957,8 @@ namespace HelixToolkit.Maths
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector3 Clamp(this Vector3 value, Vector3 min, Vector3 max)
         {
-            float x = Math.Max(min.X, Math.Min(value.X, max.X));
-            float y = Math.Max(min.Y, Math.Min(value.Y, max.Y));
-            float z = Math.Max(min.Z, Math.Min(value.Z, max.Z));
-            return new Vector3(x, y, z);
+            Clamp(ref value, ref min, ref max, out var result);
+            return result;
         }
 
         /// <summary>
@@ -1009,5 +1081,192 @@ namespace HelixToolkit.Maths
             return ret > 0 ? PlaneIntersectionType.Front : ret == 0 ? PlaneIntersectionType.Intersecting : PlaneIntersectionType.Back;
         }
 
+        public static void MinMax(this IList<Vector3> vectors, out Vector3 min, out Vector3 max)
+        {
+            MinMax(vectors, 0, vectors.Count, out min, out max);
+        }
+
+        public static void MinMax(this IList<Vector3> vectors, int start, int count, out Vector3 min, out Vector3 max)
+        {
+            if (vectors == null || vectors.Count == 0 || count == 0)
+            {
+                min = max = Vector3.Zero;
+                return;
+            }
+            if (start + count > vectors.Count)
+            {
+                throw new ArgumentOutOfRangeException(nameof(count), "The start and count exceed the length of the vectors array.");
+            }
+
+            int i = start;
+            int end = start + count;
+            var currentMin = new Vector3(float.MaxValue);
+            var currentMax = new Vector3(float.MinValue);
+#if NET6_0_OR_GREATER
+            if (MathSettings.EnableSIMD)
+            {
+                if (Avx.IsSupported && i + 8 <= end)
+                {
+                    // Initialize min and max vectors with the first element
+                    var minX = Vector256.Create(float.MaxValue);
+                    var minY = Vector256.Create(float.MaxValue);
+                    var minZ = Vector256.Create(float.MaxValue);
+                    var maxX = Vector256.Create(float.MinValue);
+                    var maxY = Vector256.Create(float.MinValue);
+                    var maxZ = Vector256.Create(float.MinValue);
+                    // Process vectors in chunks of 8
+                    for (; i <= end - 8;)
+                    {
+                        var v1 = vectors[i++];
+                        var v2 = vectors[i++];
+                        var v3 = vectors[i++];
+                        var v4 = vectors[i++];
+                        var v5 = vectors[i++];
+                        var v6 = vectors[i++];
+                        var v7 = vectors[i++];
+                        var v8 = vectors[i++];
+                        // Load 8 X components
+                        var xVec = Vector256.Create(v1.X, v2.X, v3.X, v4.X, v5.X, v6.X, v7.X, v8.X);
+                        minX = Avx.Min(minX, xVec);
+                        maxX = Avx.Max(maxX, xVec);
+                        // Load 8 Y components
+                        var yVec = Vector256.Create(v1.Y, v2.Y, v3.Y, v4.Y, v5.Y, v6.Y, v7.Y, v8.Y);
+                        minY = Avx.Min(minY, yVec);
+                        maxY = Avx.Max(maxY, yVec);
+                        // Load 8 Z components
+                        var zVec = Vector256.Create(v1.Z, v2.Z, v3.Z, v4.Z, v5.Z, v6.Z, v7.Z, v8.Z);
+                        minZ = Avx.Min(minZ, zVec);
+                        maxZ = Avx.Max(maxZ, zVec);
+                    }
+                    // Reduce the 8 min/max values in the vectors to a single value
+                    currentMin = new(HorizontalMin(minX), HorizontalMin(minY), HorizontalMin(minZ));
+                    currentMax = new(HorizontalMax(maxX), HorizontalMax(maxY), HorizontalMax(maxZ));
+                }
+
+                if (Sse.IsSupported && i + 4 <= end)
+                {
+                    // Initialize min and max vectors with the first element
+                    var minX = Vector128.Create(float.MaxValue);
+                    var minY = Vector128.Create(float.MaxValue);
+                    var minZ = Vector128.Create(float.MaxValue);
+                    var maxX = Vector128.Create(float.MinValue);
+                    var maxY = Vector128.Create(float.MinValue);
+                    var maxZ = Vector128.Create(float.MinValue);
+                    // Process vectors in chunks of 4
+                    for (; i <= end - 4;)
+                    {
+                        var v1 = vectors[i++];
+                        var v2 = vectors[i++];
+                        var v3 = vectors[i++];
+                        var v4 = vectors[i++];
+                        // Load 4 X components
+                        var xVec = Vector128.Create(v1.X, v2.X, v3.X, v4.X);
+                        minX = Sse.Min(minX, xVec);
+                        maxX = Sse.Max(maxX, xVec);
+
+                        // Load 4 Y components
+                        var yVec = Vector128.Create(v1.Y, v2.Y, v3.Y, v4.Y);
+                        minY = Sse.Min(minY, yVec);
+                        maxY = Sse.Max(maxY, yVec);
+
+                        // Load 4 Z components
+                        var zVec = Vector128.Create(v1.Z, v2.Z, v3.Z, v4.Z);
+                        minZ = Sse.Min(minZ, zVec);
+                        maxZ = Sse.Max(maxZ, zVec);
+                    }
+
+                    // Reduce the 4 min/max values in the vectors to a single value
+                    currentMin = new(HorizontalMin(minX), HorizontalMin(minY), HorizontalMin(minZ));
+                    currentMax = new(HorizontalMax(maxX), HorizontalMax(maxY), HorizontalMax(maxZ));
+                }
+            }
+
+#endif
+            // Process remaining vectors
+            for (; i < end; i++)
+            {
+                currentMax = Vector3.Max(currentMax, vectors[i]);
+                currentMin = Vector3.Min(currentMin, vectors[i]);
+            }
+
+            min = currentMin;
+            max = currentMax;
+        }
+#if NET6_0_OR_GREATER
+        // Helper function to find the minimum of 4 floats in an SSE vector
+        private static float HorizontalMin(Vector128<float> vector)
+        {
+            vector = Sse.Min(vector, Sse.Shuffle(vector, vector, 0b01001110)); // Swap 0 and 1, 2 and 3
+            vector = Sse.Min(vector, Sse.Shuffle(vector, vector, 0b10110001)); // Swap 0 and 2, 1 and 3
+            return vector.GetElement(0);
+        }
+
+        private static float HorizontalMin(Vector256<float> vector)
+        {
+            var v1 = Avx.Permute(vector, 0b10110001); // swap floats: 0<->1, 2<->3, 4<->5, 6<->7
+            var v2 = Avx.Min(vector, v1);
+            var v3 = Avx.Permute(v2, 0b01001110); // swap floats
+            var v4 = Avx.Min(v2, v3);
+            var v5 = Avx.Permute2x128(v4, v4, 0b00000001); // swap 128-bit lanes
+            var min = Avx.Min(v4, v5);
+            return min.GetElement(0);
+        }
+
+        // Helper function to find the maximum of 4 floats in an SSE vector
+        private static float HorizontalMax(Vector128<float> vector)
+        {
+            vector = Sse.Max(vector, Sse.Shuffle(vector, vector, 0b01001110)); // Swap 0 and 1, 2 and 3
+            vector = Sse.Max(vector, Sse.Shuffle(vector, vector, 0b10110001)); // Swap 0 and 2, 1 and 3
+            return vector.GetElement(0);
+        }
+
+        private static float HorizontalMax(Vector256<float> vector)
+        {
+            var v1 = Avx.Permute(vector, 0b10110001); // swap floats: 0<->1, 2<->3, 4<->5, 6<->7
+            var v2 = Avx.Max(vector, v1);
+            var v3 = Avx.Permute(v2, 0b01001110); // swap floats
+            var v4 = Avx.Max(v2, v3);
+            var v5 = Avx.Permute2x128(v4, v4, 0b00000001); // swap 128-bit lanes
+            var max = Avx.Max(v4, v5);
+            return max.GetElement(0);
+        }
+#endif
+        public static Vector3 GetCentroid(this IList<Vector3> vertices)
+        {
+            return vertices.GetCentroid(0, vertices.Count);
+        }
+
+        public static Vector3 GetCentroid(this IList<Vector3> vertices, int start, int count)
+        {
+            if (start + count > vertices.Count)
+            {
+                throw new ArgumentOutOfRangeException(nameof(count), "The start and count exceed the length of the vertices array.");
+            }
+            if (vertices.Count == 0)
+            {
+                return default;
+            }
+#if NET6_0_OR_GREATER
+            if (MathSettings.EnableSIMD && Sse.IsSupported)
+            {
+                Vector128<float> sum = Vector128.Create(vertices[start].X, vertices[start].Y, vertices[start].Z, 0);
+                var end = Math.Min(start + count, vertices.Count);
+                for (int i = start + 1; i < end; ++i)
+                {
+                    var v = Vector128.Create(vertices[i].X, vertices[i].Y, vertices[i].Z, 0);
+                    var diff = Sse.Subtract(v, sum);
+                    diff = Sse.Divide(diff, Vector128.Create((float)(i + 1)));
+                    sum = Sse.Add(sum, diff);
+                }
+                return new Vector3(sum.GetElement(0), sum.GetElement(1), sum.GetElement(2));
+            }
+#endif
+            var centroid = vertices[0];
+            for (var i = 1; i < vertices.Count; i++)
+            {
+                centroid += (vertices[i] - centroid) / (i + 1);
+            }
+            return centroid;
+        }
     }
 }
