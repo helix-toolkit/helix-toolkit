@@ -1,0 +1,63 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main*
+      - develop*
+      - release*
+  pull_request:
+    branches:
+      - main*
+      - develop*
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: |
+          6.0.x
+          8.0.x
+          2.0.x
+          
+    - name: Setup msbuild
+      uses: microsoft/setup-msbuild@v2
+        
+    - name: Checkout repository
+      uses: actions/checkout@v4        
+
+    - name: Install GitVersion
+      run: choco install gitversion.portable --version=5.12.0 -y
+
+    - name: Restore NuGet packages
+      run: nuget restore .\Source\HelixToolkit.sln
+
+    - name: Run GitVersion
+      run: gitversion /l console /output buildserver /updateprojectfiles
+
+    - name: Build solution
+      run: dotnet build .\Source\HelixToolkit.sln --configuration Release --no-restore
+
+    - name: Run tests
+      run: .\Source\run-tests.cmd
+  
+  # publish:
+  #   runs-on: windows-latest
+  #   needs: build
+  #   steps:
+  #   - name: Install NuGet
+  #     run: dotnet tool install --global NuGet.CommandLine
+  #   - name: Publish NuGet package
+  #     env:
+  #       NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
+  #     if: github.event_name == 'push' && github.ref == 'refs/heads/main*'
+  #     run: nuget push .\Source\**\*.nupkg -Source https://api.nuget.org/v3/index.json -ApiKey $NUGET_API_KEY
+  #   - name: Publish MyGet package
+  #     env:
+  #       MYGET_API_KEY: ${{ secrets.MYGET_API_KEY }}
+  #     if: github.event_name == 'push'
+  #     run: nuget push .\Source\**\*.nupkg -Source https://www.myget.org/F/helixtoolkit-nightly/api/v2/package -ApiKey $MYGET_API_KEY
