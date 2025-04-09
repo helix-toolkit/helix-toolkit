@@ -20,9 +20,10 @@ jobs:
       uses: actions/setup-dotnet@v4
       with:
         dotnet-version: |
+          2.0.x
           6.0.x
           8.0.x
-          2.0.x
+          9.0.x
           
     - name: Setup msbuild
       uses: microsoft/setup-msbuild@v2
