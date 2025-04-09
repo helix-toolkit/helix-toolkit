@@ -11,6 +11,7 @@
     <UseWinUI>true</UseWinUI>
     <IsPackable>false</IsPackable>
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+    <EnableMsixTooling>True</EnableMsixTooling>
   </PropertyGroup>
 
   <ItemGroup>
