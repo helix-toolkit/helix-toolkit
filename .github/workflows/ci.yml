@@ -46,7 +46,7 @@ jobs:
       run: dotnet build .\Source\HelixToolkit.sln --configuration Release --no-restore
 
     - name: Run tests
-      run: .\Source\run-tests.cmd
+      run: .\Source\run-tests.cmd Release
   
   # publish:
   #   runs-on: windows-latest
