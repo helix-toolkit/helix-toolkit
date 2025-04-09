@@ -29,6 +29,8 @@ jobs:
         
     - name: Checkout repository
       uses: actions/checkout@v4        
+      with:
+          fetch-depth: 0
 
     - name: Install GitVersion
       run: choco install gitversion.portable --version=5.12.0 -y
