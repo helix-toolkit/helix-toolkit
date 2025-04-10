@@ -53,10 +53,9 @@ jobs:
       with:
         name: build-artifacts
         path: |
-            Source/**/bin/Release/**/*.dll
-            Source/**/bin/Release/**/*.exe
-            Source/**/bin/Release/**/*.pdb
             Source/**/bin/Release/**/*.nupkg
+            Source/**/bin/Release/**/*.snupkg
+            Source/**/bin/Release/**/*.cso
   
   # publish:
   #   runs-on: windows-latest
