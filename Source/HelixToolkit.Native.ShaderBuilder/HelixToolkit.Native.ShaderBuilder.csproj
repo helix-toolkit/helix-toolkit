@@ -371,10 +371,13 @@
         <!-- Create the destination directory if it doesn't exist -->
         <MakeDir Directories="$(ShaderOutputPath)" />
         <Message Text="ShaderOutputPath: $(ShaderOutputPath)" Importance="High" />
-        <Message Text="ShaderFiles: @(ShaderFiles)" Importance="High" />
         <!-- Copy the shader files -->
         <Copy SourceFiles="@(ShaderFiles)"
               DestinationFiles="@(ShaderFiles->'$(ShaderOutputPath)\%(Filename)%(Extension)')"
               SkipUnchangedFiles="true" />
+        <ItemGroup>
+            <ShaderFiles Include="$(ShaderOutputPath)\*.cso" />
+        </ItemGroup>        
+        <Message Text="@(ShaderFiles->'%(Filename)&#x0A;')" Importance="High" />
     </Target>
 </Project>

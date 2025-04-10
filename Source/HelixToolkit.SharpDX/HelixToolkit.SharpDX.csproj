@@ -59,6 +59,6 @@
         <ProjectReference Include="..\HelixToolkit\HelixToolkit.csproj" />
     </ItemGroup>
     <Target Name="WaitForShaderBuilder" BeforeTargets="BeforeBuild">
-        <MSBuild Projects="..\HelixToolkit.Native.ShaderBuilder\HelixToolkit.Native.ShaderBuilder.csproj" Targets="Build" Properties="Configuration=$(Configuration);Platform=$(Platform);TargetFramework=net8.0" />
+        <MSBuild Projects="..\HelixToolkit.Native.ShaderBuilder\HelixToolkit.Native.ShaderBuilder.csproj" Targets="Build;CheckCsoFilesPostBuild;CopyShaderFiles;" Properties="Configuration=$(Configuration);Platform=$(Platform);TargetFramework=net8.0" />
     </Target>
 </Project>
