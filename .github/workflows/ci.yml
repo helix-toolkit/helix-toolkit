@@ -47,6 +47,16 @@ jobs:
 
     - name: Run tests
       run: .\Source\run-tests.cmd Release
+
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: build-artifacts
+        path: |
+            Source/**/bin/Release/**/*.dll
+            Source/**/bin/Release/**/*.exe
+            Source/**/bin/Release/**/*.pdb
+            Source/**/bin/Release/**/*.nupkg
   
   # publish:
   #   runs-on: windows-latest
