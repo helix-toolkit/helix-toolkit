@@ -59,13 +59,9 @@
     <ProjectReference Include="..\HelixToolkit.Maths\HelixToolkit.Maths.csproj" />
     <ProjectReference Include="..\HelixToolkit\HelixToolkit.csproj" />
   </ItemGroup>
-
-    <Target Name="CheckCsoFilesExist" BeforeTargets="BeforeBuild">
-        <ItemGroup>
-            <!-- Search for .cso files in the specified directory -->
-            <CsoFiles Include="..\HelixToolkit.Native.ShaderBuilder\bin\$(Configuration)\net8.0\**\*.cso" />
-        </ItemGroup>
-        <!-- Fail the build if no .cso files are found -->
-        <Error Text="No .cso files found in the directory: ..\HelixToolkit.Native.ShaderBuilder\bin\$(Configuration)\net8.0" Condition="@(CsoFiles->Count()) == 0" />
-    </Target>
+  <Target Name="WaitForShaderBuilder" BeforeTargets="BeforeBuild">
+      <MSBuild Projects="..\HelixToolkit.Native.ShaderBuilder\HelixToolkit.Native.ShaderBuilder.csproj" 
+              Targets="Build" 
+              Properties="Configuration=$(Configuration);Platform=$(Platform)" />
+  </Target>
 </Project>
