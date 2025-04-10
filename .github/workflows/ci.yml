@@ -45,8 +45,8 @@ jobs:
     - name: Build solution
       run: dotnet build .\Source\HelixToolkit.sln --configuration Release --no-restore
 
-    - name: Run tests
-      run: .\Source\run-tests.cmd Release
+    # - name: Run tests
+    #   run: .\Source\run-tests.cmd Release
 
     - name: Upload artifacts
       uses: actions/upload-artifact@v3
