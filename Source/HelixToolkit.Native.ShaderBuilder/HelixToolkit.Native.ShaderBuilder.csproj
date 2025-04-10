@@ -375,9 +375,5 @@
         <Copy SourceFiles="@(ShaderFiles)"
               DestinationFiles="@(ShaderFiles->'$(ShaderOutputPath)\%(Filename)%(Extension)')"
               SkipUnchangedFiles="true" />
-        <ItemGroup>
-            <ShaderFiles Include="$(ShaderOutputPath)\*.cso" />
-        </ItemGroup>        
-        <Message Text="@(ShaderFiles->'%(Filename)&#x0A;')" Importance="High" />
     </Target>
 </Project>

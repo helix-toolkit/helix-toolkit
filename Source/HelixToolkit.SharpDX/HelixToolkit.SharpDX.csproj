@@ -21,6 +21,7 @@
         <Using Remove="System.Net.Http" />
     </ItemGroup>
 
+
     <ItemGroup>
         <EmbeddedResource Include="Textures\arial.dds">
             <LogicalName>HelixToolkit.SharpDX.Resources.%(Filename)%(Extension)</LogicalName>
@@ -32,6 +33,7 @@
             <LogicalName>HelixToolkit.SharpDX.Resources.%(Filename)%(Extension)</LogicalName>
         </EmbeddedResource>
     </ItemGroup>
+
 
     <ItemGroup>
         <PackageReference Include="CommunityToolkit.Common" Version="8.3.2" />
@@ -60,5 +62,13 @@
     </ItemGroup>
     <Target Name="WaitForShaderBuilder" BeforeTargets="BeforeBuild">
         <MSBuild Projects="..\HelixToolkit.Native.ShaderBuilder\HelixToolkit.Native.ShaderBuilder.csproj" Targets="Build;CheckCsoFilesPostBuild;CopyShaderFiles;" Properties="Configuration=$(Configuration);Platform=$(Platform);TargetFramework=net8.0" />
+        <ItemGroup>
+            <ShaderFiles Include="..\HelixToolkit.Native.ShaderBuilder\bin\Shaders\*.cso" />      
+        </ItemGroup>
+        <Message Text="@(ShaderFiles->'%(Filename)&#x0A;')" Importance="High" />
+    </Target>
+    <Target Name="PrintEmbeddedResources" AfterTargets="Build">
+        <Message Text="Print embedded resources..." Importance="High" />
+        <Message Text="@(EmbeddedResource)" Importance="High" />
     </Target>
 </Project>
