@@ -17,7 +17,9 @@
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
         <IsPackable>true</IsPackable>
     </PropertyGroup>
-
+    <PropertyGroup>
+        <ShaderOutputPath>bin\Shaders</ShaderOutputPath>
+    </PropertyGroup>
     <ItemGroup>
         <Using Remove="System.Net.Http" />
     </ItemGroup>
@@ -29,22 +31,7 @@
         <EmbeddedResource Include="Textures\arial.fnt">
             <LogicalName>HelixToolkit.SharpDX.Resources.%(Filename)%(Extension)</LogicalName>
         </EmbeddedResource>
-        <EmbeddedResource Include="..\HelixToolkit.Native.ShaderBuilder\bin\$(Configuration)\net8.0\VS\*.cso" LinkBase="Resources">
-            <LogicalName>HelixToolkit.SharpDX.Resources.%(Filename)%(Extension)</LogicalName>
-        </EmbeddedResource>
-        <EmbeddedResource Include="..\HelixToolkit.Native.ShaderBuilder\bin\$(Configuration)\net8.0\DS\*.cso" LinkBase="Resources">
-            <LogicalName>HelixToolkit.SharpDX.Resources.%(Filename)%(Extension)</LogicalName>
-        </EmbeddedResource>
-        <EmbeddedResource Include="..\HelixToolkit.Native.ShaderBuilder\bin\$(Configuration)\net8.0\CS\*.cso" LinkBase="Resources">
-            <LogicalName>HelixToolkit.SharpDX.Resources.%(Filename)%(Extension)</LogicalName>
-        </EmbeddedResource>
-        <EmbeddedResource Include="..\HelixToolkit.Native.ShaderBuilder\bin\$(Configuration)\net8.0\GS\*.cso" LinkBase="Resources">
-            <LogicalName>HelixToolkit.SharpDX.Resources.%(Filename)%(Extension)</LogicalName>
-        </EmbeddedResource>
-        <EmbeddedResource Include="..\HelixToolkit.Native.ShaderBuilder\bin\$(Configuration)\net8.0\HS\*.cso" LinkBase="Resources">
-            <LogicalName>HelixToolkit.SharpDX.Resources.%(Filename)%(Extension)</LogicalName>
-        </EmbeddedResource>
-        <EmbeddedResource Include="..\HelixToolkit.Native.ShaderBuilder\bin\$(Configuration)\net8.0\PS\*.cso" LinkBase="Resources">
+        <EmbeddedResource Include="$(ShaderOutputPath)\*.cso" LinkBase="Resources">
             <LogicalName>HelixToolkit.SharpDX.Resources.%(Filename)%(Extension)</LogicalName>
         </EmbeddedResource>
     </ItemGroup>
@@ -78,5 +65,17 @@
         <MSBuild Projects="..\HelixToolkit.Native.ShaderBuilder\HelixToolkit.Native.ShaderBuilder.csproj"
                 Targets="Build"
                 Properties="Configuration=$(Configuration);Platform=$(Platform);TargetFramework=net8.0" />
+    </Target>
+    <Target Name="CopyShaderFiles" BeforeTargets="BeforeBuild">
+      <ItemGroup>
+          <ShaderFiles Include="..\HelixToolkit.Native.ShaderBuilder\bin\$(Configuration)\net8.0\**\*.cso" />
+      </ItemGroup>
+      <!-- Create the destination directory if it doesn't exist -->
+      <MakeDir Directories="$(ShaderOutputPath)" />
+
+      <!-- Copy the shader files -->
+      <Copy SourceFiles="@(ShaderFiles)"
+            DestinationFiles="@(ShaderFiles->'$(ShaderOutputPath)\%(Filename)%(Extension)')"
+            SkipUnchangedFiles="true" />
     </Target>
 </Project>
