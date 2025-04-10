@@ -360,7 +360,7 @@
         <!-- Fail the build if no .cso files are found -->
         <Error Text="No .cso files found in the build output folder: $(OutDir)" Condition="@(CsoFiles->Count()) == 0" />
     </Target>
-    <Target Name="CopyShaderFiles" BeforeTargets="BeforeBuild">
+    <Target Name="CopyShaderFiles" AfterTargets="Build">
         <PropertyGroup>
             <ShaderOutputPath>$(OutDir)..\..\Shaders</ShaderOutputPath>
         </PropertyGroup>
