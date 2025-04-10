@@ -62,6 +62,6 @@
   <Target Name="WaitForShaderBuilder" BeforeTargets="BeforeBuild">
       <MSBuild Projects="..\HelixToolkit.Native.ShaderBuilder\HelixToolkit.Native.ShaderBuilder.csproj" 
               Targets="Build" 
-              Properties="Configuration=$(Configuration);" />
+              Properties="Configuration=$(Configuration);Platform=$(Platform);TargetFramework=net8.0" />
   </Target>
 </Project>
