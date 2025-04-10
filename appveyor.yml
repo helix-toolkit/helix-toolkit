@@ -1,53 +1,53 @@
-image:
-- Visual Studio 2022
+# image:
+# - Visual Studio 2022
 
-pull_requests:
-  do_not_increment_build_number: true
+# pull_requests:
+#   do_not_increment_build_number: true
   
-skip_commits:
-  files:
-    - '*.md'
+# skip_commits:
+#   files:
+#     - '*.md'
     
-install:
-  - choco install gitversion.portable --version=5.12.0 -y
+# install:
+#   - choco install gitversion.portable --version=5.12.0 -y
 
-environment:
-  IGNORE_NORMALISATION_GIT_HEAD_MOVE: 1
+# environment:
+#   IGNORE_NORMALISATION_GIT_HEAD_MOVE: 1
 
-configuration: Release
-dotnet_csproj:
-  patch: true
-  file: '**\*.csproj'
-  version: '{version}'
-  package_version: '{version}'
-  assembly_version: '{version}'
-  file_version: '{build}'
-  informational_version: '{version}'
+# configuration: Release
+# dotnet_csproj:
+#   patch: true
+#   file: '**\*.csproj'
+#   version: '{version}'
+#   package_version: '{version}'
+#   assembly_version: '{version}'
+#   file_version: '{build}'
+#   informational_version: '{version}'
 
-before_build:
-  - appveyor DownloadFile https://dist.nuget.org/win-x86-commandline/latest/nuget.exe
-  - nuget restore .\Source\HelixToolkit.sln
-  - gitversion /l console /output buildserver /updateprojectfiles
+# before_build:
+#   - appveyor DownloadFile https://dist.nuget.org/win-x86-commandline/latest/nuget.exe
+#   - nuget restore .\Source\HelixToolkit.sln
+#   - gitversion /l console /output buildserver /updateprojectfiles
 
-build:
-  project: Source\HelixToolkit.sln
-  publish_nuget: true
-  publish_nuget_symbols: true
-  use_snupkg_format: true
-  verbosity: minimal
+# build:
+#   project: Source\HelixToolkit.sln
+#   publish_nuget: true
+#   publish_nuget_symbols: true
+#   use_snupkg_format: true
+#   verbosity: minimal
 
-test_script:
-- Source\run-tests.cmd
+# test_script:
+# - Source\run-tests.cmd
     
-deploy:
-  provider: NuGet
-  server: https://www.myget.org/F/helixtoolkit-nightly/api/v2/package
-  api_key:
-    secure: Ed/7hI7ap963N/sJk9GAj1FeaZ0ynQlG1sH2U7BtoW5ykGPKNr2q0ThLkBRY8JKh
-  skip_symbols: false
-  symbol_server: https://www.myget.org/F/helixtoolkit-nightly/api/v2/package
-  artifact: /.*(\.|\.s)nupkg/
-  on:
-    APPVEYOR_REPO_NAME: helix-toolkit/helix-toolkit
-    APPVEYOR_ACCOUNT_NAME: holance
+# deploy:
+#   provider: NuGet
+#   server: https://www.myget.org/F/helixtoolkit-nightly/api/v2/package
+#   api_key:
+#     secure: Ed/7hI7ap963N/sJk9GAj1FeaZ0ynQlG1sH2U7BtoW5ykGPKNr2q0ThLkBRY8JKh
+#   skip_symbols: false
+#   symbol_server: https://www.myget.org/F/helixtoolkit-nightly/api/v2/package
+#   artifact: /.*(\.|\.s)nupkg/
+#   on:
+#     APPVEYOR_REPO_NAME: helix-toolkit/helix-toolkit
+#     APPVEYOR_ACCOUNT_NAME: holance
 
