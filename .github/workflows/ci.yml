@@ -51,6 +51,9 @@ jobs:
     - name: Run GitVersion
       run: gitversion /l console /output buildserver /updateprojectfiles
 
+    - name: Build Shaders
+      run: dotnet build .\Source\HelixToolkit.Native.ShaderBuilder\HelixToolkit.Native.ShaderBuilder.csproj --configuration Release --no-restore
+
     - name: Build solution
       run: dotnet build .\Source\HelixToolkit.sln --configuration Release --no-restore
 

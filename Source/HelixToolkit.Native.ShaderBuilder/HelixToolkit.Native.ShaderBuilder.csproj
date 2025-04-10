@@ -361,20 +361,4 @@
         <!-- Fail the build if no .cso files are found -->
         <Error Text="No .cso files found in the build output folder: $(OutDir)" Condition="@(CsoFiles->Count()) == 0" />
     </Target>
-    <Target Name="CopyShaderFiles" AfterTargets="Build">
-        <PropertyGroup>
-            <ShaderOutputPath>$(OutDir)..\..\Shaders</ShaderOutputPath>
-        </PropertyGroup>
-        <Message Text="CopyShaderFiles target is running." Importance="High" />
-        <ItemGroup>
-            <ShaderFiles Include="$(OutDir)**\*.cso" />
-        </ItemGroup>
-        <!-- Create the destination directory if it doesn't exist -->
-        <MakeDir Directories="$(ShaderOutputPath)" />
-        <Message Text="ShaderOutputPath: $(ShaderOutputPath)" Importance="High" />
-        <!-- Copy the shader files -->
-        <Copy SourceFiles="@(ShaderFiles)"
-              DestinationFiles="@(ShaderFiles->'$(ShaderOutputPath)\%(Filename)%(Extension)')"
-              SkipUnchangedFiles="true" />
-    </Target>
 </Project>

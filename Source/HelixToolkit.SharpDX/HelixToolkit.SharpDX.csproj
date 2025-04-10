@@ -29,7 +29,7 @@
         <EmbeddedResource Include="Textures\arial.fnt">
             <LogicalName>HelixToolkit.SharpDX.Resources.%(Filename)%(Extension)</LogicalName>
         </EmbeddedResource>
-        <EmbeddedResource Include="..\HelixToolkit.Native.ShaderBuilder\bin\Shaders\*.cso" LinkBase="Resources">
+        <EmbeddedResource Include="..\HelixToolkit.Native.ShaderBuilder\bin\**\*.cso" LinkBase="Resources">
             <LogicalName>HelixToolkit.SharpDX.Resources.%(Filename)%(Extension)</LogicalName>
         </EmbeddedResource>
     </ItemGroup>
@@ -60,13 +60,6 @@
         <ProjectReference Include="..\HelixToolkit.Maths\HelixToolkit.Maths.csproj" />
         <ProjectReference Include="..\HelixToolkit\HelixToolkit.csproj" />
     </ItemGroup>
-    <Target Name="WaitForShaderBuilder" BeforeTargets="Build">
-        <MSBuild Projects="..\HelixToolkit.Native.ShaderBuilder\HelixToolkit.Native.ShaderBuilder.csproj" Targets="BuildShader;CopyShaderFiles;" Properties="Configuration=$(Configuration);Platform=$(Platform);TargetFramework=net8.0" />
-        <ItemGroup>
-            <ShaderFiles Include="..\HelixToolkit.Native.ShaderBuilder\bin\Shaders\*.cso" />      
-        </ItemGroup>
-        <Message Text="@(ShaderFiles->'%(Filename)&#x0A;')" Importance="High" />
-    </Target>
     <Target Name="PrintEmbeddedResources" AfterTargets="Build">
         <Message Text="Print embedded resources..." Importance="High" />
         <Message Text="@(EmbeddedResource)" Importance="High" />
