@@ -60,8 +60,8 @@
         <ProjectReference Include="..\HelixToolkit.Maths\HelixToolkit.Maths.csproj" />
         <ProjectReference Include="..\HelixToolkit\HelixToolkit.csproj" />
     </ItemGroup>
-    <Target Name="WaitForShaderBuilder" BeforeTargets="BeforeBuild">
-        <MSBuild Projects="..\HelixToolkit.Native.ShaderBuilder\HelixToolkit.Native.ShaderBuilder.csproj" Targets="Build;CheckCsoFilesPostBuild;CopyShaderFiles;" Properties="Configuration=$(Configuration);Platform=$(Platform);TargetFramework=net8.0" />
+    <Target Name="WaitForShaderBuilder" BeforeTargets="Build">
+        <MSBuild Projects="..\HelixToolkit.Native.ShaderBuilder\HelixToolkit.Native.ShaderBuilder.csproj" Targets="BuildShader;CopyShaderFiles;" Properties="Configuration=$(Configuration);Platform=$(Platform);TargetFramework=net8.0" />
         <ItemGroup>
             <ShaderFiles Include="..\HelixToolkit.Native.ShaderBuilder\bin\Shaders\*.cso" />      
         </ItemGroup>
