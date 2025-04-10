@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
@@ -352,5 +352,12 @@
   <ItemGroup>
     <PackageReference Include="JeremyAnsel.HLSL.Targets" Version="2.0.26" />
   </ItemGroup>
-
+    <Target Name="CheckCsoFilesPostBuild" AfterTargets="Build">
+        <ItemGroup>
+            <!-- Search for .cso files in the output directory -->
+            <CsoFiles Include="$(OutDir)**\*.cso" />
+        </ItemGroup>
+        <!-- Fail the build if no .cso files are found -->
+        <Error Text="No .cso files found in the build output folder: $(OutDir)" Condition="@(CsoFiles->Count()) == 0" />
+    </Target>
 </Project>
