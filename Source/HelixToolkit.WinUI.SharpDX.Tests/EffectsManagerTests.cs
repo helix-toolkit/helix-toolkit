@@ -1,6 +1,7 @@
 ﻿using HelixToolkit.SharpDX;
 using NUnit.Framework;
 using NUnit.Framework.Legacy;
+using SharpDX.DXGI;
 
 namespace HelixToolkit.WinUI.SharpDX.Tests;
 
@@ -10,6 +11,13 @@ public class EffectsManagerTests
     [Test]
     public void InitializationTest()
     {
+        using var f = new Factory1();
+        Adapter[] adapters = f.Adapters;
+        if (adapters.Length == 0)
+        {
+            Assert.Ignore("No graphics adapters found.");
+        }
+
         using (var effectsManager = new DefaultEffectsManager())
         {
             foreach (var techName in effectsManager.RenderTechniques)
