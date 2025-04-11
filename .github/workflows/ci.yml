@@ -72,6 +72,11 @@ jobs:
     runs-on: windows-latest
     needs: build
     steps:
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 9.0.x
+        
     - name: Install NuGet
       run: dotnet tool install --global NuGet.CommandLine
     - name: Publish MyGet package
