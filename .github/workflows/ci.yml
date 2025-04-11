@@ -68,19 +68,14 @@ jobs:
             Source/**/bin/Release/**/*.nupkg
             Source/**/bin/Release/**/*.snupkg
   
-  # publish:
-  #   runs-on: windows-latest
-  #   needs: build
-  #   steps:
-  #   - name: Install NuGet
-  #     run: dotnet tool install --global NuGet.CommandLine
-  #   - name: Publish NuGet package
-  #     env:
-  #       NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
-  #     if: github.event_name == 'push' && github.ref == 'refs/heads/main*'
-  #     run: nuget push .\Source\**\*.nupkg -Source https://api.nuget.org/v3/index.json -ApiKey $NUGET_API_KEY
-  #   - name: Publish MyGet package
-  #     env:
-  #       MYGET_API_KEY: ${{ secrets.MYGET_API_KEY }}
-  #     if: github.event_name == 'push'
-  #     run: nuget push .\Source\**\*.nupkg -Source https://www.myget.org/F/helixtoolkit-nightly/api/v2/package -ApiKey $MYGET_API_KEY
+  publish:
+    runs-on: windows-latest
+    needs: build
+    steps:
+    - name: Install NuGet
+      run: dotnet tool install --global NuGet.CommandLine
+    - name: Publish MyGet package
+      env:
+        MYGET_API_KEY: ${{ secrets.MYGET_API_KEY }}
+      if: github.event_name == 'push' && (startsWith(github.ref, 'refs/heads/main') || startsWith(github.ref, 'refs/heads/develop'))
+      run: nuget push .\Source\**\*.nupkg -Source https://www.myget.org/F/helixtoolkit-nightly/api/v2/package -ApiKey $MYGET_API_KEY
