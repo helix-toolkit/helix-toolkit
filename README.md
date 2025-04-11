@@ -22,8 +22,8 @@ Custom 3D Engine and XAML/MVVM compatible Scene Graphs based on [SharpDX](https:
 Please download full source code to run examples.
 
 [![License: MIT](https://img.shields.io/github/license/helix-toolkit/helix-toolkit)](https://github.com/helix-toolkit/helix-toolkit/blob/develop/LICENSE)
-[![AppVeyor status](https://ci.appveyor.com/api/projects/status/vbrornad55ln8tp4?svg=true)](https://ci.appveyor.com/project/holance/helix-toolkit-qqf1e)
-![Github Action](https://github.com/helix-toolkit/helix-toolkit/actions/workflows/ci.yml/badge.svg)
+[![Github Action](https://github.com/helix-toolkit/helix-toolkit/actions/workflows/ci.yml/badge.svg)](https://github.com/helix-toolkit/helix-toolkit/actions?query=workflow%3ACI
+)
 [![Release](https://img.shields.io/github/release/helix-toolkit/helix-toolkit.svg?style=popout)](https://www.nuget.org/packages?q=Helix-Toolkit)
 [![Chat](https://img.shields.io/gitter/room/helix-toolkit/helix-toolkit.svg)](https://gitter.im/helix-toolkit/helix-toolkit)
 
