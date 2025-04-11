@@ -1,3 +1,5 @@
+build: off
+
 image:
 - Visual Studio 2022
 

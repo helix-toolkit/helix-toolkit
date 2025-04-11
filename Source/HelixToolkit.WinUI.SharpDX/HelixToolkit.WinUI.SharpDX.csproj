@@ -21,6 +21,7 @@
     <DefineConstants>$(DefineConstants);WINUI</DefineConstants>
     <IsPackable>true</IsPackable>
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+    <EnableMsixTooling>True</EnableMsixTooling>
   </PropertyGroup>
 
   <ItemGroup>

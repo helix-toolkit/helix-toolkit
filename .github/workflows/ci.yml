@@ -1,0 +1,91 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main*
+      - develop*
+      - release*
+    paths-ignore:
+      - '**.md'
+      - 'docs/**'
+      - 'LICENSE'
+      - '.gitignore'
+  pull_request:
+    branches:
+      - main*
+      - develop*
+    paths-ignore:
+      - '**.md'
+      - 'docs/**'
+      - 'LICENSE'
+      - '.gitignore'
+      
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: |
+          2.0.x
+          6.0.x
+          8.0.x
+          
+    - name: Setup msbuild
+      uses: microsoft/setup-msbuild@v2
+        
+    - name: Checkout repository
+      uses: actions/checkout@v4        
+      with:
+          fetch-depth: 0
+
+    - name: Install GitVersion
+      run: choco install gitversion.portable --version=5.12.0 -y
+
+    - name: Restore NuGet packages
+      run: nuget restore .\Source\HelixToolkit.sln
+
+    - name: Run GitVersion
+      run: gitversion /l console /output buildserver /updateprojectfiles
+
+    - name: Build Shaders # Needs to run this first, otherwise there is a race condition causes shaders are not being embedded into the HelixToolkit.SharpDX binary.
+      run: dotnet build .\Source\HelixToolkit.Native.ShaderBuilder\HelixToolkit.Native.ShaderBuilder.csproj --configuration Release --no-restore
+
+    - name: Build solution
+      run: dotnet build .\Source\HelixToolkit.sln --configuration Release --no-restore
+
+    - name: Run tests
+      run: .\Source\run-tests.cmd Release
+
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: build-artifacts
+        path: |
+            Source/**/bin/Release/**/*.nupkg
+            Source/**/bin/Release/**/*.snupkg
+  
+  publish:
+    runs-on: windows-latest
+    needs: build
+    steps:
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 9.0.x
+        
+    - name: Download artifacts
+      uses: actions/download-artifact@v4
+      with:
+        name: build-artifacts
+
+    - name: Publish MyGet package
+      env:
+        MYGET_API_KEY: ${{ secrets.MYGET_API_KEY }}
+      if: github.event_name == 'push' && (startsWith(github.ref, 'refs/heads/main') || startsWith(github.ref, 'refs/heads/develop'))
+      run: |
+        dotnet nuget push **/*.nupkg -s https://www.myget.org/F/helixtoolkit-nightly/api/v2/package -k $env:MYGET_API_KEY
+        dotnet nuget push **/*.snupkg -s https://www.myget.org/F/helixtoolkit-nightly/api/v2/package -k $env:MYGET_API_KEY
