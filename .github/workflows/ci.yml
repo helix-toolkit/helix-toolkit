@@ -69,6 +69,7 @@ jobs:
             Source/**/bin/Release/**/*.snupkg
   
   publish:
+    if: github.repository == 'original/repository'
     runs-on: windows-latest
     needs: build
     steps:
