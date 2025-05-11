@@ -1,4 +1,4 @@
-﻿using Assimp;
+﻿using SharpAssimp;
 using Microsoft.Extensions.Logging;
 using System.Diagnostics.CodeAnalysis;
 using HxAnimations = HelixToolkit.SharpDX.Animations;
@@ -106,7 +106,7 @@ public partial class Exporter
         }
         if (info.Mesh.Colors != null && info.Mesh.Colors.Count > 0)
         {
-            assimpMesh.VertexColorChannels[0] = new List<Color4D>(info.Mesh.Colors.Select(x => x.ToAssimpColor4D()));
+            assimpMesh.VertexColorChannels[0] = new List<Vector4>(info.Mesh.Colors.Select(x => x.ToAssimpColor4D()));
         }
         if (info.Mesh is MeshGeometry3D mesh)
         {
@@ -125,7 +125,7 @@ public partial class Exporter
             }
             if (mesh.TextureCoordinates != null && mesh.TextureCoordinates.Count > 0)
             {
-                assimpMesh.TextureCoordinateChannels[0] = new List<Vector3D>(mesh.TextureCoordinates.Select(x => x.ToAssimpVector3D()));
+                assimpMesh.TextureCoordinateChannels[0] = new List<Vector3>(mesh.TextureCoordinates.Select(x => x.ToAssimpVector3D()));
             }
             if (info.Bones != null &&
                 mesh is BoneSkinnedMeshGeometry3D boneSkinMesh

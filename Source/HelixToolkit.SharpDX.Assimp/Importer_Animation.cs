@@ -1,4 +1,4 @@
-﻿using Assimp;
+﻿using SharpAssimp;
 using Microsoft.Extensions.Logging;
 using HxAnimations = HelixToolkit.SharpDX.Animations;
 using HxScene = HelixToolkit.SharpDX.Model.Scene;
@@ -35,15 +35,15 @@ public partial class Importer
             // Adds dummy key if it is empty
             if (posCount == 0)
             {
-                channel.PositionKeys.Add(new VectorKey(0, new Vector3D()));
+                channel.PositionKeys.Add(new VectorKey(0, new Vector3()));
             }
             if (rotCount == 0)
             {
-                channel.RotationKeys.Add(new QuaternionKey(0, new global::Assimp.Quaternion()));
+                channel.RotationKeys.Add(new QuaternionKey(0, new Quaternion()));
             }
             if (scaleCount == 0)
             {
-                channel.ScalingKeys.Add(new VectorKey(0, new Vector3D(1, 1, 1)));
+                channel.ScalingKeys.Add(new VectorKey(0, new Vector3(1, 1, 1)));
             }
             int i = 0, j = 0, k = 0;
             double nextT1 = channel.PositionKeys[i].Time,

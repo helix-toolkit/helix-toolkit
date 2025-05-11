@@ -1,4 +1,4 @@
-﻿using Assimp;
+﻿using SharpAssimp;
 using HelixToolkit.SharpDX.Model;
 using Microsoft.Extensions.Logging;
 using System.Text;
@@ -220,7 +220,7 @@ public partial class Exporter : IDisposable
             scene.Materials.Add(OnCreateAssimpMaterial(material.Key));
         }
         scene.RootNode = ConstructAssimpNode(root, null);
-        scene.Meshes.AddRange(meshInfos.Select(x => x.Value.AssimpMesh));
+        scene.Meshes.AddRange(meshInfos.Select(x => x.Value.AssimpMesh!));
         AddAnimationsToScene(scene);
         return scene;
     }
@@ -349,7 +349,7 @@ public partial class Exporter : IDisposable
         /// <summary>
         ///     The materials
         /// </summary>
-        public Tuple<global::Assimp.Material, MaterialCore>[]? Materials;
+        public Tuple<global::SharpAssimp.Material, MaterialCore>[]? Materials;
 
         /// <summary>
         ///     The meshes

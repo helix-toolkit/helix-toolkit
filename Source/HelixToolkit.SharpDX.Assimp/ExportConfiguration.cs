@@ -1,5 +1,5 @@
-﻿using Assimp.Configs;
-using Assimp;
+﻿using SharpAssimp.Configs;
+using SharpAssimp;
 
 namespace HelixToolkit.SharpDX.Assimp;
 
