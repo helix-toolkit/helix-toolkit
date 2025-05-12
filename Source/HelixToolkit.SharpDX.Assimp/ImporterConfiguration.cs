@@ -1,5 +1,5 @@
-﻿using Assimp;
-using Assimp.Configs;
+﻿using SharpAssimp;
+using SharpAssimp.Configs;
 using HelixToolkit.SharpDX.Model;
 using SharpDX;
 using SharpDX.Direct3D11;

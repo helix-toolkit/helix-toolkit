@@ -13,7 +13,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="AssimpNet" Version="5.0.0-beta1" />
     <PackageReference Include="CommunityToolkit.Common" Version="8.3.2" />
     <PackageReference Include="CommunityToolkit.Diagnostics" Version="8.3.2" />
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.3.2" />

@@ -1,4 +1,5 @@
-﻿using Assimp;
+﻿using SharpAssimp;
+using System.Numerics;
 
 namespace HelixToolkit.SharpDX.Assimp;
 
@@ -13,9 +14,9 @@ public static class Extensions
     /// <param name="m">The m.</param>
     /// <param name="isColumnMajor"></param>
     /// <returns></returns>
-    public static Matrix ToHxMatrix(this global::Assimp.Matrix4x4 m, bool isColumnMajor)
+    public static Matrix ToHxMatrix(this Matrix4x4 m, bool isColumnMajor)
     {
-        var matrix = new Matrix(m.A1, m.A2, m.A3, m.A4, m.B1, m.B2, m.B3, m.B4, m.C1, m.C2, m.C3, m.C4, m.D1, m.D2, m.D3, m.D4);
+        var matrix = new Matrix(m.M11, m.M12, m.M13, m.M14, m.M21, m.M22, m.M23, m.M24, m.M31, m.M32, m.M33, m.M34, m.M41, m.M42, m.M43, m.M44);
         if (isColumnMajor)
         {
             matrix = Matrix.Transpose(matrix);
@@ -28,35 +29,37 @@ public static class Extensions
     /// <param name="m">The m.</param>
     /// <param name="toColumnMajor"></param>
     /// <returns></returns>
-    public static global::Assimp.Matrix4x4 ToAssimpMatrix(this Matrix m, bool toColumnMajor)
+    public static Matrix4x4 ToAssimpMatrix(this Matrix m, bool toColumnMajor)
     {
-        var matrix = new global::Assimp.Matrix4x4(m.M11, m.M12, m.M13, m.M14, m.M21, m.M22, m.M23, m.M24, m.M31, m.M32, m.M33, m.M34, m.M41, m.M42, m.M43, m.M44);
+        var matrix = new Matrix4x4(m.M11, m.M12, m.M13, m.M14, m.M21, m.M22, m.M23, m.M24, m.M31, m.M32, m.M33, m.M34, m.M41, m.M42, m.M43, m.M44);
         if (toColumnMajor)
         {
-            matrix.Transpose();
+            matrix = Matrix4x4.Transpose(matrix);
         }
         return matrix;
     }
 
-    public static Vector3 ToVector3(this global::Assimp.Vector3D v)
+    public static Vector3 ToVector3(this Vector3 v)
     {
         return new System.Numerics.Vector3(v.X, v.Y, v.Z);
     }
+
     /// <summary>
     /// To the assimp vector3d.
     /// </summary>
     /// <param name="v">The v.</param>
     /// <returns></returns>
-    public static global::Assimp.Vector3D ToAssimpVector3D(this Vector3 v)
+    public static Vector3 ToAssimpVector3D(this Vector3 v)
     {
-        return new global::Assimp.Vector3D(v.X, v.Y, v.Z);
+        return new Vector3(v.X, v.Y, v.Z);
     }
+
     /// <summary>
     /// To the sharp dx vector2.
     /// </summary>
     /// <param name="v">The v.</param>
     /// <returns></returns>
-    public static Vector2 ToVector2(this global::Assimp.Vector2D v)
+    public static Vector2 ToVector2(this Vector2 v)
     {
         return new Vector2(v.X, v.Y);
     }
@@ -66,25 +69,27 @@ public static class Extensions
     /// </summary>
     /// <param name="v">The v.</param>
     /// <returns></returns>
-    public static global::Assimp.Vector2D ToAssimpVector2D(this Vector2 v)
+    public static Vector2 ToAssimpVector2D(this Vector2 v)
     {
-        return new global::Assimp.Vector2D(v.X, v.Y);
+        return new Vector2(v.X, v.Y);
     }
+
     /// <summary>
     /// To the assimp vector3d.
     /// </summary>
     /// <param name="v">The v.</param>
     /// <returns></returns>
-    public static global::Assimp.Vector3D ToAssimpVector3D(this Vector2 v)
+    public static Vector3 ToAssimpVector3D(this Vector2 v)
     {
-        return new global::Assimp.Vector3D(v.X, v.Y, 0);
+        return new Vector3(v.X, v.Y, 0);
     }
+
     /// <summary>
     /// To the sharp dx vector2.
     /// </summary>
     /// <param name="v">The v.</param>
     /// <returns></returns>
-    public static Vector2 ToVector2(this global::Assimp.Vector3D v)
+    public static Vector2 ToVector2(this Vector3 v)
     {
         return new Vector2(v.X, v.Y);
     }
@@ -93,9 +98,9 @@ public static class Extensions
     /// </summary>
     /// <param name="v">The v.</param>
     /// <returns></returns>
-    public static Color4 ToColor4(this global::Assimp.Color4D v)
+    public static Color4 ToColor4(this Vector4 v)
     {
-        return new Color4(v.R, v.G, v.B, v.A);
+        return new Color4(v.X, v.Y, v.Z, v.W);
     }
 
     /// <summary>
@@ -104,9 +109,9 @@ public static class Extensions
     /// <param name="v">The v.</param>
     /// <param name="alpha"></param>
     /// <returns></returns>
-    public static Color4D ToAssimpColor4D(this Color4 v, float alpha = 1f)
+    public static Vector4 ToAssimpColor4D(this Color4 v, float alpha = 1f)
     {
-        return new Color4D(v.Red, v.Green, v.Blue, 1f);
+        return new Vector4(v.Red, v.Green, v.Blue, alpha);
     }
 
     /// <summary>
@@ -114,7 +119,7 @@ public static class Extensions
     /// </summary>
     /// <param name="q">The q.</param>
     /// <returns></returns>
-    public static Quaternion ToHelixQuaternion(this global::Assimp.Quaternion q)
+    public static Quaternion ToHelixQuaternion(this Quaternion q)
     {
         return new Quaternion(q.X, q.Y, q.Z, q.W);
     }
@@ -124,9 +129,9 @@ public static class Extensions
     /// </summary>
     /// <param name="q">The q.</param>
     /// <returns></returns>
-    public static global::Assimp.Quaternion ToAssimpQuaternion(this Quaternion q)
+    public static Quaternion ToAssimpQuaternion(this Quaternion q)
     {
-        return new global::Assimp.Quaternion(q.W, q.X, q.Y, q.Z);
+        return new Quaternion(q.X, q.Y, q.Z, q.W);
     }
 
     /// <summary>
@@ -134,7 +139,7 @@ public static class Extensions
     /// </summary>
     /// <param name="transform">The transform.</param>
     /// <returns></returns>
-    public static UVTransform ToHelixUVTransform(this global::Assimp.UVTransform transform)
+    public static UVTransform ToHelixUVTransform(this global::SharpAssimp.UVTransform transform)
     {
         return new UVTransform(transform.Rotation, transform.Scaling.ToVector2(), transform.Translation.ToVector2());
     }
@@ -145,7 +150,7 @@ public static class Extensions
     /// <param name="type">The type.</param>
     /// <returns></returns>
     /// <exception cref="NotSupportedException">Type {type} is not supported.</exception>
-    public static Model.MetaDataType ToHelixMetadataType(this global::Assimp.MetaDataType type)
+    public static Model.MetaDataType ToHelixMetadataType(this global::SharpAssimp.MetaDataType type)
     {
         return type switch
         {
@@ -155,7 +160,7 @@ public static class Extensions
             MetaDataType.Int32 => Model.MetaDataType.Int32,
             MetaDataType.String => Model.MetaDataType.String,
             MetaDataType.UInt64 => Model.MetaDataType.UInt64,
-            MetaDataType.Vector3D => Model.MetaDataType.Vector3D,
+            MetaDataType.Vector3 => Model.MetaDataType.Vector3D,
             _ => throw new NotSupportedException($"Type {type} is not supported."),
         };
     }
@@ -176,7 +181,7 @@ public static class Extensions
             Model.MetaDataType.Int32 => MetaDataType.Int32,
             Model.MetaDataType.String => MetaDataType.String,
             Model.MetaDataType.UInt64 => MetaDataType.UInt64,
-            Model.MetaDataType.Vector3D => MetaDataType.Vector3D,
+            Model.MetaDataType.Vector3D => MetaDataType.Vector3,
             _ => throw new NotSupportedException($"Type {type} is not supported."),
         };
     }

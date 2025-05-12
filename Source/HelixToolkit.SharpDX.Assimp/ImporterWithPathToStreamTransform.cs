@@ -1,4 +1,4 @@
-﻿using Assimp;
+﻿using SharpAssimp;
 
 namespace HelixToolkit.SharpDX.Assimp;
 

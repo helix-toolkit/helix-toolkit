@@ -1,5 +1,5 @@
-﻿using Assimp;
-using Assimp.Configs;
+﻿using SharpAssimp;
+using SharpAssimp.Configs;
 using HelixToolkit.SharpDX.Model;
 using Microsoft.Extensions.Logging;
 using SharpDX;
@@ -181,7 +181,7 @@ public partial class Importer : IDisposable
         scene = null;
         try
         {
-            if (!importer.IsImportFormatSupported(Path.GetExtension(filePath)))
+            if (!AssimpContext.IsImportFormatSupported(Path.GetExtension(filePath)))
             {
                 return ErrorCode.FileTypeNotSupported | ErrorCode.Failed;
             }
@@ -190,7 +190,7 @@ public partial class Importer : IDisposable
                     importer.SetConfig(config);
             importer.Scale = configuration.GlobalScale;
             var fileName = Path.GetExtension(filePath);
-            if (!importer.IsImportFormatSupported(fileName))
+            if (!AssimpContext.IsImportFormatSupported(fileName))
             {
                 ErrorCode |= ErrorCode.FileTypeNotSupported;
                 return ErrorCode;
@@ -258,7 +258,7 @@ public partial class Importer : IDisposable
         scene = null;
         try
         {
-            if (!importer.IsImportFormatSupported(formatHint))
+            if (!AssimpContext.IsImportFormatSupported(formatHint))
             {
                 return ErrorCode.FileTypeNotSupported | ErrorCode.Failed;
             }
@@ -348,7 +348,7 @@ public partial class Importer : IDisposable
         }
 
         var internalScene = ToHelixScene(assimpScene, Configuration.EnableParallelProcessing);
-        scene = new HelixToolkitScene(ConstructHelixScene(assimpScene.RootNode, internalScene));
+        scene = new HelixToolkitScene(ConstructHelixScene(assimpScene.RootNode!, internalScene));
         ErrorCode |= ProcessSceneNodes(scene.Root);
         if (ErrorCode.HasFlag(ErrorCode.Failed))
             return ErrorCode;
@@ -374,7 +374,7 @@ public partial class Importer : IDisposable
         {
             AssimpScene = scene,
             Meshes = new MeshInfo[scene.MeshCount],
-            Materials = new KeyValuePair<global::Assimp.Material, MaterialCore?>[scene.MaterialCount]
+            Materials = new KeyValuePair<global::SharpAssimp.Material, MaterialCore?>[scene.MaterialCount]
         };
         Parallel.Invoke(() =>
         {
@@ -402,7 +402,7 @@ public partial class Importer : IDisposable
                     embeddedTextureDict.Clear();
                     if (scene.HasTextures)
                     {
-                        embeddedTextures.AddRange(scene.Textures);
+                        embeddedTextures.AddRange(scene.Textures!);
                         for (int i = 0; i < embeddedTextures.Count; ++i)
                         {
                             var key = embeddedTextures[i].Filename;
@@ -481,7 +481,7 @@ public partial class Importer : IDisposable
         /// <summary>
         ///     The materials
         /// </summary>
-        public KeyValuePair<global::Assimp.Material, MaterialCore?>[]? Materials;
+        public KeyValuePair<global::SharpAssimp.Material, MaterialCore?>[]? Materials;
 
         /// <summary>
         ///     The meshes
