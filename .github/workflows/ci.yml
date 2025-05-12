@@ -70,7 +70,7 @@ jobs:
             Source/**/bin/Release/**/*.snupkg
   
   publish:
-    if: github.repository == 'helix-toolkit/helix-toolkit'
+    if: github.repository == 'helix-toolkit/helix-toolkit' && github.event_name != 'pull_request'
     runs-on: windows-latest
     needs: build
     steps:
