@@ -61,6 +61,7 @@ jobs:
       run: .\Source\run-tests.cmd Release
 
     - name: Upload artifacts
+      if: github.event_name != 'pull_request' # Skip this step for pull requests
       uses: actions/upload-artifact@v4
       with:
         name: build-artifacts
@@ -69,7 +70,7 @@ jobs:
             Source/**/bin/Release/**/*.snupkg
   
   publish:
-    if: github.repository == 'helix-toolkit/helix-toolkit'
+    if: github.repository == 'helix-toolkit/helix-toolkit' && github.event_name != 'pull_request'
     runs-on: windows-latest
     needs: build
     steps:
