@@ -85,9 +85,17 @@ jobs:
         name: build-artifacts
 
     - name: Publish MyGet package
+      if: github.event_name == 'push' && (startsWith(github.ref, 'refs/heads/main') || startsWith(github.ref, 'refs/heads/develop'))    
       env:
         MYGET_API_KEY: ${{ secrets.MYGET_API_KEY }}
-      if: github.event_name == 'push' && (startsWith(github.ref, 'refs/heads/main') || startsWith(github.ref, 'refs/heads/develop'))
       run: |
         dotnet nuget push **/*.nupkg -s https://www.myget.org/F/helixtoolkit-nightly/api/v2/package -k $env:MYGET_API_KEY
         dotnet nuget push **/*.snupkg -s https://www.myget.org/F/helixtoolkit-nightly/api/v2/package -k $env:MYGET_API_KEY
+
+    - name: Publish to GitHub Packages
+      if: github.event_name == 'push' && (startsWith(github.ref, 'refs/heads/main') || startsWith(github.ref, 'refs/heads/develop'))    
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        dotnet nuget push **/*.nupkg -s https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json -k $env:GITHUB_TOKEN
+        dotnet nuget push **/*.snupkg -s https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json -k $env:GITHUB_TOKEN
