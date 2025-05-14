@@ -42,17 +42,10 @@ public class MainWindowViewModel : BindableBase
             {
                 var model = new HgtTerrainModel
                 {
-                    Texture = new MapTexture("c:\\Users\\alex-valchuk\\AppData\\Roaming\\Aerologos\\LOGOS\\bmps\\12-061.bmp")
-                    {
-                        Top = 100,
-                        Bottom = -100,
-                        Left = -100,
-                        Right = 100
-                    },
-                    /*Texture = new SlopeTexture(8)
+                    Texture = new SlopeTexture(8)
                     {
                         Brush = GradientBrushes.GreenGrayWhite
-                    }*/
+                    }
                 };
                 var cell = new SRTMDataCell(source);
                 model.Load(cell);
