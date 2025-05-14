@@ -20,6 +20,12 @@ public static class GradientBrushes
         Colors.Blue, Colors.White, Colors.Red);
 
     /// <summary>
+    /// A green-gray-white gradient brush.
+    /// </summary>
+    public static readonly LinearGradientBrush GreenGrayWhite = BrushHelper.CreateGradientBrush(
+        Colors.Green, Colors.Gray, Colors.White);
+
+    /// <summary>
     /// A hue gradient brush.
     /// </summary>
     public static readonly LinearGradientBrush Hue = BrushHelper.CreateHsvBrush(1.0);

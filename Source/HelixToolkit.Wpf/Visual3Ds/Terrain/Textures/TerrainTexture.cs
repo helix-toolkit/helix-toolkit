@@ -37,7 +37,7 @@ public abstract class TerrainTexture
     /// <param name="mesh">
     /// The mesh.
     /// </param>
-    public virtual void Calculate(TerrainModel model, MeshGeometry3D mesh)
+    public virtual void Calculate(ITerrainModel model, MeshGeometry3D mesh)
     {
     }
 }
