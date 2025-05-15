@@ -94,11 +94,23 @@ public class ObjExporterTests : ExporterTests
         }
         finally
         {
-            if (File.Exists(path))
-                File.Delete(path);
+            try
+            {
+                if (File.Exists(path))
+                    File.Delete(path);
+            }
+            catch (IOException)
+            {
+            }
 
-            if (File.Exists(mtlPath))
-                File.Delete(mtlPath);
+            try
+            {
+                if (File.Exists(mtlPath))
+                    File.Delete(mtlPath);
+            }
+            catch (IOException)
+            {
+            }
 
             try
             {
@@ -109,7 +121,13 @@ public class ObjExporterTests : ExporterTests
             {
             }
 
-            File.Delete(temp);
+            try
+            {
+                File.Delete(temp);
+            }
+            catch (IOException)
+            {
+            }
         }
     }
 
