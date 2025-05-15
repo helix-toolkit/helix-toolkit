@@ -25,5 +25,5 @@ for /f "delims=|" %%f in ('dir /b bld\TestResults\') do (
 set _filelist=%_filelist:,;=%
 echo %_filelist%
 
-packages\reportgenerator -reports:"%_filelist%" -filefilters:-*.g.cs -reporttypes:Html;Badges -targetdir:bld\coverage -verbosity:Info
+packages\reportgenerator -reports:"%_filelist%" -filefilters:-*.g.cs -reporttypes:Html;Badges -targetdir:bld\coverage -verbosity:Info settings:numberOfReportsParsedInParallel=16 settings:numberOfReportsMergedInParallel=2
 if %ERRORLEVEL% neq 0 exit /b %ERRORLEVEL%
