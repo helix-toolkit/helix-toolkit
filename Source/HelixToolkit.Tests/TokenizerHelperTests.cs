@@ -23,6 +23,46 @@ public class TokenizerHelperTests
         Assert.That(separator, Is.EqualTo(';'));
     }
 
+    [Test]
+    public void GetNumericListSeparatorPoint()
+    {
+        var format = new NumberFormatInfo { NumberDecimalSeparator = "." };
+        char separator = TokenizerHelper.GetNumericListSeparator(format);
+        Assert.That(separator, Is.EqualTo(','));
+    }
+
+    [Test]
+    public void GetNumericListSeparatorComma()
+    {
+        var format = new NumberFormatInfo { NumberDecimalSeparator = "," };
+        char separator = TokenizerHelper.GetNumericListSeparator(format);
+        Assert.That(separator, Is.EqualTo(';'));
+    }
+
+    [Test]
+    public void CtorNull()
+    {
+        var tokenizer = new TokenizerHelper(null, CultureInfo.InvariantCulture);
+        bool r = tokenizer.NextToken();
+        Assert.That(r, Is.False);
+    }
+
+    [Test]
+    public void CtorWhitespace()
+    {
+        var tokenizer = new TokenizerHelper("  ", CultureInfo.InvariantCulture);
+        bool r = tokenizer.NextToken();
+        Assert.That(r, Is.False);
+    }
+
+    [Test]
+    public void CtorNotWhitespace()
+    {
+        var tokenizer = new TokenizerHelper(" a", CultureInfo.InvariantCulture);
+        bool r = tokenizer.NextToken();
+        Assert.That(r, Is.True);
+    }
+
     [Test, Sequential]
     public void FoundSeparator([Values("a", "a b", "a,b")] string str, [Values(false, false, true)] bool hasSeparator)
     {
@@ -51,6 +91,23 @@ public class TokenizerHelperTests
     }
 
     [Test]
+    public void NextToken2()
+    {
+        var tokenizer = new TokenizerHelper("a,',b", CultureInfo.InvariantCulture);
+        tokenizer.NextToken();
+        tokenizer.NextToken();
+        var token = tokenizer.GetCurrentToken().ToString();
+        Assert.That(token, Is.EqualTo("'"));
+    }
+
+    [Test]
+    public void NextTokenEmptyThrows()
+    {
+        var tokenizer = new TokenizerHelper("a,,", CultureInfo.InvariantCulture);
+        Assert.Throws<InvalidOperationException>(() => tokenizer.NextToken());
+    }
+
+    [Test]
     public void NextTokenRequiredThrows()
     {
         var tokenizer = new TokenizerHelper("a", CultureInfo.InvariantCulture);
@@ -65,7 +122,44 @@ public class TokenizerHelperTests
         string a = tokenizer.NextTokenRequired().ToString();
         string b = tokenizer.NextTokenRequired().ToString();
         string c = tokenizer.NextTokenRequired().ToString();
+    }
 
+    [Test]
+    public void NextTokenRequiredQuoteThrows()
+    {
+        var tokenizer = new TokenizerHelper("'a", CultureInfo.InvariantCulture);
+        Assert.Throws<InvalidOperationException>(() => tokenizer.NextTokenRequired(true));
+    }
+
+    [Test]
+    public void NextTokenRequiredEmptyQuoteThrows()
+    {
+        var tokenizer = new TokenizerHelper("''", CultureInfo.InvariantCulture);
+        Assert.Throws<InvalidOperationException>(() => tokenizer.NextTokenRequired(true));
+    }
+
+    [Test]
+    public void NextTokenRequiredQuote()
+    {
+        var tokenizer = new TokenizerHelper("'a'", CultureInfo.InvariantCulture);
+        string token = tokenizer.NextTokenRequired(true).ToString();
+        Assert.That(token, Is.EqualTo("a"));
+    }
+
+    [Test]
+    public void NextTokenRequiredEmptyThrows()
+    {
+        var tokenizer = new TokenizerHelper("' ", CultureInfo.InvariantCulture);
+        Assert.Throws<InvalidOperationException>(() => tokenizer.NextTokenRequired(true));
+    }
+
+    [Test]
+    public void NextTokenRequiredEmptyThrows2()
+    {
+        var tokenizer = new TokenizerHelper("a b'c ", CultureInfo.InvariantCulture);
+        tokenizer.NextTokenRequired(true);
+        tokenizer.NextTokenRequired(true);
+        Assert.Throws<InvalidOperationException>(() => tokenizer.NextTokenRequired(true));
     }
 
     [Test]
