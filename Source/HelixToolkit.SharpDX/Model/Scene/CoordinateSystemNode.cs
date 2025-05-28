@@ -176,7 +176,7 @@ public class CoordinateSystemNode : ScreenSpacedNode
     public CoordinateSystemNode()
     {
         IsHitTestVisible = false;
-        CameraType = ScreenSpacedCameraType.Perspective;
+        CameraType = ScreenSpacedCameraType.Auto;
         arrowMeshModel.Material = new ColorMaterialCore();
         arrowMeshModel.CullMode = CullMode.Back;
         axisBillboard.EnableViewFrustumCheck = false;
