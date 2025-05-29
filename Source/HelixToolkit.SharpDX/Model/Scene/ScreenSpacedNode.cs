@@ -189,6 +189,7 @@ public class ScreenSpacedNode : GroupNode
             if (RenderCore is IScreenSpacedRenderParams core)
             {
                 core.Mode = value;
+                OnCoordinateSystemChanged(true);
             }
         }
         get

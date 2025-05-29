@@ -297,4 +297,19 @@ public class CoordinateSystemNode : ScreenSpacedNode
     {
         return false;
     }
+
+    protected override void OnCoordinateSystemChanged(bool e)
+    {
+        base.OnCoordinateSystemChanged(e);
+
+        if (axisBillboard.Geometry is BillboardText3D labelText)
+        {
+            float scale = Mode == ScreenSpacedMode.RelativeScreenSpaced ? 0.5f : 4.0f;
+
+            for (int i = 0; i < 3; i++)
+            {
+                labelText.TextInfo[i].Scale = scale;
+            }
+        }
+    }
 }
