@@ -298,9 +298,9 @@ public class CoordinateSystemNode : ScreenSpacedNode
         return false;
     }
 
-    protected override void OnCoordinateSystemChanged(bool e)
+    protected override void OnCoordinateSystemChanged(bool isRightHand)
     {
-        base.OnCoordinateSystemChanged(e);
+        base.OnCoordinateSystemChanged(isRightHand);
 
         if (axisBillboard.Geometry is BillboardText3D labelText)
         {
