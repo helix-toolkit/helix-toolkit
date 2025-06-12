@@ -2116,36 +2116,6 @@ public class CameraController : Grid
     }
 
     /// <summary>
-    /// Clamps the specified value between the limits.
-    /// </summary>
-    /// <param name="value">
-    /// The value.
-    /// </param>
-    /// <param name="min">
-    /// The min.
-    /// </param>
-    /// <param name="max">
-    /// The max.
-    /// </param>
-    /// <returns>
-    /// The clamp.
-    /// </returns>
-    private double Clamp(double value, double min, double max)
-    {
-        if (value < min)
-        {
-            return min;
-        }
-
-        if (value > max)
-        {
-            return max;
-        }
-
-        return value;
-    }
-
-    /// <summary>
     /// Finds the pan vector.
     /// </summary>
     /// <param name="dx">
@@ -2415,8 +2385,8 @@ public class CameraController : Grid
     private void OnTimeStep(double time)
     {
         // should be independent of time
-        var factor = this.IsInertiaEnabled ? Math.Pow(this.InertiaFactor, time / 0.012) : 0;
-        factor = this.Clamp(factor, 0.2, 1);
+        double factor = this.IsInertiaEnabled ? Math.Pow(this.InertiaFactor, time / 0.012) : 0;
+        factor = HelixToolkit.Maths.MathUtil.Clamp(factor, 0.2, 1);
 
         if (this.isSpinning && this.spinningSpeed.LengthSquared > 0)
         {

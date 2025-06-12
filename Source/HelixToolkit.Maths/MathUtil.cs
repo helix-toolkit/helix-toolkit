@@ -247,6 +247,18 @@ namespace HelixToolkit.Maths
         /// <param name="min">The min.</param>
         /// <param name="max">The max.</param>
         /// <returns>The result of clamping a value between min and max</returns>
+        public static int Clamp(int value, int min, int max)
+        {
+            return value < min ? min : (value > max ? max : value);
+        }
+
+        /// <summary>
+        /// Clamps the specified value.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        /// <param name="min">The min.</param>
+        /// <param name="max">The max.</param>
+        /// <returns>The result of clamping a value between min and max</returns>
         public static float Clamp(float value, float min, float max)
         {
             return value < min ? min : (value > max ? max : value);
@@ -259,7 +271,7 @@ namespace HelixToolkit.Maths
         /// <param name="min">The min.</param>
         /// <param name="max">The max.</param>
         /// <returns>The result of clamping a value between min and max</returns>
-        public static int Clamp(int value, int min, int max)
+        public static double Clamp(double value, double min, double max)
         {
             return value < min ? min : (value > max ? max : value);
         }
@@ -388,7 +400,7 @@ namespace HelixToolkit.Maths
         }
 
         /// <summary>
-        /// Wraps the specified value into a range [min, max[
+        /// Wraps the specified value into a range [min, max]
         /// </summary>
         /// <param name="value">The value.</param>
         /// <param name="min">The min.</param>
