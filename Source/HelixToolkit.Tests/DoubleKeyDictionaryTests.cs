@@ -23,7 +23,6 @@ public class DoubleKeyDictionaryTests
     [Test]
     public void Clear_Valid()
     {
-
         var dict = new DoubleKeyDictionary<int, int, int>()
         {
             [1, 2] = 5,
@@ -238,12 +237,20 @@ public class DoubleKeyDictionaryTests
             [3, 6] = 4,
         };
 
+        var dict7 = new DoubleKeyDictionary<int, int, int>()
+        {
+            [1, 1] = 5,
+            [1, 2] = 6,
+            [3, 4] = 7,
+        };
+
         Assert.That(dict0.Equals(dict1), Is.True);
         Assert.That(dict0.Equals(dict2), Is.False);
         Assert.That(dict0.Equals(dict3), Is.False);
         Assert.That(dict0.Equals(dict4), Is.False);
         Assert.That(dict0.Equals(dict5), Is.False);
         Assert.That(dict0.Equals(dict6), Is.False);
+        Assert.That(dict0.Equals(dict7), Is.False);
         Assert.That(dict0.Equals(null), Is.False);
     }
 }
