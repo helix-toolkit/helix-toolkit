@@ -158,7 +158,7 @@ public class PointMaterialCore : MaterialCore, IPointRenderParams
     /// <summary>
     /// Gets or sets a value indicating whether [enable blending].
     /// <para>Once enabled, final color 
-    /// = <see cref="BlendingFactor"/> * <see cref="PointColor"/> + (1 - <see cref="BlendingFactor"/>) * Vertex Color.</para>
+    /// = <see cref="BlendingFactor"/> * Vertex Color + (1 - <see cref="BlendingFactor"/>) * <see cref="PointColor"/>.</para>
     /// </summary>
     /// <value>
     ///   <c>true</c> if [enable blending]; otherwise, <c>false</c>.
