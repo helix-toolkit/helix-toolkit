@@ -5,6 +5,7 @@ using HelixToolkit.SharpDX.Model.Scene2D;
 using HelixToolkit.SharpDX.Utilities;
 #if WINUI
 using HelixToolkit.WinUI.SharpDX.Elements2D;
+using Microsoft.UI;
 using Microsoft.UI.Input;
 using Microsoft.UI.Xaml.Data;
 using Microsoft.UI.Xaml.Markup;
@@ -1118,6 +1119,22 @@ public partial class Viewport3DX : Control, IViewport3DX
     public void AddZoomForce(double dx, Vector3 zoomOrigin)
     {
         CameraController.AddZoomForce(dx, zoomOrigin);
+    }
+
+    /// <summary>
+    /// Shows the target adorner.
+    /// </summary>
+    /// <param name="position">The position.</param>
+    public void ShowTargetAdorner(Vector2 position)
+    {
+    }
+
+    /// <summary>
+    /// Shows the zoom rectangle.
+    /// </summary>
+    /// <param name="rect">The zoom rectangle.</param>
+    public void ShowZoomRectangle(Rect rect)
+    {
     }
 
     /// <summary>

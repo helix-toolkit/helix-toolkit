@@ -84,7 +84,7 @@ internal abstract class MouseGestureHandler
     /// <value>
     /// The inv.
     /// </value>
-    protected int inv = 1;
+    protected int Inv { get; private set; } = 1;
 
     /// <summary>
     /// Gets the model up direction.
@@ -134,10 +134,16 @@ internal abstract class MouseGestureHandler
     }
 
     /// <summary>
+    /// Gets the camera controller.
+    /// </summary>
+    /// <value>The camera controler.</value>
+    protected CameraController Controller { get; private set; }
+
+    /// <summary>
     /// Gets the viewport.
     /// </summary>
     /// <value>The viewport.</value>
-    protected CameraController Controller { get; private set; }
+    public Viewport3DX Viewport => Controller.Viewport;
 
     /// <summary>
     /// Gets the zoom sensitivity.
@@ -228,7 +234,7 @@ internal abstract class MouseGestureHandler
         this.LastPoint3D = this.MouseDownPoint3D;
         //this.ManipulationWatch.Restart();
         startTick = Stopwatch.GetTimestamp();
-        inv = Camera.CreateLeftHandSystem ? -1 : 1;
+        Inv = Camera.CreateLeftHandSystem ? -1 : 1;
         Controller.StopAnimations();
         Controller.PushCameraSetting();
         IsActive = true;

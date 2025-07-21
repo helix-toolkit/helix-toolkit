@@ -1,8 +1,22 @@
 ﻿using HelixToolkit.SharpDX;
 using HelixToolkit.SharpDX.Cameras;
+#if false
+#elif WINUI
+using Windows.UI.Core;
+#elif WPF
 using System.Windows.Input;
+#else
+#error Unknown framework
+#endif
 
+#if false
+#elif WINUI
+namespace HelixToolkit.WinUI.SharpDX;
+#elif WPF
 namespace HelixToolkit.Wpf.SharpDX;
+#else
+#error Unknown framework
+#endif
 
 /// <summary>
 /// Handles rotation.
@@ -27,7 +41,7 @@ internal class RotateHandler : MouseGestureHandler
     /// <summary>
     /// The rotation point.
     /// </summary>
-    private Point rotationPoint;
+    private Point2D rotationPoint;
 
     /// <summary>
     /// The 3D rotation point.
@@ -65,6 +79,7 @@ internal class RotateHandler : MouseGestureHandler
         }
     }
 
+#if WPF
     /// <summary>
     /// Occurs when the manipulation is completed.
     /// </summary>
@@ -74,12 +89,13 @@ internal class RotateHandler : MouseGestureHandler
         base.Completed(e);
         this.Viewport.HideTargetAdorner();
     }
+#endif
 
     /// <summary>
     /// Occurs when the position is changed during a manipulation.
     /// </summary>
-    /// <param name="e">The <see cref="ManipulationEventArgs"/> instance containing the event data.</param>
-    public override void Delta(Point e)
+    /// <param name="e"></param>
+    public override void Delta(Point2D e)
     {
         base.Delta(e);
         this.Rotate(this.LastPoint, e, this.rotationPoint3D);
@@ -123,12 +139,18 @@ internal class RotateHandler : MouseGestureHandler
     }
 
     /// <summary>
-    /// Rotates the specified p0.
+    /// Rotate the camera around the specified point.
     /// </summary>
-    /// <param name="p0">The p0.</param>
-    /// <param name="p1">The p1.</param>
-    /// <param name="rotateAround">The rotate around.</param>
-    /// <param name="stopOther">if set to <c>true</c> [stop other].</param>
+    /// <param name="p0">
+    /// The p 0.
+    /// </param>
+    /// <param name="p1">
+    /// The p 1.
+    /// </param>
+    /// <param name="rotateAround">
+    /// The rotate around.
+    /// </param>
+    /// <param name="stopOther">Stop other manipulation</param>
     public void Rotate(Vector2 p0, Vector2 p1, Vector3 rotateAround, bool stopOther = true)
     {
         if (!this.Controller.IsRotationEnabled)
@@ -151,28 +173,31 @@ internal class RotateHandler : MouseGestureHandler
         var newPos = Camera.CameraInternal.Position;
         var newLook = Camera.CameraInternal.LookDirection;
         var newUp = Vector3.Normalize(Camera.CameraInternal.UpDirection);
+
         switch (this.Controller.CameraRotationMode)
         {
             case CameraRotationMode.Trackball:
                 CameraMath.RotateTrackball(CameraMode, ref p0, ref p1, ref rotateAround, (float)RotationSensitivity,
                     Controller.Width, Controller.Height, Camera!, Inv, out newPos, out newLook, out newUp);
                 break;
+
             case CameraRotationMode.Turntable:
                 var p = p1 - p0;
                 CameraMath.RotateTurntable(CameraMode, ref p, ref rotateAround, (float)RotationSensitivity,
                     Controller.Width, Controller.Height, Camera!, Inv, invertUpDir ? -ModelUpDirection : ModelUpDirection, out newPos, out newLook, out newUp);
                 break;
+
             case CameraRotationMode.Turnball:
                 CameraMath.RotateTurnball(CameraMode, ref p0, ref p1, ref rotateAround, (float)RotationSensitivity,
                     Controller.Width, Controller.Height, Camera!, Inv, out newPos, out newLook, out newUp);
                 break;
-            default:
-                break;
         }
+
         Camera.LookDirection = newLook.ToVector3D();
         Camera.Position = newPos.ToPoint3D();
         Camera.UpDirection = newUp.ToVector3D();
     }
+
     /// <summary>
     /// The rotate.
     /// </summary>
@@ -183,17 +208,19 @@ internal class RotateHandler : MouseGestureHandler
     {
         var p0 = this.LastPoint.ToVector2();
         var p1 = p0 + delta;
+
         if (this.MouseDownPoint3D != null)
         {
             this.Rotate(p0, p1, this.MouseDownPoint3D.Value);
         }
-        this.LastPoint = new Point(p0.X, p0.Y);
+
+        this.LastPoint = new Point2D(p0.X, p0.Y);
     }
 
     /// <summary>
     /// Occurs when the manipulation is started.
     /// </summary>
-    /// <param name="e">The <see cref="ManipulationEventArgs"/> instance containing the event data.</param>
+    /// <param name="e"></param>
     public override void Started(Point e)
     {
         base.Started(e);
@@ -203,8 +230,7 @@ internal class RotateHandler : MouseGestureHandler
             return;
         }
 
-        this.rotationPoint = new Point(
-            this.Viewport.ActualWidth / 2, this.Viewport.ActualHeight / 2);
+        this.rotationPoint = new Point2D((float)this.Viewport.ActualWidth / 2, (float)this.Viewport.ActualHeight / 2);
         this.rotationPoint3D = this.Camera.CameraInternal.Target;
         invertUpDir = Vector3.Dot(Controller.CameraUpDirection, ModelUpDirection) < 0;
 
@@ -214,6 +240,7 @@ internal class RotateHandler : MouseGestureHandler
                 this.rotationPoint = this.MouseDownPoint;
                 this.rotationPoint3D = this.Camera.CameraInternal.Position;
                 break;
+
             default:
                 if (Controller.FixedRotationPointEnabled)
                 {
@@ -247,8 +274,7 @@ internal class RotateHandler : MouseGestureHandler
                 case CameraRotationMode.Turntable:
                     break;
                 case CameraRotationMode.Turnball:
-                    CameraMath.InitTurnballRotationAxes(e.ToVector2(), (int)Viewport.ActualWidth, (int)Viewport.ActualHeight, Camera!,
-                        out rotationAxisX, out rotationAxisY);
+                    CameraMath.InitTurnballRotationAxes(e.ToVector2(), (int)Viewport.ActualWidth, (int)Viewport.ActualHeight, Camera!, out rotationAxisX, out rotationAxisY);
                     break;
             }
         }
@@ -278,7 +304,7 @@ internal class RotateHandler : MouseGestureHandler
     /// <returns>
     /// A cursor.
     /// </returns>
-    protected override Cursor GetCursor()
+    protected override UICursor GetCursor()
     {
         return this.Controller.RotateCursor;
     }
@@ -292,11 +318,11 @@ internal class RotateHandler : MouseGestureHandler
     protected override void OnInertiaStarting(double elapsedTime)
     {
         var delta = this.LastPoint - this.MouseDownPoint;
-        var deltaV = new Vector2((float)delta.X, (float)delta.Y);
+        var deltaV = delta.ToVector2();
         // Debug.WriteLine("SpinInertiaStarting: " + elapsedTime + "ms " + delta.Length + "px");
         this.Controller.StartSpin(
             4 * deltaV * (float)(this.Controller.SpinReleaseTime / elapsedTime),
-            this.MouseDownPoint,
+            this.MouseDownPoint.ToPoint(),
             this.rotationPoint3D);
     }
 }
