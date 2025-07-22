@@ -339,13 +339,13 @@ public class LineBuilder
     }
 
     /// <summary>
-    /// Generates the circile.
+    /// Generates the circle.
     /// </summary>
     /// <param name="plane">The plane.</param>
     /// <param name="radius">The radius.</param>
     /// <param name="segments">The segments.</param>
     /// <returns></returns>
-    public static LineGeometry3D GenerateCircile(Plane plane, float radius, int segments)
+    public static LineGeometry3D GenerateCircle(Plane plane, float radius, int segments)
     {
         var bd = new LineBuilder();
         bd.AddCircle(plane.Normal * plane.D, plane.Normal, radius, segments);
@@ -534,5 +534,14 @@ public class LineBuilder
         var tv = sp - tp;
 
         return tv.Length(); // return the closest distance
+    }
+
+    /// <summary>
+    /// Removes all the data from the current LineBuilder instance.
+    /// </summary>
+    public void Clear()
+    {
+        positions.Clear();
+        lineListIndices.Clear();
     }
 }
