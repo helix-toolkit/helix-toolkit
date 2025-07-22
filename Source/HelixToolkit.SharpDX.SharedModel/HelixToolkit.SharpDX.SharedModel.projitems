@@ -24,6 +24,9 @@
     <Compile Include="$(MSBuildThisFileDirectory)Controls\MouseHandlers\ManipulationActionExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\MouseHandlers\ManipulationBinding.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\MouseHandlers\ManipulationEventArgs.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\MouseHandlers\ManipulationGesture.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\MouseHandlers\PanHandler.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\MouseHandlers\RotateHandler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\Viewport3DX_Properties.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Converters\BoolToVisibilityConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Converters\EmptyStringToVisibilityConverter.cs" />

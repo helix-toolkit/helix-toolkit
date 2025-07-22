@@ -58,6 +58,18 @@ public static class Media3DExtension
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static Vector2 ToVector2(this Vector2 vector)
+    {
+        return vector;
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static Point ToPoint(this Point vector)
+    {
+        return vector;
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Point ToPoint(this Vector2 vector)
     {
         return new Point(vector.X, vector.Y);
