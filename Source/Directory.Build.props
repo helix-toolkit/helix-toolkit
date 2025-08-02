@@ -24,6 +24,10 @@
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
 
+  <PropertyGroup>
+    <AvaloniaVersion>11.2.0</AvaloniaVersion>
+  </PropertyGroup>
+
   <ItemGroup>
     <None Include="$(SolutionDir)..\LICENSE">
       <Pack>True</Pack>
