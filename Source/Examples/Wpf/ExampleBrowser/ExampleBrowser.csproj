@@ -49,6 +49,7 @@
     <Resource Include="Examples\Hippo\Icons\*.xaml" />
     <Resource Include="Examples\Hippo\Application.ico" />
     <Resource Include="Examples\Lego\lego.png" />
+    <Resource Include="Examples\MeshBuilderSample\TextureTestImage.png"/>
     <Resource Include="Examples\ParticleSystem\smoke.png" />
     <Resource Include="Examples\SolarSystem\Textures\*.jpg" />
     <Resource Include="Examples\Voxels\MyModel.xml" />
@@ -124,6 +125,7 @@
     <None Include="Examples\Panorama\Models\**\*.*">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Remove="Examples\MeshBuilderSample\TextureTestImage.png" />
     <None Remove="Examples\Voxels\MyModel.xml" />
     <None Update="Examples\Terrain\Models\crater_0513.btz">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
