@@ -4,6 +4,8 @@
 using HelixToolkit.WinUI.SharpDX.Model;
 #elif WPF
 using HelixToolkit.Wpf.SharpDX.Model;
+#elif AVALONIA
+using HelixToolkit.Avalonia.SharpDX.Model;
 #else
 #error Unknown framework
 #endif
@@ -13,6 +15,8 @@ using HelixToolkit.Wpf.SharpDX.Model;
 namespace HelixToolkit.WinUI.SharpDX;
 #elif WPF
 namespace HelixToolkit.Wpf.SharpDX;
+#elif AVALONIA
+namespace HelixToolkit.Avalonia.SharpDX;
 #else
 #error Unknown framework
 #endif
@@ -20,14 +24,15 @@ namespace HelixToolkit.Wpf.SharpDX;
 public sealed class DirectionalLight3D : Light3D
 {
     public static readonly DependencyProperty DirectionProperty =
-        DependencyProperty.Register("Direction", typeof(Vector3D), typeof(Light3D), new PropertyMetadata(new Vector3D(),
+        HelixProperty.Register<DirectionalLight3D, Vector3D>("Direction",
+            new Vector3D(),
             (d, e) =>
             {
                 if (d is Element3DCore { SceneNode: DirectionalLightNode node })
                 {
-                    node.Direction = ((Vector3D)e.NewValue).ToVector3();
+                    node.Direction = ((Vector3D)e.NewValue!).ToVector3();
                 }
-            }));
+            });
 
     /// <summary>
     /// Direction of the light.
@@ -38,7 +43,7 @@ public sealed class DirectionalLight3D : Light3D
     {
         get
         {
-            return (Vector3D)this.GetValue(DirectionProperty);
+            return (Vector3D)this.GetValue(DirectionProperty)!;
         }
         set
         {
