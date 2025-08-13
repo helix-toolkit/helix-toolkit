@@ -71,7 +71,7 @@ internal abstract class MouseGestureHandler
     /// <summary>
     /// Gets or sets the last point (in 2D screen coordinates).
     /// </summary>
-    protected Vector2 LastPoint;
+    protected Point LastPoint;
 
     /// <summary>
     /// Gets or sets the last point (in 3D world coordinates).
@@ -114,7 +114,7 @@ internal abstract class MouseGestureHandler
     /// <summary>
     /// Gets or sets the mouse down point (2D screen coordinates).
     /// </summary>
-    protected Vector2 MouseDownPoint;
+    protected Point MouseDownPoint;
 
     /// <summary>
     /// Gets or sets the mouse down point (3D world coordinates).
@@ -184,7 +184,7 @@ internal abstract class MouseGestureHandler
     /// <param name="e">
     /// The <see cref="Vector2"/> instance containing the event data.
     /// </param>
-    public virtual void Delta(Vector2 e)
+    public virtual void Delta(Point e)
     {
     }
 
@@ -373,7 +373,7 @@ internal abstract class MouseGestureHandler
     /// </param>
     protected virtual void OnMouseMove(object? sender, PointerRoutedEventArgs e)
     {
-        this.Delta(e.GetCurrentPoint(this.Controller.Viewport).Position.ToVector2());
+        this.Delta(e.GetCurrentPoint(this.Controller.Viewport).Position);
     }
 
     /// <summary>
@@ -443,8 +443,8 @@ internal abstract class MouseGestureHandler
     /// </param>
     private void SetMouseDownPoint(Point position)
     {
-        this.MouseDownPoint = position.ToVector2();
-        if (!this.Controller.Viewport.FixedRotationPointEnabled && this.Controller.Viewport.FindHitsInFrustum(this.MouseDownPoint, ref hits))
+        this.MouseDownPoint = position;
+        if (!this.Controller.Viewport.FixedRotationPointEnabled && this.Controller.Viewport.FindHitsInFrustum(this.MouseDownPoint.ToVector2(), ref hits))
         {
             if (hits.Count > 0)
             {

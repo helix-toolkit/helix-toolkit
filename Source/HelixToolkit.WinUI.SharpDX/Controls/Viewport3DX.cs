@@ -1125,7 +1125,7 @@ public partial class Viewport3DX : Control, IViewport3DX
     /// Shows the target adorner.
     /// </summary>
     /// <param name="position">The position.</param>
-    public void ShowTargetAdorner(Vector2 position)
+    public void ShowTargetAdorner(Point position)
     {
     }
 
