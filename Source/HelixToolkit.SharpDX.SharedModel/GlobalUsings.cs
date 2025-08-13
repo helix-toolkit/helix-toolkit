@@ -68,6 +68,31 @@ global using FrameworkControl = System.Windows.FrameworkContentElement;
 global using Animatable = System.Windows.Media.Animation.Animatable;
 global using Freezable = System.Windows.Freezable;
 global using UIInputEventArgs = System.Windows.Input.InputEventArgs;
+#elif AVALONIA
+global using DependencyProperty = Avalonia.AvaloniaProperty;
+global using Vector3D = System.Numerics.Vector3;
+global using Transform3D = System.Numerics.Matrix4x4;
+global using Point3D = System.Numerics.Vector3;
+global using Size3D = System.Numerics.Vector3;
+global using Point2D = System.Numerics.Vector2;
+global using Point = Avalonia.Point;
+global using UIMatrix = System.Numerics.Matrix4x4;
+global using UIColor = Avalonia.Media.Color;
+global using UIColors = Avalonia.Media.Colors;
+global using UICursor = Avalonia.Input.Cursor;
+global using UIFontStyle = Avalonia.Media.FontStyle;
+global using UIFontStyles = Avalonia.Media.FontStyle;
+global using UIVisibility = bool;
+global using UIHorizontalAlignment = Avalonia.Layout.HorizontalAlignment;
+global using UIVerticalAlignment = Avalonia.Layout.VerticalAlignment;
+global using UIThickness = Avalonia.Thickness;
+global using UIOrientation = Avalonia.Layout.Orientation;
+global using FrameworkContentElement = Avalonia.Controls.Control;
+global using FrameworkControl = Avalonia.Controls.Control;
+global using Animatable = Avalonia.Controls.Control;
+global using Freezable = Avalonia.Controls.Control;
+global using UIInputEventArgs = Avalonia.Interactivity.RoutedEventArgs;
+// Avalonia.StyledElement
 #else
 #error Unknown framework
 #endif
