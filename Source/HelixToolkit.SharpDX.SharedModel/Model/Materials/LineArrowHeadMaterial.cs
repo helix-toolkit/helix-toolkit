@@ -5,6 +5,8 @@
 namespace HelixToolkit.WinUI.SharpDX;
 #elif WPF
 namespace HelixToolkit.Wpf.SharpDX;
+#elif AVALONIA
+namespace HelixToolkit.Avalonia.SharpDX;
 #else
 #error Unknown framework
 #endif
@@ -15,7 +17,7 @@ public class LineArrowHeadMaterial : LineMaterial
     {
         get
         {
-            return (double)GetValue(ArrowSizeProperty);
+            return (double)GetValue(ArrowSizeProperty)!;
         }
         set
         {
@@ -24,14 +26,14 @@ public class LineArrowHeadMaterial : LineMaterial
     }
 
     public static readonly DependencyProperty ArrowSizeProperty =
-        DependencyProperty.Register("ArrowSize", typeof(double), typeof(LineArrowHeadMaterial), new PropertyMetadata(0.1, (d, e) =>
+        HelixProperty.Register<LineArrowHeadMaterial, double>("ArrowSize",
+            0.1, (d, e) =>
         {
             if (d is LineMaterial { Core: LineArrowHeadMaterialCore core })
             {
-                core.ArrowSize = (float)(double)e.NewValue;
+                core.ArrowSize = (float)(double)e.NewValue!;
             }
-        }));
-
+        });
 
     protected override MaterialCore OnCreateCore()
     {

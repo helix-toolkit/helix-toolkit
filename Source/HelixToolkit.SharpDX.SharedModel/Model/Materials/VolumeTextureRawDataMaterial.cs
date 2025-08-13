@@ -5,6 +5,8 @@
 namespace HelixToolkit.WinUI.SharpDX;
 #elif WPF
 namespace HelixToolkit.Wpf.SharpDX;
+#elif AVALONIA
+namespace HelixToolkit.Avalonia.SharpDX;
 #else
 #error Unknown framework
 #endif
@@ -28,7 +30,7 @@ public sealed class VolumeTextureRawDataMaterial : VolumeTextureMaterialBase
     {
         get
         {
-            return (VolumeTextureParams)GetValue(TextureProperty);
+            return (VolumeTextureParams)GetValue(TextureProperty)!;
         }
         set
         {
@@ -38,14 +40,14 @@ public sealed class VolumeTextureRawDataMaterial : VolumeTextureMaterialBase
 
 
     public static readonly DependencyProperty TextureProperty =
-        DependencyProperty.Register("Texture", typeof(VolumeTextureParams), typeof(VolumeTextureRawDataMaterial),
-            new PropertyMetadata(new VolumeTextureParams(), (d, e) =>
+        HelixProperty.Register<VolumeTextureRawDataMaterial, VolumeTextureParams>("Texture",
+            new VolumeTextureParams(), (d, e) =>
             {
                 if (d is VolumeTextureRawDataMaterial { Core: VolumeTextureRawDataMaterialCore core })
                 {
-                    core.VolumeTexture = (VolumeTextureParams)e.NewValue;
+                    core.VolumeTexture = (VolumeTextureParams)e.NewValue!;
                 }
-            }));
+            });
 
     public VolumeTextureRawDataMaterial()
     {
@@ -92,6 +94,7 @@ public sealed class VolumeTextureRawDataMaterial : VolumeTextureMaterialBase
             EnablePlaneAlignment = EnablePlaneAlignment,
         };
     }
+#elif AVALONIA
 #else
 #error Unknown framework
 #endif
