@@ -6,6 +6,8 @@ using HelixToolkit.SharpDX.Model.Scene;
 using HelixToolkit.WinUI.SharpDX.Model;
 #elif WPF
 using HelixToolkit.Wpf.SharpDX.Model;
+#elif AVALONIA
+using HelixToolkit.Avalonia.SharpDX.Model;
 #else
 #error Unknown framework
 #endif
@@ -15,6 +17,8 @@ using HelixToolkit.Wpf.SharpDX.Model;
 namespace HelixToolkit.WinUI.SharpDX;
 #elif WPF
 namespace HelixToolkit.Wpf.SharpDX;
+#elif AVALONIA
+namespace HelixToolkit.Avalonia.SharpDX;
 #else
 #error Unknown framework
 #endif
@@ -35,7 +39,7 @@ public class PostEffectMeshOutlineBlur : Element3D
     {
         get
         {
-            return (string)GetValue(EffectNameProperty);
+            return (string)GetValue(EffectNameProperty)!;
         }
         set
         {
@@ -47,14 +51,14 @@ public class PostEffectMeshOutlineBlur : Element3D
     /// The effect name property
     /// </summary>
     public static readonly DependencyProperty EffectNameProperty =
-        DependencyProperty.Register("EffectName", typeof(string), typeof(PostEffectMeshOutlineBlur),
-            new PropertyMetadata(DefaultRenderTechniqueNames.PostEffectMeshOutlineBlur, (d, e) =>
+        HelixProperty.Register<PostEffectMeshOutlineBlur, string>("EffectName",
+            DefaultRenderTechniqueNames.PostEffectMeshOutlineBlur, (d, e) =>
             {
                 if (d is Element3DCore { SceneNode: NodePostEffectMeshOutlineBlur core })
                 {
-                    core.EffectName = (string)e.NewValue;
+                    core.EffectName = (string)e.NewValue!;
                 }
-            }));
+            });
 
 
     /// <summary>
@@ -67,7 +71,7 @@ public class PostEffectMeshOutlineBlur : Element3D
     {
         get
         {
-            return (UIColor)GetValue(ColorProperty);
+            return (UIColor)GetValue(ColorProperty)!;
         }
         set
         {
@@ -79,13 +83,14 @@ public class PostEffectMeshOutlineBlur : Element3D
     /// The color property
     /// </summary>
     public static readonly DependencyProperty ColorProperty =
-        DependencyProperty.Register("Color", typeof(UIColor), typeof(PostEffectMeshOutlineBlur), new PropertyMetadata(UIColors.Red, (d, e) =>
+        HelixProperty.Register<PostEffectMeshOutlineBlur, UIColor>("Color",
+            UIColors.Red, (d, e) =>
         {
             if (d is Element3DCore { SceneNode: NodePostEffectMeshOutlineBlur core })
             {
-                core.Color = ((UIColor)e.NewValue).ToColor4();
+                core.Color = ((UIColor)e.NewValue!).ToColor4();
             }
-        }));
+        });
 
 
     /// <summary>
@@ -98,7 +103,7 @@ public class PostEffectMeshOutlineBlur : Element3D
     {
         get
         {
-            return (double)GetValue(ScaleXProperty);
+            return (double)GetValue(ScaleXProperty)!;
         }
         set
         {
@@ -110,13 +115,14 @@ public class PostEffectMeshOutlineBlur : Element3D
     /// The scale x property
     /// </summary>
     public static readonly DependencyProperty ScaleXProperty =
-        DependencyProperty.Register("ScaleX", typeof(double), typeof(PostEffectMeshOutlineBlur), new PropertyMetadata(1.0, (d, e) =>
+        HelixProperty.Register<PostEffectMeshOutlineBlur, double>("ScaleX",
+            1.0, (d, e) =>
         {
             if (d is Element3DCore { SceneNode: NodePostEffectMeshOutlineBlur core })
             {
-                core.ScaleX = (float)(double)e.NewValue;
+                core.ScaleX = (float)(double)e.NewValue!;
             }
-        }));
+        });
 
     /// <summary>
     /// Gets or sets the scale y.
@@ -128,7 +134,7 @@ public class PostEffectMeshOutlineBlur : Element3D
     {
         get
         {
-            return (double)GetValue(ScaleYProperty);
+            return (double)GetValue(ScaleYProperty)!;
         }
         set
         {
@@ -140,13 +146,14 @@ public class PostEffectMeshOutlineBlur : Element3D
     /// The scale y property
     /// </summary>
     public static readonly DependencyProperty ScaleYProperty =
-        DependencyProperty.Register("ScaleY", typeof(double), typeof(PostEffectMeshOutlineBlur), new PropertyMetadata(1.0, (d, e) =>
+        HelixProperty.Register<PostEffectMeshOutlineBlur, double>("ScaleY",
+            1.0, (d, e) =>
         {
             if (d is Element3DCore { SceneNode: NodePostEffectMeshOutlineBlur core })
             {
-                core.ScaleY = (float)(double)e.NewValue;
+                core.ScaleY = (float)(double)e.NewValue!;
             }
-        }));
+        });
 
     /// <summary>
     /// Gets or sets the number of blur pass.
@@ -158,7 +165,7 @@ public class PostEffectMeshOutlineBlur : Element3D
     {
         get
         {
-            return (int)GetValue(NumberOfBlurPassProperty);
+            return (int)GetValue(NumberOfBlurPassProperty)!;
         }
         set
         {
@@ -170,13 +177,14 @@ public class PostEffectMeshOutlineBlur : Element3D
     /// The number of blur pass property
     /// </summary>
     public static readonly DependencyProperty NumberOfBlurPassProperty =
-        DependencyProperty.Register("NumberOfBlurPass", typeof(int), typeof(PostEffectMeshOutlineBlur), new PropertyMetadata(1, (d, e) =>
+        HelixProperty.Register<PostEffectMeshOutlineBlur, int>("NumberOfBlurPass",
+            1, (d, e) =>
         {
             if (d is Element3DCore { SceneNode: NodePostEffectMeshOutlineBlur core })
             {
-                core.NumberOfBlurPass = (int)e.NewValue;
+                core.NumberOfBlurPass = (int)e.NewValue!;
             }
-        }));
+        });
 
     protected override SceneNode OnCreateSceneNode()
     {

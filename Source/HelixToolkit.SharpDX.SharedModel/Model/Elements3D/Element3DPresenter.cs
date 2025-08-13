@@ -5,6 +5,9 @@ using Microsoft.UI.Xaml.Markup;
 #elif WPF
 using System.Windows;
 using System.Windows.Markup;
+#elif AVALONIA
+using Avalonia.Interactivity;
+using Avalonia.Metadata;
 #else
 #error Unknown framework
 #endif
@@ -14,6 +17,8 @@ using System.Windows.Markup;
 namespace HelixToolkit.WinUI.SharpDX;
 #elif WPF
 namespace HelixToolkit.Wpf.SharpDX;
+#elif AVALONIA
+namespace HelixToolkit.Avalonia.SharpDX;
 #else
 #error Unknown framework
 #endif
@@ -23,6 +28,7 @@ namespace HelixToolkit.Wpf.SharpDX;
 [ContentProperty(Name = "Content")]
 #elif WPF
 [ContentProperty("Content")]
+#elif AVALONIA
 #else
 #error Unknown framework
 #endif
@@ -34,6 +40,9 @@ public class Element3DPresenter : Element3D
     /// <value>
     /// The content.
     /// </value>
+#if AVALONIA
+    [Content]
+#endif
     public Element3D? Content
     {
         get
@@ -50,12 +59,13 @@ public class Element3DPresenter : Element3D
     /// The content property
     /// </summary>
     public static readonly DependencyProperty ContentProperty =
-        DependencyProperty.Register("Content", typeof(Element3D), typeof(Element3DPresenter), new PropertyMetadata(null, (d, e) =>
+        HelixProperty.Register<Element3DPresenter, Element3D?>("Content",
+            null, (d, e) =>
         {
             var model = d as Element3DPresenter;
             if (e.OldValue != null)
             {
-                model?.RemoveLogicalChild(e.OldValue);
+                model?.RemoveLogicalChild((Element3D)e.OldValue);
                 if (e.OldValue is Element3D ele)
                 {
                     (model?.SceneNode as GroupNode)?.RemoveChildNode(ele.SceneNode);
@@ -63,13 +73,13 @@ public class Element3DPresenter : Element3D
             }
             if (e.NewValue != null)
             {
-                model?.AddLogicalChild(e.NewValue);
+                model?.AddLogicalChild((Element3D)e.NewValue);
                 if (e.NewValue is Element3D ele)
                 {
                     (model?.SceneNode as GroupNode)?.AddChildNode(ele.SceneNode);
                 }
             }
-        }));
+        });
 
     public Element3DPresenter()
     {
@@ -87,7 +97,7 @@ public class Element3DPresenter : Element3D
         {
 #if false
 #elif WINUI
-#elif WPF
+#elif WPF || AVALONIA
             RemoveLogicalChild(Content);
             AddLogicalChild(Content);
 #else

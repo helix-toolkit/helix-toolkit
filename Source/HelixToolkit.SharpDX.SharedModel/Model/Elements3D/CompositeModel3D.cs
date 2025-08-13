@@ -1,12 +1,16 @@
 ﻿using HelixToolkit.SharpDX;
 using HelixToolkit.SharpDX.Model.Scene;
 using System.Collections.Specialized;
+
 #if false
 #elif WINUI
 using Microsoft.UI.Xaml.Markup;
 #elif WPF
 using System.Windows;
 using System.Windows.Markup;
+#elif AVALONIA
+using Avalonia.Interactivity;
+using Avalonia.Metadata;
 #else
 #error Unknown framework
 #endif
@@ -16,6 +20,8 @@ using System.Windows.Markup;
 namespace HelixToolkit.WinUI.SharpDX;
 #elif WPF
 namespace HelixToolkit.Wpf.SharpDX;
+#elif AVALONIA
+namespace HelixToolkit.Avalonia.SharpDX;
 #else
 #error Unknown framework
 #endif
@@ -28,19 +34,20 @@ namespace HelixToolkit.Wpf.SharpDX;
 [ContentProperty(Name = "Children")]
 #elif WPF
 [ContentProperty("Children")]
+#elif AVALONIA
 #else
 #error Unknown framework
 #endif
 public class CompositeModel3D : Element3D, IHitable, ISelectable, IMouse3D
 {
     public static readonly DependencyProperty IsSelectedProperty =
-        DependencyProperty.Register("IsSelected", typeof(bool), typeof(CompositeModel3D), new PropertyMetadata(false));
+        HelixProperty.Register<CompositeModel3D, bool>("IsSelected", false);
 
     public bool IsSelected
     {
         get
         {
-            return (bool)this.GetValue(IsSelectedProperty);
+            return (bool)this.GetValue(IsSelectedProperty)!;
         }
         set
         {
@@ -48,15 +55,15 @@ public class CompositeModel3D : Element3D, IHitable, ISelectable, IMouse3D
         }
     }
 
-    // Using a DependencyProperty as the backing store for AlwasyHittable.  This enables animation, styling, binding, etc...
     public static readonly DependencyProperty AlwasyHittableProperty =
-        DependencyProperty.Register("AlwaysHittable", typeof(bool), typeof(CompositeModel3D), new PropertyMetadata(false, (d, e) =>
+        HelixProperty.Register<CompositeModel3D, bool>("AlwaysHittable",
+            false, (d, e) =>
         {
             if (d is CompositeModel3D model)
             {
-                model.SceneNode.AlwaysHittable = (bool)e.NewValue;
+                model.SceneNode.AlwaysHittable = (bool)e.NewValue!;
             }
-        }));
+        });
 
     /// <summary>
     /// Gets or sets a value indicating whether [always hittable].
@@ -68,7 +75,7 @@ public class CompositeModel3D : Element3D, IHitable, ISelectable, IMouse3D
     {
         get
         {
-            return (bool)GetValue(AlwasyHittableProperty);
+            return (bool)GetValue(AlwasyHittableProperty)!;
         }
         set
         {
@@ -82,6 +89,9 @@ public class CompositeModel3D : Element3D, IHitable, ISelectable, IMouse3D
     /// <value>
     ///     The children.
     /// </value>
+#if AVALONIA
+    [Content]
+#endif
     public ObservableElement3DCollection Children { get; } = new();
 
     /// <summary>

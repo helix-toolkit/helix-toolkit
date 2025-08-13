@@ -6,6 +6,8 @@ using HelixToolkit.SharpDX.Model.Scene;
 namespace HelixToolkit.WinUI.SharpDX;
 #elif WPF
 namespace HelixToolkit.Wpf.SharpDX;
+#elif AVALONIA
+namespace HelixToolkit.Avalonia.SharpDX;
 #else
 #error Unknown framework
 #endif
@@ -25,7 +27,7 @@ public class PostEffectMeshBorderHighlight : PostEffectMeshOutlineBlur
     {
         get
         {
-            return (OutlineMode)GetValue(DrawModeProperty);
+            return (OutlineMode)GetValue(DrawModeProperty)!;
         }
         set
         {
@@ -37,14 +39,15 @@ public class PostEffectMeshBorderHighlight : PostEffectMeshOutlineBlur
     /// The draw mode property
     /// </summary>
     public static readonly DependencyProperty DrawModeProperty =
-        DependencyProperty.Register("DrawMode", typeof(OutlineMode), typeof(PostEffectMeshBorderHighlight), new PropertyMetadata(OutlineMode.Merged,
+        HelixProperty.Register<PostEffectMeshBorderHighlight, OutlineMode>("DrawMode",
+            OutlineMode.Merged,
             (d, e) =>
             {
                 if (d is Element3D { SceneNode: NodePostEffectBorderHighlight core })
                 {
-                    core.DrawMode = (OutlineMode)e.NewValue;
+                    core.DrawMode = (OutlineMode)e.NewValue!;
                 }
-            }));
+            });
 
 
     protected override SceneNode OnCreateSceneNode()

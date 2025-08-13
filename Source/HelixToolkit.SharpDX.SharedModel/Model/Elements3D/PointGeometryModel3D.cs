@@ -6,6 +6,8 @@ using HelixToolkit.SharpDX.Model.Scene;
 #elif WINUI
 #elif WPF
 using System.Windows;
+#elif AVALONIA
+using Avalonia;
 #else
 #error Unknown framework
 #endif
@@ -15,6 +17,8 @@ using System.Windows;
 namespace HelixToolkit.WinUI.SharpDX;
 #elif WPF
 namespace HelixToolkit.Wpf.SharpDX;
+#elif AVALONIA
+namespace HelixToolkit.Avalonia.SharpDX;
 #else
 #error Unknown framework
 #endif
@@ -26,55 +30,59 @@ public class PointGeometryModel3D : GeometryModel3D
 {
     #region Dependency Properties
     public static readonly DependencyProperty ColorProperty =
-        DependencyProperty.Register("Color", typeof(UIColor), typeof(PointGeometryModel3D),
-            new PropertyMetadata(UIColors.Black, (d, e) =>
+        HelixProperty.Register<PointGeometryModel3D, UIColor>("Color",
+            UIColors.Black, (d, e) =>
             {
                 if (d is PointGeometryModel3D core)
                 {
-                    core.material.PointColor = ((UIColor)e.NewValue).ToColor4();
+                    core.material.PointColor = ((UIColor)e.NewValue!).ToColor4();
                 }
-            }));
+            });
 
     public static readonly DependencyProperty SizeProperty =
-        DependencyProperty.Register("Size", typeof(Size), typeof(PointGeometryModel3D), new PropertyMetadata(new Size(1.0, 1.0),
+        HelixProperty.Register<PointGeometryModel3D, Size>("Size",
+            new Size(1.0, 1.0),
             (d, e) =>
             {
                 if (d is PointGeometryModel3D core)
                 {
-                    var size = (Size)e.NewValue;
+                    var size = (Size)e.NewValue!;
                     core.material.Width = (float)size.Width;
                     core.material.Height = (float)size.Height;
                 }
-            }));
+            });
 
     public static readonly DependencyProperty FigureProperty =
-        DependencyProperty.Register("Figure", typeof(PointFigure), typeof(PointGeometryModel3D), new PropertyMetadata(PointFigure.Rect,
+        HelixProperty.Register<PointGeometryModel3D, PointFigure>("Figure",
+            PointFigure.Rect,
             (d, e) =>
             {
                 if (d is PointGeometryModel3D core)
                 {
-                    core.material.Figure = (PointFigure)e.NewValue;
+                    core.material.Figure = (PointFigure)e.NewValue!;
                 }
-            }));
+            });
 
     public static readonly DependencyProperty FigureRatioProperty =
-        DependencyProperty.Register("FigureRatio", typeof(double), typeof(PointGeometryModel3D), new PropertyMetadata(0.25,
+        HelixProperty.Register<PointGeometryModel3D, double>("FigureRatio",
+            0.25,
             (d, e) =>
             {
                 if (d is PointGeometryModel3D core)
                 {
-                    core.material.FigureRatio = (float)(double)e.NewValue;
+                    core.material.FigureRatio = (float)(double)e.NewValue!;
                 }
-            }));
+            });
 
     public static readonly DependencyProperty HitTestThicknessProperty =
-        DependencyProperty.Register("HitTestThickness", typeof(double), typeof(PointGeometryModel3D), new PropertyMetadata(4.0, (d, e) =>
+        HelixProperty.Register<PointGeometryModel3D, double>("HitTestThickness",
+            4.0, (d, e) =>
         {
             if (d is PointGeometryModel3D { SceneNode: PointNode node })
             {
-                node.HitTestThickness = (float)(double)e.NewValue;
+                node.HitTestThickness = (float)(double)e.NewValue!;
             }
-        }));
+        });
 
     /// <summary>
     /// Fixed sized. Default = true. 
@@ -82,43 +90,45 @@ public class PointGeometryModel3D : GeometryModel3D
     /// <para>When FixedSize = false, the render size will be actual size in 3D world space</para>
     /// </summary>
     public static readonly DependencyProperty FixedSizeProperty
-        = DependencyProperty.Register("FixedSize", typeof(bool), typeof(PointGeometryModel3D),
-        new PropertyMetadata(true,
+        = HelixProperty.Register<PointGeometryModel3D, bool>("FixedSize",
+            true,
             (d, e) =>
             {
                 if (d is PointGeometryModel3D core)
                 {
-                    core.material.FixedSize = (bool)e.NewValue;
+                    core.material.FixedSize = (bool)e.NewValue!;
                 }
-            }));
+            });
 
     // Using a DependencyProperty as the backing store for EnableColorBlending.  This enables animation, styling, binding, etc...
     public static readonly DependencyProperty EnableColorBlendingProperty =
-        DependencyProperty.Register("EnableColorBlending", typeof(bool), typeof(PointGeometryModel3D), new PropertyMetadata(false,
+        HelixProperty.Register<PointGeometryModel3D, bool>("EnableColorBlending",
+            false,
             (d, e) =>
             {
                 if (d is PointGeometryModel3D core)
                 {
-                    core.material.EnableColorBlending = (bool)e.NewValue;
+                    core.material.EnableColorBlending = (bool)e.NewValue!;
                 }
-            }));
+            });
 
     // Using a DependencyProperty as the backing store for BlendingFactor.  This enables animation, styling, binding, etc...
     public static readonly DependencyProperty BlendingFactorProperty =
-        DependencyProperty.Register("BlendingFactor", typeof(double), typeof(PointGeometryModel3D), new PropertyMetadata(0.0,
+        HelixProperty.Register<PointGeometryModel3D, double>("BlendingFactor",
+            0.0,
             (d, e) =>
             {
                 if (d is PointGeometryModel3D core)
                 {
-                    core.material.BlendingFactor = (float)(double)e.NewValue;
+                    core.material.BlendingFactor = (float)(double)e.NewValue!;
                 }
-            }));
+            });
 
     public UIColor Color
     {
         get
         {
-            return (UIColor)this.GetValue(ColorProperty);
+            return (UIColor)this.GetValue(ColorProperty)!;
         }
         set
         {
@@ -130,7 +140,7 @@ public class PointGeometryModel3D : GeometryModel3D
     {
         get
         {
-            return (Size)this.GetValue(SizeProperty);
+            return (Size)this.GetValue(SizeProperty)!;
         }
         set
         {
@@ -142,7 +152,7 @@ public class PointGeometryModel3D : GeometryModel3D
     {
         get
         {
-            return (PointFigure)this.GetValue(FigureProperty);
+            return (PointFigure)this.GetValue(FigureProperty)!;
         }
         set
         {
@@ -154,7 +164,7 @@ public class PointGeometryModel3D : GeometryModel3D
     {
         get
         {
-            return (double)this.GetValue(FigureRatioProperty);
+            return (double)this.GetValue(FigureRatioProperty)!;
         }
         set
         {
@@ -169,7 +179,7 @@ public class PointGeometryModel3D : GeometryModel3D
     {
         get
         {
-            return (double)this.GetValue(HitTestThicknessProperty);
+            return (double)this.GetValue(HitTestThicknessProperty)!;
         }
         set
         {
@@ -190,7 +200,7 @@ public class PointGeometryModel3D : GeometryModel3D
         }
         get
         {
-            return (bool)GetValue(FixedSizeProperty);
+            return (bool)GetValue(FixedSizeProperty)!;
         }
     }
 
@@ -206,7 +216,7 @@ public class PointGeometryModel3D : GeometryModel3D
     {
         get
         {
-            return (bool)GetValue(EnableColorBlendingProperty);
+            return (bool)GetValue(EnableColorBlendingProperty)!;
         }
         set
         {
@@ -224,7 +234,7 @@ public class PointGeometryModel3D : GeometryModel3D
     {
         get
         {
-            return (double)GetValue(BlendingFactorProperty);
+            return (double)GetValue(BlendingFactorProperty)!;
         }
         set
         {

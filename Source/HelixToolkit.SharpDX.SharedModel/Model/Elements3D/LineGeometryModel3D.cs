@@ -6,6 +6,8 @@ using HelixToolkit.SharpDX.Model.Scene;
 using HelixToolkit.WinUI.SharpDX.Model;
 #elif WPF
 using HelixToolkit.Wpf.SharpDX.Model;
+#elif AVALONIA
+using HelixToolkit.Avalonia.SharpDX.Model;
 #else
 #error Unknown framework
 #endif
@@ -15,6 +17,8 @@ using HelixToolkit.Wpf.SharpDX.Model;
 namespace HelixToolkit.WinUI.SharpDX;
 #elif WPF
 namespace HelixToolkit.Wpf.SharpDX;
+#elif AVALONIA
+namespace HelixToolkit.Avalonia.SharpDX;
 #else
 #error Unknown framework
 #endif
@@ -30,68 +34,70 @@ public class LineGeometryModel3D : GeometryModel3D
     /// The color property
     /// </summary>
     public static readonly DependencyProperty ColorProperty =
-        DependencyProperty.Register("Color", typeof(UIColor), typeof(LineGeometryModel3D),
-            new PropertyMetadata(UIColors.Black, (d, e) =>
+        HelixProperty.Register<LineGeometryModel3D, UIColor>("Color",
+            UIColors.Black, (d, e) =>
             {
                 if (d is LineGeometryModel3D node)
                 {
-                    node.material.LineColor = ((UIColor)e.NewValue).ToColor4();
+                    node.material.LineColor = ((UIColor)e.NewValue!).ToColor4();
                 }
-            }));
+            });
 
     /// <summary>
     /// The thickness property
     /// </summary>
     public static readonly DependencyProperty ThicknessProperty =
-        DependencyProperty.Register("Thickness", typeof(double), typeof(LineGeometryModel3D), new PropertyMetadata(1.0, (d, e) =>
+        HelixProperty.Register<LineGeometryModel3D, double>("Thickness",
+            1.0, (d, e) =>
         {
             if (d is LineGeometryModel3D node)
             {
-                node.material.Thickness = (float)(double)e.NewValue;
+                node.material.Thickness = (float)(double)e.NewValue!;
             }
-        }));
+        });
 
     /// <summary>
     /// The smoothness property
     /// </summary>
     public static readonly DependencyProperty SmoothnessProperty =
-        DependencyProperty.Register("Smoothness", typeof(double), typeof(LineGeometryModel3D), new PropertyMetadata(0.0,
+        HelixProperty.Register<LineGeometryModel3D, double>("Smoothness",
+            0.0,
         (d, e) =>
         {
             if (d is LineGeometryModel3D node)
             {
-                node.material.Smoothness = (float)(double)e.NewValue;
+                node.material.Smoothness = (float)(double)e.NewValue!;
             }
-        }));
+        });
 
     /// <summary>
     /// The hit test thickness property
     /// </summary>
     public static readonly DependencyProperty HitTestThicknessProperty =
-        DependencyProperty.Register("HitTestThickness", typeof(double), typeof(LineGeometryModel3D), new PropertyMetadata(1.0, (d, e) =>
+        HelixProperty.Register<LineGeometryModel3D, double>("HitTestThickness",
+            1.0, (d, e) =>
         {
             if (d is Element3DCore { SceneNode: LineNode node })
             {
-                node.HitTestThickness = (double)e.NewValue;
+                node.HitTestThickness = (double)e.NewValue!;
             }
-        }));
-
+        });
 
     /// <summary>
     /// Fixed sized billboard. Default = true. 
     /// <para>When FixedSize = true, the billboard render size will be scale to normalized device coordinates(screen) size</para>
     /// <para>When FixedSize = false, the billboard render size will be actual size in 3D world space</para>
     /// </summary>
-    public static readonly DependencyProperty FixedSizeProperty
-        = DependencyProperty.Register("FixedSize", typeof(bool), typeof(LineGeometryModel3D),
-        new PropertyMetadata(true,
+    public static readonly DependencyProperty FixedSizeProperty =
+        HelixProperty.Register<LineGeometryModel3D, bool>("FixedSize",
+            true,
             (d, e) =>
             {
                 if (d is LineGeometryModel3D node)
                 {
-                    node.material.FixedSize = (bool)e.NewValue;
+                    node.material.FixedSize = (bool)e.NewValue!;
                 }
-            }));
+            });
 
     /// <summary>
     /// Gets or sets the color.
@@ -103,7 +109,7 @@ public class LineGeometryModel3D : GeometryModel3D
     {
         get
         {
-            return (UIColor)this.GetValue(ColorProperty);
+            return (UIColor)this.GetValue(ColorProperty)!;
         }
         set
         {
@@ -121,7 +127,7 @@ public class LineGeometryModel3D : GeometryModel3D
     {
         get
         {
-            return (double)this.GetValue(ThicknessProperty);
+            return (double)this.GetValue(ThicknessProperty)!;
         }
         set
         {
@@ -139,7 +145,7 @@ public class LineGeometryModel3D : GeometryModel3D
     {
         get
         {
-            return (double)this.GetValue(SmoothnessProperty);
+            return (double)this.GetValue(SmoothnessProperty)!;
         }
         set
         {
@@ -154,7 +160,7 @@ public class LineGeometryModel3D : GeometryModel3D
     {
         get
         {
-            return (double)this.GetValue(HitTestThicknessProperty);
+            return (double)this.GetValue(HitTestThicknessProperty)!;
         }
         set
         {
@@ -175,7 +181,7 @@ public class LineGeometryModel3D : GeometryModel3D
         }
         get
         {
-            return (bool)GetValue(FixedSizeProperty);
+            return (bool)GetValue(FixedSizeProperty)!;
         }
     }
     #endregion
