@@ -90,7 +90,15 @@ public sealed class ContourHelper
     /// The position count.
     /// </summary>
     private int positionCount;
+    /// <summary>
+    /// Initializes a new instance of the <see cref="ContourHelper" /> class.
+    /// </summary>
+    /// <param name="plane">The plane</param>
+    /// <param name="originalMesh">The original mesh</param>
+    public ContourHelper(Plane plane, MeshGeometry3D originalMesh) : this(PlaneHelper.GetPlanOrigin(ref plane), plane.Normal, originalMesh)
+    {
 
+    }
     /// <summary>
     /// Initializes a new instance of the <see cref="ContourHelper" /> class.
     /// </summary>
