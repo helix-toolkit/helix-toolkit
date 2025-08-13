@@ -4,6 +4,7 @@ using Microsoft.UI.Xaml.Media;
 #elif WPF
 using System.Windows;
 using System.Windows.Media;
+#elif AVALONIA
 #else
 #error Unknown framework
 #endif
@@ -13,6 +14,8 @@ using System.Windows.Media;
 namespace HelixToolkit.WinUI.SharpDX.Elements2D;
 #elif WPF
 namespace HelixToolkit.Wpf.SharpDX.Elements2D;
+#elif AVALONIA
+namespace HelixToolkit.Avalonia.SharpDX.Elements2D;
 #else
 #error Unknown framework
 #endif
@@ -30,6 +33,7 @@ public sealed class MoverButton2D : Button2D
 #elif WPF
         DefaultStyleKeyProperty.OverrideMetadata(
             typeof(MoverButton2D), new FrameworkPropertyMetadata(typeof(MoverButton2D)));
+#elif AVALONIA
 #else
 #error Unknown framework
 #endif
@@ -37,7 +41,13 @@ public sealed class MoverButton2D : Button2D
 
     public MoverButton2D()
     {
+#if false
+#elif WINUI || WPF
         DefaultStyleKey = typeof(MoverButton2D);
+#elif AVALONIA 
+#else
+#error Unknown framework
+#endif
 
         SetDefaultStyle();
     }
@@ -56,6 +66,7 @@ public sealed class MoverButton2D : Button2D
         this.BorderBrush = new SolidColorBrush(UIColor.FromArgb(255, 255, 125, 0));
         this.Margin = new Thickness(8, 8, 8, 8);
 #elif WPF
+#elif AVALONIA
 #else
 #error Unknown framework
 #endif
@@ -65,6 +76,7 @@ public sealed class MoverButton2D : Button2D
 #elif WINUI
     private Brush? _previousBackgroundBrush;
 #elif WPF
+#elif AVALONIA
 #else
 #error Unknown framework
 #endif
@@ -90,6 +102,7 @@ public sealed class MoverButton2D : Button2D
             }
         }
 #elif WPF
+#elif AVALONIA
 #else
 #error Unknown framework
 #endif

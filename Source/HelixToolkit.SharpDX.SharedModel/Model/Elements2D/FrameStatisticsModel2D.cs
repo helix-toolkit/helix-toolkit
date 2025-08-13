@@ -8,6 +8,9 @@ using Microsoft.UI.Xaml.Media;
 #elif WPF
 using HelixToolkit.Wpf.SharpDX.Extensions;
 using System.Windows.Media;
+#elif AVALONIA
+using HelixToolkit.Avalonia.SharpDX.Extensions;
+using Avalonia.Media;
 #else
 #error Unknown framework
 #endif
@@ -17,6 +20,8 @@ using System.Windows.Media;
 namespace HelixToolkit.WinUI.SharpDX.Elements2D;
 #elif WPF
 namespace HelixToolkit.Wpf.SharpDX.Elements2D;
+#elif AVALONIA
+namespace HelixToolkit.Avalonia.SharpDX.Elements2D;
 #else
 #error Unknown framework
 #endif
@@ -27,23 +32,26 @@ public class FrameStatisticsModel2D : Element2D
 #elif WINUI
     new
 #elif WPF
+#elif AVALONIA
 #else
 #error Unknown framework
 #endif
-    public static readonly DependencyProperty ForegroundProperty
-        = DependencyProperty.Register("Foreground", typeof(Brush), typeof(FrameStatisticsModel2D),
-    new PropertyMetadata(new SolidColorBrush(UIColors.Black), (d, e) =>
-    {
-        if (d is FrameStatisticsModel2D model)
-        {
-            model.foregroundChanged = true;
-        }
-    }));
+    public static readonly DependencyProperty ForegroundProperty =
+        HelixProperty.Register<FrameStatisticsModel2D, Brush?>("Foreground",
+            new SolidColorBrush(UIColors.Black),
+            (d, e) =>
+            {
+                if (d is FrameStatisticsModel2D model)
+                {
+                    model.foregroundChanged = true;
+                }
+            });
 
 #if false
 #elif WINUI
     new
 #elif WPF
+#elif AVALONIA
 #else
 #error Unknown framework
 #endif
@@ -63,23 +71,26 @@ public class FrameStatisticsModel2D : Element2D
 #elif WINUI
     new
 #elif WPF
+#elif AVALONIA
 #else
 #error Unknown framework
 #endif
-    public static readonly DependencyProperty BackgroundProperty
-        = DependencyProperty.Register("Background", typeof(Brush), typeof(FrameStatisticsModel2D),
-            new PropertyMetadata(new SolidColorBrush(UIColor.FromArgb(64, 32, 32, 32)), (d, e) =>
+    public static readonly DependencyProperty BackgroundProperty =
+        HelixProperty.Register<FrameStatisticsModel2D, Brush?>("Background",
+            new SolidColorBrush(UIColor.FromArgb(64, 32, 32, 32)),
+            (d, e) =>
             {
                 if (d is FrameStatisticsModel2D model)
                 {
                     model.backgroundChanged = true;
                 }
-            }));
+            });
 
 #if false
 #elif WINUI
     new
 #elif WPF
+#elif AVALONIA
 #else
 #error Unknown framework
 #endif

@@ -5,6 +5,8 @@ using System.IO;
 using HelixToolkit.WinUI.SharpDX.Core2D;
 #elif WPF
 using HelixToolkit.Wpf.SharpDX.Core2D;
+#elif AVALONIA
+using HelixToolkit.Avalonia.SharpDX.Core2D;
 #else
 #error Unknown framework
 #endif
@@ -14,6 +16,8 @@ using HelixToolkit.Wpf.SharpDX.Core2D;
 namespace HelixToolkit.WinUI.SharpDX.Elements2D;
 #elif WPF
 namespace HelixToolkit.Wpf.SharpDX.Elements2D;
+#elif AVALONIA
+namespace HelixToolkit.Avalonia.SharpDX.Elements2D;
 #else
 #error Unknown framework
 #endif
@@ -46,15 +50,15 @@ public class ImageModel2D : Element2D
     /// The image stream property
     /// </summary>
     public static readonly DependencyProperty ImageStreamProperty =
-        DependencyProperty.Register("ImageStream", typeof(Stream), typeof(ImageModel2D), new PropertyMetadata(null,
+        HelixProperty.Register<ImageModel2D, Stream?>("ImageStream",
+            null,
             (d, e) =>
             {
                 if (d is Element2DCore { SceneNode: ImageNode2D node })
                 {
                     node.ImageStream = e.NewValue as Stream;
                 }
-            }));
-
+            });
 
     /// <summary>
     /// Gets or sets the opacity.
@@ -64,16 +68,18 @@ public class ImageModel2D : Element2D
     /// </value>
 #if false
 #elif WINUI
-    public new double Opacity
+    new
 #elif WPF
-    public double Opacity
+#elif AVALONIA
+    new
 #else
 #error Unknown framework
 #endif
+    public double Opacity
     {
         get
         {
-            return (double)GetValue(OpacityProperty);
+            return (double)GetValue(OpacityProperty)!;
         }
         set
         {
@@ -86,19 +92,22 @@ public class ImageModel2D : Element2D
     /// </summary>
 #if false
 #elif WINUI
-    public static readonly new DependencyProperty OpacityProperty =
+    new
 #elif WPF
-    public static readonly DependencyProperty OpacityProperty =
+#elif AVALONIA
+    new
 #else
 #error Unknown framework
 #endif
-    DependencyProperty.Register("Opacity", typeof(double), typeof(ImageModel2D), new PropertyMetadata(1.0, (d, e) =>
+    public static readonly DependencyProperty OpacityProperty =
+        HelixProperty.Register<ImageModel2D, double>("Opacity",
+            1.0, (d, e) =>
         {
             if (d is Element2DCore { SceneNode: ImageNode2D node })
             {
-                node.Opacity = (float)(double)e.NewValue;
+                node.Opacity = (float)(double)e.NewValue!;
             }
-        }));
+        });
 
     protected override SceneNode2D OnCreateSceneNode()
     {
