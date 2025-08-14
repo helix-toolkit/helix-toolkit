@@ -486,19 +486,19 @@ public static class MeshGeometryHelper
     /// <param name="planeOrigin">
     /// The plane origin.
     /// </param>
-    /// <param name="planNormal">
+    /// <param name="planeNormal">
     /// The plane normal.
     /// </param>
     /// <returns>
     /// The new cutted <see cref="MeshGeometry3D"/> by the plane.
     /// </returns>
-    public static MeshGeometry3D Cut(this MeshGeometry3D mesh, Vector3 planeOrigin, Vector3 planNormal)
+    public static MeshGeometry3D Cut(this MeshGeometry3D mesh, Vector3 planeOrigin, Vector3 planeNormal)
     {
         MeshGeometry3D cloneMesh = mesh.Clone();
         var hasTextureCoordinates = cloneMesh.TextureCoordinates != null && cloneMesh.TextureCoordinates.Count > 0;
         var hasNormals = cloneMesh.Normals != null && cloneMesh.Normals.Count > 0;
         var meshBuilder = new MeshBuilder(hasNormals, hasTextureCoordinates);
-        var contourHelper = new ContourHelper(planeOrigin, planNormal, cloneMesh);
+        var contourHelper = new ContourHelper(planeOrigin, planeNormal, cloneMesh);
         foreach (var position in cloneMesh.Positions)
         {
             meshBuilder.Positions.Add(position);
@@ -579,16 +579,16 @@ public static class MeshGeometryHelper
     /// <param name="planeOrigin">
     /// The plane origin.
     /// </param>
-    /// <param name="planNormal">
+    /// <param name="planeNormal">
     /// The plane normal.
     /// </param>
     /// <returns>
     /// The segments of the contour.
     /// </returns>
-    public static IList<Vector3> GetContourSegments(this MeshGeometry3D mesh, Vector3 planeOrigin, Vector3 planNormal)
+    public static IList<Vector3> GetContourSegments(this MeshGeometry3D mesh, Vector3 planeOrigin, Vector3 planeNormal)
     {
         var segments = new Vector3Collection();
-        var contourHelper = new ContourHelper(planeOrigin, planNormal, mesh);
+        var contourHelper = new ContourHelper(planeOrigin, planeNormal, mesh);
         for (var i = 0; i < mesh.TriangleIndices.Count; i += 3)
         {
             contourHelper.ContourFacet(
