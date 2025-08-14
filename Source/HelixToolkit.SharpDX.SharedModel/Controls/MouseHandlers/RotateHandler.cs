@@ -5,6 +5,7 @@ using HelixToolkit.SharpDX.Cameras;
 using Windows.UI.Core;
 #elif WPF
 using System.Windows.Input;
+#elif AVALONIA
 #else
 #error Unknown framework
 #endif
@@ -14,6 +15,8 @@ using System.Windows.Input;
 namespace HelixToolkit.WinUI.SharpDX;
 #elif WPF
 namespace HelixToolkit.Wpf.SharpDX;
+#elif AVALONIA
+namespace HelixToolkit.Avalonia.SharpDX;
 #else
 #error Unknown framework
 #endif
@@ -41,7 +44,7 @@ internal class RotateHandler : MouseGestureHandler
     /// <summary>
     /// The rotation point.
     /// </summary>
-    private Point2D rotationPoint;
+    private Point rotationPoint;
 
     /// <summary>
     /// The 3D rotation point.
@@ -79,7 +82,7 @@ internal class RotateHandler : MouseGestureHandler
         }
     }
 
-#if WPF
+#if WPF || AVALONIA
     /// <summary>
     /// Occurs when the manipulation is completed.
     /// </summary>
@@ -95,7 +98,7 @@ internal class RotateHandler : MouseGestureHandler
     /// Occurs when the position is changed during a manipulation.
     /// </summary>
     /// <param name="e"></param>
-    public override void Delta(Point2D e)
+    public override void Delta(Point e)
     {
         base.Delta(e);
         this.Rotate(this.LastPoint, e, this.rotationPoint3D);
@@ -214,7 +217,7 @@ internal class RotateHandler : MouseGestureHandler
             this.Rotate(p0, p1, this.MouseDownPoint3D.Value);
         }
 
-        this.LastPoint = new Point2D(p0.X, p0.Y);
+        this.LastPoint = new Point(p0.X, p0.Y);
     }
 
     /// <summary>
@@ -230,7 +233,7 @@ internal class RotateHandler : MouseGestureHandler
             return;
         }
 
-        this.rotationPoint = new Point2D((float)this.Viewport.ActualWidth / 2, (float)this.Viewport.ActualHeight / 2);
+        this.rotationPoint = new Point((float)this.Viewport.ActualWidth / 2, (float)this.Viewport.ActualHeight / 2);
         this.rotationPoint3D = this.Camera.CameraInternal.Target;
         invertUpDir = Vector3.Dot(Controller.CameraUpDirection, ModelUpDirection) < 0;
 
@@ -317,8 +320,8 @@ internal class RotateHandler : MouseGestureHandler
     /// </param>
     protected override void OnInertiaStarting(double elapsedTime)
     {
-        var delta = this.LastPoint - this.MouseDownPoint;
-        var deltaV = delta.ToVector2();
+        var delta = this.LastPoint.ToVector2() - this.MouseDownPoint.ToVector2();
+        var deltaV = delta;
         // Debug.WriteLine("SpinInertiaStarting: " + elapsedTime + "ms " + delta.Length + "px");
         this.Controller.StartSpin(
             4 * deltaV * (float)(this.Controller.SpinReleaseTime / elapsedTime),

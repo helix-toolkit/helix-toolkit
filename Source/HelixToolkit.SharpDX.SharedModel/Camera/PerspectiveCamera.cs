@@ -5,6 +5,8 @@
 namespace HelixToolkit.WinUI.SharpDX;
 #elif WPF
 namespace HelixToolkit.Wpf.SharpDX;
+#elif AVALONIA
+namespace HelixToolkit.Avalonia.SharpDX;
 #else
 #error Unknown framework
 #endif
@@ -17,15 +19,15 @@ public class PerspectiveCamera : ProjectionCamera, IPerspectiveCameraModel
     /// <summary>
     /// The field of view property
     /// </summary>
-    public static readonly DependencyProperty FieldOfViewProperty = DependencyProperty.Register(
-        "FieldOfView", typeof(double), typeof(PerspectiveCamera), new PropertyMetadata(45.0,
+    public static readonly DependencyProperty FieldOfViewProperty = HelixProperty.Register<PerspectiveCamera, double>(
+        "FieldOfView", 45.0,
             (d, e) =>
             {
                 if (d is Camera { CameraInternal: PerspectiveCameraCore core })
                 {
-                    core.FieldOfView = (float)(double)e.NewValue;
+                    core.FieldOfView = (float)(double)e.NewValue!;
                 }
-            }));
+            });
 
     /// <summary>
     /// Gets or sets the field of view.
@@ -37,7 +39,7 @@ public class PerspectiveCamera : ProjectionCamera, IPerspectiveCameraModel
     {
         get
         {
-            return (double)this.GetValue(FieldOfViewProperty);
+            return (double)this.GetValue(FieldOfViewProperty)!;
         }
         set
         {
@@ -71,6 +73,7 @@ public class PerspectiveCamera : ProjectionCamera, IPerspectiveCameraModel
     {
         return new PerspectiveCamera();
     }
+#elif AVALONIA
 #else
 #error Unknown framework
 #endif

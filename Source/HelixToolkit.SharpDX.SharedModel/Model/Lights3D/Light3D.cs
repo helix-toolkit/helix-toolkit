@@ -5,6 +5,8 @@ using HelixToolkit.SharpDX.Model.Scene;
 using HelixToolkit.WinUI.SharpDX.Model;
 #elif WPF
 using HelixToolkit.Wpf.SharpDX.Model;
+#elif AVALONIA
+using HelixToolkit.Avalonia.SharpDX.Model;
 #else
 #error Unknown framework
 #endif
@@ -14,6 +16,8 @@ using HelixToolkit.Wpf.SharpDX.Model;
 namespace HelixToolkit.WinUI.SharpDX;
 #elif WPF
 namespace HelixToolkit.Wpf.SharpDX;
+#elif AVALONIA
+namespace HelixToolkit.Avalonia.SharpDX;
 #else
 #error Unknown framework
 #endif
@@ -21,13 +25,14 @@ namespace HelixToolkit.Wpf.SharpDX;
 public abstract class Light3D : Element3D
 {
     public static readonly DependencyProperty ColorProperty =
-        DependencyProperty.Register("Color", typeof(UIColor), typeof(Light3D), new PropertyMetadata(UIColors.Gray, (d, e) =>
+        HelixProperty.Register<Light3D, UIColor>("Color",
+            UIColors.Gray, (d, e) =>
         {
             if (d is Element3DCore { SceneNode: LightNode node })
             {
-                node.Color = ((UIColor)e.NewValue).ToColor4();
+                node.Color = ((UIColor)e.NewValue!).ToColor4();
             }
-        }));
+        });
 
     /// <summary>
     /// Color of the light.
@@ -37,7 +42,7 @@ public abstract class Light3D : Element3D
     {
         get
         {
-            return (UIColor)GetValue(ColorProperty);
+            return (UIColor)GetValue(ColorProperty)!;
         }
         set
         {

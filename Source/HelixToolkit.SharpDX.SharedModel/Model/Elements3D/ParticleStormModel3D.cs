@@ -12,6 +12,9 @@ using HelixToolkit.WinUI.SharpDX.Model;
 using HelixToolkit.Wpf.SharpDX.Model;
 using System.Windows;
 using Rect3D = System.Windows.Media.Media3D.Rect3D;
+#elif AVALONIA
+using HelixToolkit.Avalonia.SharpDX.Model;
+using Avalonia;
 #else
 #error Unknown framework
 #endif
@@ -21,6 +24,8 @@ using Rect3D = System.Windows.Media.Media3D.Rect3D;
 namespace HelixToolkit.WinUI.SharpDX;
 #elif WPF
 namespace HelixToolkit.Wpf.SharpDX;
+#elif AVALONIA
+namespace HelixToolkit.Avalonia.SharpDX;
 #else
 #error Unknown framework
 #endif
@@ -28,16 +33,16 @@ namespace HelixToolkit.Wpf.SharpDX;
 public class ParticleStormModel3D : Element3D
 {
     #region Dependency Properties
-    public static readonly DependencyProperty ParticleCountProperty = DependencyProperty.Register("ParticleCount", typeof(int), typeof(ParticleStormModel3D),
-        new PropertyMetadata(DefaultParticleCount,
+    public static readonly DependencyProperty ParticleCountProperty =
+        HelixProperty.Register<ParticleStormModel3D, int>("ParticleCount",
+            DefaultParticleCount,
             (d, e) =>
             {
                 if (d is Element3DCore { SceneNode: ParticleStormNode node })
                 {
-                    node.ParticleCount = Math.Max(8, (int)e.NewValue);
+                    node.ParticleCount = Math.Max(8, (int)e.NewValue!);
                 }
-            }
-            ));
+            });
 
     public int ParticleCount
     {
@@ -47,20 +52,20 @@ public class ParticleStormModel3D : Element3D
         }
         get
         {
-            return (int)GetValue(ParticleCountProperty);
+            return (int)GetValue(ParticleCountProperty)!;
         }
     }
 
-    public static readonly DependencyProperty EmitterLocationProperty = DependencyProperty.Register("EmitterLocation", typeof(Point3D), typeof(ParticleStormModel3D),
-        new PropertyMetadata(DefaultEmitterLocation.ToPoint3D(),
+    public static readonly DependencyProperty EmitterLocationProperty =
+        HelixProperty.Register<ParticleStormModel3D, Point3D>("EmitterLocation",
+            DefaultEmitterLocation.ToPoint3D(),
             (d, e) =>
             {
                 if (d is Element3DCore { SceneNode: ParticleStormNode node })
                 {
-                    node.EmitterLocation = (((Point3D)e.NewValue).ToVector3());
+                    node.EmitterLocation = (((Point3D)e.NewValue!).ToVector3());
                 }
-            }
-            ));
+            });
 
     public Point3D EmitterLocation
     {
@@ -70,20 +75,20 @@ public class ParticleStormModel3D : Element3D
         }
         get
         {
-            return (Point3D)GetValue(EmitterLocationProperty);
+            return (Point3D)GetValue(EmitterLocationProperty)!;
         }
     }
 
-    public static readonly DependencyProperty ConsumerLocationProperty = DependencyProperty.Register("ConsumerLocation", typeof(Point3D), typeof(ParticleStormModel3D),
-        new PropertyMetadata(DefaultConsumerLocation.ToPoint3D(),
+    public static readonly DependencyProperty ConsumerLocationProperty =
+        HelixProperty.Register<ParticleStormModel3D, Point3D>("ConsumerLocation",
+            DefaultConsumerLocation.ToPoint3D(),
             (d, e) =>
             {
                 if (d is Element3DCore { SceneNode: ParticleStormNode node })
                 {
-                    node.ConsumerLocation = (((Point3D)e.NewValue).ToVector3());
+                    node.ConsumerLocation = (((Point3D)e.NewValue!).ToVector3());
                 }
-            }
-            ));
+            });
 
     public Point3D ConsumerLocation
     {
@@ -93,23 +98,24 @@ public class ParticleStormModel3D : Element3D
         }
         get
         {
-            return (Point3D)GetValue(ConsumerLocationProperty);
+            return (Point3D)GetValue(ConsumerLocationProperty)!;
         }
     }
 
 #if false
 #elif WINUI
-    public static readonly DependencyProperty ParticleBoundsProperty = DependencyProperty.Register("ParticleBounds", typeof(BoundingBox), typeof(ParticleStormModel3D),
-        new PropertyMetadata(new BoundingBox(new Vector3(-50, -50, -50), new Vector3(50, 50, 50)),
+    public static readonly DependencyProperty ParticleBoundsProperty =
+        HelixProperty.Register<ParticleStormModel3D, BoundingBox>("ParticleBounds",
+        new BoundingBox(new Vector3(-50, -50, -50), new Vector3(50, 50, 50)),
         (d, e) =>
         {
             if (d is Element3DCore { SceneNode: ParticleStormNode node })
             {
-                var bound = (BoundingBox)e.NewValue;
+                var bound = (BoundingBox)e.NewValue!;
                 node.DomainBoundMax = bound.Maximum;
                 node.DomainBoundMin = bound.Minimum;
             }
-        }));
+        });
 
     public BoundingBox ParticleBounds
     {
@@ -119,21 +125,22 @@ public class ParticleStormModel3D : Element3D
         }
         get
         {
-            return (BoundingBox)GetValue(ParticleBoundsProperty);
+            return (BoundingBox)GetValue(ParticleBoundsProperty)!;
         }
     }
 #elif WPF
-    public static readonly DependencyProperty ParticleBoundsProperty = DependencyProperty.Register("ParticleBounds", typeof(Rect3D), typeof(ParticleStormModel3D),
-    new PropertyMetadata(new Rect3D(0, 0, 0, 100, 100, 100),
+    public static readonly DependencyProperty ParticleBoundsProperty =
+        HelixProperty.Register<ParticleStormModel3D, Rect3D>("ParticleBounds",
+        new Rect3D(0, 0, 0, 100, 100, 100),
         (d, e) =>
         {
             if (d is Element3DCore { SceneNode: ParticleStormNode node })
             {
-                var bound = (Rect3D)e.NewValue;
+                var bound = (Rect3D)e.NewValue!;
                 node.DomainBoundMax = new Vector3((float)(bound.SizeX / 2 + bound.Location.X), (float)(bound.SizeY / 2 + bound.Location.Y), (float)(bound.SizeZ / 2 + bound.Location.Z));
                 node.DomainBoundMin = new Vector3((float)(bound.Location.X - bound.SizeX / 2), (float)(bound.Location.Y - bound.SizeY / 2), (float)(bound.Location.Z - bound.SizeZ / 2));
             }
-        }));
+        });
 
     public Rect3D ParticleBounds
     {
@@ -146,20 +153,45 @@ public class ParticleStormModel3D : Element3D
             return (Rect3D)GetValue(ParticleBoundsProperty);
         }
     }
-#else
-#error Unknown framework
-#endif
-
-    public static readonly DependencyProperty EmitterRadiusProperty = DependencyProperty.Register("EmitterRadius", typeof(double), typeof(ParticleStormModel3D),
-        new PropertyMetadata(0.0,
+#elif AVALONIA
+    public static readonly DependencyProperty ParticleBoundsProperty =
+        HelixProperty.Register<ParticleStormModel3D, BoundingBox>("ParticleBounds",
+            new BoundingBox(new Vector3(-50, -50, -50), new Vector3(50, 50, 50)),
             (d, e) =>
             {
                 if (d is Element3DCore { SceneNode: ParticleStormNode node })
                 {
-                    node.EmitterRadius = (float)(double)e.NewValue;
+                    var bound = (BoundingBox)e.NewValue!;
+                    node.DomainBoundMax = bound.Maximum;
+                    node.DomainBoundMin = bound.Minimum;
                 }
-            }
-            ));
+            });
+
+    public BoundingBox ParticleBounds
+    {
+        set
+        {
+            SetValue(ParticleBoundsProperty, value);
+        }
+        get
+        {
+            return (BoundingBox)GetValue(ParticleBoundsProperty)!;
+        }
+    }
+#else
+#error Unknown framework
+#endif
+
+    public static readonly DependencyProperty EmitterRadiusProperty =
+        HelixProperty.Register<ParticleStormModel3D, double>("EmitterRadius",
+            0.0,
+            (d, e) =>
+            {
+                if (d is Element3DCore { SceneNode: ParticleStormNode node })
+                {
+                    node.EmitterRadius = (float)(double)e.NewValue!;
+                }
+            });
 
     public double EmitterRadius
     {
@@ -169,20 +201,20 @@ public class ParticleStormModel3D : Element3D
         }
         get
         {
-            return (double)GetValue(EmitterRadiusProperty);
+            return (double)GetValue(EmitterRadiusProperty)!;
         }
     }
 
-    public static readonly DependencyProperty ConsumerGravityProperty = DependencyProperty.Register("ConsumerGravity", typeof(double), typeof(ParticleStormModel3D),
-        new PropertyMetadata(0.0,
+    public static readonly DependencyProperty ConsumerGravityProperty =
+        HelixProperty.Register<ParticleStormModel3D, double>("ConsumerGravity",
+            0.0,
             (d, e) =>
             {
                 if (d is Element3DCore { SceneNode: ParticleStormNode node })
                 {
-                    node.ConsumerGravity = ((float)(double)e.NewValue);
+                    node.ConsumerGravity = ((float)(double)e.NewValue!);
                 }
-            }
-            ));
+            });
 
     public double ConsumerGravity
     {
@@ -192,20 +224,20 @@ public class ParticleStormModel3D : Element3D
         }
         get
         {
-            return (double)GetValue(ConsumerGravityProperty);
+            return (double)GetValue(ConsumerGravityProperty)!;
         }
     }
 
-    public static readonly DependencyProperty ConsumerRadiusProperty = DependencyProperty.Register("ConsumerRadius", typeof(double), typeof(ParticleStormModel3D),
-        new PropertyMetadata(0.0,
+    public static readonly DependencyProperty ConsumerRadiusProperty =
+        HelixProperty.Register<ParticleStormModel3D, double>("ConsumerRadius",
+            0.0,
             (d, e) =>
             {
                 if (d is Element3DCore { SceneNode: ParticleStormNode node })
                 {
-                    node.ConsumerRadius = (float)(double)e.NewValue;
+                    node.ConsumerRadius = (float)(double)e.NewValue!;
                 }
-            }
-            ));
+            });
 
     public double ConsumerRadius
     {
@@ -215,20 +247,20 @@ public class ParticleStormModel3D : Element3D
         }
         get
         {
-            return (double)GetValue(ConsumerRadiusProperty);
+            return (double)GetValue(ConsumerRadiusProperty)!;
         }
     }
 
-    public static readonly DependencyProperty InitialEnergyProperty = DependencyProperty.Register("InitialEnergy", typeof(double), typeof(ParticleStormModel3D),
-        new PropertyMetadata(5.0,
+    public static readonly DependencyProperty InitialEnergyProperty =
+        HelixProperty.Register<ParticleStormModel3D, double>("InitialEnergy",
+            5.0,
             (d, e) =>
             {
                 if (d is Element3DCore { SceneNode: ParticleStormNode node })
                 {
-                    node.InitialEnergy = Math.Max(1f, (float)(double)e.NewValue);
+                    node.InitialEnergy = Math.Max(1f, (float)(double)e.NewValue!);
                 }
-            }
-            ));
+            });
 
     public double InitialEnergy
     {
@@ -238,20 +270,20 @@ public class ParticleStormModel3D : Element3D
         }
         get
         {
-            return (double)GetValue(InitialEnergyProperty);
+            return (double)GetValue(InitialEnergyProperty)!;
         }
     }
 
-    public static readonly DependencyProperty EnergyDissipationRateProperty = DependencyProperty.Register("EnergyDissipationRate", typeof(double), typeof(ParticleStormModel3D),
-        new PropertyMetadata(1.0,
+    public static readonly DependencyProperty EnergyDissipationRateProperty =
+        HelixProperty.Register<ParticleStormModel3D, double>("EnergyDissipationRate",
+            1.0,
             (d, e) =>
             {
                 if (d is Element3DCore { SceneNode: ParticleStormNode node })
                 {
-                    node.EnergyDissipationRate = Math.Max(1f, (float)(double)e.NewValue);
+                    node.EnergyDissipationRate = Math.Max(1f, (float)(double)e.NewValue!);
                 }
-            }
-            ));
+            });
 
     public double EnergyDissipationRate
     {
@@ -261,20 +293,20 @@ public class ParticleStormModel3D : Element3D
         }
         get
         {
-            return (double)GetValue(EnergyDissipationRateProperty);
+            return (double)GetValue(EnergyDissipationRateProperty)!;
         }
     }
 
-    public static readonly DependencyProperty RandomVectorGeneratorProperty = DependencyProperty.Register("RandomVectorGenerator", typeof(IRandomVector), typeof(ParticleStormModel3D),
-        new PropertyMetadata(new UniformRandomVectorGenerator(),
+    public static readonly DependencyProperty RandomVectorGeneratorProperty =
+        HelixProperty.Register<ParticleStormModel3D, IRandomVector>("RandomVectorGenerator",
+            new UniformRandomVectorGenerator(),
             (d, e) =>
             {
                 if (d is Element3DCore { SceneNode: ParticleStormNode node })
                 {
-                    node.RandomVectorGenerator = (IRandomVector)e.NewValue;
+                    node.RandomVectorGenerator = (IRandomVector)e.NewValue!;
                 }
-            }
-            ));
+            });
 
     public IRandomVector RandomVectorGenerator
     {
@@ -284,20 +316,20 @@ public class ParticleStormModel3D : Element3D
         }
         get
         {
-            return (IRandomVector)GetValue(RandomVectorGeneratorProperty);
+            return (IRandomVector)GetValue(RandomVectorGeneratorProperty)!;
         }
     }
 
-    public static readonly DependencyProperty ParticleTextureProperty = DependencyProperty.Register("ParticleTexture", typeof(TextureModel), typeof(ParticleStormModel3D),
-        new PropertyMetadata(null,
+    public static readonly DependencyProperty ParticleTextureProperty =
+        HelixProperty.Register<ParticleStormModel3D, TextureModel?>("ParticleTexture",
+            null,
             (d, e) =>
             {
                 if (d is Element3DCore { SceneNode: ParticleStormNode node })
                 {
-                    node.ParticleTexture = (TextureModel)e.NewValue;
+                    node.ParticleTexture = (TextureModel?)e.NewValue;
                 }
-            }
-            ));
+            });
 
     public TextureModel? ParticleTexture
     {
@@ -311,16 +343,16 @@ public class ParticleStormModel3D : Element3D
         }
     }
 
-    public static readonly DependencyProperty NumTextureColumnProperty = DependencyProperty.Register("NumTextureColumn", typeof(int), typeof(ParticleStormModel3D),
-        new PropertyMetadata(1,
+    public static readonly DependencyProperty NumTextureColumnProperty =
+        HelixProperty.Register<ParticleStormModel3D, int>("NumTextureColumn",
+            1,
             (d, e) =>
             {
                 if (d is Element3DCore { SceneNode: ParticleStormNode node })
                 {
-                    node.NumTextureColumn = (uint)System.Math.Max(1, (int)e.NewValue);
+                    node.NumTextureColumn = (uint)System.Math.Max(1, (int)e.NewValue!);
                 }
-            }
-            ));
+            });
 
     public int NumTextureColumn
     {
@@ -330,20 +362,20 @@ public class ParticleStormModel3D : Element3D
         }
         get
         {
-            return (int)GetValue(NumTextureColumnProperty);
+            return (int)GetValue(NumTextureColumnProperty)!;
         }
     }
 
-    public static readonly DependencyProperty NumTextureRowProperty = DependencyProperty.Register("NumTextureRow", typeof(int), typeof(ParticleStormModel3D),
-        new PropertyMetadata(1,
+    public static readonly DependencyProperty NumTextureRowProperty =
+        HelixProperty.Register<ParticleStormModel3D, int>("NumTextureRow",
+            1,
             (d, e) =>
             {
                 if (d is Element3DCore { SceneNode: ParticleStormNode node })
                 {
-                    node.NumTextureRow = (uint)System.Math.Max(1, (int)e.NewValue);
+                    node.NumTextureRow = (uint)System.Math.Max(1, (int)e.NewValue!);
                 }
-            }
-            ));
+            });
 
     public int NumTextureRow
     {
@@ -353,20 +385,21 @@ public class ParticleStormModel3D : Element3D
         }
         get
         {
-            return (int)GetValue(NumTextureRowProperty);
+            return (int)GetValue(NumTextureRowProperty)!;
         }
     }
 
-    public static readonly DependencyProperty ParticleSizeProperty = DependencyProperty.Register("ParticleSize", typeof(Size), typeof(ParticleStormModel3D),
-        new PropertyMetadata(new Size(1, 1),
+    public static readonly DependencyProperty ParticleSizeProperty =
+        HelixProperty.Register<ParticleStormModel3D, Size>("ParticleSize",
+            new Size(1, 1),
             (d, e) =>
             {
-                var size = (Size)e.NewValue;
+                var size = (Size)e.NewValue!;
                 if (d is Element3DCore { SceneNode: ParticleStormNode node })
                 {
                     node.ParticleSize = new Vector2((float)size.Width, (float)size.Height);
                 }
-            }));
+            });
 
     public Size ParticleSize
     {
@@ -376,21 +409,21 @@ public class ParticleStormModel3D : Element3D
         }
         get
         {
-            return (Size)GetValue(ParticleSizeProperty);
+            return (Size)GetValue(ParticleSizeProperty)!;
         }
     }
 
 
-    public static readonly DependencyProperty InitialVelocityProperty = DependencyProperty.Register("InitialVelocity", typeof(double), typeof(ParticleStormModel3D),
-        new PropertyMetadata(1.0,
+    public static readonly DependencyProperty InitialVelocityProperty =
+        HelixProperty.Register<ParticleStormModel3D, double>("InitialVelocity",
+            1.0,
             (d, e) =>
             {
                 if (d is Element3DCore { SceneNode: ParticleStormNode node })
                 {
-                    node.InitialVelocity = (float)(double)e.NewValue;
+                    node.InitialVelocity = (float)(double)e.NewValue!;
                 }
-            }
-            ));
+            });
 
     public double InitialVelocity
     {
@@ -400,20 +433,20 @@ public class ParticleStormModel3D : Element3D
         }
         get
         {
-            return (double)GetValue(InitialVelocityProperty);
+            return (double)GetValue(InitialVelocityProperty)!;
         }
     }
 
-    public static readonly DependencyProperty AccelerationProperty = DependencyProperty.Register("Acceleration", typeof(Vector3D), typeof(ParticleStormModel3D),
-        new PropertyMetadata(DefaultAcceleration.ToVector3D(),
+    public static readonly DependencyProperty AccelerationProperty =
+        HelixProperty.Register<ParticleStormModel3D, Vector3D>("Acceleration",
+            DefaultAcceleration.ToVector3D(),
             (d, e) =>
             {
                 if (d is Element3DCore { SceneNode: ParticleStormNode node })
                 {
-                    node.InitAcceleration = ((Vector3D)e.NewValue).ToVector3();
+                    node.InitAcceleration = ((Vector3D)e.NewValue!).ToVector3();
                 }
-            }
-            ));
+            });
 
     public Vector3D Acceleration
     {
@@ -423,19 +456,20 @@ public class ParticleStormModel3D : Element3D
         }
         get
         {
-            return (Vector3D)GetValue(AccelerationProperty);
+            return (Vector3D)GetValue(AccelerationProperty)!;
         }
     }
 
-    public static readonly DependencyProperty CumulateAtBoundProperty = DependencyProperty.Register("CumulateAtBound", typeof(bool), typeof(ParticleStormModel3D),
-        new PropertyMetadata(false,
+    public static readonly DependencyProperty CumulateAtBoundProperty =
+        HelixProperty.Register<ParticleStormModel3D, bool>("CumulateAtBound",
+            false,
             (d, e) =>
             {
                 if (d is Element3DCore { SceneNode: ParticleStormNode node })
                 {
-                    node.CumulateAtBound = (bool)e.NewValue;
+                    node.CumulateAtBound = (bool)e.NewValue!;
                 }
-            }));
+            });
 
     public bool CumulateAtBound
     {
@@ -445,19 +479,20 @@ public class ParticleStormModel3D : Element3D
         }
         get
         {
-            return (bool)GetValue(CumulateAtBoundProperty);
+            return (bool)GetValue(CumulateAtBoundProperty)!;
         }
     }
 
-    public static readonly DependencyProperty BlendColorProperty = DependencyProperty.Register("BlendColor", typeof(UIColor), typeof(ParticleStormModel3D),
-        new PropertyMetadata(UIColors.White,
+    public static readonly DependencyProperty BlendColorProperty =
+        HelixProperty.Register<ParticleStormModel3D, UIColor>("BlendColor",
+            UIColors.White,
             (d, e) =>
             {
                 if (d is Element3DCore { SceneNode: ParticleStormNode node })
                 {
-                    node.BlendColor = ((UIColor)e.NewValue).ToColor4();
+                    node.BlendColor = ((UIColor)e.NewValue!).ToColor4();
                 }
-            }));
+            });
 
     public UIColor BlendColor
     {
@@ -467,19 +502,20 @@ public class ParticleStormModel3D : Element3D
         }
         get
         {
-            return (UIColor)GetValue(BlendColorProperty);
+            return (UIColor)GetValue(BlendColorProperty)!;
         }
     }
 
-    public static readonly DependencyProperty AnimateSpriteByEnergyBoundProperty = DependencyProperty.Register("AnimateSpriteByEnergy", typeof(bool), typeof(ParticleStormModel3D),
-        new PropertyMetadata(false,
+    public static readonly DependencyProperty AnimateSpriteByEnergyBoundProperty =
+        HelixProperty.Register<ParticleStormModel3D, bool>("AnimateSpriteByEnergy",
+            false,
             (d, e) =>
             {
                 if (d is Element3DCore { SceneNode: ParticleStormNode node })
                 {
-                    node.AnimateSpriteByEnergy = (bool)e.NewValue;
+                    node.AnimateSpriteByEnergy = (bool)e.NewValue!;
                 }
-            }));
+            });
 
     public bool AnimateSpriteByEnergy
     {
@@ -489,7 +525,7 @@ public class ParticleStormModel3D : Element3D
         }
         get
         {
-            return (bool)GetValue(AnimateSpriteByEnergyBoundProperty);
+            return (bool)GetValue(AnimateSpriteByEnergyBoundProperty)!;
         }
     }
 
@@ -497,7 +533,7 @@ public class ParticleStormModel3D : Element3D
     {
         get
         {
-            return (double)GetValue(TurbulanceProperty);
+            return (double)GetValue(TurbulanceProperty)!;
         }
         set
         {
@@ -507,25 +543,26 @@ public class ParticleStormModel3D : Element3D
 
 
     public static readonly DependencyProperty TurbulanceProperty =
-        DependencyProperty.Register("Turbulance", typeof(double), typeof(ParticleStormModel3D),
-            new PropertyMetadata(0.0,
-                (d, e) =>
-                {
-                    if (d is Element3DCore { SceneNode: ParticleStormNode node })
-                    {
-                        node.Turbulance = (float)(double)e.NewValue;
-                    }
-                }));
-
-    public static readonly DependencyProperty BlendProperty = DependencyProperty.Register("Blend", typeof(BlendOperation), typeof(ParticleStormModel3D),
-        new PropertyMetadata(BlendOperation.Add,
+        HelixProperty.Register<ParticleStormModel3D, double>("Turbulance",
+            0.0,
             (d, e) =>
             {
                 if (d is Element3DCore { SceneNode: ParticleStormNode node })
                 {
-                    node.Blend = (BlendOperation)e.NewValue;
+                    node.Turbulance = (float)(double)e.NewValue!;
                 }
-            }));
+            });
+
+    public static readonly DependencyProperty BlendProperty =
+        HelixProperty.Register<ParticleStormModel3D, BlendOperation>("Blend",
+            BlendOperation.Add,
+            (d, e) =>
+            {
+                if (d is Element3DCore { SceneNode: ParticleStormNode node })
+                {
+                    node.Blend = (BlendOperation)e.NewValue!;
+                }
+            });
 
     public BlendOperation Blend
     {
@@ -535,19 +572,20 @@ public class ParticleStormModel3D : Element3D
         }
         get
         {
-            return (BlendOperation)GetValue(BlendProperty);
+            return (BlendOperation)GetValue(BlendProperty)!;
         }
     }
 
-    public static readonly DependencyProperty AlphaBlendProperty = DependencyProperty.Register("AlphaBlend", typeof(BlendOperation), typeof(ParticleStormModel3D),
-        new PropertyMetadata(BlendOperation.Add,
+    public static readonly DependencyProperty AlphaBlendProperty =
+        HelixProperty.Register<ParticleStormModel3D, BlendOperation>("AlphaBlend",
+            BlendOperation.Add,
             (d, e) =>
             {
                 if (d is Element3DCore { SceneNode: ParticleStormNode node })
                 {
-                    node.AlphaBlend = (BlendOperation)e.NewValue;
+                    node.AlphaBlend = (BlendOperation)e.NewValue!;
                 }
-            }));
+            });
 
     public BlendOperation AlphaBlend
     {
@@ -557,19 +595,20 @@ public class ParticleStormModel3D : Element3D
         }
         get
         {
-            return (BlendOperation)GetValue(AlphaBlendProperty);
+            return (BlendOperation)GetValue(AlphaBlendProperty)!;
         }
     }
 
-    public static readonly DependencyProperty SourceBlendProperty = DependencyProperty.Register("SourceBlend", typeof(BlendOption), typeof(ParticleStormModel3D),
-        new PropertyMetadata(BlendOption.One,
+    public static readonly DependencyProperty SourceBlendProperty =
+        HelixProperty.Register<ParticleStormModel3D, BlendOption>("SourceBlend",
+            BlendOption.One,
             (d, e) =>
             {
                 if (d is Element3DCore { SceneNode: ParticleStormNode node })
                 {
-                    node.SourceBlend = (BlendOption)e.NewValue;
+                    node.SourceBlend = (BlendOption)e.NewValue!;
                 }
-            }));
+            });
 
     public BlendOption SourceBlend
     {
@@ -579,19 +618,20 @@ public class ParticleStormModel3D : Element3D
         }
         get
         {
-            return (BlendOption)GetValue(SourceBlendProperty);
+            return (BlendOption)GetValue(SourceBlendProperty)!;
         }
     }
 
-    public static readonly DependencyProperty DestBlendProperty = DependencyProperty.Register("DestBlend", typeof(BlendOption), typeof(ParticleStormModel3D),
-        new PropertyMetadata(BlendOption.One,
+    public static readonly DependencyProperty DestBlendProperty =
+        HelixProperty.Register<ParticleStormModel3D, BlendOption>("DestBlend",
+            BlendOption.One,
             (d, e) =>
             {
                 if (d is Element3DCore { SceneNode: ParticleStormNode node })
                 {
-                    node.DestBlend = (BlendOption)e.NewValue;
+                    node.DestBlend = (BlendOption)e.NewValue!;
                 }
-            }));
+            });
 
     public BlendOption DestBlend
     {
@@ -601,19 +641,20 @@ public class ParticleStormModel3D : Element3D
         }
         get
         {
-            return (BlendOption)GetValue(DestBlendProperty);
+            return (BlendOption)GetValue(DestBlendProperty)!;
         }
     }
 
-    public static readonly DependencyProperty SourceAlphaBlendProperty = DependencyProperty.Register("SourceAlphaBlend", typeof(BlendOption), typeof(ParticleStormModel3D),
-        new PropertyMetadata(BlendOption.One,
+    public static readonly DependencyProperty SourceAlphaBlendProperty =
+        HelixProperty.Register<ParticleStormModel3D, BlendOption>("SourceAlphaBlend",
+            BlendOption.One,
             (d, e) =>
             {
                 if (d is Element3DCore { SceneNode: ParticleStormNode node })
                 {
-                    node.SourceAlphaBlend = (BlendOption)e.NewValue;
+                    node.SourceAlphaBlend = (BlendOption)e.NewValue!;
                 }
-            }));
+            });
 
     public BlendOption SourceAlphaBlend
     {
@@ -623,19 +664,20 @@ public class ParticleStormModel3D : Element3D
         }
         get
         {
-            return (BlendOption)GetValue(SourceAlphaBlendProperty);
+            return (BlendOption)GetValue(SourceAlphaBlendProperty)!;
         }
     }
 
-    public static readonly DependencyProperty DestAlphaBlendProperty = DependencyProperty.Register("DestAlphaBlend", typeof(BlendOption), typeof(ParticleStormModel3D),
-        new PropertyMetadata(BlendOption.Zero,
+    public static readonly DependencyProperty DestAlphaBlendProperty =
+        HelixProperty.Register<ParticleStormModel3D, BlendOption>("DestAlphaBlend",
+            BlendOption.Zero,
             (d, e) =>
             {
                 if (d is Element3DCore { SceneNode: ParticleStormNode node })
                 {
-                    node.DestAlphaBlend = (BlendOption)e.NewValue;
+                    node.DestAlphaBlend = (BlendOption)e.NewValue!;
                 }
-            }));
+            });
 
     public BlendOption DestAlphaBlend
     {
@@ -645,7 +687,7 @@ public class ParticleStormModel3D : Element3D
         }
         get
         {
-            return (BlendOption)GetValue(DestAlphaBlendProperty);
+            return (BlendOption)GetValue(DestAlphaBlendProperty)!;
         }
     }
     /// <summary>
@@ -658,7 +700,7 @@ public class ParticleStormModel3D : Element3D
     {
         get
         {
-            return (UIColor)GetValue(BlendFactorProperty);
+            return (UIColor)GetValue(BlendFactorProperty)!;
         }
         set
         {
@@ -670,15 +712,15 @@ public class ParticleStormModel3D : Element3D
     /// The blend factor property
     /// </summary>
     public static readonly DependencyProperty BlendFactorProperty =
-        DependencyProperty.Register("BlendFactor", typeof(UIColor), typeof(ParticleStormModel3D),
-        new PropertyMetadata(UIColors.White,
+        HelixProperty.Register<ParticleStormModel3D, UIColor>("BlendFactor",
+            UIColors.White,
             (d, e) =>
             {
                 if (d is Element3DCore { SceneNode: ParticleStormNode node })
                 {
-                    node.BlendFactor = ((UIColor)e.NewValue).ToColor4();
+                    node.BlendFactor = ((UIColor)e.NewValue!).ToColor4();
                 }
-            }));
+            });
 
     /// <summary>
     /// Gets or sets the sample mask used during blending
@@ -690,7 +732,7 @@ public class ParticleStormModel3D : Element3D
     {
         get
         {
-            return (int)GetValue(SampleMaskProperty);
+            return (int)GetValue(SampleMaskProperty)!;
         }
         set
         {
@@ -702,15 +744,15 @@ public class ParticleStormModel3D : Element3D
     /// The sample mask property
     /// </summary>
     public static readonly DependencyProperty SampleMaskProperty =
-        DependencyProperty.Register("SampleMask", typeof(int), typeof(ParticleStormModel3D),
-            new PropertyMetadata(-1,
+        HelixProperty.Register<ParticleStormModel3D, int>("SampleMask",
+            -1,
                 (d, e) =>
                 {
                     if (d is Element3DCore { SceneNode: ParticleStormNode node })
                     {
-                        node.SampleMask = (int)e.NewValue;
+                        node.SampleMask = (int)e.NewValue!;
                     }
-                }));
+                });
 
     /// <summary>
     /// List of instance matrix. 
@@ -731,26 +773,28 @@ public class ParticleStormModel3D : Element3D
     /// List of instance matrix.
     /// </summary>
     public static readonly DependencyProperty InstancesProperty =
-        DependencyProperty.Register("Instances", typeof(IList<Matrix>), typeof(ParticleStormModel3D), new PropertyMetadata(null, (d, e) =>
+        HelixProperty.Register<ParticleStormModel3D, IList<Matrix>?>("Instances",
+            null, (d, e) =>
         {
             if (d is Element3DCore { SceneNode: ParticleStormNode node })
             {
                 node.Instances = e.NewValue as IList<Matrix>;
             }
-        }));
+        });
 
     /// <summary>
     /// The enable view frustum check property
     /// </summary>
     public static readonly DependencyProperty EnableViewFrustumCheckProperty =
-        DependencyProperty.Register("EnableViewFrustumCheck", typeof(bool), typeof(ParticleStormModel3D), new PropertyMetadata(true,
+        HelixProperty.Register<ParticleStormModel3D, bool>("EnableViewFrustumCheck",
+            true,
             (d, e) =>
             {
                 if (d is Element3DCore { SceneNode: ParticleStormNode node })
                 {
-                    node.EnableViewFrustumCheck = (bool)e.NewValue;
+                    node.EnableViewFrustumCheck = (bool)e.NewValue!;
                 }
-            }));
+            });
     #endregion
 
     protected override SceneNode OnCreateSceneNode()
@@ -804,6 +848,12 @@ public class ParticleStormModel3D : Element3D
             c.InitAcceleration = Acceleration.ToVector3();
             c.DomainBoundMax = new Vector3((float)(ParticleBounds.SizeX / 2 + ParticleBounds.Location.X), (float)(ParticleBounds.SizeY / 2 + ParticleBounds.Location.Y), (float)(ParticleBounds.SizeZ / 2 + ParticleBounds.Location.Z));
             c.DomainBoundMin = new Vector3((float)(ParticleBounds.Location.X - ParticleBounds.SizeX / 2), (float)(ParticleBounds.Location.Y - ParticleBounds.SizeY / 2), (float)(ParticleBounds.Location.Z - ParticleBounds.SizeZ / 2));
+#elif AVALONIA
+            c.EmitterLocation = EmitterLocation;
+            c.ConsumerLocation = ConsumerLocation;
+            c.InitAcceleration = Acceleration;
+            c.DomainBoundMax = ParticleBounds.Maximum;
+            c.DomainBoundMin = ParticleBounds.Minimum;
 #else
 #error Unknown framework
 #endif

@@ -8,8 +8,6 @@ using HelixToolkit.WinUI.SharpDX.Extensions;
 using Microsoft.UI.Xaml.Data;
 using Microsoft.UI.Xaml.Markup;
 using Microsoft.UI.Xaml.Media;
-using HorizontalAlignment = Microsoft.UI.Xaml.HorizontalAlignment;
-using VerticalAlignment = Microsoft.UI.Xaml.VerticalAlignment;
 #elif WPF
 using HelixToolkit.Wpf.SharpDX.Core2D;
 using HelixToolkit.Wpf.SharpDX.Extensions;
@@ -17,8 +15,12 @@ using System.Windows;
 using System.Windows.Data;
 using System.Windows.Markup;
 using System.Windows.Media;
-using HorizontalAlignment = System.Windows.HorizontalAlignment;
-using VerticalAlignment = System.Windows.VerticalAlignment;
+#elif AVALONIA
+using HelixToolkit.Avalonia.SharpDX.Core2D;
+using HelixToolkit.Avalonia.SharpDX.Extensions;
+using Avalonia.Data;
+using Avalonia.Media;
+using Avalonia.Metadata;
 #else
 #error Unknown framework
 #endif
@@ -28,6 +30,8 @@ using VerticalAlignment = System.Windows.VerticalAlignment;
 namespace HelixToolkit.WinUI.SharpDX.Elements2D;
 #elif WPF
 namespace HelixToolkit.Wpf.SharpDX.Elements2D;
+#elif AVALONIA
+namespace HelixToolkit.Avalonia.SharpDX.Elements2D;
 #else
 #error Unknown framework
 #endif
@@ -37,13 +41,15 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D;
 [ContentProperty(Name = "Content2D")]
 #elif WPF
 [ContentProperty("Content2D")]
+#elif AVALONIA
 #else
 #error Unknown framework
 #endif
 public abstract class ContentElement2D : Element2D
 {
-    public static readonly DependencyProperty Content2DProperty = DependencyProperty.Register("Content2D",
-        typeof(object), typeof(ContentElement2D), new PropertyMetadata(null, (d, e) =>
+    public static readonly DependencyProperty Content2DProperty =
+        HelixProperty.Register<ContentElement2D, object?>("Content2D",
+            null, (d, e) =>
         {
             if (d is not ContentElement2D model)
                 return;
@@ -74,10 +80,13 @@ public abstract class ContentElement2D : Element2D
             }
 
             model.InvalidateMeasure();
-        }));
+        });
 
     [UIBindable(true)]
-    public object Content2D
+#if AVALONIA
+    [Content]
+#endif
+    public object? Content2D
     {
         set
         {
@@ -93,12 +102,13 @@ public abstract class ContentElement2D : Element2D
 #elif WINUI
     new
 #elif WPF
+#elif AVALONIA
 #else
 #error Unknown framework
 #endif
-    public static readonly DependencyProperty BackgroundProperty
-        = DependencyProperty.Register("Background", typeof(Brush), typeof(ContentElement2D),
-            new PropertyMetadata(new SolidColorBrush(UIColors.Transparent),
+    public static readonly DependencyProperty BackgroundProperty =
+        HelixProperty.Register<ContentElement2D, Brush>("Background",
+            new SolidColorBrush(UIColors.Transparent),
             (d, e) =>
             {
                 if (d is ContentElement2D m)
@@ -106,12 +116,13 @@ public abstract class ContentElement2D : Element2D
                     m.backgroundChanged = true;
                     m.InvalidateRender();
                 }
-            }));
+            });
 
 #if false
 #elif WINUI
     new
 #elif WPF
+#elif AVALONIA
 #else
 #error Unknown framework
 #endif
@@ -123,7 +134,7 @@ public abstract class ContentElement2D : Element2D
         }
         get
         {
-            return (Brush)GetValue(BackgroundProperty);
+            return (Brush)GetValue(BackgroundProperty)!;
         }
     }
 
@@ -131,17 +142,19 @@ public abstract class ContentElement2D : Element2D
 #elif WINUI
     new
 #elif WPF
+#elif AVALONIA
 #else
 #error Unknown framework
 #endif
-    public static readonly DependencyProperty ForegroundProperty
-        = DependencyProperty.Register("Foreground", typeof(Brush), typeof(ContentElement2D),
-    new PropertyMetadata(new SolidColorBrush(UIColors.Black)));
+    public static readonly DependencyProperty ForegroundProperty =
+        HelixProperty.Register<ContentElement2D, Brush>("Foreground",
+            new SolidColorBrush(UIColors.Black));
 
 #if false
 #elif WINUI
     new
 #elif WPF
+#elif AVALONIA
 #else
 #error Unknown framework
 #endif
@@ -153,7 +166,7 @@ public abstract class ContentElement2D : Element2D
         }
         get
         {
-            return (Brush)GetValue(ForegroundProperty);
+            return (Brush)GetValue(ForegroundProperty)!;
         }
     }
 
@@ -161,14 +174,15 @@ public abstract class ContentElement2D : Element2D
 #elif WINUI
     new
 #elif WPF
+#elif AVALONIA
 #else
 #error Unknown framework
 #endif
-    public HorizontalAlignment HorizontalContentAlignment
+    public UIHorizontalAlignment HorizontalContentAlignment
     {
         get
         {
-            return (HorizontalAlignment)GetValue(HorizontalContentAlignmentProperty);
+            return (UIHorizontalAlignment)GetValue(HorizontalContentAlignmentProperty)!;
         }
         set
         {
@@ -180,31 +194,33 @@ public abstract class ContentElement2D : Element2D
 #elif WINUI
     new
 #elif WPF
+#elif AVALONIA
 #else
 #error Unknown framework
 #endif
     public static readonly DependencyProperty HorizontalContentAlignmentProperty =
-        DependencyProperty.Register("HorizontalContentAlignment", typeof(HorizontalAlignment), typeof(ContentElement2D),
-            new PropertyMetadata(HorizontalAlignment.Center, (d, e) =>
+        HelixProperty.Register<ContentElement2D, UIHorizontalAlignment>("HorizontalContentAlignment",
+            UIHorizontalAlignment.Center, (d, e) =>
             {
                 if (d is Element2DCore { SceneNode: ContentNode2D node })
                 {
-                    node.HorizontalContentAlignment = ((HorizontalAlignment)e.NewValue).ToD2DHorizontalAlignment();
+                    node.HorizontalContentAlignment = ((UIHorizontalAlignment)e.NewValue!).ToD2DHorizontalAlignment();
                 }
-            }));
+            });
 
 #if false
 #elif WINUI
     new
 #elif WPF
+#elif AVALONIA
 #else
 #error Unknown framework
 #endif
-    public VerticalAlignment VerticalContentAlignment
+    public UIVerticalAlignment VerticalContentAlignment
     {
         get
         {
-            return (VerticalAlignment)GetValue(VerticalContentAlignmentProperty);
+            return (UIVerticalAlignment)GetValue(VerticalContentAlignmentProperty)!;
         }
         set
         {
@@ -216,18 +232,19 @@ public abstract class ContentElement2D : Element2D
 #elif WINUI
     new
 #elif WPF
+#elif AVALONIA
 #else
 #error Unknown framework
 #endif
     public static readonly DependencyProperty VerticalContentAlignmentProperty =
-        DependencyProperty.Register("VerticalContentAlignment", typeof(VerticalAlignment), typeof(ContentElement2D),
-            new PropertyMetadata(VerticalAlignment.Center, (d, e) =>
+        HelixProperty.Register<ContentElement2D, UIVerticalAlignment>("VerticalContentAlignment",
+            UIVerticalAlignment.Center, (d, e) =>
             {
                 if (d is Element2DCore { SceneNode: ContentNode2D node })
                 {
-                    node.VerticalContentAlignment = ((VerticalAlignment)e.NewValue).ToD2DVerticalAlignment();
+                    node.VerticalContentAlignment = ((UIVerticalAlignment)e.NewValue!).ToD2DVerticalAlignment();
                 }
-            }));
+            });
 
     private bool backgroundChanged = true;
 
@@ -259,9 +276,25 @@ public abstract class ContentElement2D : Element2D
             {
                 Source = this,
                 Mode = BindingMode.OneWay,
+#if false
+#elif WINUI || WPF
                 Path = new PropertyPath(nameof(Foreground))
+#elif AVALONIA
+                Path = nameof(Foreground)
+#else
+#error Unknown framework
+#endif
             };
+
+#if false
+
+#elif WINUI || WPF
             BindingOperations.SetBinding(content, TextModel2D.ForegroundProperty, binding);
+#elif AVALONIA
+            content.Bind(TextModel2D.ForegroundProperty, binding);
+#else
+#error Unknown framework
+#endif
         }
     }
 }

@@ -5,6 +5,8 @@ using HelixToolkit.SharpDX.Model;
 #elif WINUI
 #elif WPF
 using System.Windows;
+#elif AVALONIA
+using Avalonia;
 #else
 #error Unknown framework
 #endif
@@ -14,6 +16,8 @@ using System.Windows;
 namespace HelixToolkit.WinUI.SharpDX;
 #elif WPF
 namespace HelixToolkit.Wpf.SharpDX;
+#elif AVALONIA
+namespace HelixToolkit.Avalonia.SharpDX;
 #else
 #error Unknown framework
 #endif
@@ -22,98 +26,98 @@ public class PointMaterial : Material
 {
     #region Dependency Properties
     public static readonly DependencyProperty ColorProperty =
-        DependencyProperty.Register("Color", typeof(UIColor), typeof(PointMaterial),
-            new PropertyMetadata(UIColors.Black, (d, e) =>
+        HelixProperty.Register<PointMaterial, UIColor>("Color",
+            UIColors.Black, (d, e) =>
             {
                 if (d is PointMaterial { Core: PointMaterialCore core })
                 {
-                    core.PointColor = ((UIColor)e.NewValue).ToColor4();
+                    core.PointColor = ((UIColor)e.NewValue!).ToColor4();
                 }
-            }));
+            });
 
     public static readonly DependencyProperty SizeProperty =
-        DependencyProperty.Register("Size", typeof(Size), typeof(PointMaterial), new PropertyMetadata(new Size(1.0, 1.0),
+        HelixProperty.Register<PointMaterial, Size>("Size", new Size(1.0, 1.0),
             (d, e) =>
             {
                 if (d is PointMaterial { Core: PointMaterialCore core })
                 {
-                    var size = (Size)e.NewValue;
+                    var size = (Size)e.NewValue!;
                     core.Width = (float)size.Width;
                     core.Height = (float)size.Height;
                 }
-            }));
+            });
 
     public static readonly DependencyProperty FigureProperty =
-        DependencyProperty.Register("Figure", typeof(PointFigure), typeof(PointMaterial), new PropertyMetadata(PointFigure.Rect,
+        HelixProperty.Register<PointMaterial, PointFigure>("Figure", PointFigure.Rect,
             (d, e) =>
             {
                 if (d is PointMaterial { Core: PointMaterialCore core })
                 {
-                    core.Figure = (PointFigure)e.NewValue;
+                    core.Figure = (PointFigure)e.NewValue!;
                 }
-            }));
+            });
 
     public static readonly DependencyProperty FigureRatioProperty =
-        DependencyProperty.Register("FigureRatio", typeof(double), typeof(PointMaterial), new PropertyMetadata(0.25,
+        HelixProperty.Register<PointMaterial, double>("FigureRatio", 0.25,
             (d, e) =>
             {
                 if (d is PointMaterial { Core: PointMaterialCore core })
                 {
-                    core.FigureRatio = (float)(double)e.NewValue;
+                    core.FigureRatio = (float)(double)e.NewValue!;
                 }
-            }));
+            });
 
     public static readonly DependencyProperty EnableDistanceFadingProperty =
-        DependencyProperty.Register("EnableDistanceFading", typeof(bool), typeof(PointMaterial), new PropertyMetadata(false,
+        HelixProperty.Register<PointMaterial, bool>("EnableDistanceFading", false,
             (d, e) =>
             {
                 if (d is PointMaterial { Core: PointMaterialCore core })
                 {
-                    core.EnableDistanceFading = (bool)e.NewValue;
+                    core.EnableDistanceFading = (bool)e.NewValue!;
                 }
-            }));
+            });
 
     public static readonly DependencyProperty FadingNearDistanceProperty =
-        DependencyProperty.Register("FadingNearDistance", typeof(double), typeof(PointMaterial), new PropertyMetadata(0.0,
+        HelixProperty.Register<PointMaterial, double>("FadingNearDistance", 0.0,
             (d, e) =>
             {
                 if (d is PointMaterial { Core: PointMaterialCore core })
                 {
-                    core.FadingNearDistance = (float)(double)e.NewValue;
+                    core.FadingNearDistance = (float)(double)e.NewValue!;
                 }
-            }));
+            });
 
     public static readonly DependencyProperty FadingFarDistanceProperty =
-        DependencyProperty.Register("FadingFarDistance", typeof(double), typeof(PointMaterial), new PropertyMetadata(100.0,
+        HelixProperty.Register<PointMaterial, double>("FadingFarDistance", 100.0,
             (d, e) =>
             {
                 if (d is PointMaterial { Core: PointMaterialCore core })
                 {
-                    core.FadingFarDistance = (float)(double)e.NewValue;
+                    core.FadingFarDistance = (float)(double)e.NewValue!;
                 }
-            }));
+            });
 
     // Using a DependencyProperty as the backing store for EnableColorBlending.  This enables animation, styling, binding, etc...
     public static readonly DependencyProperty EnableColorBlendingProperty =
-        DependencyProperty.Register("EnableColorBlending", typeof(bool), typeof(PointMaterial), new PropertyMetadata(false,
+        HelixProperty.Register<PointMaterial, bool>("EnableColorBlending", false,
             (d, e) =>
             {
                 if (d is PointMaterial { Core: PointMaterialCore core })
                 {
-                    core.EnableColorBlending = (bool)e.NewValue;
+                    core.EnableColorBlending = (bool)e.NewValue!;
                 }
-            }));
+            });
 
     // Using a DependencyProperty as the backing store for BlendingFactor.  This enables animation, styling, binding, etc...
     public static readonly DependencyProperty BlendingFactorProperty =
-        DependencyProperty.Register("BlendingFactor", typeof(double), typeof(PointMaterial), new PropertyMetadata(0.0,
+        HelixProperty.Register<PointMaterial, double>("BlendingFactor", 0.0,
             (d, e) =>
             {
                 if (d is PointMaterial { Core: PointMaterialCore core })
                 {
-                    core.BlendingFactor = (float)(double)e.NewValue;
+                    core.BlendingFactor = (float)(double)e.NewValue!;
                 }
-            }));
+            });
 
     /// <summary>
     /// Gets or sets the point color.
@@ -125,7 +129,7 @@ public class PointMaterial : Material
     {
         get
         {
-            return (UIColor)this.GetValue(ColorProperty);
+            return (UIColor)this.GetValue(ColorProperty)!;
         }
         set
         {
@@ -143,7 +147,7 @@ public class PointMaterial : Material
     {
         get
         {
-            return (Size)this.GetValue(SizeProperty);
+            return (Size)this.GetValue(SizeProperty)!;
         }
         set
         {
@@ -160,7 +164,7 @@ public class PointMaterial : Material
     {
         get
         {
-            return (PointFigure)this.GetValue(FigureProperty);
+            return (PointFigure)this.GetValue(FigureProperty)!;
         }
         set
         {
@@ -177,7 +181,7 @@ public class PointMaterial : Material
     {
         get
         {
-            return (double)this.GetValue(FigureRatioProperty);
+            return (double)this.GetValue(FigureRatioProperty)!;
         }
         set
         {
@@ -198,7 +202,7 @@ public class PointMaterial : Material
         }
         get
         {
-            return (bool)GetValue(EnableDistanceFadingProperty);
+            return (bool)GetValue(EnableDistanceFadingProperty)!;
         }
     }
     /// <summary>
@@ -211,7 +215,7 @@ public class PointMaterial : Material
     {
         get
         {
-            return (double)this.GetValue(FadingNearDistanceProperty);
+            return (double)this.GetValue(FadingNearDistanceProperty)!;
         }
         set
         {
@@ -228,7 +232,7 @@ public class PointMaterial : Material
     {
         get
         {
-            return (double)this.GetValue(FadingFarDistanceProperty);
+            return (double)this.GetValue(FadingFarDistanceProperty)!;
         }
         set
         {
@@ -248,7 +252,7 @@ public class PointMaterial : Material
     {
         get
         {
-            return (bool)GetValue(EnableColorBlendingProperty);
+            return (bool)GetValue(EnableColorBlendingProperty)!;
         }
         set
         {
@@ -266,7 +270,7 @@ public class PointMaterial : Material
     {
         get
         {
-            return (double)GetValue(BlendingFactorProperty);
+            return (double)GetValue(BlendingFactorProperty)!;
         }
         set
         {
@@ -316,6 +320,7 @@ public class PointMaterial : Material
             Name = Name
         };
     }
+#elif AVALONIA
 #else
 #error Unknown framework
 #endif

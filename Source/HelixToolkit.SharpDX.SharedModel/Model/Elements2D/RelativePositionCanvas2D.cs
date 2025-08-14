@@ -4,6 +4,8 @@
 using HelixToolkit.WinUI.SharpDX.Core2D;
 #elif WPF
 using HelixToolkit.Wpf.SharpDX.Core2D;
+#elif AVALONIA
+using HelixToolkit.Avalonia.SharpDX.Core2D;
 #else
 #error Unknown framework
 #endif
@@ -13,6 +15,8 @@ using HelixToolkit.Wpf.SharpDX.Core2D;
 namespace HelixToolkit.WinUI.SharpDX.Elements2D;
 #elif WPF
 namespace HelixToolkit.Wpf.SharpDX.Elements2D;
+#elif AVALONIA
+namespace HelixToolkit.Avalonia.SharpDX.Elements2D;
 #else
 #error Unknown framework
 #endif
@@ -28,12 +32,13 @@ public class RelativePositionCanvas2D : Panel2D
     /// <summary>
     /// The relative x property
     /// </summary>
-    public static readonly DependencyProperty RelativeXProperty = DependencyProperty.RegisterAttached("RelativeX", typeof(double), typeof(RelativePositionCanvas2D),
-        new PropertyMetadata(0.0,
+    public static readonly DependencyProperty RelativeXProperty =
+        HelixProperty.RegisterAttached<RelativePositionCanvas2D, double>("RelativeX",
+            0.0,
             (d, e) =>
             {
                 (d as Element2DCore)?.InvalidateMeasure();
-            }));
+            });
 
     /// <summary>
     /// Sets the relative x.
@@ -52,18 +57,19 @@ public class RelativePositionCanvas2D : Panel2D
     /// <returns></returns>
     public static double GetRelativeX(Element2DCore element)
     {
-        return (double)element.GetValue(RelativeXProperty);
+        return (double)element.GetValue(RelativeXProperty)!;
     }
 
     /// <summary>
     /// The relative y property
     /// </summary>
-    public static readonly DependencyProperty RelativeYProperty = DependencyProperty.RegisterAttached("RelativeY", typeof(double), typeof(RelativePositionCanvas2D),
-        new PropertyMetadata(0.0,
+    public static readonly DependencyProperty RelativeYProperty =
+        HelixProperty.RegisterAttached<RelativePositionCanvas2D, double>("RelativeY",
+            0.0,
             (d, e) =>
             {
                 (d as Element2DCore)?.InvalidateMeasure();
-            }));
+            });
 
     /// <summary>
     /// Sets the relative y.
@@ -82,7 +88,7 @@ public class RelativePositionCanvas2D : Panel2D
     /// <returns></returns>
     public static double GetRelativeY(Element2DCore element)
     {
-        return (double)element.GetValue(RelativeYProperty);
+        return (double)element.GetValue(RelativeYProperty)!;
     }
     #endregion
 

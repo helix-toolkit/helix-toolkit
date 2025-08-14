@@ -3,6 +3,7 @@
 using Windows.UI.Core;
 #elif WPF
 using System.Windows.Input;
+#elif AVALONIA
 #else
 #error Unknown framework
 #endif
@@ -12,6 +13,8 @@ using System.Windows.Input;
 namespace HelixToolkit.WinUI.SharpDX;
 #elif WPF
 namespace HelixToolkit.Wpf.SharpDX;
+#elif AVALONIA
+namespace HelixToolkit.Avalonia.SharpDX;
 #else
 #error Unknown framework
 #endif
@@ -41,7 +44,7 @@ internal class PanHandler : MouseGestureHandler
     /// Occurs when the position is changed during a manipulation.
     /// </summary>
     /// <param name="e">The <see cref="Point2D"/> instance containing the event data.</param>
-    public override void Delta(Point2D e)
+    public override void Delta(Point e)
     {
         base.Delta(e);
 
@@ -121,7 +124,7 @@ internal class PanHandler : MouseGestureHandler
             return;
         }
 
-        var mousePoint = new Point2D(LastPoint.X + delta.X, LastPoint.Y + delta.Y);
+        var mousePoint = new Point(LastPoint.X + delta.X, LastPoint.Y + delta.Y);
 
         var thisPoint3D = this.UnProject(mousePoint, this.panPoint3D, this.Camera.CameraInternal.LookDirection);
 
@@ -191,7 +194,7 @@ internal class PanHandler : MouseGestureHandler
     /// </param>
     protected override void OnInertiaStarting(double elapsedTime)
     {
-        var speed = (this.LastPoint - this.MouseDownPoint) * (40.0f / (float)elapsedTime);
-        this.Controller.AddPanForce((float)speed.X, (float)speed.Y);
+        var speed = (this.LastPoint.ToVector2() - this.MouseDownPoint.ToVector2()) * (40.0f / (float)elapsedTime);
+        this.Controller.AddPanForce(speed.X, speed.Y);
     }
 }

@@ -6,6 +6,8 @@ using HelixToolkit.SharpDX.Model.Scene;
 using HelixToolkit.WinUI.SharpDX.Model;
 #elif WPF
 using HelixToolkit.Wpf.SharpDX.Model;
+#elif AVALONIA
+using HelixToolkit.Avalonia.SharpDX.Model;
 #else
 #error Unknown framework
 #endif
@@ -15,6 +17,8 @@ using HelixToolkit.Wpf.SharpDX.Model;
 namespace HelixToolkit.WinUI.SharpDX;
 #elif WPF
 namespace HelixToolkit.Wpf.SharpDX;
+#elif AVALONIA
+namespace HelixToolkit.Avalonia.SharpDX;
 #else
 #error Unknown framework
 #endif
@@ -36,7 +40,7 @@ public class PostEffectBloom : Element3D
     {
         get
         {
-            return (string)GetValue(EffectNameProperty);
+            return (string)GetValue(EffectNameProperty)!;
         }
         set
         {
@@ -48,14 +52,14 @@ public class PostEffectBloom : Element3D
     /// The effect name property
     /// </summary>
     public static readonly DependencyProperty EffectNameProperty =
-        DependencyProperty.Register("EffectName", typeof(string), typeof(PostEffectBloom),
-            new PropertyMetadata(DefaultRenderTechniqueNames.PostEffectBloom, (d, e) =>
+        HelixProperty.Register<PostEffectBloom, string>("EffectName",
+            DefaultRenderTechniqueNames.PostEffectBloom, (d, e) =>
             {
                 if (d is Element3DCore { SceneNode: NodePostEffectBloom core })
                 {
-                    core.EffectName = (string)e.NewValue;
+                    core.EffectName = (string)e.NewValue!;
                 }
-            }));
+            });
 
     /// <summary>
     /// Gets or sets the threshold color.
@@ -67,7 +71,7 @@ public class PostEffectBloom : Element3D
     {
         get
         {
-            return (UIColor)GetValue(ThresholdColorProperty);
+            return (UIColor)GetValue(ThresholdColorProperty)!;
         }
         set
         {
@@ -79,14 +83,15 @@ public class PostEffectBloom : Element3D
     /// The threshold color property
     /// </summary>
     public static readonly DependencyProperty ThresholdColorProperty =
-        DependencyProperty.Register("ThresholdColor", typeof(UIColor), typeof(PostEffectBloom), new PropertyMetadata(UIColor.FromArgb(0, 200, 200, 200),
+        HelixProperty.Register<PostEffectBloom, UIColor>("ThresholdColor",
+            UIColor.FromArgb(0, 200, 200, 200),
             (d, e) =>
             {
                 if (d is Element3DCore { SceneNode: NodePostEffectBloom core })
                 {
-                    core.ThresholdColor = ((UIColor)e.NewValue).ToColor4();
+                    core.ThresholdColor = ((UIColor)e.NewValue!).ToColor4();
                 }
-            }));
+            });
 
     /// <summary>
     /// Gets or sets the number of blur pass.
@@ -98,7 +103,7 @@ public class PostEffectBloom : Element3D
     {
         get
         {
-            return (int)GetValue(NumberOfBlurPassProperty);
+            return (int)GetValue(NumberOfBlurPassProperty)!;
         }
         set
         {
@@ -110,13 +115,14 @@ public class PostEffectBloom : Element3D
     /// The number of blur pass property
     /// </summary>
     public static readonly DependencyProperty NumberOfBlurPassProperty =
-        DependencyProperty.Register("NumberOfBlurPass", typeof(int), typeof(PostEffectBloom), new PropertyMetadata(1, (d, e) =>
+        HelixProperty.Register<PostEffectBloom, int>("NumberOfBlurPass",
+            1, (d, e) =>
         {
             if (d is Element3DCore { SceneNode: NodePostEffectBloom core })
             {
-                core.NumberOfBlurPass = (int)e.NewValue;
+                core.NumberOfBlurPass = (int)e.NewValue!;
             }
-        }));
+        });
 
     /// <summary>
     /// Gets or sets the bloom extract intensity.
@@ -128,7 +134,7 @@ public class PostEffectBloom : Element3D
     {
         get
         {
-            return (double)GetValue(BloomExtractIntensityProperty);
+            return (double)GetValue(BloomExtractIntensityProperty)!;
         }
         set
         {
@@ -140,13 +146,14 @@ public class PostEffectBloom : Element3D
     /// The bloom extract intensity property
     /// </summary>
     public static readonly DependencyProperty BloomExtractIntensityProperty =
-        DependencyProperty.Register("BloomExtractIntensity", typeof(double), typeof(PostEffectBloom), new PropertyMetadata(1.0, (d, e) =>
+        HelixProperty.Register<PostEffectBloom, double>("BloomExtractIntensity",
+            1.0, (d, e) =>
         {
             if (d is Element3DCore { SceneNode: NodePostEffectBloom core })
             {
-                core.BloomExtractIntensity = (float)(double)e.NewValue;
+                core.BloomExtractIntensity = (float)(double)e.NewValue!;
             }
-        }));
+        });
 
     /// <summary>
     /// Gets or sets the bloom pass intensity.
@@ -158,7 +165,7 @@ public class PostEffectBloom : Element3D
     {
         get
         {
-            return (double)GetValue(BloomPassIntensityProperty);
+            return (double)GetValue(BloomPassIntensityProperty)!;
         }
         set
         {
@@ -170,13 +177,14 @@ public class PostEffectBloom : Element3D
     /// The bloom pass intensity property
     /// </summary>
     public static readonly DependencyProperty BloomPassIntensityProperty =
-        DependencyProperty.Register("BloomPassIntensity", typeof(double), typeof(PostEffectBloom), new PropertyMetadata(0.95, (d, e) =>
+        HelixProperty.Register<PostEffectBloom, double>("BloomPassIntensity",
+            0.95, (d, e) =>
         {
             if (d is Element3DCore { SceneNode: NodePostEffectBloom core })
             {
-                core.BloomPassIntensity = (float)(double)e.NewValue;
+                core.BloomPassIntensity = (float)(double)e.NewValue!;
             }
-        }));
+        });
 
     /// <summary>
     /// Gets or sets the bloom combine intensity.
@@ -188,7 +196,7 @@ public class PostEffectBloom : Element3D
     {
         get
         {
-            return (double)GetValue(BloomCombineIntensityProperty);
+            return (double)GetValue(BloomCombineIntensityProperty)!;
         }
         set
         {
@@ -200,13 +208,14 @@ public class PostEffectBloom : Element3D
     /// The bloom combine intensity property
     /// </summary>
     public static readonly DependencyProperty BloomCombineIntensityProperty =
-        DependencyProperty.Register("BloomCombineIntensity", typeof(double), typeof(PostEffectBloom), new PropertyMetadata(0.7, (d, e) =>
+        HelixProperty.Register<PostEffectBloom, double>("BloomCombineIntensity",
+            0.7, (d, e) =>
         {
             if (d is Element3DCore { SceneNode: NodePostEffectBloom core })
             {
-                core.BloomCombineIntensity = (float)(double)e.NewValue;
+                core.BloomCombineIntensity = (float)(double)e.NewValue!;
             }
-        }));
+        });
 
     /// <summary>
     /// Gets or sets the bloom combine saturation.
@@ -218,7 +227,7 @@ public class PostEffectBloom : Element3D
     {
         get
         {
-            return (double)GetValue(BloomCombineSaturationProperty);
+            return (double)GetValue(BloomCombineSaturationProperty)!;
         }
         set
         {
@@ -230,13 +239,14 @@ public class PostEffectBloom : Element3D
     /// The bloom combine saturation property
     /// </summary>
     public static readonly DependencyProperty BloomCombineSaturationProperty =
-        DependencyProperty.Register("BloomCombineSaturation", typeof(double), typeof(PostEffectBloom), new PropertyMetadata(0.7, (d, e) =>
+        HelixProperty.Register<PostEffectBloom, double>("BloomCombineSaturation",
+            0.7, (d, e) =>
         {
             if (d is Element3DCore { SceneNode: NodePostEffectBloom core })
             {
-                core.BloomCombineSaturation = (float)(double)e.NewValue;
+                core.BloomCombineSaturation = (float)(double)e.NewValue!;
             }
-        }));
+        });
     #endregion
 
     protected override SceneNode OnCreateSceneNode()

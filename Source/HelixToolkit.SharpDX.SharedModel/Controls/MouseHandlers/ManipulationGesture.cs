@@ -2,6 +2,7 @@
 #elif WINUI
 #elif WPF
 using System.Windows.Input;
+#elif AVALONIA
 #else
 #error Unknown framework
 #endif
@@ -11,6 +12,8 @@ using System.Windows.Input;
 namespace HelixToolkit.WinUI.SharpDX;
 #elif WPF
 namespace HelixToolkit.Wpf.SharpDX;
+#elif AVALONIA
+namespace HelixToolkit.Avalonia.SharpDX;
 #else
 #error Unknown framework
 #endif

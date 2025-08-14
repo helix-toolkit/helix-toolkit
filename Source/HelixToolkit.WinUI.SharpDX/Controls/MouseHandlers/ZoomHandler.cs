@@ -53,9 +53,9 @@ internal class ZoomHandler : MouseGestureHandler
     /// Occurs when the position is changed during a manipulation.
     /// </summary>
     /// <param name="e">The <see cref="Point"/> instance containing the event data.</param>
-    public override void Delta(Vector2 e)
+    public override void Delta(Point e)
     {
-        var delta = e - this.LastPoint;
+        var delta = e.ToVector2() - this.LastPoint.ToVector2();
         this.LastPoint = e;
         this.Zoom(delta.Y * 0.01, this.zoomPoint3D);
     }

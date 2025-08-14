@@ -1219,7 +1219,7 @@ public class CameraController
         {
             if (this.EnableTouchRotate && n == this.rotateFingerCount)
             {
-                this.rotateHandler.Delta(position.ToVector2());
+                this.rotateHandler.Delta(position);
                 e.Handled = true;
                 if (!this.allowCombinedManipulation) return;
             }
@@ -1257,7 +1257,7 @@ public class CameraController
 
             if (this.EnableThreeFingerPan && n == this.panFingerCount)
             {
-                this.panHandler.Delta(position.ToVector2());
+                this.panHandler.Delta(position);
                 e.Handled = true;
                 //if (!this.allowCombinedManipulation) return;
             }

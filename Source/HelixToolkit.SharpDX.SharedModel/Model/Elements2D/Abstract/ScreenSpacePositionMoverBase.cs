@@ -6,6 +6,8 @@ using HelixToolkit.SharpDX.Model.Scene2D;
 namespace HelixToolkit.WinUI.SharpDX.Elements2D;
 #elif WPF
 namespace HelixToolkit.Wpf.SharpDX.Elements2D;
+#elif AVALONIA
+namespace HelixToolkit.Avalonia.SharpDX.Elements2D;
 #else
 #error Unknown framework
 #endif
@@ -26,7 +28,7 @@ public abstract class ScreenSpacePositionMoverBase : Panel2D
     {
         get
         {
-            return (bool)GetValue(EnableMoverProperty);
+            return (bool)GetValue(EnableMoverProperty)!;
         }
         set
         {
@@ -38,13 +40,14 @@ public abstract class ScreenSpacePositionMoverBase : Panel2D
     /// The enable mover property
     /// </summary>
     public static readonly DependencyProperty EnableMoverProperty =
-        DependencyProperty.Register("EnableMover", typeof(bool), typeof(ScreenSpacePositionMover), new PropertyMetadata(true, (d, e) =>
+        HelixProperty.Register<ScreenSpacePositionMoverBase, bool>("EnableMover",
+            true, (d, e) =>
         {
             if (d is Element2D { SceneNode: Node2DMoverBase node })
             {
-                node.EnableMover = (bool)e.NewValue;
+                node.EnableMover = (bool)e.NewValue!;
             }
-        }));
+        });
 
     /// <summary>
     /// Occurs when [on move clicked].

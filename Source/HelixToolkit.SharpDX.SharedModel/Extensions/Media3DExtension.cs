@@ -7,6 +7,8 @@ using System.Runtime.CompilerServices;
 namespace HelixToolkit.WinUI.SharpDX;
 #elif WPF
 namespace HelixToolkit.Wpf.SharpDX;
+#elif AVALONIA
+namespace HelixToolkit.Avalonia.SharpDX;
 #else
 #error Unknown framework
 #endif
@@ -56,6 +58,15 @@ public static class Media3DExtension
     {
         return new RawVector2((float)vector.X, (float)vector.Y);
     }
+
+#if AVALONIA
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static RawVector2 ToRawVector2(this global::Avalonia.RelativePoint vector)
+    {
+        Point pt = vector.Point;
+        return new RawVector2((float)pt.X, (float)pt.Y);
+    }
+#endif
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Vector2 ToVector2(this Vector2 vector)
@@ -142,10 +153,13 @@ public static class Media3DExtension
         var matrix = trafo.Value;
         return new Vector4((float)matrix.OffsetX, (float)matrix.OffsetY, (float)matrix.OffsetZ, (float)matrix.M44);
     }
+#elif AVALONIA
 #else
 #error Unknown framework
 #endif
 
+#if false
+#elif WINUI
     public static Matrix3x3 ToMatrix3x3(this UIMatrix m)
     {
         return new Matrix3x3((float)m.M11, (float)m.M12, 0, (float)m.M21, (float)m.M22, 0f, (float)m.OffsetX, (float)m.OffsetY, 1f);
@@ -154,6 +168,23 @@ public static class Media3DExtension
     {
         return new Matrix3x2((float)m.M11, (float)m.M12, (float)m.M21, (float)m.M22, (float)m.OffsetX, (float)m.OffsetY);
     }
+#elif WPF
+    public static Matrix3x3 ToMatrix3x3(this UIMatrix m)
+    {
+        return new Matrix3x3((float)m.M11, (float)m.M12, 0, (float)m.M21, (float)m.M22, 0f, (float)m.OffsetX, (float)m.OffsetY, 1f);
+    }
+    public static Matrix3x2 ToMatrix3x2(this UIMatrix m)
+    {
+        return new Matrix3x2((float)m.M11, (float)m.M12, (float)m.M21, (float)m.M22, (float)m.OffsetX, (float)m.OffsetY);
+    }
+#elif AVALONIA
+    public static Matrix3x2 ToMatrix3x2(this global::Avalonia.Matrix m)
+    {
+        return new Matrix3x2((float)m.M11, (float)m.M12, (float)m.M21, (float)m.M22, (float)m.M31, (float)m.M32);
+    }
+#else
+#error Unknown framework
+#endif
 
 #if false
 #elif WINUI
@@ -240,6 +271,12 @@ public static class Media3DExtension
         g.Children.Add(t2);
         g.Children.Add(t1);
         return g;
+    }
+#elif AVALONIA
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static Matrix ToMatrix(this Matrix m)
+    {
+        return m;
     }
 #else
 #error Unknown framework

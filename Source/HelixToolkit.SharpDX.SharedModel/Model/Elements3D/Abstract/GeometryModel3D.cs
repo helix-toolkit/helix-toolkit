@@ -9,6 +9,8 @@ using SharpDX;
 using HelixToolkit.WinUI.SharpDX.Model;
 #elif WPF
 using HelixToolkit.Wpf.SharpDX.Model;
+#elif AVALONIA
+using HelixToolkit.Avalonia.SharpDX.Model;
 #else
 #error Unknown framework
 #endif
@@ -18,6 +20,8 @@ using HelixToolkit.Wpf.SharpDX.Model;
 namespace HelixToolkit.WinUI.SharpDX;
 #elif WPF
 namespace HelixToolkit.Wpf.SharpDX;
+#elif AVALONIA
+namespace HelixToolkit.Avalonia.SharpDX;
 #else
 #error Unknown framework
 #endif
@@ -32,134 +36,150 @@ public abstract class GeometryModel3D : Element3D, IHitable, IThrowingShadow, IA
     /// The geometry property
     /// </summary>
     public static readonly DependencyProperty GeometryProperty =
-        DependencyProperty.Register("Geometry", typeof(Geometry3D), typeof(GeometryModel3D), new PropertyMetadata(null,
+        HelixProperty.Register<GeometryModel3D, Geometry3D?>("Geometry",
+            null,
             (d, e) =>
             {
                 if (d is Element3DCore { SceneNode: GeometryNode core })
                 {
                     core.Geometry = e.NewValue as Geometry3D;
                 }
-            }));
+            });
 
     public static readonly DependencyProperty IsThrowingShadowProperty =
-            DependencyProperty.Register("IsThrowingShadow", typeof(bool), typeof(GeometryModel3D), new PropertyMetadata(false, (d, e) =>
+            HelixProperty.Register<GeometryModel3D, bool>("IsThrowingShadow",
+                false, (d, e) =>
             {
                 if (d is Element3D { SceneNode: IThrowingShadow t })
                 {
-                    t.IsThrowingShadow = (bool)e.NewValue;
+                    t.IsThrowingShadow = (bool)e.NewValue!;
                 }
-            }));
+            });
 
     /// <summary>
     /// The depth bias property
     /// </summary>
     public static readonly DependencyProperty DepthBiasProperty =
-        DependencyProperty.Register("DepthBias", typeof(int), typeof(GeometryModel3D), new PropertyMetadata(0, (d, e) =>
+        HelixProperty.Register<GeometryModel3D, int>("DepthBias",
+            0, (d, e) =>
         {
             if (d is Element3DCore { SceneNode: GeometryNode core })
             {
-                core.DepthBias = (int)e.NewValue;
+                core.DepthBias = (int)e.NewValue!;
             }
-        }));
+        });
+
     /// <summary>
     /// The slope scaled depth bias property
     /// </summary>
     public static readonly DependencyProperty SlopeScaledDepthBiasProperty =
-        DependencyProperty.Register("SlopeScaledDepthBias", typeof(double), typeof(GeometryModel3D), new PropertyMetadata(0.0, (d, e) =>
+        HelixProperty.Register<GeometryModel3D, double>("SlopeScaledDepthBias",
+            0.0, (d, e) =>
         {
             if (d is Element3DCore { SceneNode: GeometryNode core })
             {
-                core.SlopeScaledDepthBias = (float)(double)e.NewValue;
+                core.SlopeScaledDepthBias = (float)(double)e.NewValue!;
             }
-        }));
+        });
+
     /// <summary>
     /// The is selected property
     /// </summary>
     public static readonly DependencyProperty IsSelectedProperty =
-        DependencyProperty.Register("IsSelected", typeof(bool), typeof(GeometryModel3D), new PropertyMetadata(false));
+        HelixProperty.Register<GeometryModel3D, bool>("IsSelected", false);
+
     /// <summary>
     /// The is multisample enabled property
     /// </summary>
     public static readonly DependencyProperty IsMultisampleEnabledProperty =
-        DependencyProperty.Register("IsMultisampleEnabled", typeof(bool), typeof(GeometryModel3D), new PropertyMetadata(true, (d, e) =>
+        HelixProperty.Register<GeometryModel3D, bool>("IsMultisampleEnabled",
+            true, (d, e) =>
         {
             if (d is Element3DCore { SceneNode: GeometryNode core })
             {
-                core.IsMSAAEnabled = (bool)e.NewValue;
+                core.IsMSAAEnabled = (bool)e.NewValue!;
             }
-        }));
+        });
+
     /// <summary>
     /// The fill mode property
     /// </summary>
-    public static readonly DependencyProperty FillModeProperty = DependencyProperty.Register("FillMode", typeof(FillMode), typeof(GeometryModel3D),
-        new PropertyMetadata(FillMode.Solid, (d, e) =>
+    public static readonly DependencyProperty FillModeProperty =
+        HelixProperty.Register<GeometryModel3D, FillMode>("FillMode",
+            FillMode.Solid, (d, e) =>
         {
             if (d is Element3DCore { SceneNode: GeometryNode core })
             {
-                core.FillMode = (FillMode)e.NewValue;
+                core.FillMode = (FillMode)e.NewValue!;
             }
-        }));
+        });
+
     /// <summary>
     /// The is scissor enabled property
     /// </summary>
     public static readonly DependencyProperty IsScissorEnabledProperty =
-        DependencyProperty.Register("IsScissorEnabled", typeof(bool), typeof(GeometryModel3D), new PropertyMetadata(true, (d, e) =>
+        HelixProperty.Register<GeometryModel3D, bool>("IsScissorEnabled",
+            true, (d, e) =>
         {
             if (d is Element3DCore { SceneNode: GeometryNode core })
             {
-                core.IsScissorEnabled = (bool)e.NewValue;
+                core.IsScissorEnabled = (bool)e.NewValue!;
             }
-        }));
+        });
+
     /// <summary>
     /// The enable view frustum check property
     /// </summary>
     public static readonly DependencyProperty EnableViewFrustumCheckProperty =
-        DependencyProperty.Register("EnableViewFrustumCheck", typeof(bool), typeof(GeometryModel3D), new PropertyMetadata(true,
+        HelixProperty.Register<GeometryModel3D, bool>("EnableViewFrustumCheck",
+            true,
             (d, e) =>
             {
                 if (d is Element3DCore { SceneNode: GeometryNode core })
                 {
-                    core.EnableViewFrustumCheck = (bool)e.NewValue;
+                    core.EnableViewFrustumCheck = (bool)e.NewValue!;
                 }
-            }));
+            });
+
     /// <summary>
     /// The is depth clip enabled property
     /// </summary>
-    public static readonly DependencyProperty IsDepthClipEnabledProperty = DependencyProperty.Register("IsDepthClipEnabled", typeof(bool), typeof(GeometryModel3D),
-        new PropertyMetadata(true, (d, e) =>
+    public static readonly DependencyProperty IsDepthClipEnabledProperty =
+        HelixProperty.Register<GeometryModel3D, bool>("IsDepthClipEnabled",
+            true, (d, e) =>
         {
             if (d is Element3DCore { SceneNode: GeometryNode core })
             {
-                core.IsDepthClipEnabled = (bool)e.NewValue;
+                core.IsDepthClipEnabled = (bool)e.NewValue!;
             }
-        }));
+        });
 
 
     /// <summary>
     /// The post effects property
     /// </summary>
     public static readonly DependencyProperty PostEffectsProperty =
-        DependencyProperty.Register("PostEffects", typeof(string), typeof(GeometryModel3D), new PropertyMetadata(string.Empty, (d, e) =>
+        HelixProperty.Register<GeometryModel3D, string>("PostEffects",
+            string.Empty, (d, e) =>
         {
             if (d is Element3DCore { SceneNode: GeometryNode core })
             {
-                core.PostEffects = (string)e.NewValue;
+                core.PostEffects = (string)e.NewValue!;
             }
-        }));
+        });
 
     /// <summary>
     /// The always hittable property
     /// </summary>
     public static readonly DependencyProperty AlwaysHittableProperty =
-        DependencyProperty.Register("AlwaysHittable", typeof(bool), typeof(GeometryModel3D), new PropertyMetadata(false, (d, e) =>
+        HelixProperty.Register<GeometryModel3D, bool>("AlwaysHittable",
+            false, (d, e) =>
         {
             if (d is Element3DCore { SceneNode: GeometryNode core })
             {
-                core.AlwaysHittable = (bool)e.NewValue;
+                core.AlwaysHittable = (bool)e.NewValue!;
             }
-        }));
-
-
+        });
 
     /// <summary>
     /// Gets or sets the geometry.
@@ -189,29 +209,31 @@ public abstract class GeometryModel3D : Element3D, IHitable, IThrowingShadow, IA
         }
         get
         {
-            return (bool)GetValue(IsThrowingShadowProperty);
+            return (bool)GetValue(IsThrowingShadowProperty)!;
         }
     }
+
     /// <summary>
     /// List of instance matrix.
     /// </summary>
     public static readonly DependencyProperty InstancesProperty =
-        DependencyProperty.Register("Instances", typeof(IList<Matrix>), typeof(GeometryModel3D), new PropertyMetadata(null, (d, e) =>
+        HelixProperty.Register<GeometryModel3D, IList<Matrix>?>("Instances",
+            null, (d, e) =>
         {
             if (d is Element3DCore { SceneNode: GeometryNode core })
             {
                 core.Instances = e.NewValue as IList<Matrix>;
             }
-        }));
+        });
 
     /// <summary>
     /// List of instance matrix. 
     /// </summary>
-    public IList<Matrix> Instances
+    public IList<Matrix>? Instances
     {
         get
         {
-            return (IList<Matrix>)this.GetValue(InstancesProperty);
+            return (IList<Matrix>?)this.GetValue(InstancesProperty);
         }
         set
         {
@@ -229,7 +251,7 @@ public abstract class GeometryModel3D : Element3D, IHitable, IThrowingShadow, IA
     {
         get
         {
-            return (int)this.GetValue(DepthBiasProperty);
+            return (int)this.GetValue(DepthBiasProperty)!;
         }
         set
         {
@@ -246,7 +268,7 @@ public abstract class GeometryModel3D : Element3D, IHitable, IThrowingShadow, IA
     {
         get
         {
-            return (double)this.GetValue(SlopeScaledDepthBiasProperty);
+            return (double)this.GetValue(SlopeScaledDepthBiasProperty)!;
         }
         set
         {
@@ -263,7 +285,7 @@ public abstract class GeometryModel3D : Element3D, IHitable, IThrowingShadow, IA
     {
         get
         {
-            return (bool)this.GetValue(IsSelectedProperty);
+            return (bool)this.GetValue(IsSelectedProperty)!;
         }
         set
         {
@@ -282,7 +304,7 @@ public abstract class GeometryModel3D : Element3D, IHitable, IThrowingShadow, IA
         }
         get
         {
-            return (bool)GetValue(IsMultisampleEnabledProperty);
+            return (bool)GetValue(IsMultisampleEnabledProperty)!;
         }
     }
     /// <summary>
@@ -299,7 +321,7 @@ public abstract class GeometryModel3D : Element3D, IHitable, IThrowingShadow, IA
         }
         get
         {
-            return (FillMode)GetValue(FillModeProperty);
+            return (FillMode)GetValue(FillModeProperty)!;
         }
     }
     /// <summary>
@@ -316,7 +338,7 @@ public abstract class GeometryModel3D : Element3D, IHitable, IThrowingShadow, IA
         }
         get
         {
-            return (bool)GetValue(IsScissorEnabledProperty);
+            return (bool)GetValue(IsScissorEnabledProperty)!;
         }
     }
     /// <summary>
@@ -333,7 +355,7 @@ public abstract class GeometryModel3D : Element3D, IHitable, IThrowingShadow, IA
         }
         get
         {
-            return (bool)GetValue(IsDepthClipEnabledProperty);
+            return (bool)GetValue(IsDepthClipEnabledProperty)!;
         }
     }
     /// <summary>
@@ -350,7 +372,7 @@ public abstract class GeometryModel3D : Element3D, IHitable, IThrowingShadow, IA
         }
         get
         {
-            return (bool)GetValue(EnableViewFrustumCheckProperty);
+            return (bool)GetValue(EnableViewFrustumCheckProperty)!;
         }
     }
 
@@ -358,7 +380,7 @@ public abstract class GeometryModel3D : Element3D, IHitable, IThrowingShadow, IA
     {
         get
         {
-            return (string)GetValue(PostEffectsProperty);
+            return (string)GetValue(PostEffectsProperty)!;
         }
         set
         {
@@ -377,7 +399,7 @@ public abstract class GeometryModel3D : Element3D, IHitable, IThrowingShadow, IA
     {
         get
         {
-            return (bool)GetValue(AlwaysHittableProperty);
+            return (bool)GetValue(AlwaysHittableProperty)!;
         }
         set
         {

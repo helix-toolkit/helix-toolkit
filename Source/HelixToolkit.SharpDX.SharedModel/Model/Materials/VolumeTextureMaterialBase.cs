@@ -8,6 +8,8 @@ using SharpDX.Direct3D11;
 namespace HelixToolkit.WinUI.SharpDX;
 #elif WPF
 namespace HelixToolkit.Wpf.SharpDX;
+#elif AVALONIA
+namespace HelixToolkit.Avalonia.SharpDX;
 #else
 #error Unknown framework
 #endif
@@ -18,7 +20,7 @@ public abstract class VolumeTextureMaterialBase : Material, IVolumeTextureMateri
     {
         get
         {
-            return (SamplerStateDescription)GetValue(SamplerProperty);
+            return (SamplerStateDescription)GetValue(SamplerProperty)!;
         }
         set
         {
@@ -28,14 +30,14 @@ public abstract class VolumeTextureMaterialBase : Material, IVolumeTextureMateri
 
 
     public static readonly DependencyProperty SamplerProperty =
-        DependencyProperty.Register("Sampler", typeof(SamplerStateDescription), typeof(VolumeTextureMaterialBase),
-            new PropertyMetadata(DefaultSamplers.VolumeSampler, (d, e) =>
+        HelixProperty.Register<VolumeTextureMaterialBase, SamplerStateDescription>("Sampler",
+            DefaultSamplers.VolumeSampler, (d, e) =>
             {
                 if (d is VolumeTextureMaterialBase { Core: VolumeTextureDDS3DMaterialCore core })
                 {
-                    core.Sampler = (SamplerStateDescription)e.NewValue;
+                    core.Sampler = (SamplerStateDescription)e.NewValue!;
                 }
-            }));
+            });
 
     /// <summary>
     /// Gets or sets the sample distance. Default = 1.0
@@ -47,7 +49,7 @@ public abstract class VolumeTextureMaterialBase : Material, IVolumeTextureMateri
     {
         get
         {
-            return (double)GetValue(SampleDistanceProperty);
+            return (double)GetValue(SampleDistanceProperty)!;
         }
         set
         {
@@ -56,14 +58,14 @@ public abstract class VolumeTextureMaterialBase : Material, IVolumeTextureMateri
     }
 
     public static readonly DependencyProperty SampleDistanceProperty =
-        DependencyProperty.Register("SampleDistance", typeof(double), typeof(VolumeTextureMaterialBase),
-            new PropertyMetadata(1.0, (d, e) =>
+        HelixProperty.Register<VolumeTextureMaterialBase, double>("SampleDistance",
+            1.0, (d, e) =>
             {
                 if (d is VolumeTextureMaterialBase { Core: IVolumeTextureMaterial core })
                 {
-                    core.SampleDistance = (double)e.NewValue;
+                    core.SampleDistance = (double)e.NewValue!;
                 }
-            }));
+            });
 
 
     /// <summary>
@@ -76,7 +78,7 @@ public abstract class VolumeTextureMaterialBase : Material, IVolumeTextureMateri
     {
         get
         {
-            return (int)GetValue(MaxIterationsProperty);
+            return (int)GetValue(MaxIterationsProperty)!;
         }
         set
         {
@@ -85,14 +87,14 @@ public abstract class VolumeTextureMaterialBase : Material, IVolumeTextureMateri
     }
 
     public static readonly DependencyProperty MaxIterationsProperty =
-        DependencyProperty.Register("MaxIterations", typeof(int), typeof(VolumeTextureMaterialBase),
-            new PropertyMetadata(int.MaxValue, (d, e) =>
+        HelixProperty.Register<VolumeTextureMaterialBase, int>("MaxIterations",
+            int.MaxValue, (d, e) =>
             {
                 if (d is VolumeTextureMaterialBase { Core: IVolumeTextureMaterial core })
                 {
-                    core.MaxIterations = (int)e.NewValue;
+                    core.MaxIterations = (int)e.NewValue!;
                 }
-            }));
+            });
 
 
     /// <summary>
@@ -105,7 +107,7 @@ public abstract class VolumeTextureMaterialBase : Material, IVolumeTextureMateri
     {
         get
         {
-            return (int)GetValue(IterationOffsetProperty);
+            return (int)GetValue(IterationOffsetProperty)!;
         }
         set
         {
@@ -115,14 +117,14 @@ public abstract class VolumeTextureMaterialBase : Material, IVolumeTextureMateri
 
 
     public static readonly DependencyProperty IterationOffsetProperty =
-        DependencyProperty.Register("IterationOffset", typeof(int), typeof(VolumeTextureMaterialBase),
-            new PropertyMetadata(0, (d, e) =>
+        HelixProperty.Register<VolumeTextureMaterialBase, int>("IterationOffset",
+            0, (d, e) =>
             {
                 if (d is VolumeTextureMaterialBase { Core: IVolumeTextureMaterial core })
                 {
-                    core.IterationOffset = (int)e.NewValue;
+                    core.IterationOffset = (int)e.NewValue!;
                 }
-            }));
+            });
 
     /// <summary>
     /// Gets or sets the iso value. Only data with isovalue > sepecified iso value will be displayed
@@ -135,7 +137,7 @@ public abstract class VolumeTextureMaterialBase : Material, IVolumeTextureMateri
     {
         get
         {
-            return (double)GetValue(IsoValueProperty);
+            return (double)GetValue(IsoValueProperty)!;
         }
         set
         {
@@ -144,14 +146,14 @@ public abstract class VolumeTextureMaterialBase : Material, IVolumeTextureMateri
     }
 
     public static readonly DependencyProperty IsoValueProperty =
-        DependencyProperty.Register("IsoValue", typeof(double), typeof(VolumeTextureMaterialBase),
-            new PropertyMetadata(0.0, (d, e) =>
+        HelixProperty.Register<VolumeTextureMaterialBase, double>("IsoValue",
+            0.0, (d, e) =>
             {
                 if (d is VolumeTextureMaterialBase { Core: IVolumeTextureMaterial core })
                 {
-                    core.IsoValue = (double)e.NewValue;
+                    core.IsoValue = (double)e.NewValue!;
                 }
-            }));
+            });
 
     /// <summary>
     /// Gets or sets the color. It can also used to adjust opacity
@@ -163,7 +165,7 @@ public abstract class VolumeTextureMaterialBase : Material, IVolumeTextureMateri
     {
         get
         {
-            return (Color4)GetValue(ColorProperty);
+            return (Color4)GetValue(ColorProperty)!;
         }
         set
         {
@@ -173,15 +175,15 @@ public abstract class VolumeTextureMaterialBase : Material, IVolumeTextureMateri
 
 
     public static readonly DependencyProperty ColorProperty =
-        DependencyProperty.Register("Color4", typeof(Color4), typeof(VolumeTextureMaterialBase),
-            new PropertyMetadata(new Color4(1, 1, 1, 1),
+        HelixProperty.Register<VolumeTextureMaterialBase, Color4>("Color4",
+            new Color4(1, 1, 1, 1),
             (d, e) =>
             {
                 if (d is VolumeTextureMaterialBase { Core: IVolumeTextureMaterial core })
                 {
-                    core.Color = (Color4)e.NewValue;
+                    core.Color = (Color4)e.NewValue!;
                 }
-            }));
+            });
 
 
     /// <summary>
@@ -203,23 +205,21 @@ public abstract class VolumeTextureMaterialBase : Material, IVolumeTextureMateri
     }
 
     public static readonly DependencyProperty TransferMapProperty =
-        DependencyProperty.Register("TransferMap", typeof(Color4[]), typeof(VolumeTextureMaterialBase),
-            new PropertyMetadata(null,
+        HelixProperty.Register<VolumeTextureMaterialBase, Color4[]?>("TransferMap",
+            null,
             (d, e) =>
             {
                 if (d is VolumeTextureMaterialBase { Core: IVolumeTextureMaterial core })
                 {
-                    core.TransferMap = (Color4[])e.NewValue;
+                    core.TransferMap = (Color4[])e.NewValue!;
                 }
-            }));
-
-
+            });
 
     public bool EnablePlaneAlignment
     {
         get
         {
-            return (bool)GetValue(EnablePlaneAlignmentProperty);
+            return (bool)GetValue(EnablePlaneAlignmentProperty)!;
         }
         set
         {
@@ -229,13 +229,14 @@ public abstract class VolumeTextureMaterialBase : Material, IVolumeTextureMateri
 
     // Using a DependencyProperty as the backing store for EnablePlaneAlignment.  This enables animation, styling, binding, etc...
     public static readonly DependencyProperty EnablePlaneAlignmentProperty =
-        DependencyProperty.Register("EnablePlaneAlignment", typeof(bool), typeof(VolumeTextureMaterialBase), new PropertyMetadata(true, (d, e) =>
+        HelixProperty.Register<VolumeTextureMaterialBase, bool>("EnablePlaneAlignment",
+            true, (d, e) =>
         {
             if (d is VolumeTextureMaterialBase { Core: IVolumeTextureMaterial core })
             {
-                core.EnablePlaneAlignment = (bool)e.NewValue;
+                core.EnablePlaneAlignment = (bool)e.NewValue!;
             }
-        }));
+        });
 
     public VolumeTextureMaterialBase()
     {

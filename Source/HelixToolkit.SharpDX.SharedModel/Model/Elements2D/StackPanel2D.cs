@@ -4,6 +4,8 @@
 using HelixToolkit.WinUI.SharpDX.Extensions;
 #elif WPF
 using HelixToolkit.Wpf.SharpDX.Extensions;
+#elif AVALONIA
+using HelixToolkit.Avalonia.SharpDX.Extensions;
 #else
 #error Unknown framework
 #endif
@@ -13,6 +15,8 @@ using HelixToolkit.Wpf.SharpDX.Extensions;
 namespace HelixToolkit.WinUI.SharpDX.Elements2D;
 #elif WPF
 namespace HelixToolkit.Wpf.SharpDX.Elements2D;
+#elif AVALONIA
+namespace HelixToolkit.Avalonia.SharpDX.Elements2D;
 #else
 #error Unknown framework
 #endif
@@ -29,7 +33,7 @@ public class StackPanel2D : Panel2D
     {
         get
         {
-            return (UIOrientation)GetValue(OrientationProperty);
+            return (UIOrientation)GetValue(OrientationProperty)!;
         }
         set
         {
@@ -41,14 +45,15 @@ public class StackPanel2D : Panel2D
     /// The orientation property
     /// </summary>
     public static readonly DependencyProperty OrientationProperty =
-        DependencyProperty.Register("Orientation", typeof(UIOrientation), typeof(StackPanel2D), new PropertyMetadata(UIOrientation.Horizontal,
+        HelixProperty.Register<StackPanel2D, UIOrientation>("Orientation",
+            UIOrientation.Horizontal,
             (d, e) =>
             {
                 if (d is Element2D { SceneNode: StackPanelNode2D node })
                 {
-                    node.Orientation = ((UIOrientation)e.NewValue).ToD2DOrientation();
+                    node.Orientation = ((UIOrientation)e.NewValue!).ToD2DOrientation();
                 }
-            }));
+            });
 
     protected override SceneNode2D OnCreateSceneNode()
     {
