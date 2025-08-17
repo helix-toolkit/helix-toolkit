@@ -28,11 +28,11 @@ dotnet_csproj:
 
 before_build:
   - appveyor DownloadFile https://dist.nuget.org/win-x86-commandline/latest/nuget.exe
-  - nuget restore .\Source\HelixToolkit.sln
+  - nuget restore .\Source\HelixToolkit.slnx
   - gitversion /l console /output buildserver /updateprojectfiles
 
 build:
-  project: Source\HelixToolkit.sln
+  project: Source\HelixToolkit.slnx
   publish_nuget: true
   publish_nuget_symbols: true
   use_snupkg_format: true

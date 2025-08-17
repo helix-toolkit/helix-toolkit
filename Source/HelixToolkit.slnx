@@ -1,0 +1,126 @@
+<Solution>
+  <Configurations>
+    <Platform Name="Any CPU" />
+    <Platform Name="ARM64" />
+    <Platform Name="x64" />
+    <Platform Name="x86" />
+  </Configurations>
+  <Folder Name="/Examples/" />
+  <Folder Name="/Examples/Avalonia.SharpDX/">
+    <Project Path="Examples/Avalonia.SharpDX/EmptyDemo.Desktop/EmptyDemo.Desktop.csproj" />
+    <Project Path="Examples/Avalonia.SharpDX/EmptyDemo/EmptyDemo.csproj" />
+  </Folder>
+  <Folder Name="/Examples/WinUI.SharpDX/">
+    <Project Path="Examples/WinUI.SharpDX/D2DScreenMenuDemo/D2DScreenMenuDemo.csproj">
+      <Platform Solution="*|Any CPU" Project="x64" />
+      <Platform Solution="*|ARM64" Project="ARM64" />
+      <Platform Solution="*|x64" Project="x64" />
+      <Platform Solution="*|x86" Project="x86" />
+      <Deploy />
+    </Project>
+    <Project Path="Examples/WinUI.SharpDX/EmptyDemo/EmptyDemo.csproj">
+      <Platform Solution="*|Any CPU" Project="x64" />
+      <Platform Solution="*|ARM64" Project="ARM64" />
+      <Platform Solution="*|x64" Project="x64" />
+      <Platform Solution="*|x86" Project="x86" />
+      <Deploy />
+    </Project>
+    <Project Path="Examples/WinUI.SharpDX/ModelViewerDemo/ModelViewerDemo.csproj">
+      <Platform Solution="*|Any CPU" Project="x64" />
+      <Platform Solution="*|ARM64" Project="ARM64" />
+      <Platform Solution="*|x64" Project="x64" />
+      <Platform Solution="*|x86" Project="x86" />
+      <Deploy />
+    </Project>
+  </Folder>
+  <Folder Name="/Examples/Wpf.SharpDX.Core/">
+    <Project Path="Examples/Wpf.SharpDX.Core/DynamicPointsAndLinesDemo/DynamicPointsAndLinesDemo.csproj" />
+    <Project Path="Examples/Wpf.SharpDX.Core/OffScreenRenderingDemo/OffScreenRenderingDemo.csproj" />
+    <Project Path="Examples/Wpf.SharpDX.Core/WinFormsTest/WinFormsTest.csproj" />
+  </Folder>
+  <Folder Name="/Examples/Wpf.SharpDX/">
+    <Project Path="Examples/Wpf.SharpDX/BatchedMeshDemo/BatchedMeshDemo.csproj" />
+    <Project Path="Examples/Wpf.SharpDX/BillboardDemo/BillboardDemo.csproj" />
+    <Project Path="Examples/Wpf.SharpDX/BoneSkinDemo/BoneSkinDemo.csproj" />
+    <Project Path="Examples/Wpf.SharpDX/CrossSectionDemo/CrossSectionDemo.csproj" />
+    <Project Path="Examples/Wpf.SharpDX/CustomShaderDemo/CustomShaderDemo.csproj" />
+    <Project Path="Examples/Wpf.SharpDX/CustomViewCubeDemo/CustomViewCubeDemo.csproj" />
+    <Project Path="Examples/Wpf.SharpDX/D2DScreenMenuDemo/D2DScreenMenuDemo.csproj" />
+    <Project Path="Examples/Wpf.SharpDX/DeferredShadingDemo/DeferredShadingDemo.csproj" />
+    <Project Path="Examples/Wpf.SharpDX/DemoCore/DemoCore.csproj" />
+    <Project Path="Examples/Wpf.SharpDX/DynamicCodeSurfaceDemo/DynamicCodeSurfaceDemo.csproj" />
+    <Project Path="Examples/Wpf.SharpDX/DynamicTextureDemo/DynamicTextureDemo.csproj" />
+    <Project Path="Examples/Wpf.SharpDX/EmptyDemo/EmptyDemo.csproj" />
+    <Project Path="Examples/Wpf.SharpDX/EnvironmentMapDemo/EnvironmentMapDemo.csproj" />
+    <Project Path="Examples/Wpf.SharpDX/ExampleBrowser/ExampleBrowser.csproj" />
+    <Project Path="Examples/Wpf.SharpDX/FileLoadDemo/FileLoadDemo.csproj" />
+    <Project Path="Examples/Wpf.SharpDX/GenericMaterialDemo/GenericMaterialDemo.csproj" />
+    <Project Path="Examples/Wpf.SharpDX/GroupElementDemo/GroupElementDemo.csproj" />
+    <Project Path="Examples/Wpf.SharpDX/ImageViewDemo/ImageViewDemo.csproj" />
+    <Project Path="Examples/Wpf.SharpDX/InstancingDemo/InstancingDemo.csproj" />
+    <Project Path="Examples/Wpf.SharpDX/LightingDemo/LightingDemo.csproj" />
+    <Project Path="Examples/Wpf.SharpDX/LineShadingDemo/LineShadingDemo.csproj" />
+    <Project Path="Examples/Wpf.SharpDX/ManipulatorDemo/ManipulatorDemo.csproj" />
+    <Project Path="Examples/Wpf.SharpDX/MaterialDemo/MaterialDemo.csproj" />
+    <Project Path="Examples/Wpf.SharpDX/MemoryLeakTester/MemoryLeakTester.csproj" />
+    <Project Path="Examples/Wpf.SharpDX/MeshSimplificationDemo/MeshSimplificationDemo.csproj" />
+    <Project Path="Examples/Wpf.SharpDX/MorphTargetAnimationDemo/MorphTargetAnimationDemo.csproj" />
+    <Project Path="Examples/Wpf.SharpDX/MouseDragDemo/MouseDragDemo.csproj" />
+    <Project Path="Examples/Wpf.SharpDX/OctreeDemo/OctreeDemo.csproj" />
+    <Project Path="Examples/Wpf.SharpDX/OrderIndependantTransparentRenderingDemo/OrderIndependantTransparentRenderingDemo.csproj" />
+    <Project Path="Examples/Wpf.SharpDX/ParticleSystemDemo/ParticleSystemDemo.csproj" />
+    <Project Path="Examples/Wpf.SharpDX/PolygonTriangulationDemo/PolygonTriangulationDemo.csproj" />
+    <Project Path="Examples/Wpf.SharpDX/PostEffectsDemo/PostEffectsDemo.csproj" />
+    <Project Path="Examples/Wpf.SharpDX/RenderTechniqueImportExportDemo/RenderTechniqueImportExportDemo.csproj" />
+    <Project Path="Examples/Wpf.SharpDX/ScreenDuplicationDemo/ScreenDuplicationDemo.csproj" />
+    <Project Path="Examples/Wpf.SharpDX/ScreenSpaceDemo/ScreenSpaceDemo.csproj" />
+    <Project Path="Examples/Wpf.SharpDX/ShadowMapDemo/ShadowMapDemo.csproj" />
+    <Project Path="Examples/Wpf.SharpDX/SimpleDemo/SimpleDemo.csproj" />
+    <Project Path="Examples/Wpf.SharpDX/SSAODemo/SSAODemo.csproj" />
+    <Project Path="Examples/Wpf.SharpDX/SwapChainRenderingDemo/SwapChainRenderingDemo.csproj" />
+    <Project Path="Examples/Wpf.SharpDX/TemplateDemo/TemplateDemo.csproj" />
+    <Project Path="Examples/Wpf.SharpDX/TessellationDemo/TessellationDemo.csproj" />
+    <Project Path="Examples/WPF.SharpDX/TriangleSelection/TriangleSelection.csproj" />
+    <Project Path="Examples/Wpf.SharpDX/Viewport3DXCodeBehindTester/Viewport3DXCodeBehindTester.csproj" />
+    <Project Path="Examples/Wpf.SharpDX/VolumeRenderingDemo/VolumeRenderingDemo.csproj" />
+    <Project Path="Examples/Wpf.SharpDX/XRayDemo/XRayDemo.csproj" />
+  </Folder>
+  <Folder Name="/Examples/Wpf/">
+    <Project Path="Examples/Wpf/EmptyDemo/EmptyDemo.csproj" />
+    <Project Path="Examples/Wpf/ExampleBrowser/ExampleBrowser.csproj" />
+    <Project Path="Examples/Wpf/SimpleDemo/SimpleDemo.csproj" />
+    <Project Path="Examples/Wpf/SurfaceDemo/SurfaceDemo.csproj" />
+    <Project Path="Examples/Wpf/WpfDemo/WpfDemo.csproj" />
+  </Folder>
+  <Folder Name="/SolutionItems/">
+    <File Path="Directory.Build.props" />
+    <File Path="GlobalUsing.cs" />
+  </Folder>
+  <Project Path="HelixToolkit.Assimp.Tests/HelixToolkit.Assimp.Tests.csproj" />
+  <Project Path="HelixToolkit.Assimp/HelixToolkit.Assimp.csproj" />
+  <Project Path="HelixToolkit.Avalonia.SharpDX/HelixToolkit.Avalonia.SharpDX.csproj" />
+  <Project Path="HelixToolkit.Geometry.Tests/HelixToolkit.Geometry.Tests.csproj" />
+  <Project Path="HelixToolkit.Geometry/HelixToolkit.Geometry.csproj" />
+  <Project Path="HelixToolkit.Maths.Tests/HelixToolkit.Maths.Tests.csproj" />
+  <Project Path="HelixToolkit.Maths/HelixToolkit.Maths.csproj" />
+  <Project Path="HelixToolkit.Native.ShaderBuilder/HelixToolkit.Native.ShaderBuilder.csproj" />
+  <Project Path="HelixToolkit.Perf/HelixToolkit.Perf.csproj" />
+  <Project Path="HelixToolkit.SharpDX.Assimp.Tests/HelixToolkit.SharpDX.Assimp.Tests.csproj" />
+  <Project Path="HelixToolkit.SharpDX.Assimp/HelixToolkit.SharpDX.Assimp.csproj" />
+  <Project Path="HelixToolkit.SharpDX.SharedModel/HelixToolkit.SharpDX.SharedModel.shproj" />
+  <Project Path="HelixToolkit.SharpDX.Tests/HelixToolkit.SharpDX.Tests.csproj" />
+  <Project Path="HelixToolkit.SharpDX/HelixToolkit.SharpDX.csproj">
+    <BuildDependency Project="HelixToolkit.Native.ShaderBuilder/HelixToolkit.Native.ShaderBuilder.csproj" />
+  </Project>
+  <Project Path="HelixToolkit.Tests.Common/HelixToolkit.Tests.Common.csproj" />
+  <Project Path="HelixToolkit.Tests/HelixToolkit.Tests.csproj" />
+  <Project Path="HelixToolkit.WinUI.SharpDX.Tests/HelixToolkit.WinUI.SharpDX.Tests.csproj" />
+  <Project Path="HelixToolkit.WinUI.SharpDX/HelixToolkit.WinUI.SharpDX.csproj" />
+  <Project Path="HelixToolkit.Wpf.SharpDX.Tests/HelixToolkit.Wpf.SharpDX.Tests.csproj" />
+  <Project Path="HelixToolkit.Wpf.SharpDX/HelixToolkit.Wpf.SharpDX.csproj" />
+  <Project Path="HelixToolkit.Wpf.TDxInput.Tests/HelixToolkit.Wpf.TDxInput.Tests.csproj" />
+  <Project Path="HelixToolkit.Wpf.TDxInput/HelixToolkit.Wpf.TDxInput.csproj" />
+  <Project Path="HelixToolkit.Wpf.Tests/HelixToolkit.Wpf.Tests.csproj" />
+  <Project Path="HelixToolkit.Wpf/HelixToolkit.Wpf.csproj" />
+  <Project Path="HelixToolkit/HelixToolkit.csproj" />
+</Solution>

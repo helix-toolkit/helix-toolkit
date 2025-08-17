@@ -46,7 +46,7 @@ jobs:
       run: choco install gitversion.portable --version=5.12.0 -y
 
     - name: Restore NuGet packages
-      run: nuget restore .\Source\HelixToolkit.sln
+      run: nuget restore .\Source\HelixToolkit.slnx
 
     - name: Run GitVersion
       run: gitversion /l console /output buildserver /updateprojectfiles
@@ -55,7 +55,7 @@ jobs:
       run: dotnet build .\Source\HelixToolkit.Native.ShaderBuilder\HelixToolkit.Native.ShaderBuilder.csproj --configuration Release --no-restore
 
     - name: Build solution
-      run: dotnet build .\Source\HelixToolkit.sln --configuration Release --no-restore
+      run: dotnet build .\Source\HelixToolkit.slnx --configuration Release --no-restore
 
     - name: Run tests
       run: .\Source\run-tests.cmd Release
