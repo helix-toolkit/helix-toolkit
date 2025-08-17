@@ -1,5 +1,3 @@
-[![HelixToolkit](https://img.shields.io/badge/-Helix%20Toolkit-blue)](https://github.com/helix-toolkit/helix-toolkit) 
-
 <img src='https://avatars3.githubusercontent.com/u/8432523?s=200&v=4' width='64' />
 
 # Helix Toolkit
@@ -24,9 +22,9 @@ Custom 3D Engine and XAML/MVVM compatible Scene Graphs based on [SharpDX](https:
 [**Examples:**](/Source/Examples)
 Please download full source code to run examples.
 
+[![Github Stars](https://img.shields.io/github/stars/helix-toolkit/helix-toolkit)](https://github.com/helix-toolkit/helix-toolkit)
 [![License: MIT](https://img.shields.io/github/license/helix-toolkit/helix-toolkit)](https://github.com/helix-toolkit/helix-toolkit/blob/develop/LICENSE)
-[![Github Action](https://github.com/helix-toolkit/helix-toolkit/actions/workflows/ci.yml/badge.svg)](https://github.com/helix-toolkit/helix-toolkit/actions?query=workflow%3ACI
-)
+[![Github Action](https://github.com/helix-toolkit/helix-toolkit/actions/workflows/ci.yml/badge.svg)](https://github.com/helix-toolkit/helix-toolkit/actions?query=workflow%3ACI)
 [![Release](https://img.shields.io/github/release/helix-toolkit/helix-toolkit.svg?style=popout)](https://www.nuget.org/packages?q=Helix-Toolkit)
 [![Chat](https://img.shields.io/gitter/room/helix-toolkit/helix-toolkit.svg)](https://gitter.im/helix-toolkit/helix-toolkit)
 
@@ -114,4 +112,5 @@ Please use the following template to report bugs.
 
 #### 2023-03-17
 Nightly build myget feed link has been updated to: https://www.myget.org/F/helixtoolkit-nightly
+
 
