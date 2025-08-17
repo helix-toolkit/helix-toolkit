@@ -1,6 +1,100 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [2.27.0]
+
+### Bug Fix
+
+1. Fix instancing matrix calculation order. (SharpDX)
+
+1. Fix volume rendering not working.
+
+## [2.26.0]
+
+### Added
+
+1. Allow AddTube function to accept optional up vectors for path segments. (WPF)
+   
+1. Add MeshBuilderSample into Examples.Wpf (WPF)
+   
+1. Adds Triangle selection demo in sharpdx. (SharpDX)
+   
+1. Add IsTopBottomViewReverseOriented property for Wpf.HelixViewport3D (WPF)
+   
+1. Allow set point size in HelixToolkit.Wpf.CombinedSelectionCommand (Wpf)
+   
+1. Support Angle property for TextGroupVisual3D (WPF)
+
+1. Added missing scale to ToBillboardImage3D. (WPF)
+
+1. Add TypeConverter to collections (WPF)
+
+### Improvement
+
+1. Reimplement MeshBuilder.AddTube (MeshBuilder)
+   
+### Bug Fix
+
+1. Fix memory leak in EffectManager (SharpDX)
+
+1. Fix line width changed when line is out of camera frustum. (SharpDX)
+
+1. Fix memory leak in image packer. (SharpDX)
+
+1. Remove HitTestResultCallback in Viewport3DHelper.FindHits(), remove nullable types (WPF)
+
+1. Fix zoom extend. (SharpDX)
+
+1. Fix Dispose wrong position of RenderTargetBitmap in Wpf.ParticleSystem. (WPF)
+
+1. Fixed memory leaks when using RenderTargetBitmap (Wpf)
+
+1. Fix null reference exception in DX11ImageSourceRenderHost. (Wpf.SharpDX)
+
+1. Fix HelixToolkit.Wpf.TextVisual3D display wrong size when apply Angle!=0 (WPF)
+
+1. Fix MeshBuilder.GetCircle, Add search box in Wpf ExampleBrowser. (WPF)
+
+1. Fix MeshBuilder.GetCircle() OutOfRangeExeption when thetaDiv <=0. (MeshBuilder)
+
+1. Fix MeshBuilder.GetCircle (MeshBuilder)
+
+1. Fixed ViewBoxNode wrong color axis face in Helix.Wpf.SharpDX (SharpDX)
+
+1. Remove obsolete memmber in Wpf.HelixViewport3D (WPF)
+
+1. Change Wpf.Converter to Wpf.ConverterExtensions. (WPF)
+
+1. Fix float to double conversion. (MeshBuilder)
+
+1. Delete HelixToolkit.Wpf.BoundingSphere (WPF)
+
+
+## [2.25.0] 2024-2-27
+
+### Added
+1. Add CombinedSelectionCommand. (WPF)
+1. Allow importer to load obj,off,ply,stl from application resources. (WPF)
+1. Add AngleProperty for BillboardTextVisual3D (WPF)
+1. Add Angle Property for TextVisual3D. (WPF)
+1. Added ability to create tiled image materials with controlled vertical and horizontal scale factor. (WPF)
+1. Support color inner rectangle of RectangleAdorner. (WPF)
+1. Add FillRectangleBrush property for RectangleSelectionCommand, CombinedSelectionCommand. (WPF)
+
+### Improvement
+1. Re-implmenet zoom extents algorithm.(WPF.SharpDX/UWP/WinUI)
+1. Get rid of the sync context in RenderHostBase. Get rid of unnecessary parallel frustum tests. Change SceneNode ItemsInternal from ObservableCollection to own implementation.(WPF.SharpDX/UWP/WinUI)
+1. Improve dual depth peeling implementation. (WPF.SharpDX/UWP/WinUI)
+   
+### Fixed
+1. Fixed NullRefrenceException in CuttingPlaneGroup.CuttingPlanes (WPF)
+1. Fixed null exception XamlExporter (WPF)
+1. Fix outline highlight not showing up while rending backface only. (WPF.SharpDX/UWP/WinUI)
+1. Fix particle system not able to render 2x2 particle texture. (WPF.SharpDX/UWP/WinUI)
+1. Fix rendering doesn't update after removing item from Viewport3DX.Items.(WPF.SharpDX/UWP/WinUI)
+1. Fix OIT mode switch not working in UWP demo.(WPF.SharpDX/UWP/WinUI)
+2. Fix WinUI crash. (WinUI)
+
 ## [2.24.0] 2023-05-09
 
 ### Added
