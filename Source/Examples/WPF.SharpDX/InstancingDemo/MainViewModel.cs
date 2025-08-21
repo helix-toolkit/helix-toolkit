@@ -1,32 +1,28 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="MainViewModel.cs" company="Helix Toolkit">
-//   Copyright (c) 2014 Helix Toolkit contributors
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
+﻿// The MIT License (MIT)
+// Copyright (c) 2018 Helix Toolkit contributors
+// See the LICENSE file in the project root for more information.
 
 namespace InstancingDemo
 {
-    using System.Collections.Generic;
-
     using DemoCore;
-
     using HelixToolkit.Wpf.SharpDX;
     using SharpDX;
+    using System;
+    using System.Collections.Generic;
+    using System.Diagnostics;
+    using System.IO;
+    using System.Linq;
+    using System.Windows.Threading;
+    using Color = System.Windows.Media.Color;
+    using Color4 = SharpDX.Color4;
+    using Colors = System.Windows.Media.Colors;
     using Media3D = System.Windows.Media.Media3D;
+    using Plane = SharpDX.Plane;
     using Point3D = System.Windows.Media.Media3D.Point3D;
-    using Vector3D = System.Windows.Media.Media3D.Vector3D;
     using Transform3D = System.Windows.Media.Media3D.Transform3D;
     using TranslateTransform3D = System.Windows.Media.Media3D.TranslateTransform3D;
-    using Color = System.Windows.Media.Color;
-    using Plane = SharpDX.Plane;
     using Vector3 = SharpDX.Vector3;
-    using Colors = System.Windows.Media.Colors;
-    using Color4 = SharpDX.Color4;
-    using System;
-    using System.IO;
-    using System.Windows.Threading;
-    using System.Diagnostics;
-    using System.Linq;
+    using Vector3D = System.Windows.Media.Media3D.Vector3D;
 
     public class MainViewModel : BaseViewModel
     {
@@ -85,7 +81,7 @@ namespace InstancingDemo
             Lines = l1.ToLineGeometry3D();
             Lines.Colors = new Color4Collection(Enumerable.Repeat(Colors.White.ToColor4(), Lines.Positions.Count));
             // model trafo
-            ModelTransform = Media3D.Transform3D.Identity;// new Media3D.RotateTransform3D(new Media3D.AxisAngleRotation3D(new Vector3D(0, 0, 1), 45));
+            ModelTransform = new Media3D.TranslateTransform3D(10, 2, 3);
 
             // model material
             ModelMaterial = PhongMaterials.White;
@@ -176,13 +172,13 @@ namespace InstancingDemo
             ModelInstances = instances.ToArray();
             SubTitle = "Number of Instances: " + parameters.Count.ToString();
 
-            if(BillboardInstances == null)
+            if (BillboardInstances == null)
             {
-                for (int i = 0; i < 2*num; ++i)
+                for (int i = 0; i < 2 * num; ++i)
                 {
                     billboardParams.Add(new BillboardInstanceParameter()
-                    { TexCoordOffset = new Vector2(1f/6 * rnd.Next(0, 6), 1f/6 * rnd.Next(0,6)), TexCoordScale = new Vector2(1f/6, 1f/6) });
-                    billboardinstances.Add( Matrix.Scaling(rnd.NextFloat(0.5f, 4f), rnd.NextFloat(0.5f, 3f), rnd.NextFloat(0.5f, 3f))
+                    { TexCoordOffset = new Vector2(1f / 6 * rnd.Next(0, 6), 1f / 6 * rnd.Next(0, 6)), TexCoordScale = new Vector2(1f / 6, 1f / 6) });
+                    billboardinstances.Add(Matrix.Scaling(rnd.NextFloat(0.5f, 4f), rnd.NextFloat(0.5f, 3f), rnd.NextFloat(0.5f, 3f))
                         * Matrix.Translation(new Vector3(rnd.NextFloat(0, 100), rnd.NextFloat(0, 100), rnd.NextFloat(-50, 50))));
                 }
                 BillboardInstanceParams = billboardParams.ToArray();
@@ -190,10 +186,10 @@ namespace InstancingDemo
             }
             else
             {
-                for(int i=0; i<billboardinstances.Count; ++i)
+                for (int i = 0; i < billboardinstances.Count; ++i)
                 {
                     var current = billboardinstances[i];
-                    current.M41 += i % 3 == 0? aniX/50 : -aniX / 50;
+                    current.M41 += i % 3 == 0 ? aniX / 50 : -aniX / 50;
                     current.M42 += i % 4 == 0 ? aniY / 50 : -aniY / 30;
                     current.M43 += i % 5 == 0 ? aniZ / 100 : -aniZ / 50;
                     billboardinstances[i] = current;
@@ -211,16 +207,16 @@ namespace InstancingDemo
             var hitTests = viewport.FindHits(point);
             if (hitTests.Count > 0)
             {
-                foreach(var hit in hitTests)
-                {                  
+                foreach (var hit in hitTests)
+                {
                     if (hit.ModelHit is InstancingMeshGeometryModel3D)
                     {
                         var index = (int)hit.Tag;
-                        InstanceParam[index].EmissiveColor = InstanceParam[index].EmissiveColor != Colors.Yellow.ToColor4()? Colors.Yellow.ToColor4() : Colors.Black.ToColor4();
+                        InstanceParam[index].EmissiveColor = InstanceParam[index].EmissiveColor != Colors.Yellow.ToColor4() ? Colors.Yellow.ToColor4() : Colors.Black.ToColor4();
                         InstanceParam = (InstanceParameter[])InstanceParam.Clone();
                         break;
                     }
-                    else if(hit.ModelHit is LineGeometryModel3D)
+                    else if (hit.ModelHit is LineGeometryModel3D)
                     {
                         var index = (int)hit.Tag;
                         SelectedLineInstances = new Matrix[] { ModelInstances[index] };
