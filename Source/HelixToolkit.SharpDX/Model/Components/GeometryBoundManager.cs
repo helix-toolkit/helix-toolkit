@@ -238,16 +238,24 @@ public sealed class GeometryBoundManager : IDisposable
             else
             {
                 var bound = Geometry?.Bound.Transform(Instances![0]) ?? DefaultBound;
-                foreach (var instance in Instances!)
+                for (int i = 1; i < Instances!.Count; ++i)
                 {
-                    var b = Geometry?.Bound.Transform(instance) ?? DefaultBound;
+                    var b = Geometry?.Bound.Transform(Instances![i]) ?? DefaultBound;
                     BoundingBox.Merge(ref bound, ref b, out bound);
                 }
                 oldBound = Bounds;
                 Bounds = bound;
                 RaiseOnBoundChanged(Bounds, oldBound);
                 oldBound = BoundsWithTransform;
-                BoundsWithTransform = Bounds.Transform(target.TotalModelMatrixInternal);
+
+                var originBound = Geometry?.Bound.Transform(target.TotalModelMatrixInternal) ?? DefaultBound;
+                bound = originBound.Transform(Instances![0]);
+                for (int i = 1; i < Instances!.Count; ++i)
+                {
+                    var b = originBound.Transform(Instances![i]);
+                    BoundingBox.Merge(ref bound, ref b, out bound);
+                }
+                BoundsWithTransform = bound;
                 RaiseOnTransformBoundChanged(BoundsWithTransform, oldBound);
             }
         }
