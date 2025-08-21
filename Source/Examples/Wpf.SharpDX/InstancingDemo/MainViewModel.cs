@@ -10,10 +10,10 @@ using System.Windows.Threading;
 using Color = System.Windows.Media.Color;
 using Colors = System.Windows.Media.Colors;
 using Media3D = System.Windows.Media.Media3D;
+using MeshGeometry3D = HelixToolkit.SharpDX.MeshGeometry3D;
 using Point3D = System.Windows.Media.Media3D.Point3D;
 using Transform3D = System.Windows.Media.Media3D.Transform3D;
 using Vector3D = System.Windows.Media.Media3D.Vector3D;
-using MeshGeometry3D = HelixToolkit.SharpDX.MeshGeometry3D;
 
 namespace InstancingDemo;
 
@@ -116,7 +116,7 @@ public partial class MainViewModel : DemoCore.BaseViewModel
         Lines.Colors = Lines.Positions is null ? null : new Color4Collection(Enumerable.Repeat(Colors.White.ToColor4(), Lines.Positions.Count));
 
         // model trafo
-        modelTransform = Media3D.Transform3D.Identity;// new Media3D.RotateTransform3D(new Media3D.AxisAngleRotation3D(new Vector3D(0, 0, 1), 45));
+        modelTransform = new Media3D.TranslateTransform3D(10, 2, 3);// new Media3D.RotateTransform3D(new Media3D.AxisAngleRotation3D(new Vector3D(0, 0, 1), 45));
 
         // model material
         ModelMaterial = PhongMaterials.White;

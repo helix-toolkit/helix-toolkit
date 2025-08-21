@@ -176,12 +176,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HelixToolkit.Perf", "HelixT
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HelixToolkit.Tests.Common", "HelixToolkit.Tests.Common\HelixToolkit.Tests.Common.csproj", "{3997131E-F284-4A41-93A3-801AA93CB6D1}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Éléments de solution", "Éléments de solution", "{9C8CB701-102D-CF49-A3E0-89AC09D42C2C}"
-	ProjectSection(SolutionItems) = preProject
-		Directory.Build.props = Directory.Build.props
-		GlobalUsing.cs = GlobalUsing.cs
-	EndProjectSection
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HelixToolkit.Avalonia.SharpDX", "HelixToolkit.Avalonia.SharpDX\HelixToolkit.Avalonia.SharpDX.csproj", "{88C2CF9E-1FB5-4129-8EC7-0B415E107108}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Avalonia.SharpDX", "Avalonia.SharpDX", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"

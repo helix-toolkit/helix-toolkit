@@ -28,7 +28,7 @@
         /// <param name="box"></param>
         /// <param name="transform"></param>
         /// <returns></returns>
-        public static BoundingBox Transform(this BoundingBox box, Matrix transform)
+        public static BoundingBox Transform(this BoundingBox box, in Matrix transform)
         {
             /////////////////Row 4/////////////////
             Vector3 min = transform.Translation;
