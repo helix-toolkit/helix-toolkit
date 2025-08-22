@@ -1,6 +1,17 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [2.27.2]
+
+### Bug Fix
+1. Fix instancing bounding box not correct.
+2. Fix instancing octree hit test not working.
+
+## [2.27.1]
+
+### Improvement
+Update 'WindowsAppSDK' to version 1.7
+
 ## [2.27.0]
 
 ### Bug Fix
