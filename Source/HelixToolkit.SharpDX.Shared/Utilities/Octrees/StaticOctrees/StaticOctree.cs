@@ -1,4 +1,8 @@
-﻿/*
+﻿// The MIT License (MIT)
+// Copyright (c) 2018 Helix Toolkit contributors
+// See the LICENSE file in the project root for more information.
+
+/*
 The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
@@ -367,7 +371,7 @@ namespace HelixToolkit.UWP
             /// <summary>
             ///
             /// </summary>
-            public bool TreeBuilt { private set; get; } = false;
+            public bool TreeBuilt { protected set; get; } = false;
 
             /// <summary>
             ///
