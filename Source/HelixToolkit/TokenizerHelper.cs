@@ -23,7 +23,7 @@ public sealed class TokenizerHelper
     /// </summary> 
     /// <param name="str"> The string which will be tokenized. </param>
     /// <param name="formatProvider"> The IFormatProvider which controls this tokenization. </param> 
-    public TokenizerHelper(string str, IFormatProvider formatProvider)
+    public TokenizerHelper(string? str, IFormatProvider formatProvider)
     {
         var numberSeparator = GetNumericListSeparator(formatProvider);
         this.Initialize(str, '\'', numberSeparator);
@@ -36,7 +36,7 @@ public sealed class TokenizerHelper
     /// <param name="str"> The string to tokenize. </param>
     /// <param name="quoteChar"> The quote char. </param> 
     /// <param name="separator"> The list separator. </param> 
-    public TokenizerHelper(string str, char quoteChar, char separator)
+    public TokenizerHelper(string? str, char quoteChar, char separator)
     {
         this.Initialize(str, quoteChar, separator);
     }
@@ -48,9 +48,9 @@ public sealed class TokenizerHelper
     /// <param name="str"> The string to tokenize. </param>
     /// <param name="quoteChar"> The quote char. </param> 
     /// <param name="separator"> The list separator. </param> 
-    private void Initialize(string str, char quoteChar, char separator)
+    private void Initialize(string? str, char quoteChar, char separator)
     {
-        this.str = str;
+        this.str = str ?? string.Empty;
         this.strLen = str == null ? 0 : str.Length;
         this.currentTokenIndex = -1;
         this.quoteChar = quoteChar;
@@ -72,10 +72,10 @@ public sealed class TokenizerHelper
 
     public ReadOnlySpan<char> GetCurrentToken()
     {
-        // if no current token, return null 
+        // if no current token, return default
         if (this.currentTokenIndex < 0)
         {
-            return null;
+            return default;
         }
 
         return this.str.AsSpan(this.currentTokenIndex, this.currentTokenLength);
@@ -298,13 +298,11 @@ public sealed class TokenizerHelper
         // Get the NumberFormatInfo out of the provider, if possible
         // If the IFormatProvider doesn't not contain a NumberFormatInfo, then 
         // this method returns the current culture's NumberFormatInfo. 
-        var numberFormat = NumberFormatInfo.GetInstance(provider);
-
-        Debug.Assert(null != numberFormat);
+        NumberFormatInfo numberFormat = NumberFormatInfo.GetInstance(provider);
 
         // Is the decimal separator is the same as the list separator?
         // If so, we use the ";". 
-        if (numberFormat is not null && (numberFormat.NumberDecimalSeparator.Length > 0) && (numericSeparator == numberFormat.NumberDecimalSeparator[0]))
+        if (numericSeparator == numberFormat.NumberDecimalSeparator[0])
         {
             numericSeparator = ';';
         }

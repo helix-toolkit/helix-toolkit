@@ -9,6 +9,8 @@ public class StaticInstancingModelOctree : StaticOctree<KeyValuePair<int, Boundi
 {
     protected readonly IList<Matrix> InstanceMatrix;
     protected readonly BoundingBox GeometryBound;
+    private Matrix currModelMatrix = Matrix.Identity;
+    private BoundingBox maxBound = new();
     /// <summary>
     /// Initializes a new instance of the <see cref="StaticInstancingModelOctree"/> class.
     /// </summary>
@@ -36,13 +38,7 @@ public class StaticInstancingModelOctree : StaticOctree<KeyValuePair<int, Boundi
     /// <returns></returns>
     protected override BoundingBox GetMaxBound()
     {
-        var totalBound = GeometryBound.Transform(InstanceMatrix[0]);
-        for (var i = 0; i < InstanceMatrix.Count; ++i)
-        {
-            var b = GeometryBound.Transform(InstanceMatrix[i]);
-            BoundingBox.Merge(ref totalBound, ref b, out totalBound);
-        }
-        return totalBound;
+        return maxBound;
     }
     /// <summary>
     /// Gets the objects.
@@ -50,11 +46,13 @@ public class StaticInstancingModelOctree : StaticOctree<KeyValuePair<int, Boundi
     /// <returns></returns>
     protected override KeyValuePair<int, BoundingBox>[] GetObjects()
     {
+        maxBound = GeometryBound.Transform(InstanceMatrix[0]);
         var bounds = new KeyValuePair<int, BoundingBox>[InstanceMatrix.Count];
         for (var i = 0; i < InstanceMatrix.Count; ++i)
         {
-            var b = GeometryBound.Transform(InstanceMatrix[i]);
+            var b = GeometryBound.Transform(currModelMatrix * InstanceMatrix[i]);
             bounds[i] = new KeyValuePair<int, BoundingBox>(i, b);
+            maxBound = BoundingBox.Merge(maxBound, b);
         }
         return bounds;
     }
@@ -86,15 +84,21 @@ public class StaticInstancingModelOctree : StaticOctree<KeyValuePair<int, Boundi
         {
             return false;
         }
+        if (currModelMatrix != modelMatrix)
+        {
+            currModelMatrix = modelMatrix;
+            TreeBuilt = false;
+            BuildTree();
+        }
         var isHit = false;
-        var bound = octant.Bound.Transform(modelMatrix);
+        var bound = octant.Bound;
         var rayWS = context.RayWS;
         if (rayWS.Intersects(ref bound))
         {
             isIntersect = true;
             for (var i = octant.Start; i < octant.End; ++i)
             {
-                var b = Objects![i].Value.Transform(modelMatrix);
+                var b = Objects![i].Value;
                 if (b.Intersects(ref rayWS))
                 {
                     var result = new HitTestResult()

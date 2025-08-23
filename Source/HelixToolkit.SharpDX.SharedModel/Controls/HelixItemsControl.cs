@@ -2,6 +2,9 @@
 #elif WINUI
 #elif WPF
 using System.Windows;
+#elif AVALONIA
+using Avalonia;
+using Avalonia.Controls;
 #else
 #error Unknown framework
 #endif
@@ -11,6 +14,8 @@ using System.Windows;
 namespace HelixToolkit.WinUI.SharpDX;
 #elif WPF
 namespace HelixToolkit.Wpf.SharpDX;
+#elif AVALONIA
+namespace HelixToolkit.Avalonia.SharpDX;
 #else
 #error Unknown framework
 #endif
@@ -24,11 +29,17 @@ public class HelixItemsControl : ItemsControl
         ManipulationMode = ManipulationModes.None;
 #elif WPF
         Focusable = false;
+#elif AVALONIA
+        Focusable = false;
 #else
 #error Unknown framework
 #endif
+
         IsHitTestVisible = false;
+
+#if WINUI || WPF
         this.DefaultStyleKey = typeof(HelixItemsControl);
+#endif
     }
 
     protected override Size ArrangeOverride(Size finalSize)

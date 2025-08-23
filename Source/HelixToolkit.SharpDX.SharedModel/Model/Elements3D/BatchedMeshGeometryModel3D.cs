@@ -9,6 +9,8 @@ using HelixToolkit.SharpDX.Model.Scene;
 using HelixToolkit.WinUI.SharpDX.Model;
 #elif WPF
 using HelixToolkit.Wpf.SharpDX.Model;
+#elif AVALONIA
+using HelixToolkit.Avalonia.SharpDX.Model;
 #else
 #error Unknown framework
 #endif
@@ -18,6 +20,8 @@ using HelixToolkit.Wpf.SharpDX.Model;
 namespace HelixToolkit.WinUI.SharpDX;
 #elif WPF
 namespace HelixToolkit.Wpf.SharpDX;
+#elif AVALONIA
+namespace HelixToolkit.Avalonia.SharpDX;
 #else
 #error Unknown framework
 #endif
@@ -31,11 +35,11 @@ namespace HelixToolkit.Wpf.SharpDX;
 public class BatchedMeshGeometryModel3D : Element3D, IHitable, IThrowingShadow, IApplyPostEffect
 {
     #region Dependency Properties
-    public IList<BatchedMeshGeometryConfig> BatchedGeometries
+    public IList<BatchedMeshGeometryConfig>? BatchedGeometries
     {
         get
         {
-            return (IList<BatchedMeshGeometryConfig>)GetValue(BatchedGeometriesProperty);
+            return (IList<BatchedMeshGeometryConfig>?)GetValue(BatchedGeometriesProperty);
         }
         set
         {
@@ -44,20 +48,21 @@ public class BatchedMeshGeometryModel3D : Element3D, IHitable, IThrowingShadow, 
     }
 
     public static readonly DependencyProperty BatchedGeometriesProperty =
-        DependencyProperty.Register("BatchedGeometries", typeof(IList<BatchedMeshGeometryConfig>), typeof(BatchedMeshGeometryModel3D), new PropertyMetadata(null,
+        HelixProperty.Register<BatchedMeshGeometryModel3D, IList<BatchedMeshGeometryConfig>?>("BatchedGeometries",
+            null,
             (d, e) =>
             {
                 if (d is BatchedMeshGeometryModel3D { SceneNode: BatchedMeshNode node })
                 {
                     node.Geometries = e.NewValue == null ? null : ((IList<BatchedMeshGeometryConfig>)e.NewValue).ToArray();
                 }
-            }));
+            });
 
-    public IList<Material> BatchedMaterials
+    public IList<Material>? BatchedMaterials
     {
         get
         {
-            return (IList<Material>)GetValue(BatchedMaterialsProperty);
+            return (IList<Material>?)GetValue(BatchedMaterialsProperty);
         }
         set
         {
@@ -66,7 +71,8 @@ public class BatchedMeshGeometryModel3D : Element3D, IHitable, IThrowingShadow, 
     }
 
     public static readonly DependencyProperty BatchedMaterialsProperty =
-        DependencyProperty.Register("BatchedMaterials", typeof(IList<Material>), typeof(BatchedMeshGeometryModel3D), new PropertyMetadata(null,
+        HelixProperty.Register<BatchedMeshGeometryModel3D, IList<Material>?>("BatchedMaterials",
+            null,
             (d, e) =>
             {
                 if (d is BatchedMeshGeometryModel3D { SceneNode: BatchedMeshNode node })
@@ -74,221 +80,238 @@ public class BatchedMeshGeometryModel3D : Element3D, IHitable, IThrowingShadow, 
                     node.Materials = e.NewValue == null ?
                     null : ((IList<Material>)e.NewValue).Where(x => x.Core is PhongMaterialCore).Select(x => (PhongMaterialCore)x.Core!).ToArray();
                 }
-            }));
+            });
 
     public static readonly DependencyProperty IsThrowingShadowProperty =
-    DependencyProperty.Register("IsThrowingShadow", typeof(bool), typeof(BatchedMeshGeometryModel3D), new PropertyMetadata(false, (d, e) =>
+    HelixProperty.Register<BatchedMeshGeometryModel3D, bool>("IsThrowingShadow",
+        false, (d, e) =>
     {
         if (d is Element3D { SceneNode: IThrowingShadow t })
         {
-            t.IsThrowingShadow = (bool)e.NewValue;
+            t.IsThrowingShadow = (bool)e.NewValue!;
         }
-    }));
+    });
 
     /// <summary>
     /// The depth bias property
     /// </summary>
     public static readonly DependencyProperty DepthBiasProperty =
-        DependencyProperty.Register("DepthBias", typeof(int), typeof(BatchedMeshGeometryModel3D), new PropertyMetadata(0, (d, e) =>
+        HelixProperty.Register<BatchedMeshGeometryModel3D, int>("DepthBias",
+            0, (d, e) =>
         {
             if (d is Element3DCore { SceneNode: BatchedMeshNode node })
             {
-                node.DepthBias = (int)e.NewValue;
+                node.DepthBias = (int)e.NewValue!;
             }
-        }));
+        });
 
     /// <summary>
     /// The slope scaled depth bias property
     /// </summary>
     public static readonly DependencyProperty SlopeScaledDepthBiasProperty =
-        DependencyProperty.Register("SlopeScaledDepthBias", typeof(double), typeof(BatchedMeshGeometryModel3D), new PropertyMetadata(0.0, (d, e) =>
+        HelixProperty.Register<BatchedMeshGeometryModel3D, double>("SlopeScaledDepthBias",
+            0.0, (d, e) =>
         {
             if (d is Element3DCore { SceneNode: BatchedMeshNode node })
             {
-                node.SlopeScaledDepthBias = (float)(double)e.NewValue;
+                node.SlopeScaledDepthBias = (float)(double)e.NewValue!;
             }
-        }));
+        });
 
     /// <summary>
     /// The is selected property
     /// </summary>
     public static readonly DependencyProperty IsSelectedProperty =
-        DependencyProperty.Register("IsSelected", typeof(bool), typeof(BatchedMeshGeometryModel3D), new PropertyMetadata(false));
+        HelixProperty.Register<BatchedMeshGeometryModel3D, bool>("IsSelected", false);
 
     /// <summary>
     /// The is multisample enabled property
     /// </summary>
     public static readonly DependencyProperty IsMultisampleEnabledProperty =
-        DependencyProperty.Register("IsMultisampleEnabled", typeof(bool), typeof(BatchedMeshGeometryModel3D), new PropertyMetadata(true, (d, e) =>
+        HelixProperty.Register<BatchedMeshGeometryModel3D, bool>("IsMultisampleEnabled",
+            true, (d, e) =>
         {
             if (d is Element3DCore { SceneNode: BatchedMeshNode node })
             {
-                node.IsMSAAEnabled = (bool)e.NewValue;
+                node.IsMSAAEnabled = (bool)e.NewValue!;
             }
-        }));
+        });
 
     /// <summary>
     /// The fill mode property
     /// </summary>
-    public static readonly DependencyProperty FillModeProperty = DependencyProperty.Register("FillMode", typeof(FillMode), typeof(BatchedMeshGeometryModel3D),
-        new PropertyMetadata(FillMode.Solid, (d, e) =>
+    public static readonly DependencyProperty FillModeProperty =
+        HelixProperty.Register<BatchedMeshGeometryModel3D, FillMode>("FillMode",
+            FillMode.Solid, (d, e) =>
         {
             if (d is Element3DCore { SceneNode: BatchedMeshNode node })
             {
-                node.FillMode = (FillMode)e.NewValue;
+                node.FillMode = (FillMode)e.NewValue!;
             }
-        }));
+        });
 
     /// <summary>
     /// The is scissor enabled property
     /// </summary>
     public static readonly DependencyProperty IsScissorEnabledProperty =
-        DependencyProperty.Register("IsScissorEnabled", typeof(bool), typeof(BatchedMeshGeometryModel3D), new PropertyMetadata(true, (d, e) =>
+        HelixProperty.Register<BatchedMeshGeometryModel3D, bool>("IsScissorEnabled",
+            true, (d, e) =>
         {
             if (d is Element3DCore { SceneNode: BatchedMeshNode node })
             {
-                node.IsScissorEnabled = (bool)e.NewValue;
+                node.IsScissorEnabled = (bool)e.NewValue!;
             }
-        }));
+        });
 
     /// <summary>
     /// The enable view frustum check property
     /// </summary>
     public static readonly DependencyProperty EnableViewFrustumCheckProperty =
-        DependencyProperty.Register("EnableViewFrustumCheck", typeof(bool), typeof(BatchedMeshGeometryModel3D), new PropertyMetadata(true,
+        HelixProperty.Register<BatchedMeshGeometryModel3D, bool>("EnableViewFrustumCheck",
+            true,
             (d, e) =>
             {
                 if (d is Element3DCore { SceneNode: BatchedMeshNode node })
                 {
-                    node.EnableViewFrustumCheck = (bool)e.NewValue;
+                    node.EnableViewFrustumCheck = (bool)e.NewValue!;
                 }
-            }));
+            });
 
     /// <summary>
     /// The is depth clip enabled property
     /// </summary>
-    public static readonly DependencyProperty IsDepthClipEnabledProperty = DependencyProperty.Register("IsDepthClipEnabled", typeof(bool), typeof(BatchedMeshGeometryModel3D),
-        new PropertyMetadata(true, (d, e) =>
+    public static readonly DependencyProperty IsDepthClipEnabledProperty =
+        HelixProperty.Register<BatchedMeshGeometryModel3D, bool>("IsDepthClipEnabled",
+            true, (d, e) =>
         {
             if (d is Element3DCore { SceneNode: BatchedMeshNode node })
             {
-                node.IsDepthClipEnabled = (bool)e.NewValue;
+                node.IsDepthClipEnabled = (bool)e.NewValue!;
             }
-        }));
+        });
 
 
     // Using a DependencyProperty as the backing store for PostEffects.  This enables animation, styling, binding, etc...
     public static readonly DependencyProperty PostEffectsProperty =
-        DependencyProperty.Register("PostEffects", typeof(string), typeof(BatchedMeshGeometryModel3D), new PropertyMetadata(string.Empty, (d, e) =>
+        HelixProperty.Register<BatchedMeshGeometryModel3D, string>("PostEffects",
+            string.Empty, (d, e) =>
         {
             if (d is Element3DCore { SceneNode: BatchedMeshNode node })
             {
-                node.PostEffects = (string)e.NewValue;
+                node.PostEffects = (string)e.NewValue!;
             }
-        }));
+        });
 
     /// <summary>
     /// 
     /// </summary>
     public static readonly DependencyProperty MaterialProperty =
-        DependencyProperty.Register("Material", typeof(Material), typeof(BatchedMeshGeometryModel3D), new PropertyMetadata(null, (d, e) =>
+        HelixProperty.Register<BatchedMeshGeometryModel3D, Material?>("Material",
+            null, (d, e) =>
         {
             if (d is Element3DCore { SceneNode: BatchedMeshNode node })
             {
-                node.Material = (Material)e.NewValue;
+                node.Material = (Material?)e.NewValue;
             }
-        }));
+        });
 
     /// <summary>
     /// Specifiy if model material is transparent. 
     /// During rendering, transparent objects are rendered after opaque objects. Transparent objects' order in scene graph are preserved.
     /// </summary>
     public static readonly DependencyProperty IsTransparentProperty =
-        DependencyProperty.Register("IsTransparent", typeof(bool), typeof(BatchedMeshGeometryModel3D), new PropertyMetadata(false, (d, e) =>
+        HelixProperty.Register<BatchedMeshGeometryModel3D, bool>("IsTransparent",
+            false, (d, e) =>
         {
             if (d is Element3DCore { SceneNode: BatchedMeshNode node })
             {
-                node.IsTransparent = (bool)e.NewValue;
+                node.IsTransparent = (bool)e.NewValue!;
             }
-        }));
+        });
 
     /// <summary>
     /// The front counter clockwise property
     /// </summary>
-    public static readonly DependencyProperty FrontCounterClockwiseProperty = DependencyProperty.Register("FrontCounterClockwise", typeof(bool), typeof(BatchedMeshGeometryModel3D),
-        new PropertyMetadata(true, (d, e) =>
+    public static readonly DependencyProperty FrontCounterClockwiseProperty =
+        HelixProperty.Register<BatchedMeshGeometryModel3D, bool>("FrontCounterClockwise",
+            true, (d, e) =>
         {
             if (d is Element3DCore { SceneNode: BatchedMeshNode node })
             {
-                node.FrontCCW = (bool)e.NewValue;
+                node.FrontCCW = (bool)e.NewValue!;
             }
-        }));
+        });
 
     /// <summary>
     /// The cull mode property
     /// </summary>
-    public static readonly DependencyProperty CullModeProperty = DependencyProperty.Register("CullMode", typeof(CullMode), typeof(BatchedMeshGeometryModel3D),
-        new PropertyMetadata(CullMode.None, (d, e) =>
+    public static readonly DependencyProperty CullModeProperty =
+        HelixProperty.Register<BatchedMeshGeometryModel3D, CullMode>("CullMode",
+            CullMode.None, (d, e) =>
         {
             if (d is Element3DCore { SceneNode: BatchedMeshNode node })
             {
-                node.CullMode = (CullMode)e.NewValue;
+                node.CullMode = (CullMode)e.NewValue!;
             }
-        }));
+        });
 
     /// <summary>
     /// The invert normal property
     /// </summary>
-    public static readonly DependencyProperty InvertNormalProperty = DependencyProperty.Register("InvertNormal", typeof(bool), typeof(BatchedMeshGeometryModel3D),
-        new PropertyMetadata(false, (d, e) =>
+    public static readonly DependencyProperty InvertNormalProperty =
+        HelixProperty.Register<BatchedMeshGeometryModel3D, bool>("InvertNormal",
+            false, (d, e) =>
         {
             if (d is Element3DCore { SceneNode: BatchedMeshNode node })
             {
-                node.InvertNormal = (bool)e.NewValue;
+                node.InvertNormal = (bool)e.NewValue!;
             }
-        }));
+        });
 
     /// <summary>
     /// The render wireframe property
     /// </summary>
     public static readonly DependencyProperty RenderWireframeProperty =
-        DependencyProperty.Register("RenderWireframe", typeof(bool), typeof(BatchedMeshGeometryModel3D), new PropertyMetadata(false, (d, e) =>
+        HelixProperty.Register<BatchedMeshGeometryModel3D, bool>("RenderWireframe",
+            false, (d, e) =>
         {
             if (d is Element3DCore { SceneNode: BatchedMeshNode node })
             {
-                node.RenderWireframe = (bool)e.NewValue;
+                node.RenderWireframe = (bool)e.NewValue!;
             }
-        }));
+        });
 
     /// <summary>
     /// The wireframe color property
     /// </summary>
     public static readonly DependencyProperty WireframeColorProperty =
-        DependencyProperty.Register("WireframeColor", typeof(UIColor), typeof(BatchedMeshGeometryModel3D), new PropertyMetadata(UIColors.SkyBlue, (d, e) =>
+        HelixProperty.Register<BatchedMeshGeometryModel3D, UIColor>("WireframeColor",
+            UIColors.SkyBlue, (d, e) =>
         {
             if (d is Element3DCore { SceneNode: BatchedMeshNode node })
             {
-                node.WireframeColor = ((UIColor)e.NewValue).ToColor4();
+                node.WireframeColor = ((UIColor)e.NewValue!).ToColor4();
             }
-        }));
+        });
 
     /// <summary>
     /// The always hittable property
     /// </summary>
     public static readonly DependencyProperty AlwaysHittableProperty =
-        DependencyProperty.Register("AlwaysHittable", typeof(bool), typeof(BatchedMeshGeometryModel3D), new PropertyMetadata(false, (d, e) =>
+        HelixProperty.Register<BatchedMeshGeometryModel3D, bool>("AlwaysHittable",
+            false, (d, e) =>
         {
             if (d is Element3DCore { SceneNode: BatchedMeshNode node })
             {
-                node.AlwaysHittable = (bool)e.NewValue;
+                node.AlwaysHittable = (bool)e.NewValue!;
             }
-        }));
+        });
 
     public string PostEffects
     {
         get
         {
-            return (string)GetValue(PostEffectsProperty);
+            return (string)GetValue(PostEffectsProperty)!;
         }
         set
         {
@@ -308,7 +331,7 @@ public class BatchedMeshGeometryModel3D : Element3D, IHitable, IThrowingShadow, 
         }
         get
         {
-            return (bool)GetValue(IsThrowingShadowProperty);
+            return (bool)GetValue(IsThrowingShadowProperty)!;
         }
     }
 
@@ -322,7 +345,7 @@ public class BatchedMeshGeometryModel3D : Element3D, IHitable, IThrowingShadow, 
     {
         get
         {
-            return (int)this.GetValue(DepthBiasProperty);
+            return (int)this.GetValue(DepthBiasProperty)!;
         }
         set
         {
@@ -339,7 +362,7 @@ public class BatchedMeshGeometryModel3D : Element3D, IHitable, IThrowingShadow, 
     {
         get
         {
-            return (double)this.GetValue(SlopeScaledDepthBiasProperty);
+            return (double)this.GetValue(SlopeScaledDepthBiasProperty)!;
         }
         set
         {
@@ -356,7 +379,7 @@ public class BatchedMeshGeometryModel3D : Element3D, IHitable, IThrowingShadow, 
     {
         get
         {
-            return (bool)this.GetValue(IsSelectedProperty);
+            return (bool)this.GetValue(IsSelectedProperty)!;
         }
         set
         {
@@ -375,7 +398,7 @@ public class BatchedMeshGeometryModel3D : Element3D, IHitable, IThrowingShadow, 
         }
         get
         {
-            return (bool)GetValue(IsMultisampleEnabledProperty);
+            return (bool)GetValue(IsMultisampleEnabledProperty)!;
         }
     }
     /// <summary>
@@ -392,7 +415,7 @@ public class BatchedMeshGeometryModel3D : Element3D, IHitable, IThrowingShadow, 
         }
         get
         {
-            return (FillMode)GetValue(FillModeProperty);
+            return (FillMode)GetValue(FillModeProperty)!;
         }
     }
     /// <summary>
@@ -409,7 +432,7 @@ public class BatchedMeshGeometryModel3D : Element3D, IHitable, IThrowingShadow, 
         }
         get
         {
-            return (bool)GetValue(IsScissorEnabledProperty);
+            return (bool)GetValue(IsScissorEnabledProperty)!;
         }
     }
     /// <summary>
@@ -426,7 +449,7 @@ public class BatchedMeshGeometryModel3D : Element3D, IHitable, IThrowingShadow, 
         }
         get
         {
-            return (bool)GetValue(IsDepthClipEnabledProperty);
+            return (bool)GetValue(IsDepthClipEnabledProperty)!;
         }
     }
     /// <summary>
@@ -443,18 +466,18 @@ public class BatchedMeshGeometryModel3D : Element3D, IHitable, IThrowingShadow, 
         }
         get
         {
-            return (bool)GetValue(EnableViewFrustumCheckProperty);
+            return (bool)GetValue(EnableViewFrustumCheckProperty)!;
         }
     }
 
     /// <summary>
     /// 
     /// </summary>
-    public Material Material
+    public Material? Material
     {
         get
         {
-            return (Material)this.GetValue(MaterialProperty);
+            return (Material?)this.GetValue(MaterialProperty);
         }
         set
         {
@@ -470,7 +493,7 @@ public class BatchedMeshGeometryModel3D : Element3D, IHitable, IThrowingShadow, 
     {
         get
         {
-            return (bool)GetValue(IsTransparentProperty);
+            return (bool)GetValue(IsTransparentProperty)!;
         }
         set
         {
@@ -490,7 +513,7 @@ public class BatchedMeshGeometryModel3D : Element3D, IHitable, IThrowingShadow, 
     {
         get
         {
-            return (bool)GetValue(RenderWireframeProperty);
+            return (bool)GetValue(RenderWireframeProperty)!;
         }
         set
         {
@@ -508,7 +531,7 @@ public class BatchedMeshGeometryModel3D : Element3D, IHitable, IThrowingShadow, 
     {
         get
         {
-            return (UIColor)GetValue(WireframeColorProperty);
+            return (UIColor)GetValue(WireframeColorProperty)!;
         }
         set
         {
@@ -529,7 +552,7 @@ public class BatchedMeshGeometryModel3D : Element3D, IHitable, IThrowingShadow, 
         }
         get
         {
-            return (bool)GetValue(FrontCounterClockwiseProperty);
+            return (bool)GetValue(FrontCounterClockwiseProperty)!;
         }
     }
 
@@ -547,7 +570,7 @@ public class BatchedMeshGeometryModel3D : Element3D, IHitable, IThrowingShadow, 
         }
         get
         {
-            return (CullMode)GetValue(CullModeProperty);
+            return (CullMode)GetValue(CullModeProperty)!;
         }
     }
 
@@ -562,7 +585,7 @@ public class BatchedMeshGeometryModel3D : Element3D, IHitable, IThrowingShadow, 
         }
         get
         {
-            return (bool)GetValue(InvertNormalProperty);
+            return (bool)GetValue(InvertNormalProperty)!;
         }
     }
     /// <summary>
@@ -575,7 +598,7 @@ public class BatchedMeshGeometryModel3D : Element3D, IHitable, IThrowingShadow, 
     {
         get
         {
-            return (bool)GetValue(AlwaysHittableProperty);
+            return (bool)GetValue(AlwaysHittableProperty)!;
         }
         set
         {

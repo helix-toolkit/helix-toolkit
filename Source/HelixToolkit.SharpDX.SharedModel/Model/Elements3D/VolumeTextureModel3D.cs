@@ -5,6 +5,8 @@
 namespace HelixToolkit.WinUI.SharpDX;
 #elif WPF
 namespace HelixToolkit.Wpf.SharpDX;
+#elif AVALONIA
+namespace HelixToolkit.Avalonia.SharpDX;
 #else
 #error Unknown framework
 #endif
@@ -17,11 +19,11 @@ public class VolumeTextureModel3D : Element3D
     /// <value>
     /// The volume material.
     /// </value>
-    public Material VolumeMaterial
+    public Material? VolumeMaterial
     {
         get
         {
-            return (Material)GetValue(VolumeMaterialProperty);
+            return (Material?)GetValue(VolumeMaterialProperty);
         }
         set
         {
@@ -30,14 +32,14 @@ public class VolumeTextureModel3D : Element3D
     }
 
     public static readonly DependencyProperty VolumeMaterialProperty =
-        DependencyProperty.Register("VolumeMaterial", typeof(Material), typeof(VolumeTextureModel3D),
-            new PropertyMetadata(null, (d, e) =>
+        HelixProperty.Register<VolumeTextureModel3D, Material?>("VolumeMaterial",
+            null, (d, e) =>
             {
                 if (d is VolumeTextureModel3D { SceneNode: VolumeTextureNode node })
                 {
-                    node.Material = (Material)e.NewValue;
+                    node.Material = (Material?)e.NewValue;
                 }
-            }));
+            });
 
     protected override SceneNode OnCreateSceneNode()
     {

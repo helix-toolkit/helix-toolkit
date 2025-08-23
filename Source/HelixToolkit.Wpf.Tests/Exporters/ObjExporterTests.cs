@@ -43,10 +43,8 @@ public class ObjExporterTests : ExporterTests
         }
         finally
         {
-            if (File.Exists(path))
-                File.Delete(path);
-
-            File.Delete(temp);
+            DeleteFileWithoutException(path);
+            DeleteFileWithoutException(temp);
         }
     }
 
@@ -67,13 +65,9 @@ public class ObjExporterTests : ExporterTests
         }
         finally
         {
-            if (File.Exists(path))
-                File.Delete(path);
-
-            if (File.Exists(mtlPath))
-                File.Delete(mtlPath);
-
-            File.Delete(temp);
+            DeleteFileWithoutException(path);
+            DeleteFileWithoutException(mtlPath);
+            DeleteFileWithoutException(temp);
         }
     }
 
@@ -83,10 +77,13 @@ public class ObjExporterTests : ExporterTests
         string temp = Path.GetTempFileName();
         var path = temp + "box_gradient_png.obj";
         var mtlPath = temp + "box_gradient_png.mtl";
+        var texturesFolder = temp + "_textures";
+
+        Directory.CreateDirectory(texturesFolder);
 
         try
         {
-            var e = new ObjExporter { MaterialsFile = mtlPath };
+            var e = new ObjExporter { MaterialsFile = mtlPath, TextureFolder = texturesFolder };
             using (var stream = File.Create(path))
             {
                 this.ExportModel(e, stream, () => new BoxVisual3D { Material = Materials.Rainbow });
@@ -94,22 +91,10 @@ public class ObjExporterTests : ExporterTests
         }
         finally
         {
-            if (File.Exists(path))
-                File.Delete(path);
-
-            if (File.Exists(mtlPath))
-                File.Delete(mtlPath);
-
-            try
-            {
-                if (File.Exists("mat1.png"))
-                    File.Delete("mat1.png");
-            }
-            catch (IOException)
-            {
-            }
-
-            File.Delete(temp);
+            DeleteFileWithoutException(path);
+            DeleteFileWithoutException(mtlPath);
+            DeleteFileWithoutException(temp);
+            DeleteDirectoryWithoutException(texturesFolder);
         }
     }
 
@@ -119,10 +104,13 @@ public class ObjExporterTests : ExporterTests
         string temp = Path.GetTempFileName();
         var path = temp + "box_gradient_jpg.obj";
         var mtlPath = temp + "box_gradient_jpg.mtl";
+        var texturesFolder = temp + "_textures";
+
+        Directory.CreateDirectory(texturesFolder);
 
         try
         {
-            var e = new ObjExporter { TextureExtension = ".jpg", MaterialsFile = mtlPath };
+            var e = new ObjExporter { TextureExtension = ".jpg", MaterialsFile = mtlPath, TextureFolder = texturesFolder };
             using (var stream = File.Create(path))
             {
                 this.ExportModel(e, stream, () => new BoxVisual3D { Material = Materials.Rainbow });
@@ -130,22 +118,10 @@ public class ObjExporterTests : ExporterTests
         }
         finally
         {
-            if (File.Exists(path))
-                File.Delete(path);
-
-            if (File.Exists(mtlPath))
-                File.Delete(mtlPath);
-
-            try
-            {
-                if (File.Exists("mat1.jpg"))
-                    File.Delete("mat1.jpg");
-            }
-            catch (IOException)
-            {
-            }
-
-            File.Delete(temp);
+            DeleteFileWithoutException(path);
+            DeleteFileWithoutException(mtlPath);
+            DeleteFileWithoutException(temp);
+            DeleteDirectoryWithoutException(texturesFolder);
         }
     }
 
@@ -197,13 +173,9 @@ f 1/1 2/2 3/3
         }
         finally
         {
-            if (File.Exists(objPath))
-                File.Delete(objPath);
-
-            if (File.Exists(mtlPath))
-                File.Delete(mtlPath);
-
-            File.Delete(temp);
+            DeleteFileWithoutException(objPath);
+            DeleteFileWithoutException(mtlPath);
+            DeleteFileWithoutException(temp);
         }
     }
 
@@ -323,5 +295,29 @@ f 1/1 2/2 3/3
 
         ClassicAssert.AreEqual(originalMesh.Positions[0], modelMesh.Positions[0]);
         ClassicAssert.AreEqual(originalMesh.Normals[0], modelMesh.Normals[0]);
+    }
+
+    private static void DeleteFileWithoutException(string path)
+    {
+        try
+        {
+            if (File.Exists(path))
+                File.Delete(path);
+        }
+        catch (IOException)
+        {
+        }
+    }
+
+    private static void DeleteDirectoryWithoutException(string path)
+    {
+        try
+        {
+            if (Directory.Exists(path))
+                Directory.Delete(path, true);
+        }
+        catch
+        {
+        }
     }
 }

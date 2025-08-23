@@ -5,6 +5,8 @@ using HelixToolkit.SharpDX.Model.Scene;
 using HelixToolkit.WinUI.SharpDX.Model;
 #elif WPF
 using HelixToolkit.Wpf.SharpDX.Model;
+#elif AVALONIA
+using HelixToolkit.Avalonia.SharpDX.Model;
 #else
 #error Unknown framework
 #endif
@@ -14,6 +16,8 @@ using HelixToolkit.Wpf.SharpDX.Model;
 namespace HelixToolkit.WinUI.SharpDX;
 #elif WPF
 namespace HelixToolkit.Wpf.SharpDX;
+#elif AVALONIA
+namespace HelixToolkit.Avalonia.SharpDX;
 #else
 #error Unknown framework
 #endif
@@ -28,16 +32,16 @@ public class ViewBoxModel3D : ScreenSpacedElement3D
     /// <summary>
     /// 
     /// </summary>
-    public static readonly DependencyProperty UpDirectionProperty = DependencyProperty.Register("UpDirection", typeof(Vector3D), typeof(ViewBoxModel3D),
-        new PropertyMetadata(new Vector3D(0, 1, 0),
+    public static readonly DependencyProperty UpDirectionProperty =
+        HelixProperty.Register<ViewBoxModel3D, Vector3D>("UpDirection",
+            new Vector3D(0, 1, 0),
         (d, e) =>
         {
             if (d is Element3DCore { SceneNode: ViewBoxNode node })
             {
-                node.UpDirection = ((Vector3D)e.NewValue).ToVector3();
+                node.UpDirection = ((Vector3D)e.NewValue!).ToVector3();
             }
-        }));
-
+        });
 
     /// <summary>
     /// Gets or sets up direction.
@@ -53,19 +57,20 @@ public class ViewBoxModel3D : ScreenSpacedElement3D
         }
         get
         {
-            return (Vector3D)GetValue(UpDirectionProperty);
+            return (Vector3D)GetValue(UpDirectionProperty)!;
         }
     }
 
 
-    public static readonly DependencyProperty ViewBoxTextureProperty = DependencyProperty.Register("ViewBoxTexture", typeof(TextureModel), typeof(ViewBoxModel3D),
-        new PropertyMetadata(null, (d, e) =>
+    public static readonly DependencyProperty ViewBoxTextureProperty =
+        HelixProperty.Register<ViewBoxModel3D, TextureModel?>("ViewBoxTexture",
+            null, (d, e) =>
         {
             if (d is Element3DCore { SceneNode: ViewBoxNode node })
             {
                 node.ViewBoxTexture = (TextureModel?)e.NewValue;
             }
-        }));
+        });
 
     public TextureModel? ViewBoxTexture
     {
@@ -90,7 +95,7 @@ public class ViewBoxModel3D : ScreenSpacedElement3D
     {
         get
         {
-            return (bool)GetValue(EnableEdgeClickProperty);
+            return (bool)GetValue(EnableEdgeClickProperty)!;
         }
         set
         {
@@ -102,13 +107,14 @@ public class ViewBoxModel3D : ScreenSpacedElement3D
     /// The enable edge click property
     /// </summary>
     public static readonly DependencyProperty EnableEdgeClickProperty =
-        DependencyProperty.Register("EnableEdgeClick", typeof(bool), typeof(ViewBoxModel3D), new PropertyMetadata(false, (d, e) =>
+        HelixProperty.Register<ViewBoxModel3D, bool>("EnableEdgeClick",
+            false, (d, e) =>
         {
             if (d is Element3DCore { SceneNode: ViewBoxNode node })
             {
-                node.EnableEdgeClick = (bool)e.NewValue;
+                node.EnableEdgeClick = (bool)e.NewValue!;
             }
-        }));
+        });
 
     protected override SceneNode OnCreateSceneNode()
     {

@@ -4,6 +4,8 @@
 using HelixToolkit.WinUI.SharpDX.Core2D;
 #elif WPF
 using HelixToolkit.Wpf.SharpDX.Core2D;
+#elif AVALONIA
+using HelixToolkit.Avalonia.SharpDX.Core2D;
 #else
 #error Unknown framework
 #endif
@@ -13,6 +15,8 @@ using HelixToolkit.Wpf.SharpDX.Core2D;
 namespace HelixToolkit.WinUI.SharpDX.Elements2D;
 #elif WPF
 namespace HelixToolkit.Wpf.SharpDX.Elements2D;
+#elif AVALONIA
+namespace HelixToolkit.Avalonia.SharpDX.Elements2D;
 #else
 #error Unknown framework
 #endif
@@ -26,12 +30,13 @@ public class Canvas2D : Panel2D
     /// <summary>
     /// The left property
     /// </summary>
-    public static readonly DependencyProperty LeftProperty = DependencyProperty.RegisterAttached("Left", typeof(double), typeof(Canvas2D),
-        new PropertyMetadata(double.PositiveInfinity,
+    public static readonly DependencyProperty LeftProperty =
+        HelixProperty.RegisterAttached<Canvas2D, double>("Left",
+            double.PositiveInfinity,
             (d, e) =>
             {
                 (d as Element2DCore)?.InvalidateMeasure();
-            }));
+            });
 
     /// <summary>
     /// Sets the left.
@@ -50,18 +55,19 @@ public class Canvas2D : Panel2D
     /// <returns></returns>
     public static double GetLeft(Element2DCore element)
     {
-        return (double)element.GetValue(LeftProperty);
+        return (double)element.GetValue(LeftProperty)!;
     }
 
     /// <summary>
     /// The top property
     /// </summary>
-    public static readonly DependencyProperty TopProperty = DependencyProperty.RegisterAttached("Top", typeof(double), typeof(Canvas2D),
-        new PropertyMetadata(double.PositiveInfinity,
+    public static readonly DependencyProperty TopProperty =
+        HelixProperty.RegisterAttached<Canvas2D, double>("Top",
+            double.PositiveInfinity,
             (d, e) =>
             {
                 (d as Element2DCore)?.InvalidateMeasure();
-            }));
+            });
 
     /// <summary>
     /// Sets the top.
@@ -80,18 +86,19 @@ public class Canvas2D : Panel2D
     /// <returns></returns>
     public static double GetTop(Element2DCore element)
     {
-        return (double)element.GetValue(TopProperty);
+        return (double)element.GetValue(TopProperty)!;
     }
 
     /// <summary>
     /// The right property
     /// </summary>
-    public static readonly DependencyProperty RightProperty = DependencyProperty.RegisterAttached("Right", typeof(double), typeof(Canvas2D),
-        new PropertyMetadata(double.PositiveInfinity,
+    public static readonly DependencyProperty RightProperty =
+        HelixProperty.RegisterAttached<Canvas2D, double>("Right",
+            double.PositiveInfinity,
             (d, e) =>
             {
                 (d as Element2DCore)?.InvalidateMeasure();
-            }));
+            });
 
     /// <summary>
     /// Sets the right.
@@ -110,18 +117,19 @@ public class Canvas2D : Panel2D
     /// <returns></returns>
     public static double GetRight(Element2DCore element)
     {
-        return (double)element.GetValue(RightProperty);
+        return (double)element.GetValue(RightProperty)!;
     }
 
     /// <summary>
     /// The bottom property
     /// </summary>
-    public static readonly DependencyProperty BottomProperty = DependencyProperty.RegisterAttached("Bottom", typeof(double), typeof(Canvas2D),
-        new PropertyMetadata(double.PositiveInfinity,
+    public static readonly DependencyProperty BottomProperty =
+        HelixProperty.RegisterAttached<Canvas2D, double>("Bottom",
+            double.PositiveInfinity,
             (d, e) =>
             {
                 (d as Element2DCore)?.InvalidateMeasure();
-            }));
+            });
 
     /// <summary>
     /// Sets the bottom.
@@ -140,7 +148,7 @@ public class Canvas2D : Panel2D
     /// <returns></returns>
     public static double GetBottom(Element2DCore element)
     {
-        return (double)element.GetValue(BottomProperty);
+        return (double)element.GetValue(BottomProperty)!;
     }
     #endregion
 

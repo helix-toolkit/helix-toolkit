@@ -5,6 +5,8 @@ using Microsoft.UI.Input;
 #elif WPF
 using System.Windows;
 using System.Windows.Input;
+#elif AVALONIA
+using Avalonia.Interactivity;
 #else
 #error Unknown framework
 #endif
@@ -14,6 +16,8 @@ using System.Windows.Input;
 namespace HelixToolkit.WinUI.SharpDX.Elements2D;
 #elif WPF
 namespace HelixToolkit.Wpf.SharpDX.Elements2D;
+#elif AVALONIA
+namespace HelixToolkit.Avalonia.SharpDX.Elements2D;
 #else
 #error Unknown framework
 #endif
@@ -27,6 +31,7 @@ public class Mouse2DEventArgs : RoutedEventArgs
         get; private set;
     }
 #elif WPF
+#elif AVALONIA
 #else
 #error Unknown framework
 #endif
@@ -46,15 +51,17 @@ public class Mouse2DEventArgs : RoutedEventArgs
         get; private set;
     }
 
-    public InputEventArgs? InputArgs
+    public UIInputEventArgs? InputArgs
     {
         get; private set;
     }
 
-    public Mouse2DEventArgs(RoutedEvent routedEvent, object? source, HitTest2DResult? hitTestResult, Point position, Viewport3DX? viewport = null, InputEventArgs? inputArgs = null)
+    public Mouse2DEventArgs(RoutedEvent routedEvent, object? source, HitTest2DResult? hitTestResult, Point position, Viewport3DX? viewport = null, UIInputEventArgs? inputArgs = null)
 #if false
 #elif WINUI
 #elif WPF
+        : base(routedEvent, source)
+#elif AVALONIA
         : base(routedEvent, source)
 #else
 #error Unknown framework
@@ -64,6 +71,7 @@ public class Mouse2DEventArgs : RoutedEventArgs
 #elif WINUI
         this.RoutedEvent = routedEvent;
 #elif WPF
+#elif AVALONIA
 #else
 #error Unknown framework
 #endif
@@ -79,6 +87,8 @@ public class Mouse2DEventArgs : RoutedEventArgs
 #elif WINUI
 #elif WPF
         : base(routedEvent, source)
+#elif AVALONIA
+        : base(routedEvent, source)
 #else
 #error Unknown framework
 #endif
@@ -87,6 +97,7 @@ public class Mouse2DEventArgs : RoutedEventArgs
 #elif WINUI
         this.RoutedEvent = routedEvent;
 #elif WPF
+#elif AVALONIA
 #else
 #error Unknown framework
 #endif

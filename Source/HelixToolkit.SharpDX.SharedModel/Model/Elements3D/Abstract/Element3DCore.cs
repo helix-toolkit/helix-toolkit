@@ -7,6 +7,8 @@ using SharpDX;
 namespace HelixToolkit.WinUI.SharpDX.Model;
 #elif WPF
 namespace HelixToolkit.Wpf.SharpDX.Model;
+#elif AVALONIA
+namespace HelixToolkit.Avalonia.SharpDX.Model;
 #else
 #error Unknown framework
 #endif
@@ -14,7 +16,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model;
 /// <summary>
 /// External Wrapper core to be used for different platform
 /// </summary>
-public abstract class Element3DCore : FrameworkControl, IDisposable
+public abstract partial class Element3DCore : FrameworkControl, IDisposable
 {
     public sealed class SceneNodeCreatedEventArgs : EventArgs
     {
@@ -113,6 +115,9 @@ public abstract class Element3DCore : FrameworkControl, IDisposable
     /// <value>
     /// The bounds.
     /// </value>
+#if AVALONIA
+    new
+#endif
     public BoundingBox Bounds
     {
         get

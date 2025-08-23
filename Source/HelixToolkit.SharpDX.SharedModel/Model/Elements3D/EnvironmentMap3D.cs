@@ -6,6 +6,8 @@ using HelixToolkit.SharpDX.Model.Scene;
 using HelixToolkit.WinUI.SharpDX.Model;
 #elif WPF
 using HelixToolkit.Wpf.SharpDX.Model;
+#elif AVALONIA
+using HelixToolkit.Avalonia.SharpDX.Model;
 #else
 #error Unknown framework
 #endif
@@ -15,6 +17,8 @@ using HelixToolkit.Wpf.SharpDX.Model;
 namespace HelixToolkit.WinUI.SharpDX;
 #elif WPF
 namespace HelixToolkit.Wpf.SharpDX;
+#elif AVALONIA
+namespace HelixToolkit.Avalonia.SharpDX;
 #else
 #error Unknown framework
 #endif
@@ -27,14 +31,15 @@ public class EnvironmentMap3D : Element3D
     /// <summary>
     /// The texture property
     /// </summary>
-    public static readonly DependencyProperty TextureProperty = DependencyProperty.Register("Texture", typeof(TextureModel), typeof(EnvironmentMap3D),
-        new PropertyMetadata(null, (d, e) =>
+    public static readonly DependencyProperty TextureProperty =
+        HelixProperty.Register<EnvironmentMap3D, TextureModel?>("Texture",
+            null, (d, e) =>
         {
             if (d is Element3DCore { SceneNode: EnvironmentMapNode node })
             {
                 node.Texture = (TextureModel?)e.NewValue;
             }
-        }));
+        });
 
     /// <summary>
     /// Gets or sets the texture.
@@ -54,14 +59,15 @@ public class EnvironmentMap3D : Element3D
         }
     }
 
-    public static readonly DependencyProperty SkipRenderingProperty = DependencyProperty.Register("SkipRendering", typeof(bool), typeof(EnvironmentMap3D),
-        new PropertyMetadata(false, (d, e) =>
+    public static readonly DependencyProperty SkipRenderingProperty =
+        HelixProperty.Register<EnvironmentMap3D, bool>("SkipRendering",
+            false, (d, e) =>
         {
             if (d is Element3DCore { SceneNode: EnvironmentMapNode node })
             {
-                node.SkipRendering = (bool)e.NewValue;
+                node.SkipRendering = (bool)e.NewValue!;
             }
-        }));
+        });
 
     /// <summary>
     /// Skip environment map rendering, but still keep it available for other object to use.
@@ -74,7 +80,7 @@ public class EnvironmentMap3D : Element3D
         }
         get
         {
-            return (bool)GetValue(SkipRenderingProperty);
+            return (bool)GetValue(SkipRenderingProperty)!;
         }
     }
 

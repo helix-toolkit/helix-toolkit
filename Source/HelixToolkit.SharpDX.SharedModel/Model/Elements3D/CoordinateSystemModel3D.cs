@@ -6,6 +6,8 @@ using HelixToolkit.SharpDX.Model.Scene;
 using HelixToolkit.WinUI.SharpDX.Model;
 #elif WPF
 using HelixToolkit.Wpf.SharpDX.Model;
+#elif AVALONIA
+using HelixToolkit.Avalonia.SharpDX.Model;
 #else
 #error Unknown framework
 #endif
@@ -15,6 +17,8 @@ using HelixToolkit.Wpf.SharpDX.Model;
 namespace HelixToolkit.WinUI.SharpDX;
 #elif WPF
 namespace HelixToolkit.Wpf.SharpDX;
+#elif AVALONIA
+namespace HelixToolkit.Avalonia.SharpDX;
 #else
 #error Unknown framework
 #endif
@@ -27,92 +31,99 @@ public class CoordinateSystemModel3D : ScreenSpacedElement3D
     /// <summary>
     /// <see cref="AxisXColor"/>
     /// </summary>
-    public static readonly DependencyProperty AxisXColorProperty = DependencyProperty.Register("AxisXColor", typeof(UIColor), typeof(CoordinateSystemModel3D),
-        new PropertyMetadata(UIColors.Red,
+    public static readonly DependencyProperty AxisXColorProperty =
+        HelixProperty.Register<CoordinateSystemModel3D, UIColor>("AxisXColor",
+            UIColors.Red,
             (d, e) =>
             {
                 if (d is Element3DCore { SceneNode: CoordinateSystemNode node })
                 {
-                    node.AxisXColor = ((UIColor)e.NewValue).ToColor4();
+                    node.AxisXColor = ((UIColor)e.NewValue!).ToColor4();
                 }
-            }));
+            });
 
     /// <summary>
     /// <see cref="AxisYColor"/>
     /// </summary>
-    public static readonly DependencyProperty AxisYColorProperty = DependencyProperty.Register("AxisYColor", typeof(UIColor), typeof(CoordinateSystemModel3D),
-        new PropertyMetadata(UIColors.Green,
+    public static readonly DependencyProperty AxisYColorProperty =
+        HelixProperty.Register<CoordinateSystemModel3D, UIColor>("AxisYColor",
+            UIColors.Green,
             (d, e) =>
             {
                 if (d is Element3DCore { SceneNode: CoordinateSystemNode node })
                 {
-                    node.AxisYColor = ((UIColor)e.NewValue).ToColor4();
+                    node.AxisYColor = ((UIColor)e.NewValue!).ToColor4();
                 }
-            }));
+            });
 
     /// <summary>
     /// <see cref="AxisZColor"/>
     /// </summary>
-    public static readonly DependencyProperty AxisZColorProperty = DependencyProperty.Register("AxisZColor", typeof(UIColor), typeof(CoordinateSystemModel3D),
-        new PropertyMetadata(UIColors.Blue,
+    public static readonly DependencyProperty AxisZColorProperty =
+        HelixProperty.Register<CoordinateSystemModel3D, UIColor>("AxisZColor",
+            UIColors.Blue,
             (d, e) =>
             {
                 if (d is Element3DCore { SceneNode: CoordinateSystemNode node })
                 {
-                    node.AxisZColor = ((UIColor)e.NewValue).ToColor4();
+                    node.AxisZColor = ((UIColor)e.NewValue!).ToColor4();
                 }
-            }));
+            });
     /// <summary>
     /// 
     /// </summary>
-    public static readonly DependencyProperty LabelColorProperty = DependencyProperty.Register("LabelColor", typeof(UIColor), typeof(CoordinateSystemModel3D),
-        new PropertyMetadata(UIColors.Gray,
+    public static readonly DependencyProperty LabelColorProperty =
+        HelixProperty.Register<CoordinateSystemModel3D, UIColor>("LabelColor",
+            UIColors.Gray,
             (d, e) =>
             {
                 if (d is Element3DCore { SceneNode: CoordinateSystemNode node })
                 {
-                    node.LabelColor = ((UIColor)e.NewValue).ToColor4();
+                    node.LabelColor = ((UIColor)e.NewValue!).ToColor4();
                 }
-            }));
+            });
 
     /// <summary>
     /// The coordinate system label x property
     /// </summary>
-    public static readonly DependencyProperty CoordinateSystemLabelXProperty = DependencyProperty.Register(
-            "CoordinateSystemLabelX", typeof(string), typeof(CoordinateSystemModel3D), new PropertyMetadata("X",
+    public static readonly DependencyProperty CoordinateSystemLabelXProperty =
+        HelixProperty.Register<CoordinateSystemModel3D, string>("CoordinateSystemLabelX",
+            "X",
             (d, e) =>
             {
                 if (d is Element3DCore { SceneNode: CoordinateSystemNode node })
                 {
-                    node.LabelX = (string)e.NewValue;
+                    node.LabelX = (string)e.NewValue!;
                 }
-            }));
+            });
 
     /// <summary>
     /// The coordinate system label Y property
     /// </summary>
-    public static readonly DependencyProperty CoordinateSystemLabelYProperty = DependencyProperty.Register(
-            "CoordinateSystemLabelY", typeof(string), typeof(CoordinateSystemModel3D), new PropertyMetadata("Y",
+    public static readonly DependencyProperty CoordinateSystemLabelYProperty =
+        HelixProperty.Register<CoordinateSystemModel3D, string>("CoordinateSystemLabelY",
+            "Y",
             (d, e) =>
             {
                 if (d is Element3DCore { SceneNode: CoordinateSystemNode node })
                 {
-                    node.LabelY = (string)e.NewValue;
+                    node.LabelY = (string)e.NewValue!;
                 }
-            }));
+            });
 
     /// <summary>
     /// The coordinate system label Z property
     /// </summary>
-    public static readonly DependencyProperty CoordinateSystemLabelZProperty = DependencyProperty.Register(
-            "CoordinateSystemLabelZ", typeof(string), typeof(CoordinateSystemModel3D), new PropertyMetadata("Z",
+    public static readonly DependencyProperty CoordinateSystemLabelZProperty =
+        HelixProperty.Register<CoordinateSystemModel3D, string>("CoordinateSystemLabelZ",
+            "Z",
             (d, e) =>
             {
                 if (d is Element3DCore { SceneNode: CoordinateSystemNode node })
                 {
-                    node.LabelZ = (string)e.NewValue;
+                    node.LabelZ = (string)e.NewValue!;
                 }
-            }));
+            });
 
     /// <summary>
     /// Axis X Color
@@ -125,7 +136,7 @@ public class CoordinateSystemModel3D : ScreenSpacedElement3D
         }
         get
         {
-            return (UIColor)GetValue(AxisXColorProperty);
+            return (UIColor)GetValue(AxisXColorProperty)!;
         }
     }
 
@@ -140,7 +151,7 @@ public class CoordinateSystemModel3D : ScreenSpacedElement3D
         }
         get
         {
-            return (UIColor)GetValue(AxisYColorProperty);
+            return (UIColor)GetValue(AxisYColorProperty)!;
         }
     }
 
@@ -155,7 +166,7 @@ public class CoordinateSystemModel3D : ScreenSpacedElement3D
         }
         get
         {
-            return (UIColor)GetValue(AxisZColorProperty);
+            return (UIColor)GetValue(AxisZColorProperty)!;
         }
     }
 
@@ -170,7 +181,7 @@ public class CoordinateSystemModel3D : ScreenSpacedElement3D
         }
         get
         {
-            return (UIColor)GetValue(LabelColorProperty);
+            return (UIColor)GetValue(LabelColorProperty)!;
         }
     }
 
@@ -185,7 +196,7 @@ public class CoordinateSystemModel3D : ScreenSpacedElement3D
         }
         get
         {
-            return (string)GetValue(CoordinateSystemLabelXProperty);
+            return (string)GetValue(CoordinateSystemLabelXProperty)!;
         }
     }
 
@@ -200,7 +211,7 @@ public class CoordinateSystemModel3D : ScreenSpacedElement3D
         }
         get
         {
-            return (string)GetValue(CoordinateSystemLabelYProperty);
+            return (string)GetValue(CoordinateSystemLabelYProperty)!;
         }
     }
 
@@ -215,7 +226,7 @@ public class CoordinateSystemModel3D : ScreenSpacedElement3D
         }
         get
         {
-            return (string)GetValue(CoordinateSystemLabelZProperty);
+            return (string)GetValue(CoordinateSystemLabelZProperty)!;
         }
     }
 

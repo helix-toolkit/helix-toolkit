@@ -39,12 +39,12 @@ internal class ZoomRectangleHandler : MouseGestureHandler
     /// Occurs when the position is changed during a manipulation.
     /// </summary>
     /// <param name="e">The <see cref="Point"/> instance containing the event data.</param>
-    public override void Delta(Vector2 e)
+    public override void Delta(Point e)
     {
         base.Delta(e);
 
         double ar = this.Controller.Viewport.ActualHeight / this.Controller.Viewport.ActualWidth;
-        var delta = this.MouseDownPoint - e;
+        var delta = this.MouseDownPoint.ToVector2() - e.ToVector2();
 
         if (Math.Abs(delta.Y / delta.X) < ar)
         {
@@ -55,7 +55,7 @@ internal class ZoomRectangleHandler : MouseGestureHandler
             delta.X = (float)(Math.Sign(delta.X) * Math.Abs(delta.Y / ar));
         }
 
-        this.zoomRectangle = new Rect(this.MouseDownPoint.ToPoint(), (this.MouseDownPoint - delta).ToPoint());
+        this.zoomRectangle = new Rect(this.MouseDownPoint, (this.MouseDownPoint.ToVector2() - delta).ToPoint());
 
         //this.Viewport.ShowZoomRectangle(this.zoomRectangle);
     }
