@@ -6,17 +6,20 @@
 
 **Helix Toolkit is a collection of 3D components for .NET Framework.**
 
-[**HelixToolkit.WPF:**](/Source/HelixToolkit.Wpf)
+[**HelixToolkit.Wpf:**](/Source/HelixToolkit.Wpf)
 Adds variety of functionalities/models on the top of internal WPF 3D models (Media3D namespace).
 
-[**HelixToolkit.SharpDX.WPF:**](/Source/HelixToolkit.Wpf.SharpDX)
+[**HelixToolkit.Wpf.SharpDX:**](/Source/HelixToolkit.Wpf.SharpDX)
 Custom 3D Engine and XAML/MVVM compatible Scene Graphs based on [SharpDX](https://github.com/sharpdx/SharpDX)(DirectX 11) for WPF.
 
-[**HelixToolkit.SharpDX.WinUI:**](/Source/HelixToolkit.WinUI.SharpDX)
+[**HelixToolkit.WinUI.SharpDX:**](/Source/HelixToolkit.WinUI.SharpDX)
 Custom 3D Engine and XAML/MVVM compatible Scene Graphs based on [SharpDX](https://github.com/sharpdx/SharpDX)(DirectX 11) for WinUI.
 
+[**HelixToolkit.Avalonia.SharpDX:**](/Source/HelixToolkit.Avalonia.SharpDX)
+Custom 3D Engine and XAML/MVVM compatible Scene Graphs based on [SharpDX](https://github.com/sharpdx/SharpDX)(DirectX 11) for AvaloniaUI.
+
 [**HelixToolkit.SharpDX.Assimp:**](/Source/HelixToolkit.SharpDX.Assimp)
-[Assimp.Net](https://bitbucket.org/Starnick/assimpnet/src/master/) 3D model importer/expoter support for HelixToolkit.SharpDX Components.
+[SharpAssimp](https://github.com/JeremyAnsel/SharpAssimp) 3D model importer/expoter support for HelixToolkit.SharpDX Components.
 
 [**Examples:**](/Source/Examples)
 Please download full source code to run examples.
@@ -66,15 +69,16 @@ flowchart TD
         n7["HelixToolkit.SharpDX.Assimp"]
         n8["HelixToolkit.Wpf.SharpDX"]
         n9["HelixToolkit.WinUI.SharpDX"]
+        n10["HelixToolkit.Avallonia.SharpDX"]
   end
  subgraph s2["WPF 3D Engine"]
-        n10["HelixToolkit.Wpf"]
-        n11["HelixToolkit.Wpf.TDxInput"]
+        n11["HelixToolkit.Wpf"]
+        n12["HelixToolkit.Wpf.TDxInput"]
   end
     hx["HelixToolkit"] --> n1["HelixToolkit.Maths"]
     n1 --> n2["HelixToolkit.Geometry"]
-    n6 --> n7 & n8 & n9
-    n10 --> n11
+    n6 --> n7 & n8 & n9 & n10
+    n11 --> n12
     n2 --> s2
     n2 --> s1
 
@@ -91,23 +95,24 @@ Please use the following template to report bugs.
 - Sample Code:
 
 ## News
-#### 2025-03-30
-[v2.27.0](https://github.com/helix-toolkit/helix-toolkit/releases/tag/v2.27.0) releases are available on nuget. [Release Note](/CHANGELOG.md)
+#### 2025-08-17
+[v2.27.1](https://github.com/helix-toolkit/helix-toolkit/releases/tag/v2.27.0) releases are available on nuget. [Release Note](/CHANGELOG.md)
 
-:bangbang: This is the final release of HelixToolkit v2. Moving forward, our focus will shift to the development of v3.
+:bangbang: HelixToolkit v2 is in maintainance mode (Will only release new version on critical bug fixes). Moving forward, our focus will shift to the development of v3.
 
-- [WPF](https://www.nuget.org/packages/HelixToolkit.Wpf/2.27.0)
-- [Core.WPF](https://www.nuget.org/packages/HelixToolkit.Core.Wpf/2.27.0)
-- [WPF.Input](https://www.nuget.org/packages/HelixToolkit.Wpf.Input/2.27.0)
-- [WPF.SharpDX](https://www.nuget.org/packages/HelixToolkit.Wpf.SharpDX/2.27.0)
-- [UWP](https://www.nuget.org/packages/HelixToolkit.UWP/2.27.0)
-- [SharpDX.Core](https://www.nuget.org/packages/HelixToolkit.SharpDX.Core/2.27.0)
-- [SharpDX.Core.Wpf](https://www.nuget.org/packages/HelixToolkit.SharpDX.Core.Wpf/2.27.0)
-- [WinUI](https://www.nuget.org/packages/HelixToolkit.WinUI/2.27.0)
-- [SharpDX.Assimp](https://www.nuget.org/packages/HelixToolkit.SharpDX.Assimp/2.27.0)
+- [WPF](https://www.nuget.org/packages/HelixToolkit.Wpf/2.27.1)
+- [Core.WPF](https://www.nuget.org/packages/HelixToolkit.Core.Wpf/2.27.1)
+- [WPF.Input](https://www.nuget.org/packages/HelixToolkit.Wpf.Input/2.27.1)
+- [WPF.SharpDX](https://www.nuget.org/packages/HelixToolkit.Wpf.SharpDX/2.27.1)
+- [UWP](https://www.nuget.org/packages/HelixToolkit.UWP/2.27.1)
+- [SharpDX.Core](https://www.nuget.org/packages/HelixToolkit.SharpDX.Core/2.27.1)
+- [SharpDX.Core.Wpf](https://www.nuget.org/packages/HelixToolkit.SharpDX.Core.Wpf/2.27.1)
+- [WinUI](https://www.nuget.org/packages/HelixToolkit.WinUI/2.27.1)
+- [SharpDX.Assimp](https://www.nuget.org/packages/HelixToolkit.SharpDX.Assimp/2.27.1)
 
 #### Changes (Please refer to [Release Note](https://github.com/helix-toolkit/helix-toolkit/blob/master/CHANGELOG.md) for details)
 
 #### 2023-03-17
 Nightly build myget feed link has been updated to: https://www.myget.org/F/helixtoolkit-nightly
+
 

@@ -5,6 +5,8 @@
 using HelixToolkit.WinUI.SharpDX.Model;
 #elif WPF
 using HelixToolkit.Wpf.SharpDX.Model;
+#elif AVALONIA
+using HelixToolkit.Avalonia.SharpDX.Model;
 #else
 #error Unknown framework
 #endif
@@ -14,6 +16,8 @@ using HelixToolkit.Wpf.SharpDX.Model;
 namespace HelixToolkit.WinUI.SharpDX;
 #elif WPF
 namespace HelixToolkit.Wpf.SharpDX;
+#elif AVALONIA
+namespace HelixToolkit.Avalonia.SharpDX;
 #else
 #error Unknown framework
 #endif
@@ -24,21 +28,23 @@ public class LineMaterialGeometryModel3D : GeometryModel3D
     /// 
     /// </summary>
     public static readonly DependencyProperty MaterialProperty =
-        DependencyProperty.Register("Material", typeof(Material), typeof(LineMaterialGeometryModel3D), new PropertyMetadata(null, (d, e) =>
+        HelixProperty.Register<LineMaterialGeometryModel3D, Material?>("Material",
+            null, (d, e) =>
         {
             if (d is Element3DCore { SceneNode: LineNode node })
             {
                 node.Material = e.NewValue as Material;
             }
-        }));
+        });
+
     /// <summary>
     /// 
     /// </summary>
-    public Material Material
+    public Material? Material
     {
         get
         {
-            return (Material)this.GetValue(MaterialProperty);
+            return (Material?)this.GetValue(MaterialProperty);
         }
         set
         {
@@ -50,13 +56,14 @@ public class LineMaterialGeometryModel3D : GeometryModel3D
     /// The hit test thickness property
     /// </summary>
     public static readonly DependencyProperty HitTestThicknessProperty =
-        DependencyProperty.Register("HitTestThickness", typeof(double), typeof(LineMaterialGeometryModel3D), new PropertyMetadata(1.0, (d, e) =>
+        HelixProperty.Register<LineMaterialGeometryModel3D, double>("HitTestThickness",
+            1.0, (d, e) =>
         {
             if (d is Element3DCore { SceneNode: LineNode node })
             {
-                node.HitTestThickness = (double)e.NewValue;
+                node.HitTestThickness = (double)e.NewValue!;
             }
-        }));
+        });
 
     /// <summary>
     /// Used only for point/line hit test
@@ -65,7 +72,7 @@ public class LineMaterialGeometryModel3D : GeometryModel3D
     {
         get
         {
-            return (double)this.GetValue(HitTestThicknessProperty);
+            return (double)this.GetValue(HitTestThicknessProperty)!;
         }
         set
         {

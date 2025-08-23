@@ -162,6 +162,17 @@ public class DoubleKeyDictionary<K, T, V> : IEnumerable<DoubleKeyPairValue<K, T,
             // here we can be sure that the key is in both lists,
             // but we need to check the contents of the inner dictionary
             var otherInnerDictionary = other.OuterDictionary[innerItems.Key];
+
+            if (innerItems.Value.Count != otherInnerDictionary.Count)
+            {
+                isEqual = false;
+            }
+
+            if (!isEqual)
+            {
+                break;
+            }
+
             foreach (var innerValue in innerItems.Value)
             {
                 if (!otherInnerDictionary.ContainsValue(innerValue.Value))
@@ -172,6 +183,11 @@ public class DoubleKeyDictionary<K, T, V> : IEnumerable<DoubleKeyPairValue<K, T,
                 if (!otherInnerDictionary.ContainsKey(innerValue.Key))
                 {
                     isEqual = false;
+                }
+
+                if (!isEqual)
+                {
+                    break;
                 }
             }
 

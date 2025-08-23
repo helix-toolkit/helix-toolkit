@@ -8,7 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="JeremyAnsel.HLSL.Targets" Version="2.0.26" />
+    <PackageReference Include="JeremyAnsel.HLSL.Targets" Version="2.0.29" />
   </ItemGroup>
     <Target Name="BuildShader" BeforeTargets="BeforeBuild">
         <ItemGroup>
@@ -359,6 +359,6 @@
             <CsoFiles Include="$(OutDir)**\*.cso" />
         </ItemGroup>
         <!-- Fail the build if no .cso files are found -->
-        <Error Text="No .cso files found in the build output folder: $(OutDir)" Condition="@(CsoFiles->Count()) == 0" />
+        <Error Text="No .cso files found in the build output folder: $(OutDir)" Condition="@(CsoFiles-&gt;Count()) == 0" />
     </Target>
 </Project>

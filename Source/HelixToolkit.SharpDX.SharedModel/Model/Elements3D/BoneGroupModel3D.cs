@@ -6,6 +6,8 @@ using SharpDX;
 namespace HelixToolkit.WinUI.SharpDX;
 #elif WPF
 namespace HelixToolkit.Wpf.SharpDX;
+#elif AVALONIA
+namespace HelixToolkit.Avalonia.SharpDX;
 #else
 #error Unknown framework
 #endif
@@ -21,11 +23,11 @@ public sealed class BoneGroupModel3D : GroupModel3D
     /// <value>
     /// The bone matrices.
     /// </value>
-    public Matrix[] BoneMatrices
+    public Matrix[]? BoneMatrices
     {
         get
         {
-            return (Matrix[])GetValue(BoneMatricesProperty);
+            return (Matrix[]?)GetValue(BoneMatricesProperty);
         }
         set
         {
@@ -37,13 +39,14 @@ public sealed class BoneGroupModel3D : GroupModel3D
     /// The bone matrices property
     /// </summary>
     public static readonly DependencyProperty BoneMatricesProperty =
-        DependencyProperty.Register("BoneMatrices", typeof(Matrix[]), typeof(BoneGroupModel3D), new PropertyMetadata(null, (d, e) =>
+        HelixProperty.Register<BoneGroupModel3D, Matrix[]?>("BoneMatrices",
+            null, (d, e) =>
         {
             if (d is Element3D { SceneNode: BoneGroupNode node })
             {
-                node.BoneMatrices = (Matrix[])e.NewValue;
+                node.BoneMatrices = (Matrix[]?)e.NewValue;
             }
-        }));
+        });
 
     protected override SceneNode OnCreateSceneNode()
     {

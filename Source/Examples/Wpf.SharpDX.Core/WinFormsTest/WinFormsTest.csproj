@@ -36,7 +36,7 @@
     </ItemGroup>
     <ItemGroup>
       <PackageReference Include="SharpDX.Desktop" Version="4.2.0" />
-      <PackageReference Include="ImGui.NET" Version="1.91.0.1" />
+      <PackageReference Include="ImGui.NET" Version="1.91.6.1" />
     </ItemGroup>
     <ItemGroup>
         <Compile Include="..\..\GlobalUsing.cs" />

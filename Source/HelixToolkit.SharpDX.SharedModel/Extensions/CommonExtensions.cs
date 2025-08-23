@@ -7,6 +7,9 @@ using Media = Microsoft.UI.Xaml.Media;
 #elif WPF
 using System.Windows;
 using Media = System.Windows.Media;
+#elif AVALONIA
+using Avalonia.Media;
+using Media = Avalonia.Media;
 #else
 #error Unknown framework
 #endif
@@ -16,6 +19,8 @@ using Media = System.Windows.Media;
 namespace HelixToolkit.WinUI.SharpDX.Extensions;
 #elif WPF
 namespace HelixToolkit.Wpf.SharpDX.Extensions;
+#elif AVALONIA
+namespace HelixToolkit.Avalonia.SharpDX.Extensions;
 #else
 #error Unknown framework
 #endif
@@ -140,6 +145,29 @@ public static class CommonExtensions
         {
             return global::SharpDX.DirectWrite.FontWeight.Normal;
         }
+#elif AVALONIA
+        return fontWeight switch
+        {
+            FontWeight.Thin => global::SharpDX.DirectWrite.FontWeight.Thin,
+            FontWeight.ExtraLight => global::SharpDX.DirectWrite.FontWeight.ExtraLight,
+            //FontWeight.UltraLight => global::SharpDX.DirectWrite.FontWeight.UltraLight,
+            FontWeight.Light => global::SharpDX.DirectWrite.FontWeight.Light,
+            FontWeight.SemiLight => global::SharpDX.DirectWrite.FontWeight.SemiLight,
+            FontWeight.Normal => global::SharpDX.DirectWrite.FontWeight.Normal,
+            //FontWeight.Regular => global::SharpDX.DirectWrite.FontWeight.Regular,
+            FontWeight.Medium => global::SharpDX.DirectWrite.FontWeight.Medium,
+            FontWeight.DemiBold => global::SharpDX.DirectWrite.FontWeight.DemiBold,
+            //FontWeight.SemiBold => global::SharpDX.DirectWrite.FontWeight.SemiBold,
+            FontWeight.Bold => global::SharpDX.DirectWrite.FontWeight.Bold,
+            FontWeight.ExtraBold => global::SharpDX.DirectWrite.FontWeight.ExtraBold,
+            //FontWeight.UltraBold => global::SharpDX.DirectWrite.FontWeight.UltraBold,
+            FontWeight.Black => global::SharpDX.DirectWrite.FontWeight.Black,
+            //FontWeight.Heavy => global::SharpDX.DirectWrite.FontWeight.Heavy,
+            //FontWeight.Solid => global::SharpDX.DirectWrite.FontWeight.Heavy,
+            FontWeight.ExtraBlack => global::SharpDX.DirectWrite.FontWeight.ExtraBlack,
+            //FontWeight.UltraBlack => global::SharpDX.DirectWrite.FontWeight.UltraBlack,
+            _ => global::SharpDX.DirectWrite.FontWeight.Normal
+        };
 #else
 #error Unknown framework
 #endif
@@ -182,6 +210,14 @@ public static class CommonExtensions
         {
             return global::SharpDX.DirectWrite.FontStyle.Normal;
         }
+#elif AVALONIA
+        return style switch
+        {
+            FontStyle.Normal => global::SharpDX.DirectWrite.FontStyle.Normal,
+            FontStyle.Italic => global::SharpDX.DirectWrite.FontStyle.Italic,
+            FontStyle.Oblique => global::SharpDX.DirectWrite.FontStyle.Oblique,
+            _ => global::SharpDX.DirectWrite.FontStyle.Normal
+        };
 #else
 #error Unknown framework
 #endif
@@ -198,6 +234,8 @@ public static class CommonExtensions
         };
     }
 
+#if false
+#elif WINUI || WPF
     public static D2D.Gamma ToD2DColorInterpolationMode(this Media.ColorInterpolationMode mode)
     {
         return mode switch
@@ -207,6 +245,10 @@ public static class CommonExtensions
             _ => D2D.Gamma.Linear,
         };
     }
+#elif AVALONIA
+#else
+#error Unknown framework
+#endif
 
     public static D2D.Brush ToD2DBrush(this Media.Brush brush, global::SharpDX.Direct2D1.RenderTarget target)
     {
@@ -222,7 +264,9 @@ public static class CommonExtensions
                 (
                     target,
                     linear.GradientStops.Select(x => new D2D.GradientStop() { Color = x.Color.ToRawColor4(), Position = (float)x.Offset }).ToArray(),
+#if WINUI || WPF
                     linear.ColorInterpolationMode.ToD2DColorInterpolationMode(),
+#endif
                     linear.SpreadMethod.ToD2DExtendMode()
                 )
                 );
@@ -248,6 +292,24 @@ public static class CommonExtensions
                     radial.SpreadMethod.ToD2DExtendMode()
                 ));
         }
+#elif AVALONIA
+        else if (brush is Media.RadialGradientBrush radial)
+        {
+            return new D2D.RadialGradientBrush(target,
+                new D2D.RadialGradientBrushProperties()
+                {
+                    Center = radial.Center.ToRawVector2(),
+                    GradientOriginOffset = radial.GradientOrigin.ToRawVector2(),
+                    RadiusX = (float)radial.RadiusX.Scalar,
+                    RadiusY = (float)radial.RadiusY.Scalar
+                },
+                new D2D.GradientStopCollection
+                (
+                    target,
+                    radial.GradientStops.Select(x => new D2D.GradientStop() { Color = x.Color.ToRawColor4(), Position = (float)x.Offset }).ToArray(),
+                    radial.SpreadMethod.ToD2DExtendMode()
+                ));
+        }
 #else
 #error Unknown framework
 #endif
@@ -264,7 +326,9 @@ public static class CommonExtensions
             Media.PenLineCap.Flat => D2D.CapStyle.Flat,
             Media.PenLineCap.Round => D2D.CapStyle.Round,
             Media.PenLineCap.Square => D2D.CapStyle.Square,
+#if WINUI || WPF
             Media.PenLineCap.Triangle => D2D.CapStyle.Triangle,
+#endif
             _ => D2D.CapStyle.Flat,
         };
     }
@@ -307,6 +371,35 @@ public static class CommonExtensions
             return D2D.DashStyle.DashDotDot;
         }
         else if (style == Media.DashStyles.Dot)
+        {
+            return D2D.DashStyle.Dot;
+        }
+        else
+        {
+            return D2D.DashStyle.Solid;
+        }
+    }
+#elif AVALONIA
+    public static D2D.DashStyle ToD2DDashStyle(this Media.DashStyle? style)
+    {
+        if (style is null)
+        {
+            return D2D.DashStyle.Solid;
+        }
+
+        if (style == Media.DashStyle.Dash)
+        {
+            return D2D.DashStyle.Dash;
+        }
+        else if (style == Media.DashStyle.DashDot)
+        {
+            return D2D.DashStyle.DashDot;
+        }
+        else if (style == Media.DashStyle.DashDotDot)
+        {
+            return D2D.DashStyle.DashDotDot;
+        }
+        else if (style == Media.DashStyle.Dot)
         {
             return D2D.DashStyle.Dot;
         }

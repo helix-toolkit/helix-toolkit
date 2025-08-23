@@ -1,6 +1,4 @@
-﻿using HelixToolkit.SharpDX.Utilities;
-using SharpDX;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Globalization;
 
 namespace HelixToolkit.Wpf.SharpDX.Utilities;

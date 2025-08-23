@@ -2,6 +2,8 @@
 #elif WINUI
 #elif WPF
 using System.ComponentModel;
+#elif AVALONIA
+using System.ComponentModel;
 #else
 #error Unknown framework
 #endif
@@ -11,6 +13,8 @@ using System.ComponentModel;
 namespace HelixToolkit.WinUI.SharpDX;
 #elif WPF
 namespace HelixToolkit.Wpf.SharpDX;
+#elif AVALONIA
+namespace HelixToolkit.Avalonia.SharpDX;
 #else
 #error Unknown framework
 #endif
@@ -21,6 +25,8 @@ namespace HelixToolkit.Wpf.SharpDX;
 #if false
 #elif WINUI
 #elif WPF
+[TypeConverter(typeof(ManipulationActionConverter))]
+#elif AVALONIA
 [TypeConverter(typeof(ManipulationActionConverter))]
 #else
 #error Unknown framework

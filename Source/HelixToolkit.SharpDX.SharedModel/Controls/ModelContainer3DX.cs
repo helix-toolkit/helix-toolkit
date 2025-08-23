@@ -14,6 +14,8 @@ using DeviceContext = SharpDX.Direct3D11.DeviceContext1;
 #elif WINUI
 #elif WPF
 using HelixToolkit.Wpf.SharpDX.Utilities;
+#elif AVALONIA
+using HelixToolkit.Avalonia.SharpDX.Utilities;
 #else
 #error Unknown framework
 #endif
@@ -23,6 +25,8 @@ using HelixToolkit.Wpf.SharpDX.Utilities;
 namespace HelixToolkit.WinUI.SharpDX;
 #elif WPF
 namespace HelixToolkit.Wpf.SharpDX;
+#elif AVALONIA
+namespace HelixToolkit.Avalonia.SharpDX;
 #else
 #error Unknown framework
 #endif
@@ -36,9 +40,10 @@ public class ModelContainer3DX : HelixItemsControl, IModelContainer
     /// <summary>
     /// The EffectsManager property. Suggest to bind effects manager in viewmodel. Assign effect manager from code behind may cause memory leak
     /// </summary>
-    public static readonly DependencyProperty EffectsManagerProperty = DependencyProperty.Register(
-        "EffectsManager", typeof(IEffectsManager), typeof(ModelContainer3DX), new PropertyMetadata(null,
-            (s, e) => ((ModelContainer3DX)s).EffectsManagerPropertyChanged()));
+    public static readonly DependencyProperty EffectsManagerProperty =
+        HelixProperty.Register<ModelContainer3DX, IEffectsManager?>("EffectsManager",
+            null,
+            (s, e) => ((ModelContainer3DX)s).EffectsManagerPropertyChanged());
 
     /// <summary>
     /// Gets or sets the <see cref="EffectsManagerProperty"/>.
@@ -48,7 +53,7 @@ public class ModelContainer3DX : HelixItemsControl, IModelContainer
     {
         get
         {
-            return (IEffectsManager)GetValue(EffectsManagerProperty);
+            return (IEffectsManager?)GetValue(EffectsManagerProperty);
         }
         set
         {
@@ -136,11 +141,18 @@ public class ModelContainer3DX : HelixItemsControl, IModelContainer
         get => currentRenderHost?.ImmediateDeviceContext;
     }
 
-    public new float ActualWidth
+#if WINUI || WPF
+    new
+#endif
+    public float ActualWidth
     {
         get => 0;
     }
-    public new float ActualHeight
+
+#if WINUI || WPF
+    new
+#endif
+    public float ActualHeight
     {
         get => 0;
     }
@@ -339,9 +351,9 @@ public class ModelContainer3DX : HelixItemsControl, IModelContainer
     {
         get
         {
-            foreach (Element3D item in Items)
+            foreach (Element3D? item in Items)
             {
-                yield return item.SceneNode;
+                yield return item?.SceneNode;
             }
         }
     }
@@ -383,6 +395,8 @@ public class ModelContainer3DX : HelixItemsControl, IModelContainer
 #if false
 #elif WINUI
 #elif WPF
+    [TypeConverter(typeof(Color4Converter))]
+#elif AVALONIA
     [TypeConverter(typeof(Color4Converter))]
 #else
 #error Unknown framework
@@ -621,8 +635,14 @@ public class ModelContainer3DX : HelixItemsControl, IModelContainer
     public ModelContainer3DX()
     {
         this.IsHitTestVisible = false;
-#if !NETFX_CORE && !WINUI
+
+#if false
+#elif WINUI
+#elif WPF
         Visibility = System.Windows.Visibility.Collapsed;
+#elif AVALONIA
+#else
+#error Unknown framework
 #endif
     }
 

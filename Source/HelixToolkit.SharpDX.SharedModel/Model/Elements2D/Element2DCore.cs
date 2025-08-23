@@ -1,12 +1,22 @@
 ﻿using HelixToolkit.SharpDX;
 using HelixToolkit.SharpDX.Model.Scene2D;
 using SharpDX;
+#if false
+#elif WINUI
+#elif WPF
+#elif AVALONIA
+using Avalonia.Threading;
+#else
+#error Unknown framework
+#endif
 
 #if false
 #elif WINUI
 namespace HelixToolkit.WinUI.SharpDX.Core2D;
 #elif WPF
 namespace HelixToolkit.Wpf.SharpDX.Core2D;
+#elif AVALONIA
+namespace HelixToolkit.Avalonia.SharpDX.Core2D;
 #else
 #error Unknown framework
 #endif
@@ -109,6 +119,15 @@ public abstract partial class Element2DCore : FrameworkControl, IDisposable
                 Dispatcher.Invoke(() => { OnDetached(); });
             }
         }
+#elif AVALONIA
+        if (Dispatcher.UIThread.CheckAccess())
+        {
+            OnDetached();
+        }
+        else
+        {
+            Dispatcher.UIThread.Invoke(() => { OnDetached(); });
+        }
 #else
 #error Unknown framework
 #endif
@@ -166,6 +185,8 @@ public abstract partial class Element2DCore : FrameworkControl, IDisposable
 #elif WINUI
     new
 #elif WPF
+#elif AVALONIA
+    new
 #else
 #error Unknown framework
 #endif
@@ -178,6 +199,8 @@ public abstract partial class Element2DCore : FrameworkControl, IDisposable
 #elif WINUI
     new
 #elif WPF
+#elif AVALONIA
+    new
 #else
 #error Unknown framework
 #endif

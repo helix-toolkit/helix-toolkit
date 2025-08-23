@@ -5,6 +5,8 @@
 namespace HelixToolkit.WinUI.SharpDX;
 #elif WPF
 namespace HelixToolkit.Wpf.SharpDX;
+#elif AVALONIA
+namespace HelixToolkit.Avalonia.SharpDX;
 #else
 #error Unknown framework
 #endif
@@ -16,6 +18,9 @@ public class MouseUp3DEventArgs : Mouse3DEventArgs
     public MouseUp3DEventArgs(HitTestResult? hitTestResult, Point position, Viewport3DX? viewport = null, UIInputEventArgs? originalInputEventArgs = null)
         : base(hitTestResult, position, viewport, originalInputEventArgs)
 #elif WPF
+    public MouseUp3DEventArgs(object? source, HitTestResult? hitTestResult, Point position, Viewport3DX? viewport = null, UIInputEventArgs? originalInputEventArgs = null)
+        : base(Element3D.MouseUp3DEvent, source, hitTestResult, position, viewport, originalInputEventArgs)
+#elif AVALONIA
     public MouseUp3DEventArgs(object? source, HitTestResult? hitTestResult, Point position, Viewport3DX? viewport = null, UIInputEventArgs? originalInputEventArgs = null)
         : base(Element3D.MouseUp3DEvent, source, hitTestResult, position, viewport, originalInputEventArgs)
 #else

@@ -9,6 +9,8 @@ using System.Runtime.Serialization;
 #elif WINUI
 #elif WPF
 using HelixToolkit.Wpf.SharpDX.Utilities;
+#elif AVALONIA
+using HelixToolkit.Avalonia.SharpDX.Utilities;
 #else
 #error Unknown framework
 #endif
@@ -18,8 +20,10 @@ using HelixToolkit.Wpf.SharpDX.Utilities;
 namespace HelixToolkit.WinUI.SharpDX;
 #elif WPF
 namespace HelixToolkit.Wpf.SharpDX;
+#elif AVALONIA
+namespace HelixToolkit.Avalonia.SharpDX;
 #else
-#error Unknown framework
+s#error Unknown framework
 #endif
 
 /// <summary>
@@ -32,14 +36,15 @@ public class ColorStripeMaterial : Material
     /// The diffuse color property
     /// </summary>
     public static readonly DependencyProperty DiffuseColorProperty =
-        DependencyProperty.Register("DiffuseColor", typeof(Color4), typeof(ColorStripeMaterial), new PropertyMetadata((Color4)Color.White,
+        HelixProperty.Register<ColorStripeMaterial, Color4>("DiffuseColor",
+            (Color4)Color.White,
             (d, e) =>
             {
                 if (d is Material { Core: ColorStripeMaterialCore core })
                 {
-                    core.DiffuseColor = (Color4)e.NewValue;
+                    core.DiffuseColor = (Color4)e.NewValue!;
                 }
-            }));
+            });
 
     /// <summary>
     /// Gets or sets the diffuse color for the material.
@@ -48,6 +53,8 @@ public class ColorStripeMaterial : Material
 #elif WINUI
 #elif WPF
     [TypeConverter(typeof(Color4Converter))]
+#elif AVALONIA
+    [TypeConverter(typeof(Color4Converter))]
 #else
 #error Unknown framework
 #endif
@@ -55,7 +62,7 @@ public class ColorStripeMaterial : Material
     {
         get
         {
-            return (Color4)this.GetValue(DiffuseColorProperty);
+            return (Color4)this.GetValue(DiffuseColorProperty)!;
         }
         set
         {
@@ -67,13 +74,14 @@ public class ColorStripeMaterial : Material
     /// The color stripe property
     /// </summary>
     public static readonly DependencyProperty ColorStripeXProperty =
-        DependencyProperty.Register("ColorStripeX", typeof(IList<Color4>), typeof(ColorStripeMaterial), new PropertyMetadata(null, (d, e) =>
+        HelixProperty.Register<ColorStripeMaterial, IList<Color4>?>("ColorStripeX",
+            null, (d, e) =>
         {
             if (d is Material { Core: ColorStripeMaterialCore core })
             {
                 core.ColorStripeX = (IList<Color4>?)e.NewValue;
             }
-        }));
+        });
 
     /// <summary>
     /// Gets or sets the color stripe.
@@ -97,13 +105,14 @@ public class ColorStripeMaterial : Material
     /// The color stripe property
     /// </summary>
     public static readonly DependencyProperty ColorStripeYProperty =
-        DependencyProperty.Register("ColorStripeY", typeof(IList<Color4>), typeof(ColorStripeMaterial), new PropertyMetadata(null, (d, e) =>
+        HelixProperty.Register<ColorStripeMaterial, IList<Color4>?>("ColorStripeY",
+            null, (d, e) =>
         {
             if (d is Material { Core: ColorStripeMaterialCore core })
             {
                 core.ColorStripeY = (IList<Color4>?)e.NewValue;
             }
-        }));
+        });
 
     /// <summary>
     /// Gets or sets the color stripe.
@@ -126,15 +135,15 @@ public class ColorStripeMaterial : Material
     /// 
     /// </summary>
     public static readonly DependencyProperty ColorStripeSamplerProperty =
-        DependencyProperty.Register("ColorStripeSampler", typeof(SamplerStateDescription), typeof(ColorStripeMaterial), new PropertyMetadata(DefaultSamplers.LinearSamplerClampAni1,
+        HelixProperty.Register<ColorStripeMaterial, SamplerStateDescription>("ColorStripeSampler",
+            DefaultSamplers.LinearSamplerClampAni1,
             (d, e) =>
             {
                 if (d is Material { Core: ColorStripeMaterialCore core })
                 {
-                    core.ColorStripeSampler = (SamplerStateDescription)e.NewValue;
+                    core.ColorStripeSampler = (SamplerStateDescription)e.NewValue!;
                 }
-            }));
-
+            });
 
     /// <summary>
     /// Gets or sets a value indicating whether [color stripe x enabled].
@@ -146,7 +155,7 @@ public class ColorStripeMaterial : Material
     {
         get
         {
-            return (bool)GetValue(ColorStripeXEnabledProperty);
+            return (bool)GetValue(ColorStripeXEnabledProperty)!;
         }
         set
         {
@@ -158,14 +167,15 @@ public class ColorStripeMaterial : Material
     /// The color stripe x enabled property
     /// </summary>
     public static readonly DependencyProperty ColorStripeXEnabledProperty =
-        DependencyProperty.Register("ColorStripeXEnabled", typeof(bool), typeof(ColorStripeMaterial), new PropertyMetadata(true,
+        HelixProperty.Register<ColorStripeMaterial, bool>("ColorStripeXEnabled",
+            true,
             (d, e) =>
             {
                 if (d is Material { Core: ColorStripeMaterialCore core })
                 {
-                    core.ColorStripeXEnabled = (bool)e.NewValue;
+                    core.ColorStripeXEnabled = (bool)e.NewValue!;
                 }
-            }));
+            });
 
     /// <summary>
     /// Gets or sets a value indicating whether [color stripe y enabled].
@@ -177,7 +187,7 @@ public class ColorStripeMaterial : Material
     {
         get
         {
-            return (bool)GetValue(ColorStripeYEnabledProperty);
+            return (bool)GetValue(ColorStripeYEnabledProperty)!;
         }
         set
         {
@@ -189,14 +199,15 @@ public class ColorStripeMaterial : Material
     /// The color stripe y enabled property
     /// </summary>
     public static readonly DependencyProperty ColorStripeYEnabledProperty =
-        DependencyProperty.Register("ColorStripeYEnabled", typeof(bool), typeof(ColorStripeMaterial), new PropertyMetadata(true,
+        HelixProperty.Register<ColorStripeMaterial, bool>("ColorStripeYEnabled",
+            true,
             (d, e) =>
             {
                 if (d is Material { Core: ColorStripeMaterialCore core })
                 {
-                    core.ColorStripeYEnabled = (bool)e.NewValue;
+                    core.ColorStripeYEnabled = (bool)e.NewValue!;
                 }
-            }));
+            });
 
     /// <summary>
     /// 
@@ -205,7 +216,7 @@ public class ColorStripeMaterial : Material
     {
         get
         {
-            return (SamplerStateDescription)this.GetValue(ColorStripeSamplerProperty);
+            return (SamplerStateDescription)this.GetValue(ColorStripeSamplerProperty)!;
         }
         set
         {
@@ -256,6 +267,7 @@ public class ColorStripeMaterial : Material
             Name = Name
         };
     }
+#elif AVALONIA
 #else
 #error Unknown framework
 #endif

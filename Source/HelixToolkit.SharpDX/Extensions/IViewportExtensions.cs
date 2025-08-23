@@ -28,7 +28,7 @@ public static class IViewportExtensions
     /// <param name="pos">The position.</param>
     /// <param name="hits">The hits.</param>
     /// <returns></returns>
-    public static bool FindHitsInFrustum(this IViewport3DX viewport, Vector2 pos, ref List<HitTestResult> hits)
+    public static bool FindHitsInFrustum(this IViewport3DX viewport, Point pos, ref List<HitTestResult> hits)
     {
         if (viewport.RenderHost == null || !viewport.RenderHost.IsRendering || viewport.RenderHost.RenderContext is null)
         {

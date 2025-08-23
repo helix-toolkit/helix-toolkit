@@ -464,6 +464,18 @@ public static class MeshGeometryHelper
         return sb.Length > 0 ? sb.ToString() : null;
     }
 
+    /// <summary>
+    /// Cuts the mesh with the specified plane.
+    /// </summary>
+    /// <param name="mesh">The mesh.</param>
+    /// <param name="plane">The plane</param>
+    /// <returns>
+    /// The new cutted <see cref="MeshGeometry3D"/> by the plane.
+    /// </returns>
+    public static MeshGeometry3D Cut(this MeshGeometry3D mesh, Plane plane)
+    {
+        return Cut(mesh, plane.GetPlanOrigin(), plane.Normal);
+    }
 
     /// <summary>
     /// Cuts the mesh with the specified plane.
@@ -471,29 +483,29 @@ public static class MeshGeometryHelper
     /// <param name="mesh">
     /// The mesh.
     /// </param>
-    /// <param name="plane">
+    /// <param name="planeOrigin">
     /// The plane origin.
     /// </param>
-    /// <param name="normal">
+    /// <param name="planeNormal">
     /// The plane normal.
     /// </param>
     /// <returns>
-    /// The <see cref="MeshGeometry3D"/>.
+    /// The new cutted <see cref="MeshGeometry3D"/> by the plane.
     /// </returns>
-    public static MeshGeometry3D Cut(this MeshGeometry3D mesh, Vector3 plane, Vector3 normal)
+    public static MeshGeometry3D Cut(this MeshGeometry3D mesh, Vector3 planeOrigin, Vector3 planeNormal)
     {
-        var hasTextureCoordinates = mesh.TextureCoordinates != null && mesh.TextureCoordinates.Count > 0;
-        var hasNormals = mesh.Normals != null && mesh.Normals.Count > 0;
+        MeshGeometry3D cloneMesh = mesh.Clone();
+        var hasTextureCoordinates = cloneMesh.TextureCoordinates != null && cloneMesh.TextureCoordinates.Count > 0;
+        var hasNormals = cloneMesh.Normals != null && cloneMesh.Normals.Count > 0;
         var meshBuilder = new MeshBuilder(hasNormals, hasTextureCoordinates);
-        var contourHelper = new ContourHelper(plane, normal, mesh);
-        foreach (var position in mesh.Positions)
+        var contourHelper = new ContourHelper(planeOrigin, planeNormal, cloneMesh);
+        foreach (var position in cloneMesh.Positions)
         {
             meshBuilder.Positions.Add(position);
         }
-
         if (hasTextureCoordinates)
         {
-            foreach (var textureCoordinate in mesh.TextureCoordinates!)
+            foreach (var textureCoordinate in cloneMesh.TextureCoordinates!)
             {
                 meshBuilder.TextureCoordinates!.Add(textureCoordinate);
             }
@@ -501,17 +513,17 @@ public static class MeshGeometryHelper
 
         if (hasNormals)
         {
-            foreach (var n in mesh.Normals!)
+            foreach (var n in cloneMesh.Normals!)
             {
                 meshBuilder.Normals!.Add(n);
             }
         }
 
-        for (var i = 0; i < mesh.TriangleIndices.Count; i += 3)
+        for (var i = 0; i < cloneMesh.TriangleIndices.Count; i += 3)
         {
-            var index0 = mesh.TriangleIndices[i];
-            var index1 = mesh.TriangleIndices[i + 1];
-            var index2 = mesh.TriangleIndices[i + 2];
+            var index0 = cloneMesh.TriangleIndices[i];
+            var index1 = cloneMesh.TriangleIndices[i + 1];
+            var index2 = cloneMesh.TriangleIndices[i + 2];
 
 
             contourHelper.ContourFacet(index0, index1, index2,
@@ -550,22 +562,33 @@ public static class MeshGeometryHelper
     /// <summary>
     /// Gets the contour segments.
     /// </summary>
+    /// <param name="mesh">The mesh.</param>
+    /// <param name="plane">The plane.</param>
+    /// <returns></returns>
+    public static IList<Vector3> GetContourSegments(this MeshGeometry3D mesh, Plane plane)
+    {
+        return GetContourSegments(mesh, plane.GetPlanOrigin(), plane.Normal);
+    }
+
+    /// <summary>
+    /// Gets the contour segments.
+    /// </summary>
     /// <param name="mesh">
     /// The mesh.
     /// </param>
-    /// <param name="plane">
+    /// <param name="planeOrigin">
     /// The plane origin.
     /// </param>
-    /// <param name="normal">
+    /// <param name="planeNormal">
     /// The plane normal.
     /// </param>
     /// <returns>
     /// The segments of the contour.
     /// </returns>
-    public static IList<Vector3> GetContourSegments(this MeshGeometry3D mesh, Vector3 plane, Vector3 normal)
+    public static IList<Vector3> GetContourSegments(this MeshGeometry3D mesh, Vector3 planeOrigin, Vector3 planeNormal)
     {
         var segments = new Vector3Collection();
-        var contourHelper = new ContourHelper(plane, normal, mesh);
+        var contourHelper = new ContourHelper(planeOrigin, planeNormal, mesh);
         for (var i = 0; i < mesh.TriangleIndices.Count; i += 3)
         {
             contourHelper.ContourFacet(
@@ -580,10 +603,9 @@ public static class MeshGeometryHelper
             segments.AddRange(positions);
         }
 
+
         return segments;
     }
-
-
     /// <summary>
     /// Combines the segments.
     /// </summary>

@@ -5,6 +5,8 @@
 namespace HelixToolkit.WinUI.SharpDX;
 #elif WPF
 namespace HelixToolkit.Wpf.SharpDX;
+#elif AVALONIA
+namespace HelixToolkit.Avalonia.SharpDX;
 #else
 #error Unknown framework
 #endif
@@ -18,79 +20,77 @@ public abstract class ProjectionCamera : Camera, IProjectionCameraModel
     /// The create left hand system property
     /// </summary>
     public static readonly DependencyProperty CreateLeftHandSystemProperty =
-        DependencyProperty.Register(
-            "CreateLeftHandSystem", typeof(bool), typeof(ProjectionCamera), new PropertyMetadata(false, (d, e) =>
+        HelixProperty.Register<ProjectionCamera, bool>(
+            "CreateLeftHandSystem", false, (d, e) =>
             {
                 if (d is Camera { CameraInternal: ProjectionCameraCore core })
                 {
-                    core.CreateLeftHandSystem = (bool)e.NewValue;
+                    core.CreateLeftHandSystem = (bool)e.NewValue!;
                 }
-            }));
+            });
 
     /// <summary>
     /// The far plane distance property.
     /// </summary>
     public static readonly DependencyProperty FarPlaneDistanceProperty =
-        DependencyProperty.Register(
-            "FarPlaneDistance", typeof(double), typeof(ProjectionCamera), new PropertyMetadata(1e3, (d, e) =>
+        HelixProperty.Register<ProjectionCamera, double>(
+            "FarPlaneDistance", 1e3, (d, e) =>
             {
                 if (d is Camera { CameraInternal: ProjectionCameraCore core })
                 {
-                    core.FarPlaneDistance = (float)(double)e.NewValue;
+                    core.FarPlaneDistance = (float)(double)e.NewValue!;
                 }
-            }));
+            });
 
     /// <summary>
     /// The look direction property
     /// </summary>
-    public static readonly DependencyProperty LookDirectionProperty = DependencyProperty.Register(
-        "LookDirection", typeof(Vector3D), typeof(ProjectionCamera), new PropertyMetadata(new Vector3D(0, 0, -5), (d, e) =>
+    public static readonly DependencyProperty LookDirectionProperty = HelixProperty.Register<ProjectionCamera, Vector3D>(
+        "LookDirection", new Vector3D(0, 0, -5), (d, e) =>
         {
             if (d is Camera { CameraInternal: ProjectionCameraCore core })
             {
-                core.LookDirection = ((Vector3D)e.NewValue).ToVector3();
+                core.LookDirection = ((Vector3D)e.NewValue!).ToVector3();
             }
-        }));
+        });
 
     /// <summary>
     /// The near plane distance property
     /// </summary>
     public static readonly DependencyProperty NearPlaneDistanceProperty =
-        DependencyProperty.Register(
-            "NearPlaneDistance", typeof(double), typeof(ProjectionCamera), new PropertyMetadata(0.01, (d, e) =>
+        HelixProperty.Register<ProjectionCamera, double>(
+            "NearPlaneDistance", 0.01, (d, e) =>
             {
                 if (d is Camera { CameraInternal: ProjectionCameraCore core })
                 {
-                    core.NearPlaneDistance = (float)(double)e.NewValue;
+                    core.NearPlaneDistance = (float)(double)e.NewValue!;
                 }
-            }));
+            });
 
     /// <summary>
     /// The position property
     /// </summary>
-    public static readonly DependencyProperty PositionProperty = DependencyProperty.Register(
+    public static readonly DependencyProperty PositionProperty = HelixProperty.Register<ProjectionCamera, Point3D>(
         "Position",
-        typeof(Point3D),
-        typeof(ProjectionCamera),
-        new PropertyMetadata(new Point3D(0, 0, +5), (d, e) =>
+        new Point3D(0, 0, +5), (d, e) =>
         {
             if (d is Camera { CameraInternal: ProjectionCameraCore core })
             {
-                core.Position = ((Point3D)e.NewValue).ToVector3();
+                core.Position = ((Point3D)e.NewValue!).ToVector3();
             }
-        }));
+        });
 
     /// <summary>
     /// Up direction property
     /// </summary>
-    public static readonly DependencyProperty UpDirectionProperty = DependencyProperty.Register(
-        "UpDirection", typeof(Vector3D), typeof(ProjectionCamera), new PropertyMetadata(new Vector3D(0, 1, 0), (d, e) =>
+    public static readonly DependencyProperty UpDirectionProperty = HelixProperty.Register<ProjectionCamera, Vector3D>(
+        "UpDirection", new Vector3D(0, 1, 0), (d, e) =>
         {
             if (d is Camera { CameraInternal: ProjectionCameraCore core })
             {
-                core.UpDirection = ((Vector3D)e.NewValue).ToVector3();
+                core.UpDirection = ((Vector3D)e.NewValue!).ToVector3();
             }
-        }));
+        });
 
     /// <summary>
     /// Gets or sets a value indicating whether to create a left hand system.
@@ -102,7 +102,7 @@ public abstract class ProjectionCamera : Camera, IProjectionCameraModel
     {
         get
         {
-            return (bool)this.GetValue(CreateLeftHandSystemProperty);
+            return (bool)this.GetValue(CreateLeftHandSystemProperty)!;
         }
         set
         {
@@ -120,7 +120,7 @@ public abstract class ProjectionCamera : Camera, IProjectionCameraModel
     {
         get
         {
-            return (double)this.GetValue(FarPlaneDistanceProperty);
+            return (double)this.GetValue(FarPlaneDistanceProperty)!;
         }
         set
         {
@@ -138,7 +138,7 @@ public abstract class ProjectionCamera : Camera, IProjectionCameraModel
     {
         get
         {
-            return (Vector3D)this.GetValue(LookDirectionProperty);
+            return (Vector3D)this.GetValue(LookDirectionProperty)!;
         }
         set
         {
@@ -156,7 +156,7 @@ public abstract class ProjectionCamera : Camera, IProjectionCameraModel
     {
         get
         {
-            return (double)this.GetValue(NearPlaneDistanceProperty);
+            return (double)this.GetValue(NearPlaneDistanceProperty)!;
         }
         set
         {
@@ -174,7 +174,7 @@ public abstract class ProjectionCamera : Camera, IProjectionCameraModel
     {
         get
         {
-            return (Point3D)this.GetValue(PositionProperty);
+            return (Point3D)this.GetValue(PositionProperty)!;
         }
         set
         {
@@ -206,7 +206,7 @@ public abstract class ProjectionCamera : Camera, IProjectionCameraModel
     {
         get
         {
-            return (Vector3D)this.GetValue(UpDirectionProperty);
+            return (Vector3D)this.GetValue(UpDirectionProperty)!;
         }
         set
         {

@@ -1,5 +1,5 @@
-﻿using System.Windows.Media.Media3D;
-using System.Windows;
+﻿using System.Windows;
+using System.Windows.Media.Media3D;
 
 namespace HelixToolkit.Wpf;
 
@@ -7,9 +7,11 @@ namespace HelixToolkit.Wpf;
 /// A visual element that shows a terrain model.
 /// </summary>
 /// <remarks>
-/// The following terrrain model file formats are supported:
+/// The following terrain model file formats are supported:
 /// .bt
 /// .btz (gzip compressed .bt)
+/// .hgt (SRTM1, SRTM3)
+/// .hgt.zip (SRTM1, SRTM3) compressed
 ///  <para>
 /// The origin of model will be at the midpoint of the terrain.
 /// A compression method to convert from ".bt" to ".btz" can be found in the GZipHelper.
@@ -23,6 +25,12 @@ public class TerrainVisual3D : ModelVisual3D
     /// </summary>
     public static readonly DependencyProperty SourceProperty = DependencyProperty.Register(
         "Source", typeof(string), typeof(TerrainVisual3D), new UIPropertyMetadata(null, SourceChanged));
+
+    /// <summary>
+    /// Identifies the <see cref="Model"/> dependency property.
+    /// </summary>
+    public static readonly DependencyProperty ModelProperty = DependencyProperty.Register(
+        "Model", typeof(ITerrainModel), typeof(TerrainVisual3D), new UIPropertyMetadata(null, ModelChanged));
 
     /// <summary>
     /// The visual child.
@@ -56,6 +64,23 @@ public class TerrainVisual3D : ModelVisual3D
     }
 
     /// <summary>
+    /// Gets or sets the terrain model.
+    /// </summary>
+    /// <value>The terrain model.</value>
+    public ITerrainModel Model
+    {
+        get
+        {
+            return (ITerrainModel)this.GetValue(ModelProperty);
+        }
+
+        set
+        {
+            this.SetValue(ModelProperty, value);
+        }
+    }
+
+    /// <summary>
     /// The source changed.
     /// </summary>
     /// <param name="obj">
@@ -70,17 +95,50 @@ public class TerrainVisual3D : ModelVisual3D
     }
 
     /// <summary>
+    /// The source object changed.
+    /// </summary>
+    /// <param name="obj">
+    /// The obj.
+    /// </param>
+    /// <param name="args">
+    /// The args.
+    /// </param>
+    protected static void ModelChanged(DependencyObject obj, DependencyPropertyChangedEventArgs args)
+    {
+        ((TerrainVisual3D)obj).UpdateModel();
+    }
+
+    /// <summary>
     /// Updates the model.
     /// </summary>
     private void UpdateModel()
     {
-        var r = new TerrainModel();
-        r.Load(this.Source);
+        var r = GetTerrainModel();
+        if (r == null) return;
 
-        // r.Texture = new SlopeDirectionTexture(0);
-        r.Texture = new SlopeTexture(8);
+        if (!string.IsNullOrWhiteSpace(this.Source))
+            r.Load(this.Source);
+
+        //r.Texture = new SlopeDirectionTexture(0);
+        r.Texture ??= new SlopeTexture(8);
 
         // r.Texture = new MapTexture(@"D:\tmp\CraterLake.png") { Left = r.Left, Right = r.Right, Top = r.Top, Bottom = r.Bottom };
-        this.visualChild.Content = r.CreateModel(2);
+        this.visualChild.Content = r.CreateModel(r.Lod);
+    }
+
+    private ITerrainModel? GetTerrainModel()
+    {
+        if (this.Model != null)
+            return this.Model;
+
+        else if (this.Source.EndsWith(".bt", StringComparison.InvariantCultureIgnoreCase) ||
+            this.Source.EndsWith(".btz", StringComparison.InvariantCultureIgnoreCase))
+            return new TerrainModel();
+                
+        else if (this.Source.EndsWith(".hgt", StringComparison.InvariantCultureIgnoreCase) ||
+                 this.Source.EndsWith(".hgt.zip", StringComparison.InvariantCultureIgnoreCase))
+            return new HgtTerrainModel();
+
+        return null;
     }
 }

@@ -11,6 +11,11 @@ using DashStyles = SharpDX.Direct2D1.DashStyle;
 using HelixToolkit.Wpf.SharpDX.Core2D;
 using HelixToolkit.Wpf.SharpDX.Extensions;
 using System.Windows.Media;
+#elif AVALONIA
+using HelixToolkit.Avalonia.SharpDX.Core2D;
+using HelixToolkit.Avalonia.SharpDX.Extensions;
+using Avalonia.Media;
+using DoubleCollection = double[];
 #else
 #error Unknown framework
 #endif
@@ -20,21 +25,24 @@ using System.Windows.Media;
 namespace HelixToolkit.WinUI.SharpDX.Elements2D;
 #elif WPF
 namespace HelixToolkit.Wpf.SharpDX.Elements2D;
+#elif AVALONIA
+namespace HelixToolkit.Avalonia.SharpDX.Elements2D;
 #else
 #error Unknown framework
 #endif
 
 public abstract class ShapeModel2D : Element2D
 {
-    public static readonly DependencyProperty FillProperty
-        = DependencyProperty.Register("Fill", typeof(Brush), typeof(ShapeModel2D), new PropertyMetadata(new SolidColorBrush(UIColors.Black),
+    public static readonly DependencyProperty FillProperty =
+        HelixProperty.Register<ShapeModel2D, Brush>("Fill",
+            new SolidColorBrush(UIColors.Black),
             (d, e) =>
             {
                 if (d is ShapeModel2D node)
                 {
                     node.fillChanged = true;
                 }
-            }));
+            });
 
     public Brush Fill
     {
@@ -44,20 +52,21 @@ public abstract class ShapeModel2D : Element2D
         }
         get
         {
-            return (Brush)GetValue(FillProperty);
+            return (Brush)GetValue(FillProperty)!;
         }
     }
 
     #region Stroke properties
-    public static readonly DependencyProperty StrokeProperty
-        = DependencyProperty.Register("Stroke", typeof(Brush), typeof(ShapeModel2D), new PropertyMetadata(new SolidColorBrush(UIColors.Black),
+    public static readonly DependencyProperty StrokeProperty =
+        HelixProperty.Register<ShapeModel2D, Brush>("Stroke",
+            new SolidColorBrush(UIColors.Black),
             (d, e) =>
             {
                 if (d is ShapeModel2D node)
                 {
                     node.strokeChanged = true;
                 }
-            }));
+            });
 
     public Brush Stroke
     {
@@ -67,19 +76,20 @@ public abstract class ShapeModel2D : Element2D
         }
         get
         {
-            return (Brush)GetValue(StrokeProperty);
+            return (Brush)GetValue(StrokeProperty)!;
         }
     }
 
-    public static readonly DependencyProperty StrokeDashCapProperty
-    = DependencyProperty.Register("StrokeDashCap", typeof(PenLineCap), typeof(ShapeModel2D), new PropertyMetadata(PenLineCap.Flat,
+    public static readonly DependencyProperty StrokeDashCapProperty =
+        HelixProperty.Register<ShapeModel2D, PenLineCap>("StrokeDashCap",
+            PenLineCap.Flat,
         (d, e) =>
         {
             if (d is Element2DCore { SceneNode: ShapeNode2D node })
             {
-                node.StrokeDashCap = ((PenLineCap)e.NewValue).ToD2DCapStyle();
+                node.StrokeDashCap = ((PenLineCap)e.NewValue!).ToD2DCapStyle();
             }
-        }));
+        });
 
     public PenLineCap StrokeDashCap
     {
@@ -89,19 +99,20 @@ public abstract class ShapeModel2D : Element2D
         }
         get
         {
-            return (PenLineCap)GetValue(StrokeDashCapProperty);
+            return (PenLineCap)GetValue(StrokeDashCapProperty)!;
         }
     }
 
-    public static readonly DependencyProperty StrokeStartLineCapProperty
-        = DependencyProperty.Register("StrokeStartLineCap", typeof(PenLineCap), typeof(ShapeModel2D), new PropertyMetadata(PenLineCap.Flat,
+    public static readonly DependencyProperty StrokeStartLineCapProperty =
+        HelixProperty.Register<ShapeModel2D, PenLineCap>("StrokeStartLineCap",
+            PenLineCap.Flat,
             (d, e) =>
             {
                 if (d is Element2DCore { SceneNode: ShapeNode2D node })
                 {
-                    node.StrokeStartLineCap = ((PenLineCap)e.NewValue).ToD2DCapStyle();
+                    node.StrokeStartLineCap = ((PenLineCap)e.NewValue!).ToD2DCapStyle();
                 }
-            }));
+            });
 
     public PenLineCap StrokeStartLineCap
     {
@@ -111,19 +122,20 @@ public abstract class ShapeModel2D : Element2D
         }
         get
         {
-            return (PenLineCap)GetValue(StrokeStartLineCapProperty);
+            return (PenLineCap)GetValue(StrokeStartLineCapProperty)!;
         }
     }
 
-    public static readonly DependencyProperty StrokeEndLineCapProperty
-    = DependencyProperty.Register("StrokeEndLineCap", typeof(PenLineCap), typeof(ShapeModel2D), new PropertyMetadata(PenLineCap.Flat,
+    public static readonly DependencyProperty StrokeEndLineCapProperty =
+        HelixProperty.Register<ShapeModel2D, PenLineCap>("StrokeEndLineCap",
+            PenLineCap.Flat,
         (d, e) =>
         {
             if (d is Element2DCore { SceneNode: ShapeNode2D node })
             {
-                node.StrokeEndLineCap = ((PenLineCap)e.NewValue).ToD2DCapStyle();
+                node.StrokeEndLineCap = ((PenLineCap)e.NewValue!).ToD2DCapStyle();
             }
-        }));
+        });
 
     public PenLineCap StrokeEndLineCap
     {
@@ -133,19 +145,20 @@ public abstract class ShapeModel2D : Element2D
         }
         get
         {
-            return (PenLineCap)GetValue(StrokeEndLineCapProperty);
+            return (PenLineCap)GetValue(StrokeEndLineCapProperty)!;
         }
     }
 
-    public static readonly DependencyProperty StrokeDashArrayProperty
-        = DependencyProperty.Register("StrokeDashArray", typeof(DoubleCollection), typeof(ShapeModel2D), new PropertyMetadata(null,
+    public static readonly DependencyProperty StrokeDashArrayProperty =
+        HelixProperty.Register<ShapeModel2D, DoubleCollection?>("StrokeDashArray",
+            null,
             (d, e) =>
             {
                 if (d is Element2DCore { SceneNode: ShapeNode2D node })
                 {
                     node.StrokeDashArray = e.NewValue == null ? Array.Empty<float>() : (e.NewValue as DoubleCollection)?.ToFloatArray() ?? Array.Empty<float>();
                 }
-            }));
+            });
 
     public DoubleCollection? StrokeDashArray
     {
@@ -159,15 +172,16 @@ public abstract class ShapeModel2D : Element2D
         }
     }
 
-    public static readonly DependencyProperty StrokeDashOffsetProperty
-        = DependencyProperty.Register("StrokeDashOffset", typeof(double), typeof(ShapeModel2D), new PropertyMetadata(0.0,
+    public static readonly DependencyProperty StrokeDashOffsetProperty =
+        HelixProperty.Register<ShapeModel2D, double>("StrokeDashOffset",
+            0.0,
             (d, e) =>
             {
                 if (d is Element2DCore { SceneNode: ShapeNode2D node })
                 {
-                    node.StrokeDashOffset = (float)(double)e.NewValue;
+                    node.StrokeDashOffset = (float)(double)e.NewValue!;
                 }
-            }));
+            });
 
     public double StrokeDashOffset
     {
@@ -177,19 +191,20 @@ public abstract class ShapeModel2D : Element2D
         }
         get
         {
-            return (double)GetValue(StrokeDashOffsetProperty);
+            return (double)GetValue(StrokeDashOffsetProperty)!;
         }
     }
 
-    public static readonly DependencyProperty StrokeLineJoinProperty
-    = DependencyProperty.Register("StrokeLineJoin", typeof(PenLineJoin), typeof(ShapeModel2D), new PropertyMetadata(PenLineJoin.Bevel,
-        (d, e) =>
-        {
-            if (d is Element2DCore { SceneNode: ShapeNode2D node })
+    public static readonly DependencyProperty StrokeLineJoinProperty =
+        HelixProperty.Register<ShapeModel2D, PenLineJoin>("StrokeLineJoin",
+            PenLineJoin.Bevel,
+            (d, e) =>
             {
-                node.StrokeLineJoin = ((PenLineJoin)e.NewValue).ToD2DLineJoin();
-            }
-        }));
+                if (d is Element2DCore { SceneNode: ShapeNode2D node })
+                {
+                    node.StrokeLineJoin = ((PenLineJoin)e.NewValue!).ToD2DLineJoin();
+                }
+            });
 
     public PenLineJoin StrokeLineJoin
     {
@@ -199,19 +214,20 @@ public abstract class ShapeModel2D : Element2D
         }
         get
         {
-            return (PenLineJoin)GetValue(StrokeLineJoinProperty);
+            return (PenLineJoin)GetValue(StrokeLineJoinProperty)!;
         }
     }
 
-    public static readonly DependencyProperty StrokeMiterLimitProperty
-        = DependencyProperty.Register("StrokeMiterLimit", typeof(double), typeof(ShapeModel2D), new PropertyMetadata(1.0,
+    public static readonly DependencyProperty StrokeMiterLimitProperty =
+        HelixProperty.Register<ShapeModel2D, double>("StrokeMiterLimit",
+            1.0,
             (d, e) =>
             {
                 if (d is Element2DCore { SceneNode: ShapeNode2D node })
                 {
-                    node.StrokeMiterLimit = (float)(double)e.NewValue;
+                    node.StrokeMiterLimit = (float)(double)e.NewValue!;
                 }
-            }));
+            });
 
     public double StrokeMiterLimit
     {
@@ -221,19 +237,20 @@ public abstract class ShapeModel2D : Element2D
         }
         get
         {
-            return (double)GetValue(StrokeMiterLimitProperty);
+            return (double)GetValue(StrokeMiterLimitProperty)!;
         }
     }
 
-    public static readonly DependencyProperty StrokeThicknessProperty
-        = DependencyProperty.Register("StrokeThickness", typeof(double), typeof(ShapeModel2D), new PropertyMetadata(1.0,
+    public static readonly DependencyProperty StrokeThicknessProperty =
+        HelixProperty.Register<ShapeModel2D, double>("StrokeThickness",
+            1.0,
             (d, e) =>
             {
                 if (d is Element2DCore { SceneNode: ShapeNode2D node })
                 {
-                    node.StrokeThickness = (float)(double)e.NewValue;
+                    node.StrokeThickness = (float)(double)e.NewValue!;
                 }
-            }));
+            });
 
     public double StrokeThickness
     {
@@ -243,7 +260,7 @@ public abstract class ShapeModel2D : Element2D
         }
         get
         {
-            return (double)GetValue(StrokeThicknessProperty);
+            return (double)GetValue(StrokeThicknessProperty)!;
         }
     }
 
@@ -252,7 +269,7 @@ public abstract class ShapeModel2D : Element2D
     {
         get
         {
-            return (DashStyle)GetValue(DashStyleProperty);
+            return (DashStyle)GetValue(DashStyleProperty)!;
         }
         set
         {
@@ -261,14 +278,19 @@ public abstract class ShapeModel2D : Element2D
     }
 
     public static readonly DependencyProperty DashStyleProperty =
-        DependencyProperty.Register("DashStyle", typeof(DashStyle), typeof(ShapeModel2D), new PropertyMetadata(DashStyles.Solid,
+        HelixProperty.Register<ShapeModel2D, DashStyle>("DashStyle",
+#if WINUI || WPF
+            DashStyles.Solid,
+#elif AVALONIA
+            new DashStyle(),
+#endif
             (d, e) =>
             {
                 if (d is Element2DCore { SceneNode: ShapeNode2D node })
                 {
-                    node.StrokeDashStyle = ((DashStyle)e.NewValue).ToD2DDashStyle();
+                    node.StrokeDashStyle = ((DashStyle)e.NewValue!).ToD2DDashStyle();
                 }
-            }));
+            });
 
     #endregion
 

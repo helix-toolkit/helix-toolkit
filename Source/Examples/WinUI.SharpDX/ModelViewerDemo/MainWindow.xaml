@@ -48,6 +48,7 @@
                             FXAALevel="Medium"
                             FixedRotationPoint="{Binding ModelCentroid}"
                             FixedRotationPointEnabled="True">
+                <hx:AmbientLight3D Color="#101010" />
                 <hx:DirectionalLight3D Direction="{Binding Camera.LookDirection}"
                                        Color="White" />
                 <hx:Element3DPresenter Content="{Binding Root}" />

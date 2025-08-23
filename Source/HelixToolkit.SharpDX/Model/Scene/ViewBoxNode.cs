@@ -209,6 +209,12 @@ public class ViewBoxNode : ScreenSpacedNode
         }
     }
 
+    protected override void OnDetach()
+    {
+        UpdateTexture(null);
+        base.OnDetach();
+    }
+
     protected override void OnCoordinateSystemChanged(bool e)
     {
         if (isRightHanded != e)

@@ -4,6 +4,8 @@
 using HelixToolkit.WinUI.SharpDX.Model;
 #elif WPF
 using HelixToolkit.Wpf.SharpDX.Model;
+#elif AVALONIA
+using HelixToolkit.Avalonia.SharpDX.Model;
 #else
 #error Unknown framework
 #endif
@@ -13,6 +15,8 @@ using HelixToolkit.Wpf.SharpDX.Model;
 namespace HelixToolkit.WinUI.SharpDX;
 #elif WPF
 namespace HelixToolkit.Wpf.SharpDX;
+#elif AVALONIA
+namespace HelixToolkit.Avalonia.SharpDX;
 #else
 #error Unknown framework
 #endif
@@ -20,34 +24,37 @@ namespace HelixToolkit.Wpf.SharpDX;
 public class PointLight3D : Light3D
 {
     public static readonly DependencyProperty AttenuationProperty =
-        DependencyProperty.Register("Attenuation", typeof(Vector3D), typeof(PointLight3D), new PropertyMetadata(new Vector3D(1.0f, 0.0f, 0.0f),
+        HelixProperty.Register<PointLight3D, Vector3D>("Attenuation",
+            new Vector3D(1.0f, 0.0f, 0.0f),
             (d, e) =>
             {
                 if (d is Element3DCore { SceneNode: PointLightNode node })
                 {
-                    node.Attenuation = ((Vector3D)e.NewValue).ToVector3();
+                    node.Attenuation = ((Vector3D)e.NewValue!).ToVector3();
                 }
-            }));
+            });
 
     public static readonly DependencyProperty RangeProperty =
-        DependencyProperty.Register("Range", typeof(double), typeof(PointLight3D), new PropertyMetadata(100.0,
+        HelixProperty.Register<PointLight3D, double>("Range",
+            100.0,
             (d, e) =>
             {
                 if (d is Element3DCore { SceneNode: PointLightNode node })
                 {
-                    node.Range = (float)(double)e.NewValue;
+                    node.Range = (float)(double)e.NewValue!;
                 }
-            }));
+            });
 
     public static readonly DependencyProperty PositionProperty =
-        DependencyProperty.Register("Position", typeof(Point3D), typeof(PointLight3D), new PropertyMetadata(new Point3D(),
+        HelixProperty.Register<PointLight3D, Point3D>("Position",
+            new Point3D(),
             (d, e) =>
             {
                 if (d is Element3DCore { SceneNode: PointLightNode node })
                 {
-                    node.Position = ((Point3D)e.NewValue).ToVector3();
+                    node.Position = ((Point3D)e.NewValue!).ToVector3();
                 }
-            }));
+            });
 
     /// <summary>
     /// The position of the model in world space.
@@ -56,7 +63,7 @@ public class PointLight3D : Light3D
     {
         get
         {
-            return (Point3D)this.GetValue(PositionProperty);
+            return (Point3D)this.GetValue(PositionProperty)!;
         }
         set
         {
@@ -75,7 +82,7 @@ public class PointLight3D : Light3D
     {
         get
         {
-            return (Vector3D)this.GetValue(AttenuationProperty);
+            return (Vector3D)this.GetValue(AttenuationProperty)!;
         }
         set
         {
@@ -92,7 +99,7 @@ public class PointLight3D : Light3D
     {
         get
         {
-            return (double)this.GetValue(RangeProperty);
+            return (double)this.GetValue(RangeProperty)!;
         }
         set
         {

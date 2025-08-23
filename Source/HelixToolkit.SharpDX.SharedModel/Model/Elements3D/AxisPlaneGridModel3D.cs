@@ -6,6 +6,8 @@ using HelixToolkit.SharpDX.Model.Scene;
 namespace HelixToolkit.WinUI.SharpDX;
 #elif WPF
 namespace HelixToolkit.Wpf.SharpDX;
+#elif AVALONIA
+namespace HelixToolkit.Avalonia.SharpDX;
 #else
 #error Unknown framework
 #endif
@@ -25,7 +27,7 @@ public class AxisPlaneGridModel3D : Element3D
     {
         get
         {
-            return (bool)GetValue(AutoSpacingProperty);
+            return (bool)GetValue(AutoSpacingProperty)!;
         }
         set
         {
@@ -37,14 +39,15 @@ public class AxisPlaneGridModel3D : Element3D
     /// The automatic spacing property
     /// </summary>
     public static readonly DependencyProperty AutoSpacingProperty =
-        DependencyProperty.Register("AutoSpacing", typeof(bool), typeof(AxisPlaneGridModel3D), new PropertyMetadata(true,
+        HelixProperty.Register<AxisPlaneGridModel3D, bool>("AutoSpacing",
+            true,
             (d, e) =>
             {
                 if (d is Element3D { SceneNode: AxisPlaneGridNode node })
                 {
-                    node.AutoSpacing = (bool)e.NewValue;
+                    node.AutoSpacing = (bool)e.NewValue!;
                 }
-            }));
+            });
 
 
     /// <summary>
@@ -57,7 +60,7 @@ public class AxisPlaneGridModel3D : Element3D
     {
         get
         {
-            return (double)GetValue(AutoSpacingRateProperty);
+            return (double)GetValue(AutoSpacingRateProperty)!;
         }
         set
         {
@@ -69,14 +72,15 @@ public class AxisPlaneGridModel3D : Element3D
     /// The automatic spacing rate property
     /// </summary>
     public static readonly DependencyProperty AutoSpacingRateProperty =
-        DependencyProperty.Register("AutoSpacingRate", typeof(double), typeof(AxisPlaneGridModel3D), new PropertyMetadata(5.0,
+        HelixProperty.Register<AxisPlaneGridModel3D, double>("AutoSpacingRate",
+            5.0,
             (d, e) =>
             {
                 if (d is Element3D { SceneNode: AxisPlaneGridNode node })
                 {
-                    node.AutoSpacingRate = (float)(double)e.NewValue;
+                    node.AutoSpacingRate = (float)(double)e.NewValue!;
                 }
-            }));
+            });
 
     /// <summary>
     /// Gets or sets the grid spacing.
@@ -88,7 +92,7 @@ public class AxisPlaneGridModel3D : Element3D
     {
         get
         {
-            return (double)GetValue(GridSpacingProperty);
+            return (double)GetValue(GridSpacingProperty)!;
         }
         set
         {
@@ -100,14 +104,15 @@ public class AxisPlaneGridModel3D : Element3D
     /// The grid spacing property
     /// </summary>
     public static readonly DependencyProperty GridSpacingProperty =
-        DependencyProperty.Register("GridSpacing", typeof(double), typeof(AxisPlaneGridModel3D), new PropertyMetadata(10.0,
+        HelixProperty.Register<AxisPlaneGridModel3D, double>("GridSpacing",
+            10.0,
             (d, e) =>
             {
                 if (d is Element3D { SceneNode: AxisPlaneGridNode node })
                 {
-                    node.GridSpacing = (float)(double)e.NewValue;
+                    node.GridSpacing = (float)(double)e.NewValue!;
                 }
-            }));
+            });
 
     /// <summary>
     /// Gets or sets the grid thickness.
@@ -119,7 +124,7 @@ public class AxisPlaneGridModel3D : Element3D
     {
         get
         {
-            return (double)GetValue(GridThicknessProperty);
+            return (double)GetValue(GridThicknessProperty)!;
         }
         set
         {
@@ -131,14 +136,15 @@ public class AxisPlaneGridModel3D : Element3D
     /// The grid thickness property
     /// </summary>
     public static readonly DependencyProperty GridThicknessProperty =
-        DependencyProperty.Register("GridThickness", typeof(double), typeof(AxisPlaneGridModel3D), new PropertyMetadata(0.05,
+        HelixProperty.Register<AxisPlaneGridModel3D, double>("GridThickness",
+            0.05,
             (d, e) =>
             {
                 if (d is Element3D { SceneNode: AxisPlaneGridNode node })
                 {
-                    node.GridThickness = (float)(double)e.NewValue;
+                    node.GridThickness = (float)(double)e.NewValue!;
                 }
-            }));
+            });
 
     /// <summary>
     /// Gets or sets the fading factor.
@@ -150,7 +156,7 @@ public class AxisPlaneGridModel3D : Element3D
     {
         get
         {
-            return (double)GetValue(FadingFactorProperty);
+            return (double)GetValue(FadingFactorProperty)!;
         }
         set
         {
@@ -162,13 +168,14 @@ public class AxisPlaneGridModel3D : Element3D
     /// The fading factor property
     /// </summary>
     public static readonly DependencyProperty FadingFactorProperty =
-        DependencyProperty.Register("FadingFactor", typeof(double), typeof(AxisPlaneGridModel3D), new PropertyMetadata(0.2, (d, e) =>
+        HelixProperty.Register<AxisPlaneGridModel3D, double>("FadingFactor",
+            0.2, (d, e) =>
         {
             if (d is Element3D { SceneNode: AxisPlaneGridNode node })
             {
-                node.FadingFactor = (float)(double)e.NewValue;
+                node.FadingFactor = (float)(double)e.NewValue!;
             }
-        }));
+        });
 
     /// <summary>
     /// Gets or sets the color of the plane.
@@ -180,7 +187,7 @@ public class AxisPlaneGridModel3D : Element3D
     {
         get
         {
-            return (UIColor)GetValue(PlaneColorProperty);
+            return (UIColor)GetValue(PlaneColorProperty)!;
         }
         set
         {
@@ -191,15 +198,15 @@ public class AxisPlaneGridModel3D : Element3D
     /// The plane color property
     /// </summary>
     public static readonly DependencyProperty PlaneColorProperty =
-        DependencyProperty.Register("PlaneColor", typeof(UIColor), typeof(AxisPlaneGridModel3D),
-                new PropertyMetadata(UIColors.Gray,
-                    (d, e) =>
-                    {
-                        if (d is Element3D { SceneNode: AxisPlaneGridNode node })
-                        {
-                            node.PlaneColor = ((UIColor)e.NewValue).ToColor4();
-                        }
-                    }));
+        HelixProperty.Register<AxisPlaneGridModel3D, UIColor>("PlaneColor",
+            UIColors.Gray,
+            (d, e) =>
+            {
+                if (d is Element3D { SceneNode: AxisPlaneGridNode node })
+                {
+                    node.PlaneColor = ((UIColor)e.NewValue!).ToColor4();
+                }
+            });
 
     /// <summary>
     /// Gets or sets the color of the grid.
@@ -211,7 +218,7 @@ public class AxisPlaneGridModel3D : Element3D
     {
         get
         {
-            return (UIColor)GetValue(GridColorProperty);
+            return (UIColor)GetValue(GridColorProperty)!;
         }
         set
         {
@@ -223,15 +230,15 @@ public class AxisPlaneGridModel3D : Element3D
     /// The grid color property
     /// </summary>
     public static readonly DependencyProperty GridColorProperty =
-        DependencyProperty.Register("GridColor", typeof(UIColor), typeof(AxisPlaneGridModel3D),
-                new PropertyMetadata(UIColors.DarkGray,
+        HelixProperty.Register<AxisPlaneGridModel3D, UIColor>("GridColor",
+            UIColors.DarkGray,
             (d, e) =>
             {
                 if (d is Element3D { SceneNode: AxisPlaneGridNode node })
                 {
-                    node.GridColor = ((UIColor)e.NewValue).ToColor4();
+                    node.GridColor = ((UIColor)e.NewValue!).ToColor4();
                 }
-            }));
+            });
 
     /// <summary>
     /// Gets or sets a value indicating whether [render shadow map].
@@ -243,7 +250,7 @@ public class AxisPlaneGridModel3D : Element3D
     {
         get
         {
-            return (bool)GetValue(RenderShadowMapProperty);
+            return (bool)GetValue(RenderShadowMapProperty)!;
         }
         set
         {
@@ -255,14 +262,15 @@ public class AxisPlaneGridModel3D : Element3D
     /// The render shadow map property
     /// </summary>
     public static readonly DependencyProperty RenderShadowMapProperty =
-        DependencyProperty.Register("RenderShadowMap", typeof(bool), typeof(AxisPlaneGridModel3D), new PropertyMetadata(false,
+        HelixProperty.Register<AxisPlaneGridModel3D, bool>("RenderShadowMap",
+            false,
             (d, e) =>
             {
                 if (d is Element3D { SceneNode: AxisPlaneGridNode node })
                 {
-                    node.RenderShadowMap = (bool)e.NewValue;
+                    node.RenderShadowMap = (bool)e.NewValue!;
                 }
-            }));
+            });
 
     /// <summary>
     /// Gets or sets up axis.
@@ -274,7 +282,7 @@ public class AxisPlaneGridModel3D : Element3D
     {
         get
         {
-            return (Axis)GetValue(UpAxisProperty);
+            return (Axis)GetValue(UpAxisProperty)!;
         }
         set
         {
@@ -286,14 +294,15 @@ public class AxisPlaneGridModel3D : Element3D
     /// Up axis property
     /// </summary>
     public static readonly DependencyProperty UpAxisProperty =
-        DependencyProperty.Register("UpAxis", typeof(Axis), typeof(AxisPlaneGridModel3D), new PropertyMetadata(Axis.Y,
+        HelixProperty.Register<AxisPlaneGridModel3D, Axis>("UpAxis",
+            Axis.Y,
             (d, e) =>
             {
                 if (d is Element3D { SceneNode: AxisPlaneGridNode node })
                 {
-                    node.UpAxis = (Axis)e.NewValue;
+                    node.UpAxis = (Axis)e.NewValue!;
                 }
-            }));
+            });
 
     /// <summary>
     /// Gets or sets the offset.
@@ -305,7 +314,7 @@ public class AxisPlaneGridModel3D : Element3D
     {
         get
         {
-            return (double)GetValue(OffsetProperty);
+            return (double)GetValue(OffsetProperty)!;
         }
         set
         {
@@ -317,14 +326,15 @@ public class AxisPlaneGridModel3D : Element3D
     /// The offset property
     /// </summary>
     public static readonly DependencyProperty OffsetProperty =
-        DependencyProperty.Register("Offset", typeof(double), typeof(AxisPlaneGridModel3D), new PropertyMetadata(0.0,
+        HelixProperty.Register<AxisPlaneGridModel3D, double>("Offset",
+            0.0,
             (d, e) =>
             {
                 if (d is Element3D { SceneNode: AxisPlaneGridNode node })
                 {
-                    node.Offset = (float)(double)e.NewValue;
+                    node.Offset = (float)(double)e.NewValue!;
                 }
-            }));
+            });
 
     /// <summary>
     /// Gets or sets the grid pattern.
@@ -336,7 +346,7 @@ public class AxisPlaneGridModel3D : Element3D
     {
         get
         {
-            return (GridPattern)GetValue(GridPatternProperty);
+            return (GridPattern)GetValue(GridPatternProperty)!;
         }
         set
         {
@@ -348,14 +358,15 @@ public class AxisPlaneGridModel3D : Element3D
     /// The grid pattern property
     /// </summary>
     public static readonly DependencyProperty GridPatternProperty =
-        DependencyProperty.Register("GridPattern", typeof(GridPattern), typeof(AxisPlaneGridModel3D), new PropertyMetadata(GridPattern.Tile,
+        HelixProperty.Register<AxisPlaneGridModel3D, GridPattern>("GridPattern",
+            GridPattern.Tile,
             (d, e) =>
             {
                 if (d is Element3D { SceneNode: AxisPlaneGridNode node })
                 {
-                    node.GridPattern = (GridPattern)e.NewValue;
+                    node.GridPattern = (GridPattern)e.NewValue!;
                 }
-            }));
+            });
 
     protected override SceneNode OnCreateSceneNode()
     {

@@ -9,6 +9,8 @@ using System.ComponentModel;
 #elif WINUI
 #elif WPF
 using HelixToolkit.Wpf.SharpDX.Utilities;
+#elif AVALONIA
+using HelixToolkit.Avalonia.SharpDX.Utilities;
 #else
 #error Unknown framework
 #endif
@@ -18,6 +20,8 @@ using HelixToolkit.Wpf.SharpDX.Utilities;
 namespace HelixToolkit.WinUI.SharpDX;
 #elif WPF
 namespace HelixToolkit.Wpf.SharpDX;
+#elif AVALONIA
+namespace HelixToolkit.Avalonia.SharpDX;
 #else
 #error Unknown framework
 #endif
@@ -28,14 +32,15 @@ public class DiffuseMaterial : Material
     /// The diffuse color property
     /// </summary>
     public static readonly DependencyProperty DiffuseColorProperty =
-        DependencyProperty.Register("DiffuseColor", typeof(Color4), typeof(DiffuseMaterial), new PropertyMetadata((Color4)Color.White,
+        HelixProperty.Register<DiffuseMaterial, Color4>("DiffuseColor",
+            (Color4)Color.White,
             (d, e) =>
             {
                 if (d is Material { Core: DiffuseMaterialCore core })
                 {
-                    core.DiffuseColor = (Color4)e.NewValue;
+                    core.DiffuseColor = (Color4)e.NewValue!;
                 }
-            }));
+            });
 
     /// <summary>
     /// Gets or sets the diffuse color for the material.
@@ -45,6 +50,8 @@ public class DiffuseMaterial : Material
 #elif WINUI
 #elif WPF
     [TypeConverter(typeof(Color4Converter))]
+#elif AVALONIA
+    [TypeConverter(typeof(Color4Converter))]
 #else
 #error Unknown framework
 #endif
@@ -52,7 +59,7 @@ public class DiffuseMaterial : Material
     {
         get
         {
-            return (Color4)this.GetValue(DiffuseColorProperty);
+            return (Color4)this.GetValue(DiffuseColorProperty)!;
         }
         set
         {
@@ -64,14 +71,15 @@ public class DiffuseMaterial : Material
     /// 
     /// </summary>
     public static readonly DependencyProperty DiffuseMapProperty =
-        DependencyProperty.Register("DiffuseMap", typeof(TextureModel), typeof(DiffuseMaterial), new PropertyMetadata(null,
+        HelixProperty.Register<DiffuseMaterial, TextureModel?>("DiffuseMap",
+            null,
             (d, e) =>
             {
                 if (d is Material { Core: DiffuseMaterialCore core })
                 {
                     core.DiffuseMap = e.NewValue as TextureModel;
                 }
-            }));
+            });
 
     /// <summary>
     /// Gets or sets the diffuse map.
@@ -95,14 +103,15 @@ public class DiffuseMaterial : Material
     /// 
     /// </summary>
     public static readonly DependencyProperty DiffuseMapSamplerProperty =
-        DependencyProperty.Register("DiffuseMapSampler", typeof(SamplerStateDescription), typeof(DiffuseMaterial), new PropertyMetadata(DefaultSamplers.LinearSamplerWrapAni4,
+        HelixProperty.Register<DiffuseMaterial, SamplerStateDescription>("DiffuseMapSampler",
+            DefaultSamplers.LinearSamplerWrapAni4,
             (d, e) =>
             {
                 if (d is Material { Core: DiffuseMaterialCore core })
                 {
-                    core.DiffuseMapSampler = (SamplerStateDescription)e.NewValue;
+                    core.DiffuseMapSampler = (SamplerStateDescription)e.NewValue!;
                 }
-            }));
+            });
 
     /// <summary>
     /// 
@@ -111,7 +120,7 @@ public class DiffuseMaterial : Material
     {
         get
         {
-            return (SamplerStateDescription)this.GetValue(DiffuseMapSamplerProperty);
+            return (SamplerStateDescription)this.GetValue(DiffuseMapSamplerProperty)!;
         }
         set
         {
@@ -122,13 +131,14 @@ public class DiffuseMaterial : Material
     /// The uv transform property
     /// </summary>
     public static readonly DependencyProperty UVTransformProperty =
-        DependencyProperty.Register("UVTransform", typeof(UVTransform), typeof(DiffuseMaterial), new PropertyMetadata(UVTransform.Identity, (d, e) =>
+        HelixProperty.Register<DiffuseMaterial, UVTransform>("UVTransform",
+            UVTransform.Identity, (d, e) =>
         {
             if (d is Material { Core: DiffuseMaterialCore core })
             {
-                core.UVTransform = (UVTransform)e.NewValue;
+                core.UVTransform = (UVTransform)e.NewValue!;
             }
-        }));
+        });
 
     /// <summary>
     /// Gets or sets the texture uv transform.
@@ -140,7 +150,7 @@ public class DiffuseMaterial : Material
     {
         get
         {
-            return (UVTransform)GetValue(UVTransformProperty);
+            return (UVTransform)GetValue(UVTransformProperty)!;
         }
         set
         {
@@ -159,7 +169,7 @@ public class DiffuseMaterial : Material
     {
         get
         {
-            return (bool)GetValue(EnableUnLitProperty);
+            return (bool)GetValue(EnableUnLitProperty)!;
         }
         set
         {
@@ -171,14 +181,15 @@ public class DiffuseMaterial : Material
     /// The enable un lit property
     /// </summary>
     public static readonly DependencyProperty EnableUnLitProperty =
-        DependencyProperty.Register("EnableUnLit", typeof(bool), typeof(DiffuseMaterial), new PropertyMetadata(false,
+        HelixProperty.Register<DiffuseMaterial, bool>("EnableUnLit",
+            false,
             (d, e) =>
             {
                 if (d is Material { Core: DiffuseMaterialCore core })
                 {
-                    core.EnableUnLit = (bool)e.NewValue;
+                    core.EnableUnLit = (bool)e.NewValue!;
                 }
-            }));
+            });
 
     /// <summary>
     /// Gets or sets a value indicating whether [enable flat shading].
@@ -190,7 +201,7 @@ public class DiffuseMaterial : Material
     {
         get
         {
-            return (bool)GetValue(EnableFlatShadingProperty);
+            return (bool)GetValue(EnableFlatShadingProperty)!;
         }
         set
         {
@@ -199,13 +210,14 @@ public class DiffuseMaterial : Material
     }
 
     public static readonly DependencyProperty EnableFlatShadingProperty =
-        DependencyProperty.Register("EnableFlatShading", typeof(bool), typeof(DiffuseMaterial), new PropertyMetadata(false, (d, e) =>
+        HelixProperty.Register<DiffuseMaterial, bool>("EnableFlatShading",
+            false, (d, e) =>
         {
             if (d is Material { Core: DiffuseMaterialCore core })
             {
-                core.EnableFlatShading = (bool)e.NewValue;
+                core.EnableFlatShading = (bool)e.NewValue!;
             }
-        }));
+        });
 
     /// <summary>
     /// Gets or sets the vertex color blending factor.
@@ -218,7 +230,7 @@ public class DiffuseMaterial : Material
     {
         get
         {
-            return (double)GetValue(VertexColorBlendingFactorProperty);
+            return (double)GetValue(VertexColorBlendingFactorProperty)!;
         }
         set
         {
@@ -227,14 +239,15 @@ public class DiffuseMaterial : Material
     }
 
     public static readonly DependencyProperty VertexColorBlendingFactorProperty =
-        DependencyProperty.Register("VertexColorBlendingFactor", typeof(double), typeof(DiffuseMaterial), new PropertyMetadata(0.0,
+        HelixProperty.Register<DiffuseMaterial, double>("VertexColorBlendingFactor",
+            0.0,
         (d, e) =>
         {
             if (d is Material { Core: DiffuseMaterialCore core })
             {
-                core.VertexColorBlendingFactor = (float)(double)e.NewValue;
+                core.VertexColorBlendingFactor = (float)(double)e.NewValue!;
             }
-        }));
+        });
 
     public DiffuseMaterial()
     {
@@ -287,6 +300,7 @@ public class DiffuseMaterial : Material
     {
         return CloneMaterial();
     }
+#elif AVALONIA
 #else
 #error Unknown framework
 #endif

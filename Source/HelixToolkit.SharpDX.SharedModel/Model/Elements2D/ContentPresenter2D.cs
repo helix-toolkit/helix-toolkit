@@ -1,5 +1,6 @@
 ﻿using HelixToolkit.SharpDX.Model.Scene2D;
 using System.ComponentModel;
+
 #if false
 #elif WINUI
 using HelixToolkit.WinUI.SharpDX.Core2D;
@@ -7,6 +8,9 @@ using Microsoft.UI.Xaml.Markup;
 #elif WPF
 using HelixToolkit.Wpf.SharpDX.Core2D;
 using System.Windows.Markup;
+#elif AVALONIA
+using HelixToolkit.Avalonia.SharpDX.Core2D;
+using Avalonia.Metadata;
 #else
 #error Unknown framework
 #endif
@@ -16,6 +20,8 @@ using System.Windows.Markup;
 namespace HelixToolkit.WinUI.SharpDX.Elements2D;
 #elif WPF
 namespace HelixToolkit.Wpf.SharpDX.Elements2D;
+#elif AVALONIA
+namespace HelixToolkit.Avalonia.SharpDX.Elements2D;
 #else
 #error Unknown framework
 #endif
@@ -25,14 +31,15 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D;
 [ContentProperty(Name = "Content")]
 #elif WPF
 [ContentProperty("Content")]
+#elif AVALONIA
 #else
 #error Unknown framework
 #endif
 public class ContentPresenter2D : Element2D
 {
-    public static readonly DependencyProperty Content2DProperty = DependencyProperty.Register("Content", typeof(Element2DCore),
-        typeof(ContentPresenter2D),
-        new PropertyMetadata(null,
+    public static readonly DependencyProperty Content2DProperty =
+        HelixProperty.Register<ContentPresenter2D, Element2DCore?>("Content",
+            null,
         (d, e) =>
         {
             if (d is not ContentPresenter2D model)
@@ -55,9 +62,12 @@ public class ContentPresenter2D : Element2D
                 model.AddLogicalChild(newElement);
                 node.Content = newElement;
             }
-        }));
+        });
 
     [Bindable(true)]
+#if AVALONIA
+    [Content]
+#endif
     public Element2D? Content2D
     {
         set

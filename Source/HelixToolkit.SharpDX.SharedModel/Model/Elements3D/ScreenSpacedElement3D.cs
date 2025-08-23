@@ -10,6 +10,11 @@ using HelixToolkit.Wpf.SharpDX.Elements2D;
 using HelixToolkit.Wpf.SharpDX.Model;
 using System.Windows;
 using System.Windows.Data;
+#elif AVALONIA
+using HelixToolkit.Avalonia.SharpDX.Elements2D;
+using HelixToolkit.Avalonia.SharpDX.Model;
+using Avalonia.Data;
+using Avalonia.Data.Converters;
 #else
 #error Unknown framework
 #endif
@@ -19,6 +24,8 @@ using System.Windows.Data;
 namespace HelixToolkit.WinUI.SharpDX;
 #elif WPF
 namespace HelixToolkit.Wpf.SharpDX;
+#elif AVALONIA
+namespace HelixToolkit.Avalonia.SharpDX;
 #else
 #error Unknown framework
 #endif
@@ -40,101 +47,109 @@ public abstract class ScreenSpacedElement3D : GroupModel3D
     /// <summary>
     /// <see cref="RelativeScreenLocationX"/>
     /// </summary>
-    public static readonly DependencyProperty RelativeScreenLocationXProperty = DependencyProperty.Register("RelativeScreenLocationX", typeof(double), typeof(ScreenSpacedElement3D),
-        new PropertyMetadata(-0.8,
+    public static readonly DependencyProperty RelativeScreenLocationXProperty =
+        HelixProperty.Register<ScreenSpacedElement3D, double>("RelativeScreenLocationX",
+            -0.8,
             (d, e) =>
             {
                 if (d is Element3DCore { SceneNode: ScreenSpacedNode node })
                 {
-                    node.RelativeScreenLocationX = (float)(double)e.NewValue;
+                    node.RelativeScreenLocationX = (float)(double)e.NewValue!;
                 }
-            }));
+            });
 
     /// <summary>
     /// <see cref="RelativeScreenLocationY"/>
     /// </summary>
-    public static readonly DependencyProperty RelativeScreenLocationYProperty = DependencyProperty.Register("RelativeScreenLocationY", typeof(double), typeof(ScreenSpacedElement3D),
-        new PropertyMetadata(-0.8,
+    public static readonly DependencyProperty RelativeScreenLocationYProperty =
+        HelixProperty.Register<ScreenSpacedElement3D, double>("RelativeScreenLocationY",
+            -0.8,
             (d, e) =>
             {
                 if (d is Element3DCore { SceneNode: ScreenSpacedNode node })
                 {
-                    node.RelativeScreenLocationY = (float)(double)e.NewValue;
+                    node.RelativeScreenLocationY = (float)(double)e.NewValue!;
                 }
-            }));
+            });
 
     /// <summary>
     /// <see cref="SizeScale"/>
     /// </summary>
-    public static readonly DependencyProperty SizeScaleProperty = DependencyProperty.Register("SizeScale", typeof(double), typeof(ScreenSpacedElement3D),
-        new PropertyMetadata(1.0,
+    public static readonly DependencyProperty SizeScaleProperty =
+        HelixProperty.Register<ScreenSpacedElement3D, double>("SizeScale",
+            1.0,
             (d, e) =>
             {
                 if (d is Element3DCore { SceneNode: ScreenSpacedNode node })
                 {
-                    node.SizeScale = (float)(double)e.NewValue;
+                    node.SizeScale = (float)(double)e.NewValue!;
                 }
-            }));
+            });
 
     /// <summary>
     /// The enable mover property
     /// </summary>
     public static readonly DependencyProperty EnableMoverProperty =
-        DependencyProperty.Register("EnableMover", typeof(bool), typeof(ScreenSpacedElement3D), new PropertyMetadata(true));
+        HelixProperty.Register<ScreenSpacedElement3D, bool>("EnableMover", true);
 
     /// <summary>
     /// The mode property
     /// </summary>
     public static readonly DependencyProperty ModeProperty =
-        DependencyProperty.Register("Mode", typeof(ScreenSpacedMode), typeof(ScreenSpacedElement3D), new PropertyMetadata(ScreenSpacedMode.RelativeScreenSpaced,
+        HelixProperty.Register<ScreenSpacedElement3D, ScreenSpacedMode>("Mode",
+            ScreenSpacedMode.RelativeScreenSpaced,
             (d, e) =>
             {
                 if (d is Element3DCore { SceneNode: ScreenSpacedNode node })
                 {
-                    node.Mode = (ScreenSpacedMode)e.NewValue;
+                    node.Mode = (ScreenSpacedMode)e.NewValue!;
                 }
-            }));
+            });
 
     // Using a DependencyProperty as the backing store for CameraType.  This enables animation, styling, binding, etc...
     public static readonly DependencyProperty CameraTypeProperty =
-        DependencyProperty.Register("CameraType", typeof(ScreenSpacedCameraType), typeof(ScreenSpacedElement3D), new PropertyMetadata(ScreenSpacedCameraType.Auto,
+        HelixProperty.Register<ScreenSpacedElement3D, ScreenSpacedCameraType>("CameraType",
+            ScreenSpacedCameraType.Auto,
             (d, e) =>
             {
                 if (d is Element3DCore element && element.SceneNode is ScreenSpacedNode node)
                 {
-                    node.CameraType = (ScreenSpacedCameraType)e.NewValue;
+                    node.CameraType = (ScreenSpacedCameraType)e.NewValue!;
                 }
-            }));
+            });
 
     /// <summary>
     /// The absolute position3 d property
     /// </summary>
     public static readonly DependencyProperty AbsolutePosition3DProperty =
-        DependencyProperty.Register("AbsolutePosition3D", typeof(Point3D), typeof(ScreenSpacedElement3D), new PropertyMetadata(new Point3D(), (d, e) =>
+        HelixProperty.Register<ScreenSpacedElement3D, Point3D>("AbsolutePosition3D",
+            new Point3D(), (d, e) =>
         {
             if (d is Element3DCore { SceneNode: ScreenSpacedNode node })
             {
-                node.AbsolutePosition3D = ((Point3D)e.NewValue).ToVector3();
+                node.AbsolutePosition3D = ((Point3D)e.NewValue!).ToVector3();
             }
-        }));
+        });
 
     public static readonly DependencyProperty FarPlaneDistanceProperty =
-        DependencyProperty.Register("FarPlaneDistance", typeof(double), typeof(ScreenSpacedElement3D), new PropertyMetadata(1e3, (d, e) =>
+        HelixProperty.Register<ScreenSpacedElement3D, double>("FarPlaneDistance",
+            1e3, (d, e) =>
         {
             if (d is Element3DCore element && element.SceneNode is ScreenSpacedNode node)
             {
-                node.FarPlane = (float)e.NewValue;
+                node.FarPlane = (float)e.NewValue!;
             }
-        }));
+        });
 
     public static readonly DependencyProperty NearPlaneDistanceProperty =
-        DependencyProperty.Register("NearPlaneDistance", typeof(double), typeof(ScreenSpacedElement3D), new PropertyMetadata(1e-2, (d, e) =>
+        HelixProperty.Register<ScreenSpacedElement3D, double>("NearPlaneDistance",
+            1e-2, (d, e) =>
         {
             if (d is Element3DCore element && element.SceneNode is ScreenSpacedNode node)
             {
-                node.NearPlane = (float)e.NewValue;
+                node.NearPlane = (float)e.NewValue!;
             }
-        }));
+        });
 
     /// <summary>
     /// Gets or sets a value indicating whether [enable mover].
@@ -146,7 +161,7 @@ public abstract class ScreenSpacedElement3D : GroupModel3D
     {
         get
         {
-            return (bool)GetValue(EnableMoverProperty);
+            return (bool)GetValue(EnableMoverProperty)!;
         }
         set
         {
@@ -165,7 +180,7 @@ public abstract class ScreenSpacedElement3D : GroupModel3D
         }
         get
         {
-            return (double)GetValue(RelativeScreenLocationXProperty);
+            return (double)GetValue(RelativeScreenLocationXProperty)!;
         }
     }
 
@@ -180,7 +195,7 @@ public abstract class ScreenSpacedElement3D : GroupModel3D
         }
         get
         {
-            return (double)GetValue(RelativeScreenLocationYProperty);
+            return (double)GetValue(RelativeScreenLocationYProperty)!;
         }
     }
 
@@ -195,7 +210,7 @@ public abstract class ScreenSpacedElement3D : GroupModel3D
         }
         get
         {
-            return (double)GetValue(SizeScaleProperty);
+            return (double)GetValue(SizeScaleProperty)!;
         }
     }
 
@@ -209,7 +224,7 @@ public abstract class ScreenSpacedElement3D : GroupModel3D
     {
         get
         {
-            return (ScreenSpacedMode)GetValue(ModeProperty);
+            return (ScreenSpacedMode)GetValue(ModeProperty)!;
         }
         set
         {
@@ -227,7 +242,7 @@ public abstract class ScreenSpacedElement3D : GroupModel3D
     {
         get
         {
-            return (ScreenSpacedCameraType)GetValue(CameraTypeProperty);
+            return (ScreenSpacedCameraType)GetValue(CameraTypeProperty)!;
         }
         set
         {
@@ -245,7 +260,7 @@ public abstract class ScreenSpacedElement3D : GroupModel3D
     {
         get
         {
-            return (Point3D)GetValue(AbsolutePosition3DProperty);
+            return (Point3D)GetValue(AbsolutePosition3DProperty)!;
         }
         set
         {
@@ -263,7 +278,7 @@ public abstract class ScreenSpacedElement3D : GroupModel3D
     {
         get
         {
-            return (double)GetValue(FarPlaneDistanceProperty);
+            return (double)GetValue(FarPlaneDistanceProperty)!;
         }
         set
         {
@@ -281,7 +296,7 @@ public abstract class ScreenSpacedElement3D : GroupModel3D
     {
         get
         {
-            return (double)GetValue(NearPlaneDistanceProperty);
+            return (double)GetValue(NearPlaneDistanceProperty)!;
         }
         set
         {
@@ -309,8 +324,8 @@ public abstract class ScreenSpacedElement3D : GroupModel3D
         private set; get;
     } = new RelativePositionCanvas2D()
     {
-        HorizontalAlignment = HorizontalAlignment.Stretch,
-        VerticalAlignment = VerticalAlignment.Stretch
+        HorizontalAlignment = UIHorizontalAlignment.Stretch,
+        VerticalAlignment = UIVerticalAlignment.Stretch
     };
 
     private ScreenSpacePositionMoverBase? mover;
@@ -363,11 +378,18 @@ public abstract class ScreenSpacedElement3D : GroupModel3D
         }
     }
 
-    private static void SetBinding(string path, DependencyObject dobj, DependencyProperty property, object viewModel, BindingMode mode = BindingMode.TwoWay, IValueConverter? converter = null)
+    private static void SetBinding(string path, FrameworkControl dobj, DependencyProperty property, object viewModel, BindingMode mode = BindingMode.TwoWay, IValueConverter? converter = null)
     {
         var binding = new Binding
         {
+#if false
+#elif WINUI || WPF
             Path = new PropertyPath(path),
+#elif AVALONIA
+            Path = path,
+#else
+#error Unknown framework
+#endif
             Source = viewModel,
             Mode = mode
         };
@@ -376,7 +398,15 @@ public abstract class ScreenSpacedElement3D : GroupModel3D
         {
             binding.Converter = converter;
         }
+
+#if false
+#elif WINUI || WPF
         BindingOperations.SetBinding(dobj, property, binding);
+#elif AVALONIA
+        dobj.Bind(property, binding);
+#else
+#error Unknown framework
+#endif
     }
     #endregion
 }

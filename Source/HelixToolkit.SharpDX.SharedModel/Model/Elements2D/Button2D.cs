@@ -4,6 +4,7 @@ using Microsoft.UI.Xaml.Media;
 #elif WPF
 using System.Windows;
 using System.Windows.Media;
+#elif AVALONIA
 #else
 #error Unknown framework
 #endif
@@ -13,6 +14,8 @@ using System.Windows.Media;
 namespace HelixToolkit.WinUI.SharpDX.Elements2D;
 #elif WPF
 namespace HelixToolkit.Wpf.SharpDX.Elements2D;
+#elif AVALONIA
+namespace HelixToolkit.Avalonia.SharpDX.Elements2D;
 #else
 #error Unknown framework
 #endif
@@ -26,6 +29,7 @@ public class Button2D : Clickable2D
 #elif WPF
         DefaultStyleKeyProperty.OverrideMetadata(
             typeof(Button2D), new FrameworkPropertyMetadata(typeof(Button2D)));
+#elif AVALONIA
 #else
 #error Unknown framework
 #endif
@@ -37,6 +41,7 @@ public class Button2D : Clickable2D
 #elif WINUI
         DefaultStyleKey = typeof(Button2D);
 #elif WPF
+#elif AVALONIA
 #else
 #error Unknown framework
 #endif
@@ -59,6 +64,7 @@ public class Button2D : Clickable2D
         this.CornerRadius = 2;
         this.BorderThickness = new UIThickness(0, 0, 0, 0);
 #elif WPF
+#elif AVALONIA
 #else
 #error Unknown framework
 #endif
@@ -68,6 +74,7 @@ public class Button2D : Clickable2D
 #elif WINUI
     private Brush? _previousBackgroundBrush;
 #elif WPF
+#elif AVALONIA
 #else
 #error Unknown framework
 #endif
@@ -94,6 +101,7 @@ public class Button2D : Clickable2D
             }
         }
 #elif WPF
+#elif AVALONIA
 #else
 #error Unknown framework
 #endif

@@ -6,6 +6,8 @@ using HelixToolkit.SharpDX.Model.Scene2D;
 namespace HelixToolkit.WinUI.SharpDX.Elements2D;
 #elif WPF
 namespace HelixToolkit.Wpf.SharpDX.Elements2D;
+#elif AVALONIA
+namespace HelixToolkit.Avalonia.SharpDX.Elements2D;
 #else
 #error Unknown framework
 #endif
@@ -70,6 +72,8 @@ public class ScreenSpacePositionMover : ScreenSpacePositionMoverBase
             b.Visibility = UIVisibility.Collapsed;
 #elif WPF
             b.Visibility = UIVisibility.Hidden;
+#elif AVALONIA
+            b.Visibility = false;
 #else
 #error Unknown framework
 #endif
@@ -114,7 +118,14 @@ public class ScreenSpacePositionMover : ScreenSpacePositionMoverBase
                 {
                     foreach (Button2D b in Buttons)
                     {
+#if false
+#elif WINUI || WPF
                         b.Visibility = UIVisibility.Visible;
+#elif AVALONIA
+                        b.Visibility = true;
+#else
+#error Unknown framework
+#endif
                     }
                 }
                 return base.OnHitTest(ref mousePoint, out hitResult);
@@ -130,6 +141,8 @@ public class ScreenSpacePositionMover : ScreenSpacePositionMoverBase
                         b.Visibility = UIVisibility.Collapsed;
 #elif WPF
                         b.Visibility = UIVisibility.Hidden;
+#elif AVALONIA
+                        b.Visibility = false;
 #else
 #error Unknown framework
 #endif
