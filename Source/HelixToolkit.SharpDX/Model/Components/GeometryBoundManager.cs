@@ -204,15 +204,19 @@ public sealed class GeometryBoundManager : IDisposable
 
     private void OnTransformChanged(object? sender, TransformArgs e)
     {
-        var oldBound = BoundsWithTransform;
-        BoundsWithTransform = Bounds.Transform(e);
-        RaiseOnTransformBoundChanged(BoundsWithTransform, oldBound);
-        var oldSphere = BoundsSphereWithTransform;
-        BoundsSphereWithTransform = BoundsSphere.TransformBoundingSphere(e);
-        RaiseOnTransformBoundSphereChanged(BoundsSphereWithTransform, oldSphere);
+        UpdateBoundingBox(e.Transform);
+        UpdateBoundingSphere(e.Transform);
     }
 
     private void UpdateBoundingBox()
+    {
+        if (elementCore.TryGetTarget(out var target))
+        {
+            UpdateBoundingBox(target.TotalModelMatrixInternal);
+        }
+    }
+
+    private void UpdateBoundingBox(in Matrix modelTransform)
     {
         if (!GeometryValid)
         {
@@ -221,47 +225,39 @@ public sealed class GeometryBoundManager : IDisposable
         }
         else
         {
-            if (!elementCore.TryGetTarget(out var target))
-            {
-                return;
-            }
-            BoundingBox oldBound;
+            var oldBound = Bounds;
+            var oldBoundWithTransform = BoundsWithTransform;
+            Bounds = Geometry?.Bound ?? DefaultBound;
             if (!HasInstances)
             {
-                oldBound = Bounds;
-                Bounds = Geometry?.Bound ?? DefaultBound;
-                RaiseOnBoundChanged(Bounds, oldBound);
-                oldBound = BoundsWithTransform;
-                BoundsWithTransform = Bounds.Transform(target.TotalModelMatrixInternal);
-                RaiseOnTransformBoundChanged(BoundsWithTransform, oldBound);
+                BoundsWithTransform = Bounds.Transform(modelTransform);
             }
             else
             {
-                var bound = Geometry?.Bound.Transform(Instances![0]) ?? DefaultBound;
-                for (int i = 1; i < Instances!.Count; ++i)
-                {
-                    var b = Geometry?.Bound.Transform(Instances![i]) ?? DefaultBound;
-                    BoundingBox.Merge(ref bound, ref b, out bound);
-                }
-                oldBound = Bounds;
-                Bounds = bound;
-                RaiseOnBoundChanged(Bounds, oldBound);
-                oldBound = BoundsWithTransform;
-
-                var originBound = Geometry?.Bound.Transform(target.TotalModelMatrixInternal) ?? DefaultBound;
-                bound = originBound.Transform(Instances![0]);
+                var originBound = Bounds.Transform(modelTransform);
+                var bound = originBound.Transform(Instances![0]);
                 for (int i = 1; i < Instances!.Count; ++i)
                 {
                     var b = originBound.Transform(Instances![i]);
                     BoundingBox.Merge(ref bound, ref b, out bound);
                 }
+
                 BoundsWithTransform = bound;
-                RaiseOnTransformBoundChanged(BoundsWithTransform, oldBound);
             }
+            RaiseOnBoundChanged(Bounds, oldBound);
+            RaiseOnTransformBoundChanged(BoundsWithTransform, oldBoundWithTransform);
         }
     }
 
     private void UpdateBoundingSphere()
+    {
+        if (elementCore.TryGetTarget(out var target))
+        {
+            UpdateBoundingSphere(target.TotalModelMatrixInternal);
+        }
+    }
+
+    private void UpdateBoundingSphere(in Matrix modelTransform)
     {
         if (!GeometryValid)
         {
@@ -270,35 +266,26 @@ public sealed class GeometryBoundManager : IDisposable
         }
         else
         {
-            if (!elementCore.TryGetTarget(out var target))
-            {
-                return;
-            }
-            BoundingSphere oldSphere;
+            var oldSphere = BoundsSphere;
+            var oldSphereTransform = BoundsSphereWithTransform;
+            BoundsSphere = Geometry?.BoundingSphere ?? DefaultBoundSphere;
             if (!HasInstances)
             {
-                oldSphere = BoundsSphere;
-                BoundsSphere = Geometry?.BoundingSphere ?? DefaultBoundSphere;
-                RaiseOnBoundSphereChanged(BoundsSphere, oldSphere);
-                oldSphere = BoundsSphereWithTransform;
-                BoundsSphereWithTransform = BoundsSphere.TransformBoundingSphere(target.TotalModelMatrixInternal);
-                RaiseOnTransformBoundSphereChanged(BoundsSphereWithTransform, oldSphere);
+                BoundsSphereWithTransform = BoundsSphere.TransformBoundingSphere(modelTransform);
             }
             else
             {
-                var boundSphere = Geometry?.BoundingSphere.TransformBoundingSphere(Instances![0]) ?? DefaultBoundSphere;
-                foreach (var instance in Instances!)
+                var boundSphere = Geometry?.BoundingSphere.TransformBoundingSphere(modelTransform) ?? DefaultBoundSphere;
+                var sphere = boundSphere.TransformBoundingSphere(Instances![0]);
+                for (int i = 1; i < Instances!.Count; ++i)
                 {
-                    var bs = Geometry?.BoundingSphere.TransformBoundingSphere(instance) ?? DefaultBoundSphere;
-                    BoundingSphere.Merge(ref boundSphere, ref bs, out boundSphere);
+                    var bs = boundSphere.TransformBoundingSphere(Instances![i]);
+                    BoundingSphere.Merge(ref sphere, ref bs, out sphere);
                 }
-                oldSphere = BoundsSphere;
-                BoundsSphere = boundSphere;
-                RaiseOnBoundSphereChanged(BoundsSphere, oldSphere);
-                oldSphere = BoundsSphereWithTransform;
-                BoundsSphereWithTransform = BoundsSphere.TransformBoundingSphere(target.TotalModelMatrixInternal);
-                RaiseOnTransformBoundSphereChanged(BoundsSphereWithTransform, oldSphere);
+                BoundsSphereWithTransform = sphere;
             }
+            RaiseOnBoundSphereChanged(BoundsSphere, oldSphere);
+            RaiseOnTransformBoundSphereChanged(BoundsSphereWithTransform, oldSphereTransform);
         }
     }
 
