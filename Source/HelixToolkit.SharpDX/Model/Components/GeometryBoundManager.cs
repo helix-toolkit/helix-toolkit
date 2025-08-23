@@ -205,6 +205,7 @@ public sealed class GeometryBoundManager : IDisposable
     private void OnTransformChanged(object? sender, TransformArgs e)
     {
         UpdateBoundingBox(e.Transform);
+        UpdateBoundingSphere(e.Transform);
     }
 
     private void UpdateBoundingBox()
