@@ -2561,19 +2561,47 @@ public sealed class MeshBuilder
     /// <param name="columnsClosed">
     /// True if columns are closed.
     /// </param>
-    public void AddRectangularMeshTriangleIndices(
-        int index0, int rows, int columns, bool rowsClosed, bool columnsClosed)
+    public (int ActualRows, int ActualColumns) AddRectangularMeshTriangleIndices(int index0, int rows, int columns, bool rowsClosed, bool columnsClosed)
     {
+        /*
+         *Creates triangle indices for a rectangular mesh grid
+         *Example with 3x4 grid (3 rows, 4 columns):
+         *
+         *   0----1----2----3
+         *   |    |    |    |
+         *   4----5----6----7
+         *   |    |    |    |
+         *   8----9---10---11
+         *
+         *Each quad is divided into 2 triangles:
+         *Quad (0,0): vertices 0,1,4,5 → triangles: (0,5,1) and (5,0,4)
+         *Quad (0,1): vertices 1,2,5,6 → triangles: (1,6,2) and (6,1,5)
+         *
+         * (0,0)-------- (0,1)
+         *  |   \       |
+         *  |     \     |
+         *  |       \   |
+         * (1,0) ------ (1,1)
+         *
+         *  1st triangle: i00, i11, i01
+         *  2nd triangle: i11, i00, i10
+         */
+
+
+        int actualRows = rows;
+        int actualColumns = columns;
         int m2 = rows - 1;
         int n2 = columns - 1;
         if (columnsClosed)
         {
             m2++;
+            actualColumns++;
         }
 
         if (rowsClosed)
         {
             n2++;
+            actualRows++;
         }
 
         for (int i = 0; i < m2; i++)
@@ -2593,6 +2621,7 @@ public sealed class MeshBuilder
                 this.TriangleIndices.Add(i10);
             }
         }
+        return (actualRows, actualColumns);
     }
 
     /// <summary>
@@ -3563,6 +3592,12 @@ public sealed class MeshBuilder
 
     /// <summary>
     /// Adds a tube with a custom section.
+    /// <para>
+    /// Limitation: using <paramref name="xTextureCoordinates"/>
+    /// with <paramref  name="isTubeClosed"/> = true 
+    /// or <paramref name="isSectionClosed"/> = true 
+    /// will be incorrect texture at the last of mesh
+    /// </para>
     /// </summary>
     /// <param name="path">
     /// A list of points defining the centers of the tube.
@@ -3697,20 +3732,12 @@ public sealed class MeshBuilder
                 bool isIntersect = ray.PlaneIntersection(plane, out Vector3 intersect);
                 if (!isIntersect)
                 {
-                    Ray reverseRay = Ray.Reverse(ray);;
+                    Ray reverseRay = Ray.Reverse(ray); ;
                     isIntersect = reverseRay.PlaneIntersection(plane, out intersect);
                 }
                 if (isIntersect)
                 {
                     this.Positions.Add(intersect);
-
-                    this.Normals?.Add(Vector3.Normalize(intersect - currentP));
-                    Vector2 textureCoordinate = Vector2.Zero;
-                    if (xTextureCoordinates is not null)
-                    {
-                        textureCoordinate = new Vector2(xTextureCoordinates[i % xTextureCoordinates.Count], (float)j / (sectionLength - 1));
-                    }
-                    this.TextureCoordinates?.Add(textureCoordinate);
                 }
             }
             preDir = currentDir;
@@ -3721,7 +3748,38 @@ public sealed class MeshBuilder
                 rowsPath++;
             }
         }
-        this.AddRectangularMeshTriangleIndices(index0, rowsPath, sectionLength, isSectionClosed, isTubeClosed);
+        var (actualRows, actualColumn) = this.AddRectangularMeshTriangleIndices(index0, rowsPath, sectionLength, isSectionClosed, isTubeClosed);
+
+        //incorrect(missing) texture at the last of mesh
+        //rowsPath = actualRows;
+        //sectionLength = actualColumn;
+        if (this.Normals != null)
+        {
+            this.AddRectangularMeshNormals(index0, rowsPath, sectionLength);
+        }
+        if (this.TextureCoordinates != null)
+        {
+            if (xTextureCoordinates != null)
+            {
+                for (int i = 0; i < rowsPath; i++)
+                {
+                    for (int j = 0; j < sectionLength; j++)
+                    {
+                        Vector2 textureCoordinate = Vector2.Zero;
+                        if (xTextureCoordinates is not null)
+                        {
+                            textureCoordinate = new Vector2(xTextureCoordinates[i % xTextureCoordinates.Count], (float)j / (sectionLength - 1));
+                        }
+                        this.TextureCoordinates?.Add(textureCoordinate);
+                    }
+                }
+            }
+            else
+            {
+                this.AddRectangularMeshTextureCoordinates(rowsPath, sectionLength);
+            }
+        }
+
         if (!isTubeClosed && (frontCap || backCap))
         {
             Vector3[] normals = new Vector3[section.Count];

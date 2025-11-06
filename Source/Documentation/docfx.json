@@ -14,6 +14,7 @@
             "HelixToolkit.SharpDX.Assimp/**.csproj",
             "HelixToolkit.Wpf.SharpDX/**.csproj",
             "HelixToolkit.WinUI.SharpDX/**.csproj",
+            "HelixToolkit.Avalonia.SharpDX/**.csproj",
           ],
           "src": "../"
         }

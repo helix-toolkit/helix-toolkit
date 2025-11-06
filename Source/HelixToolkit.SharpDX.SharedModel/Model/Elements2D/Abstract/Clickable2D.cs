@@ -5,6 +5,9 @@ using System.Windows.Input;
 #elif WINUI
 #elif WPF
 using System.Windows;
+#elif AVALONIA
+using Avalonia.Input;
+using Avalonia.Interactivity;
 #else
 #error Unknown framework
 #endif
@@ -14,6 +17,8 @@ using System.Windows;
 namespace HelixToolkit.WinUI.SharpDX.Elements2D;
 #elif WPF
 namespace HelixToolkit.Wpf.SharpDX.Elements2D;
+#elif AVALONIA
+namespace HelixToolkit.Avalonia.SharpDX.Elements2D;
 #else
 #error Unknown framework
 #endif
@@ -23,7 +28,9 @@ public abstract class Clickable2D : Border2D
     public static long DoubleClickThreshold { get; set; } = 300;
 
     #region Dependency Properties
-    public static readonly DependencyProperty CommandProperty = DependencyProperty.Register("Command", typeof(ICommand), typeof(Clickable2D), new PropertyMetadata(null));
+    public static readonly DependencyProperty CommandProperty =
+        HelixProperty.Register<Clickable2D, ICommand?>("Command", null);
+
     public ICommand? Command
     {
         set
@@ -47,7 +54,12 @@ public abstract class Clickable2D : Border2D
 
     public static readonly RoutedEvent DoubleClicked2DEvent =
         EventManager.RegisterRoutedEvent("DoubleClicked2D", RoutingStrategy.Bubble, typeof(Mouse2DRoutedEventHandler), typeof(Clickable2D));
+#elif AVALONIA
+    public static readonly RoutedEvent<Mouse2DEventArgs> Clicked2DEvent =
+        RoutedEvent.Register<Clickable2D, Mouse2DEventArgs>("Clicked2D", RoutingStrategies.Bubble);
 
+    public static readonly RoutedEvent<Mouse2DEventArgs> DoubleClicked2DEvent =
+        RoutedEvent.Register<Clickable2D, Mouse2DEventArgs>("DoubleClicked2D", RoutingStrategies.Bubble);
 #else
 #error Unknown framework
 #endif
@@ -58,7 +70,7 @@ public abstract class Clickable2D : Border2D
         {
 #if false
 #elif WINUI
-#elif WPF
+#elif WPF || AVALONIA
             AddHandler(Clicked2DEvent, value);
 #else
 #error Unknown framework
@@ -68,7 +80,7 @@ public abstract class Clickable2D : Border2D
         {
 #if false
 #elif WINUI
-#elif WPF
+#elif WPF || AVALONIA
             RemoveHandler(Clicked2DEvent, value);
 #else
 #error Unknown framework
@@ -82,7 +94,7 @@ public abstract class Clickable2D : Border2D
         {
 #if false
 #elif WINUI
-#elif WPF
+#elif WPF || AVALONIA
             AddHandler(DoubleClicked2DEvent, value);
 #else
 #error Unknown framework
@@ -92,7 +104,7 @@ public abstract class Clickable2D : Border2D
         {
 #if false
 #elif WINUI
-#elif WPF
+#elif WPF || AVALONIA
             RemoveHandler(DoubleClicked2DEvent, value);
 #else
 #error Unknown framework
@@ -104,6 +116,8 @@ public abstract class Clickable2D : Border2D
 #if false
 #elif WINUI
 #elif WPF
+    private long lastClickedTime = 0;
+#elif AVALONIA
     private long lastClickedTime = 0;
 #else
 #error Unknown framework
@@ -139,6 +153,27 @@ public abstract class Clickable2D : Border2D
         if (e.InputArgs is TouchEventArgs || (e.InputArgs is MouseEventArgs m && m.LeftButton == MouseButtonState.Pressed))
         {
             long time = e.InputArgs.Timestamp;
+            if (time - lastClickedTime < DoubleClickThreshold)
+            {
+                RaiseEvent(new Mouse2DEventArgs(DoubleClicked2DEvent, this));
+#if DEBUG
+                Debug.WriteLine("DoubleClicked2DEvent");
+#endif
+            }
+            else
+            {
+                RaiseEvent(new Mouse2DEventArgs(Clicked2DEvent, this));
+#if DEBUG
+                Debug.WriteLine("Clicked2DEvent");
+#endif
+                Command?.Execute(e);
+            }
+            lastClickedTime = time;
+        }
+#elif AVALONIA
+        if (e.InputArgs is PointerEventArgs m && m.GetCurrentPoint(null).Properties.IsLeftButtonPressed)
+        {
+            long time = (long)m.Timestamp;
             if (time - lastClickedTime < DoubleClickThreshold)
             {
                 RaiseEvent(new Mouse2DEventArgs(DoubleClicked2DEvent, this));

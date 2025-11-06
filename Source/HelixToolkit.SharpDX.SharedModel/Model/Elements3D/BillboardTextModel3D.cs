@@ -8,6 +8,8 @@ using SharpDX.Direct3D11;
 using HelixToolkit.WinUI.SharpDX.Model;
 #elif WPF
 using HelixToolkit.Wpf.SharpDX.Model;
+#elif AVALONIA
+using HelixToolkit.Avalonia.SharpDX.Model;
 #else
 #error Unknown framework
 #endif
@@ -17,6 +19,8 @@ using HelixToolkit.Wpf.SharpDX.Model;
 namespace HelixToolkit.WinUI.SharpDX;
 #elif WPF
 namespace HelixToolkit.Wpf.SharpDX;
+#elif AVALONIA
+namespace HelixToolkit.Avalonia.SharpDX;
 #else
 #error Unknown framework
 #endif
@@ -33,15 +37,16 @@ public class BillboardTextModel3D : GeometryModel3D
     /// <para>When FixedSize = true, the billboard render size will be scale to normalized device coordinates(screen) size</para>
     /// <para>When FixedSize = false, the billboard render size will be actual size in 3D world space</para>
     /// </summary>
-    public static readonly DependencyProperty FixedSizeProperty = DependencyProperty.Register("FixedSize", typeof(bool), typeof(BillboardTextModel3D),
-        new PropertyMetadata(true,
+    public static readonly DependencyProperty FixedSizeProperty =
+        HelixProperty.Register<BillboardTextModel3D, bool>("FixedSize",
+            true,
             (d, e) =>
             {
                 if (d is BillboardTextModel3D model)
                 {
-                    model.material.FixedSize = (bool)e.NewValue;
+                    model.material.FixedSize = (bool)e.NewValue!;
                 }
-            }));
+            });
 
     /// <summary>
     /// Fixed sized billboard. Default = true. 
@@ -56,7 +61,7 @@ public class BillboardTextModel3D : GeometryModel3D
         }
         get
         {
-            return (bool)GetValue(FixedSizeProperty);
+            return (bool)GetValue(FixedSizeProperty)!;
         }
     }
 
@@ -65,13 +70,14 @@ public class BillboardTextModel3D : GeometryModel3D
     /// During rendering, transparent objects are rendered after opaque objects. Transparent objects' order in scene graph are preserved.
     /// </summary>
     public static readonly DependencyProperty IsTransparentProperty =
-        DependencyProperty.Register("IsTransparent", typeof(bool), typeof(BillboardTextModel3D), new PropertyMetadata(false, (d, e) =>
+        HelixProperty.Register<BillboardTextModel3D, bool>("IsTransparent",
+            false, (d, e) =>
         {
             if (d is Element3DCore { SceneNode: BillboardNode node })
             {
-                node.IsTransparent = (bool)e.NewValue;
+                node.IsTransparent = (bool)e.NewValue!;
             }
-        }));
+        });
 
     /// <summary>
     /// Specifiy if  billboard texture is transparent. 
@@ -81,7 +87,7 @@ public class BillboardTextModel3D : GeometryModel3D
     {
         get
         {
-            return (bool)GetValue(IsTransparentProperty);
+            return (bool)GetValue(IsTransparentProperty)!;
         }
         set
         {
@@ -99,7 +105,7 @@ public class BillboardTextModel3D : GeometryModel3D
     {
         get
         {
-            return (SamplerStateDescription)GetValue(SamplerDescriptionProperty);
+            return (SamplerStateDescription)GetValue(SamplerDescriptionProperty)!;
         }
         set
         {
@@ -111,13 +117,14 @@ public class BillboardTextModel3D : GeometryModel3D
     /// The sampler description property
     /// </summary>
     public static readonly DependencyProperty SamplerDescriptionProperty =
-        DependencyProperty.Register("SamplerDescription", typeof(SamplerStateDescription), typeof(BillboardTextModel3D), new PropertyMetadata(DefaultSamplers.LinearSamplerClampAni1, (d, e) =>
+        HelixProperty.Register<BillboardTextModel3D, SamplerStateDescription>("SamplerDescription",
+            DefaultSamplers.LinearSamplerClampAni1, (d, e) =>
         {
             if (d is BillboardTextModel3D model)
             {
-                model.material.SamplerDescription = (SamplerStateDescription)e.NewValue;
+                model.material.SamplerDescription = (SamplerStateDescription)e.NewValue!;
             }
-        }));
+        });
     #endregion
 
     #region Overridable Methods        

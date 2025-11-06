@@ -6,6 +6,7 @@
         <Configuration>
           <Format>cobertura</Format>
           <UseSourceLink>true</UseSourceLink>
+          <SingleHit>true</SingleHit>
         </Configuration>
       </DataCollector>
     </DataCollectors>

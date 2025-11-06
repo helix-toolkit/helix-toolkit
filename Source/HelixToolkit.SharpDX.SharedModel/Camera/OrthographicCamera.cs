@@ -5,6 +5,8 @@
 namespace HelixToolkit.WinUI.SharpDX;
 #elif WPF
 namespace HelixToolkit.Wpf.SharpDX;
+#elif AVALONIA
+namespace HelixToolkit.Avalonia.SharpDX;
 #else
 #error Unknown framework
 #endif
@@ -17,14 +19,18 @@ public class OrthographicCamera : ProjectionCamera, IOrthographicCameraModel
     /// <summary>
     /// The width property
     /// </summary>
-    public static readonly DependencyProperty WidthProperty = DependencyProperty.Register(
-        "Width", typeof(double), typeof(OrthographicCamera), new PropertyMetadata(10.0, (d, e) =>
+#if AVALONIA
+    new
+#endif
+    public static readonly DependencyProperty WidthProperty =
+        HelixProperty.Register<OrthographicCamera, double>("Width",
+            10.0, (d, e) =>
         {
             if (d is Camera { CameraInternal: OrthographicCameraCore core })
             {
-                core.Width = (float)(double)e.NewValue;
+                core.Width = (float)(double)e.NewValue!;
             }
-        }));
+        });
 
     /// <summary>
     /// Gets or sets the width.
@@ -32,11 +38,14 @@ public class OrthographicCamera : ProjectionCamera, IOrthographicCameraModel
     /// <value>
     /// The width.
     /// </value>
+#if AVALONIA
+    new
+#endif
     public double Width
     {
         get
         {
-            return (double)this.GetValue(WidthProperty);
+            return (double)this.GetValue(WidthProperty)!;
         }
         set
         {
@@ -137,6 +146,7 @@ public class OrthographicCamera : ProjectionCamera, IOrthographicCameraModel
     {
         return new OrthographicCamera();
     }
+#elif AVALONIA
 #else
 #error Unknown framework
 #endif

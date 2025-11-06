@@ -3,6 +3,8 @@
 #elif WINUI
 #elif WPF
 using System.Windows;
+#elif AVALONIA
+using Avalonia.Interactivity;
 #else
 #error Unknown framework
 #endif
@@ -12,6 +14,8 @@ using System.Windows;
 namespace HelixToolkit.WinUI.SharpDX;
 #elif WPF
 namespace HelixToolkit.Wpf.SharpDX;
+#elif AVALONIA
+namespace HelixToolkit.Avalonia.SharpDX;
 #else
 #error Unknown framework
 #endif
@@ -20,6 +24,8 @@ public abstract class Mouse3DEventArgs
 #if false
 #elif WINUI
 #elif WPF
+    : RoutedEventArgs
+#elif AVALONIA
     : RoutedEventArgs
 #else
 #error Unknown framework
@@ -45,6 +51,7 @@ public abstract class Mouse3DEventArgs
 #elif WINUI
     private bool handled;
 #elif WPF
+#elif AVALONIA
 #else
 #error Unknown framework
 #endif
@@ -52,6 +59,8 @@ public abstract class Mouse3DEventArgs
 #if false
 #elif WINUI
 #elif WPF
+    new
+#elif AVALONIA
     new
 #else
 #error Unknown framework
@@ -64,6 +73,8 @@ public abstract class Mouse3DEventArgs
 #elif WINUI
             return handled;
 #elif WPF
+            return base.Handled;
+#elif AVALONIA
             return base.Handled;
 #else
 #error Unknown framework
@@ -79,6 +90,8 @@ public abstract class Mouse3DEventArgs
             handled = value;
 #elif WPF
             base.Handled = value;
+#elif AVALONIA
+            base.Handled = value;
 #else
 #error Unknown framework
 #endif
@@ -89,6 +102,9 @@ public abstract class Mouse3DEventArgs
 #elif WINUI
     public Mouse3DEventArgs(HitTestResult? hitTestResult, Point position, Viewport3DX? viewport = null, UIInputEventArgs? originalInputEventArgs = null)
 #elif WPF
+    public Mouse3DEventArgs(RoutedEvent routedEvent, object? source, HitTestResult? hitTestResult, Point position, Viewport3DX? viewport = null, UIInputEventArgs? originalInputEventArgs = null)
+        : base(routedEvent, source)
+#elif AVALONIA
     public Mouse3DEventArgs(RoutedEvent routedEvent, object? source, HitTestResult? hitTestResult, Point position, Viewport3DX? viewport = null, UIInputEventArgs? originalInputEventArgs = null)
         : base(routedEvent, source)
 #else

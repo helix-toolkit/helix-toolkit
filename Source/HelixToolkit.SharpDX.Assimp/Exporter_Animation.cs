@@ -1,4 +1,4 @@
-﻿using Assimp;
+﻿using SharpAssimp;
 using Microsoft.Extensions.Logging;
 using HxAnimations = HelixToolkit.SharpDX.Animations;
 using HxScene = HelixToolkit.SharpDX.Model.Scene;

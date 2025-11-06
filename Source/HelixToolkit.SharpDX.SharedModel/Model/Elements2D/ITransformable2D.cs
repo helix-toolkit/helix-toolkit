@@ -3,6 +3,8 @@
 using Microsoft.UI.Xaml.Media;
 #elif WPF
 using System.Windows.Media;
+#elif AVALONIA
+using Avalonia.Media;
 #else
 #error Unknown framework
 #endif
@@ -12,13 +14,15 @@ using System.Windows.Media;
 namespace HelixToolkit.WinUI.SharpDX.Elements2D;
 #elif WPF
 namespace HelixToolkit.Wpf.SharpDX.Elements2D;
+#elif AVALONIA
+namespace HelixToolkit.Avalonia.SharpDX.Elements2D;
 #else
 #error Unknown framework
 #endif
 
 public interface ITransformable2D
 {
-    Transform Transform
+    Transform? Transform
     {
         set; get;
     }

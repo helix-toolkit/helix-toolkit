@@ -1,4 +1,4 @@
-﻿using Assimp;
+﻿using SharpAssimp;
 using HelixToolkit.Geometry;
 using HelixToolkit.SharpDX.Model;
 using Microsoft.Extensions.Logging;
@@ -162,7 +162,7 @@ public partial class Importer
         if (mesh.HasVertexColors(0))
         {
             hMesh.Colors =
-               new Color4Collection(mesh.VertexColorChannels[0].Select(x => new Color4(x.R, x.G, x.B, x.A)));
+               new Color4Collection(mesh.VertexColorChannels[0].Select(x => new Color4(x.X, x.Y, x.Z, x.W)));
         }
         if (mesh.HasTextureCoords(0))
         {
@@ -282,7 +282,7 @@ public partial class Importer
         if (mesh.HasVertexColors(0))
         {
             hMesh.Colors =
-               new Color4Collection(mesh.VertexColorChannels[0].Select(x => new Color4(x.R, x.G, x.B, x.A)));
+               new Color4Collection(mesh.VertexColorChannels[0].Select(x => new Color4(x.X, x.Y, x.Z, x.W)));
         }
         return hMesh;
     }

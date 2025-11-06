@@ -2,6 +2,8 @@
 #elif WINUI
 #elif WPF
 using System.Windows;
+#elif AVALONIA
+using Avalonia.Interactivity;
 #else
 #error Unknown framework
 #endif
@@ -11,6 +13,8 @@ using System.Windows;
 namespace HelixToolkit.WinUI.SharpDX;
 #elif WPF
 namespace HelixToolkit.Wpf.SharpDX;
+#elif AVALONIA
+namespace HelixToolkit.Avalonia.SharpDX;
 #else
 #error Unknown framework
 #endif
@@ -26,6 +30,10 @@ public interface IMouse3D
     event RoutedEventHandler MouseDown3D;
     event RoutedEventHandler MouseUp3D;
     event RoutedEventHandler MouseMove3D;
+#elif AVALONIA
+    event EventHandler<RoutedEventArgs> MouseDown3D;
+    event EventHandler<RoutedEventArgs> MouseUp3D;
+    event EventHandler<RoutedEventArgs> MouseMove3D;
 #else
 #error Unknown framework
 #endif

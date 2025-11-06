@@ -5,6 +5,8 @@
 namespace HelixToolkit.WinUI.SharpDX.Extensions;
 #elif WPF
 namespace HelixToolkit.Wpf.SharpDX.Extensions;
+#elif AVALONIA
+namespace HelixToolkit.Avalonia.SharpDX.Extensions;
 #else
 #error Unknown framework
 #endif
@@ -15,16 +17,22 @@ public static class TypeConvertExtensions
     {
         return v switch
         {
-            UIVisibility.Collapsed => Scene2D.Visibility.Collapsed,
 #if false
 #elif WINUI
+            UIVisibility.Collapsed => Scene2D.Visibility.Collapsed,
+            UIVisibility.Visible => Scene2D.Visibility.Visible,
+            _ => Scene2D.Visibility.Visible,
 #elif WPF
+            UIVisibility.Collapsed => Scene2D.Visibility.Collapsed,
             UIVisibility.Hidden => Scene2D.Visibility.Hidden,
+            UIVisibility.Visible => Scene2D.Visibility.Visible,
+            _ => Scene2D.Visibility.Visible,
+#elif AVALONIA
+            false => Scene2D.Visibility.Collapsed,
+            true => Scene2D.Visibility.Visible,
 #else
 #error Unknown framework
 #endif
-            UIVisibility.Visible => Scene2D.Visibility.Visible,
-            _ => Scene2D.Visibility.Visible,
         };
     }
 

@@ -13,6 +13,12 @@ using HelixToolkit.Wpf.SharpDX.Extensions;
 using System.Windows;
 using System.Windows.Markup;
 using System.Windows.Media;
+#elif AVALONIA
+using HelixToolkit.Avalonia.SharpDX.Core2D;
+using HelixToolkit.Avalonia.SharpDX.Extensions;
+using Avalonia.Media;
+using Avalonia.Metadata;
+using FontWeights = Avalonia.Media.FontWeight;
 #else
 #error Unknown framework
 #endif
@@ -22,6 +28,8 @@ using System.Windows.Media;
 namespace HelixToolkit.WinUI.SharpDX.Elements2D;
 #elif WPF
 namespace HelixToolkit.Wpf.SharpDX.Elements2D;
+#elif AVALONIA
+namespace HelixToolkit.Avalonia.SharpDX.Elements2D;
 #else
 #error Unknown framework
 #endif
@@ -31,6 +39,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D;
 [ContentProperty(Name = "Text")]
 #elif WPF
 [ContentProperty("Text")]
+#elif AVALONIA
 #else
 #error Unknown framework
 #endif
@@ -38,16 +47,19 @@ public class TextModel2D : Element2D, ITextBlock
 {
     public static readonly string DefaultFont = "Arial";
 
-    public static readonly DependencyProperty TextProperty
-        = DependencyProperty.Register("Text", typeof(string), typeof(TextModel2D),
-            new PropertyMetadata("Text", (d, e) =>
+    public static readonly DependencyProperty TextProperty =
+        HelixProperty.Register<TextModel2D, string>("Text",
+            "", (d, e) =>
             {
                 if (d is Element2DCore { SceneNode: TextNode2D node })
                 {
                     node.Text = e.NewValue == null ? string.Empty : (string)e.NewValue;
                 }
-            }));
+            });
 
+#if AVALONIA
+    [Content]
+#endif
     public string Text
     {
         set
@@ -56,7 +68,7 @@ public class TextModel2D : Element2D, ITextBlock
         }
         get
         {
-            return (string)GetValue(TextProperty);
+            return (string)GetValue(TextProperty)!;
         }
     }
 
@@ -64,23 +76,25 @@ public class TextModel2D : Element2D, ITextBlock
 #elif WINUI
     new
 #elif WPF
+#elif AVALONIA
 #else
 #error Unknown framework
 #endif
-    public static readonly DependencyProperty ForegroundProperty
-        = DependencyProperty.Register("Foreground", typeof(Brush), typeof(TextModel2D),
-            new PropertyMetadata(new SolidColorBrush(Colors.Black), (d, e) =>
+    public static readonly DependencyProperty ForegroundProperty =
+        HelixProperty.Register<TextModel2D, Brush>("Foreground",
+            new SolidColorBrush(Colors.Black), (d, e) =>
             {
                 if (d is TextModel2D model)
                 {
                     model.foregroundChanged = true;
                 }
-            }));
+            });
 
 #if false
 #elif WINUI
     new
 #elif WPF
+#elif AVALONIA
 #else
 #error Unknown framework
 #endif
@@ -92,7 +106,7 @@ public class TextModel2D : Element2D, ITextBlock
         }
         get
         {
-            return (Brush)GetValue(ForegroundProperty);
+            return (Brush)GetValue(ForegroundProperty)!;
         }
     }
 
@@ -100,27 +114,29 @@ public class TextModel2D : Element2D, ITextBlock
 #elif WINUI
     new
 #elif WPF
+#elif AVALONIA
 #else
 #error Unknown framework
 #endif
-    public static readonly DependencyProperty BackgroundProperty
-        = DependencyProperty.Register("Background", typeof(Brush), typeof(TextModel2D),
-            new PropertyMetadata(null, (d, e) =>
+    public static readonly DependencyProperty BackgroundProperty =
+        HelixProperty.Register<TextModel2D, Brush?>("Background",
+            null, (d, e) =>
             {
                 if (d is TextModel2D model)
                 {
                     model.backgroundChanged = true;
                 }
-            }));
+            });
 
 #if false
 #elif WINUI
     new
 #elif WPF
+#elif AVALONIA
 #else
 #error Unknown framework
 #endif
-    public Brush Background
+    public Brush? Background
     {
         set
         {
@@ -128,7 +144,7 @@ public class TextModel2D : Element2D, ITextBlock
         }
         get
         {
-            return (Brush)GetValue(BackgroundProperty);
+            return (Brush?)GetValue(BackgroundProperty);
         }
     }
 
@@ -136,23 +152,25 @@ public class TextModel2D : Element2D, ITextBlock
 #elif WINUI
     new
 #elif WPF
+#elif AVALONIA
 #else
 #error Unknown framework
 #endif
-    public static readonly DependencyProperty FontSizeProperty
-        = DependencyProperty.Register("FontSize", typeof(int), typeof(TextModel2D),
-            new PropertyMetadata(12, (d, e) =>
+    public static readonly DependencyProperty FontSizeProperty =
+        HelixProperty.Register<TextModel2D, int>("FontSize",
+            12, (d, e) =>
             {
                 if (d is Element2DCore { SceneNode: TextNode2D node })
                 {
-                    node.FontSize = Math.Max(1, (int)e.NewValue);
+                    node.FontSize = Math.Max(1, (int)e.NewValue!);
                 }
-            }));
+            });
 
 #if false
 #elif WINUI
     new
 #elif WPF
+#elif AVALONIA
 #else
 #error Unknown framework
 #endif
@@ -164,7 +182,7 @@ public class TextModel2D : Element2D, ITextBlock
         }
         get
         {
-            return (int)GetValue(FontSizeProperty);
+            return (int)GetValue(FontSizeProperty)!;
         }
     }
 
@@ -172,23 +190,25 @@ public class TextModel2D : Element2D, ITextBlock
 #elif WINUI
     new
 #elif WPF
+#elif AVALONIA
 #else
 #error Unknown framework
 #endif
-    public static readonly DependencyProperty FontWeightProperty
-        = DependencyProperty.Register("FontWeight", typeof(FontWeight), typeof(TextModel2D),
-            new PropertyMetadata(FontWeights.Normal, (d, e) =>
+    public static readonly DependencyProperty FontWeightProperty =
+        HelixProperty.Register<TextModel2D, FontWeight>("FontWeight",
+            FontWeights.Normal, (d, e) =>
             {
                 if (d is Element2DCore { SceneNode: TextNode2D node })
                 {
-                    node.FontWeight = ((FontWeight)e.NewValue).ToDXFontWeight();
+                    node.FontWeight = ((FontWeight)e.NewValue!).ToDXFontWeight();
                 }
-            }));
+            });
 
 #if false
 #elif WINUI
     new
 #elif WPF
+#elif AVALONIA
 #else
 #error Unknown framework
 #endif
@@ -200,7 +220,7 @@ public class TextModel2D : Element2D, ITextBlock
         }
         get
         {
-            return (FontWeight)GetValue(FontWeightProperty);
+            return (FontWeight)GetValue(FontWeightProperty)!;
         }
     }
 
@@ -208,27 +228,29 @@ public class TextModel2D : Element2D, ITextBlock
 #elif WINUI
     new
 #elif WPF
+#elif AVALONIA
 #else
 #error Unknown framework
 #endif
-    public static readonly DependencyProperty FontStyleProperty
-        = DependencyProperty.Register("FontStyle", typeof(UIFontStyle), typeof(TextModel2D),
-            new PropertyMetadata(UIFontStyles.Normal, (d, e) =>
+    public static readonly DependencyProperty FontStyleProperty =
+        HelixProperty.Register<TextModel2D, UIFontStyle>("FontStyle",
+            UIFontStyles.Normal, (d, e) =>
             {
                 if (d is Element2DCore { SceneNode: TextNode2D node })
                 {
-                    node.FontStyle = ((FontStyle)e.NewValue).ToDXFontStyle();
+                    node.FontStyle = ((FontStyle)e.NewValue!).ToDXFontStyle();
                 }
-            }));
+            });
 
 #if false
 #elif WINUI
     new
 #elif WPF
+#elif AVALONIA
 #else
 #error Unknown framework
 #endif
-    public FontStyle FontStyle
+    public UIFontStyle FontStyle
     {
         set
         {
@@ -236,7 +258,7 @@ public class TextModel2D : Element2D, ITextBlock
         }
         get
         {
-            return (FontStyle)GetValue(FontStyleProperty);
+            return (UIFontStyle)GetValue(FontStyleProperty)!;
         }
     }
 
@@ -251,7 +273,7 @@ public class TextModel2D : Element2D, ITextBlock
     {
         get
         {
-            return (TextAlignment)GetValue(TextAlignmentProperty);
+            return (TextAlignment)GetValue(TextAlignmentProperty)!;
         }
         set
         {
@@ -263,13 +285,14 @@ public class TextModel2D : Element2D, ITextBlock
     /// The text alignment property
     /// </summary>
     public static readonly DependencyProperty TextAlignmentProperty =
-        DependencyProperty.Register("TextAlignment", typeof(TextAlignment), typeof(TextModel2D), new PropertyMetadata(TextAlignment.Left, (d, e) =>
+        HelixProperty.Register<TextModel2D, TextAlignment>("TextAlignment",
+            TextAlignment.Left, (d, e) =>
         {
             if (d is Element2DCore { SceneNode: TextNode2D node })
             {
-                node.TextAlignment = ((TextAlignment)e.NewValue).ToD2DTextAlignment();
+                node.TextAlignment = ((TextAlignment)e.NewValue!).ToD2DTextAlignment();
             }
-        }));
+        });
 
     /// <summary>
     /// Gets or sets the text alignment.
@@ -279,16 +302,18 @@ public class TextModel2D : Element2D, ITextBlock
     /// </value>
 #if false
 #elif WINUI
-    public new FlowDirection FlowDirection
+    new
 #elif WPF
-    public FlowDirection FlowDirection
+#elif AVALONIA
+    new
 #else
 #error Unknown framework
 #endif
+    public FlowDirection FlowDirection
     {
         get
         {
-            return (FlowDirection)GetValue(FlowDirectionProperty);
+            return (FlowDirection)GetValue(FlowDirectionProperty)!;
         }
         set
         {
@@ -301,20 +326,22 @@ public class TextModel2D : Element2D, ITextBlock
     /// </summary>
 #if false
 #elif WINUI
-    public static readonly new DependencyProperty FlowDirectionProperty =
+new
 #elif WPF
-    public static readonly DependencyProperty FlowDirectionProperty =
+#elif AVALONIA
+    new
 #else
 #error Unknown framework
 #endif
-        DependencyProperty.Register("FlowDirection", typeof(FlowDirection), typeof(TextModel2D), new PropertyMetadata(FlowDirection.LeftToRight, (d, e) =>
+    public static readonly DependencyProperty FlowDirectionProperty =
+        HelixProperty.Register<TextModel2D, FlowDirection>("FlowDirection",
+            FlowDirection.LeftToRight, (d, e) =>
         {
             if (d is Element2DCore { SceneNode: TextNode2D node })
             {
-                node.FlowDirection = ((FlowDirection)e.NewValue).ToD2DFlowDir();
+                node.FlowDirection = ((FlowDirection)e.NewValue!).ToD2DFlowDir();
             }
-        }));
-
+        });
 
     /// <summary>
     /// Gets or sets the font family.
@@ -326,6 +353,7 @@ public class TextModel2D : Element2D, ITextBlock
 #elif WINUI
     new
 #elif WPF
+#elif AVALONIA
 #else
 #error Unknown framework
 #endif
@@ -347,17 +375,19 @@ public class TextModel2D : Element2D, ITextBlock
 #elif WINUI
     new
 #elif WPF
+#elif AVALONIA
 #else
 #error Unknown framework
 #endif
     public static readonly DependencyProperty FontFamilyProperty =
-        DependencyProperty.Register("FontFamily", typeof(string), typeof(TextModel2D), new PropertyMetadata(DefaultFont, (d, e) =>
+        HelixProperty.Register<TextModel2D, string?>("FontFamily",
+            DefaultFont, (d, e) =>
         {
             if (d is Element2DCore { SceneNode: TextNode2D node })
             {
                 node.FontFamily = e.NewValue == null ? DefaultFont : (string)e.NewValue;
             }
-        }));
+        });
 
     private bool foregroundChanged = true;
     private bool backgroundChanged = true;

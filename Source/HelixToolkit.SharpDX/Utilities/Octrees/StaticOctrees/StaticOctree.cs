@@ -341,7 +341,7 @@ public abstract class StaticOctree<T> : IOctreeBasic where T : unmanaged
     /// <summary>
     ///
     /// </summary>
-    public bool TreeBuilt { private set; get; } = false;
+    public bool TreeBuilt { protected set; get; } = false;
 
     /// <summary>
     ///

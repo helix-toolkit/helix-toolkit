@@ -8,6 +8,8 @@ using SharpDX.Direct3D11;
 namespace HelixToolkit.WinUI.SharpDX;
 #elif WPF
 namespace HelixToolkit.Wpf.SharpDX;
+#elif AVALONIA
+namespace HelixToolkit.Avalonia.SharpDX;
 #else
 #error Unknown framework
 #endif
@@ -19,108 +21,117 @@ public class LineMaterial : Material
     /// The color property
     /// </summary>
     public static readonly DependencyProperty ColorProperty =
-        DependencyProperty.Register("Color", typeof(UIColor), typeof(LineMaterial),
-            new PropertyMetadata(UIColors.Black, (d, e) =>
+        HelixProperty.Register<LineMaterial, UIColor>("Color",
+            UIColors.Black, (d, e) =>
             {
                 if (d is LineMaterial { Core: LineMaterialCore core })
                 {
-                    core.LineColor = ((UIColor)e.NewValue).ToColor4();
+                    core.LineColor = ((UIColor)e.NewValue!).ToColor4();
                 }
-            }));
+            });
 
     /// <summary>
     /// The thickness property
     /// </summary>
     public static readonly DependencyProperty ThicknessProperty =
-        DependencyProperty.Register("Thickness", typeof(double), typeof(LineMaterial), new PropertyMetadata(1.0, (d, e) =>
+        HelixProperty.Register<LineMaterial, double>("Thickness",
+            1.0, (d, e) =>
         {
             if (d is LineMaterial { Core: LineMaterialCore core })
             {
-                core.Thickness = (float)(double)e.NewValue;
+                core.Thickness = (float)(double)e.NewValue!;
             }
-        }));
+        });
 
     /// <summary>
     /// The smoothness property
     /// </summary>
     public static readonly DependencyProperty SmoothnessProperty =
-        DependencyProperty.Register("Smoothness", typeof(double), typeof(LineMaterial), new PropertyMetadata(0.0,
+        HelixProperty.Register<LineMaterial, double>("Smoothness",
+            0.0,
         (d, e) =>
         {
             if (d is LineMaterial { Core: LineMaterialCore core })
             {
-                core.Smoothness = (float)(double)e.NewValue;
+                core.Smoothness = (float)(double)e.NewValue!;
             }
-        }));
+        });
 
     public static readonly DependencyProperty EnableDistanceFadingProperty =
-        DependencyProperty.Register("EnableDistanceFading", typeof(bool), typeof(LineMaterial), new PropertyMetadata(true,
+        HelixProperty.Register<LineMaterial, bool>("EnableDistanceFading",
+            true,
             (d, e) =>
             {
                 if (d is LineMaterial { Core: LineMaterialCore core })
                 {
-                    core.EnableDistanceFading = (bool)e.NewValue;
+                    core.EnableDistanceFading = (bool)e.NewValue!;
                 }
-            }));
+            });
 
     public static readonly DependencyProperty FadingNearDistanceProperty =
-        DependencyProperty.Register("FadingNearDistance", typeof(double), typeof(LineMaterial), new PropertyMetadata(0.0,
+        HelixProperty.Register<LineMaterial, double>("FadingNearDistance",
+            0.0,
             (d, e) =>
             {
                 if (d is LineMaterial { Core: LineMaterialCore core })
                 {
-                    core.FadingNearDistance = (float)(double)e.NewValue;
+                    core.FadingNearDistance = (float)(double)e.NewValue!;
                 }
-            }));
+            });
 
     public static readonly DependencyProperty FadingFarDistanceProperty =
-        DependencyProperty.Register("FadingFarDistance", typeof(double), typeof(LineMaterial), new PropertyMetadata(100.0,
+        HelixProperty.Register<LineMaterial, double>("FadingFarDistance",
+            100.0,
             (d, e) =>
             {
                 if (d is LineMaterial { Core: LineMaterialCore core })
                 {
-                    core.FadingFarDistance = (float)(double)e.NewValue;
+                    core.FadingFarDistance = (float)(double)e.NewValue!;
                 }
-            }));
+            });
 
     public static readonly DependencyProperty TextureProperty =
-        DependencyProperty.Register("Texture", typeof(TextureModel), typeof(LineMaterial), new PropertyMetadata(null,
+        HelixProperty.Register<LineMaterial, TextureModel?>("Texture",
+            null,
             (d, e) =>
             {
                 if (d is LineMaterial { Core: LineMaterialCore core })
                 {
                     core.Texture = e.NewValue == null ? null : (TextureModel)e.NewValue;
                 }
-            }));
+            });
 
 
     public static readonly DependencyProperty TextureScaleProperty =
-        DependencyProperty.Register("TextureScale", typeof(double), typeof(LineMaterial), new PropertyMetadata(1.0, (d, e) =>
+        HelixProperty.Register<LineMaterial, double>("TextureScale",
+            1.0, (d, e) =>
         {
             if (d is LineMaterial { Core: LineMaterialCore core })
             {
-                core.TextureScale = (float)(double)e.NewValue;
+                core.TextureScale = (float)(double)e.NewValue!;
             }
-        }));
+        });
 
     public static readonly DependencyProperty SamplerDescriptionProperty =
-        DependencyProperty.Register("SamplerDescription", typeof(SamplerStateDescription), typeof(LineMaterial), new PropertyMetadata(DefaultSamplers.LineSamplerUWrapVClamp,
+        HelixProperty.Register<LineMaterial, SamplerStateDescription>("SamplerDescription",
+            DefaultSamplers.LineSamplerUWrapVClamp,
             (d, e) =>
             {
                 if (d is LineMaterial { Core: LineMaterialCore core })
                 {
-                    core.SamplerDescription = (SamplerStateDescription)e.NewValue;
+                    core.SamplerDescription = (SamplerStateDescription)e.NewValue!;
                 }
-            }));
+            });
 
     public static readonly DependencyProperty FixedSizeProperty =
-        DependencyProperty.Register("FixedSize", typeof(bool), typeof(LineMaterial), new PropertyMetadata(true, (d, e) =>
+        HelixProperty.Register<LineMaterial, bool>("FixedSize",
+            true, (d, e) =>
         {
             if (d is LineMaterial { Core: LineMaterialCore core })
             {
-                core.FixedSize = (bool)e.NewValue;
+                core.FixedSize = (bool)e.NewValue!;
             }
-        }));
+        });
 
     /// <summary>
     /// Gets or sets the color.
@@ -132,7 +143,7 @@ public class LineMaterial : Material
     {
         get
         {
-            return (UIColor)this.GetValue(ColorProperty);
+            return (UIColor)this.GetValue(ColorProperty)!;
         }
         set
         {
@@ -149,7 +160,7 @@ public class LineMaterial : Material
     {
         get
         {
-            return (double)this.GetValue(ThicknessProperty);
+            return (double)this.GetValue(ThicknessProperty)!;
         }
         set
         {
@@ -167,7 +178,7 @@ public class LineMaterial : Material
     {
         get
         {
-            return (double)this.GetValue(SmoothnessProperty);
+            return (double)this.GetValue(SmoothnessProperty)!;
         }
         set
         {
@@ -188,7 +199,7 @@ public class LineMaterial : Material
         }
         get
         {
-            return (bool)GetValue(EnableDistanceFadingProperty);
+            return (bool)GetValue(EnableDistanceFadingProperty)!;
         }
     }
     /// <summary>
@@ -201,7 +212,7 @@ public class LineMaterial : Material
     {
         get
         {
-            return (double)this.GetValue(FadingNearDistanceProperty);
+            return (double)this.GetValue(FadingNearDistanceProperty)!;
         }
         set
         {
@@ -218,7 +229,7 @@ public class LineMaterial : Material
     {
         get
         {
-            return (double)this.GetValue(FadingFarDistanceProperty);
+            return (double)this.GetValue(FadingFarDistanceProperty)!;
         }
         set
         {
@@ -253,7 +264,7 @@ public class LineMaterial : Material
     {
         get
         {
-            return (double)GetValue(TextureScaleProperty);
+            return (double)GetValue(TextureScaleProperty)!;
         }
         set
         {
@@ -270,7 +281,7 @@ public class LineMaterial : Material
     {
         get
         {
-            return (SamplerStateDescription)GetValue(SamplerDescriptionProperty);
+            return (SamplerStateDescription)GetValue(SamplerDescriptionProperty)!;
         }
         set
         {
@@ -287,7 +298,7 @@ public class LineMaterial : Material
     {
         get
         {
-            return (bool)GetValue(FixedSizeProperty);
+            return (bool)GetValue(FixedSizeProperty)!;
         }
         set
         {
@@ -353,6 +364,7 @@ public class LineMaterial : Material
             FixedSize = FixedSize
         };
     }
+#elif AVALONIA
 #else
 #error Unknown framework
 #endif

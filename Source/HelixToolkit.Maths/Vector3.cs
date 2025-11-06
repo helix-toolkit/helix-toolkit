@@ -1108,12 +1108,12 @@ namespace HelixToolkit.Maths
                 if (Avx.IsSupported && i + 8 <= end)
                 {
                     // Initialize min and max vectors with the first element
-                    var minX = Vector256.Create(float.MaxValue);
-                    var minY = Vector256.Create(float.MaxValue);
-                    var minZ = Vector256.Create(float.MaxValue);
-                    var maxX = Vector256.Create(float.MinValue);
-                    var maxY = Vector256.Create(float.MinValue);
-                    var maxZ = Vector256.Create(float.MinValue);
+                    var minX = Vector256.Create(currentMin.X);
+                    var minY = Vector256.Create(currentMin.Y);
+                    var minZ = Vector256.Create(currentMin.Z);
+                    var maxX = Vector256.Create(currentMax.X);
+                    var maxY = Vector256.Create(currentMax.Y);
+                    var maxZ = Vector256.Create(currentMax.Z);
                     // Process vectors in chunks of 8
                     for (; i <= end - 8;)
                     {
@@ -1146,12 +1146,12 @@ namespace HelixToolkit.Maths
                 if (Sse.IsSupported && i + 4 <= end)
                 {
                     // Initialize min and max vectors with the first element
-                    var minX = Vector128.Create(float.MaxValue);
-                    var minY = Vector128.Create(float.MaxValue);
-                    var minZ = Vector128.Create(float.MaxValue);
-                    var maxX = Vector128.Create(float.MinValue);
-                    var maxY = Vector128.Create(float.MinValue);
-                    var maxZ = Vector128.Create(float.MinValue);
+                    var minX = Vector128.Create(currentMin.X);
+                    var minY = Vector128.Create(currentMin.Y);
+                    var minZ = Vector128.Create(currentMin.Z);
+                    var maxX = Vector128.Create(currentMax.X);
+                    var maxY = Vector128.Create(currentMax.Y);
+                    var maxZ = Vector128.Create(currentMax.Z);
                     // Process vectors in chunks of 4
                     for (; i <= end - 4;)
                     {

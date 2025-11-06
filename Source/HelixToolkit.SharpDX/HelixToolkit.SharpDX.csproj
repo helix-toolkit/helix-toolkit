@@ -29,7 +29,7 @@
     <EmbeddedResource Include="Textures\arial.fnt">
       <LogicalName>HelixToolkit.SharpDX.Resources.%(Filename)%(Extension)</LogicalName>
     </EmbeddedResource>
-    <EmbeddedResource Include="..\HelixToolkit.Native.ShaderBuilder\bin\$(Configuration)\net8.0\**\*.cso" LinkBase="Resources">
+    <EmbeddedResource Include="..\HelixToolkit.Native.ShaderBuilder\bin\$(Configuration)\**\*.cso" LinkBase="Resources">
       <LogicalName>HelixToolkit.SharpDX.Resources.%(Filename)%(Extension)</LogicalName>
     </EmbeddedResource>
   </ItemGroup>
@@ -40,7 +40,7 @@
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.3.2" />
     <PackageReference Include="Cyotek.Drawing.BitmapFont" Version="2.0.4" />
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.11.0" />
-    <PackageReference Include="PolySharp" Version="1.14.1">
+    <PackageReference Include="PolySharp" Version="1.15.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
@@ -59,5 +59,10 @@
     <ProjectReference Include="..\HelixToolkit.Maths\HelixToolkit.Maths.csproj" />
     <ProjectReference Include="..\HelixToolkit\HelixToolkit.csproj" />
   </ItemGroup>
+
+  <Target Name="PrintEmbeddedResources" AfterTargets="Build">
+    <Message Text="Print embedded resources..." Importance="High" />
+    <Message Text="@(EmbeddedResource)" Importance="High" />
+  </Target>
 
 </Project>

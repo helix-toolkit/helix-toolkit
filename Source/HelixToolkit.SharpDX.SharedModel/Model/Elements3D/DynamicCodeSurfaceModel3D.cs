@@ -6,6 +6,8 @@ using System.CodeDom.Compiler;
 namespace HelixToolkit.WinUI.SharpDX;
 #elif WPF
 namespace HelixToolkit.Wpf.SharpDX;
+#elif AVALONIA
+namespace HelixToolkit.Avalonia.SharpDX;
 #else
 #error Unknown framework
 #endif
@@ -16,7 +18,7 @@ public class DynamicCodeSurfaceModel3D : MeshGeometryModel3D
     {
         get
         {
-            return (string)GetValue(SourceCodeProperty);
+            return (string)GetValue(SourceCodeProperty)!;
         }
         set
         {
@@ -26,21 +28,20 @@ public class DynamicCodeSurfaceModel3D : MeshGeometryModel3D
 
 
     public static readonly DependencyProperty SourceCodeProperty =
-        DependencyProperty.Register("SourceCode", typeof(string), typeof(DynamicCodeSurfaceModel3D), new PropertyMetadata(null, (d, e) =>
+        HelixProperty.Register<DynamicCodeSurfaceModel3D, string>("SourceCode",
+            string.Empty, (d, e) =>
         {
             if (d is DynamicCodeSurfaceModel3D { SceneNode: DynamicCodeSurface3DNode node })
             {
-                node.Source = (string)e.NewValue;
+                node.Source = (string)e.NewValue!;
             }
-        }));
-
-
+        });
 
     public double ParameterW
     {
         get
         {
-            return (double)GetValue(ParameterWProperty);
+            return (double)GetValue(ParameterWProperty)!;
         }
         set
         {
@@ -50,19 +51,20 @@ public class DynamicCodeSurfaceModel3D : MeshGeometryModel3D
 
 
     public static readonly DependencyProperty ParameterWProperty =
-        DependencyProperty.Register("ParameterW", typeof(double), typeof(DynamicCodeSurfaceModel3D), new PropertyMetadata(1.0, (d, e) =>
+        HelixProperty.Register<DynamicCodeSurfaceModel3D, double>("ParameterW",
+            1.0, (d, e) =>
         {
             if (d is DynamicCodeSurfaceModel3D { SceneNode: DynamicCodeSurface3DNode node })
             {
-                node.ParameterW = (float)(double)e.NewValue;
+                node.ParameterW = (float)(double)e.NewValue!;
             }
-        }));
+        });
 
     public int MeshSizeU
     {
         get
         {
-            return (int)GetValue(MeshSizeUProperty);
+            return (int)GetValue(MeshSizeUProperty)!;
         }
         set
         {
@@ -71,19 +73,20 @@ public class DynamicCodeSurfaceModel3D : MeshGeometryModel3D
     }
 
     public static readonly DependencyProperty MeshSizeUProperty =
-        DependencyProperty.Register("MeshSizeU", typeof(int), typeof(DynamicCodeSurfaceModel3D), new PropertyMetadata(120, (d, e) =>
+        HelixProperty.Register<DynamicCodeSurfaceModel3D, int>("MeshSizeU",
+            120, (d, e) =>
         {
             if (d is DynamicCodeSurfaceModel3D { SceneNode: DynamicCodeSurface3DNode node })
             {
-                node.MeshSizeU = (int)e.NewValue;
+                node.MeshSizeU = (int)e.NewValue!;
             }
-        }));
+        });
 
     public int MeshSizeV
     {
         get
         {
-            return (int)GetValue(MeshSizeVProperty);
+            return (int)GetValue(MeshSizeVProperty)!;
         }
         set
         {
@@ -93,13 +96,14 @@ public class DynamicCodeSurfaceModel3D : MeshGeometryModel3D
 
 
     public static readonly DependencyProperty MeshSizeVProperty =
-        DependencyProperty.Register("MeshSizeV", typeof(int), typeof(DynamicCodeSurfaceModel3D), new PropertyMetadata(120, (d, e) =>
+        HelixProperty.Register<DynamicCodeSurfaceModel3D, int>("MeshSizeV",
+            120, (d, e) =>
         {
             if (d is DynamicCodeSurfaceModel3D { SceneNode: DynamicCodeSurface3DNode node })
             {
-                node.MeshSizeV = (int)e.NewValue;
+                node.MeshSizeV = (int)e.NewValue!;
             }
-        }));
+        });
 
 #if NET48
     public CompilerErrorCollection? ErrorList
@@ -115,7 +119,8 @@ public class DynamicCodeSurfaceModel3D : MeshGeometryModel3D
     }
 
     public static readonly DependencyProperty ErrorListProperty =
-        DependencyProperty.Register("ErrorList", typeof(CompilerErrorCollection), typeof(DynamicCodeSurfaceModel3D), new PropertyMetadata(null));
+        HelixProperty.Register<DynamicCodeSurfaceModel3D, CompilerErrorCollection?>("ErrorList",
+            null);
 #endif
 
     protected override void AssignDefaultValuesToSceneNode(SceneNode node)

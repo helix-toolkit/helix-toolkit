@@ -1,4 +1,5 @@
 ﻿using HelixToolkit.SharpDX;
+
 #if false
 #elif WINUI
 using HelixToolkit.WinUI.SharpDX.Core2D;
@@ -9,6 +10,11 @@ using HelixToolkit.Wpf.SharpDX.Core2D;
 using HelixToolkit.Wpf.SharpDX.Extensions;
 using System.Windows;
 using Media = System.Windows.Media;
+#elif AVALONIA
+using HelixToolkit.Avalonia.SharpDX.Core2D;
+using HelixToolkit.Avalonia.SharpDX.Extensions;
+using Avalonia.Interactivity;
+using Media = Avalonia.Media;
 #else
 #error Unknown framework
 #endif
@@ -18,6 +24,8 @@ using Media = System.Windows.Media;
 namespace HelixToolkit.WinUI.SharpDX.Elements2D;
 #elif WPF
 namespace HelixToolkit.Wpf.SharpDX.Elements2D;
+#elif AVALONIA
+namespace HelixToolkit.Avalonia.SharpDX.Elements2D;
 #else
 #error Unknown framework
 #endif
@@ -32,18 +40,24 @@ public abstract class Element2D : Element2DCore, ITransformable2D, IHitable2D
 #elif WINUI
     new
 #elif WPF
+#elif AVALONIA
 #else
 #error Unknown framework
 #endif
     public static readonly DependencyProperty VisibilityProperty =
-        DependencyProperty.Register("Visibility", typeof(Visibility), typeof(Element2D), new PropertyMetadata(Visibility.Visible,
+        HelixProperty.Register<Element2D, UIVisibility>("Visibility",
+#if AVALONIA
+            true,
+#else
+            Visibility.Visible,
+#endif
             (d, e) =>
             {
                 if (d is Element2DCore core)
                 {
-                    core.SceneNode.Visibility = ((Visibility)e.NewValue).ToD2DVisibility();
+                    core.SceneNode.Visibility = ((UIVisibility)e.NewValue!).ToD2DVisibility();
                 }
-            }));
+            });
 
     /// <summary>
     /// 
@@ -52,10 +66,11 @@ public abstract class Element2D : Element2DCore, ITransformable2D, IHitable2D
 #elif WINUI
     new
 #elif WPF
+#elif AVALONIA
 #else
 #error Unknown framework
 #endif
-    public Visibility Visibility
+    public UIVisibility Visibility
     {
         set
         {
@@ -63,7 +78,7 @@ public abstract class Element2D : Element2DCore, ITransformable2D, IHitable2D
         }
         get
         {
-            return (Visibility)GetValue(VisibilityProperty);
+            return (UIVisibility)GetValue(VisibilityProperty)!;
         }
     }
 
@@ -71,23 +86,28 @@ public abstract class Element2D : Element2DCore, ITransformable2D, IHitable2D
 #elif WINUI
     new
 #elif WPF
+#elif AVALONIA
+    new
 #else
 #error Unknown framework
 #endif
     public static readonly DependencyProperty IsHitTestVisibleProperty =
-        DependencyProperty.Register("IsHitTestVisible", typeof(bool), typeof(Element2D), new PropertyMetadata(true,
+        HelixProperty.Register<Element2D, bool>("IsHitTestVisible",
+            true,
             (d, e) =>
             {
                 if (d is Element2DCore core)
                 {
-                    core.SceneNode.IsHitTestVisible = (bool)e.NewValue;
+                    core.SceneNode.IsHitTestVisible = (bool)e.NewValue!;
                 }
-            }));
+            });
 
 #if false
 #elif WINUI
     new
 #elif WPF
+#elif AVALONIA
+    new
 #else
 #error Unknown framework
 #endif
@@ -99,7 +119,7 @@ public abstract class Element2D : Element2DCore, ITransformable2D, IHitable2D
         }
         get
         {
-            return (bool)GetValue(IsHitTestVisibleProperty);
+            return (bool)GetValue(IsHitTestVisibleProperty)!;
         }
     }
 
@@ -110,20 +130,21 @@ public abstract class Element2D : Element2DCore, ITransformable2D, IHitable2D
 #elif WINUI
 #elif WPF
     new
+#elif AVALONIA
 #else
 #error Unknown framework
 #endif
     public static readonly DependencyProperty IsMouseOverProperty =
-        DependencyProperty.Register("IsMouseOver", typeof(bool), typeof(Element2D),
-            new PropertyMetadata(false, (d, e) =>
+        HelixProperty.Register<Element2D, bool>("IsMouseOver",
+            false, (d, e) =>
             {
                 if (d is Element2D model)
                 {
-                    model.SceneNode.IsMouseOver = (bool)e.NewValue;
-                    model.OnMouseOverChanged((bool)e.NewValue, (bool)e.OldValue);
+                    model.SceneNode.IsMouseOver = (bool)e.NewValue!;
+                    model.OnMouseOverChanged((bool)e.NewValue!, (bool)e.OldValue!);
                     model.InvalidateRender();
                 }
-            }));
+            });
 
     /// <summary>
     /// Gets or sets a value indicating whether this instance is mouse over2 d.
@@ -135,6 +156,7 @@ public abstract class Element2D : Element2DCore, ITransformable2D, IHitable2D
 #elif WINUI
 #elif WPF
     new
+#elif AVALONIA
 #else
 #error Unknown framework
 #endif
@@ -142,7 +164,7 @@ public abstract class Element2D : Element2DCore, ITransformable2D, IHitable2D
     {
         get
         {
-            return (bool)GetValue(IsMouseOverProperty);
+            return (bool)GetValue(IsMouseOverProperty)!;
         }
         set
         {
@@ -154,23 +176,28 @@ public abstract class Element2D : Element2DCore, ITransformable2D, IHitable2D
 #elif WINUI
     new
 #elif WPF
+#elif AVALONIA
+    new
 #else
 #error Unknown framework
 #endif
-    public static readonly DependencyProperty WidthProperty = DependencyProperty.Register("Width", typeof(double), typeof(Element2D),
-        new PropertyMetadata(double.PositiveInfinity,
+    public static readonly DependencyProperty WidthProperty =
+        HelixProperty.Register<Element2D, double>("Width",
+            double.PositiveInfinity,
             (d, e) =>
             {
                 if (d is Element2DCore core)
                 {
-                    core.SceneNode.Width = (float)(double)e.NewValue;
+                    core.SceneNode.Width = (float)(double)e.NewValue!;
                 }
-            }));
+            });
 
 #if false
 #elif WINUI
     new
 #elif WPF
+#elif AVALONIA
+    new
 #else
 #error Unknown framework
 #endif
@@ -182,7 +209,7 @@ public abstract class Element2D : Element2DCore, ITransformable2D, IHitable2D
         }
         get
         {
-            return (double)GetValue(WidthProperty);
+            return (double)GetValue(WidthProperty)!;
         }
     }
 
@@ -190,23 +217,28 @@ public abstract class Element2D : Element2DCore, ITransformable2D, IHitable2D
 #elif WINUI
     new
 #elif WPF
+#elif AVALONIA
+    new
 #else
 #error Unknown framework
 #endif
-    public static readonly DependencyProperty HeightProperty = DependencyProperty.Register("Height", typeof(double), typeof(Element2D),
-        new PropertyMetadata(double.PositiveInfinity,
+    public static readonly DependencyProperty HeightProperty =
+        HelixProperty.Register<Element2D, double>("Height",
+            double.PositiveInfinity,
             (d, e) =>
             {
                 if (d is Element2DCore core)
                 {
-                    core.SceneNode.Height = (float)(double)e.NewValue;
+                    core.SceneNode.Height = (float)(double)e.NewValue!;
                 }
-            }));
+            });
 
 #if false
 #elif WINUI
     new
 #elif WPF
+#elif AVALONIA
+    new
 #else
 #error Unknown framework
 #endif
@@ -218,19 +250,20 @@ public abstract class Element2D : Element2DCore, ITransformable2D, IHitable2D
         }
         get
         {
-            return (double)GetValue(HeightProperty);
+            return (double)GetValue(HeightProperty)!;
         }
     }
 
-    public static readonly DependencyProperty MinimumWidthProperty = DependencyProperty.Register("MinimumWidth", typeof(double), typeof(Element2D),
-        new PropertyMetadata(0.0,
+    public static readonly DependencyProperty MinimumWidthProperty =
+        HelixProperty.Register<Element2D, double>("MinimumWidth",
+            0.0,
             (d, e) =>
             {
                 if (d is Element2DCore core)
                 {
-                    core.SceneNode.MinimumWidth = (float)(double)e.NewValue;
+                    core.SceneNode.MinimumWidth = (float)(double)e.NewValue!;
                 }
-            }));
+            });
 
     public double MinimumWidth
     {
@@ -240,19 +273,20 @@ public abstract class Element2D : Element2DCore, ITransformable2D, IHitable2D
         }
         get
         {
-            return (double)GetValue(MinimumWidthProperty);
+            return (double)GetValue(MinimumWidthProperty)!;
         }
     }
 
-    public static readonly DependencyProperty MinimumHeightProperty = DependencyProperty.Register("MinimumHeight", typeof(double), typeof(Element2D),
-        new PropertyMetadata(0.0,
+    public static readonly DependencyProperty MinimumHeightProperty =
+        HelixProperty.Register<Element2D, double>("MinimumHeight",
+            0.0,
             (d, e) =>
             {
                 if (d is Element2DCore core)
                 {
-                    core.SceneNode.MinimumHeight = (float)(double)e.NewValue;
+                    core.SceneNode.MinimumHeight = (float)(double)e.NewValue!;
                 }
-            }));
+            });
 
     public double MinimumHeight
     {
@@ -262,19 +296,20 @@ public abstract class Element2D : Element2DCore, ITransformable2D, IHitable2D
         }
         get
         {
-            return (double)GetValue(MinimumHeightProperty);
+            return (double)GetValue(MinimumHeightProperty)!;
         }
     }
 
-    public static readonly DependencyProperty MaximumWidthProperty = DependencyProperty.Register("MaximumWidth", typeof(double), typeof(Element2D),
-        new PropertyMetadata(double.PositiveInfinity,
+    public static readonly DependencyProperty MaximumWidthProperty =
+        HelixProperty.Register<Element2D, double>("MaximumWidth",
+            double.PositiveInfinity,
             (d, e) =>
             {
                 if (d is Element2DCore core)
                 {
-                    core.SceneNode.MaximumWidth = (float)(double)e.NewValue;
+                    core.SceneNode.MaximumWidth = (float)(double)e.NewValue!;
                 }
-            }));
+            });
 
     public double MaximumWidth
     {
@@ -284,19 +319,20 @@ public abstract class Element2D : Element2DCore, ITransformable2D, IHitable2D
         }
         get
         {
-            return (double)GetValue(MaximumWidthProperty);
+            return (double)GetValue(MaximumWidthProperty)!;
         }
     }
 
-    public static readonly DependencyProperty MaximumHeightProperty = DependencyProperty.Register("MaximumHeight", typeof(double), typeof(Element2D),
-        new PropertyMetadata(double.PositiveInfinity,
+    public static readonly DependencyProperty MaximumHeightProperty =
+        HelixProperty.Register<Element2D, double>("MaximumHeight",
+            double.PositiveInfinity,
             (d, e) =>
             {
                 if (d is Element2DCore core)
                 {
-                    core.SceneNode.MaximumHeight = (float)(double)e.NewValue;
+                    core.SceneNode.MaximumHeight = (float)(double)e.NewValue!;
                 }
-            }));
+            });
 
     public double MaximumHeight
     {
@@ -306,7 +342,7 @@ public abstract class Element2D : Element2DCore, ITransformable2D, IHitable2D
         }
         get
         {
-            return (double)GetValue(MaximumHeightProperty);
+            return (double)GetValue(MaximumHeightProperty)!;
         }
     }
 
@@ -314,14 +350,16 @@ public abstract class Element2D : Element2DCore, ITransformable2D, IHitable2D
 #elif WINUI
     new
 #elif WPF
+#elif AVALONIA
+    new
 #else
 #error Unknown framework
 #endif
-    public HorizontalAlignment HorizontalAlignment
+    public UIHorizontalAlignment HorizontalAlignment
     {
         get
         {
-            return (HorizontalAlignment)GetValue(HorizontalAlignmentProperty);
+            return (UIHorizontalAlignment)GetValue(HorizontalAlignmentProperty)!;
         }
         set
         {
@@ -333,32 +371,36 @@ public abstract class Element2D : Element2DCore, ITransformable2D, IHitable2D
 #elif WINUI
     new
 #elif WPF
+#elif AVALONIA
+    new
 #else
 #error Unknown framework
 #endif
     public static readonly DependencyProperty HorizontalAlignmentProperty =
-        DependencyProperty.Register("HorizontalAlignment", typeof(HorizontalAlignment), typeof(Element2D),
-            new PropertyMetadata(HorizontalAlignment.Stretch,
+        HelixProperty.Register<Element2D, UIHorizontalAlignment>("HorizontalAlignment",
+            UIHorizontalAlignment.Stretch,
                 (d, e) =>
                 {
                     if (d is Element2DCore core)
                     {
-                        core.SceneNode.HorizontalAlignment = ((HorizontalAlignment)e.NewValue).ToD2DHorizontalAlignment();
+                        core.SceneNode.HorizontalAlignment = ((UIHorizontalAlignment)e.NewValue!).ToD2DHorizontalAlignment();
                     }
-                }));
+                });
 
 #if false
 #elif WINUI
     new
 #elif WPF
+#elif AVALONIA
+    new
 #else
 #error Unknown framework
 #endif
-    public VerticalAlignment VerticalAlignment
+    public UIVerticalAlignment VerticalAlignment
     {
         get
         {
-            return (VerticalAlignment)GetValue(VerticalAlignmentProperty);
+            return (UIVerticalAlignment)GetValue(VerticalAlignmentProperty)!;
         }
         set
         {
@@ -370,32 +412,36 @@ public abstract class Element2D : Element2DCore, ITransformable2D, IHitable2D
 #elif WINUI
     new
 #elif WPF
+#elif AVALONIA
+    new
 #else
 #error Unknown framework
 #endif
     public static readonly DependencyProperty VerticalAlignmentProperty =
-        DependencyProperty.Register("VerticalAlignment", typeof(VerticalAlignment), typeof(Element2D),
-            new PropertyMetadata(VerticalAlignment.Stretch,
+        HelixProperty.Register<Element2D, UIVerticalAlignment>("VerticalAlignment",
+            UIVerticalAlignment.Stretch,
                 (d, e) =>
                 {
                     if (d is Element2DCore core)
                     {
-                        core.SceneNode.VerticalAlignment = ((VerticalAlignment)e.NewValue).ToD2DVerticalAlignment();
+                        core.SceneNode.VerticalAlignment = ((UIVerticalAlignment)e.NewValue!).ToD2DVerticalAlignment();
                     }
-                }));
+                });
 
 #if false
 #elif WINUI
     new
 #elif WPF
+#elif AVALONIA
+    new
 #else
 #error Unknown framework
 #endif
-    public Thickness Margin
+    public UIThickness Margin
     {
         get
         {
-            return (Thickness)GetValue(MarginProperty);
+            return (UIThickness)GetValue(MarginProperty)!;
         }
         set
         {
@@ -407,38 +453,51 @@ public abstract class Element2D : Element2DCore, ITransformable2D, IHitable2D
 #elif WINUI
     new
 #elif WPF
+#elif AVALONIA
+    new
 #else
 #error Unknown framework
 #endif
     public static readonly DependencyProperty MarginProperty =
-        DependencyProperty.Register("Margin", typeof(Thickness), typeof(Element2D), new PropertyMetadata(new Thickness(),
+        HelixProperty.Register<Element2D, UIThickness>("Margin",
+            new UIThickness(),
             (d, e) =>
             {
                 if (d is Element2DCore core)
                 {
-                    core.SceneNode.Margin = ((Thickness)e.NewValue).ToD2DThickness();
+                    core.SceneNode.Margin = ((UIThickness)e.NewValue!).ToD2DThickness();
                 }
-            }));
+            });
 
 #if false
 #elif WINUI
     public static readonly DependencyProperty TransformProperty =
-        DependencyProperty.Register("Transform", typeof(Media.Transform), typeof(Element2D), new PropertyMetadata(new Media.MatrixTransform { Matrix = Media.Matrix.Identity }, (d, e) =>
+        HelixProperty.Register<Element2D, Media.Transform?>("Transform",
+        new Media.MatrixTransform { Matrix = Media.Matrix.Identity }, (d, e) =>
         {
             if (d is Element2DCore core)
             {
                 core.SceneNode.ModelMatrix = e.NewValue == null ? Matrix3x2.Identity : ((Media.MatrixTransform)e.NewValue).Matrix.ToMatrix3x2();
             }
-        }));
+        });
 #elif WPF
     public static readonly DependencyProperty TransformProperty =
-        DependencyProperty.Register("Transform", typeof(Media.Transform), typeof(Element2D), new PropertyMetadata(Media.Transform.Identity, (d, e) =>
+        HelixProperty.Register<Element2D, Media.Transform?>("Transform", Media.Transform.Identity, (d, e) =>
         {
             if (d is Element2DCore core)
             {
                 core.SceneNode.ModelMatrix = e.NewValue == null ? Matrix3x2.Identity : ((Media.Transform)e.NewValue).Value.ToMatrix3x2();
             }
-        }));
+        });
+#elif AVALONIA
+    public static readonly DependencyProperty TransformProperty =
+        HelixProperty.Register<Element2D, Media.Transform?>("Transform", new Media.MatrixTransform(), (d, e) =>
+        {
+            if (d is Element2DCore core)
+            {
+                core.SceneNode.ModelMatrix = e.NewValue == null ? Matrix3x2.Identity : ((Media.Transform)e.NewValue).Value.ToMatrix3x2();
+            }
+        });
 #else
 #error Unknown framework
 #endif
@@ -446,11 +505,11 @@ public abstract class Element2D : Element2DCore, ITransformable2D, IHitable2D
     /// <summary>
     /// Render transform
     /// </summary>
-    public Media.Transform Transform
+    public Media.Transform? Transform
     {
         get
         {
-            return (Media.Transform)GetValue(TransformProperty);
+            return (Media.Transform?)GetValue(TransformProperty);
         }
 
         set
@@ -463,6 +522,8 @@ public abstract class Element2D : Element2DCore, ITransformable2D, IHitable2D
 #elif WINUI
     new
 #elif WPF
+#elif AVALONIA
+    new
 #else
 #error Unknown framework
 #endif
@@ -470,7 +531,7 @@ public abstract class Element2D : Element2DCore, ITransformable2D, IHitable2D
     {
         get
         {
-            return (Point)GetValue(RenderTransformOriginProperty);
+            return (Point)GetValue(RenderTransformOriginProperty)!;
         }
         set
         {
@@ -482,24 +543,27 @@ public abstract class Element2D : Element2DCore, ITransformable2D, IHitable2D
 #elif WINUI
     new
 #elif WPF
+#elif AVALONIA
+    new
 #else
 #error Unknown framework
 #endif
     public static readonly DependencyProperty RenderTransformOriginProperty =
-        DependencyProperty.Register("RenderTransformOrigin", typeof(Point), typeof(Element2D), new PropertyMetadata(new Point(0.5, 0.5),
+        HelixProperty.Register<Element2D, Point>("RenderTransformOrigin",
+            new Point(0.5, 0.5),
             (d, e) =>
             {
                 if (d is Element2DCore core)
                 {
-                    core.SceneNode.RenderTransformOrigin = ((Point)e.NewValue).ToVector2();
+                    core.SceneNode.RenderTransformOrigin = ((Point)e.NewValue!).ToVector2();
                 }
-            }));
+            });
 
     public bool EnableBitmapCache
     {
         get
         {
-            return (bool)GetValue(EnableBitmapCacheProperty);
+            return (bool)GetValue(EnableBitmapCacheProperty)!;
         }
         set
         {
@@ -508,17 +572,17 @@ public abstract class Element2D : Element2DCore, ITransformable2D, IHitable2D
     }
 
     public static readonly DependencyProperty EnableBitmapCacheProperty =
-        DependencyProperty.Register("EnableBitmapCache", typeof(bool), typeof(Element2D),
-            new PropertyMetadata(false,
+        HelixProperty.Register<Element2D, bool>("EnableBitmapCache",
+            false,
                 (d, e) =>
                 {
                     if (d is Element2DCore core)
                     {
-                        core.SceneNode.EnableBitmapCache = (bool)e.NewValue;
+                        core.SceneNode.EnableBitmapCache = (bool)e.NewValue!;
                     }
-                }));
+                });
 
-#endregion
+    #endregion
 
     #region Events
     public delegate void Mouse2DRoutedEventHandler(object? sender, Mouse2DEventArgs e);
@@ -549,6 +613,21 @@ public abstract class Element2D : Element2DCore, ITransformable2D, IHitable2D
 
     public static readonly RoutedEvent MouseLeave2DEvent =
         EventManager.RegisterRoutedEvent("MouseLeave2D", RoutingStrategy.Bubble, typeof(Mouse2DRoutedEventHandler), typeof(Element2D));
+#elif AVALONIA
+    public static readonly RoutedEvent<Mouse2DEventArgs> MouseDown2DEvent =
+        RoutedEvent.Register<Element2D, Mouse2DEventArgs>("MouseDown2D", RoutingStrategies.Bubble);
+
+    public static readonly RoutedEvent<Mouse2DEventArgs> MouseUp2DEvent =
+        RoutedEvent.Register<Element2D, Mouse2DEventArgs>("MouseUp2D", RoutingStrategies.Bubble);
+
+    public static readonly RoutedEvent<Mouse2DEventArgs> MouseMove2DEvent =
+        RoutedEvent.Register<Element2D, Mouse2DEventArgs>("MouseMove2D", RoutingStrategies.Bubble);
+
+    public static readonly RoutedEvent<Mouse2DEventArgs> MouseEnter2DEvent =
+        RoutedEvent.Register<Element2D, Mouse2DEventArgs>("MouseEnter2D", RoutingStrategies.Bubble);
+
+    public static readonly RoutedEvent<Mouse2DEventArgs> MouseLeave2DEvent =
+        RoutedEvent.Register<Element2D, Mouse2DEventArgs>("MouseLeave2D", RoutingStrategies.Bubble);
 #else
 #error Unknown framework
 #endif
@@ -561,6 +640,8 @@ public abstract class Element2D : Element2DCore, ITransformable2D, IHitable2D
 #elif WINUI
 #elif WPF
             AddHandler(MouseDown2DEvent, value);
+#elif AVALONIA
+            AddHandler(MouseDown2DEvent, value);
 #else
 #error Unknown framework
 #endif
@@ -570,6 +651,8 @@ public abstract class Element2D : Element2DCore, ITransformable2D, IHitable2D
 #if false
 #elif WINUI
 #elif WPF
+            RemoveHandler(MouseDown2DEvent, value);
+#elif AVALONIA
             RemoveHandler(MouseDown2DEvent, value);
 #else
 #error Unknown framework
@@ -585,6 +668,8 @@ public abstract class Element2D : Element2DCore, ITransformable2D, IHitable2D
 #elif WINUI
 #elif WPF
             AddHandler(MouseUp2DEvent, value);
+#elif AVALONIA
+            AddHandler(MouseUp2DEvent, value);
 #else
 #error Unknown framework
 #endif
@@ -594,6 +679,8 @@ public abstract class Element2D : Element2DCore, ITransformable2D, IHitable2D
 #if false
 #elif WINUI
 #elif WPF
+            RemoveHandler(MouseUp2DEvent, value);
+#elif AVALONIA
             RemoveHandler(MouseUp2DEvent, value);
 #else
 #error Unknown framework
@@ -609,6 +696,8 @@ public abstract class Element2D : Element2DCore, ITransformable2D, IHitable2D
 #elif WINUI
 #elif WPF
             AddHandler(MouseMove2DEvent, value);
+#elif AVALONIA
+            AddHandler(MouseMove2DEvent, value);
 #else
 #error Unknown framework
 #endif
@@ -618,6 +707,8 @@ public abstract class Element2D : Element2DCore, ITransformable2D, IHitable2D
 #if false
 #elif WINUI
 #elif WPF
+            RemoveHandler(MouseMove2DEvent, value);
+#elif AVALONIA
             RemoveHandler(MouseMove2DEvent, value);
 #else
 #error Unknown framework
@@ -633,6 +724,8 @@ public abstract class Element2D : Element2DCore, ITransformable2D, IHitable2D
 #elif WINUI
 #elif WPF
             AddHandler(MouseEnter2DEvent, value);
+#elif AVALONIA
+            AddHandler(MouseEnter2DEvent, value);
 #else
 #error Unknown framework
 #endif
@@ -642,6 +735,8 @@ public abstract class Element2D : Element2DCore, ITransformable2D, IHitable2D
 #if false
 #elif WINUI
 #elif WPF
+            RemoveHandler(MouseEnter2DEvent, value);
+#elif AVALONIA
             RemoveHandler(MouseEnter2DEvent, value);
 #else
 #error Unknown framework
@@ -657,6 +752,8 @@ public abstract class Element2D : Element2DCore, ITransformable2D, IHitable2D
 #elif WINUI
 #elif WPF
             AddHandler(MouseLeave2DEvent, value);
+#elif AVALONIA
+            AddHandler(MouseLeave2DEvent, value);
 #else
 #error Unknown framework
 #endif
@@ -667,12 +764,14 @@ public abstract class Element2D : Element2DCore, ITransformable2D, IHitable2D
 #elif WINUI
 #elif WPF
             RemoveHandler(MouseLeave2DEvent, value);
+#elif AVALONIA
+            RemoveHandler(MouseLeave2DEvent, value);
 #else
 #error Unknown framework
 #endif
         }
     }
-#endregion
+    #endregion
 
     public Element2D()
     {

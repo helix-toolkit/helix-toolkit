@@ -1,0 +1,41 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:EmptyDemo.ViewModels"
+             xmlns:hx="http://helix-toolkit.org/avalonia/SharpDX"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="EmptyDemo.Views.MainView"
+             x:DataType="vm:MainViewModel">
+
+  <Design.DataContext>
+    <!-- This only sets the DataContext for the previewer in an IDE,
+         to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
+    <vm:MainViewModel />
+  </Design.DataContext>
+
+  <Grid>
+    <hx:Viewport3DX x:Name="viewport"
+                    EffectsManager="{Binding EffectsManager}"
+                    Camera="{Binding Camera}"
+                    OnRendered="OnRendered"
+                    IsViewCubeEdgeClicksEnabled="True"
+                    ShowViewCube="True"
+                    ShowCoordinateSystem="True"
+                    ShowCameraInfo="True"
+                    ShowFrameRate="True" >
+      <hx:AmbientLight3D/>
+      <hx:AxisPlaneGridModel3D UpAxis="X"/>
+      <hx:AxisPlaneGridModel3D UpAxis="Y"/>
+      <hx:AxisPlaneGridModel3D UpAxis="Z"/>
+
+    </hx:Viewport3DX>
+
+    <TextBlock Text="{Binding Greeting}"
+             HorizontalAlignment="Center"
+             VerticalAlignment="Center"
+             Background="Yellow"
+             Foreground="Black"/>
+  </Grid>
+
+</UserControl>

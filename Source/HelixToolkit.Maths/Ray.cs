@@ -335,6 +335,18 @@ namespace HelixToolkit.Maths
         }
 
         /// <summary>
+        /// Transform the ray using the specified transformation matrix.
+        /// </summary>
+        /// <param name="matrix"></param>
+        /// <returns></returns>
+        public Ray Transform(in Matrix matrix)
+        {
+            var position = Vector3Helper.TransformCoordinate(Position, matrix);
+            var direction = Vector3.Normalize(Vector3.TransformNormal(Direction, matrix));
+            return new Ray(position, direction);
+        }
+
+        /// <summary>
         /// Tests for equality between two objects.
         /// </summary>
         /// <param name="left">The first value to compare.</param>

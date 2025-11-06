@@ -71,6 +71,7 @@
                                     Transform="{Binding ModelTransform}"
                                     Color="White" />
             <hx:LineGeometryModel3D Geometry="{Binding Lines}"
+                                    Transform="{Binding ModelTransform}"
                                     Instances="{Binding SelectedLineInstances}"
                                     Color="Orange" />
             <hx:InstancingBillboardModel3D x:Name="billboardModel3D"

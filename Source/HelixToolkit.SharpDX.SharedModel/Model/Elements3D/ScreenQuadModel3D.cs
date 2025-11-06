@@ -7,6 +7,7 @@ using SharpDX.Direct3D11;
 #elif WINUI
 using System.Runtime.Versioning;
 #elif WPF
+#elif AVALONIA
 #else
 #error Unknown framework
 #endif
@@ -16,6 +17,8 @@ using System.Runtime.Versioning;
 namespace HelixToolkit.WinUI.SharpDX;
 #elif WPF
 namespace HelixToolkit.Wpf.SharpDX;
+#elif AVALONIA
+namespace HelixToolkit.Avalonia.SharpDX;
 #else
 #error Unknown framework
 #endif
@@ -27,6 +30,7 @@ namespace HelixToolkit.Wpf.SharpDX;
 #elif WINUI
 [SupportedOSPlatform("windows")]
 #elif WPF
+#elif AVALONIA
 #else
 #error Unknown framework
 #endif
@@ -45,19 +49,20 @@ public class ScreenQuadModel3D : Element3D
     }
 
     public static readonly DependencyProperty TextureProperty =
-        DependencyProperty.Register("Texture", typeof(TextureModel), typeof(ScreenQuadModel3D), new PropertyMetadata(null, (d, e) =>
+        HelixProperty.Register<ScreenQuadModel3D, TextureModel?>("Texture",
+            null, (d, e) =>
         {
             if (d is ScreenQuadModel3D { SceneNode: ScreenQuadNode node })
             {
-                node.Texture = (TextureModel)e.NewValue;
+                node.Texture = (TextureModel?)e.NewValue;
             }
-        }));
+        });
 
     public SamplerStateDescription SamplerDescription
     {
         get
         {
-            return (SamplerStateDescription)GetValue(SamplerDescriptionProperty);
+            return (SamplerStateDescription)GetValue(SamplerDescriptionProperty)!;
         }
         set
         {
@@ -67,15 +72,14 @@ public class ScreenQuadModel3D : Element3D
 
 
     public static readonly DependencyProperty SamplerDescriptionProperty =
-        DependencyProperty.Register("SamplerDescription", typeof(SamplerStateDescription), typeof(ScreenQuadModel3D),
-            new PropertyMetadata(DefaultSamplers.LinearSamplerClampAni1, (d, e) =>
+        HelixProperty.Register<ScreenQuadModel3D, SamplerStateDescription>("SamplerDescription",
+            DefaultSamplers.LinearSamplerClampAni1, (d, e) =>
             {
                 if (d is ScreenQuadModel3D { SceneNode: ScreenQuadNode node })
                 {
-                    node.Sampler = (SamplerStateDescription)e.NewValue;
+                    node.Sampler = (SamplerStateDescription)e.NewValue!;
                 }
-            }));
-
+            });
 
     /// <summary>
     /// Gets or sets the depth of the quad, range from 0 ~ 1.
@@ -87,7 +91,7 @@ public class ScreenQuadModel3D : Element3D
     {
         get
         {
-            return (double)GetValue(DepthProperty);
+            return (double)GetValue(DepthProperty)!;
         }
         set
         {
@@ -96,14 +100,15 @@ public class ScreenQuadModel3D : Element3D
     }
 
     public static readonly DependencyProperty DepthProperty =
-        DependencyProperty.Register("Depth", typeof(double), typeof(ScreenQuadModel3D), new PropertyMetadata(1.0,
+        HelixProperty.Register<ScreenQuadModel3D, double>("Depth",
+            1.0,
             (d, e) =>
             {
                 if (d is ScreenQuadModel3D { SceneNode: ScreenQuadNode node })
                 {
-                    node.Depth = (float)Math.Max(0, Math.Min(1, (double)e.NewValue));
+                    node.Depth = (float)Math.Max(0, Math.Min(1, (double)e.NewValue!));
                 }
-            }));
+            });
 
     protected override SceneNode OnCreateSceneNode()
     {
