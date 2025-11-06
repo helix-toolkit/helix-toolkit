@@ -95,24 +95,25 @@ Please use the following template to report bugs.
 - Sample Code:
 
 ## News
-#### 2025-08-17
-[v2.27.1](https://github.com/helix-toolkit/helix-toolkit/releases/tag/v2.27.0) releases are available on nuget. [Release Note](/CHANGELOG.md)
+#### 2025-11-06
+[v3.0.0](https://github.com/helix-toolkit/helix-toolkit/releases/tag/v3.0.0) releases are available on nuget. [Release Note](/CHANGELOG.md)
 
 :bangbang: HelixToolkit v2 is in maintainance mode (Will only release new version on critical bug fixes). Moving forward, our focus will shift to the development of v3.
 
-- [WPF](https://www.nuget.org/packages/HelixToolkit.Wpf/2.27.1)
-- [Core.WPF](https://www.nuget.org/packages/HelixToolkit.Core.Wpf/2.27.1)
-- [WPF.Input](https://www.nuget.org/packages/HelixToolkit.Wpf.Input/2.27.1)
-- [WPF.SharpDX](https://www.nuget.org/packages/HelixToolkit.Wpf.SharpDX/2.27.1)
-- [UWP](https://www.nuget.org/packages/HelixToolkit.UWP/2.27.1)
-- [SharpDX.Core](https://www.nuget.org/packages/HelixToolkit.SharpDX.Core/2.27.1)
-- [SharpDX.Core.Wpf](https://www.nuget.org/packages/HelixToolkit.SharpDX.Core.Wpf/2.27.1)
-- [WinUI](https://www.nuget.org/packages/HelixToolkit.WinUI/2.27.1)
-- [SharpDX.Assimp](https://www.nuget.org/packages/HelixToolkit.SharpDX.Assimp/2.27.1)
+- [WPF](https://www.nuget.org/packages/HelixToolkit.Wpf/3.0.0-ci0001)
+- [Core.WPF](https://www.nuget.org/packages/HelixToolkit.Core.Wpf/3.0.0-ci0001)
+- [WPF.Input](https://www.nuget.org/packages/HelixToolkit.Wpf.Input/3.0.0-ci0001)
+- [WPF.SharpDX](https://www.nuget.org/packages/HelixToolkit.Wpf.SharpDX/3.0.0-ci0001)
+- [UWP](https://www.nuget.org/packages/HelixToolkit.UWP/3.0.0-ci0001)
+- [SharpDX.Core](https://www.nuget.org/packages/HelixToolkit.SharpDX.Core/3.0.0-ci0001)
+- [SharpDX.Core.Wpf](https://www.nuget.org/packages/HelixToolkit.SharpDX.Core.Wpf/3.0.0-ci0001)
+- [WinUI](https://www.nuget.org/packages/HelixToolkit.WinUI/3.0.0-ci0001)
+- [SharpDX.Assimp](https://www.nuget.org/packages/HelixToolkit.SharpDX.Assimp/3.0.0-ci0001)
 
 #### Changes (Please refer to [Release Note](https://github.com/helix-toolkit/helix-toolkit/blob/master/CHANGELOG.md) for details)
 
 #### 2023-03-17
 Nightly build myget feed link has been updated to: https://www.myget.org/F/helixtoolkit-nightly
+
 
 
