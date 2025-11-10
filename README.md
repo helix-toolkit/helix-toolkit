@@ -6,20 +6,32 @@
 
 **Helix Toolkit is a collection of 3D components for .NET Framework.**
 
-[**HelixToolkit.Wpf:**](/Source/HelixToolkit.Wpf)
-Adds variety of functionalities/models on the top of internal WPF 3D models (Media3D namespace).
+[**HelixToolkit:**](/Source/HelixToolkit)
+Core components shares across different projects.
 
-[**HelixToolkit.Wpf.SharpDX:**](/Source/HelixToolkit.Wpf.SharpDX)
-Custom 3D Engine and XAML/MVVM compatible Scene Graphs based on [SharpDX](https://github.com/sharpdx/SharpDX)(DirectX 11) for WPF.
+[**HelixToolkit.Maths:**](/Source/HelixToolkit.Maths)
+Modified Math library carried over from SharpDX project to support `System.Numerics` library.
 
-[**HelixToolkit.WinUI.SharpDX:**](/Source/HelixToolkit.WinUI.SharpDX)
-Custom 3D Engine and XAML/MVVM compatible Scene Graphs based on [SharpDX](https://github.com/sharpdx/SharpDX)(DirectX 11) for WinUI.
+[**HelixToolkit.Geometry:**](/Source/HelixToolkit.Geometry)
+Geometry builder library to support common shapes.
+
+[**HelixToolkit.SharpDX:**](/Source/HelixToolkit.SharpDX)
+Custom 3D Engine and Scene Graphs based on [SharpDX](https://github.com/sharpdx/SharpDX)(DirectX 11).
 
 [**HelixToolkit.Avalonia.SharpDX:**](/Source/HelixToolkit.Avalonia.SharpDX)
-Custom 3D Engine and XAML/MVVM compatible Scene Graphs based on [SharpDX](https://github.com/sharpdx/SharpDX)(DirectX 11) for AvaloniaUI.
+XAML/MVVM compatible Scene Graphs for supporting AvaloniaUI based on `HelixToolkit.SharpDX`.
+
+[**HelixToolkit.Wpf.SharpDX:**](/Source/HelixToolkit.Wpf.SharpDX)
+XAML/MVVM compatible Scene Graphs for supporting WPF based on `HelixToolkit.SharpDX`.
 
 [**HelixToolkit.SharpDX.Assimp:**](/Source/HelixToolkit.SharpDX.Assimp)
-[SharpAssimp](https://github.com/JeremyAnsel/SharpAssimp) 3D model importer/expoter support for HelixToolkit.SharpDX Components.
+[SharpAssimp](https://github.com/JeremyAnsel/SharpAssimp) 3D model importer/expoter support for `HelixToolkit.SharpDX` Components.
+
+[**HelixToolkit.WinUI.SharpDX:**](/Source/HelixToolkit.WinUI.SharpDX)
+XAML/MVVM compatible Scene Graphs for supporting WinUI based on `HelixToolkit.SharpDX`.
+
+[**HelixToolkit.Wpf:**](/Source/HelixToolkit.Wpf)
+Adds variety of functionalities/models on the top of internal WPF 3D models (Media3D namespace).
 
 [**Examples:**](/Source/Examples)
 Please download full source code to run examples.
@@ -100,20 +112,21 @@ Please use the following template to report bugs.
 
 :bangbang: HelixToolkit v2 is in maintainance mode (Will only release new version on critical bug fixes). Moving forward, our focus will shift to the development of v3.
 
-- [WPF](https://www.nuget.org/packages/HelixToolkit.Wpf/3.0.0-ci0001)
-- [Core.WPF](https://www.nuget.org/packages/HelixToolkit.Core.Wpf/3.0.0-ci0001)
-- [WPF.Input](https://www.nuget.org/packages/HelixToolkit.Wpf.Input/3.0.0-ci0001)
-- [WPF.SharpDX](https://www.nuget.org/packages/HelixToolkit.Wpf.SharpDX/3.0.0-ci0001)
-- [UWP](https://www.nuget.org/packages/HelixToolkit.UWP/3.0.0-ci0001)
-- [SharpDX.Core](https://www.nuget.org/packages/HelixToolkit.SharpDX.Core/3.0.0-ci0001)
-- [SharpDX.Core.Wpf](https://www.nuget.org/packages/HelixToolkit.SharpDX.Core.Wpf/3.0.0-ci0001)
-- [WinUI](https://www.nuget.org/packages/HelixToolkit.WinUI/3.0.0-ci0001)
-- [SharpDX.Assimp](https://www.nuget.org/packages/HelixToolkit.SharpDX.Assimp/3.0.0-ci0001)
-
+- [HelixToolkit.Maths](https://www.nuget.org/packages/HelixToolkit.Maths/3.0.0-ci0001)
+- [HelixToolkit.Geometry](https://www.nuget.org/packages/HelixToolkit.Geometry/3.0.0-ci0001)
+- [HelixToolkit.SharpDX](https://www.nuget.org/packages/HelixToolkit.SharpDX/3.0.0-ci0001)
+- [HelixToolkit.WPF.SharpDX](https://www.nuget.org/packages/HelixToolkit.Wpf.SharpDX/3.0.0-ci0001)
+- [HelixToolkit.WinUI.SharpDX](https://www.nuget.org/packages/HelixToolkit.WinUI.SharpDX/3.0.0-ci0001)
+- [HelixToolkit.Avalonia.SharpDX](https://www.nuget.org/packages/HelixToolkit.Avalonia.SharpDX/3.0.0-ci0001)
+- [HelixToolkit.SharpDX.Assimp](https://www.nuget.org/packages/HelixToolkit.SharpDX.Assimp/3.0.0-ci0001)
+- [HelixToolkit.WPF](https://www.nuget.org/packages/HelixToolkit.Wpf/3.0.0-ci0001)
+- [HelixToolkit.Wpf.TDxInput](https://www.nuget.org/packages/HelixToolkit.Wpf.TDxInput/3.0.0-ci0001)
+- 
 #### Changes (Please refer to [Release Note](https://github.com/helix-toolkit/helix-toolkit/blob/master/CHANGELOG.md) for details)
 
 #### 2023-03-17
 Nightly build myget feed link has been updated to: https://www.myget.org/F/helixtoolkit-nightly
+
 
 
 
