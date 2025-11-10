@@ -1,6 +1,145 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [3.0.0] 2025-11-06
+* Fixed rectangle selection cause model3D.Bounds is empty, improve performance by @MauNguyenVan in https://github.com/helix-toolkit/helix-toolkit/pull/1971
+* Improve component by @MauNguyenVan in https://github.com/helix-toolkit/helix-toolkit/pull/1976
+* Fixed NullRefrenceException in CuttingPlaneGroup.CuttingPlanes [WPF] by @MauNguyenVan in https://github.com/helix-toolkit/helix-toolkit/pull/1979
+* Some Improvements by @holance in https://github.com/helix-toolkit/helix-toolkit/pull/1981
+* Fix WinUI crash. Ref #1977 by @holance in https://github.com/helix-toolkit/helix-toolkit/pull/1982
+* Improve component by @MauNguyenVan in https://github.com/helix-toolkit/helix-toolkit/pull/1987
+* Fix use of NotifyCollectionChangedEventArgs in ObservableFastList by @SnowyWreath in https://github.com/helix-toolkit/helix-toolkit/pull/1989
+* Fix rendering doesn't update after removing item from Viewport3DX.Items. by @holance in https://github.com/helix-toolkit/helix-toolkit/pull/2002
+* Re-implmenet zoom extents in sharpdx versions. by @holance in https://github.com/helix-toolkit/helix-toolkit/pull/2003
+* Fixed null exception XamlExporter [Helixtoolkit.Wpf] by @MauNguyenVan in https://github.com/helix-toolkit/helix-toolkit/pull/2006
+* [HelixToolkit.WPF] Update checking ProjectionCamera by @MauNguyenVan in https://github.com/helix-toolkit/helix-toolkit/pull/2014
+* [HelixTookit.Wpf] Add CombinedSelectionCommand by @MauNguyenVan in https://github.com/helix-toolkit/helix-toolkit/pull/2020
+* [HelixToolkit.Wpf] Update CombinedSelectionCommand by @MauNguyenVan in https://github.com/helix-toolkit/helix-toolkit/pull/2022
+* Update Rect3DExtension by @MauNguyenVan in https://github.com/helix-toolkit/helix-toolkit/pull/2025
+* feat: allow importer to load obj,off,ply,stl from application resources by @alex-valchuk in https://github.com/helix-toolkit/helix-toolkit/pull/2030
+* ObjReader.cs, GetFullPath method: If base path is non-existent, tryin… by @Tenchiken80 in https://github.com/helix-toolkit/helix-toolkit/pull/2033
+* Add AngleProperty for BillboardTextVisual3D by @MauNguyenVan in https://github.com/helix-toolkit/helix-toolkit/pull/2042
+* Added ability to create tiled image materials with controlled vertical and horizontal scale factor by @Tenchiken80 in https://github.com/helix-toolkit/helix-toolkit/pull/2043
+* Removed unnecessary dependencies by @topsterde in https://github.com/helix-toolkit/helix-toolkit/pull/2057
+* Only init rotate transform if angle  != 0 by @MauNguyenVan in https://github.com/helix-toolkit/helix-toolkit/pull/2063
+* Rect3D to BoundingBox conversion needs to use Size properties to calculate equivalent Maximum Point by @saintentropy in https://github.com/helix-toolkit/helix-toolkit/pull/2062
+* Fix WinUI model viewer so it can be closed properly. #2048 by @holance in https://github.com/helix-toolkit/helix-toolkit/pull/2066
+* Wip v3 by @holance in https://github.com/helix-toolkit/helix-toolkit/pull/2068
+* Sync with develop branch and bug fixes. by @holance in https://github.com/helix-toolkit/helix-toolkit/pull/2071
+* Adds back winform demo. by @holance in https://github.com/helix-toolkit/helix-toolkit/pull/2073
+* Fix MyGet symbol_server by @JeremyAnsel in https://github.com/helix-toolkit/helix-toolkit/pull/2076
+* Add Angle Property for TextVisual3D by @JeremyAnsel in https://github.com/helix-toolkit/helix-toolkit/pull/2082
+* Use system.numerics and HelixToolkit.Maths library by @holance in https://github.com/helix-toolkit/helix-toolkit/pull/2084
+* Support color inner rectangle of RectangleAdorner by @JeremyAnsel in https://github.com/helix-toolkit/helix-toolkit/pull/2086
+* Improve converter performance by @JeremyAnsel in https://github.com/helix-toolkit/helix-toolkit/pull/2092
+* Fix converter inconsistencies. by @holance in https://github.com/helix-toolkit/helix-toolkit/pull/2094
+* Fix missing TriangleIndecies assignment in `MeshGeometry3D ToMeshGeometry3D(this Geometry.MeshGeometry3D mesh)`. Ref #2097 by @holance in https://github.com/helix-toolkit/helix-toolkit/pull/2098
+* Update gitversion.yml for the branches configuration by @JeremyAnsel in https://github.com/helix-toolkit/helix-toolkit/pull/2100
+* Add FillRectangleBrush property for RectangleSelectionCommand, CombinedSelectionCommand by @MauNguyenVan in https://github.com/helix-toolkit/helix-toolkit/pull/2099
+* Fix null ref exception. by @holance in https://github.com/helix-toolkit/helix-toolkit/pull/2102
+* Refactor Helix.Wpf HelixViewport3D, Update selection example by @MauNguyenVan in https://github.com/helix-toolkit/helix-toolkit/pull/2104
+* Delete ShareFunction at HelixToolkit.Geometry by @MauNguyenVan in https://github.com/helix-toolkit/helix-toolkit/pull/2105
+* Fix all the c# language suggestions in math lib. by @holance in https://github.com/helix-toolkit/helix-toolkit/pull/2110
+* Delete Vector.Normalized Extension, Delete Rect3D in Geometry by @MauNguyenVan in https://github.com/helix-toolkit/helix-toolkit/pull/2111
+* Delete BoundingBoxExtensions, rename DataStreamExtension -> DataStreamExtensions by @MauNguyenVan in https://github.com/helix-toolkit/helix-toolkit/pull/2112
+* Arrange, restructure code by @MauNguyenVan in https://github.com/helix-toolkit/helix-toolkit/pull/2114
+* Fix outline highlight not showing up while rending backface only. #2118 by @holance in https://github.com/helix-toolkit/helix-toolkit/pull/2120
+* Update name to more consistency by @MauNguyenVan in https://github.com/helix-toolkit/helix-toolkit/pull/2123
+* Fix incorrect edge model on viewbox. by @holance in https://github.com/helix-toolkit/helix-toolkit/pull/2124
+* Fix build errors in wpf examples. by @holance in https://github.com/helix-toolkit/helix-toolkit/pull/2125
+* Fix particle system not able to render 2x2 particle texture. #2126 by @holance in https://github.com/helix-toolkit/helix-toolkit/pull/2130
+* Change namespace from HelixToolkit to HelixToolkit.Geometry for HelixToolkit.Geometry by @MauNguyenVan in https://github.com/helix-toolkit/helix-toolkit/pull/2132
+* Update Exlicite type for ViewCubeVisual3D by @MauNguyenVan in https://github.com/helix-toolkit/helix-toolkit/pull/2134
+* Improve dual depth peeling implementation. Fix #2116. by @holance in https://github.com/helix-toolkit/helix-toolkit/pull/2135
+* Implement dynamic depth peeling iteration support. by @holance in https://github.com/helix-toolkit/helix-toolkit/pull/2141
+* Fix panning not working in HelixToolkit.Wpf. #2140 by @holance in https://github.com/helix-toolkit/helix-toolkit/pull/2143
+* Update Wpf.Viewport3DHelper.FindHits. by @MauNguyenVan in https://github.com/helix-toolkit/helix-toolkit/pull/2145
+* Fix panning not working in HelixToolkit.Wpf  when camera  zoom-in exceed NearPlaneDistance by @MauNguyenVan in https://github.com/helix-toolkit/helix-toolkit/pull/2148
+* Remove duplicate code in Wpf.MouseGestureHandler by @MauNguyenVan in https://github.com/helix-toolkit/helix-toolkit/pull/2152
+* Update projects to include readme. #2142. by @holance in https://github.com/helix-toolkit/helix-toolkit/pull/2155
+* Delete HelixToolkit.Wpf.BoundingSphere by @MauNguyenVan in https://github.com/helix-toolkit/helix-toolkit/pull/2164
+* Fix float to double conversion by @JeremyAnsel in https://github.com/helix-toolkit/helix-toolkit/pull/2169
+* Change Wpf.Converter to Wpf.ConverterExtensions, Fix Wpf.Test failed by @MauNguyenVan in https://github.com/helix-toolkit/helix-toolkit/pull/2170
+* Add IsTopBottomViewReverseOriented property for Wpf.HelixViewport3D by @MauNguyenVan in https://github.com/helix-toolkit/helix-toolkit/pull/2172
+* Add TypeConverter to collections by @JeremyAnsel in https://github.com/helix-toolkit/helix-toolkit/pull/2177
+* Remove obsolete memmber in Wpf.HelixViewport3D by @MauNguyenVan in https://github.com/helix-toolkit/helix-toolkit/pull/2179
+* Fixed ViewBoxNode wrong color axis face in Helix.Wpf.SharpDX by @MauNguyenVan in https://github.com/helix-toolkit/helix-toolkit/pull/2181
+* Fix MeshBuilder.GetCircle by @MauNguyenVan in https://github.com/helix-toolkit/helix-toolkit/pull/2187
+* Adds Triangle selection demo in sharpdx. by @holance in https://github.com/helix-toolkit/helix-toolkit/pull/2193
+* Fix build error. by @holance in https://github.com/helix-toolkit/helix-toolkit/pull/2194
+* Fix MeshBuilder.GetCircle() OutOfRangeExeption when thetaDiv <=0 by @MauNguyenVan in https://github.com/helix-toolkit/helix-toolkit/pull/2195
+* Add MeshBuilderSample into Examples.Wpf by @MauNguyenVan in https://github.com/helix-toolkit/helix-toolkit/pull/2197
+* Allow AddTube function to accept optional up vectors for path segments. by @holance in https://github.com/helix-toolkit/helix-toolkit/pull/2200
+* Add function for HelixToolkit Vector3, Quaternion by @MauNguyenVan in https://github.com/helix-toolkit/helix-toolkit/pull/2206
+* [V3] Fix HelixToolkit.Wpf.TextVisual3D display wrong size when apply Angle!=0 by @MauNguyenVan in https://github.com/helix-toolkit/helix-toolkit/pull/2209
+* Fix null ref exception. #2205. by @holance in https://github.com/helix-toolkit/helix-toolkit/pull/2220
+* [V3] Fixed memory leaks when using RenderTargetBitmap in HelixToolkit.Wpf by @MauNguyenVan in https://github.com/helix-toolkit/helix-toolkit/pull/2224
+* Update choco command by @JeremyAnsel in https://github.com/helix-toolkit/helix-toolkit/pull/2229
+* Fix Dispose wrong position of RenderTargetBitmap in Wpf.ParticleSystem by @MauNguyenVan in https://github.com/helix-toolkit/helix-toolkit/pull/2227
+* Support Angle property for TextGroupVisual3D by @MauNguyenVan in https://github.com/helix-toolkit/helix-toolkit/pull/2231
+* Added missing scale to ToBillboardImage3D. by @KlaskSkovby in https://github.com/helix-toolkit/helix-toolkit/pull/2234
+* Fix build error. by @holance in https://github.com/helix-toolkit/helix-toolkit/pull/2236
+* Fix zoom extend. #2180 by @holance in https://github.com/helix-toolkit/helix-toolkit/pull/2244
+* Reimplement MeshBuilder.AddTube by @MauNguyenVan in https://github.com/helix-toolkit/helix-toolkit/pull/2251
+* Update code quality, add some functions by @MauNguyenVan in https://github.com/helix-toolkit/helix-toolkit/pull/2255
+* Make HitResult as abstract by @MauNguyenVan in https://github.com/helix-toolkit/helix-toolkit/pull/2256
+* Fix documentation by @JeremyAnsel in https://github.com/helix-toolkit/helix-toolkit/pull/2257
+* Generate code coverage report for tests by @JeremyAnsel in https://github.com/helix-toolkit/helix-toolkit/pull/2258
+* Allow set point size in HelixToolkit.Wpf.CombinedSelectionCommand by @MauNguyenVan in https://github.com/helix-toolkit/helix-toolkit/pull/2260
+* Add net 8.0 target framework by @JeremyAnsel in https://github.com/helix-toolkit/helix-toolkit/pull/2262
+* Set target framework to 8.0 for all examples by @JeremyAnsel in https://github.com/helix-toolkit/helix-toolkit/pull/2271
+* Fix ImagePacker memory leak.  by @holance in https://github.com/helix-toolkit/helix-toolkit/pull/2277
+* Remove HitTestResultCallback in Viewport3DHelper.FindHits(), remove nullable types by @MauNguyenVan in https://github.com/helix-toolkit/helix-toolkit/pull/2274
+* Improve wpf collection converters performance by @JeremyAnsel in https://github.com/helix-toolkit/helix-toolkit/pull/2279
+* V3: Update dependencies by @JeremyAnsel in https://github.com/helix-toolkit/helix-toolkit/pull/2282
+* [V3] Fix warnings by @JeremyAnsel in https://github.com/helix-toolkit/helix-toolkit/pull/2283
+* [V3] Reduce memory allocations in collections by @JeremyAnsel in https://github.com/helix-toolkit/helix-toolkit/pull/2286
+* Fix line width changed when line is out of camera frustum. by @holance in https://github.com/helix-toolkit/helix-toolkit/pull/2290
+* Combine sharpdx converters to shared project by @JeremyAnsel in https://github.com/helix-toolkit/helix-toolkit/pull/2291
+* Move sharpdx models to shared project by @JeremyAnsel in https://github.com/helix-toolkit/helix-toolkit/pull/2292
+* Move wpf and winui sharpdx code to shared project by @JeremyAnsel in https://github.com/helix-toolkit/helix-toolkit/pull/2294
+* Fix memory leak in EffectManager by @JeremyAnsel in https://github.com/helix-toolkit/helix-toolkit/pull/2297
+* Fix temp file path in wpf exporter tests by @JeremyAnsel in https://github.com/helix-toolkit/helix-toolkit/pull/2299
+* [V3] Move more elements to sharpdx shared project by @JeremyAnsel in https://github.com/helix-toolkit/helix-toolkit/pull/2302
+* [V3] Add sharpdx D2DScreenMenuDemo to WinUI from Wpf by @JeremyAnsel in https://github.com/helix-toolkit/helix-toolkit/pull/2305
+* Add readonly fields for billboard by @MauNguyenVan in https://github.com/helix-toolkit/helix-toolkit/pull/2308
+* [V3] Add ImporterWithPathToStreamTransform by @JeremyAnsel in https://github.com/helix-toolkit/helix-toolkit/pull/2309
+* [V3] Improve namespaces in SharpDX shared project by @JeremyAnsel in https://github.com/helix-toolkit/helix-toolkit/pull/2311
+* [V3] Add Maths and Geometry projects to docfx.json by @JeremyAnsel in https://github.com/helix-toolkit/helix-toolkit/pull/2314
+* Update README.md by @holance in https://github.com/helix-toolkit/helix-toolkit/pull/2321
+* Move the instance matrices multiplication after world matrix. by @holance in https://github.com/helix-toolkit/helix-toolkit/pull/2325
+* Fix volume render is not displaying by @holance in https://github.com/helix-toolkit/helix-toolkit/pull/2344
+* Fix tests by @JeremyAnsel in https://github.com/helix-toolkit/helix-toolkit/pull/2350
+* Implement SIMD SSE for vector array normalization, minmax, etc. by @holance in https://github.com/helix-toolkit/helix-toolkit/pull/2351
+* Add tests by @JeremyAnsel in https://github.com/helix-toolkit/helix-toolkit/pull/2354
+* Migrate to use github action workflow by @holance in https://github.com/helix-toolkit/helix-toolkit/pull/2361
+* Replace AssimpNet with SharpAssimp by @JeremyAnsel in https://github.com/helix-toolkit/helix-toolkit/pull/2375
+* Avoid upload artifacts on pull request. by @holance in https://github.com/helix-toolkit/helix-toolkit/pull/2376
+* Update ci.yml to publish packages to github packages. by @holance in https://github.com/helix-toolkit/helix-toolkit/pull/2377
+* Add NASA SRTM .hgt format support for terrain rendering by @alex-valchuk in https://github.com/helix-toolkit/helix-toolkit/pull/2379
+* Speed up tests report generator by @JeremyAnsel in https://github.com/helix-toolkit/helix-toolkit/pull/2380
+* Add tests by @JeremyAnsel in https://github.com/helix-toolkit/helix-toolkit/pull/2382
+* Add tests for TokenizerHelper by @JeremyAnsel in https://github.com/helix-toolkit/helix-toolkit/pull/2384
+* Fix CameraType in CoordinateSystemNode by @JeremyAnsel in https://github.com/helix-toolkit/helix-toolkit/pull/2386
+* Fix text scale in CoordinateSystemNode by @JeremyAnsel in https://github.com/helix-toolkit/helix-toolkit/pull/2388
+* Rename e in OnCoordinateSystemChanged by @JeremyAnsel in https://github.com/helix-toolkit/helix-toolkit/pull/2389
+* Update dependencies by @JeremyAnsel in https://github.com/helix-toolkit/helix-toolkit/pull/2390
+* Remove duplicate code by @MauNguyenVan in https://github.com/helix-toolkit/helix-toolkit/pull/2391
+* Add tests for DoubleKeyDictionary by @JeremyAnsel in https://github.com/helix-toolkit/helix-toolkit/pull/2395
+* Add tests for FastList by @JeremyAnsel in https://github.com/helix-toolkit/helix-toolkit/pull/2397
+* EnableColorBlending comment is wrong by @mdelanno in https://github.com/helix-toolkit/helix-toolkit/pull/2399
+* Move SharpDX mouse handlers to shared project by @JeremyAnsel in https://github.com/helix-toolkit/helix-toolkit/pull/2400
+* Fix a typo and add a clear method by @mdelanno in https://github.com/helix-toolkit/helix-toolkit/pull/2401
+* Add comment in MeshBuilder and AddTube() by @MauNguyenVan in https://github.com/helix-toolkit/helix-toolkit/pull/2407
+* Fix cutting MeshGeometry3D.Cut modify the origin mesh by @MauNguyenVan in https://github.com/helix-toolkit/helix-toolkit/pull/2408
+* Fix typo by @MauNguyenVan in https://github.com/helix-toolkit/helix-toolkit/pull/2410
+* Add support for Avalonia UI by @JeremyAnsel in https://github.com/helix-toolkit/helix-toolkit/pull/2409
+* Update WindowsAppSDK to 1.7 by @JeremyAnsel in https://github.com/helix-toolkit/helix-toolkit/pull/2415
+* Update Readme by @JeremyAnsel in https://github.com/helix-toolkit/helix-toolkit/pull/2414
+* Bug fix on instancing octree hit testing and geometry bound calculation on instancing. by @holance in https://github.com/helix-toolkit/helix-toolkit/pull/2422
+* Fix sharpdx import material by @JeremyAnsel in https://github.com/helix-toolkit/helix-toolkit/pull/2425
+* Fix bounding box/bounding sphere on instancing. by @holance in https://github.com/helix-toolkit/helix-toolkit/pull/2426
+
 ## [2.24.0] 2023-05-09
 
 ### Added
