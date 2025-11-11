@@ -44,9 +44,9 @@ Please download full source code to run examples.
 
 Description         | Value
 --------------------|-----------------------
-Web page            | http://helix-toolkit.github.io/
+Web page            | https://helix-toolkit.github.io/
 Wiki                | https://github.com/helix-toolkit/helix-toolkit/wiki
-Documentation       | http://helix-toolkit.readthedocs.io/
+Documentation       | [https://helix-toolkit.github.io/develop3](https://helix-toolkit.github.io/helix-toolkit/develop3/)
 Chat                | https://gitter.im/helix-toolkit/helix-toolkit
 Source repository   | http://github.com/helix-toolkit/helix-toolkit
 Latest build        | http://ci.appveyor.com/project/holance/helix-toolkit
@@ -154,6 +154,7 @@ Please use the following template to report bugs.
 
 #### 2023-03-17
 Nightly build myget feed link has been updated to: https://www.myget.org/F/helixtoolkit-nightly
+
 
 
 
