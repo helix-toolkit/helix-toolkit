@@ -1,0 +1,2968 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Class ParticleStormModel3D | Helix Toolkit - 3D for .NET </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Class ParticleStormModel3D | Helix Toolkit - 3D for .NET ">
+      
+      
+      <link rel="icon" href="../images/favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/helix-toolkit/helix-toolkit/new/develop3/apiSpec/new?filename=HelixToolkit_Avalonia_SharpDX_ParticleStormModel3D.md&amp;value=---%0Auid%3A%20HelixToolkit.Avalonia.SharpDX.ParticleStormModel3D%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="ManagedReference">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../images/favicon.ico" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="HelixToolkit.Avalonia.SharpDX.ParticleStormModel3D">
+
+
+
+  <h1 id="HelixToolkit_Avalonia_SharpDX_ParticleStormModel3D" data-uid="HelixToolkit.Avalonia.SharpDX.ParticleStormModel3D" class="text-break">
+Class ParticleStormModel3D  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX.SharedModel/Model/Elements3D/ParticleStormModel3D.cs/#L33"><i class="bi bi-code-slash"></i></a>
+  </h1>
+
+  <div class="facts text-secondary">
+    <dl><dt>Namespace</dt><dd><a class="xref" href="HelixToolkit.html">HelixToolkit</a>.<a class="xref" href="HelixToolkit.Avalonia.html">Avalonia</a>.<a class="xref" href="HelixToolkit.Avalonia.SharpDX.html">SharpDX</a></dd></dl>
+  <dl><dt>Assembly</dt><dd>HelixToolkit.Avalonia.SharpDX.dll</dd></dl>
+  </div>
+
+  <div class="markdown summary"></div>
+  <div class="markdown conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class ParticleStormModel3D : Element3D, INotifyPropertyChanged, IDataContextProvider, ILogical, IThemeVariantHost, IResourceHost, IResourceNode, IStyleHost, ISetLogicalParent, ISetInheritanceParent, ISupportInitialize, IStyleable, INamed, IInputElement, IDataTemplateHost, ISetterValue, IDisposable, IVisible</code></pre>
+  </div>
+
+
+
+
+  <dl class="typelist inheritance">
+    <dt>Inheritance</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
+      <div><span class="xref">AvaloniaObject</span></div>
+      <div><span class="xref">Animatable</span></div>
+      <div><span class="xref">StyledElement</span></div>
+      <div><span class="xref">Visual</span></div>
+      <div><span class="xref">Layoutable</span></div>
+      <div><span class="xref">Interactive</span></div>
+      <div><span class="xref">InputElement</span></div>
+      <div><span class="xref">Control</span></div>
+      <div><a class="xref" href="HelixToolkit.Avalonia.SharpDX.Model.Element3DCore.html">Element3DCore</a></div>
+      <div><a class="xref" href="HelixToolkit.Avalonia.SharpDX.Element3D.html">Element3D</a></div>
+      <div><span class="xref">ParticleStormModel3D</span></div>
+    </dd>
+  </dl>
+
+  <dl class="typelist implements">
+    <dt>Implements</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.componentmodel.inotifypropertychanged">INotifyPropertyChanged</a></div>
+      <div><span class="xref">IDataContextProvider</span></div>
+      <div><span class="xref">ILogical</span></div>
+      <div><span class="xref">IThemeVariantHost</span></div>
+      <div><span class="xref">IResourceHost</span></div>
+      <div><span class="xref">IResourceNode</span></div>
+      <div><span class="xref">IStyleHost</span></div>
+      <div><span class="xref">ISetLogicalParent</span></div>
+      <div><span class="xref">ISetInheritanceParent</span></div>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.componentmodel.isupportinitialize">ISupportInitialize</a></div>
+      <div><span class="xref">IStyleable</span></div>
+      <div><span class="xref">INamed</span></div>
+      <div><span class="xref">IInputElement</span></div>
+      <div><span class="xref">IDataTemplateHost</span></div>
+      <div><span class="xref">ISetterValue</span></div>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.idisposable">IDisposable</a></div>
+      <div><a class="xref" href="HelixToolkit.Avalonia.SharpDX.IVisible.html">IVisible</a></div>
+    </dd>
+  </dl>
+
+
+  <dl class="typelist inheritedMembers">
+    <dt>Inherited Members</dt>
+    <dd>
+    <div>
+      <a class="xref" href="HelixToolkit.Avalonia.SharpDX.Element3D.html#HelixToolkit_Avalonia_SharpDX_Element3D_IsRenderingProperty">Element3D.IsRenderingProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.Avalonia.SharpDX.Element3D.html#HelixToolkit_Avalonia_SharpDX_Element3D_IsRendering">Element3D.IsRendering</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.Avalonia.SharpDX.Element3D.html#HelixToolkit_Avalonia_SharpDX_Element3D_VisibilityProperty">Element3D.VisibilityProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.Avalonia.SharpDX.Element3D.html#HelixToolkit_Avalonia_SharpDX_Element3D_Visibility">Element3D.Visibility</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.Avalonia.SharpDX.Element3D.html#HelixToolkit_Avalonia_SharpDX_Element3D_TransformProperty">Element3D.TransformProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.Avalonia.SharpDX.Element3D.html#HelixToolkit_Avalonia_SharpDX_Element3D_Transform">Element3D.Transform</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.Avalonia.SharpDX.Element3D.html#HelixToolkit_Avalonia_SharpDX_Element3D_IsHitTestVisibleProperty">Element3D.IsHitTestVisibleProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.Avalonia.SharpDX.Element3D.html#HelixToolkit_Avalonia_SharpDX_Element3D_IsHitTestVisible">Element3D.IsHitTestVisible</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.Avalonia.SharpDX.Element3D.html#HelixToolkit_Avalonia_SharpDX_Element3D_RenderOrder">Element3D.RenderOrder</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.Avalonia.SharpDX.Element3D.html#HelixToolkit_Avalonia_SharpDX_Element3D_RenderOrderProperty">Element3D.RenderOrderProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.Avalonia.SharpDX.Element3D.html#HelixToolkit_Avalonia_SharpDX_Element3D_MouseDown3DEvent">Element3D.MouseDown3DEvent</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.Avalonia.SharpDX.Element3D.html#HelixToolkit_Avalonia_SharpDX_Element3D_MouseUp3DEvent">Element3D.MouseUp3DEvent</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.Avalonia.SharpDX.Element3D.html#HelixToolkit_Avalonia_SharpDX_Element3D_MouseMove3DEvent">Element3D.MouseMove3DEvent</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.Avalonia.SharpDX.Element3D.html#HelixToolkit_Avalonia_SharpDX_Element3D_MouseDown3D">Element3D.MouseDown3D</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.Avalonia.SharpDX.Element3D.html#HelixToolkit_Avalonia_SharpDX_Element3D_MouseUp3D">Element3D.MouseUp3D</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.Avalonia.SharpDX.Element3D.html#HelixToolkit_Avalonia_SharpDX_Element3D_MouseMove3D">Element3D.MouseMove3D</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.Avalonia.SharpDX.Element3D.html#HelixToolkit_Avalonia_SharpDX_Element3D_OnMouse3DDown_System_Object_Avalonia_Interactivity_RoutedEventArgs_">Element3D.OnMouse3DDown(object, RoutedEventArgs)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.Avalonia.SharpDX.Element3D.html#HelixToolkit_Avalonia_SharpDX_Element3D_OnMouse3DUp_System_Object_Avalonia_Interactivity_RoutedEventArgs_">Element3D.OnMouse3DUp(object, RoutedEventArgs)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.Avalonia.SharpDX.Element3D.html#HelixToolkit_Avalonia_SharpDX_Element3D_OnMouse3DMove_System_Object_Avalonia_Interactivity_RoutedEventArgs_">Element3D.OnMouse3DMove(object, RoutedEventArgs)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.Avalonia.SharpDX.Element3D.html#HelixToolkit_Avalonia_SharpDX_Element3D_Mouse3DDown">Element3D.Mouse3DDown</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.Avalonia.SharpDX.Element3D.html#HelixToolkit_Avalonia_SharpDX_Element3D_Mouse3DUp">Element3D.Mouse3DUp</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.Avalonia.SharpDX.Element3D.html#HelixToolkit_Avalonia_SharpDX_Element3D_Mouse3DMove">Element3D.Mouse3DMove</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.Avalonia.SharpDX.Element3D.html#HelixToolkit_Avalonia_SharpDX_Element3D_FindVisualAncestor__1_Avalonia_StyledElement_">Element3D.FindVisualAncestor&lt;T&gt;(StyledElement)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.Avalonia.SharpDX.Model.Element3DCore.html#HelixToolkit_Avalonia_SharpDX_Model_Element3DCore_AddLogicalChild_Avalonia_LogicalTree_ILogical_">Element3DCore.AddLogicalChild(ILogical)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.Avalonia.SharpDX.Model.Element3DCore.html#HelixToolkit_Avalonia_SharpDX_Model_Element3DCore_RemoveLogicalChild_Avalonia_LogicalTree_ILogical_">Element3DCore.RemoveLogicalChild(ILogical)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.Avalonia.SharpDX.Model.Element3DCore.html#HelixToolkit_Avalonia_SharpDX_Model_Element3DCore_GUID">Element3DCore.GUID</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.Avalonia.SharpDX.Model.Element3DCore.html#HelixToolkit_Avalonia_SharpDX_Model_Element3DCore_TotalModelMatrix">Element3DCore.TotalModelMatrix</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.Avalonia.SharpDX.Model.Element3DCore.html#HelixToolkit_Avalonia_SharpDX_Model_Element3DCore_Visible">Element3DCore.Visible</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.Avalonia.SharpDX.Model.Element3DCore.html#HelixToolkit_Avalonia_SharpDX_Model_Element3DCore_IsAttached">Element3DCore.IsAttached</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.Avalonia.SharpDX.Model.Element3DCore.html#HelixToolkit_Avalonia_SharpDX_Model_Element3DCore_SceneNode">Element3DCore.SceneNode</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.Avalonia.SharpDX.Model.Element3DCore.html#HelixToolkit_Avalonia_SharpDX_Model_Element3DCore_OnSceneNodeCreated">Element3DCore.OnSceneNodeCreated</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.Avalonia.SharpDX.Model.Element3DCore.html#HelixToolkit_Avalonia_SharpDX_Model_Element3DCore_Bounds">Element3DCore.Bounds</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.Avalonia.SharpDX.Model.Element3DCore.html#HelixToolkit_Avalonia_SharpDX_Model_Element3DCore_BoundsWithTransform">Element3DCore.BoundsWithTransform</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.Avalonia.SharpDX.Model.Element3DCore.html#HelixToolkit_Avalonia_SharpDX_Model_Element3DCore_BoundsSphere">Element3DCore.BoundsSphere</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.Avalonia.SharpDX.Model.Element3DCore.html#HelixToolkit_Avalonia_SharpDX_Model_Element3DCore_BoundsSphereWithTransform">Element3DCore.BoundsSphereWithTransform</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.Avalonia.SharpDX.Model.Element3DCore.html#HelixToolkit_Avalonia_SharpDX_Model_Element3DCore_HitTest_HelixToolkit_SharpDX_HitTestContext_System_Collections_Generic_List_HelixToolkit_SharpDX_HitTestResult___">Element3DCore.HitTest(HitTestContext, ref List&lt;HitTestResult&gt;)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.Avalonia.SharpDX.Model.Element3DCore.html#HelixToolkit_Avalonia_SharpDX_Model_Element3DCore_InvalidateRender">Element3DCore.InvalidateRender()</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.Avalonia.SharpDX.Model.Element3DCore.html#HelixToolkit_Avalonia_SharpDX_Model_Element3DCore_Dispose_System_Boolean_">Element3DCore.Dispose(bool)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.Avalonia.SharpDX.Model.Element3DCore.html#HelixToolkit_Avalonia_SharpDX_Model_Element3DCore_Dispose">Element3DCore.Dispose()</a>
+    </div>
+    <div>
+      <span class="xref">Control.FocusAdornerProperty</span>
+    </div>
+    <div>
+      <span class="xref">Control.TagProperty</span>
+    </div>
+    <div>
+      <span class="xref">Control.ContextMenuProperty</span>
+    </div>
+    <div>
+      <span class="xref">Control.ContextFlyoutProperty</span>
+    </div>
+    <div>
+      <span class="xref">Control.RequestBringIntoViewEvent</span>
+    </div>
+    <div>
+      <span class="xref">Control.ContextRequestedEvent</span>
+    </div>
+    <div>
+      <span class="xref">Control.LoadedEvent</span>
+    </div>
+    <div>
+      <span class="xref">Control.UnloadedEvent</span>
+    </div>
+    <div>
+      <span class="xref">Control.SizeChangedEvent</span>
+    </div>
+    <div>
+      <span class="xref">Control.GetTemplateFocusTarget()</span>
+    </div>
+    <div>
+      <span class="xref">Control.OnLoaded(RoutedEventArgs)</span>
+    </div>
+    <div>
+      <span class="xref">Control.OnUnloaded(RoutedEventArgs)</span>
+    </div>
+    <div>
+      <span class="xref">Control.OnSizeChanged(SizeChangedEventArgs)</span>
+    </div>
+    <div>
+      <span class="xref">Control.OnAttachedToVisualTreeCore(VisualTreeAttachmentEventArgs)</span>
+    </div>
+    <div>
+      <span class="xref">Control.OnDetachedFromVisualTreeCore(VisualTreeAttachmentEventArgs)</span>
+    </div>
+    <div>
+      <span class="xref">Control.OnGotFocus(GotFocusEventArgs)</span>
+    </div>
+    <div>
+      <span class="xref">Control.OnLostFocus(RoutedEventArgs)</span>
+    </div>
+    <div>
+      <span class="xref">Control.OnCreateAutomationPeer()</span>
+    </div>
+    <div>
+      <span class="xref">Control.OnPointerReleased(PointerReleasedEventArgs)</span>
+    </div>
+    <div>
+      <span class="xref">Control.OnKeyUp(KeyEventArgs)</span>
+    </div>
+    <div>
+      <span class="xref">Control.OnPropertyChanged(AvaloniaPropertyChangedEventArgs)</span>
+    </div>
+    <div>
+      <span class="xref">Control.FocusAdorner</span>
+    </div>
+    <div>
+      <span class="xref">Control.DataTemplates</span>
+    </div>
+    <div>
+      <span class="xref">Control.ContextMenu</span>
+    </div>
+    <div>
+      <span class="xref">Control.ContextFlyout</span>
+    </div>
+    <div>
+      <span class="xref">Control.IsLoaded</span>
+    </div>
+    <div>
+      <span class="xref">Control.Tag</span>
+    </div>
+    <div>
+      <span class="xref">Control.ContextRequested</span>
+    </div>
+    <div>
+      <span class="xref">Control.Loaded</span>
+    </div>
+    <div>
+      <span class="xref">Control.Unloaded</span>
+    </div>
+    <div>
+      <span class="xref">Control.SizeChanged</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.FocusableProperty</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.IsEnabledProperty</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.IsEffectivelyEnabledProperty</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.CursorProperty</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.IsKeyboardFocusWithinProperty</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.IsFocusedProperty</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.IsPointerOverProperty</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.IsTabStopProperty</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.GotFocusEvent</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.LostFocusEvent</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.KeyDownEvent</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.KeyUpEvent</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.TabIndexProperty</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.TextInputEvent</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.TextInputMethodClientRequestedEvent</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.PointerEnteredEvent</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.PointerExitedEvent</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.PointerMovedEvent</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.PointerPressedEvent</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.PointerReleasedEvent</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.PointerCaptureLostEvent</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.PointerWheelChangedEvent</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.TappedEvent</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.HoldingEvent</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.DoubleTappedEvent</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.Focus(NavigationMethod, KeyModifiers)</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.OnKeyDown(KeyEventArgs)</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.OnTextInput(TextInputEventArgs)</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.OnPointerEntered(PointerEventArgs)</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.OnPointerExited(PointerEventArgs)</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.OnPointerMoved(PointerEventArgs)</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.OnPointerPressed(PointerPressedEventArgs)</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.OnPointerCaptureLost(PointerCaptureLostEventArgs)</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.OnPointerWheelChanged(PointerWheelEventArgs)</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.UpdateIsEffectivelyEnabled()</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.Focusable</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.IsEnabled</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.Cursor</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.IsKeyboardFocusWithin</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.IsFocused</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.IsPointerOver</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.IsTabStop</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.IsEffectivelyEnabled</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.TabIndex</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.KeyBindings</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.IsEnabledCore</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.GestureRecognizers</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.GotFocus</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.LostFocus</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.KeyDown</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.KeyUp</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.TextInput</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.TextInputMethodClientRequested</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.PointerEntered</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.PointerExited</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.PointerMoved</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.PointerPressed</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.PointerReleased</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.PointerCaptureLost</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.PointerWheelChanged</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.Tapped</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.Holding</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.DoubleTapped</span>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.delegate">Interactive.AddHandler(RoutedEvent, Delegate, RoutingStrategies, bool)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.eventhandler-1">Interactive.AddHandler&lt;TEventArgs&gt;(RoutedEvent&lt;TEventArgs&gt;, EventHandler&lt;TEventArgs&gt;, RoutingStrategies, bool)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.delegate">Interactive.RemoveHandler(RoutedEvent, Delegate)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.eventhandler-1">Interactive.RemoveHandler&lt;TEventArgs&gt;(RoutedEvent&lt;TEventArgs&gt;, EventHandler&lt;TEventArgs&gt;)</a>
+    </div>
+    <div>
+      <span class="xref">Interactive.RaiseEvent(RoutedEventArgs)</span>
+    </div>
+    <div>
+      <span class="xref">Interactive.BuildEventRoute(RoutedEvent)</span>
+    </div>
+    <div>
+      <span class="xref">Layoutable.DesiredSizeProperty</span>
+    </div>
+    <div>
+      <span class="xref">Layoutable.WidthProperty</span>
+    </div>
+    <div>
+      <span class="xref">Layoutable.HeightProperty</span>
+    </div>
+    <div>
+      <span class="xref">Layoutable.MinWidthProperty</span>
+    </div>
+    <div>
+      <span class="xref">Layoutable.MaxWidthProperty</span>
+    </div>
+    <div>
+      <span class="xref">Layoutable.MinHeightProperty</span>
+    </div>
+    <div>
+      <span class="xref">Layoutable.MaxHeightProperty</span>
+    </div>
+    <div>
+      <span class="xref">Layoutable.MarginProperty</span>
+    </div>
+    <div>
+      <span class="xref">Layoutable.HorizontalAlignmentProperty</span>
+    </div>
+    <div>
+      <span class="xref">Layoutable.VerticalAlignmentProperty</span>
+    </div>
+    <div>
+      <span class="xref">Layoutable.UseLayoutRoundingProperty</span>
+    </div>
+    <div>
+      <span class="xref">Layoutable.UpdateLayout()</span>
+    </div>
+    <div>
+      <span class="xref">Layoutable.ApplyTemplate()</span>
+    </div>
+    <div>
+      <span class="xref">Layoutable.Measure(Size)</span>
+    </div>
+    <div>
+      <span class="xref">Layoutable.Arrange(Rect)</span>
+    </div>
+    <div>
+      <span class="xref">Layoutable.InvalidateMeasure()</span>
+    </div>
+    <div>
+      <span class="xref">Layoutable.InvalidateArrange()</span>
+    </div>
+    <div>
+      <span class="xref">Layoutable.AffectsMeasure&lt;T&gt;(params AvaloniaProperty[])</span>
+    </div>
+    <div>
+      <span class="xref">Layoutable.AffectsArrange&lt;T&gt;(params AvaloniaProperty[])</span>
+    </div>
+    <div>
+      <span class="xref">Layoutable.MeasureCore(Size)</span>
+    </div>
+    <div>
+      <span class="xref">Layoutable.MeasureOverride(Size)</span>
+    </div>
+    <div>
+      <span class="xref">Layoutable.ArrangeCore(Rect)</span>
+    </div>
+    <div>
+      <span class="xref">Layoutable.ArrangeOverride(Size)</span>
+    </div>
+    <div>
+      <span class="xref">Layoutable.OnMeasureInvalidated()</span>
+    </div>
+    <div>
+      <span class="xref">Layoutable.OnVisualParentChanged(Visual, Visual)</span>
+    </div>
+    <div>
+      <span class="xref">Layoutable.Width</span>
+    </div>
+    <div>
+      <span class="xref">Layoutable.Height</span>
+    </div>
+    <div>
+      <span class="xref">Layoutable.MinWidth</span>
+    </div>
+    <div>
+      <span class="xref">Layoutable.MaxWidth</span>
+    </div>
+    <div>
+      <span class="xref">Layoutable.MinHeight</span>
+    </div>
+    <div>
+      <span class="xref">Layoutable.MaxHeight</span>
+    </div>
+    <div>
+      <span class="xref">Layoutable.Margin</span>
+    </div>
+    <div>
+      <span class="xref">Layoutable.HorizontalAlignment</span>
+    </div>
+    <div>
+      <span class="xref">Layoutable.VerticalAlignment</span>
+    </div>
+    <div>
+      <span class="xref">Layoutable.DesiredSize</span>
+    </div>
+    <div>
+      <span class="xref">Layoutable.IsMeasureValid</span>
+    </div>
+    <div>
+      <span class="xref">Layoutable.IsArrangeValid</span>
+    </div>
+    <div>
+      <span class="xref">Layoutable.UseLayoutRounding</span>
+    </div>
+    <div>
+      <span class="xref">Layoutable.EffectiveViewportChanged</span>
+    </div>
+    <div>
+      <span class="xref">Layoutable.LayoutUpdated</span>
+    </div>
+    <div>
+      <span class="xref">Visual.BoundsProperty</span>
+    </div>
+    <div>
+      <span class="xref">Visual.ClipToBoundsProperty</span>
+    </div>
+    <div>
+      <span class="xref">Visual.ClipProperty</span>
+    </div>
+    <div>
+      <span class="xref">Visual.IsVisibleProperty</span>
+    </div>
+    <div>
+      <span class="xref">Visual.OpacityProperty</span>
+    </div>
+    <div>
+      <span class="xref">Visual.OpacityMaskProperty</span>
+    </div>
+    <div>
+      <span class="xref">Visual.EffectProperty</span>
+    </div>
+    <div>
+      <span class="xref">Visual.HasMirrorTransformProperty</span>
+    </div>
+    <div>
+      <span class="xref">Visual.RenderTransformProperty</span>
+    </div>
+    <div>
+      <span class="xref">Visual.RenderTransformOriginProperty</span>
+    </div>
+    <div>
+      <span class="xref">Visual.FlowDirectionProperty</span>
+    </div>
+    <div>
+      <span class="xref">Visual.VisualParentProperty</span>
+    </div>
+    <div>
+      <span class="xref">Visual.ZIndexProperty</span>
+    </div>
+    <div>
+      <span class="xref">Visual.GetFlowDirection(Visual)</span>
+    </div>
+    <div>
+      <span class="xref">Visual.SetFlowDirection(Visual, FlowDirection)</span>
+    </div>
+    <div>
+      <span class="xref">Visual.InvalidateVisual()</span>
+    </div>
+    <div>
+      <span class="xref">Visual.Render(DrawingContext)</span>
+    </div>
+    <div>
+      <span class="xref">Visual.AffectsRender&lt;T&gt;(params AvaloniaProperty[])</span>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">Visual.LogicalChildrenCollectionChanged(object, NotifyCollectionChangedEventArgs)</a>
+    </div>
+    <div>
+      <span class="xref">Visual.OnAttachedToVisualTree(VisualTreeAttachmentEventArgs)</span>
+    </div>
+    <div>
+      <span class="xref">Visual.OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs)</span>
+    </div>
+    <div>
+      <span class="xref">Visual.InvalidateMirrorTransform()</span>
+    </div>
+    <div>
+      <span class="xref">Visual.ClipToBounds</span>
+    </div>
+    <div>
+      <span class="xref">Visual.Clip</span>
+    </div>
+    <div>
+      <span class="xref">Visual.IsEffectivelyVisible</span>
+    </div>
+    <div>
+      <span class="xref">Visual.IsVisible</span>
+    </div>
+    <div>
+      <span class="xref">Visual.Opacity</span>
+    </div>
+    <div>
+      <span class="xref">Visual.OpacityMask</span>
+    </div>
+    <div>
+      <span class="xref">Visual.Effect</span>
+    </div>
+    <div>
+      <span class="xref">Visual.HasMirrorTransform</span>
+    </div>
+    <div>
+      <span class="xref">Visual.RenderTransform</span>
+    </div>
+    <div>
+      <span class="xref">Visual.RenderTransformOrigin</span>
+    </div>
+    <div>
+      <span class="xref">Visual.FlowDirection</span>
+    </div>
+    <div>
+      <span class="xref">Visual.ZIndex</span>
+    </div>
+    <div>
+      <span class="xref">Visual.VisualChildren</span>
+    </div>
+    <div>
+      <span class="xref">Visual.VisualRoot</span>
+    </div>
+    <div>
+      <span class="xref">Visual.BypassFlowDirectionPolicies</span>
+    </div>
+    <div>
+      <span class="xref">Visual.AttachedToVisualTree</span>
+    </div>
+    <div>
+      <span class="xref">Visual.DetachedFromVisualTree</span>
+    </div>
+    <div>
+      <span class="xref">StyledElement.DataContextProperty</span>
+    </div>
+    <div>
+      <span class="xref">StyledElement.NameProperty</span>
+    </div>
+    <div>
+      <span class="xref">StyledElement.ParentProperty</span>
+    </div>
+    <div>
+      <span class="xref">StyledElement.TemplatedParentProperty</span>
+    </div>
+    <div>
+      <span class="xref">StyledElement.ThemeProperty</span>
+    </div>
+    <div>
+      <span class="xref">StyledElement.BeginInit()</span>
+    </div>
+    <div>
+      <span class="xref">StyledElement.EndInit()</span>
+    </div>
+    <div>
+      <span class="xref">StyledElement.ApplyStyling()</span>
+    </div>
+    <div>
+      <span class="xref">StyledElement.InitializeIfNeeded()</span>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">StyledElement.TryGetResource(object, ThemeVariant, out object)</a>
+    </div>
+    <div>
+      <span class="xref">StyledElement.OnAttachedToLogicalTree(LogicalTreeAttachmentEventArgs)</span>
+    </div>
+    <div>
+      <span class="xref">StyledElement.OnDetachedFromLogicalTree(LogicalTreeAttachmentEventArgs)</span>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.eventargs">StyledElement.OnDataContextChanged(EventArgs)</a>
+    </div>
+    <div>
+      <span class="xref">StyledElement.OnDataContextBeginUpdate()</span>
+    </div>
+    <div>
+      <span class="xref">StyledElement.OnDataContextEndUpdate()</span>
+    </div>
+    <div>
+      <span class="xref">StyledElement.OnInitialized()</span>
+    </div>
+    <div>
+      <span class="xref">StyledElement.Name</span>
+    </div>
+    <div>
+      <span class="xref">StyledElement.Classes</span>
+    </div>
+    <div>
+      <span class="xref">StyledElement.DataContext</span>
+    </div>
+    <div>
+      <span class="xref">StyledElement.IsInitialized</span>
+    </div>
+    <div>
+      <span class="xref">StyledElement.Styles</span>
+    </div>
+    <div>
+      <span class="xref">StyledElement.StyleKey</span>
+    </div>
+    <div>
+      <span class="xref">StyledElement.Resources</span>
+    </div>
+    <div>
+      <span class="xref">StyledElement.TemplatedParent</span>
+    </div>
+    <div>
+      <span class="xref">StyledElement.Theme</span>
+    </div>
+    <div>
+      <span class="xref">StyledElement.LogicalChildren</span>
+    </div>
+    <div>
+      <span class="xref">StyledElement.PseudoClasses</span>
+    </div>
+    <div>
+      <span class="xref">StyledElement.StyleKeyOverride</span>
+    </div>
+    <div>
+      <span class="xref">StyledElement.Parent</span>
+    </div>
+    <div>
+      <span class="xref">StyledElement.ActualThemeVariant</span>
+    </div>
+    <div>
+      <span class="xref">StyledElement.AttachedToLogicalTree</span>
+    </div>
+    <div>
+      <span class="xref">StyledElement.DetachedFromLogicalTree</span>
+    </div>
+    <div>
+      <span class="xref">StyledElement.DataContextChanged</span>
+    </div>
+    <div>
+      <span class="xref">StyledElement.Initialized</span>
+    </div>
+    <div>
+      <span class="xref">StyledElement.ResourcesChanged</span>
+    </div>
+    <div>
+      <span class="xref">StyledElement.ActualThemeVariantChanged</span>
+    </div>
+    <div>
+      <span class="xref">Animatable.TransitionsProperty</span>
+    </div>
+    <div>
+      <span class="xref">Animatable.OnPropertyChangedCore(AvaloniaPropertyChangedEventArgs)</span>
+    </div>
+    <div>
+      <span class="xref">Animatable.Transitions</span>
+    </div>
+    <div>
+      <span class="xref">AvaloniaObject.CheckAccess()</span>
+    </div>
+    <div>
+      <span class="xref">AvaloniaObject.VerifyAccess()</span>
+    </div>
+    <div>
+      <span class="xref">AvaloniaObject.ClearValue(AvaloniaProperty)</span>
+    </div>
+    <div>
+      <span class="xref">AvaloniaObject.ClearValue&lt;T&gt;(AvaloniaProperty&lt;T&gt;)</span>
+    </div>
+    <div>
+      <span class="xref">AvaloniaObject.ClearValue&lt;T&gt;(StyledProperty&lt;T&gt;)</span>
+    </div>
+    <div>
+      <span class="xref">AvaloniaObject.ClearValue&lt;T&gt;(DirectPropertyBase&lt;T&gt;)</span>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">AvaloniaObject.Equals(object)</a>
+    </div>
+    <div>
+      <span class="xref">AvaloniaObject.GetHashCode()</span>
+    </div>
+    <div>
+      <span class="xref">AvaloniaObject.GetValue(AvaloniaProperty)</span>
+    </div>
+    <div>
+      <span class="xref">AvaloniaObject.GetValue&lt;T&gt;(StyledProperty&lt;T&gt;)</span>
+    </div>
+    <div>
+      <span class="xref">AvaloniaObject.GetValue&lt;T&gt;(DirectPropertyBase&lt;T&gt;)</span>
+    </div>
+    <div>
+      <span class="xref">AvaloniaObject.GetBaseValue&lt;T&gt;(StyledProperty&lt;T&gt;)</span>
+    </div>
+    <div>
+      <span class="xref">AvaloniaObject.IsAnimating(AvaloniaProperty)</span>
+    </div>
+    <div>
+      <span class="xref">AvaloniaObject.IsSet(AvaloniaProperty)</span>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">AvaloniaObject.SetValue(AvaloniaProperty, object, BindingPriority)</a>
+    </div>
+    <div>
+      <span class="xref">AvaloniaObject.SetValue&lt;T&gt;(StyledProperty&lt;T&gt;, T, BindingPriority)</span>
+    </div>
+    <div>
+      <span class="xref">AvaloniaObject.SetValue&lt;T&gt;(DirectPropertyBase&lt;T&gt;, T)</span>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">AvaloniaObject.SetCurrentValue(AvaloniaProperty, object)</a>
+    </div>
+    <div>
+      <span class="xref">AvaloniaObject.SetCurrentValue&lt;T&gt;(StyledProperty&lt;T&gt;, T)</span>
+    </div>
+    <div>
+      <span class="xref">AvaloniaObject.Bind(AvaloniaProperty, IBinding)</span>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iobservable-1">AvaloniaObject.Bind(AvaloniaProperty, IObservable&lt;object&gt;, BindingPriority)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iobservable-1">AvaloniaObject.Bind&lt;T&gt;(StyledProperty&lt;T&gt;, IObservable&lt;object&gt;, BindingPriority)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iobservable-1">AvaloniaObject.Bind&lt;T&gt;(StyledProperty&lt;T&gt;, IObservable&lt;T&gt;, BindingPriority)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iobservable-1">AvaloniaObject.Bind&lt;T&gt;(StyledProperty&lt;T&gt;, IObservable&lt;BindingValue&lt;T&gt;&gt;, BindingPriority)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iobservable-1">AvaloniaObject.Bind&lt;T&gt;(DirectPropertyBase&lt;T&gt;, IObservable&lt;object&gt;)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iobservable-1">AvaloniaObject.Bind&lt;T&gt;(DirectPropertyBase&lt;T&gt;, IObservable&lt;T&gt;)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iobservable-1">AvaloniaObject.Bind&lt;T&gt;(DirectPropertyBase&lt;T&gt;, IObservable&lt;BindingValue&lt;T&gt;&gt;)</a>
+    </div>
+    <div>
+      <span class="xref">AvaloniaObject.CoerceValue(AvaloniaProperty)</span>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.exception">AvaloniaObject.UpdateDataValidation(AvaloniaProperty, BindingValueType, Exception)</a>
+    </div>
+    <div>
+      <span class="xref">AvaloniaObject.RaisePropertyChanged&lt;T&gt;(DirectPropertyBase&lt;T&gt;, T, T)</span>
+    </div>
+    <div>
+      <span class="xref">AvaloniaObject.SetAndRaise&lt;T&gt;(DirectPropertyBase&lt;T&gt;, ref T, T)</span>
+    </div>
+    <div>
+      <span class="xref">AvaloniaObject.InheritanceParent</span>
+    </div>
+    <div>
+      <span class="xref">AvaloniaObject.this[AvaloniaProperty]</span>
+    </div>
+    <div>
+      <span class="xref">AvaloniaObject.this[IndexerDescriptor]</span>
+    </div>
+    <div>
+      <span class="xref">AvaloniaObject.PropertyChanged</span>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">object.Equals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype">object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone">object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals">object.ReferenceEquals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring">object.ToString()</a>
+    </div>
+  </dd></dl>
+
+  <dl class="typelist extensionMethods">
+    <dt>Extension Methods</dt>
+    <dd>
+  <div>
+      <a class="xref" href="HelixToolkit.Avalonia.SharpDX.ViewportExtensions.html#HelixToolkit_Avalonia_SharpDX_ViewportExtensions_Traverse__1_HelixToolkit_Avalonia_SharpDX_Element3D_System_Action___0_System_Numerics_Matrix4x4__">ViewportExtensions.Traverse&lt;T&gt;(Element3D, Action&lt;T, Matrix4x4&gt;)</a>
+  </div>
+  </dd></dl>
+
+
+
+
+
+  <h2 class="section" id="fields">Fields
+</h2>
+
+
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_ParticleStormModel3D_AccelerationProperty" data-uid="HelixToolkit.Avalonia.SharpDX.ParticleStormModel3D.AccelerationProperty">
+  AccelerationProperty
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX.SharedModel/Model/Elements3D/ParticleStormModel3D.cs/#L440"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly AvaloniaProperty AccelerationProperty</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">AvaloniaProperty</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_ParticleStormModel3D_AlphaBlendProperty" data-uid="HelixToolkit.Avalonia.SharpDX.ParticleStormModel3D.AlphaBlendProperty">
+  AlphaBlendProperty
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX.SharedModel/Model/Elements3D/ParticleStormModel3D.cs/#L579"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly AvaloniaProperty AlphaBlendProperty</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">AvaloniaProperty</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_ParticleStormModel3D_AnimateSpriteByEnergyBoundProperty" data-uid="HelixToolkit.Avalonia.SharpDX.ParticleStormModel3D.AnimateSpriteByEnergyBoundProperty">
+  AnimateSpriteByEnergyBoundProperty
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX.SharedModel/Model/Elements3D/ParticleStormModel3D.cs/#L509"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly AvaloniaProperty AnimateSpriteByEnergyBoundProperty</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">AvaloniaProperty</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_ParticleStormModel3D_BlendColorProperty" data-uid="HelixToolkit.Avalonia.SharpDX.ParticleStormModel3D.BlendColorProperty">
+  BlendColorProperty
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX.SharedModel/Model/Elements3D/ParticleStormModel3D.cs/#L486"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly AvaloniaProperty BlendColorProperty</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">AvaloniaProperty</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_ParticleStormModel3D_BlendFactorProperty" data-uid="HelixToolkit.Avalonia.SharpDX.ParticleStormModel3D.BlendFactorProperty">
+  BlendFactorProperty
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX.SharedModel/Model/Elements3D/ParticleStormModel3D.cs/#L714"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>The blend factor property</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly AvaloniaProperty BlendFactorProperty</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">AvaloniaProperty</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_ParticleStormModel3D_BlendProperty" data-uid="HelixToolkit.Avalonia.SharpDX.ParticleStormModel3D.BlendProperty">
+  BlendProperty
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX.SharedModel/Model/Elements3D/ParticleStormModel3D.cs/#L556"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly AvaloniaProperty BlendProperty</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">AvaloniaProperty</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_ParticleStormModel3D_ConsumerGravityProperty" data-uid="HelixToolkit.Avalonia.SharpDX.ParticleStormModel3D.ConsumerGravityProperty">
+  ConsumerGravityProperty
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX.SharedModel/Model/Elements3D/ParticleStormModel3D.cs/#L208"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly AvaloniaProperty ConsumerGravityProperty</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">AvaloniaProperty</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_ParticleStormModel3D_ConsumerLocationProperty" data-uid="HelixToolkit.Avalonia.SharpDX.ParticleStormModel3D.ConsumerLocationProperty">
+  ConsumerLocationProperty
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX.SharedModel/Model/Elements3D/ParticleStormModel3D.cs/#L82"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly AvaloniaProperty ConsumerLocationProperty</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">AvaloniaProperty</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_ParticleStormModel3D_ConsumerRadiusProperty" data-uid="HelixToolkit.Avalonia.SharpDX.ParticleStormModel3D.ConsumerRadiusProperty">
+  ConsumerRadiusProperty
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX.SharedModel/Model/Elements3D/ParticleStormModel3D.cs/#L231"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly AvaloniaProperty ConsumerRadiusProperty</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">AvaloniaProperty</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_ParticleStormModel3D_CumulateAtBoundProperty" data-uid="HelixToolkit.Avalonia.SharpDX.ParticleStormModel3D.CumulateAtBoundProperty">
+  CumulateAtBoundProperty
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX.SharedModel/Model/Elements3D/ParticleStormModel3D.cs/#L463"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly AvaloniaProperty CumulateAtBoundProperty</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">AvaloniaProperty</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_ParticleStormModel3D_DestAlphaBlendProperty" data-uid="HelixToolkit.Avalonia.SharpDX.ParticleStormModel3D.DestAlphaBlendProperty">
+  DestAlphaBlendProperty
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX.SharedModel/Model/Elements3D/ParticleStormModel3D.cs/#L671"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly AvaloniaProperty DestAlphaBlendProperty</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">AvaloniaProperty</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_ParticleStormModel3D_DestBlendProperty" data-uid="HelixToolkit.Avalonia.SharpDX.ParticleStormModel3D.DestBlendProperty">
+  DestBlendProperty
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX.SharedModel/Model/Elements3D/ParticleStormModel3D.cs/#L625"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly AvaloniaProperty DestBlendProperty</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">AvaloniaProperty</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_ParticleStormModel3D_EmitterLocationProperty" data-uid="HelixToolkit.Avalonia.SharpDX.ParticleStormModel3D.EmitterLocationProperty">
+  EmitterLocationProperty
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX.SharedModel/Model/Elements3D/ParticleStormModel3D.cs/#L59"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly AvaloniaProperty EmitterLocationProperty</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">AvaloniaProperty</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_ParticleStormModel3D_EmitterRadiusProperty" data-uid="HelixToolkit.Avalonia.SharpDX.ParticleStormModel3D.EmitterRadiusProperty">
+  EmitterRadiusProperty
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX.SharedModel/Model/Elements3D/ParticleStormModel3D.cs/#L185"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly AvaloniaProperty EmitterRadiusProperty</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">AvaloniaProperty</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_ParticleStormModel3D_EnableViewFrustumCheckProperty" data-uid="HelixToolkit.Avalonia.SharpDX.ParticleStormModel3D.EnableViewFrustumCheckProperty">
+  EnableViewFrustumCheckProperty
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX.SharedModel/Model/Elements3D/ParticleStormModel3D.cs/#L788"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>The enable view frustum check property</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly AvaloniaProperty EnableViewFrustumCheckProperty</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">AvaloniaProperty</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_ParticleStormModel3D_EnergyDissipationRateProperty" data-uid="HelixToolkit.Avalonia.SharpDX.ParticleStormModel3D.EnergyDissipationRateProperty">
+  EnergyDissipationRateProperty
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX.SharedModel/Model/Elements3D/ParticleStormModel3D.cs/#L277"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly AvaloniaProperty EnergyDissipationRateProperty</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">AvaloniaProperty</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_ParticleStormModel3D_InitialEnergyProperty" data-uid="HelixToolkit.Avalonia.SharpDX.ParticleStormModel3D.InitialEnergyProperty">
+  InitialEnergyProperty
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX.SharedModel/Model/Elements3D/ParticleStormModel3D.cs/#L254"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly AvaloniaProperty InitialEnergyProperty</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">AvaloniaProperty</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_ParticleStormModel3D_InitialVelocityProperty" data-uid="HelixToolkit.Avalonia.SharpDX.ParticleStormModel3D.InitialVelocityProperty">
+  InitialVelocityProperty
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX.SharedModel/Model/Elements3D/ParticleStormModel3D.cs/#L417"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly AvaloniaProperty InitialVelocityProperty</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">AvaloniaProperty</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_ParticleStormModel3D_InstancesProperty" data-uid="HelixToolkit.Avalonia.SharpDX.ParticleStormModel3D.InstancesProperty">
+  InstancesProperty
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX.SharedModel/Model/Elements3D/ParticleStormModel3D.cs/#L775"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>List of instance matrix.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly AvaloniaProperty InstancesProperty</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">AvaloniaProperty</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_ParticleStormModel3D_NumTextureColumnProperty" data-uid="HelixToolkit.Avalonia.SharpDX.ParticleStormModel3D.NumTextureColumnProperty">
+  NumTextureColumnProperty
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX.SharedModel/Model/Elements3D/ParticleStormModel3D.cs/#L346"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly AvaloniaProperty NumTextureColumnProperty</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">AvaloniaProperty</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_ParticleStormModel3D_NumTextureRowProperty" data-uid="HelixToolkit.Avalonia.SharpDX.ParticleStormModel3D.NumTextureRowProperty">
+  NumTextureRowProperty
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX.SharedModel/Model/Elements3D/ParticleStormModel3D.cs/#L369"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly AvaloniaProperty NumTextureRowProperty</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">AvaloniaProperty</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_ParticleStormModel3D_ParticleBoundsProperty" data-uid="HelixToolkit.Avalonia.SharpDX.ParticleStormModel3D.ParticleBoundsProperty">
+  ParticleBoundsProperty
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX.SharedModel/Model/Elements3D/ParticleStormModel3D.cs/#L157"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly AvaloniaProperty ParticleBoundsProperty</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">AvaloniaProperty</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_ParticleStormModel3D_ParticleCountProperty" data-uid="HelixToolkit.Avalonia.SharpDX.ParticleStormModel3D.ParticleCountProperty">
+  ParticleCountProperty
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX.SharedModel/Model/Elements3D/ParticleStormModel3D.cs/#L36"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly AvaloniaProperty ParticleCountProperty</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">AvaloniaProperty</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_ParticleStormModel3D_ParticleSizeProperty" data-uid="HelixToolkit.Avalonia.SharpDX.ParticleStormModel3D.ParticleSizeProperty">
+  ParticleSizeProperty
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX.SharedModel/Model/Elements3D/ParticleStormModel3D.cs/#L392"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly AvaloniaProperty ParticleSizeProperty</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">AvaloniaProperty</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_ParticleStormModel3D_ParticleTextureProperty" data-uid="HelixToolkit.Avalonia.SharpDX.ParticleStormModel3D.ParticleTextureProperty">
+  ParticleTextureProperty
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX.SharedModel/Model/Elements3D/ParticleStormModel3D.cs/#L323"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly AvaloniaProperty ParticleTextureProperty</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">AvaloniaProperty</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_ParticleStormModel3D_RandomVectorGeneratorProperty" data-uid="HelixToolkit.Avalonia.SharpDX.ParticleStormModel3D.RandomVectorGeneratorProperty">
+  RandomVectorGeneratorProperty
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX.SharedModel/Model/Elements3D/ParticleStormModel3D.cs/#L300"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly AvaloniaProperty RandomVectorGeneratorProperty</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">AvaloniaProperty</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_ParticleStormModel3D_SampleMaskProperty" data-uid="HelixToolkit.Avalonia.SharpDX.ParticleStormModel3D.SampleMaskProperty">
+  SampleMaskProperty
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX.SharedModel/Model/Elements3D/ParticleStormModel3D.cs/#L746"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>The sample mask property</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly AvaloniaProperty SampleMaskProperty</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">AvaloniaProperty</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_ParticleStormModel3D_SourceAlphaBlendProperty" data-uid="HelixToolkit.Avalonia.SharpDX.ParticleStormModel3D.SourceAlphaBlendProperty">
+  SourceAlphaBlendProperty
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX.SharedModel/Model/Elements3D/ParticleStormModel3D.cs/#L648"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly AvaloniaProperty SourceAlphaBlendProperty</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">AvaloniaProperty</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_ParticleStormModel3D_SourceBlendProperty" data-uid="HelixToolkit.Avalonia.SharpDX.ParticleStormModel3D.SourceBlendProperty">
+  SourceBlendProperty
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX.SharedModel/Model/Elements3D/ParticleStormModel3D.cs/#L602"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly AvaloniaProperty SourceBlendProperty</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">AvaloniaProperty</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_ParticleStormModel3D_TurbulanceProperty" data-uid="HelixToolkit.Avalonia.SharpDX.ParticleStormModel3D.TurbulanceProperty">
+  TurbulanceProperty
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX.SharedModel/Model/Elements3D/ParticleStormModel3D.cs/#L545"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly AvaloniaProperty TurbulanceProperty</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">AvaloniaProperty</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+  <h2 class="section" id="properties">Properties
+</h2>
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_ParticleStormModel3D_Acceleration_" data-uid="HelixToolkit.Avalonia.SharpDX.ParticleStormModel3D.Acceleration*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_ParticleStormModel3D_Acceleration" data-uid="HelixToolkit.Avalonia.SharpDX.ParticleStormModel3D.Acceleration">
+  Acceleration
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX.SharedModel/Model/Elements3D/ParticleStormModel3D.cs/#L451"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Vector3 Acceleration { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_ParticleStormModel3D_AlphaBlend_" data-uid="HelixToolkit.Avalonia.SharpDX.ParticleStormModel3D.AlphaBlend*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_ParticleStormModel3D_AlphaBlend" data-uid="HelixToolkit.Avalonia.SharpDX.ParticleStormModel3D.AlphaBlend">
+  AlphaBlend
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX.SharedModel/Model/Elements3D/ParticleStormModel3D.cs/#L590"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public BlendOperation AlphaBlend { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">BlendOperation</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_ParticleStormModel3D_AnimateSpriteByEnergy_" data-uid="HelixToolkit.Avalonia.SharpDX.ParticleStormModel3D.AnimateSpriteByEnergy*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_ParticleStormModel3D_AnimateSpriteByEnergy" data-uid="HelixToolkit.Avalonia.SharpDX.ParticleStormModel3D.AnimateSpriteByEnergy">
+  AnimateSpriteByEnergy
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX.SharedModel/Model/Elements3D/ParticleStormModel3D.cs/#L520"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool AnimateSpriteByEnergy { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_ParticleStormModel3D_Blend_" data-uid="HelixToolkit.Avalonia.SharpDX.ParticleStormModel3D.Blend*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_ParticleStormModel3D_Blend" data-uid="HelixToolkit.Avalonia.SharpDX.ParticleStormModel3D.Blend">
+  Blend
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX.SharedModel/Model/Elements3D/ParticleStormModel3D.cs/#L567"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public BlendOperation Blend { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">BlendOperation</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_ParticleStormModel3D_BlendColor_" data-uid="HelixToolkit.Avalonia.SharpDX.ParticleStormModel3D.BlendColor*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_ParticleStormModel3D_BlendColor" data-uid="HelixToolkit.Avalonia.SharpDX.ParticleStormModel3D.BlendColor">
+  BlendColor
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX.SharedModel/Model/Elements3D/ParticleStormModel3D.cs/#L497"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Color BlendColor { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">Color</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_ParticleStormModel3D_BlendFactor_" data-uid="HelixToolkit.Avalonia.SharpDX.ParticleStormModel3D.BlendFactor*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_ParticleStormModel3D_BlendFactor" data-uid="HelixToolkit.Avalonia.SharpDX.ParticleStormModel3D.BlendFactor">
+  BlendFactor
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX.SharedModel/Model/Elements3D/ParticleStormModel3D.cs/#L699"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the blend factor for blending</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Color BlendFactor { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">Color</span></dt>
+    <dd><p>The blend factor.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_ParticleStormModel3D_ConsumerGravity_" data-uid="HelixToolkit.Avalonia.SharpDX.ParticleStormModel3D.ConsumerGravity*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_ParticleStormModel3D_ConsumerGravity" data-uid="HelixToolkit.Avalonia.SharpDX.ParticleStormModel3D.ConsumerGravity">
+  ConsumerGravity
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX.SharedModel/Model/Elements3D/ParticleStormModel3D.cs/#L219"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public double ConsumerGravity { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_ParticleStormModel3D_ConsumerLocation_" data-uid="HelixToolkit.Avalonia.SharpDX.ParticleStormModel3D.ConsumerLocation*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_ParticleStormModel3D_ConsumerLocation" data-uid="HelixToolkit.Avalonia.SharpDX.ParticleStormModel3D.ConsumerLocation">
+  ConsumerLocation
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX.SharedModel/Model/Elements3D/ParticleStormModel3D.cs/#L93"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Vector3 ConsumerLocation { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_ParticleStormModel3D_ConsumerRadius_" data-uid="HelixToolkit.Avalonia.SharpDX.ParticleStormModel3D.ConsumerRadius*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_ParticleStormModel3D_ConsumerRadius" data-uid="HelixToolkit.Avalonia.SharpDX.ParticleStormModel3D.ConsumerRadius">
+  ConsumerRadius
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX.SharedModel/Model/Elements3D/ParticleStormModel3D.cs/#L242"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public double ConsumerRadius { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_ParticleStormModel3D_CumulateAtBound_" data-uid="HelixToolkit.Avalonia.SharpDX.ParticleStormModel3D.CumulateAtBound*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_ParticleStormModel3D_CumulateAtBound" data-uid="HelixToolkit.Avalonia.SharpDX.ParticleStormModel3D.CumulateAtBound">
+  CumulateAtBound
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX.SharedModel/Model/Elements3D/ParticleStormModel3D.cs/#L474"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool CumulateAtBound { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_ParticleStormModel3D_DestAlphaBlend_" data-uid="HelixToolkit.Avalonia.SharpDX.ParticleStormModel3D.DestAlphaBlend*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_ParticleStormModel3D_DestAlphaBlend" data-uid="HelixToolkit.Avalonia.SharpDX.ParticleStormModel3D.DestAlphaBlend">
+  DestAlphaBlend
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX.SharedModel/Model/Elements3D/ParticleStormModel3D.cs/#L682"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public BlendOption DestAlphaBlend { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">BlendOption</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_ParticleStormModel3D_DestBlend_" data-uid="HelixToolkit.Avalonia.SharpDX.ParticleStormModel3D.DestBlend*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_ParticleStormModel3D_DestBlend" data-uid="HelixToolkit.Avalonia.SharpDX.ParticleStormModel3D.DestBlend">
+  DestBlend
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX.SharedModel/Model/Elements3D/ParticleStormModel3D.cs/#L636"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public BlendOption DestBlend { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">BlendOption</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_ParticleStormModel3D_EmitterLocation_" data-uid="HelixToolkit.Avalonia.SharpDX.ParticleStormModel3D.EmitterLocation*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_ParticleStormModel3D_EmitterLocation" data-uid="HelixToolkit.Avalonia.SharpDX.ParticleStormModel3D.EmitterLocation">
+  EmitterLocation
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX.SharedModel/Model/Elements3D/ParticleStormModel3D.cs/#L70"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Vector3 EmitterLocation { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_ParticleStormModel3D_EmitterRadius_" data-uid="HelixToolkit.Avalonia.SharpDX.ParticleStormModel3D.EmitterRadius*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_ParticleStormModel3D_EmitterRadius" data-uid="HelixToolkit.Avalonia.SharpDX.ParticleStormModel3D.EmitterRadius">
+  EmitterRadius
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX.SharedModel/Model/Elements3D/ParticleStormModel3D.cs/#L196"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public double EmitterRadius { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_ParticleStormModel3D_EnergyDissipationRate_" data-uid="HelixToolkit.Avalonia.SharpDX.ParticleStormModel3D.EnergyDissipationRate*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_ParticleStormModel3D_EnergyDissipationRate" data-uid="HelixToolkit.Avalonia.SharpDX.ParticleStormModel3D.EnergyDissipationRate">
+  EnergyDissipationRate
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX.SharedModel/Model/Elements3D/ParticleStormModel3D.cs/#L288"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public double EnergyDissipationRate { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_ParticleStormModel3D_InitialEnergy_" data-uid="HelixToolkit.Avalonia.SharpDX.ParticleStormModel3D.InitialEnergy*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_ParticleStormModel3D_InitialEnergy" data-uid="HelixToolkit.Avalonia.SharpDX.ParticleStormModel3D.InitialEnergy">
+  InitialEnergy
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX.SharedModel/Model/Elements3D/ParticleStormModel3D.cs/#L265"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public double InitialEnergy { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_ParticleStormModel3D_InitialVelocity_" data-uid="HelixToolkit.Avalonia.SharpDX.ParticleStormModel3D.InitialVelocity*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_ParticleStormModel3D_InitialVelocity" data-uid="HelixToolkit.Avalonia.SharpDX.ParticleStormModel3D.InitialVelocity">
+  InitialVelocity
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX.SharedModel/Model/Elements3D/ParticleStormModel3D.cs/#L428"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public double InitialVelocity { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_ParticleStormModel3D_Instances_" data-uid="HelixToolkit.Avalonia.SharpDX.ParticleStormModel3D.Instances*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_ParticleStormModel3D_Instances" data-uid="HelixToolkit.Avalonia.SharpDX.ParticleStormModel3D.Instances">
+  Instances
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX.SharedModel/Model/Elements3D/ParticleStormModel3D.cs/#L760"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>List of instance matrix.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IList&lt;Matrix4x4&gt;? Instances { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ilist-1">IList</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.matrix4x4">Matrix4x4</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_ParticleStormModel3D_NumTextureColumn_" data-uid="HelixToolkit.Avalonia.SharpDX.ParticleStormModel3D.NumTextureColumn*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_ParticleStormModel3D_NumTextureColumn" data-uid="HelixToolkit.Avalonia.SharpDX.ParticleStormModel3D.NumTextureColumn">
+  NumTextureColumn
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX.SharedModel/Model/Elements3D/ParticleStormModel3D.cs/#L357"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int NumTextureColumn { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_ParticleStormModel3D_NumTextureRow_" data-uid="HelixToolkit.Avalonia.SharpDX.ParticleStormModel3D.NumTextureRow*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_ParticleStormModel3D_NumTextureRow" data-uid="HelixToolkit.Avalonia.SharpDX.ParticleStormModel3D.NumTextureRow">
+  NumTextureRow
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX.SharedModel/Model/Elements3D/ParticleStormModel3D.cs/#L380"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int NumTextureRow { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_ParticleStormModel3D_ParticleBounds_" data-uid="HelixToolkit.Avalonia.SharpDX.ParticleStormModel3D.ParticleBounds*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_ParticleStormModel3D_ParticleBounds" data-uid="HelixToolkit.Avalonia.SharpDX.ParticleStormModel3D.ParticleBounds">
+  ParticleBounds
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX.SharedModel/Model/Elements3D/ParticleStormModel3D.cs/#L170"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public BoundingBox ParticleBounds { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Maths.BoundingBox.html">BoundingBox</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_ParticleStormModel3D_ParticleCount_" data-uid="HelixToolkit.Avalonia.SharpDX.ParticleStormModel3D.ParticleCount*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_ParticleStormModel3D_ParticleCount" data-uid="HelixToolkit.Avalonia.SharpDX.ParticleStormModel3D.ParticleCount">
+  ParticleCount
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX.SharedModel/Model/Elements3D/ParticleStormModel3D.cs/#L47"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int ParticleCount { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_ParticleStormModel3D_ParticleSize_" data-uid="HelixToolkit.Avalonia.SharpDX.ParticleStormModel3D.ParticleSize*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_ParticleStormModel3D_ParticleSize" data-uid="HelixToolkit.Avalonia.SharpDX.ParticleStormModel3D.ParticleSize">
+  ParticleSize
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX.SharedModel/Model/Elements3D/ParticleStormModel3D.cs/#L404"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Size ParticleSize { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">Size</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_ParticleStormModel3D_ParticleTexture_" data-uid="HelixToolkit.Avalonia.SharpDX.ParticleStormModel3D.ParticleTexture*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_ParticleStormModel3D_ParticleTexture" data-uid="HelixToolkit.Avalonia.SharpDX.ParticleStormModel3D.ParticleTexture">
+  ParticleTexture
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX.SharedModel/Model/Elements3D/ParticleStormModel3D.cs/#L334"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public TextureModel? ParticleTexture { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.TextureModel.html">TextureModel</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_ParticleStormModel3D_RandomVectorGenerator_" data-uid="HelixToolkit.Avalonia.SharpDX.ParticleStormModel3D.RandomVectorGenerator*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_ParticleStormModel3D_RandomVectorGenerator" data-uid="HelixToolkit.Avalonia.SharpDX.ParticleStormModel3D.RandomVectorGenerator">
+  RandomVectorGenerator
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX.SharedModel/Model/Elements3D/ParticleStormModel3D.cs/#L311"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IRandomVector RandomVectorGenerator { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.Utilities.IRandomVector.html">IRandomVector</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_ParticleStormModel3D_SampleMask_" data-uid="HelixToolkit.Avalonia.SharpDX.ParticleStormModel3D.SampleMask*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_ParticleStormModel3D_SampleMask" data-uid="HelixToolkit.Avalonia.SharpDX.ParticleStormModel3D.SampleMask">
+  SampleMask
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX.SharedModel/Model/Elements3D/ParticleStormModel3D.cs/#L731"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the sample mask used during blending</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int SampleMask { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The sample mask.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_ParticleStormModel3D_SourceAlphaBlend_" data-uid="HelixToolkit.Avalonia.SharpDX.ParticleStormModel3D.SourceAlphaBlend*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_ParticleStormModel3D_SourceAlphaBlend" data-uid="HelixToolkit.Avalonia.SharpDX.ParticleStormModel3D.SourceAlphaBlend">
+  SourceAlphaBlend
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX.SharedModel/Model/Elements3D/ParticleStormModel3D.cs/#L659"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public BlendOption SourceAlphaBlend { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">BlendOption</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_ParticleStormModel3D_SourceBlend_" data-uid="HelixToolkit.Avalonia.SharpDX.ParticleStormModel3D.SourceBlend*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_ParticleStormModel3D_SourceBlend" data-uid="HelixToolkit.Avalonia.SharpDX.ParticleStormModel3D.SourceBlend">
+  SourceBlend
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX.SharedModel/Model/Elements3D/ParticleStormModel3D.cs/#L613"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public BlendOption SourceBlend { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">BlendOption</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_ParticleStormModel3D_Turbulance_" data-uid="HelixToolkit.Avalonia.SharpDX.ParticleStormModel3D.Turbulance*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_ParticleStormModel3D_Turbulance" data-uid="HelixToolkit.Avalonia.SharpDX.ParticleStormModel3D.Turbulance">
+  Turbulance
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX.SharedModel/Model/Elements3D/ParticleStormModel3D.cs/#L532"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public double Turbulance { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h2 class="section" id="methods">Methods
+</h2>
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_ParticleStormModel3D_AssignDefaultValuesToSceneNode_" data-uid="HelixToolkit.Avalonia.SharpDX.ParticleStormModel3D.AssignDefaultValuesToSceneNode*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_ParticleStormModel3D_AssignDefaultValuesToSceneNode_HelixToolkit_SharpDX_Model_Scene_SceneNode_" data-uid="HelixToolkit.Avalonia.SharpDX.ParticleStormModel3D.AssignDefaultValuesToSceneNode(HelixToolkit.SharpDX.Model.Scene.SceneNode)">
+  AssignDefaultValuesToSceneNode(SceneNode)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX.SharedModel/Model/Elements3D/ParticleStormModel3D.cs/#L805"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected override void AssignDefaultValuesToSceneNode(SceneNode node)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>node</code> <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html">SceneNode</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_ParticleStormModel3D_OnCreateSceneNode_" data-uid="HelixToolkit.Avalonia.SharpDX.ParticleStormModel3D.OnCreateSceneNode*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_ParticleStormModel3D_OnCreateSceneNode" data-uid="HelixToolkit.Avalonia.SharpDX.ParticleStormModel3D.OnCreateSceneNode">
+  OnCreateSceneNode()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX.SharedModel/Model/Elements3D/ParticleStormModel3D.cs/#L800"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Called when [create scene node].</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected override SceneNode OnCreateSceneNode()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html">SceneNode</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX.SharedModel/Model/Elements3D/ParticleStormModel3D.cs/#L33" class="edit-link">Edit this page</a>
+        </div>
+
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          Copyright (c) 2023 Helix Toolkit contributors
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

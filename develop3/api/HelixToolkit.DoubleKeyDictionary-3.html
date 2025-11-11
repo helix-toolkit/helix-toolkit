@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Class DoubleKeyDictionary&lt;K, T, V&gt; | Helix Toolkit - 3D for .NET </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Class DoubleKeyDictionary&lt;K, T, V&gt; | Helix Toolkit - 3D for .NET ">
+      
+      <meta name="description" content="A double key dictionary.">
+      <link rel="icon" href="../images/favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/helix-toolkit/helix-toolkit/new/develop3/apiSpec/new?filename=HelixToolkit_DoubleKeyDictionary_3.md&amp;value=---%0Auid%3A%20HelixToolkit.DoubleKeyDictionary%603%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="ManagedReference">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../images/favicon.ico" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="HelixToolkit.DoubleKeyDictionary`3">
+
+
+
+  <h1 id="HelixToolkit_DoubleKeyDictionary_3" data-uid="HelixToolkit.DoubleKeyDictionary`3" class="text-break">
+Class DoubleKeyDictionary&lt;K, T, V&gt;  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit/Collections/DoubleKeyDictionary.cs/#L22"><i class="bi bi-code-slash"></i></a>
+  </h1>
+
+  <div class="facts text-secondary">
+    <dl><dt>Namespace</dt><dd><a class="xref" href="HelixToolkit.html">HelixToolkit</a></dd></dl>
+  <dl><dt>Assembly</dt><dd>HelixToolkit.dll</dd></dl>
+  </div>
+
+  <div class="markdown summary"><p>A double key dictionary.</p>
+</div>
+  <div class="markdown conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class DoubleKeyDictionary&lt;K, T, V&gt; : IEnumerable&lt;DoubleKeyPairValue&lt;K, T, V&gt;&gt;, IEnumerable, IEquatable&lt;DoubleKeyDictionary&lt;K, T, V&gt;&gt; where K : notnull where T : notnull</code></pre>
+  </div>
+
+
+
+  <h4 class="section">Type Parameters</h4>
+  <dl class="parameters">
+    <dt><code>K</code></dt>
+    <dd><p>The first key type.</p>
+</dd>
+    <dt><code>T</code></dt>
+    <dd><p>The second key type.</p>
+</dd>
+    <dt><code>V</code></dt>
+    <dd><p>The value type.</p>
+</dd>
+  </dl>
+
+  <dl class="typelist inheritance">
+    <dt>Inheritance</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
+      <div><span class="xref">DoubleKeyDictionary&lt;K, T, V&gt;</span></div>
+    </dd>
+  </dl>
+
+  <dl class="typelist implements">
+    <dt>Implements</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="HelixToolkit.DoubleKeyPairValue-3.html">DoubleKeyPairValue</a>&lt;K, T, V&gt;&gt;</div>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.ienumerable">IEnumerable</a></div>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iequatable-1">IEquatable</a>&lt;<a class="xref" href="HelixToolkit.DoubleKeyDictionary-3.html">DoubleKeyDictionary</a>&lt;K, T, V&gt;&gt;</div>
+    </dd>
+  </dl>
+
+
+  <dl class="typelist inheritedMembers">
+    <dt>Inherited Members</dt>
+    <dd>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">object.Equals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype">object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone">object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals">object.ReferenceEquals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring">object.ToString()</a>
+    </div>
+  </dd></dl>
+
+  <dl class="typelist extensionMethods">
+    <dt>Extension Methods</dt>
+    <dd>
+  <div>
+      <a class="xref" href="HelixToolkit.StringExtensions.html#HelixToolkit_StringExtensions_EnumerateToString_System_Collections_IEnumerable_System_String_System_String_">StringExtensions.EnumerateToString(IEnumerable, string?, string)</a>
+  </div>
+  </dd></dl>
+
+
+
+  <h2 id="HelixToolkit_DoubleKeyDictionary_3_remarks">Remarks</h2>
+  <div class="markdown level0 remarks"><p>See <a href="http://noocyte.wordpress.com/2008/02/18/double-key-dictionary/">http://noocyte.wordpress.com/2008/02/18/double-key-dictionary/</a>
+A Remove method was added.</p>
+</div>
+
+
+  <h2 class="section" id="properties">Properties
+</h2>
+
+
+  <a id="HelixToolkit_DoubleKeyDictionary_3_Item_" data-uid="HelixToolkit.DoubleKeyDictionary`3.Item*"></a>
+
+  <h3 id="HelixToolkit_DoubleKeyDictionary_3_Item__0__1_" data-uid="HelixToolkit.DoubleKeyDictionary`3.Item(`0,`1)">
+  this[K, T]
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit/Collections/DoubleKeyDictionary.cs/#L36"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the value with the specified indices.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public V this[K index1, T index2] { get; set; }</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>index1</code> <span class="xref">K</span></dt>
+    <dd></dd>
+    <dt><code>index2</code> <span class="xref">T</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">V</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_DoubleKeyDictionary_3_Values_" data-uid="HelixToolkit.DoubleKeyDictionary`3.Values*"></a>
+
+  <h3 id="HelixToolkit_DoubleKeyDictionary_3_Values" data-uid="HelixToolkit.DoubleKeyDictionary`3.Values">
+  Values
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit/Collections/DoubleKeyDictionary.cs/#L284"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the values.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IEnumerable&lt;V&gt; Values { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;V&gt;</dt>
+    <dd><p>The values.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h2 class="section" id="methods">Methods
+</h2>
+
+
+  <a id="HelixToolkit_DoubleKeyDictionary_3_Add_" data-uid="HelixToolkit.DoubleKeyDictionary`3.Add*"></a>
+
+  <h3 id="HelixToolkit_DoubleKeyDictionary_3_Add__0__1__2_" data-uid="HelixToolkit.DoubleKeyDictionary`3.Add(`0,`1,`2)">
+  Add(K, T, V)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit/Collections/DoubleKeyDictionary.cs/#L74"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Adds the specified key.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Add(K key1, T key2, V value)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>key1</code> <span class="xref">K</span></dt>
+    <dd><p>The key1.</p>
+</dd>
+    <dt><code>key2</code> <span class="xref">T</span></dt>
+    <dd><p>The key2.</p>
+</dd>
+    <dt><code>value</code> <span class="xref">V</span></dt>
+    <dd><p>The value.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_DoubleKeyDictionary_3_Clear_" data-uid="HelixToolkit.DoubleKeyDictionary`3.Clear*"></a>
+
+  <h3 id="HelixToolkit_DoubleKeyDictionary_3_Clear" data-uid="HelixToolkit.DoubleKeyDictionary`3.Clear">
+  Clear()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit/Collections/DoubleKeyDictionary.cs/#L52"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Clears this dictionary.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Clear()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_DoubleKeyDictionary_3_ContainsKey_" data-uid="HelixToolkit.DoubleKeyDictionary`3.ContainsKey*"></a>
+
+  <h3 id="HelixToolkit_DoubleKeyDictionary_3_ContainsKey__0__1_" data-uid="HelixToolkit.DoubleKeyDictionary`3.ContainsKey(`0,`1)">
+  ContainsKey(K, T)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit/Collections/DoubleKeyDictionary.cs/#L111"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Determines whether the specified dictionary contains the key.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool ContainsKey(K index1, T index2)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>index1</code> <span class="xref">K</span></dt>
+    <dd><p>The index1.</p>
+</dd>
+    <dt><code>index2</code> <span class="xref">T</span></dt>
+    <dd><p>The index2.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><code>true</code> if the specified index1 contains key; otherwise, <code>false</code>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_DoubleKeyDictionary_3_Equals_" data-uid="HelixToolkit.DoubleKeyDictionary`3.Equals*"></a>
+
+  <h3 id="HelixToolkit_DoubleKeyDictionary_3_Equals_HelixToolkit_DoubleKeyDictionary__0__1__2__" data-uid="HelixToolkit.DoubleKeyDictionary`3.Equals(HelixToolkit.DoubleKeyDictionary{`0,`1,`2})">
+  Equals(DoubleKeyDictionary&lt;K, T, V&gt;?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit/Collections/DoubleKeyDictionary.cs/#L141"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Equalses the specified other.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool Equals(DoubleKeyDictionary&lt;K, T, V&gt;? other)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>other</code> <a class="xref" href="HelixToolkit.DoubleKeyDictionary-3.html">DoubleKeyDictionary</a>&lt;K, T, V&gt;</dt>
+    <dd><p>The other.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p>The equals.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_DoubleKeyDictionary_3_Equals_" data-uid="HelixToolkit.DoubleKeyDictionary`3.Equals*"></a>
+
+  <h3 id="HelixToolkit_DoubleKeyDictionary_3_Equals_System_Object_" data-uid="HelixToolkit.DoubleKeyDictionary`3.Equals(System.Object)">
+  Equals(object?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit/Collections/DoubleKeyDictionary.cs/#L127"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Determines whether the specified object is equal to the current object.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override bool Equals(object? obj)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>obj</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></dt>
+    <dd><p>The object to compare with the current object.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> if the specified object  is equal to the current object; otherwise, <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_DoubleKeyDictionary_3_GetEnumerator_" data-uid="HelixToolkit.DoubleKeyDictionary`3.GetEnumerator*"></a>
+
+  <h3 id="HelixToolkit_DoubleKeyDictionary_3_GetEnumerator" data-uid="HelixToolkit.DoubleKeyDictionary`3.GetEnumerator">
+  GetEnumerator()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit/Collections/DoubleKeyDictionary.cs/#L208"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the enumerator.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IEnumerator&lt;DoubleKeyPairValue&lt;K, T, V&gt;&gt; GetEnumerator()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerator-1">IEnumerator</a>&lt;<a class="xref" href="HelixToolkit.DoubleKeyPairValue-3.html">DoubleKeyPairValue</a>&lt;K, T, V&gt;&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_DoubleKeyDictionary_3_GetHashCode_" data-uid="HelixToolkit.DoubleKeyDictionary`3.GetHashCode*"></a>
+
+  <h3 id="HelixToolkit_DoubleKeyDictionary_3_GetHashCode" data-uid="HelixToolkit.DoubleKeyDictionary`3.GetHashCode">
+  GetHashCode()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit/Collections/DoubleKeyDictionary.cs/#L267"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Serves as the default hash function.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override int GetHashCode()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>A hash code for the current object.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_DoubleKeyDictionary_3_Remove_" data-uid="HelixToolkit.DoubleKeyDictionary`3.Remove*"></a>
+
+  <h3 id="HelixToolkit_DoubleKeyDictionary_3_Remove__0__1_" data-uid="HelixToolkit.DoubleKeyDictionary`3.Remove(`0,`1)">
+  Remove(K, T)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit/Collections/DoubleKeyDictionary.cs/#L228"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Removes the specified key.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Remove(K key1, T key2)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>key1</code> <span class="xref">K</span></dt>
+    <dd><p>The key1.</p>
+</dd>
+    <dt><code>key2</code> <span class="xref">T</span></dt>
+    <dd><p>The key2.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_DoubleKeyDictionary_3_TryGetValue_" data-uid="HelixToolkit.DoubleKeyDictionary`3.TryGetValue*"></a>
+
+  <h3 id="HelixToolkit_DoubleKeyDictionary_3_TryGetValue__0__1__2__" data-uid="HelixToolkit.DoubleKeyDictionary`3.TryGetValue(`0,`1,`2@)">
+  TryGetValue(K, T, out V)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit/Collections/DoubleKeyDictionary.cs/#L255"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool TryGetValue(K key1, T key2, out V obj)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>key1</code> <span class="xref">K</span></dt>
+    <dd></dd>
+    <dt><code>key2</code> <span class="xref">T</span></dt>
+    <dd></dd>
+    <dt><code>obj</code> <span class="xref">V</span></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit/Collections/DoubleKeyDictionary.cs/#L22" class="edit-link">Edit this page</a>
+        </div>
+
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          Copyright (c) 2023 Helix Toolkit contributors
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

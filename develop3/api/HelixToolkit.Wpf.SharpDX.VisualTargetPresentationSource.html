@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Class VisualTargetPresentationSource | Helix Toolkit - 3D for .NET </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Class VisualTargetPresentationSource | Helix Toolkit - 3D for .NET ">
+      
+      <meta name="description" content="The VisualTargetPresentationSource represents the root of a visual subtree owned by a different thread that the visual tree in which is is displayed. https://blogs.msdn.microsoft.com/dwayneneed/2007/04/26/multithreaded-ui-hostvisual/">
+      <link rel="icon" href="../images/favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/helix-toolkit/helix-toolkit/new/develop3/apiSpec/new?filename=HelixToolkit_Wpf_SharpDX_VisualTargetPresentationSource.md&amp;value=---%0Auid%3A%20HelixToolkit.Wpf.SharpDX.VisualTargetPresentationSource%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="ManagedReference">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../images/favicon.ico" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="HelixToolkit.Wpf.SharpDX.VisualTargetPresentationSource">
+
+
+
+  <h1 id="HelixToolkit_Wpf_SharpDX_VisualTargetPresentationSource" data-uid="HelixToolkit.Wpf.SharpDX.VisualTargetPresentationSource" class="text-break">
+Class VisualTargetPresentationSource  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Wpf.SharpDX/Controls/VisualTargetPresentationSource.cs/#L28"><i class="bi bi-code-slash"></i></a>
+  </h1>
+
+  <div class="facts text-secondary">
+    <dl><dt>Namespace</dt><dd><a class="xref" href="HelixToolkit.html">HelixToolkit</a>.<a class="xref" href="HelixToolkit.Wpf.html">Wpf</a>.<a class="xref" href="HelixToolkit.Wpf.SharpDX.html">SharpDX</a></dd></dl>
+  <dl><dt>Assembly</dt><dd>HelixToolkit.Wpf.SharpDX.dll</dd></dl>
+  </div>
+
+  <div class="markdown summary"><p>The VisualTargetPresentationSource represents the root
+of a visual subtree owned by a different thread that the
+visual tree in which is is displayed.
+<a href="https://blogs.msdn.microsoft.com/dwayneneed/2007/04/26/multithreaded-ui-hostvisual/">https://blogs.msdn.microsoft.com/dwayneneed/2007/04/26/multithreaded-ui-hostvisual/</a></p>
+</div>
+  <div class="markdown conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class VisualTargetPresentationSource : PresentationSource, IDisposable</code></pre>
+  </div>
+
+
+
+
+  <dl class="typelist inheritance">
+    <dt>Inheritance</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.threading.dispatcherobject">DispatcherObject</a></div>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.presentationsource">PresentationSource</a></div>
+      <div><span class="xref">VisualTargetPresentationSource</span></div>
+    </dd>
+  </dl>
+
+  <dl class="typelist implements">
+    <dt>Implements</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.idisposable">IDisposable</a></div>
+    </dd>
+  </dl>
+
+
+  <dl class="typelist inheritedMembers">
+    <dt>Inherited Members</dt>
+    <dd>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.presentationsource.addsource">PresentationSource.AddSource()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.presentationsource.addsourcechangedhandler">PresentationSource.AddSourceChangedHandler(IInputElement, SourceChangedEventHandler)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.presentationsource.clearcontentrenderedlisteners">PresentationSource.ClearContentRenderedListeners()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.presentationsource.fromdependencyobject">PresentationSource.FromDependencyObject(DependencyObject)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.presentationsource.fromvisual">PresentationSource.FromVisual(Visual)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.presentationsource.removesource">PresentationSource.RemoveSource()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.presentationsource.removesourcechangedhandler">PresentationSource.RemoveSourceChangedHandler(IInputElement, SourceChangedEventHandler)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.presentationsource.rootchanged">PresentationSource.RootChanged(Visual, Visual)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.presentationsource.compositiontarget">PresentationSource.CompositionTarget</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.presentationsource.currentsources">PresentationSource.CurrentSources</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.presentationsource.contentrendered">PresentationSource.ContentRendered</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.threading.dispatcherobject.dispatcher">DispatcherObject.Dispatcher</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">object.Equals(object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">object.Equals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode">object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype">object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone">object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals">object.ReferenceEquals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring">object.ToString()</a>
+    </div>
+  </dd></dl>
+
+
+
+
+  <h2 id="HelixToolkit_Wpf_SharpDX_VisualTargetPresentationSource_remarks">Remarks</h2>
+  <div class="markdown level0 remarks"><p>A HostVisual belongs to the same UI thread that owns the
+visual tree in which it resides.</p>
+<p>A HostVisual can reference a VisualTarget owned by another
+thread.</p>
+<p>A VisualTarget has a root visual.</p>
+<p>VisualTargetPresentationSource wraps the VisualTarget and
+enables basic functionality like Loaded, which depends on
+a PresentationSource being available.</p>
+</div>
+
+
+  <h2 class="section" id="constructors">Constructors
+</h2>
+
+
+  <a id="HelixToolkit_Wpf_SharpDX_VisualTargetPresentationSource__ctor_" data-uid="HelixToolkit.Wpf.SharpDX.VisualTargetPresentationSource.#ctor*"></a>
+
+  <h3 id="HelixToolkit_Wpf_SharpDX_VisualTargetPresentationSource__ctor_System_Windows_Media_HostVisual_" data-uid="HelixToolkit.Wpf.SharpDX.VisualTargetPresentationSource.#ctor(System.Windows.Media.HostVisual)">
+  VisualTargetPresentationSource(HostVisual)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Wpf.SharpDX/Controls/VisualTargetPresentationSource.cs/#L30"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public VisualTargetPresentationSource(HostVisual hostVisual)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>hostVisual</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.hostvisual">HostVisual</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <h2 class="section" id="properties">Properties
+</h2>
+
+
+  <a id="HelixToolkit_Wpf_SharpDX_VisualTargetPresentationSource_DataContext_" data-uid="HelixToolkit.Wpf.SharpDX.VisualTargetPresentationSource.DataContext*"></a>
+
+  <h3 id="HelixToolkit_Wpf_SharpDX_VisualTargetPresentationSource_DataContext" data-uid="HelixToolkit.Wpf.SharpDX.VisualTargetPresentationSource.DataContext">
+  DataContext
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Wpf.SharpDX/Controls/VisualTargetPresentationSource.cs/#L84"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public object? DataContext { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_SharpDX_VisualTargetPresentationSource_IsDisposed_" data-uid="HelixToolkit.Wpf.SharpDX.VisualTargetPresentationSource.IsDisposed*"></a>
+
+  <h3 id="HelixToolkit_Wpf_SharpDX_VisualTargetPresentationSource_IsDisposed" data-uid="HelixToolkit.Wpf.SharpDX.VisualTargetPresentationSource.IsDisposed">
+  IsDisposed
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Wpf.SharpDX/Controls/VisualTargetPresentationSource.cs/#L129"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>When overridden in a derived class, gets a value that declares whether the object is disposed.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override bool IsDisposed { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> if the object is disposed; otherwise, <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_SharpDX_VisualTargetPresentationSource_PropertyName_" data-uid="HelixToolkit.Wpf.SharpDX.VisualTargetPresentationSource.PropertyName*"></a>
+
+  <h3 id="HelixToolkit_Wpf_SharpDX_VisualTargetPresentationSource_PropertyName" data-uid="HelixToolkit.Wpf.SharpDX.VisualTargetPresentationSource.PropertyName">
+  PropertyName
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Wpf.SharpDX/Controls/VisualTargetPresentationSource.cs/#L101"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string? PropertyName { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_SharpDX_VisualTargetPresentationSource_RootVisual_" data-uid="HelixToolkit.Wpf.SharpDX.VisualTargetPresentationSource.RootVisual*"></a>
+
+  <h3 id="HelixToolkit_Wpf_SharpDX_VisualTargetPresentationSource_RootVisual" data-uid="HelixToolkit.Wpf.SharpDX.VisualTargetPresentationSource.RootVisual">
+  RootVisual
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Wpf.SharpDX/Controls/VisualTargetPresentationSource.cs/#L35"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>When overridden in a derived class, gets or sets the root visual being presented in the source.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override Visual RootVisual { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.visual">Visual</a></dt>
+    <dd><p>The root visual.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h2 class="section" id="methods">Methods
+</h2>
+
+
+  <a id="HelixToolkit_Wpf_SharpDX_VisualTargetPresentationSource_Dispose_" data-uid="HelixToolkit.Wpf.SharpDX.VisualTargetPresentationSource.Dispose*"></a>
+
+  <h3 id="HelixToolkit_Wpf_SharpDX_VisualTargetPresentationSource_Dispose" data-uid="HelixToolkit.Wpf.SharpDX.VisualTargetPresentationSource.Dispose">
+  Dispose()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Wpf.SharpDX/Controls/VisualTargetPresentationSource.cs/#L179"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Dispose()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_SharpDX_VisualTargetPresentationSource_Dispose_" data-uid="HelixToolkit.Wpf.SharpDX.VisualTargetPresentationSource.Dispose*"></a>
+
+  <h3 id="HelixToolkit_Wpf_SharpDX_VisualTargetPresentationSource_Dispose_System_Boolean_" data-uid="HelixToolkit.Wpf.SharpDX.VisualTargetPresentationSource.Dispose(System.Boolean)">
+  Dispose(bool)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Wpf.SharpDX/Controls/VisualTargetPresentationSource.cs/#L154"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[SuppressMessage(&quot;Microsoft.Usage&quot;, &quot;CA2213&quot;, Justification = &quot;False positive.&quot;)]
+protected virtual void Dispose(bool disposing)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>disposing</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_SharpDX_VisualTargetPresentationSource_GetCompositionTargetCore_" data-uid="HelixToolkit.Wpf.SharpDX.VisualTargetPresentationSource.GetCompositionTargetCore*"></a>
+
+  <h3 id="HelixToolkit_Wpf_SharpDX_VisualTargetPresentationSource_GetCompositionTargetCore" data-uid="HelixToolkit.Wpf.SharpDX.VisualTargetPresentationSource.GetCompositionTargetCore">
+  GetCompositionTargetCore()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Wpf.SharpDX/Controls/VisualTargetPresentationSource.cs/#L138"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>When overridden in a derived class, returns a visual target for the given source.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected override CompositionTarget GetCompositionTargetCore()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.compositiontarget">CompositionTarget</a></dt>
+    <dd><p>Returns a <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.compositiontarget">CompositionTarget</a> that is target for rendering the visual.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <h2 class="section" id="events">Events
+</h2>
+
+
+
+  <h3 id="HelixToolkit_Wpf_SharpDX_VisualTargetPresentationSource_SizeChanged" data-uid="HelixToolkit.Wpf.SharpDX.VisualTargetPresentationSource.SizeChanged">
+  SizeChanged
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Wpf.SharpDX/Controls/VisualTargetPresentationSource.cs/#L127"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public event SizeChangedEventHandler? SizeChanged</code></pre>
+  </div>
+
+
+
+
+
+
+  <h4 class="section">Event Type</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.sizechangedeventhandler">SizeChangedEventHandler</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Wpf.SharpDX/Controls/VisualTargetPresentationSource.cs/#L28" class="edit-link">Edit this page</a>
+        </div>
+
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          Copyright (c) 2023 Helix Toolkit contributors
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

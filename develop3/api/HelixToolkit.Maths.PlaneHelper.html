@@ -1,0 +1,2280 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Class PlaneHelper | Helix Toolkit - 3D for .NET </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Class PlaneHelper | Helix Toolkit - 3D for .NET ">
+      
+      <meta name="description" content="Represents a plane in three dimensional space.">
+      <link rel="icon" href="../images/favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/helix-toolkit/helix-toolkit/new/develop3/apiSpec/new?filename=HelixToolkit_Maths_PlaneHelper.md&amp;value=---%0Auid%3A%20HelixToolkit.Maths.PlaneHelper%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="ManagedReference">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../images/favicon.ico" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="HelixToolkit.Maths.PlaneHelper">
+
+
+
+  <h1 id="HelixToolkit_Maths_PlaneHelper" data-uid="HelixToolkit.Maths.PlaneHelper" class="text-break">
+Class PlaneHelper  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Plane.cs/#L37"><i class="bi bi-code-slash"></i></a>
+  </h1>
+
+  <div class="facts text-secondary">
+    <dl><dt>Namespace</dt><dd><a class="xref" href="HelixToolkit.html">HelixToolkit</a>.<a class="xref" href="HelixToolkit.Maths.html">Maths</a></dd></dl>
+  <dl><dt>Assembly</dt><dd>HelixToolkit.Maths.dll</dd></dl>
+  </div>
+
+  <div class="markdown summary"><p>Represents a plane in three dimensional space.</p>
+</div>
+  <div class="markdown conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static class PlaneHelper</code></pre>
+  </div>
+
+
+
+
+  <dl class="typelist inheritance">
+    <dt>Inheritance</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
+      <div><span class="xref">PlaneHelper</span></div>
+    </dd>
+  </dl>
+
+
+
+  <dl class="typelist inheritedMembers">
+    <dt>Inherited Members</dt>
+    <dd>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">object.Equals(object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">object.Equals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode">object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype">object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone">object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals">object.ReferenceEquals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring">object.ToString()</a>
+    </div>
+  </dd></dl>
+
+
+
+
+
+
+  <h2 class="section" id="methods">Methods
+</h2>
+
+
+  <a id="HelixToolkit_Maths_PlaneHelper_Create_" data-uid="HelixToolkit.Maths.PlaneHelper.Create*"></a>
+
+  <h3 id="HelixToolkit_Maths_PlaneHelper_Create_System_Numerics_Vector3_System_Numerics_Vector3_" data-uid="HelixToolkit.Maths.PlaneHelper.Create(System.Numerics.Vector3,System.Numerics.Vector3)">
+  Create(Vector3, Vector3)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Plane.cs/#L45"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Create a plane from a specific origin and normal.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Plane Create(Vector3 point, Vector3 normal)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>point</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd><p>The point.</p>
+</dd>
+    <dt><code>normal</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd><p>The normal.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.plane">Plane</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_PlaneHelper_DistanceTo_" data-uid="HelixToolkit.Maths.PlaneHelper.DistanceTo*"></a>
+
+  <h3 id="HelixToolkit_Maths_PlaneHelper_DistanceTo_System_Numerics_Plane_System_Numerics_Vector3__" data-uid="HelixToolkit.Maths.PlaneHelper.DistanceTo(System.Numerics.Plane,System.Numerics.Vector3@)">
+  DistanceTo(Plane, ref Vector3)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Plane.cs/#L663"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Calculates the distance from a point to a plane.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static float DistanceTo(this Plane p, ref Vector3 point)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>p</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.plane">Plane</a></dt>
+    <dd></dd>
+    <dt><code>point</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd><p>The point used to calculate distance</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>The distance from given point to the given plane<br>
+Equal zero: Point on the plane<br>
+Greater than zero: The point is on the same side of the plane's normal vector<br>
+Less than zero: The point is on the opposite side of the plane's normal vector<br></p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_PlaneHelper_DistanceTo_" data-uid="HelixToolkit.Maths.PlaneHelper.DistanceTo*"></a>
+
+  <h3 id="HelixToolkit_Maths_PlaneHelper_DistanceTo_System_Numerics_Plane__System_Numerics_Vector3__" data-uid="HelixToolkit.Maths.PlaneHelper.DistanceTo(System.Numerics.Plane@,System.Numerics.Vector3@)">
+  DistanceTo(ref Plane, ref Vector3)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Plane.cs/#L656"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Calculates the distance from a point to a plane.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static float DistanceTo(ref Plane plane, ref Vector3 point)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>plane</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.plane">Plane</a></dt>
+    <dd><p>The <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.plane">Plane</a></p>
+</dd>
+    <dt><code>point</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd><p>The point used to calculate distance</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>The distance from given point to the given plane<br>
+Equal zero: Point on the plane<br>
+Greater than zero: The point is on the same side of the plane's normal vector<br>
+Less than zero: The point is on the opposite side of the plane's normal vector<br></p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_PlaneHelper_DotCoordinate_" data-uid="HelixToolkit.Maths.PlaneHelper.DotCoordinate*"></a>
+
+  <h3 id="HelixToolkit_Maths_PlaneHelper_DotCoordinate_System_Numerics_Plane_System_Numerics_Vector3_" data-uid="HelixToolkit.Maths.PlaneHelper.DotCoordinate(System.Numerics.Plane,System.Numerics.Vector3)">
+  DotCoordinate(Plane, Vector3)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Plane.cs/#L558"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Calculates the dot product of a specified vector and the normal of the plane plus the distance value of the plane.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static float DotCoordinate(Plane left, Vector3 right)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>left</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.plane">Plane</a></dt>
+    <dd><p>The source plane.</p>
+</dd>
+    <dt><code>right</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd><p>The source vector.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>The dot product of a specified vector and the normal of the Plane plus the distance value of the plane.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_PlaneHelper_DotCoordinate_" data-uid="HelixToolkit.Maths.PlaneHelper.DotCoordinate*"></a>
+
+  <h3 id="HelixToolkit_Maths_PlaneHelper_DotCoordinate_System_Numerics_Plane__System_Numerics_Vector3__System_Single__" data-uid="HelixToolkit.Maths.PlaneHelper.DotCoordinate(System.Numerics.Plane@,System.Numerics.Vector3@,System.Single@)">
+  DotCoordinate(ref Plane, ref Vector3, out float)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Plane.cs/#L547"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Calculates the dot product of a specified vector and the normal of the plane plus the distance value of the plane.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void DotCoordinate(ref Plane left, ref Vector3 right, out float result)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>left</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.plane">Plane</a></dt>
+    <dd><p>The source plane.</p>
+</dd>
+    <dt><code>right</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd><p>The source vector.</p>
+</dd>
+    <dt><code>result</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>When the method completes, contains the dot product of a specified vector and the normal of the Plane plus the distance value of the plane.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_PlaneHelper_DotNormal_" data-uid="HelixToolkit.Maths.PlaneHelper.DotNormal*"></a>
+
+  <h3 id="HelixToolkit_Maths_PlaneHelper_DotNormal_System_Numerics_Plane_System_Numerics_Vector3_" data-uid="HelixToolkit.Maths.PlaneHelper.DotNormal(System.Numerics.Plane,System.Numerics.Vector3)">
+  DotNormal(Plane, Vector3)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Plane.cs/#L580"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Calculates the dot product of the specified vector and the normal of the plane.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static float DotNormal(Plane left, Vector3 right)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>left</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.plane">Plane</a></dt>
+    <dd><p>The source plane.</p>
+</dd>
+    <dt><code>right</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd><p>The source vector.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>The dot product of the specified vector and the normal of the plane.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_PlaneHelper_DotNormal_" data-uid="HelixToolkit.Maths.PlaneHelper.DotNormal*"></a>
+
+  <h3 id="HelixToolkit_Maths_PlaneHelper_DotNormal_System_Numerics_Plane__System_Numerics_Vector3__System_Single__" data-uid="HelixToolkit.Maths.PlaneHelper.DotNormal(System.Numerics.Plane@,System.Numerics.Vector3@,System.Single@)">
+  DotNormal(ref Plane, ref Vector3, out float)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Plane.cs/#L569"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Calculates the dot product of the specified vector and the normal of the plane.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void DotNormal(ref Plane left, ref Vector3 right, out float result)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>left</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.plane">Plane</a></dt>
+    <dd><p>The source plane.</p>
+</dd>
+    <dt><code>right</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd><p>The source vector.</p>
+</dd>
+    <dt><code>result</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>When the method completes, contains the dot product of the specified vector and the normal of the plane.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_PlaneHelper_Flip_" data-uid="HelixToolkit.Maths.PlaneHelper.Flip*"></a>
+
+  <h3 id="HelixToolkit_Maths_PlaneHelper_Flip_System_Numerics_Plane_" data-uid="HelixToolkit.Maths.PlaneHelper.Flip(System.Numerics.Plane)">
+  Flip(Plane)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Plane.cs/#L700"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Create a new plane facing the opposite direction</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Plane Flip(this Plane plane)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>plane</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.plane">Plane</a></dt>
+    <dd><p>The <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.plane">Plane</a></p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.plane">Plane</a></dt>
+    <dd><p>A new plane facing the opposite direction</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_PlaneHelper_Flip_" data-uid="HelixToolkit.Maths.PlaneHelper.Flip*"></a>
+
+  <h3 id="HelixToolkit_Maths_PlaneHelper_Flip_System_Numerics_Plane__" data-uid="HelixToolkit.Maths.PlaneHelper.Flip(System.Numerics.Plane@)">
+  Flip(ref Plane)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Plane.cs/#L694"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Create a new plane facing the opposite direction</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Plane Flip(ref Plane plane)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>plane</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.plane">Plane</a></dt>
+    <dd><p>The <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.plane">Plane</a></p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.plane">Plane</a></dt>
+    <dd><p>A new plane facing the opposite direction</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_PlaneHelper_Get_" data-uid="HelixToolkit.Maths.PlaneHelper.Get*"></a>
+
+  <h3 id="HelixToolkit_Maths_PlaneHelper_Get_System_Numerics_Plane_System_Int32_" data-uid="HelixToolkit.Maths.PlaneHelper.Get(System.Numerics.Plane,System.Int32)">
+  Get(Plane, int)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Plane.cs/#L66"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the component at the specified index.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static float Get(this Plane p, int index)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>p</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.plane">Plane</a></dt>
+    <dd></dd>
+    <dt><code>index</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The index of the component to access. Use 0 for the A component, 1 for the B component, 2 for the C component, and 3 for the D component.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>The value of the A, B, C, or D component, depending on the index.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentoutofrangeexception">ArgumentOutOfRangeException</a></dt>
+    <dd><p>Thrown when the <code class="paramref">index</code> is out of the range [0, 3].</p>
+</dd>
+  </dl>
+
+
+
+  <a id="HelixToolkit_Maths_PlaneHelper_GetPlanOrigin_" data-uid="HelixToolkit.Maths.PlaneHelper.GetPlanOrigin*"></a>
+
+  <h3 id="HelixToolkit_Maths_PlaneHelper_GetPlanOrigin_System_Numerics_Plane_" data-uid="HelixToolkit.Maths.PlaneHelper.GetPlanOrigin(System.Numerics.Plane)">
+  GetPlanOrigin(Plane)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Plane.cs/#L103"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Get the origin of the plane.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Vector3 GetPlanOrigin(this Plane plane)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>plane</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.plane">Plane</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_PlaneHelper_GetPlanOrigin_" data-uid="HelixToolkit.Maths.PlaneHelper.GetPlanOrigin*"></a>
+
+  <h3 id="HelixToolkit_Maths_PlaneHelper_GetPlanOrigin_System_Numerics_Plane__" data-uid="HelixToolkit.Maths.PlaneHelper.GetPlanOrigin(System.Numerics.Plane@)">
+  GetPlanOrigin(ref Plane)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Plane.cs/#L94"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Get the origin of the plane.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Vector3 GetPlanOrigin(ref Plane plane)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>plane</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.plane">Plane</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_PlaneHelper_Intersects_" data-uid="HelixToolkit.Maths.PlaneHelper.Intersects*"></a>
+
+  <h3 id="HelixToolkit_Maths_PlaneHelper_Intersects_System_Numerics_Plane_HelixToolkit_Maths_BoundingBox__" data-uid="HelixToolkit.Maths.PlaneHelper.Intersects(System.Numerics.Plane,HelixToolkit.Maths.BoundingBox@)">
+  Intersects(Plane, ref BoundingBox)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Plane.cs/#L281"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Determines if there is an intersection between the current object and a <a class="xref" href="HelixToolkit.Maths.BoundingBox.html">BoundingBox</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static PlaneIntersectionType Intersects(this Plane p, ref BoundingBox box)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>p</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.plane">Plane</a></dt>
+    <dd></dd>
+    <dt><code>box</code> <a class="xref" href="HelixToolkit.Maths.BoundingBox.html">BoundingBox</a></dt>
+    <dd><p>The box to test.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Maths.PlaneIntersectionType.html">PlaneIntersectionType</a></dt>
+    <dd><p>Whether the two objects intersected.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_PlaneHelper_Intersects_" data-uid="HelixToolkit.Maths.PlaneHelper.Intersects*"></a>
+
+  <h3 id="HelixToolkit_Maths_PlaneHelper_Intersects_System_Numerics_Plane_HelixToolkit_Maths_BoundingSphere__" data-uid="HelixToolkit.Maths.PlaneHelper.Intersects(System.Numerics.Plane,HelixToolkit.Maths.BoundingSphere@)">
+  Intersects(Plane, ref BoundingSphere)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Plane.cs/#L303"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Determines if there is an intersection between the current object and a <a class="xref" href="HelixToolkit.Maths.BoundingSphere.html">BoundingSphere</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static PlaneIntersectionType Intersects(this Plane p, ref BoundingSphere sphere)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>p</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.plane">Plane</a></dt>
+    <dd></dd>
+    <dt><code>sphere</code> <a class="xref" href="HelixToolkit.Maths.BoundingSphere.html">BoundingSphere</a></dt>
+    <dd><p>The sphere to test.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Maths.PlaneIntersectionType.html">PlaneIntersectionType</a></dt>
+    <dd><p>Whether the two objects intersected.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_PlaneHelper_Intersects_" data-uid="HelixToolkit.Maths.PlaneHelper.Intersects*"></a>
+
+  <h3 id="HelixToolkit_Maths_PlaneHelper_Intersects_System_Numerics_Plane_HelixToolkit_Maths_Ray__" data-uid="HelixToolkit.Maths.PlaneHelper.Intersects(System.Numerics.Plane,HelixToolkit.Maths.Ray@)">
+  Intersects(Plane, ref Ray)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Plane.cs/#L143"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Determines if there is an intersection between the current object and a <a class="xref" href="HelixToolkit.Maths.Ray.html">Ray</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool Intersects(this Plane p, ref Ray ray)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>p</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.plane">Plane</a></dt>
+    <dd></dd>
+    <dt><code>ray</code> <a class="xref" href="HelixToolkit.Maths.Ray.html">Ray</a></dt>
+    <dd><p>The ray to test.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p>Whether the two objects intersected.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_PlaneHelper_Intersects_" data-uid="HelixToolkit.Maths.PlaneHelper.Intersects*"></a>
+
+  <h3 id="HelixToolkit_Maths_PlaneHelper_Intersects_System_Numerics_Plane_HelixToolkit_Maths_Ray__System_Numerics_Vector3__" data-uid="HelixToolkit.Maths.PlaneHelper.Intersects(System.Numerics.Plane,HelixToolkit.Maths.Ray@,System.Numerics.Vector3@)">
+  Intersects(Plane, ref Ray, out Vector3)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Plane.cs/#L189"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Determines if there is an intersection between the current object and a <a class="xref" href="HelixToolkit.Maths.Ray.html">Ray</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool Intersects(this Plane p, ref Ray ray, out Vector3 point)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>p</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.plane">Plane</a></dt>
+    <dd></dd>
+    <dt><code>ray</code> <a class="xref" href="HelixToolkit.Maths.Ray.html">Ray</a></dt>
+    <dd><p>The ray to test.</p>
+</dd>
+    <dt><code>point</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd><p>When the method completes, contains the point of intersection,
+or <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3.zero">Zero</a> if there was no intersection.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p>Whether the two objects intersected.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_PlaneHelper_Intersects_" data-uid="HelixToolkit.Maths.PlaneHelper.Intersects*"></a>
+
+  <h3 id="HelixToolkit_Maths_PlaneHelper_Intersects_System_Numerics_Plane_HelixToolkit_Maths_Ray__System_Single__" data-uid="HelixToolkit.Maths.PlaneHelper.Intersects(System.Numerics.Plane,HelixToolkit.Maths.Ray@,System.Single@)">
+  Intersects(Plane, ref Ray, out float)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Plane.cs/#L166"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Determines if there is an intersection between the current object and a <a class="xref" href="HelixToolkit.Maths.Ray.html">Ray</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool Intersects(this Plane p, ref Ray ray, out float distance)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>p</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.plane">Plane</a></dt>
+    <dd></dd>
+    <dt><code>ray</code> <a class="xref" href="HelixToolkit.Maths.Ray.html">Ray</a></dt>
+    <dd><p>The ray to test.</p>
+</dd>
+    <dt><code>distance</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>When the method completes, contains the distance of the intersection,
+or 0 if there was no intersection.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p>Whether the two objects intersected.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_PlaneHelper_Intersects_" data-uid="HelixToolkit.Maths.PlaneHelper.Intersects*"></a>
+
+  <h3 id="HelixToolkit_Maths_PlaneHelper_Intersects_System_Numerics_Plane_System_Numerics_Plane__" data-uid="HelixToolkit.Maths.PlaneHelper.Intersects(System.Numerics.Plane,System.Numerics.Plane@)">
+  Intersects(Plane, ref Plane)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Plane.cs/#L211"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Determines if there is an intersection between the current object and a <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.plane">Plane</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool Intersects(this Plane p, ref Plane plane)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>p</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.plane">Plane</a></dt>
+    <dd></dd>
+    <dt><code>plane</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.plane">Plane</a></dt>
+    <dd><p>The plane to test.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p>Whether the two objects intersected.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_PlaneHelper_Intersects_" data-uid="HelixToolkit.Maths.PlaneHelper.Intersects*"></a>
+
+  <h3 id="HelixToolkit_Maths_PlaneHelper_Intersects_System_Numerics_Plane_System_Numerics_Plane__HelixToolkit_Maths_Ray__" data-uid="HelixToolkit.Maths.PlaneHelper.Intersects(System.Numerics.Plane,System.Numerics.Plane@,HelixToolkit.Maths.Ray@)">
+  Intersects(Plane, ref Plane, out Ray)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Plane.cs/#L235"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Determines if there is an intersection between the current object and a <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.plane">Plane</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool Intersects(this Plane p, ref Plane plane, out Ray line)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>p</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.plane">Plane</a></dt>
+    <dd></dd>
+    <dt><code>plane</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.plane">Plane</a></dt>
+    <dd><p>The plane to test.</p>
+</dd>
+    <dt><code>line</code> <a class="xref" href="HelixToolkit.Maths.Ray.html">Ray</a></dt>
+    <dd><p>When the method completes, contains the line of intersection
+as a <a class="xref" href="HelixToolkit.Maths.Ray.html">Ray</a>, or a zero ray if there was no intersection.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p>Whether the two objects intersected.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_PlaneHelper_Intersects_" data-uid="HelixToolkit.Maths.PlaneHelper.Intersects*"></a>
+
+  <h3 id="HelixToolkit_Maths_PlaneHelper_Intersects_System_Numerics_Plane_System_Numerics_Vector3__" data-uid="HelixToolkit.Maths.PlaneHelper.Intersects(System.Numerics.Plane,System.Numerics.Vector3@)">
+  Intersects(Plane, ref Vector3)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Plane.cs/#L133"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Determines if there is an intersection between the current object and a point.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static PlaneIntersectionType Intersects(this Plane p, ref Vector3 point)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>p</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.plane">Plane</a></dt>
+    <dd><p>The p.</p>
+</dd>
+    <dt><code>point</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd><p>The point.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Maths.PlaneIntersectionType.html">PlaneIntersectionType</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_PlaneHelper_Intersects_" data-uid="HelixToolkit.Maths.PlaneHelper.Intersects*"></a>
+
+  <h3 id="HelixToolkit_Maths_PlaneHelper_Intersects_System_Numerics_Plane_System_Numerics_Vector3__System_Numerics_Vector3__System_Numerics_Vector3__" data-uid="HelixToolkit.Maths.PlaneHelper.Intersects(System.Numerics.Plane,System.Numerics.Vector3@,System.Numerics.Vector3@,System.Numerics.Vector3@)">
+  Intersects(Plane, ref Vector3, ref Vector3, ref Vector3)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Plane.cs/#L259"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Determines if there is an intersection between the current object and a triangle.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static PlaneIntersectionType Intersects(this Plane p, ref Vector3 vertex1, ref Vector3 vertex2, ref Vector3 vertex3)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>p</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.plane">Plane</a></dt>
+    <dd></dd>
+    <dt><code>vertex1</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd><p>The first vertex of the triangle to test.</p>
+</dd>
+    <dt><code>vertex2</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd><p>The second vertex of the triangle to test.</p>
+</dd>
+    <dt><code>vertex3</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd><p>The third vertex of the triangle to test.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Maths.PlaneIntersectionType.html">PlaneIntersectionType</a></dt>
+    <dd><p>Whether the two objects intersected.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_PlaneHelper_Intersects_" data-uid="HelixToolkit.Maths.PlaneHelper.Intersects*"></a>
+
+  <h3 id="HelixToolkit_Maths_PlaneHelper_Intersects_System_Numerics_Plane__HelixToolkit_Maths_BoundingBox__" data-uid="HelixToolkit.Maths.PlaneHelper.Intersects(System.Numerics.Plane@,HelixToolkit.Maths.BoundingBox@)">
+  Intersects(ref Plane, ref BoundingBox)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Plane.cs/#L292"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Determines if there is an intersection between the current object and a <a class="xref" href="HelixToolkit.Maths.BoundingBox.html">BoundingBox</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static PlaneIntersectionType Intersects(ref Plane p, ref BoundingBox box)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>p</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.plane">Plane</a></dt>
+    <dd><p>The p.</p>
+</dd>
+    <dt><code>box</code> <a class="xref" href="HelixToolkit.Maths.BoundingBox.html">BoundingBox</a></dt>
+    <dd><p>The box.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Maths.PlaneIntersectionType.html">PlaneIntersectionType</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_PlaneHelper_Intersects_" data-uid="HelixToolkit.Maths.PlaneHelper.Intersects*"></a>
+
+  <h3 id="HelixToolkit_Maths_PlaneHelper_Intersects_System_Numerics_Plane__HelixToolkit_Maths_BoundingSphere__" data-uid="HelixToolkit.Maths.PlaneHelper.Intersects(System.Numerics.Plane@,HelixToolkit.Maths.BoundingSphere@)">
+  Intersects(ref Plane, ref BoundingSphere)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Plane.cs/#L313"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Determines if there is an intersection between the current object and a <a class="xref" href="HelixToolkit.Maths.BoundingSphere.html">BoundingSphere</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static PlaneIntersectionType Intersects(ref Plane p, ref BoundingSphere sphere)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>p</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.plane">Plane</a></dt>
+    <dd><p>The p.</p>
+</dd>
+    <dt><code>sphere</code> <a class="xref" href="HelixToolkit.Maths.BoundingSphere.html">BoundingSphere</a></dt>
+    <dd><p>The sphere.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Maths.PlaneIntersectionType.html">PlaneIntersectionType</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_PlaneHelper_Intersects_" data-uid="HelixToolkit.Maths.PlaneHelper.Intersects*"></a>
+
+  <h3 id="HelixToolkit_Maths_PlaneHelper_Intersects_System_Numerics_Plane__HelixToolkit_Maths_Ray__" data-uid="HelixToolkit.Maths.PlaneHelper.Intersects(System.Numerics.Plane@,HelixToolkit.Maths.Ray@)">
+  Intersects(ref Plane, ref Ray)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Plane.cs/#L154"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Determines if there is an intersection between the current object and a <a class="xref" href="HelixToolkit.Maths.Ray.html">Ray</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool Intersects(ref Plane p, ref Ray ray)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>p</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.plane">Plane</a></dt>
+    <dd><p>The p.</p>
+</dd>
+    <dt><code>ray</code> <a class="xref" href="HelixToolkit.Maths.Ray.html">Ray</a></dt>
+    <dd><p>The ray.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_PlaneHelper_Intersects_" data-uid="HelixToolkit.Maths.PlaneHelper.Intersects*"></a>
+
+  <h3 id="HelixToolkit_Maths_PlaneHelper_Intersects_System_Numerics_Plane__HelixToolkit_Maths_Ray__System_Numerics_Vector3__" data-uid="HelixToolkit.Maths.PlaneHelper.Intersects(System.Numerics.Plane@,HelixToolkit.Maths.Ray@,System.Numerics.Vector3@)">
+  Intersects(ref Plane, ref Ray, out Vector3)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Plane.cs/#L201"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Determines if there is an intersection between the current object and a <a class="xref" href="HelixToolkit.Maths.Ray.html">Ray</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool Intersects(ref Plane p, ref Ray ray, out Vector3 point)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>p</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.plane">Plane</a></dt>
+    <dd><p>The p.</p>
+</dd>
+    <dt><code>ray</code> <a class="xref" href="HelixToolkit.Maths.Ray.html">Ray</a></dt>
+    <dd><p>The ray.</p>
+</dd>
+    <dt><code>point</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd><p>The point.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_PlaneHelper_Intersects_" data-uid="HelixToolkit.Maths.PlaneHelper.Intersects*"></a>
+
+  <h3 id="HelixToolkit_Maths_PlaneHelper_Intersects_System_Numerics_Plane__HelixToolkit_Maths_Ray__System_Single__" data-uid="HelixToolkit.Maths.PlaneHelper.Intersects(System.Numerics.Plane@,HelixToolkit.Maths.Ray@,System.Single@)">
+  Intersects(ref Plane, ref Ray, out float)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Plane.cs/#L177"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Determines if there is an intersection between the current object and a <a class="xref" href="HelixToolkit.Maths.Ray.html">Ray</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool Intersects(ref Plane p, ref Ray ray, out float distance)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>p</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.plane">Plane</a></dt>
+    <dd><p>The p.</p>
+</dd>
+    <dt><code>ray</code> <a class="xref" href="HelixToolkit.Maths.Ray.html">Ray</a></dt>
+    <dd><p>The ray.</p>
+</dd>
+    <dt><code>distance</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>The distance.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_PlaneHelper_Intersects_" data-uid="HelixToolkit.Maths.PlaneHelper.Intersects*"></a>
+
+  <h3 id="HelixToolkit_Maths_PlaneHelper_Intersects_System_Numerics_Plane__System_Numerics_Plane__" data-uid="HelixToolkit.Maths.PlaneHelper.Intersects(System.Numerics.Plane@,System.Numerics.Plane@)">
+  Intersects(ref Plane, ref Plane)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Plane.cs/#L222"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Determines if there is an intersection between the current object and a <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.plane">Plane</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool Intersects(ref Plane p, ref Plane plane)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>p</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.plane">Plane</a></dt>
+    <dd><p>The p.</p>
+</dd>
+    <dt><code>plane</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.plane">Plane</a></dt>
+    <dd><p>The plane.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_PlaneHelper_Intersects_" data-uid="HelixToolkit.Maths.PlaneHelper.Intersects*"></a>
+
+  <h3 id="HelixToolkit_Maths_PlaneHelper_Intersects_System_Numerics_Plane__System_Numerics_Plane__HelixToolkit_Maths_Ray__" data-uid="HelixToolkit.Maths.PlaneHelper.Intersects(System.Numerics.Plane@,System.Numerics.Plane@,HelixToolkit.Maths.Ray@)">
+  Intersects(ref Plane, ref Plane, out Ray)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Plane.cs/#L246"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Determines if there is an intersection between the current object and a <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.plane">Plane</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool Intersects(ref Plane p, ref Plane plane, out Ray line)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>p</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.plane">Plane</a></dt>
+    <dd><p>The p.</p>
+</dd>
+    <dt><code>plane</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.plane">Plane</a></dt>
+    <dd><p>The plane.</p>
+</dd>
+    <dt><code>line</code> <a class="xref" href="HelixToolkit.Maths.Ray.html">Ray</a></dt>
+    <dd><p>The line.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_PlaneHelper_Intersects_" data-uid="HelixToolkit.Maths.PlaneHelper.Intersects*"></a>
+
+  <h3 id="HelixToolkit_Maths_PlaneHelper_Intersects_System_Numerics_Plane__System_Numerics_Vector3__" data-uid="HelixToolkit.Maths.PlaneHelper.Intersects(System.Numerics.Plane@,System.Numerics.Vector3@)">
+  Intersects(ref Plane, ref Vector3)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Plane.cs/#L122"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Determines if there is an intersection between the current object and a point.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static PlaneIntersectionType Intersects(ref Plane p, ref Vector3 point)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>p</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.plane">Plane</a></dt>
+    <dd></dd>
+    <dt><code>point</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd><p>The point to test.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Maths.PlaneIntersectionType.html">PlaneIntersectionType</a></dt>
+    <dd><p>Whether the two objects intersected.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_PlaneHelper_Intersects_" data-uid="HelixToolkit.Maths.PlaneHelper.Intersects*"></a>
+
+  <h3 id="HelixToolkit_Maths_PlaneHelper_Intersects_System_Numerics_Plane__System_Numerics_Vector3__System_Numerics_Vector3__System_Numerics_Vector3__" data-uid="HelixToolkit.Maths.PlaneHelper.Intersects(System.Numerics.Plane@,System.Numerics.Vector3@,System.Numerics.Vector3@,System.Numerics.Vector3@)">
+  Intersects(ref Plane, ref Vector3, ref Vector3, ref Vector3)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Plane.cs/#L271"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Determines if there is an intersection between the current object and a triangle.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static PlaneIntersectionType Intersects(ref Plane p, ref Vector3 vertex1, ref Vector3 vertex2, ref Vector3 vertex3)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>p</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.plane">Plane</a></dt>
+    <dd><p>The p.</p>
+</dd>
+    <dt><code>vertex1</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd><p>The vertex1.</p>
+</dd>
+    <dt><code>vertex2</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd><p>The vertex2.</p>
+</dd>
+    <dt><code>vertex3</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd><p>The vertex3.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Maths.PlaneIntersectionType.html">PlaneIntersectionType</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_PlaneHelper_IntersectsLine_" data-uid="HelixToolkit.Maths.PlaneHelper.IntersectsLine*"></a>
+
+  <h3 id="HelixToolkit_Maths_PlaneHelper_IntersectsLine_System_Numerics_Plane_System_Numerics_Vector3__System_Numerics_Vector3__System_Numerics_Vector3__" data-uid="HelixToolkit.Maths.PlaneHelper.IntersectsLine(System.Numerics.Plane,System.Numerics.Vector3@,System.Numerics.Vector3@,System.Numerics.Vector3@)">
+  IntersectsLine(Plane, ref Vector3, ref Vector3, out Vector3)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Plane.cs/#L348"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Check if a line intersects with plane</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool IntersectsLine(this Plane p, ref Vector3 p0, ref Vector3 p1, out Vector3 intersection)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>p</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.plane">Plane</a></dt>
+    <dd></dd>
+    <dt><code>p0</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd></dd>
+    <dt><code>p1</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd></dd>
+    <dt><code>intersection</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_PlaneHelper_IntersectsLine_" data-uid="HelixToolkit.Maths.PlaneHelper.IntersectsLine*"></a>
+
+  <h3 id="HelixToolkit_Maths_PlaneHelper_IntersectsLine_System_Numerics_Plane__System_Numerics_Vector3__System_Numerics_Vector3__System_Numerics_Vector3__" data-uid="HelixToolkit.Maths.PlaneHelper.IntersectsLine(System.Numerics.Plane@,System.Numerics.Vector3@,System.Numerics.Vector3@,System.Numerics.Vector3@)">
+  IntersectsLine(ref Plane, ref Vector3, ref Vector3, out Vector3)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Plane.cs/#L325"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Check if a line intersects with plane</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool IntersectsLine(ref Plane p, ref Vector3 p0, ref Vector3 p1, out Vector3 intersection)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>p</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.plane">Plane</a></dt>
+    <dd></dd>
+    <dt><code>p0</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd></dd>
+    <dt><code>p1</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd></dd>
+    <dt><code>intersection</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_PlaneHelper_Multiply_" data-uid="HelixToolkit.Maths.PlaneHelper.Multiply*"></a>
+
+  <h3 id="HelixToolkit_Maths_PlaneHelper_Multiply_System_Numerics_Plane_System_Single_" data-uid="HelixToolkit.Maths.PlaneHelper.Multiply(System.Numerics.Plane,System.Single)">
+  Multiply(Plane, float)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Plane.cs/#L536"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Scales the plane by the given scaling factor.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Plane Multiply(Plane value, float scale)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.plane">Plane</a></dt>
+    <dd><p>The plane to scale.</p>
+</dd>
+    <dt><code>scale</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>The amount by which to scale the plane.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.plane">Plane</a></dt>
+    <dd><p>The scaled plane.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_PlaneHelper_Multiply_" data-uid="HelixToolkit.Maths.PlaneHelper.Multiply*"></a>
+
+  <h3 id="HelixToolkit_Maths_PlaneHelper_Multiply_System_Numerics_Plane__System_Single_System_Numerics_Plane__" data-uid="HelixToolkit.Maths.PlaneHelper.Multiply(System.Numerics.Plane@,System.Single,System.Numerics.Plane@)">
+  Multiply(ref Plane, float, out Plane)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Plane.cs/#L524"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Scales the plane by the given scaling factor.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void Multiply(ref Plane value, float scale, out Plane result)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.plane">Plane</a></dt>
+    <dd><p>The plane to scale.</p>
+</dd>
+    <dt><code>scale</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>The amount by which to scale the plane.</p>
+</dd>
+    <dt><code>result</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.plane">Plane</a></dt>
+    <dd><p>When the method completes, contains the scaled plane.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_PlaneHelper_Normalize_" data-uid="HelixToolkit.Maths.PlaneHelper.Normalize*"></a>
+
+  <h3 id="HelixToolkit_Maths_PlaneHelper_Normalize_System_Numerics_Plane_" data-uid="HelixToolkit.Maths.PlaneHelper.Normalize(System.Numerics.Plane)">
+  Normalize(Plane)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Plane.cs/#L54"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Changes the coefficients of the normal vector of the plane to make it of unit length.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Plane Normalize(this Plane plane)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>plane</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.plane">Plane</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.plane">Plane</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_PlaneHelper_Project_" data-uid="HelixToolkit.Maths.PlaneHelper.Project*"></a>
+
+  <h3 id="HelixToolkit_Maths_PlaneHelper_Project_System_Numerics_Plane_System_Numerics_Vector3__" data-uid="HelixToolkit.Maths.PlaneHelper.Project(System.Numerics.Plane,System.Numerics.Vector3@)">
+  Project(Plane, ref Vector3)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Plane.cs/#L682"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Calculates the projection of a point onto a plane (nearest point).</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Vector3 Project(this Plane p, ref Vector3 point)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>p</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.plane">Plane</a></dt>
+    <dd></dd>
+    <dt><code>point</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd><p>The point used to calculate projection</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd><p>The projection of a given point on a given plane.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_PlaneHelper_Project_" data-uid="HelixToolkit.Maths.PlaneHelper.Project*"></a>
+
+  <h3 id="HelixToolkit_Maths_PlaneHelper_Project_System_Numerics_Plane__System_Numerics_Vector3__" data-uid="HelixToolkit.Maths.PlaneHelper.Project(System.Numerics.Plane@,System.Numerics.Vector3@)">
+  Project(ref Plane, ref Vector3)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Plane.cs/#L674"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Calculates the projection of a point onto a plane (nearest point).</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Vector3 Project(ref Plane plane, ref Vector3 point)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>plane</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.plane">Plane</a></dt>
+    <dd><p>The <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.plane">Plane</a></p>
+</dd>
+    <dt><code>point</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd><p>The point used to calculate projection</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd><p>The projection of a given point on a given plane.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_PlaneHelper_Reflection_" data-uid="HelixToolkit.Maths.PlaneHelper.Reflection*"></a>
+
+  <h3 id="HelixToolkit_Maths_PlaneHelper_Reflection_System_Numerics_Plane_" data-uid="HelixToolkit.Maths.PlaneHelper.Reflection(System.Numerics.Plane)">
+  Reflection(Plane)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Plane.cs/#L388"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Builds a matrix that can be used to reflect vectors about a plane.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Matrix4x4 Reflection(this Plane p)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>p</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.plane">Plane</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.matrix4x4">Matrix4x4</a></dt>
+    <dd><p>The reflection matrix.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_PlaneHelper_Reflection_" data-uid="HelixToolkit.Maths.PlaneHelper.Reflection*"></a>
+
+  <h3 id="HelixToolkit_Maths_PlaneHelper_Reflection_System_Numerics_Plane__HelixToolkit_Maths_Matrix3x3__" data-uid="HelixToolkit.Maths.PlaneHelper.Reflection(System.Numerics.Plane@,HelixToolkit.Maths.Matrix3x3@)">
+  Reflection(ref Plane, out Matrix3x3)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Plane.cs/#L448"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Builds a Matrix3x3 that can be used to reflect vectors about a plane for which the reflection occurs.
+This plane is assumed to be normalized</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void Reflection(ref Plane p, out Matrix3x3 result)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>p</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.plane">Plane</a></dt>
+    <dd></dd>
+    <dt><code>result</code> <a class="xref" href="HelixToolkit.Maths.Matrix3x3.html">Matrix3x3</a></dt>
+    <dd><p>When the method completes, contains the reflection Matrix3x3.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_PlaneHelper_Reflection_" data-uid="HelixToolkit.Maths.PlaneHelper.Reflection*"></a>
+
+  <h3 id="HelixToolkit_Maths_PlaneHelper_Reflection_System_Numerics_Plane__System_Numerics_Matrix4x4__" data-uid="HelixToolkit.Maths.PlaneHelper.Reflection(System.Numerics.Plane@,System.Numerics.Matrix4x4@)">
+  Reflection(ref Plane, out Matrix4x4)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Plane.cs/#L357"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Builds a matrix that can be used to reflect vectors about a plane.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void Reflection(ref Plane p, out Matrix4x4 result)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>p</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.plane">Plane</a></dt>
+    <dd><p>The p.</p>
+</dd>
+    <dt><code>result</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.matrix4x4">Matrix4x4</a></dt>
+    <dd><p>The result.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_PlaneHelper_Reflection3x3_" data-uid="HelixToolkit.Maths.PlaneHelper.Reflection3x3*"></a>
+
+  <h3 id="HelixToolkit_Maths_PlaneHelper_Reflection3x3_System_Numerics_Plane_" data-uid="HelixToolkit.Maths.PlaneHelper.Reflection3x3(System.Numerics.Plane)">
+  Reflection3x3(Plane)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Plane.cs/#L473"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Builds a Matrix3x3 that can be used to reflect vectors about a plane for which the reflection occurs.
+This plane is assumed to be normalized</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Matrix3x3 Reflection3x3(this Plane p)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>p</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.plane">Plane</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Maths.Matrix3x3.html">Matrix3x3</a></dt>
+    <dd><p>The reflection Matrix3x3.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_PlaneHelper_Set_" data-uid="HelixToolkit.Maths.PlaneHelper.Set*"></a>
+
+  <h3 id="HelixToolkit_Maths_PlaneHelper_Set_System_Numerics_Plane__System_Int32_System_Single_" data-uid="HelixToolkit.Maths.PlaneHelper.Set(System.Numerics.Plane@,System.Int32,System.Single)">
+  Set(ref Plane, int, float)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Plane.cs/#L78"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void Set(ref Plane p, int index, float value)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>p</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.plane">Plane</a></dt>
+    <dd></dd>
+    <dt><code>index</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+    <dt><code>value</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_PlaneHelper_Shadow_" data-uid="HelixToolkit.Maths.PlaneHelper.Shadow*"></a>
+
+  <h3 id="HelixToolkit_Maths_PlaneHelper_Shadow_System_Numerics_Plane_System_Numerics_Vector4_" data-uid="HelixToolkit.Maths.PlaneHelper.Shadow(System.Numerics.Plane,System.Numerics.Vector4)">
+  Shadow(Plane, Vector4)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Plane.cs/#L436"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Creates a matrix that flattens geometry into a shadow from this the plane onto which to project the geometry as a shadow.
+This plane  is assumed to be normalized</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Matrix4x4 Shadow(this Plane p, Vector4 light)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>p</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.plane">Plane</a></dt>
+    <dd></dd>
+    <dt><code>light</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector4">Vector4</a></dt>
+    <dd><p>The light direction. If the W component is 0, the light is directional light; if the
+W component is 1, the light is a point light.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.matrix4x4">Matrix4x4</a></dt>
+    <dd><p>The shadow matrix.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_PlaneHelper_Shadow_" data-uid="HelixToolkit.Maths.PlaneHelper.Shadow*"></a>
+
+  <h3 id="HelixToolkit_Maths_PlaneHelper_Shadow_System_Numerics_Plane__System_Numerics_Vector4__System_Numerics_Matrix4x4__" data-uid="HelixToolkit.Maths.PlaneHelper.Shadow(System.Numerics.Plane@,System.Numerics.Vector4@,System.Numerics.Matrix4x4@)">
+  Shadow(ref Plane, ref Vector4, out Matrix4x4)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Plane.cs/#L402"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Creates a matrix that flattens geometry into a shadow from the plane onto which to project the geometry as a shadow.
+This plane  is assumed to be normalized</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void Shadow(ref Plane p, ref Vector4 light, out Matrix4x4 result)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>p</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.plane">Plane</a></dt>
+    <dd></dd>
+    <dt><code>light</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector4">Vector4</a></dt>
+    <dd><p>The light direction. If the W component is 0, the light is directional light; if the
+W component is 1, the light is a point light.</p>
+</dd>
+    <dt><code>result</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.matrix4x4">Matrix4x4</a></dt>
+    <dd><p>When the method completes, contains the shadow matrix.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_PlaneHelper_Shadow_" data-uid="HelixToolkit.Maths.PlaneHelper.Shadow*"></a>
+
+  <h3 id="HelixToolkit_Maths_PlaneHelper_Shadow_System_Numerics_Vector4_System_Numerics_Plane_" data-uid="HelixToolkit.Maths.PlaneHelper.Shadow(System.Numerics.Vector4,System.Numerics.Plane)">
+  Shadow(Vector4, Plane)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Plane.cs/#L511"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Creates a Matrix3x3 that flattens geometry into a shadow.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Matrix3x3 Shadow(Vector4 light, Plane plane)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>light</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector4">Vector4</a></dt>
+    <dd><p>The light direction. If the W component is 0, the light is directional light; if the
+W component is 1, the light is a point light.</p>
+</dd>
+    <dt><code>plane</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.plane">Plane</a></dt>
+    <dd><p>The plane onto which to project the geometry as a shadow. This parameter is assumed to be normalized.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Maths.Matrix3x3.html">Matrix3x3</a></dt>
+    <dd><p>The shadow Matrix3x3.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_PlaneHelper_Shadow_" data-uid="HelixToolkit.Maths.PlaneHelper.Shadow*"></a>
+
+  <h3 id="HelixToolkit_Maths_PlaneHelper_Shadow_System_Numerics_Vector4__System_Numerics_Plane__HelixToolkit_Maths_Matrix3x3__" data-uid="HelixToolkit.Maths.PlaneHelper.Shadow(System.Numerics.Vector4@,System.Numerics.Plane@,HelixToolkit.Maths.Matrix3x3@)">
+  Shadow(ref Vector4, ref Plane, out Matrix3x3)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Plane.cs/#L486"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Creates a Matrix3x3 that flattens geometry into a shadow.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void Shadow(ref Vector4 light, ref Plane plane, out Matrix3x3 result)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>light</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector4">Vector4</a></dt>
+    <dd><p>The light direction. If the W component is 0, the light is directional light; if the
+W component is 1, the light is a point light.</p>
+</dd>
+    <dt><code>plane</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.plane">Plane</a></dt>
+    <dd><p>The plane onto which to project the geometry as a shadow. This parameter is assumed to be normalized.</p>
+</dd>
+    <dt><code>result</code> <a class="xref" href="HelixToolkit.Maths.Matrix3x3.html">Matrix3x3</a></dt>
+    <dd><p>When the method completes, contains the shadow Matrix3x3.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_PlaneHelper_ToArray_" data-uid="HelixToolkit.Maths.PlaneHelper.ToArray*"></a>
+
+  <h3 id="HelixToolkit_Maths_PlaneHelper_ToArray_System_Numerics_Plane_" data-uid="HelixToolkit.Maths.PlaneHelper.ToArray(System.Numerics.Plane)">
+  ToArray(Plane)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Plane.cs/#L111"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Creates an array containing the elements of the plane.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static float[] ToArray(this Plane p)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>p</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.plane">Plane</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a>[]</dt>
+    <dd><p>A four-element array containing the components of the plane.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_PlaneHelper_Transform_" data-uid="HelixToolkit.Maths.PlaneHelper.Transform*"></a>
+
+  <h3 id="HelixToolkit_Maths_PlaneHelper_Transform_System_Numerics_Plane__System_Numerics_Matrix4x4__System_Numerics_Plane__" data-uid="HelixToolkit.Maths.PlaneHelper.Transform(System.Numerics.Plane@,System.Numerics.Matrix4x4@,System.Numerics.Plane@)">
+  Transform(ref Plane, ref Matrix4x4, out Plane)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Plane.cs/#L621"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Transforms a normalized plane by a matrix.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void Transform(ref Plane plane, ref Matrix4x4 transformation, out Plane result)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>plane</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.plane">Plane</a></dt>
+    <dd><p>The normalized source plane.</p>
+</dd>
+    <dt><code>transformation</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.matrix4x4">Matrix4x4</a></dt>
+    <dd><p>The transformation matrix.</p>
+</dd>
+    <dt><code>result</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.plane">Plane</a></dt>
+    <dd><p>When the method completes, contains the transformed plane.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_PlaneHelper_Transform_" data-uid="HelixToolkit.Maths.PlaneHelper.Transform*"></a>
+
+  <h3 id="HelixToolkit_Maths_PlaneHelper_Transform_System_Numerics_Plane__System_Numerics_Quaternion__System_Numerics_Plane__" data-uid="HelixToolkit.Maths.PlaneHelper.Transform(System.Numerics.Plane@,System.Numerics.Quaternion@,System.Numerics.Plane@)">
+  Transform(ref Plane, ref Quaternion, out Plane)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Plane.cs/#L591"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Transforms a normalized plane by a quaternion rotation.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void Transform(ref Plane plane, ref Quaternion rotation, out Plane result)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>plane</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.plane">Plane</a></dt>
+    <dd><p>The normalized source plane.</p>
+</dd>
+    <dt><code>rotation</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.quaternion">Quaternion</a></dt>
+    <dd><p>The quaternion rotation.</p>
+</dd>
+    <dt><code>result</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.plane">Plane</a></dt>
+    <dd><p>When the method completes, contains the transformed plane.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_PlaneHelper_Transform_" data-uid="HelixToolkit.Maths.PlaneHelper.Transform*"></a>
+
+  <h3 id="HelixToolkit_Maths_PlaneHelper_Transform_System_Numerics_Plane___System_Numerics_Matrix4x4__" data-uid="HelixToolkit.Maths.PlaneHelper.Transform(System.Numerics.Plane[],System.Numerics.Matrix4x4@)">
+  Transform(Plane[], ref Matrix4x4)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Plane.cs/#L632"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Transforms an array of normalized planes by a matrix.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void Transform(Plane[] planes, ref Matrix4x4 transformation)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>planes</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.plane">Plane</a>[]</dt>
+    <dd><p>The array of normalized planes to transform.</p>
+</dd>
+    <dt><code>transformation</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.matrix4x4">Matrix4x4</a></dt>
+    <dd><p>The transformation matrix.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentnullexception">ArgumentNullException</a></dt>
+    <dd><p>Thrown when <code class="paramref">planes</code> is <code>null</code>.</p>
+</dd>
+  </dl>
+
+
+
+  <a id="HelixToolkit_Maths_PlaneHelper_Transform_" data-uid="HelixToolkit.Maths.PlaneHelper.Transform*"></a>
+
+  <h3 id="HelixToolkit_Maths_PlaneHelper_Transform_System_Numerics_Plane___System_Numerics_Quaternion__" data-uid="HelixToolkit.Maths.PlaneHelper.Transform(System.Numerics.Plane[],System.Numerics.Quaternion@)">
+  Transform(Plane[], ref Quaternion)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Plane.cs/#L602"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Transforms an array of normalized planes by a quaternion rotation.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void Transform(Plane[] planes, ref Quaternion rotation)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>planes</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.plane">Plane</a>[]</dt>
+    <dd><p>The array of normalized planes to transform.</p>
+</dd>
+    <dt><code>rotation</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.quaternion">Quaternion</a></dt>
+    <dd><p>The quaternion rotation.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentnullexception">ArgumentNullException</a></dt>
+    <dd><p>Thrown when <code class="paramref">planes</code> is <code>null</code>.</p>
+</dd>
+  </dl>
+
+
+
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Plane.cs/#L37" class="edit-link">Edit this page</a>
+        </div>
+
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          Copyright (c) 2023 Helix Toolkit contributors
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

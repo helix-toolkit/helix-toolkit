@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Getting Started with Helix Toolkit | Helix Toolkit - 3D for .NET </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Getting Started with Helix Toolkit | Helix Toolkit - 3D for .NET ">
+      
+      
+      <link rel="icon" href="../images/favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/Documentation/articles/intro.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../images/favicon.ico" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="getting-started-with-helix-toolkit">Getting Started with Helix Toolkit</h1>
+
+<p>Welcome to the Helix Toolkit articles section! Here you'll find guides, tutorials, and best practices for working with Helix Toolkit.</p>
+<h2 id="introduction">Introduction</h2>
+<p>Helix Toolkit is a comprehensive 3D graphics library for .NET applications. Whether you're building a CAD application, scientific visualization tool, or interactive 3D experience, Helix Toolkit provides the components you need.</p>
+<h2 id="choosing-the-right-package">Choosing the Right Package</h2>
+<h3 id="for-wpf-applications">For WPF Applications</h3>
+<p><strong>Using Built-in WPF 3D (Media3D)</strong></p>
+<ul>
+<li>Package: <code>HelixToolkit.Wpf</code></li>
+<li>Best for: Simple 3D visualizations, compatibility with existing WPF 3D code</li>
+<li>Pros: Easy integration, no external dependencies beyond WPF</li>
+<li>Cons: Limited performance, fewer features</li>
+</ul>
+<p><strong>Using DirectX 11 via SharpDX</strong></p>
+<ul>
+<li>Package: <code>HelixToolkit.Wpf.SharpDX</code></li>
+<li>Best for: High-performance 3D rendering, complex scenes</li>
+<li>Pros: Better performance, more features (shaders, post-processing, etc.)</li>
+<li>Cons: Requires DirectX 11 capable hardware</li>
+</ul>
+<h3 id="for-winui-applications">For WinUI Applications</h3>
+<ul>
+<li>Package: <code>HelixToolkit.WinUI.SharpDX</code></li>
+<li>Modern Windows app development with DirectX 11 rendering</li>
+</ul>
+<h3 id="for-avalonia-applications">For Avalonia Applications</h3>
+<ul>
+<li>Package: <code>HelixToolkit.Avalonia.SharpDX</code></li>
+<li>Cross-platform applications (Windows, macOS, Linux) with DirectX rendering on Windows</li>
+</ul>
+<h3 id="core-packages">Core Packages</h3>
+<ul>
+<li><code>HelixToolkit</code>: Core functionality shared across all packages</li>
+<li><code>HelixToolkit.Maths</code>: Math utilities and types</li>
+<li><code>HelixToolkit.Geometry</code>: Geometry builders and utilities</li>
+</ul>
+<h2 id="installation">Installation</h2>
+<h3 id="via-nuget-package-manager-console">Via NuGet Package Manager Console</h3>
+<pre><code class="lang-powershell"># For WPF with SharpDX
+Install-Package HelixToolkit.Wpf.SharpDX
+
+# For WPF with built-in 3D
+Install-Package HelixToolkit.Wpf
+
+# For WinUI
+Install-Package HelixToolkit.WinUI.SharpDX
+
+# For Avalonia
+Install-Package HelixToolkit.Avalonia.SharpDX
+</code></pre>
+<h3 id="via-net-cli">Via .NET CLI</h3>
+<pre><code class="lang-bash"># For WPF with SharpDX
+dotnet add package HelixToolkit.Wpf.SharpDX
+
+# For WPF with built-in 3D
+dotnet add package HelixToolkit.Wpf
+</code></pre>
+<h2 id="basic-usage-example">Basic Usage Example</h2>
+<h3 id="wpf-with-sharpdx">WPF with SharpDX</h3>
+<pre><code class="lang-csharp">// MainWindow.xaml.cs
+using HelixToolkit.Wpf.SharpDX;
+using SharpDX;
+
+namespace MyApp
+{
+    public partial class MainWindow : Window
+    {
+        public MainWindow()
+        {
+            InitializeComponent();
+            
+            // Create a viewport
+            var viewport = new Viewport3DX();
+            
+            // Create a camera
+            var camera = new PerspectiveCamera
+            {
+                Position = new System.Windows.Media.Media3D.Point3D(5, 5, 5),
+                LookDirection = new System.Windows.Media.Media3D.Vector3D(-5, -5, -5)
+            };
+            viewport.Camera = camera;
+            
+            // Add to your UI
+            Content = viewport;
+        }
+    }
+}
+</code></pre>
+<h2 id="next-steps">Next Steps</h2>
+<ul>
+<li>Explore the <a href="../api/index.html">API Documentation</a> for detailed class and method references</li>
+<li>Check out example applications in the source repository</li>
+<li>Join the <a href="https://gitter.im/helix-toolkit/helix-toolkit">community chat</a> for questions and discussions</li>
+</ul>
+<h2 id="additional-resources">Additional Resources</h2>
+<ul>
+<li><a href="https://github.com/helix-toolkit/helix-toolkit">GitHub Repository</a></li>
+<li><a href="https://github.com/helix-toolkit/helix-toolkit/wiki">Wiki</a></li>
+<li><a href="https://github.com/helix-toolkit/helix-toolkit/wiki/Tips-on-performance-optimization-(WPF.SharpDX-and-UWP)">Performance Tips</a></li>
+</ul>
+<h2 id="contributing-to-documentation">Contributing to Documentation</h2>
+<p>This documentation is generated using DocFX. To contribute:</p>
+<ol>
+<li>Fork the repository</li>
+<li>Update XML documentation comments in source code</li>
+<li>Add or modify articles in <code>Source/Documentation/articles/</code></li>
+<li>Submit a pull request</li>
+</ol>
+<p>See the <a href="../README.html">Documentation README</a> for more details on building and contributing to the documentation.</p>
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/Documentation/articles/intro.md/#L1" class="edit-link">Edit this page</a>
+        </div>
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          Copyright (c) 2023 Helix Toolkit contributors
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

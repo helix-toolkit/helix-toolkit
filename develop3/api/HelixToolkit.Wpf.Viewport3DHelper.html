@@ -1,0 +1,1702 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Class Viewport3DHelper | Helix Toolkit - 3D for .NET </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Class Viewport3DHelper | Helix Toolkit - 3D for .NET ">
+      
+      <meta name="description" content="Provides extension methods for .">
+      <link rel="icon" href="../images/favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/helix-toolkit/helix-toolkit/new/develop3/apiSpec/new?filename=HelixToolkit_Wpf_Viewport3DHelper.md&amp;value=---%0Auid%3A%20HelixToolkit.Wpf.Viewport3DHelper%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="ManagedReference">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../images/favicon.ico" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="HelixToolkit.Wpf.Viewport3DHelper">
+
+
+
+  <h1 id="HelixToolkit_Wpf_Viewport3DHelper" data-uid="HelixToolkit.Wpf.Viewport3DHelper" class="text-break">
+Class Viewport3DHelper  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Wpf/Helpers/Viewport3DHelper.cs/#L19"><i class="bi bi-code-slash"></i></a>
+  </h1>
+
+  <div class="facts text-secondary">
+    <dl><dt>Namespace</dt><dd><a class="xref" href="HelixToolkit.html">HelixToolkit</a>.<a class="xref" href="HelixToolkit.Wpf.html">Wpf</a></dd></dl>
+  <dl><dt>Assembly</dt><dd>HelixToolkit.Wpf.dll</dd></dl>
+  </div>
+
+  <div class="markdown summary"><p>Provides extension methods for <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.controls.viewport3d">Viewport3D</a>.</p>
+</div>
+  <div class="markdown conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static class Viewport3DHelper</code></pre>
+  </div>
+
+
+
+
+  <dl class="typelist inheritance">
+    <dt>Inheritance</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
+      <div><span class="xref">Viewport3DHelper</span></div>
+    </dd>
+  </dl>
+
+
+
+  <dl class="typelist inheritedMembers">
+    <dt>Inherited Members</dt>
+    <dd>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">object.Equals(object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">object.Equals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode">object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype">object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone">object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals">object.ReferenceEquals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring">object.ToString()</a>
+    </div>
+  </dd></dl>
+
+
+
+
+  <h2 id="HelixToolkit_Wpf_Viewport3DHelper_remarks">Remarks</h2>
+  <div class="markdown level0 remarks"><p>See &quot;3D programming for Windows&quot; (Charles Petzold book) and <a hef="http://www.ericsink.com/wpf3d/index.html">Twelve Days of WPF 3D</a>.</p>
+</div>
+
+
+  <h2 class="section" id="methods">Methods
+</h2>
+
+
+  <a id="HelixToolkit_Wpf_Viewport3DHelper_Copy_" data-uid="HelixToolkit.Wpf.Viewport3DHelper.Copy*"></a>
+
+  <h3 id="HelixToolkit_Wpf_Viewport3DHelper_Copy_System_Windows_Controls_Viewport3D_System_Double_System_Double_System_Windows_Media_Brush_System_Int32_" data-uid="HelixToolkit.Wpf.Viewport3DHelper.Copy(System.Windows.Controls.Viewport3D,System.Double,System.Double,System.Windows.Media.Brush,System.Int32)">
+  Copy(Viewport3D, double, double, Brush, int)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Wpf/Helpers/Viewport3DHelper.cs/#L39"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Copies the specified viewport to the clipboard.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void Copy(this Viewport3D view, double width, double height, Brush background, int m = 1)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>view</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.controls.viewport3d">Viewport3D</a></dt>
+    <dd><p>The viewport.</p>
+</dd>
+    <dt><code>width</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd><p>The width.</p>
+</dd>
+    <dt><code>height</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd><p>The height.</p>
+</dd>
+    <dt><code>background</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.brush">Brush</a></dt>
+    <dd><p>The background.</p>
+</dd>
+    <dt><code>m</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The oversampling multiplier.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_Viewport3DHelper_Copy_" data-uid="HelixToolkit.Wpf.Viewport3DHelper.Copy*"></a>
+
+  <h3 id="HelixToolkit_Wpf_Viewport3DHelper_Copy_System_Windows_Controls_Viewport3D_System_Int32_" data-uid="HelixToolkit.Wpf.Viewport3DHelper.Copy(System.Windows.Controls.Viewport3D,System.Int32)">
+  Copy(Viewport3D, int)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Wpf/Helpers/Viewport3DHelper.cs/#L26"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Copies the specified viewport to the clipboard.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void Copy(this Viewport3D view, int m = 1)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>view</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.controls.viewport3d">Viewport3D</a></dt>
+    <dd><p>The viewport.</p>
+</dd>
+    <dt><code>m</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The oversampling multiplier.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_Viewport3DHelper_CopyXaml_" data-uid="HelixToolkit.Wpf.Viewport3DHelper.CopyXaml*"></a>
+
+  <h3 id="HelixToolkit_Wpf_Viewport3DHelper_CopyXaml_System_Windows_Controls_Viewport3D_" data-uid="HelixToolkit.Wpf.Viewport3DHelper.CopyXaml(System.Windows.Controls.Viewport3D)">
+  CopyXaml(Viewport3D)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Wpf/Helpers/Viewport3DHelper.cs/#L50"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Copies the viewport as <pre><code class="lang-csharp">xaml</code></pre> to the clipboard.
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void CopyXaml(this Viewport3D viewport)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>viewport</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.controls.viewport3d">Viewport3D</a></dt>
+    <dd><p>The viewport.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_Viewport3DHelper_Export_" data-uid="HelixToolkit.Wpf.Viewport3DHelper.Export*"></a>
+
+  <h3 id="HelixToolkit_Wpf_Viewport3DHelper_Export_System_Windows_Controls_Viewport3D_System_String_System_Windows_Media_Brush_" data-uid="HelixToolkit.Wpf.Viewport3DHelper.Export(System.Windows.Controls.Viewport3D,System.String,System.Windows.Media.Brush)">
+  Export(Viewport3D, string, Brush?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Wpf/Helpers/Viewport3DHelper.cs/#L61"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Exports the specified viewport.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void Export(this Viewport3D viewport, string fileName, Brush? background = null)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>viewport</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.controls.viewport3d">Viewport3D</a></dt>
+    <dd><p>The viewport.</p>
+</dd>
+    <dt><code>fileName</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>Name of the file.</p>
+</dd>
+    <dt><code>background</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.brush">Brush</a></dt>
+    <dd><p>The background brush.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_Viewport3DHelper_ExportStereo_" data-uid="HelixToolkit.Wpf.Viewport3DHelper.ExportStereo*"></a>
+
+  <h3 id="HelixToolkit_Wpf_Viewport3DHelper_ExportStereo_System_Windows_Controls_Viewport3D_System_String_System_Double_System_Windows_Media_Brush_" data-uid="HelixToolkit.Wpf.Viewport3DHelper.ExportStereo(System.Windows.Controls.Viewport3D,System.String,System.Double,System.Windows.Media.Brush)">
+  ExportStereo(Viewport3D, string, double, Brush?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Wpf/Helpers/Viewport3DHelper.cs/#L106"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Exports the specified viewport.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void ExportStereo(this Viewport3D viewport, string fileName, double stereoBase, Brush? background = null)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>viewport</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.controls.viewport3d">Viewport3D</a></dt>
+    <dd><p>The viewport.</p>
+</dd>
+    <dt><code>fileName</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>Name of the file.</p>
+</dd>
+    <dt><code>stereoBase</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd><p>The stereo base.</p>
+</dd>
+    <dt><code>background</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.brush">Brush</a></dt>
+    <dd><p>The background brush.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.HelixToolkitException.html">HelixToolkitException</a></dt>
+    <dd><p>Not supported file format.</p>
+</dd>
+  </dl>
+
+
+
+  <a id="HelixToolkit_Wpf_Viewport3DHelper_FindHits_" data-uid="HelixToolkit.Wpf.Viewport3DHelper.FindHits*"></a>
+
+  <h3 id="HelixToolkit_Wpf_Viewport3DHelper_FindHits_System_Windows_Controls_Viewport3D_System_Windows_Point_System_Windows_Media_HitTestFilterCallback_" data-uid="HelixToolkit.Wpf.Viewport3DHelper.FindHits(System.Windows.Controls.Viewport3D,System.Windows.Point,System.Windows.Media.HitTestFilterCallback)">
+  FindHits(Viewport3D, Point, HitTestFilterCallback?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Wpf/Helpers/Viewport3DHelper.cs/#L134"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Finds the hits for the specified position.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static IList&lt;PointHitResult&gt; FindHits(this Viewport3D viewport, Point position, HitTestFilterCallback? filterCallback = null)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>viewport</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.controls.viewport3d">Viewport3D</a></dt>
+    <dd><p>The viewport.</p>
+</dd>
+    <dt><code>position</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.point">Point</a></dt>
+    <dd><p>The position.</p>
+</dd>
+    <dt><code>filterCallback</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.hittestfiltercallback">HitTestFilterCallback</a></dt>
+    <dd><p>The method that represents the hit test filter callback value./&gt;</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ilist-1">IList</a>&lt;<a class="xref" href="HelixToolkit.Wpf.PointHitResult.html">PointHitResult</a>&gt;</dt>
+    <dd><p>List of hits, sorted with the nearest hit first.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_Viewport3DHelper_FindHits_" data-uid="HelixToolkit.Wpf.Viewport3DHelper.FindHits*"></a>
+
+  <h3 id="HelixToolkit_Wpf_Viewport3DHelper_FindHits_System_Windows_Controls_Viewport3D_System_Windows_Rect_HelixToolkit_Wpf_SelectionHitMode_" data-uid="HelixToolkit.Wpf.Viewport3DHelper.FindHits(System.Windows.Controls.Viewport3D,System.Windows.Rect,HelixToolkit.Wpf.SelectionHitMode)">
+  FindHits(Viewport3D, Rect, SelectionHitMode)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Wpf/Helpers/Viewport3DHelper.cs/#L193"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Finds the hits for the specified rectangle.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static IEnumerable&lt;RectangleHitResult&gt; FindHits(this Viewport3D viewport, Rect rectangle, SelectionHitMode mode)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>viewport</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.controls.viewport3d">Viewport3D</a></dt>
+    <dd><p>The viewport.</p>
+</dd>
+    <dt><code>rectangle</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.rect">Rect</a></dt>
+    <dd><p>The rectangle.</p>
+</dd>
+    <dt><code>mode</code> <a class="xref" href="HelixToolkit.Wpf.SelectionHitMode.html">SelectionHitMode</a></dt>
+    <dd><p>The mode of selection.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="HelixToolkit.Wpf.RectangleHitResult.html">RectangleHitResult</a>&gt;</dt>
+    <dd><p>The list of the hits.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_Viewport3DHelper_FindNearest_" data-uid="HelixToolkit.Wpf.Viewport3DHelper.FindNearest*"></a>
+
+  <h3 id="HelixToolkit_Wpf_Viewport3DHelper_FindNearest_System_Windows_Controls_Viewport3D_System_Windows_Point_System_Windows_Media_Media3D_Point3D__System_Windows_Media_Media3D_Vector3D__System_Windows_DependencyObject__" data-uid="HelixToolkit.Wpf.Viewport3DHelper.FindNearest(System.Windows.Controls.Viewport3D,System.Windows.Point,System.Windows.Media.Media3D.Point3D@,System.Windows.Media.Media3D.Vector3D@,System.Windows.DependencyObject@)">
+  FindNearest(Viewport3D, Point, out Point3D, out Vector3D, out DependencyObject?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Wpf/Helpers/Viewport3DHelper.cs/#L375"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Finds the nearest visual, hit point and its normal at the specified position.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool FindNearest(this Viewport3D viewport, Point position, out Point3D point, out Vector3D normal, out DependencyObject? visual)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>viewport</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.controls.viewport3d">Viewport3D</a></dt>
+    <dd><p>The viewport.</p>
+</dd>
+    <dt><code>position</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.point">Point</a></dt>
+    <dd><p>The position.</p>
+</dd>
+    <dt><code>point</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.media3d.point3d">Point3D</a></dt>
+    <dd><p>The 3D hit point.</p>
+</dd>
+    <dt><code>normal</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.media3d.vector3d">Vector3D</a></dt>
+    <dd><p>The normal of the mesh at the hit point.</p>
+</dd>
+    <dt><code>visual</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.dependencyobject">DependencyObject</a></dt>
+    <dd><p>The hit visual.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><code>true</code> if a visual was found at the specified position.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_Viewport3DHelper_FindNearestPoint_" data-uid="HelixToolkit.Wpf.Viewport3DHelper.FindNearestPoint*"></a>
+
+  <h3 id="HelixToolkit_Wpf_Viewport3DHelper_FindNearestPoint_System_Windows_Controls_Viewport3D_System_Windows_Point_" data-uid="HelixToolkit.Wpf.Viewport3DHelper.FindNearestPoint(System.Windows.Controls.Viewport3D,System.Windows.Point)">
+  FindNearestPoint(Viewport3D, Point)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Wpf/Helpers/Viewport3DHelper.cs/#L462"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Finds the coordinates of the nearest point at the specified position.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Point3D? FindNearestPoint(this Viewport3D viewport, Point position)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>viewport</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.controls.viewport3d">Viewport3D</a></dt>
+    <dd><p>The viewport.</p>
+</dd>
+    <dt><code>position</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.point">Point</a></dt>
+    <dd><p>The position.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.media3d.point3d">Point3D</a>?</dt>
+    <dd><p>The nearest point, or null if no point was found.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_Viewport3DHelper_FindNearestVisual_" data-uid="HelixToolkit.Wpf.Viewport3DHelper.FindNearestVisual*"></a>
+
+  <h3 id="HelixToolkit_Wpf_Viewport3DHelper_FindNearestVisual_System_Windows_Controls_Viewport3D_System_Windows_Point_" data-uid="HelixToolkit.Wpf.Viewport3DHelper.FindNearestVisual(System.Windows.Controls.Viewport3D,System.Windows.Point)">
+  FindNearestVisual(Viewport3D, Point)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Wpf/Helpers/Viewport3DHelper.cs/#L480"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Finds the Visual3D that is nearest the specified position.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Visual3D? FindNearestVisual(this Viewport3D viewport, Point position)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>viewport</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.controls.viewport3d">Viewport3D</a></dt>
+    <dd><p>The viewport.</p>
+</dd>
+    <dt><code>position</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.point">Point</a></dt>
+    <dd><p>The position.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.media3d.visual3d">Visual3D</a></dt>
+    <dd><p>The nearest visual, or <code>null</code> if no visual was found.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_Viewport3DHelper_GetCameraTransform_" data-uid="HelixToolkit.Wpf.Viewport3DHelper.GetCameraTransform*"></a>
+
+  <h3 id="HelixToolkit_Wpf_Viewport3DHelper_GetCameraTransform_System_Windows_Controls_Viewport3D_" data-uid="HelixToolkit.Wpf.Viewport3DHelper.GetCameraTransform(System.Windows.Controls.Viewport3D)">
+  GetCameraTransform(Viewport3D)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Wpf/Helpers/Viewport3DHelper.cs/#L509"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the camera transform (viewport and projection).</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Matrix3D GetCameraTransform(this Viewport3D viewport)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>viewport</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.controls.viewport3d">Viewport3D</a></dt>
+    <dd><p>The viewport.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.media3d.matrix3d">Matrix3D</a></dt>
+    <dd><p>A <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.media3d.matrix3d">Matrix3D</a>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_Viewport3DHelper_GetCameraTransform_" data-uid="HelixToolkit.Wpf.Viewport3DHelper.GetCameraTransform*"></a>
+
+  <h3 id="HelixToolkit_Wpf_Viewport3DHelper_GetCameraTransform_System_Windows_Media_Media3D_Viewport3DVisual_" data-uid="HelixToolkit.Wpf.Viewport3DHelper.GetCameraTransform(System.Windows.Media.Media3D.Viewport3DVisual)">
+  GetCameraTransform(Viewport3DVisual)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Wpf/Helpers/Viewport3DHelper.cs/#L495"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the camera transform.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Matrix3D GetCameraTransform(this Viewport3DVisual viewport3DVisual)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>viewport3DVisual</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.media3d.viewport3dvisual">Viewport3DVisual</a></dt>
+    <dd><p>The viewport visual.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.media3d.matrix3d">Matrix3D</a></dt>
+    <dd><p>The camera transform.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_Viewport3DHelper_GetLights_" data-uid="HelixToolkit.Wpf.Viewport3DHelper.GetLights*"></a>
+
+  <h3 id="HelixToolkit_Wpf_Viewport3DHelper_GetLights_System_Windows_Controls_Viewport3D_" data-uid="HelixToolkit.Wpf.Viewport3DHelper.GetLights(System.Windows.Controls.Viewport3D)">
+  GetLights(Viewport3D)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Wpf/Helpers/Viewport3DHelper.cs/#L519"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets all lights.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static IEnumerable&lt;Light?&gt; GetLights(this Viewport3D viewport)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>viewport</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.controls.viewport3d">Viewport3D</a></dt>
+    <dd><p>The viewport.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.media3d.light">Light</a>&gt;</dt>
+    <dd><p>A sequence of <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.media3d.light">Light</a> objects.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_Viewport3DHelper_GetProjectionMatrix_" data-uid="HelixToolkit.Wpf.Viewport3DHelper.GetProjectionMatrix*"></a>
+
+  <h3 id="HelixToolkit_Wpf_Viewport3DHelper_GetProjectionMatrix_System_Windows_Controls_Viewport3D_" data-uid="HelixToolkit.Wpf.Viewport3DHelper.GetProjectionMatrix(System.Windows.Controls.Viewport3D)">
+  GetProjectionMatrix(Viewport3D)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Wpf/Helpers/Viewport3DHelper.cs/#L623"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the projection matrix.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Matrix3D GetProjectionMatrix(this Viewport3D viewport)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>viewport</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.controls.viewport3d">Viewport3D</a></dt>
+    <dd><p>The viewport.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.media3d.matrix3d">Matrix3D</a></dt>
+    <dd><p>A <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.media3d.matrix3d">Matrix3D</a>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_Viewport3DHelper_GetRay_" data-uid="HelixToolkit.Wpf.Viewport3DHelper.GetRay*"></a>
+
+  <h3 id="HelixToolkit_Wpf_Viewport3DHelper_GetRay_System_Windows_Controls_Viewport3D_System_Windows_Point_" data-uid="HelixToolkit.Wpf.Viewport3DHelper.GetRay(System.Windows.Controls.Viewport3D,System.Windows.Point)">
+  GetRay(Viewport3D, Point)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Wpf/Helpers/Viewport3DHelper.cs/#L537"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the ray at the specified position in 2D (screen coordinates).</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Ray3D? GetRay(this Viewport3D viewport, Point position)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>viewport</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.controls.viewport3d">Viewport3D</a></dt>
+    <dd><p>The viewport.</p>
+</dd>
+    <dt><code>position</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.point">Point</a></dt>
+    <dd><p>A 2D point.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Wpf.Ray3D.html">Ray3D</a></dt>
+    <dd><p>A <a class="xref" href="HelixToolkit.Wpf.Ray3D.html">Ray3D</a>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_Viewport3DHelper_GetTotalNumberOfTriangles_" data-uid="HelixToolkit.Wpf.Viewport3DHelper.GetTotalNumberOfTriangles*"></a>
+
+  <h3 id="HelixToolkit_Wpf_Viewport3DHelper_GetTotalNumberOfTriangles_System_Windows_Controls_Viewport3D_" data-uid="HelixToolkit.Wpf.Viewport3DHelper.GetTotalNumberOfTriangles(System.Windows.Controls.Viewport3D)">
+  GetTotalNumberOfTriangles(Viewport3D)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Wpf/Helpers/Viewport3DHelper.cs/#L1042"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the total number of triangles in the viewport.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static int GetTotalNumberOfTriangles(this Viewport3D viewport)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>viewport</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.controls.viewport3d">Viewport3D</a></dt>
+    <dd><p>The viewport.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The total number of triangles</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_Viewport3DHelper_GetTotalTransform_" data-uid="HelixToolkit.Wpf.Viewport3DHelper.GetTotalTransform*"></a>
+
+  <h3 id="HelixToolkit_Wpf_Viewport3DHelper_GetTotalTransform_System_Windows_Controls_Viewport3D_" data-uid="HelixToolkit.Wpf.Viewport3DHelper.GetTotalTransform(System.Windows.Controls.Viewport3D)">
+  GetTotalTransform(Viewport3D)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Wpf/Helpers/Viewport3DHelper.cs/#L565"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the total transform (camera and viewport).</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Matrix3D GetTotalTransform(this Viewport3D viewport)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>viewport</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.controls.viewport3d">Viewport3D</a></dt>
+    <dd><p>The viewport.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.media3d.matrix3d">Matrix3D</a></dt>
+    <dd><p>The total transform.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_Viewport3DHelper_GetTotalTransform_" data-uid="HelixToolkit.Wpf.Viewport3DHelper.GetTotalTransform*"></a>
+
+  <h3 id="HelixToolkit_Wpf_Viewport3DHelper_GetTotalTransform_System_Windows_Media_Media3D_Viewport3DVisual_" data-uid="HelixToolkit.Wpf.Viewport3DHelper.GetTotalTransform(System.Windows.Media.Media3D.Viewport3DVisual)">
+  GetTotalTransform(Viewport3DVisual)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Wpf/Helpers/Viewport3DHelper.cs/#L553"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the total transform (camera and viewport).</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Matrix3D GetTotalTransform(this Viewport3DVisual viewport3DVisual)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>viewport3DVisual</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.media3d.viewport3dvisual">Viewport3DVisual</a></dt>
+    <dd><p>The viewport visual.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.media3d.matrix3d">Matrix3D</a></dt>
+    <dd><p>The total transform.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_Viewport3DHelper_GetTransform_" data-uid="HelixToolkit.Wpf.Viewport3DHelper.GetTransform*"></a>
+
+  <h3 id="HelixToolkit_Wpf_Viewport3DHelper_GetTransform_System_Windows_Controls_Viewport3D_System_Windows_Media_Media3D_Visual3D_" data-uid="HelixToolkit.Wpf.Viewport3DHelper.GetTransform(System.Windows.Controls.Viewport3D,System.Windows.Media.Media3D.Visual3D)">
+  GetTransform(Viewport3D, Visual3D)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Wpf/Helpers/Viewport3DHelper.cs/#L578"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the total transform of the specified visual.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static GeneralTransform3D? GetTransform(this Viewport3D viewport, Visual3D visual)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>viewport</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.controls.viewport3d">Viewport3D</a></dt>
+    <dd><p>The viewport.</p>
+</dd>
+    <dt><code>visual</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.media3d.visual3d">Visual3D</a></dt>
+    <dd><p>The visual.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.media3d.generaltransform3d">GeneralTransform3D</a></dt>
+    <dd><p>The transform.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_Viewport3DHelper_GetViewMatrix_" data-uid="HelixToolkit.Wpf.Viewport3DHelper.GetViewMatrix*"></a>
+
+  <h3 id="HelixToolkit_Wpf_Viewport3DHelper_GetViewMatrix_System_Windows_Controls_Viewport3D_" data-uid="HelixToolkit.Wpf.Viewport3DHelper.GetViewMatrix(System.Windows.Controls.Viewport3D)">
+  GetViewMatrix(Viewport3D)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Wpf/Helpers/Viewport3DHelper.cs/#L613"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the view matrix.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Matrix3D GetViewMatrix(this Viewport3D viewport)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>viewport</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.controls.viewport3d">Viewport3D</a></dt>
+    <dd><p>The viewport.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.media3d.matrix3d">Matrix3D</a></dt>
+    <dd><p>A <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.media3d.matrix3d">Matrix3D</a>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_Viewport3DHelper_GetViewportTransform_" data-uid="HelixToolkit.Wpf.Viewport3DHelper.GetViewportTransform*"></a>
+
+  <h3 id="HelixToolkit_Wpf_Viewport3DHelper_GetViewportTransform_System_Windows_Controls_Viewport3D_" data-uid="HelixToolkit.Wpf.Viewport3DHelper.GetViewportTransform(System.Windows.Controls.Viewport3D)">
+  GetViewportTransform(Viewport3D)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Wpf/Helpers/Viewport3DHelper.cs/#L661"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the viewport transform.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Matrix3D GetViewportTransform(this Viewport3D viewport)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>viewport</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.controls.viewport3d">Viewport3D</a></dt>
+    <dd><p>The viewport.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.media3d.matrix3d">Matrix3D</a></dt>
+    <dd><p>The transform.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_Viewport3DHelper_GetViewportTransform_" data-uid="HelixToolkit.Wpf.Viewport3DHelper.GetViewportTransform*"></a>
+
+  <h3 id="HelixToolkit_Wpf_Viewport3DHelper_GetViewportTransform_System_Windows_Media_Media3D_Viewport3DVisual_" data-uid="HelixToolkit.Wpf.Viewport3DHelper.GetViewportTransform(System.Windows.Media.Media3D.Viewport3DVisual)">
+  GetViewportTransform(Viewport3DVisual)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Wpf/Helpers/Viewport3DHelper.cs/#L633"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the viewport transform.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Matrix3D GetViewportTransform(this Viewport3DVisual viewport3DVisual)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>viewport3DVisual</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.media3d.viewport3dvisual">Viewport3DVisual</a></dt>
+    <dd><p>The viewport3DVisual.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.media3d.matrix3d">Matrix3D</a></dt>
+    <dd><p>The transform.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_Viewport3DHelper_Point2DtoPoint3D_" data-uid="HelixToolkit.Wpf.Viewport3DHelper.Point2DtoPoint3D*"></a>
+
+  <h3 id="HelixToolkit_Wpf_Viewport3DHelper_Point2DtoPoint3D_System_Windows_Controls_Viewport3D_System_Windows_Point_System_Windows_Media_Media3D_Point3D__System_Windows_Media_Media3D_Point3D__" data-uid="HelixToolkit.Wpf.Viewport3DHelper.Point2DtoPoint3D(System.Windows.Controls.Viewport3D,System.Windows.Point,System.Windows.Media.Media3D.Point3D@,System.Windows.Media.Media3D.Point3D@)">
+  Point2DtoPoint3D(Viewport3D, Point, out Point3D, out Point3D)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Wpf/Helpers/Viewport3DHelper.cs/#L690"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Transforms a position to Point3D at the near and far clipping planes.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool Point2DtoPoint3D(this Viewport3D viewport, Point pointIn, out Point3D pointNear, out Point3D pointFar)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>viewport</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.controls.viewport3d">Viewport3D</a></dt>
+    <dd><p>The viewport.</p>
+</dd>
+    <dt><code>pointIn</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.point">Point</a></dt>
+    <dd><p>The point to transform.</p>
+</dd>
+    <dt><code>pointNear</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.media3d.point3d">Point3D</a></dt>
+    <dd><p>The point at the near clipping plane.</p>
+</dd>
+    <dt><code>pointFar</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.media3d.point3d">Point3D</a></dt>
+    <dd><p>The point at the far clipping plane.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p>True if points were found.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_Viewport3DHelper_Point2DtoRay3D_" data-uid="HelixToolkit.Wpf.Viewport3DHelper.Point2DtoRay3D*"></a>
+
+  <h3 id="HelixToolkit_Wpf_Viewport3DHelper_Point2DtoRay3D_System_Windows_Controls_Viewport3D_System_Windows_Point_" data-uid="HelixToolkit.Wpf.Viewport3DHelper.Point2DtoRay3D(System.Windows.Controls.Viewport3D,System.Windows.Point)">
+  Point2DtoRay3D(Viewport3D, Point)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Wpf/Helpers/Viewport3DHelper.cs/#L734"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Transforms a 2D point to a ray.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Ray3D? Point2DtoRay3D(this Viewport3D viewport, Point pointIn)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>viewport</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.controls.viewport3d">Viewport3D</a></dt>
+    <dd><p>The viewport.</p>
+</dd>
+    <dt><code>pointIn</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.point">Point</a></dt>
+    <dd><p>The point.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Wpf.Ray3D.html">Ray3D</a></dt>
+    <dd><p>The ray.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_Viewport3DHelper_Point3DtoPoint2D_" data-uid="HelixToolkit.Wpf.Viewport3DHelper.Point3DtoPoint2D*"></a>
+
+  <h3 id="HelixToolkit_Wpf_Viewport3DHelper_Point3DtoPoint2D_System_Windows_Controls_Viewport3D_System_Collections_Generic_IEnumerable_System_Windows_Media_Media3D_Point3D__" data-uid="HelixToolkit.Wpf.Viewport3DHelper.Point3DtoPoint2D(System.Windows.Controls.Viewport3D,System.Collections.Generic.IEnumerable{System.Windows.Media.Media3D.Point3D})">
+  Point3DtoPoint2D(Viewport3D, IEnumerable&lt;Point3D&gt;)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Wpf/Helpers/Viewport3DHelper.cs/#L765"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Transforms the set of Point3D to a set of Point2D.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static IEnumerable&lt;Point&gt; Point3DtoPoint2D(this Viewport3D viewport, IEnumerable&lt;Point3D&gt; points)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>viewport</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.controls.viewport3d">Viewport3D</a></dt>
+    <dd><p>The viewport.</p>
+</dd>
+    <dt><code>points</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.media3d.point3d">Point3D</a>&gt;</dt>
+    <dd><p>The set of 3D points.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.point">Point</a>&gt;</dt>
+    <dd><p>The transformed points.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_Viewport3DHelper_Point3DtoPoint2D_" data-uid="HelixToolkit.Wpf.Viewport3DHelper.Point3DtoPoint2D*"></a>
+
+  <h3 id="HelixToolkit_Wpf_Viewport3DHelper_Point3DtoPoint2D_System_Windows_Controls_Viewport3D_System_Windows_Media_Media3D_Point3D_" data-uid="HelixToolkit.Wpf.Viewport3DHelper.Point3DtoPoint2D(System.Windows.Controls.Viewport3D,System.Windows.Media.Media3D.Point3D)">
+  Point3DtoPoint2D(Viewport3D, Point3D)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Wpf/Helpers/Viewport3DHelper.cs/#L751"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Transforms the Point3D to a Point2D.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Point Point3DtoPoint2D(this Viewport3D viewport, Point3D point)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>viewport</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.controls.viewport3d">Viewport3D</a></dt>
+    <dd><p>The viewport.</p>
+</dd>
+    <dt><code>point</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.media3d.point3d">Point3D</a></dt>
+    <dd><p>The 3D point.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.point">Point</a></dt>
+    <dd><p>The point.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_Viewport3DHelper_Print_" data-uid="HelixToolkit.Wpf.Viewport3DHelper.Print*"></a>
+
+  <h3 id="HelixToolkit_Wpf_Viewport3DHelper_Print_System_Windows_Controls_Viewport3D_System_String_" data-uid="HelixToolkit.Wpf.Viewport3DHelper.Print(System.Windows.Controls.Viewport3D,System.String)">
+  Print(Viewport3D, string)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Wpf/Helpers/Viewport3DHelper.cs/#L781"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Prints the specified viewport.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void Print(this Viewport3D vp, string description)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>vp</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.controls.viewport3d">Viewport3D</a></dt>
+    <dd><p>The viewport.</p>
+</dd>
+    <dt><code>description</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The description.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_Viewport3DHelper_RenderBitmap_" data-uid="HelixToolkit.Wpf.Viewport3DHelper.RenderBitmap*"></a>
+
+  <h3 id="HelixToolkit_Wpf_Viewport3DHelper_RenderBitmap_System_Windows_Controls_Viewport3D_System_Double_System_Double_System_Windows_Media_Brush_System_Int32_" data-uid="HelixToolkit.Wpf.Viewport3DHelper.RenderBitmap(System.Windows.Controls.Viewport3D,System.Double,System.Double,System.Windows.Media.Brush,System.Int32)">
+  RenderBitmap(Viewport3D, double, double, Brush, int)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Wpf/Helpers/Viewport3DHelper.cs/#L859"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Renders the viewport to a bitmap.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static BitmapSource RenderBitmap(this Viewport3D view, double width, double height, Brush background, int m = 1)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>view</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.controls.viewport3d">Viewport3D</a></dt>
+    <dd><p>The viewport.</p>
+</dd>
+    <dt><code>width</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd><p>The width.</p>
+</dd>
+    <dt><code>height</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd><p>The height.</p>
+</dd>
+    <dt><code>background</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.brush">Brush</a></dt>
+    <dd><p>The background.</p>
+</dd>
+    <dt><code>m</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The oversampling multiplier.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.imaging.bitmapsource">BitmapSource</a></dt>
+    <dd><p>A bitmap.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_Viewport3DHelper_RenderBitmap_" data-uid="HelixToolkit.Wpf.Viewport3DHelper.RenderBitmap*"></a>
+
+  <h3 id="HelixToolkit_Wpf_Viewport3DHelper_RenderBitmap_System_Windows_Controls_Viewport3D_System_Windows_Media_Brush_System_Int32_" data-uid="HelixToolkit.Wpf.Viewport3DHelper.RenderBitmap(System.Windows.Controls.Viewport3D,System.Windows.Media.Brush,System.Int32)">
+  RenderBitmap(Viewport3D, Brush, int)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Wpf/Helpers/Viewport3DHelper.cs/#L797"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Renders the viewport to a bitmap.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static BitmapSource RenderBitmap(this Viewport3D view, Brush background, int m = 1)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>view</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.controls.viewport3d">Viewport3D</a></dt>
+    <dd><p>The viewport.</p>
+</dd>
+    <dt><code>background</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.brush">Brush</a></dt>
+    <dd><p>The background.</p>
+</dd>
+    <dt><code>m</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The oversampling multiplier.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.imaging.bitmapsource">BitmapSource</a></dt>
+    <dd><p>A bitmap.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_Viewport3DHelper_ResizeAndArrange_" data-uid="HelixToolkit.Wpf.Viewport3DHelper.ResizeAndArrange*"></a>
+
+  <h3 id="HelixToolkit_Wpf_Viewport3DHelper_ResizeAndArrange_System_Windows_Controls_Viewport3D_System_Double_System_Double_" data-uid="HelixToolkit.Wpf.Viewport3DHelper.ResizeAndArrange(System.Windows.Controls.Viewport3D,System.Double,System.Double)">
+  ResizeAndArrange(Viewport3D, double, double)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Wpf/Helpers/Viewport3DHelper.cs/#L881"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Resizes and arranges the viewport.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void ResizeAndArrange(this Viewport3D view, double width, double height)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>view</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.controls.viewport3d">Viewport3D</a></dt>
+    <dd><p>The viewport.</p>
+</dd>
+    <dt><code>width</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd><p>The width.</p>
+</dd>
+    <dt><code>height</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd><p>The height.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_Viewport3DHelper_SaveBitmap_" data-uid="HelixToolkit.Wpf.Viewport3DHelper.SaveBitmap*"></a>
+
+  <h3 id="HelixToolkit_Wpf_Viewport3DHelper_SaveBitmap_System_Windows_Controls_Viewport3D_System_IO_Stream_System_Windows_Media_Brush_System_Int32_HelixToolkit_Wpf_BitmapExporter_OutputFormat_" data-uid="HelixToolkit.Wpf.Viewport3DHelper.SaveBitmap(System.Windows.Controls.Viewport3D,System.IO.Stream,System.Windows.Media.Brush,System.Int32,HelixToolkit.Wpf.BitmapExporter.OutputFormat)">
+  SaveBitmap(Viewport3D, Stream, Brush?, int, OutputFormat)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Wpf/Helpers/Viewport3DHelper.cs/#L957"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Saves the <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.controls.viewport3d">Viewport3D</a> to a bitmap.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void SaveBitmap(this Viewport3D view, Stream stream, Brush? background = null, int m = 1, BitmapExporter.OutputFormat format = OutputFormat.Png)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>view</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.controls.viewport3d">Viewport3D</a></dt>
+    <dd><p>The view.</p>
+</dd>
+    <dt><code>stream</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.io.stream">Stream</a></dt>
+    <dd><p>The output stream.</p>
+</dd>
+    <dt><code>background</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.brush">Brush</a></dt>
+    <dd><p>The background brush.</p>
+</dd>
+    <dt><code>m</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The oversampling multiplier.</p>
+</dd>
+    <dt><code>format</code> <a class="xref" href="HelixToolkit.Wpf.BitmapExporter.html">BitmapExporter</a>.<a class="xref" href="HelixToolkit.Wpf.BitmapExporter.OutputFormat.html">OutputFormat</a></dt>
+    <dd><p>The output format.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_Viewport3DHelper_SaveBitmap_" data-uid="HelixToolkit.Wpf.Viewport3DHelper.SaveBitmap*"></a>
+
+  <h3 id="HelixToolkit_Wpf_Viewport3DHelper_SaveBitmap_System_Windows_Controls_Viewport3D_System_String_System_Windows_Media_Brush_System_Int32_HelixToolkit_Wpf_BitmapExporter_OutputFormat_" data-uid="HelixToolkit.Wpf.Viewport3DHelper.SaveBitmap(System.Windows.Controls.Viewport3D,System.String,System.Windows.Media.Brush,System.Int32,HelixToolkit.Wpf.BitmapExporter.OutputFormat)">
+  SaveBitmap(Viewport3D, string, Brush?, int, OutputFormat)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Wpf/Helpers/Viewport3DHelper.cs/#L902"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Saves the viewport to a file.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void SaveBitmap(this Viewport3D view, string fileName, Brush? background = null, int m = 1, BitmapExporter.OutputFormat format = OutputFormat.Png)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>view</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.controls.viewport3d">Viewport3D</a></dt>
+    <dd><p>The viewport.</p>
+</dd>
+    <dt><code>fileName</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>Name of the file.</p>
+</dd>
+    <dt><code>background</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.brush">Brush</a></dt>
+    <dd><p>The background brush.</p>
+</dd>
+    <dt><code>m</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The oversampling multiplier.</p>
+</dd>
+    <dt><code>format</code> <a class="xref" href="HelixToolkit.Wpf.BitmapExporter.html">BitmapExporter</a>.<a class="xref" href="HelixToolkit.Wpf.BitmapExporter.OutputFormat.html">OutputFormat</a></dt>
+    <dd><p>The output format.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_Viewport3DHelper_SaveStereoBitmap_" data-uid="HelixToolkit.Wpf.Viewport3DHelper.SaveStereoBitmap*"></a>
+
+  <h3 id="HelixToolkit_Wpf_Viewport3DHelper_SaveStereoBitmap_System_Windows_Controls_Viewport3D_System_String_System_Double_System_Windows_Media_Brush_System_Int32_" data-uid="HelixToolkit.Wpf.Viewport3DHelper.SaveStereoBitmap(System.Windows.Controls.Viewport3D,System.String,System.Double,System.Windows.Media.Brush,System.Int32)">
+  SaveStereoBitmap(Viewport3D, string, double, Brush?, int)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Wpf/Helpers/Viewport3DHelper.cs/#L918"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Saves the <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.controls.viewport3d">Viewport3D</a> to left/right bitmap files.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void SaveStereoBitmap(this Viewport3D view, string fileName, double stereoBase, Brush? background = null, int m = 1)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>view</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.controls.viewport3d">Viewport3D</a></dt>
+    <dd><p>The viewport.</p>
+</dd>
+    <dt><code>fileName</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>Name of the file. &quot;_L&quot; and &quot;_R&quot; will be appended to the file name.</p>
+</dd>
+    <dt><code>stereoBase</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd><p>The stereo base.</p>
+</dd>
+    <dt><code>background</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.brush">Brush</a></dt>
+    <dd><p>The background brush.</p>
+</dd>
+    <dt><code>m</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The oversampling multiplier.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_Viewport3DHelper_SearchFor_" data-uid="HelixToolkit.Wpf.Viewport3DHelper.SearchFor*"></a>
+
+  <h3 id="HelixToolkit_Wpf_Viewport3DHelper_SearchFor__1_System_Collections_Generic_IEnumerable_System_Windows_Media_Media3D_Visual3D__" data-uid="HelixToolkit.Wpf.Viewport3DHelper.SearchFor``1(System.Collections.Generic.IEnumerable{System.Windows.Media.Media3D.Visual3D})">
+  SearchFor&lt;T&gt;(IEnumerable&lt;Visual3D&gt;)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Wpf/Helpers/Viewport3DHelper.cs/#L969"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Recursive search in a Visual3D collection for objects of given type T</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static IList&lt;Model3D&gt; SearchFor&lt;T&gt;(this IEnumerable&lt;Visual3D&gt; collection)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>collection</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.media3d.visual3d">Visual3D</a>&gt;</dt>
+    <dd><p>The collection.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ilist-1">IList</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.media3d.model3d">Model3D</a>&gt;</dt>
+    <dd><p>A list of models.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Type Parameters</h4>
+  <dl class="parameters">
+    <dt><code>T</code></dt>
+    <dd><p>The type to search for.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_Viewport3DHelper_UnProject_" data-uid="HelixToolkit.Wpf.Viewport3DHelper.UnProject*"></a>
+
+  <h3 id="HelixToolkit_Wpf_Viewport3DHelper_UnProject_System_Windows_Controls_Viewport3D_System_Windows_Point_" data-uid="HelixToolkit.Wpf.Viewport3DHelper.UnProject(System.Windows.Controls.Viewport3D,System.Windows.Point)">
+  UnProject(Viewport3D, Point)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Wpf/Helpers/Viewport3DHelper.cs/#L1027"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Transforms a point from the screen (2D) to a point on the plane trough the camera target point.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Point3D? UnProject(this Viewport3D viewport, Point p)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>viewport</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.controls.viewport3d">Viewport3D</a></dt>
+    <dd><p>The viewport.</p>
+</dd>
+    <dt><code>p</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.point">Point</a></dt>
+    <dd><p>The 2D point.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.media3d.point3d">Point3D</a>?</dt>
+    <dd><p>A 3D point.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_Viewport3DHelper_UnProject_" data-uid="HelixToolkit.Wpf.Viewport3DHelper.UnProject*"></a>
+
+  <h3 id="HelixToolkit_Wpf_Viewport3DHelper_UnProject_System_Windows_Controls_Viewport3D_System_Windows_Point_System_Windows_Media_Media3D_Point3D_System_Windows_Media_Media3D_Vector3D_" data-uid="HelixToolkit.Wpf.Viewport3DHelper.UnProject(System.Windows.Controls.Viewport3D,System.Windows.Point,System.Windows.Media.Media3D.Point3D,System.Windows.Media.Media3D.Vector3D)">
+  UnProject(Viewport3D, Point, Point3D, Vector3D)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Wpf/Helpers/Viewport3DHelper.cs/#L997"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Transforms a point from the screen (2D) to a point on plane (3D)</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Point3D? UnProject(this Viewport3D viewport, Point p, Point3D position, Vector3D normal)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>viewport</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.controls.viewport3d">Viewport3D</a></dt>
+    <dd><p>The viewport.</p>
+</dd>
+    <dt><code>p</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.point">Point</a></dt>
+    <dd><p>The 2D point.</p>
+</dd>
+    <dt><code>position</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.media3d.point3d">Point3D</a></dt>
+    <dd><p>A point in the plane.</p>
+</dd>
+    <dt><code>normal</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.media3d.vector3d">Vector3D</a></dt>
+    <dd><p>The plane normal.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.media3d.point3d">Point3D</a>?</dt>
+    <dd><p>A 3D point.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+  <h4 class="section" id="HelixToolkit_Wpf_Viewport3DHelper_UnProject_System_Windows_Controls_Viewport3D_System_Windows_Point_System_Windows_Media_Media3D_Point3D_System_Windows_Media_Media3D_Vector3D__remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>Maps window coordinates to object coordinates like <pre><code class="lang-csharp">gluUnProject</code></pre>.
+</div>
+
+
+
+
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Wpf/Helpers/Viewport3DHelper.cs/#L19" class="edit-link">Edit this page</a>
+        </div>
+
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          Copyright (c) 2023 Helix Toolkit contributors
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,928 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Class LineBuilder | Helix Toolkit - 3D for .NET </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Class LineBuilder | Helix Toolkit - 3D for .NET ">
+      
+      
+      <link rel="icon" href="../images/favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/helix-toolkit/helix-toolkit/new/develop3/apiSpec/new?filename=HelixToolkit_SharpDX_LineBuilder.md&amp;value=---%0Auid%3A%20HelixToolkit.SharpDX.LineBuilder%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="ManagedReference">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../images/favicon.ico" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="HelixToolkit.SharpDX.LineBuilder">
+
+
+
+  <h1 id="HelixToolkit_SharpDX_LineBuilder" data-uid="HelixToolkit.SharpDX.LineBuilder" class="text-break">
+Class LineBuilder  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Utilities/LineBuilder.cs/#L5"><i class="bi bi-code-slash"></i></a>
+  </h1>
+
+  <div class="facts text-secondary">
+    <dl><dt>Namespace</dt><dd><a class="xref" href="HelixToolkit.html">HelixToolkit</a>.<a class="xref" href="HelixToolkit.SharpDX.html">SharpDX</a></dd></dl>
+  <dl><dt>Assembly</dt><dd>HelixToolkit.SharpDX.dll</dd></dl>
+  </div>
+
+  <div class="markdown summary"></div>
+  <div class="markdown conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class LineBuilder</code></pre>
+  </div>
+
+
+
+
+  <dl class="typelist inheritance">
+    <dt>Inheritance</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
+      <div><span class="xref">LineBuilder</span></div>
+    </dd>
+  </dl>
+
+
+
+  <dl class="typelist inheritedMembers">
+    <dt>Inherited Members</dt>
+    <dd>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">object.Equals(object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">object.Equals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode">object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype">object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone">object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals">object.ReferenceEquals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring">object.ToString()</a>
+    </div>
+  </dd></dl>
+
+
+
+
+
+
+  <h2 class="section" id="constructors">Constructors
+</h2>
+
+
+  <a id="HelixToolkit_SharpDX_LineBuilder__ctor_" data-uid="HelixToolkit.SharpDX.LineBuilder.#ctor*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_LineBuilder__ctor" data-uid="HelixToolkit.SharpDX.LineBuilder.#ctor">
+  LineBuilder()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Utilities/LineBuilder.cs/#L13"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public LineBuilder()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <h2 class="section" id="methods">Methods
+</h2>
+
+
+  <a id="HelixToolkit_SharpDX_LineBuilder_Add_" data-uid="HelixToolkit.SharpDX.LineBuilder.Add*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_LineBuilder_Add_System_Boolean_System_Numerics_Vector3___" data-uid="HelixToolkit.SharpDX.LineBuilder.Add(System.Boolean,System.Numerics.Vector3[])">
+  Add(bool, params Vector3[])
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Utilities/LineBuilder.cs/#L25"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Add(bool isClosed, params Vector3[] points)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>isClosed</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+    <dt><code>points</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a>[]</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_LineBuilder_AddBox_" data-uid="HelixToolkit.SharpDX.LineBuilder.AddBox*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_LineBuilder_AddBox_System_Numerics_Vector3_System_Double_System_Double_System_Double_" data-uid="HelixToolkit.SharpDX.LineBuilder.AddBox(System.Numerics.Vector3,System.Double,System.Double,System.Double)">
+  AddBox(Vector3, double, double, double)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Utilities/LineBuilder.cs/#L50"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void AddBox(Vector3 center, double xlength, double ylength, double zlength)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>center</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd></dd>
+    <dt><code>xlength</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd></dd>
+    <dt><code>ylength</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd></dd>
+    <dt><code>zlength</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_LineBuilder_AddCircle_" data-uid="HelixToolkit.SharpDX.LineBuilder.AddCircle*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_LineBuilder_AddCircle_System_Numerics_Vector3_System_Numerics_Vector3_System_Single_System_Int32_" data-uid="HelixToolkit.SharpDX.LineBuilder.AddCircle(System.Numerics.Vector3,System.Numerics.Vector3,System.Single,System.Int32)">
+  AddCircle(Vector3, Vector3, float, int)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Utilities/LineBuilder.cs/#L146"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Adds the circle.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void AddCircle(Vector3 position, Vector3 normal, float radius, int segments)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>position</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd><p>The position.</p>
+</dd>
+    <dt><code>normal</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd><p>The normal.</p>
+</dd>
+    <dt><code>radius</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>The radius.</p>
+</dd>
+    <dt><code>segments</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The segments.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_LineBuilder_AddGrid_" data-uid="HelixToolkit.SharpDX.LineBuilder.AddGrid*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_LineBuilder_AddGrid_HelixToolkit_Geometry_BoxFaces_System_Int32_System_Int32_System_Single_System_Single_" data-uid="HelixToolkit.SharpDX.LineBuilder.AddGrid(HelixToolkit.Geometry.BoxFaces,System.Int32,System.Int32,System.Single,System.Single)">
+  AddGrid(BoxFaces, int, int, float, float)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Utilities/LineBuilder.cs/#L83"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void AddGrid(BoxFaces plane, int columns, int rows, float width, float height)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>plane</code> <a class="xref" href="HelixToolkit.Geometry.BoxFaces.html">BoxFaces</a></dt>
+    <dd></dd>
+    <dt><code>columns</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+    <dt><code>rows</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+    <dt><code>width</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd></dd>
+    <dt><code>height</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_LineBuilder_AddLine_" data-uid="HelixToolkit.SharpDX.LineBuilder.AddLine*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_LineBuilder_AddLine_System_Numerics_Vector3_System_Numerics_Vector3_" data-uid="HelixToolkit.SharpDX.LineBuilder.AddLine(System.Numerics.Vector3,System.Numerics.Vector3)">
+  AddLine(Vector3, Vector3)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Utilities/LineBuilder.cs/#L66"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void AddLine(Vector3 p1, Vector3 p2)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>p1</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd></dd>
+    <dt><code>p2</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_LineBuilder_Clear_" data-uid="HelixToolkit.SharpDX.LineBuilder.Clear*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_LineBuilder_Clear" data-uid="HelixToolkit.SharpDX.LineBuilder.Clear">
+  Clear()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Utilities/LineBuilder.cs/#L542"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Removes all the data from the current LineBuilder instance.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Clear()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_LineBuilder_GenerateBoundingBox_" data-uid="HelixToolkit.SharpDX.LineBuilder.GenerateBoundingBox*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_LineBuilder_GenerateBoundingBox_HelixToolkit_Maths_BoundingBox_" data-uid="HelixToolkit.SharpDX.LineBuilder.GenerateBoundingBox(HelixToolkit.Maths.BoundingBox)">
+  GenerateBoundingBox(BoundingBox)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Utilities/LineBuilder.cs/#L306"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Returns a line geometry of the axis-aligned bounding-box.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static LineGeometry3D GenerateBoundingBox(BoundingBox bb)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>bb</code> <a class="xref" href="HelixToolkit.Maths.BoundingBox.html">BoundingBox</a></dt>
+    <dd><p>The bounding-box</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.LineGeometry3D.html">LineGeometry3D</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_LineBuilder_GenerateBoundingBox_" data-uid="HelixToolkit.SharpDX.LineBuilder.GenerateBoundingBox*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_LineBuilder_GenerateBoundingBox_HelixToolkit_SharpDX_Geometry3D_" data-uid="HelixToolkit.SharpDX.LineBuilder.GenerateBoundingBox(HelixToolkit.SharpDX.Geometry3D)">
+  GenerateBoundingBox(Geometry3D)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Utilities/LineBuilder.cs/#L284"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Returns a line geometry of the axis-aligned bounding-box of the given mesh.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static LineGeometry3D GenerateBoundingBox(Geometry3D mesh)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>mesh</code> <a class="xref" href="HelixToolkit.SharpDX.Geometry3D.html">Geometry3D</a></dt>
+    <dd><p>Input mesh for the computation of the b-box</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.LineGeometry3D.html">LineGeometry3D</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_LineBuilder_GenerateBoundingBox_" data-uid="HelixToolkit.SharpDX.LineBuilder.GenerateBoundingBox*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_LineBuilder_GenerateBoundingBox_System_Numerics_Vector3___" data-uid="HelixToolkit.SharpDX.LineBuilder.GenerateBoundingBox(System.Numerics.Vector3[])">
+  GenerateBoundingBox(Vector3[])
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Utilities/LineBuilder.cs/#L295"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Returns a line geometry of the axis-aligned bounding-box of the given mesh.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static LineGeometry3D GenerateBoundingBox(Vector3[] points)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>points</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a>[]</dt>
+    <dd><p>Input points for the computation of the b-box</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.LineGeometry3D.html">LineGeometry3D</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_LineBuilder_GenerateCircle_" data-uid="HelixToolkit.SharpDX.LineBuilder.GenerateCircle*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_LineBuilder_GenerateCircle_System_Numerics_Plane_System_Single_System_Int32_" data-uid="HelixToolkit.SharpDX.LineBuilder.GenerateCircle(System.Numerics.Plane,System.Single,System.Int32)">
+  GenerateCircle(Plane, float, int)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Utilities/LineBuilder.cs/#L348"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Generates the circle.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static LineGeometry3D GenerateCircle(Plane plane, float radius, int segments)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>plane</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.plane">Plane</a></dt>
+    <dd><p>The plane.</p>
+</dd>
+    <dt><code>radius</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>The radius.</p>
+</dd>
+    <dt><code>segments</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The segments.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.LineGeometry3D.html">LineGeometry3D</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_LineBuilder_GenerateCircle_" data-uid="HelixToolkit.SharpDX.LineBuilder.GenerateCircle*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_LineBuilder_GenerateCircle_System_Numerics_Vector3_System_Single_System_Int32_" data-uid="HelixToolkit.SharpDX.LineBuilder.GenerateCircle(System.Numerics.Vector3,System.Single,System.Int32)">
+  GenerateCircle(Vector3, float, int)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Utilities/LineBuilder.cs/#L334"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static LineGeometry3D GenerateCircle(Vector3 plane, float radius, int segments)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>plane</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd></dd>
+    <dt><code>radius</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd></dd>
+    <dt><code>segments</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.LineGeometry3D.html">LineGeometry3D</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_LineBuilder_GenerateGrid_" data-uid="HelixToolkit.SharpDX.LineBuilder.GenerateGrid*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_LineBuilder_GenerateGrid_System_Int32_" data-uid="HelixToolkit.SharpDX.LineBuilder.GenerateGrid(System.Int32)">
+  GenerateGrid(int)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Utilities/LineBuilder.cs/#L191"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Generates a square grid with a step of 1.0</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static LineGeometry3D GenerateGrid(int width = 10)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>width</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.LineGeometry3D.html">LineGeometry3D</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_LineBuilder_GenerateGrid_" data-uid="HelixToolkit.SharpDX.LineBuilder.GenerateGrid*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_LineBuilder_GenerateGrid_System_Numerics_Vector3_System_Int32_System_Int32_" data-uid="HelixToolkit.SharpDX.LineBuilder.GenerateGrid(System.Numerics.Vector3,System.Int32,System.Int32)">
+  GenerateGrid(Vector3, int, int)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Utilities/LineBuilder.cs/#L247"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Generates a square grid with a step of 1.0</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static LineGeometry3D GenerateGrid(Vector3 plane, int min = 0, int max = 10)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>plane</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd></dd>
+    <dt><code>min</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+    <dt><code>max</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.LineGeometry3D.html">LineGeometry3D</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_LineBuilder_GenerateGrid_" data-uid="HelixToolkit.SharpDX.LineBuilder.GenerateGrid*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_LineBuilder_GenerateGrid_System_Numerics_Vector3_System_Int32_System_Int32_System_Int32_System_Int32_" data-uid="HelixToolkit.SharpDX.LineBuilder.GenerateGrid(System.Numerics.Vector3,System.Int32,System.Int32,System.Int32,System.Int32)">
+  GenerateGrid(Vector3, int, int, int, int)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Utilities/LineBuilder.cs/#L200"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Generates a square grid with a step of 1.0</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static LineGeometry3D GenerateGrid(Vector3 plane, int min0 = 0, int max0 = 10, int min1 = 0, int max1 = 10)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>plane</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd></dd>
+    <dt><code>min0</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+    <dt><code>max0</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+    <dt><code>min1</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+    <dt><code>max1</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.LineGeometry3D.html">LineGeometry3D</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_LineBuilder_GetLineToLineDistance_" data-uid="HelixToolkit.SharpDX.LineBuilder.GetLineToLineDistance*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_LineBuilder_GetLineToLineDistance_System_Numerics_Vector3_System_Numerics_Vector3_System_Numerics_Vector3_System_Numerics_Vector3_System_Numerics_Vector3__System_Numerics_Vector3__System_Single__System_Single__System_Boolean_" data-uid="HelixToolkit.SharpDX.LineBuilder.GetLineToLineDistance(System.Numerics.Vector3,System.Numerics.Vector3,System.Numerics.Vector3,System.Numerics.Vector3,System.Numerics.Vector3@,System.Numerics.Vector3@,System.Single@,System.Single@,System.Boolean)">
+  GetLineToLineDistance(Vector3, Vector3, Vector3, Vector3, out Vector3, out Vector3, out float, out float, bool)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Utilities/LineBuilder.cs/#L438"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Source: <a href="http://geomalgorithms.com/a07-_distance.html">http://geomalgorithms.com/a07-_distance.html</a>
+~2341920 tests per second</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static float GetLineToLineDistance(Vector3 s0, Vector3 s1, Vector3 t0, Vector3 t1, out Vector3 sp, out Vector3 tp, out float sc, out float tc, bool sIsRay = false)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>s0</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd></dd>
+    <dt><code>s1</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd></dd>
+    <dt><code>t0</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd></dd>
+    <dt><code>t1</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd></dd>
+    <dt><code>sp</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd></dd>
+    <dt><code>tp</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd></dd>
+    <dt><code>sc</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd></dd>
+    <dt><code>tc</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd></dd>
+    <dt><code>sIsRay</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_LineBuilder_GetPointToLineDistance2D_" data-uid="HelixToolkit.SharpDX.LineBuilder.GetPointToLineDistance2D*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_LineBuilder_GetPointToLineDistance2D_System_Numerics_Vector3__System_Numerics_Vector3__System_Numerics_Vector3__System_Numerics_Vector3__System_Single__" data-uid="HelixToolkit.SharpDX.LineBuilder.GetPointToLineDistance2D(System.Numerics.Vector3@,System.Numerics.Vector3@,System.Numerics.Vector3@,System.Numerics.Vector3@,System.Single@)">
+  GetPointToLineDistance2D(ref Vector3, ref Vector3, ref Vector3, out Vector3, out float)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Utilities/LineBuilder.cs/#L364"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>~7874015 tests per second, 3.36 times faster than GetRayToLineDistance()</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static float GetPointToLineDistance2D(ref Vector3 pt, ref Vector3 p0, ref Vector3 p1, out Vector3 closest, out float t)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>pt</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd></dd>
+    <dt><code>p0</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd></dd>
+    <dt><code>p1</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd></dd>
+    <dt><code>closest</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd></dd>
+    <dt><code>t</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_LineBuilder_GetRayToLineDistance_" data-uid="HelixToolkit.SharpDX.LineBuilder.GetRayToLineDistance*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_LineBuilder_GetRayToLineDistance_HelixToolkit_Maths_Ray_System_Numerics_Vector3_System_Numerics_Vector3_System_Numerics_Vector3__System_Numerics_Vector3__System_Single__System_Single__" data-uid="HelixToolkit.SharpDX.LineBuilder.GetRayToLineDistance(HelixToolkit.Maths.Ray,System.Numerics.Vector3,System.Numerics.Vector3,System.Numerics.Vector3@,System.Numerics.Vector3@,System.Single@,System.Single@)">
+  GetRayToLineDistance(Ray, Vector3, Vector3, out Vector3, out Vector3, out float, out float)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Utilities/LineBuilder.cs/#L417"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static float GetRayToLineDistance(Ray ray, Vector3 t0, Vector3 t1, out Vector3 sp, out Vector3 tp, out float sc, out float tc)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>ray</code> <a class="xref" href="HelixToolkit.Maths.Ray.html">Ray</a></dt>
+    <dd></dd>
+    <dt><code>t0</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd></dd>
+    <dt><code>t1</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd></dd>
+    <dt><code>sp</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd></dd>
+    <dt><code>tp</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd></dd>
+    <dt><code>sc</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd></dd>
+    <dt><code>tc</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_LineBuilder_ToLineGeometry3D_" data-uid="HelixToolkit.SharpDX.LineBuilder.ToLineGeometry3D*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_LineBuilder_ToLineGeometry3D_System_Boolean_" data-uid="HelixToolkit.SharpDX.LineBuilder.ToLineGeometry3D(System.Boolean)">
+  ToLineGeometry3D(bool)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Utilities/LineBuilder.cs/#L120"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Creates the resulting <a class="xref" href="HelixToolkit.SharpDX.LineGeometry3D.html">LineGeometry3D</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public LineGeometry3D ToLineGeometry3D(bool unshareVertices = false)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>unshareVertices</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p>If true, the resulting <a class="xref" href="HelixToolkit.SharpDX.LineGeometry3D.html">LineGeometry3D</a> has no shared vertices.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.LineGeometry3D.html">LineGeometry3D</a></dt>
+    <dd><p>Returns the resulting <a class="xref" href="HelixToolkit.SharpDX.LineGeometry3D.html">LineGeometry3D</a>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Utilities/LineBuilder.cs/#L5" class="edit-link">Edit this page</a>
+        </div>
+
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          Copyright (c) 2023 Helix Toolkit contributors
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

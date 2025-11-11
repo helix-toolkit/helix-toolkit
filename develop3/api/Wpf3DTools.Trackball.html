@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Class Trackball | Helix Toolkit - 3D for .NET </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Class Trackball | Helix Toolkit - 3D for .NET ">
+      
+      <meta name="description" content="Trackball is a utility class which observes the mouse events on a specified FrameworkElement and produces a Transform3D with the resultant rotation and scale. Example Usage: Trackball trackball = new Trackball(); trackball.EventSource = myElement; myViewport3D.Camera.Transform = trackball.Transform;  Because Viewport3Ds only raise events when the mouse is over the rendered 3D geometry (as opposed to not when the mouse is within the layout bounds) you usually want to use another element as your EventSource.  For example, a transparent border placed on top of your Viewport3D works well: &amp;lt;Grid&amp;gt;   &amp;lt;ColumnDefinition&amp;gt;&amp;lt;/ColumnDefinition&amp;gt;   &amp;lt;RowDefinition&amp;gt;&amp;lt;/RowDefinition&amp;gt;   &amp;lt;Viewport3D Name=&amp;quot;myViewport&amp;quot; ClipToBounds=&amp;quot;True&amp;quot; Grid.Row=&amp;quot;0&amp;quot; Grid.Column=&amp;quot;0&amp;quot;&amp;gt;&amp;lt;/Viewport3D&amp;gt;   &amp;lt;Border Name=&amp;quot;myElement&amp;quot; Background=&amp;quot;Transparent&amp;quot; Grid.Row=&amp;quot;0&amp;quot; Grid.Column=&amp;quot;0&amp;quot;&amp;gt;&amp;lt;/Border&amp;gt; &amp;lt;/Grid&amp;gt;  NOTE: The Transform property may be shared by multiple Cameras if you want to have auxiliary views following the trackball.   It can also be useful to share the Transform property with   models in the scene that you want to move with the camera.   (For example, the Trackport3D&#39;s headlight is implemented   this way.)    You may also use a Transform3DGroup to combine the   Transform property with additional Transforms.">
+      <link rel="icon" href="../images/favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/helix-toolkit/helix-toolkit/new/develop3/apiSpec/new?filename=Wpf3DTools_Trackball.md&amp;value=---%0Auid%3A%20Wpf3DTools.Trackball%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="ManagedReference">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../images/favicon.ico" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="Wpf3DTools.Trackball">
+
+
+
+  <h1 id="Wpf3DTools_Trackball" data-uid="Wpf3DTools.Trackball" class="text-break">
+Class Trackball  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Wpf.SharpDX/Controls/Trackball.cs/#L43"><i class="bi bi-code-slash"></i></a>
+  </h1>
+
+  <div class="facts text-secondary">
+    <dl><dt>Namespace</dt><dd><a class="xref" href="Wpf3DTools.html">Wpf3DTools</a></dd></dl>
+  <dl><dt>Assembly</dt><dd>HelixToolkit.Wpf.SharpDX.dll</dd></dl>
+  </div>
+
+  <div class="markdown summary"><p>Trackball is a utility class which observes the mouse events
+on a specified FrameworkElement and produces a Transform3D
+with the resultant rotation and scale.</p>
+<p>Example Usage:</p>
+<pre><code>Trackball trackball = new Trackball();
+trackball.EventSource = myElement;
+myViewport3D.Camera.Transform = trackball.Transform;
+</code></pre>
+<p>Because Viewport3Ds only raise events when the mouse is over the
+rendered 3D geometry (as opposed to not when the mouse is within
+the layout bounds) you usually want to use another element as
+your EventSource.  For example, a transparent border placed on
+top of your Viewport3D works well:</p>
+<pre><code>&lt;Grid&gt;
+  &lt;ColumnDefinition&gt;&lt;/ColumnDefinition&gt;
+  &lt;RowDefinition&gt;&lt;/RowDefinition&gt;
+  &lt;Viewport3D Name=&quot;myViewport&quot; ClipToBounds=&quot;True&quot; Grid.Row=&quot;0&quot; Grid.Column=&quot;0&quot;&gt;&lt;/Viewport3D&gt;
+  &lt;Border Name=&quot;myElement&quot; Background=&quot;Transparent&quot; Grid.Row=&quot;0&quot; Grid.Column=&quot;0&quot;&gt;&lt;/Border&gt;
+&lt;/Grid&gt;
+</code></pre>
+<p>NOTE: The Transform property may be shared by multiple Cameras
+if you want to have auxiliary views following the trackball.</p>
+<pre><code>  It can also be useful to share the Transform property with
+  models in the scene that you want to move with the camera.
+  (For example, the Trackport3D's headlight is implemented
+  this way.)
+
+  You may also use a Transform3DGroup to combine the
+  Transform property with additional Transforms.
+</code></pre>
+</div>
+  <div class="markdown conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class Trackball</code></pre>
+  </div>
+
+
+
+
+  <dl class="typelist inheritance">
+    <dt>Inheritance</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
+      <div><span class="xref">Trackball</span></div>
+    </dd>
+  </dl>
+
+
+
+  <dl class="typelist inheritedMembers">
+    <dt>Inherited Members</dt>
+    <dd>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">object.Equals(object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">object.Equals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode">object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype">object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone">object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals">object.ReferenceEquals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring">object.ToString()</a>
+    </div>
+  </dd></dl>
+
+
+
+
+
+
+  <h2 class="section" id="constructors">Constructors
+</h2>
+
+
+  <a id="Wpf3DTools_Trackball__ctor_" data-uid="Wpf3DTools.Trackball.#ctor*"></a>
+
+  <h3 id="Wpf3DTools_Trackball__ctor_System_Double_System_Double_" data-uid="Wpf3DTools.Trackball.#ctor(System.Double,System.Double)">
+  Trackball(double, double)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Wpf.SharpDX/Controls/Trackball.cs/#L58"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Trackball(double rotationFactor = 4, double zoomFacfor = 1)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>rotationFactor</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd></dd>
+    <dt><code>zoomFacfor</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <h2 class="section" id="properties">Properties
+</h2>
+
+
+  <a id="Wpf3DTools_Trackball_EventSource_" data-uid="Wpf3DTools.Trackball.EventSource*"></a>
+
+  <h3 id="Wpf3DTools_Trackball_EventSource" data-uid="Wpf3DTools.Trackball.EventSource">
+  EventSource
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Wpf.SharpDX/Controls/Trackball.cs/#L95"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>The FrameworkElement we listen to for mouse events.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public FrameworkElement? EventSource { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.frameworkelement">FrameworkElement</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Wpf3DTools_Trackball_RotateTransform_" data-uid="Wpf3DTools.Trackball.RotateTransform*"></a>
+
+  <h3 id="Wpf3DTools_Trackball_RotateTransform" data-uid="Wpf3DTools.Trackball.RotateTransform">
+  RotateTransform
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Wpf.SharpDX/Controls/Trackball.cs/#L84"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Rotation component of the transform</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Transform3D RotateTransform { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.media3d.transform3d">Transform3D</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Wpf3DTools_Trackball_Transform_" data-uid="Wpf3DTools.Trackball.Transform*"></a>
+
+  <h3 id="Wpf3DTools_Trackball_Transform" data-uid="Wpf3DTools.Trackball.Transform">
+  Transform
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Wpf.SharpDX/Controls/Trackball.cs/#L73"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>A transform to move the camera or scene to the trackball's
+current orientation and scale.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Transform3D Transform { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.media3d.transform3d">Transform3D</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Wpf.SharpDX/Controls/Trackball.cs/#L43" class="edit-link">Edit this page</a>
+        </div>
+
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          Copyright (c) 2023 Helix Toolkit contributors
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

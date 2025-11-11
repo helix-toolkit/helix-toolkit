@@ -1,0 +1,876 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Class PixelBuffer | Helix Toolkit - 3D for .NET </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Class PixelBuffer | Helix Toolkit - 3D for .NET ">
+      
+      <meta name="description" content="An unmanaged buffer of pixels.">
+      <link rel="icon" href="../images/favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/helix-toolkit/helix-toolkit/new/develop3/apiSpec/new?filename=SharpDX_Toolkit_Graphics_PixelBuffer.md&amp;value=---%0Auid%3A%20SharpDX.Toolkit.Graphics.PixelBuffer%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="ManagedReference">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../images/favicon.ico" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="SharpDX.Toolkit.Graphics.PixelBuffer">
+
+
+
+  <h1 id="SharpDX_Toolkit_Graphics_PixelBuffer" data-uid="SharpDX.Toolkit.Graphics.PixelBuffer" class="text-break">
+Class PixelBuffer  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/SharpDX.Toolkit/Graphics/PixelBuffer.cs/#L8"><i class="bi bi-code-slash"></i></a>
+  </h1>
+
+  <div class="facts text-secondary">
+    <dl><dt>Namespace</dt><dd><a class="xref" href="SharpDX.html">SharpDX</a>.<a class="xref" href="SharpDX.Toolkit.html">Toolkit</a>.<a class="xref" href="SharpDX.Toolkit.Graphics.html">Graphics</a></dd></dl>
+  <dl><dt>Assembly</dt><dd>HelixToolkit.SharpDX.dll</dd></dl>
+  </div>
+
+  <div class="markdown summary"><p>An unmanaged buffer of pixels.</p>
+</div>
+  <div class="markdown conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public sealed class PixelBuffer</code></pre>
+  </div>
+
+
+
+
+  <dl class="typelist inheritance">
+    <dt>Inheritance</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
+      <div><span class="xref">PixelBuffer</span></div>
+    </dd>
+  </dl>
+
+
+
+  <dl class="typelist inheritedMembers">
+    <dt>Inherited Members</dt>
+    <dd>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">object.Equals(object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">object.Equals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode">object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype">object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals">object.ReferenceEquals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring">object.ToString()</a>
+    </div>
+  </dd></dl>
+
+
+
+
+
+
+  <h2 class="section" id="constructors">Constructors
+</h2>
+
+
+  <a id="SharpDX_Toolkit_Graphics_PixelBuffer__ctor_" data-uid="SharpDX.Toolkit.Graphics.PixelBuffer.#ctor*"></a>
+
+  <h3 id="SharpDX_Toolkit_Graphics_PixelBuffer__ctor_System_Int32_System_Int32_SharpDX_DXGI_Format_System_Int32_System_Int32_System_IntPtr_" data-uid="SharpDX.Toolkit.Graphics.PixelBuffer.#ctor(System.Int32,System.Int32,SharpDX.DXGI.Format,System.Int32,System.Int32,System.IntPtr)">
+  PixelBuffer(int, int, Format, int, int, nint)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/SharpDX.Toolkit/Graphics/PixelBuffer.cs/#L38"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="SharpDX.Toolkit.Graphics.PixelBuffer.html">PixelBuffer</a> struct.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public PixelBuffer(int width, int height, Format format, int rowStride, int bufferStride, nint dataPointer)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>width</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The width.</p>
+</dd>
+    <dt><code>height</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The height.</p>
+</dd>
+    <dt><code>format</code> <span class="xref">Format</span></dt>
+    <dd><p>The format.</p>
+</dd>
+    <dt><code>rowStride</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The row pitch.</p>
+</dd>
+    <dt><code>bufferStride</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The slice pitch.</p>
+</dd>
+    <dt><code>dataPointer</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.intptr">nint</a></dt>
+    <dd><p>The pixels.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <h2 class="section" id="properties">Properties
+</h2>
+
+
+  <a id="SharpDX_Toolkit_Graphics_PixelBuffer_BufferStride_" data-uid="SharpDX.Toolkit.Graphics.PixelBuffer.BufferStride*"></a>
+
+  <h3 id="SharpDX_Toolkit_Graphics_PixelBuffer_BufferStride" data-uid="SharpDX.Toolkit.Graphics.PixelBuffer.BufferStride">
+  BufferStride
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/SharpDX.Toolkit/Graphics/PixelBuffer.cs/#L125"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the total size in bytes of this pixel buffer.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int BufferStride { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The size in bytes of the pixel buffer.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="SharpDX_Toolkit_Graphics_PixelBuffer_DataPointer_" data-uid="SharpDX.Toolkit.Graphics.PixelBuffer.DataPointer*"></a>
+
+  <h3 id="SharpDX_Toolkit_Graphics_PixelBuffer_DataPointer" data-uid="SharpDX.Toolkit.Graphics.PixelBuffer.DataPointer">
+  DataPointer
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/SharpDX.Toolkit/Graphics/PixelBuffer.cs/#L137"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the pointer to the pixel buffer.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public nint DataPointer { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.intptr">nint</a></dt>
+    <dd><p>The pointer to the pixel buffer.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="SharpDX_Toolkit_Graphics_PixelBuffer_Format_" data-uid="SharpDX.Toolkit.Graphics.PixelBuffer.Format*"></a>
+
+  <h3 id="SharpDX_Toolkit_Graphics_PixelBuffer_Format" data-uid="SharpDX.Toolkit.Graphics.PixelBuffer.Format">
+  Format
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/SharpDX.Toolkit/Graphics/PixelBuffer.cs/#L81"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the format (this value can be changed)</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Format Format { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">Format</span></dt>
+    <dd><p>The format.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="SharpDX_Toolkit_Graphics_PixelBuffer_Height_" data-uid="SharpDX.Toolkit.Graphics.PixelBuffer.Height*"></a>
+
+  <h3 id="SharpDX_Toolkit_Graphics_PixelBuffer_Height" data-uid="SharpDX.Toolkit.Graphics.PixelBuffer.Height">
+  Height
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/SharpDX.Toolkit/Graphics/PixelBuffer.cs/#L69"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the height.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int Height { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The height.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="SharpDX_Toolkit_Graphics_PixelBuffer_PixelSize_" data-uid="SharpDX.Toolkit.Graphics.PixelBuffer.PixelSize*"></a>
+
+  <h3 id="SharpDX_Toolkit_Graphics_PixelBuffer_PixelSize" data-uid="SharpDX.Toolkit.Graphics.PixelBuffer.PixelSize">
+  PixelSize
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/SharpDX.Toolkit/Graphics/PixelBuffer.cs/#L101"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the pixel size in bytes.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int PixelSize { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The pixel size in bytes.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="SharpDX_Toolkit_Graphics_PixelBuffer_RowStride_" data-uid="SharpDX.Toolkit.Graphics.PixelBuffer.RowStride*"></a>
+
+  <h3 id="SharpDX_Toolkit_Graphics_PixelBuffer_RowStride" data-uid="SharpDX.Toolkit.Graphics.PixelBuffer.RowStride">
+  RowStride
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/SharpDX.Toolkit/Graphics/PixelBuffer.cs/#L113"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the row stride in number of bytes.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int RowStride { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The row stride in number of bytes.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="SharpDX_Toolkit_Graphics_PixelBuffer_Width_" data-uid="SharpDX.Toolkit.Graphics.PixelBuffer.Width*"></a>
+
+  <h3 id="SharpDX_Toolkit_Graphics_PixelBuffer_Width" data-uid="SharpDX.Toolkit.Graphics.PixelBuffer.Width">
+  Width
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/SharpDX.Toolkit/Graphics/PixelBuffer.cs/#L57"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the width.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int Width { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The width.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h2 class="section" id="methods">Methods
+</h2>
+
+
+  <a id="SharpDX_Toolkit_Graphics_PixelBuffer_CopyTo_" data-uid="SharpDX.Toolkit.Graphics.PixelBuffer.CopyTo*"></a>
+
+  <h3 id="SharpDX_Toolkit_Graphics_PixelBuffer_CopyTo_SharpDX_Toolkit_Graphics_PixelBuffer_" data-uid="SharpDX.Toolkit.Graphics.PixelBuffer.CopyTo(SharpDX.Toolkit.Graphics.PixelBuffer)">
+  CopyTo(PixelBuffer)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/SharpDX.Toolkit/Graphics/PixelBuffer.cs/#L153"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Copies this pixel buffer to a destination pixel buffer.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void CopyTo(PixelBuffer pixelBuffer)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>pixelBuffer</code> <a class="xref" href="SharpDX.Toolkit.Graphics.PixelBuffer.html">PixelBuffer</a></dt>
+    <dd><p>The destination pixel buffer.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h4 class="section" id="SharpDX_Toolkit_Graphics_PixelBuffer_CopyTo_SharpDX_Toolkit_Graphics_PixelBuffer__remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>The destination pixel buffer must have exactly the same dimensions (width, height) and format than this instance.
+Destination buffer can have different row stride.</p>
+</div>
+
+
+
+
+  <a id="SharpDX_Toolkit_Graphics_PixelBuffer_GetPixel_" data-uid="SharpDX.Toolkit.Graphics.PixelBuffer.GetPixel*"></a>
+
+  <h3 id="SharpDX_Toolkit_Graphics_PixelBuffer_GetPixel__1_System_Int32_System_Int32_" data-uid="SharpDX.Toolkit.Graphics.PixelBuffer.GetPixel``1(System.Int32,System.Int32)">
+  GetPixel&lt;T&gt;(int, int)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/SharpDX.Toolkit/Graphics/PixelBuffer.cs/#L194"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the pixel value at a specified position.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public T GetPixel&lt;T&gt;(int x, int y) where T : unmanaged</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>x</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The x-coordinate.</p>
+</dd>
+    <dt><code>y</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The y-coordinate.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><span class="xref">T</span></dt>
+    <dd><p>The pixel value.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Type Parameters</h4>
+  <dl class="parameters">
+    <dt><code>T</code></dt>
+    <dd><p>Type of the pixel data</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+  <h4 class="section" id="SharpDX_Toolkit_Graphics_PixelBuffer_GetPixel__1_System_Int32_System_Int32__remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>Caution, this method doesn't check bounding.</p>
+</div>
+
+
+
+
+  <a id="SharpDX_Toolkit_Graphics_PixelBuffer_GetPixels_" data-uid="SharpDX.Toolkit.Graphics.PixelBuffer.GetPixels*"></a>
+
+  <h3 id="SharpDX_Toolkit_Graphics_PixelBuffer_GetPixels__1_System_Int32_" data-uid="SharpDX.Toolkit.Graphics.PixelBuffer.GetPixels``1(System.Int32)">
+  GetPixels&lt;T&gt;(int)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/SharpDX.Toolkit/Graphics/PixelBuffer.cs/#L225"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets scanline pixels from the buffer.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public T[] GetPixels&lt;T&gt;(int yOffset = 0) where T : unmanaged</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>yOffset</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The y line offset.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt>T[]</dt>
+    <dd><p>Scanline pixels from the buffer</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Type Parameters</h4>
+  <dl class="parameters">
+    <dt><code>T</code></dt>
+    <dd><p>Type of the pixel data</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+  <h4 class="section" id="SharpDX_Toolkit_Graphics_PixelBuffer_GetPixels__1_System_Int32__remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>This method is working on a row basis. The <code class="paramref">yOffset</code> is specifying the first row to get
+the pixels from.</p>
+</div>
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentexception">ArgumentException</a></dt>
+    <dd><p>If the sizeof(T) is an invalid size</p>
+</dd>
+  </dl>
+
+
+
+  <a id="SharpDX_Toolkit_Graphics_PixelBuffer_GetPixels_" data-uid="SharpDX.Toolkit.Graphics.PixelBuffer.GetPixels*"></a>
+
+  <h3 id="SharpDX_Toolkit_Graphics_PixelBuffer_GetPixels__1___0___System_Int32_" data-uid="SharpDX.Toolkit.Graphics.PixelBuffer.GetPixels``1(``0[],System.Int32)">
+  GetPixels&lt;T&gt;(T[], int)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/SharpDX.Toolkit/Graphics/PixelBuffer.cs/#L249"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets scanline pixels from the buffer.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void GetPixels&lt;T&gt;(T[] pixels, int yOffset = 0) where T : unmanaged</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>pixels</code> T[]</dt>
+    <dd><p>An allocated scanline pixel buffer</p>
+</dd>
+    <dt><code>yOffset</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The y line offset.</p>
+</dd>
+  </dl>
+
+
+  <h4 class="section">Type Parameters</h4>
+  <dl class="parameters">
+    <dt><code>T</code></dt>
+    <dd><p>Type of the pixel data</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+  <h4 class="section" id="SharpDX_Toolkit_Graphics_PixelBuffer_GetPixels__1___0___System_Int32__remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>This method is working on a row basis. The <code class="paramref">yOffset</code> is specifying the first row to get
+the pixels from.</p>
+</div>
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentexception">ArgumentException</a></dt>
+    <dd><p>If the sizeof(T) is an invalid size</p>
+</dd>
+  </dl>
+
+
+
+  <a id="SharpDX_Toolkit_Graphics_PixelBuffer_GetPixels_" data-uid="SharpDX.Toolkit.Graphics.PixelBuffer.GetPixels*"></a>
+
+  <h3 id="SharpDX_Toolkit_Graphics_PixelBuffer_GetPixels__1___0___System_Int32_System_Int32_System_Int32_" data-uid="SharpDX.Toolkit.Graphics.PixelBuffer.GetPixels``1(``0[],System.Int32,System.Int32,System.Int32)">
+  GetPixels&lt;T&gt;(T[], int, int, int)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/SharpDX.Toolkit/Graphics/PixelBuffer.cs/#L267"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets scanline pixels from the buffer.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void GetPixels&lt;T&gt;(T[] pixels, int yOffset, int pixelIndex, int pixelCount) where T : unmanaged</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>pixels</code> T[]</dt>
+    <dd><p>An allocated scanline pixel buffer</p>
+</dd>
+    <dt><code>yOffset</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The y line offset.</p>
+</dd>
+    <dt><code>pixelIndex</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>Offset into the destination <code class="paramref">pixels</code> buffer.</p>
+</dd>
+    <dt><code>pixelCount</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>Number of pixels to write into the destination <code class="paramref">pixels</code> buffer.</p>
+</dd>
+  </dl>
+
+
+  <h4 class="section">Type Parameters</h4>
+  <dl class="parameters">
+    <dt><code>T</code></dt>
+    <dd><p>Type of the pixel data</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+  <h4 class="section" id="SharpDX_Toolkit_Graphics_PixelBuffer_GetPixels__1___0___System_Int32_System_Int32_System_Int32__remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>This method is working on a row basis. The <code class="paramref">yOffset</code> is specifying the first row to get
+the pixels from.</p>
+</div>
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentexception">ArgumentException</a></dt>
+    <dd><p>If the sizeof(T) is an invalid size</p>
+</dd>
+  </dl>
+
+
+
+  <a id="SharpDX_Toolkit_Graphics_PixelBuffer_SetPixel_" data-uid="SharpDX.Toolkit.Graphics.PixelBuffer.SetPixel*"></a>
+
+  <h3 id="SharpDX_Toolkit_Graphics_PixelBuffer_SetPixel__1_System_Int32_System_Int32___0_" data-uid="SharpDX.Toolkit.Graphics.PixelBuffer.SetPixel``1(System.Int32,System.Int32,``0)">
+  SetPixel&lt;T&gt;(int, int, T)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/SharpDX.Toolkit/Graphics/PixelBuffer.cs/#L209"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the pixel value at a specified position.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void SetPixel&lt;T&gt;(int x, int y, T value) where T : unmanaged</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>x</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The x-coordinate.</p>
+</dd>
+    <dt><code>y</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The y-coordinate.</p>
+</dd>
+    <dt><code>value</code> <span class="xref">T</span></dt>
+    <dd><p>The pixel value.</p>
+</dd>
+  </dl>
+
+
+  <h4 class="section">Type Parameters</h4>
+  <dl class="parameters">
+    <dt><code>T</code></dt>
+    <dd><p>Type of the pixel data</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+  <h4 class="section" id="SharpDX_Toolkit_Graphics_PixelBuffer_SetPixel__1_System_Int32_System_Int32___0__remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>Caution, this method doesn't check bounding.</p>
+</div>
+
+
+
+
+  <a id="SharpDX_Toolkit_Graphics_PixelBuffer_SetPixels_" data-uid="SharpDX.Toolkit.Graphics.PixelBuffer.SetPixels*"></a>
+
+  <h3 id="SharpDX_Toolkit_Graphics_PixelBuffer_SetPixels__1___0___System_Int32_" data-uid="SharpDX.Toolkit.Graphics.PixelBuffer.SetPixels``1(``0[],System.Int32)">
+  SetPixels&lt;T&gt;(T[], int)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/SharpDX.Toolkit/Graphics/PixelBuffer.cs/#L303"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Sets scanline pixels to the buffer.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void SetPixels&lt;T&gt;(T[] sourcePixels, int yOffset = 0) where T : unmanaged</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>sourcePixels</code> T[]</dt>
+    <dd><p>Source pixel buffer</p>
+</dd>
+    <dt><code>yOffset</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The y line offset.</p>
+</dd>
+  </dl>
+
+
+  <h4 class="section">Type Parameters</h4>
+  <dl class="parameters">
+    <dt><code>T</code></dt>
+    <dd><p>Type of the pixel data</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+  <h4 class="section" id="SharpDX_Toolkit_Graphics_PixelBuffer_SetPixels__1___0___System_Int32__remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>This method is working on a row basis. The <code class="paramref">yOffset</code> is specifying the first row to get
+the pixels from.</p>
+</div>
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentexception">ArgumentException</a></dt>
+    <dd><p>If the sizeof(T) is an invalid size</p>
+</dd>
+  </dl>
+
+
+
+  <a id="SharpDX_Toolkit_Graphics_PixelBuffer_SetPixels_" data-uid="SharpDX.Toolkit.Graphics.PixelBuffer.SetPixels*"></a>
+
+  <h3 id="SharpDX_Toolkit_Graphics_PixelBuffer_SetPixels__1___0___System_Int32_System_Int32_System_Int32_" data-uid="SharpDX.Toolkit.Graphics.PixelBuffer.SetPixels``1(``0[],System.Int32,System.Int32,System.Int32)">
+  SetPixels&lt;T&gt;(T[], int, int, int)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/SharpDX.Toolkit/Graphics/PixelBuffer.cs/#L321"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Sets scanline pixels to the buffer.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void SetPixels&lt;T&gt;(T[] sourcePixels, int yOffset, int pixelIndex, int pixelCount) where T : unmanaged</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>sourcePixels</code> T[]</dt>
+    <dd><p>Source pixel buffer</p>
+</dd>
+    <dt><code>yOffset</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The y line offset.</p>
+</dd>
+    <dt><code>pixelIndex</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>Offset into the source <code class="paramref">sourcePixels</code> buffer.</p>
+</dd>
+    <dt><code>pixelCount</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>Number of pixels to write into the source <code class="paramref">sourcePixels</code> buffer.</p>
+</dd>
+  </dl>
+
+
+  <h4 class="section">Type Parameters</h4>
+  <dl class="parameters">
+    <dt><code>T</code></dt>
+    <dd><p>Type of the pixel data</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+  <h4 class="section" id="SharpDX_Toolkit_Graphics_PixelBuffer_SetPixels__1___0___System_Int32_System_Int32_System_Int32__remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>This method is working on a row basis. The <code class="paramref">yOffset</code> is specifying the first row to get
+the pixels from.</p>
+</div>
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentexception">ArgumentException</a></dt>
+    <dd><p>If the sizeof(T) is an invalid size</p>
+</dd>
+  </dl>
+
+
+
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/SharpDX.Toolkit/Graphics/PixelBuffer.cs/#L8" class="edit-link">Edit this page</a>
+        </div>
+
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          Copyright (c) 2023 Helix Toolkit contributors
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

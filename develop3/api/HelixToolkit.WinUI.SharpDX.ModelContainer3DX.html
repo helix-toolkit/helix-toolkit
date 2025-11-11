@@ -1,0 +1,3730 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Class ModelContainer3DX | Helix Toolkit - 3D for .NET </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Class ModelContainer3DX | Helix Toolkit - 3D for .NET ">
+      
+      <meta name="description" content="Use to contain shared models for multiple viewports. Suggest to bind effects manager in viewmodel. Assign effect manager from code behind may cause memory leak">
+      <link rel="icon" href="../images/favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/helix-toolkit/helix-toolkit/new/develop3/apiSpec/new?filename=HelixToolkit_WinUI_SharpDX_ModelContainer3DX.md&amp;value=---%0Auid%3A%20HelixToolkit.WinUI.SharpDX.ModelContainer3DX%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="ManagedReference">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../images/favicon.ico" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="HelixToolkit.WinUI.SharpDX.ModelContainer3DX">
+
+
+
+  <h1 id="HelixToolkit_WinUI_SharpDX_ModelContainer3DX" data-uid="HelixToolkit.WinUI.SharpDX.ModelContainer3DX" class="text-break">
+Class ModelContainer3DX  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX.SharedModel/Controls/ModelContainer3DX.cs/#L38"><i class="bi bi-code-slash"></i></a>
+  </h1>
+
+  <div class="facts text-secondary">
+    <dl><dt>Namespace</dt><dd><a class="xref" href="HelixToolkit.html">HelixToolkit</a>.<a class="xref" href="HelixToolkit.WinUI.html">WinUI</a>.<a class="xref" href="HelixToolkit.WinUI.SharpDX.html">SharpDX</a></dd></dl>
+  <dl><dt>Assembly</dt><dd>HelixToolkit.WinUI.SharpDX.dll</dd></dl>
+  </div>
+
+  <div class="markdown summary"><p>Use to contain shared models for multiple viewports.</p>
+<p>Suggest to bind effects manager in viewmodel. Assign effect manager from code behind may cause memory leak</p>
+</div>
+  <div class="markdown conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class ModelContainer3DX : HelixItemsControl, IEquatable&lt;DependencyObject&gt;, IAnimationObject, IVisualElement, IVisualElement2, IEquatable&lt;UIElement&gt;, IEquatable&lt;FrameworkElement&gt;, IEquatable&lt;Control&gt;, IItemContainerMapping, IWinRTObject, IDynamicInterfaceCastable, IEquatable&lt;ItemsControl&gt;, IModelContainer, IRenderHost, IGUID, IDisposable</code></pre>
+  </div>
+
+
+
+
+  <dl class="typelist inheritance">
+    <dt>Inheritance</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
+      <div><a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.dependencyobject">DependencyObject</a></div>
+      <div><a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement">UIElement</a></div>
+      <div><a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.frameworkelement">FrameworkElement</a></div>
+      <div><a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.control">Control</a></div>
+      <div><a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.itemscontrol">ItemsControl</a></div>
+      <div><a class="xref" href="HelixToolkit.WinUI.SharpDX.HelixItemsControl.html">HelixItemsControl</a></div>
+      <div><span class="xref">ModelContainer3DX</span></div>
+    </dd>
+  </dl>
+
+  <dl class="typelist implements">
+    <dt>Implements</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iequatable-1">IEquatable</a>&lt;<a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.dependencyobject">DependencyObject</a>&gt;</div>
+      <div><a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.composition.ianimationobject">IAnimationObject</a></div>
+      <div><a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.composition.ivisualelement">IVisualElement</a></div>
+      <div><a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.composition.ivisualelement2">IVisualElement2</a></div>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iequatable-1">IEquatable</a>&lt;<a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement">UIElement</a>&gt;</div>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iequatable-1">IEquatable</a>&lt;<a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.frameworkelement">FrameworkElement</a>&gt;</div>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iequatable-1">IEquatable</a>&lt;<a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.control">Control</a>&gt;</div>
+      <div><a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.iitemcontainermapping">IItemContainerMapping</a></div>
+      <div><span class="xref">IWinRTObject</span></div>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.runtime.interopservices.idynamicinterfacecastable">IDynamicInterfaceCastable</a></div>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iequatable-1">IEquatable</a>&lt;<a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.itemscontrol">ItemsControl</a>&gt;</div>
+      <div><a class="xref" href="HelixToolkit.SharpDX.IModelContainer.html">IModelContainer</a></div>
+      <div><a class="xref" href="HelixToolkit.SharpDX.IRenderHost.html">IRenderHost</a></div>
+      <div><a class="xref" href="HelixToolkit.SharpDX.IGUID.html">IGUID</a></div>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.idisposable">IDisposable</a></div>
+    </dd>
+  </dl>
+
+
+  <dl class="typelist inheritedMembers">
+    <dt>Inherited Members</dt>
+    <dd>
+    <div>
+      <a class="xref" href="HelixToolkit.WinUI.SharpDX.HelixItemsControl.html#HelixToolkit_WinUI_SharpDX_HelixItemsControl_ArrangeOverride_Windows_Foundation_Size_">HelixItemsControl.ArrangeOverride(Size)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.WinUI.SharpDX.HelixItemsControl.html#HelixToolkit_WinUI_SharpDX_HelixItemsControl_MeasureOverride_Windows_Foundation_Size_">HelixItemsControl.MeasureOverride(Size)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.itemscontrol.as">ItemsControl.As&lt;I&gt;()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.itemscontrol.getitemsowner">ItemsControl.GetItemsOwner(DependencyObject)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.itemscontrol.itemscontrolfromitemcontainer">ItemsControl.ItemsControlFromItemContainer(DependencyObject)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.itemscontrol.fromabi">ItemsControl.FromAbi(nint)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.itemscontrol.equals#microsoft-ui-xaml-controls-itemscontrol-equals(microsoft-ui-xaml-controls-itemscontrol)">ItemsControl.Equals(ItemsControl)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.itemscontrol.equals#microsoft-ui-xaml-controls-itemscontrol-equals(system-object)">ItemsControl.Equals(object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.itemscontrol.gethashcode">ItemsControl.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.itemscontrol.groupheadercontainerfromitemcontainer">ItemsControl.GroupHeaderContainerFromItemContainer(DependencyObject)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.itemscontrol.isitemitsowncontaineroverride">ItemsControl.IsItemItsOwnContainerOverride(object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.itemscontrol.getcontainerforitemoverride">ItemsControl.GetContainerForItemOverride()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.itemscontrol.clearcontainerforitemoverride">ItemsControl.ClearContainerForItemOverride(DependencyObject, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.itemscontrol.preparecontainerforitemoverride">ItemsControl.PrepareContainerForItemOverride(DependencyObject, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.itemscontrol.onitemschanged">ItemsControl.OnItemsChanged(object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.itemscontrol.onitemcontainerstylechanged">ItemsControl.OnItemContainerStyleChanged(Style, Style)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.itemscontrol.onitemcontainerstyleselectorchanged">ItemsControl.OnItemContainerStyleSelectorChanged(StyleSelector, StyleSelector)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.itemscontrol.onitemtemplatechanged">ItemsControl.OnItemTemplateChanged(DataTemplate, DataTemplate)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.itemscontrol.onitemtemplateselectorchanged">ItemsControl.OnItemTemplateSelectorChanged(DataTemplateSelector, DataTemplateSelector)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.itemscontrol.ongroupstyleselectorchanged">ItemsControl.OnGroupStyleSelectorChanged(GroupStyleSelector, GroupStyleSelector)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.itemscontrol.itemfromcontainer">ItemsControl.ItemFromContainer(DependencyObject)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.itemscontrol.containerfromitem">ItemsControl.ContainerFromItem(object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.itemscontrol.indexfromcontainer">ItemsControl.IndexFromContainer(DependencyObject)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.itemscontrol.containerfromindex">ItemsControl.ContainerFromIndex(int)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.itemscontrol.isoverridableinterface">ItemsControl.IsOverridableInterface(Guid)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.itemscontrol.displaymemberpathproperty">ItemsControl.DisplayMemberPathProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.itemscontrol.groupstyleselectorproperty">ItemsControl.GroupStyleSelectorProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.itemscontrol.isgroupingproperty">ItemsControl.IsGroupingProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.itemscontrol.itemcontainerstyleproperty">ItemsControl.ItemContainerStyleProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.itemscontrol.itemcontainerstyleselectorproperty">ItemsControl.ItemContainerStyleSelectorProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.itemscontrol.itemcontainertransitionsproperty">ItemsControl.ItemContainerTransitionsProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.itemscontrol.itemtemplateproperty">ItemsControl.ItemTemplateProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.itemscontrol.itemtemplateselectorproperty">ItemsControl.ItemTemplateSelectorProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.itemscontrol.itemspanelproperty">ItemsControl.ItemsPanelProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.itemscontrol.itemssourceproperty">ItemsControl.ItemsSourceProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.itemscontrol.displaymemberpath">ItemsControl.DisplayMemberPath</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.itemscontrol.groupstyle">ItemsControl.GroupStyle</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.itemscontrol.groupstyleselector">ItemsControl.GroupStyleSelector</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.itemscontrol.isgrouping">ItemsControl.IsGrouping</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.itemscontrol.itemcontainergenerator">ItemsControl.ItemContainerGenerator</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.itemscontrol.itemcontainerstyle">ItemsControl.ItemContainerStyle</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.itemscontrol.itemcontainerstyleselector">ItemsControl.ItemContainerStyleSelector</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.itemscontrol.itemcontainertransitions">ItemsControl.ItemContainerTransitions</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.itemscontrol.itemtemplate">ItemsControl.ItemTemplate</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.itemscontrol.itemtemplateselector">ItemsControl.ItemTemplateSelector</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.itemscontrol.items">ItemsControl.Items</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.itemscontrol.itemspanel">ItemsControl.ItemsPanel</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.itemscontrol.itemspanelroot">ItemsControl.ItemsPanelRoot</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.itemscontrol.itemssource">ItemsControl.ItemsSource</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.control.getistemplatefocustarget">Control.GetIsTemplateFocusTarget(FrameworkElement)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.control.setistemplatefocustarget">Control.SetIsTemplateFocusTarget(FrameworkElement, bool)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.control.getistemplatekeytiptarget">Control.GetIsTemplateKeyTipTarget(DependencyObject)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.control.setistemplatekeytiptarget">Control.SetIsTemplateKeyTipTarget(DependencyObject, bool)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.control.equals#microsoft-ui-xaml-controls-control-equals(microsoft-ui-xaml-controls-control)">Control.Equals(Control)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.control.removefocusengagement">Control.RemoveFocusEngagement()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.control.applytemplate">Control.ApplyTemplate()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.control.gettemplatechild">Control.GetTemplateChild(string)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.control.onpointerentered">Control.OnPointerEntered(PointerRoutedEventArgs)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.control.onpointerpressed">Control.OnPointerPressed(PointerRoutedEventArgs)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.control.onpointermoved">Control.OnPointerMoved(PointerRoutedEventArgs)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.control.onpointerreleased">Control.OnPointerReleased(PointerRoutedEventArgs)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.control.onpointerexited">Control.OnPointerExited(PointerRoutedEventArgs)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.control.onpointercapturelost">Control.OnPointerCaptureLost(PointerRoutedEventArgs)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.control.onpointercanceled">Control.OnPointerCanceled(PointerRoutedEventArgs)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.control.onpointerwheelchanged">Control.OnPointerWheelChanged(PointerRoutedEventArgs)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.control.ontapped">Control.OnTapped(TappedRoutedEventArgs)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.control.ondoubletapped">Control.OnDoubleTapped(DoubleTappedRoutedEventArgs)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.control.onholding">Control.OnHolding(HoldingRoutedEventArgs)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.control.onrighttapped">Control.OnRightTapped(RightTappedRoutedEventArgs)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.control.onmanipulationstarting">Control.OnManipulationStarting(ManipulationStartingRoutedEventArgs)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.control.onmanipulationinertiastarting">Control.OnManipulationInertiaStarting(ManipulationInertiaStartingRoutedEventArgs)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.control.onmanipulationstarted">Control.OnManipulationStarted(ManipulationStartedRoutedEventArgs)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.control.onmanipulationdelta">Control.OnManipulationDelta(ManipulationDeltaRoutedEventArgs)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.control.onmanipulationcompleted">Control.OnManipulationCompleted(ManipulationCompletedRoutedEventArgs)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.control.onkeyup">Control.OnKeyUp(KeyRoutedEventArgs)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.control.onkeydown">Control.OnKeyDown(KeyRoutedEventArgs)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.control.onpreviewkeydown">Control.OnPreviewKeyDown(KeyRoutedEventArgs)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.control.onpreviewkeyup">Control.OnPreviewKeyUp(KeyRoutedEventArgs)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.control.ongotfocus">Control.OnGotFocus(RoutedEventArgs)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.control.onlostfocus">Control.OnLostFocus(RoutedEventArgs)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.control.oncharacterreceived">Control.OnCharacterReceived(CharacterReceivedRoutedEventArgs)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.control.ondragenter">Control.OnDragEnter(DragEventArgs)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.control.ondragleave">Control.OnDragLeave(DragEventArgs)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.control.ondragover">Control.OnDragOver(DragEventArgs)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.control.ondrop">Control.OnDrop(DragEventArgs)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.control.backgroundproperty">Control.BackgroundProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.control.backgroundsizingproperty">Control.BackgroundSizingProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.control.borderbrushproperty">Control.BorderBrushProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.control.borderthicknessproperty">Control.BorderThicknessProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.control.characterspacingproperty">Control.CharacterSpacingProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.control.cornerradiusproperty">Control.CornerRadiusProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.control.defaultstylekeyproperty">Control.DefaultStyleKeyProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.control.defaultstyleresourceuriproperty">Control.DefaultStyleResourceUriProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.control.elementsoundmodeproperty">Control.ElementSoundModeProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.control.fontfamilyproperty">Control.FontFamilyProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.control.fontsizeproperty">Control.FontSizeProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.control.fontstretchproperty">Control.FontStretchProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.control.fontstyleproperty">Control.FontStyleProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.control.fontweightproperty">Control.FontWeightProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.control.foregroundproperty">Control.ForegroundProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.control.horizontalcontentalignmentproperty">Control.HorizontalContentAlignmentProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.control.isenabledproperty">Control.IsEnabledProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.control.isfocusengagedproperty">Control.IsFocusEngagedProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.control.isfocusengagementenabledproperty">Control.IsFocusEngagementEnabledProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.control.istemplatefocustargetproperty">Control.IsTemplateFocusTargetProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.control.istemplatekeytiptargetproperty">Control.IsTemplateKeyTipTargetProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.control.istextscalefactorenabledproperty">Control.IsTextScaleFactorEnabledProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.control.paddingproperty">Control.PaddingProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.control.requirespointerproperty">Control.RequiresPointerProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.control.tabnavigationproperty">Control.TabNavigationProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.control.templateproperty">Control.TemplateProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.control.verticalcontentalignmentproperty">Control.VerticalContentAlignmentProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.control.background">Control.Background</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.control.backgroundsizing">Control.BackgroundSizing</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.control.borderbrush">Control.BorderBrush</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.control.borderthickness">Control.BorderThickness</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.control.characterspacing">Control.CharacterSpacing</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.control.cornerradius">Control.CornerRadius</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.control.defaultstylekey">Control.DefaultStyleKey</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.control.defaultstyleresourceuri">Control.DefaultStyleResourceUri</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.control.elementsoundmode">Control.ElementSoundMode</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.control.fontfamily">Control.FontFamily</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.control.fontsize">Control.FontSize</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.control.fontstretch">Control.FontStretch</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.control.fontstyle">Control.FontStyle</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.control.fontweight">Control.FontWeight</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.control.foreground">Control.Foreground</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.control.horizontalcontentalignment">Control.HorizontalContentAlignment</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.control.isenabled">Control.IsEnabled</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.control.isfocusengaged">Control.IsFocusEngaged</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.control.isfocusengagementenabled">Control.IsFocusEngagementEnabled</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.control.istextscalefactorenabled">Control.IsTextScaleFactorEnabled</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.control.padding">Control.Padding</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.control.requirespointer">Control.RequiresPointer</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.control.tabnavigation">Control.TabNavigation</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.control.template">Control.Template</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.control.verticalcontentalignment">Control.VerticalContentAlignment</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.control.focusdisengaged">Control.FocusDisengaged</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.control.focusengaged">Control.FocusEngaged</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.control.isenabledchanged">Control.IsEnabledChanged</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.frameworkelement.defertree">FrameworkElement.DeferTree(DependencyObject)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.frameworkelement.equals#microsoft-ui-xaml-frameworkelement-equals(microsoft-ui-xaml-frameworkelement)">FrameworkElement.Equals(FrameworkElement)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.frameworkelement.findname">FrameworkElement.FindName(string)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.frameworkelement.setbinding">FrameworkElement.SetBinding(DependencyProperty, BindingBase)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.frameworkelement.getbindingexpression">FrameworkElement.GetBindingExpression(DependencyProperty)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.frameworkelement.invalidateviewport">FrameworkElement.InvalidateViewport()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.frameworkelement.onapplytemplate">FrameworkElement.OnApplyTemplate()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.frameworkelement.gotoelementstatecore">FrameworkElement.GoToElementStateCore(string, bool)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.frameworkelement.actualheightproperty">FrameworkElement.ActualHeightProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.frameworkelement.actualthemeproperty">FrameworkElement.ActualThemeProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.frameworkelement.actualwidthproperty">FrameworkElement.ActualWidthProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.frameworkelement.allowfocusoninteractionproperty">FrameworkElement.AllowFocusOnInteractionProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.frameworkelement.allowfocuswhendisabledproperty">FrameworkElement.AllowFocusWhenDisabledProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.frameworkelement.datacontextproperty">FrameworkElement.DataContextProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.frameworkelement.flowdirectionproperty">FrameworkElement.FlowDirectionProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.frameworkelement.focusvisualmarginproperty">FrameworkElement.FocusVisualMarginProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.frameworkelement.focusvisualprimarybrushproperty">FrameworkElement.FocusVisualPrimaryBrushProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.frameworkelement.focusvisualprimarythicknessproperty">FrameworkElement.FocusVisualPrimaryThicknessProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.frameworkelement.focusvisualsecondarybrushproperty">FrameworkElement.FocusVisualSecondaryBrushProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.frameworkelement.focusvisualsecondarythicknessproperty">FrameworkElement.FocusVisualSecondaryThicknessProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.frameworkelement.heightproperty">FrameworkElement.HeightProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.frameworkelement.horizontalalignmentproperty">FrameworkElement.HorizontalAlignmentProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.frameworkelement.languageproperty">FrameworkElement.LanguageProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.frameworkelement.marginproperty">FrameworkElement.MarginProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.frameworkelement.maxheightproperty">FrameworkElement.MaxHeightProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.frameworkelement.maxwidthproperty">FrameworkElement.MaxWidthProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.frameworkelement.minheightproperty">FrameworkElement.MinHeightProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.frameworkelement.minwidthproperty">FrameworkElement.MinWidthProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.frameworkelement.nameproperty">FrameworkElement.NameProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.frameworkelement.requestedthemeproperty">FrameworkElement.RequestedThemeProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.frameworkelement.styleproperty">FrameworkElement.StyleProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.frameworkelement.tagproperty">FrameworkElement.TagProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.frameworkelement.verticalalignmentproperty">FrameworkElement.VerticalAlignmentProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.frameworkelement.widthproperty">FrameworkElement.WidthProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.frameworkelement.actualtheme">FrameworkElement.ActualTheme</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.frameworkelement.allowfocusoninteraction">FrameworkElement.AllowFocusOnInteraction</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.frameworkelement.allowfocuswhendisabled">FrameworkElement.AllowFocusWhenDisabled</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.frameworkelement.baseuri">FrameworkElement.BaseUri</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.frameworkelement.datacontext">FrameworkElement.DataContext</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.frameworkelement.flowdirection">FrameworkElement.FlowDirection</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.frameworkelement.focusvisualmargin">FrameworkElement.FocusVisualMargin</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.frameworkelement.focusvisualprimarybrush">FrameworkElement.FocusVisualPrimaryBrush</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.frameworkelement.focusvisualprimarythickness">FrameworkElement.FocusVisualPrimaryThickness</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.frameworkelement.focusvisualsecondarybrush">FrameworkElement.FocusVisualSecondaryBrush</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.frameworkelement.focusvisualsecondarythickness">FrameworkElement.FocusVisualSecondaryThickness</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.frameworkelement.height">FrameworkElement.Height</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.frameworkelement.horizontalalignment">FrameworkElement.HorizontalAlignment</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.frameworkelement.isloaded">FrameworkElement.IsLoaded</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.frameworkelement.language">FrameworkElement.Language</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.frameworkelement.margin">FrameworkElement.Margin</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.frameworkelement.maxheight">FrameworkElement.MaxHeight</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.frameworkelement.maxwidth">FrameworkElement.MaxWidth</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.frameworkelement.minheight">FrameworkElement.MinHeight</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.frameworkelement.minwidth">FrameworkElement.MinWidth</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.frameworkelement.name">FrameworkElement.Name</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.frameworkelement.parent">FrameworkElement.Parent</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.frameworkelement.requestedtheme">FrameworkElement.RequestedTheme</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.frameworkelement.resources">FrameworkElement.Resources</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.frameworkelement.style">FrameworkElement.Style</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.frameworkelement.tag">FrameworkElement.Tag</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.frameworkelement.triggers">FrameworkElement.Triggers</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.frameworkelement.verticalalignment">FrameworkElement.VerticalAlignment</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.frameworkelement.width">FrameworkElement.Width</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.frameworkelement.actualthemechanged">FrameworkElement.ActualThemeChanged</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.frameworkelement.datacontextchanged">FrameworkElement.DataContextChanged</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.frameworkelement.effectiveviewportchanged">FrameworkElement.EffectiveViewportChanged</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.frameworkelement.layoutupdated">FrameworkElement.LayoutUpdated</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.frameworkelement.loaded">FrameworkElement.Loaded</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.frameworkelement.loading">FrameworkElement.Loading</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.frameworkelement.sizechanged">FrameworkElement.SizeChanged</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.frameworkelement.unloaded">FrameworkElement.Unloaded</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.trystartdirectmanipulation">UIElement.TryStartDirectManipulation(Pointer)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.registerasscrollport">UIElement.RegisterAsScrollPort(UIElement)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.equals#microsoft-ui-xaml-uielement-equals(microsoft-ui-xaml-uielement)">UIElement.Equals(UIElement)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.measure">UIElement.Measure(Size)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.arrange">UIElement.Arrange(Rect)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.capturepointer">UIElement.CapturePointer(Pointer)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.releasepointercapture">UIElement.ReleasePointerCapture(Pointer)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.releasepointercaptures">UIElement.ReleasePointerCaptures()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.addhandler">UIElement.AddHandler(RoutedEvent, object, bool)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.removehandler">UIElement.RemoveHandler(RoutedEvent, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.transformtovisual">UIElement.TransformToVisual(UIElement)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.invalidatemeasure">UIElement.InvalidateMeasure()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.invalidatearrange">UIElement.InvalidateArrange()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.updatelayout">UIElement.UpdateLayout()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.canceldirectmanipulations">UIElement.CancelDirectManipulations()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.startdragasync">UIElement.StartDragAsync(PointerPoint)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.startbringintoview#microsoft-ui-xaml-uielement-startbringintoview">UIElement.StartBringIntoView()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.startbringintoview#microsoft-ui-xaml-uielement-startbringintoview(microsoft-ui-xaml-bringintoviewoptions)">UIElement.StartBringIntoView(BringIntoViewOptions)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.tryinvokekeyboardaccelerator">UIElement.TryInvokeKeyboardAccelerator(ProcessKeyboardAcceleratorEventArgs)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.focus">UIElement.Focus(FocusState)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.startanimation">UIElement.StartAnimation(ICompositionAnimationBase)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.stopanimation">UIElement.StopAnimation(ICompositionAnimationBase)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.oncreateautomationpeer">UIElement.OnCreateAutomationPeer()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.ondisconnectvisualchildren">UIElement.OnDisconnectVisualChildren()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.findsubelementsfortouchtargeting">UIElement.FindSubElementsForTouchTargeting(Point, Rect)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.getchildrenintabfocusorder">UIElement.GetChildrenInTabFocusOrder()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.onkeyboardacceleratorinvoked">UIElement.OnKeyboardAcceleratorInvoked(KeyboardAcceleratorInvokedEventArgs)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.onprocesskeyboardaccelerators">UIElement.OnProcessKeyboardAccelerators(ProcessKeyboardAcceleratorEventArgs)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.onbringintoviewrequested">UIElement.OnBringIntoViewRequested(BringIntoViewRequestedEventArgs)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.populatepropertyinfooverride">UIElement.PopulatePropertyInfoOverride(string, AnimationPropertyInfo)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.populatepropertyinfo">UIElement.PopulatePropertyInfo(string, AnimationPropertyInfo)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.getvisualinternal">UIElement.GetVisualInternal()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.accesskeyproperty">UIElement.AccessKeyProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.accesskeyscopeownerproperty">UIElement.AccessKeyScopeOwnerProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.allowdropproperty">UIElement.AllowDropProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.bringintoviewrequestedevent">UIElement.BringIntoViewRequestedEvent</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.cachemodeproperty">UIElement.CacheModeProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.canbescrollanchorproperty">UIElement.CanBeScrollAnchorProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.candragproperty">UIElement.CanDragProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.characterreceivedevent">UIElement.CharacterReceivedEvent</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.clipproperty">UIElement.ClipProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.compositemodeproperty">UIElement.CompositeModeProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.contextflyoutproperty">UIElement.ContextFlyoutProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.contextrequestedevent">UIElement.ContextRequestedEvent</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.doubletappedevent">UIElement.DoubleTappedEvent</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.dragenterevent">UIElement.DragEnterEvent</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.dragleaveevent">UIElement.DragLeaveEvent</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.dragoverevent">UIElement.DragOverEvent</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.dropevent">UIElement.DropEvent</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.exitdisplaymodeonaccesskeyinvokedproperty">UIElement.ExitDisplayModeOnAccessKeyInvokedProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.focusstateproperty">UIElement.FocusStateProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.gettingfocusevent">UIElement.GettingFocusEvent</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.highcontrastadjustmentproperty">UIElement.HighContrastAdjustmentProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.holdingevent">UIElement.HoldingEvent</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.isaccesskeyscopeproperty">UIElement.IsAccessKeyScopeProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.isdoubletapenabledproperty">UIElement.IsDoubleTapEnabledProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.ishittestvisibleproperty">UIElement.IsHitTestVisibleProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.isholdingenabledproperty">UIElement.IsHoldingEnabledProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.isrighttapenabledproperty">UIElement.IsRightTapEnabledProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.istabstopproperty">UIElement.IsTabStopProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.istapenabledproperty">UIElement.IsTapEnabledProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.keydownevent">UIElement.KeyDownEvent</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.keytiphorizontaloffsetproperty">UIElement.KeyTipHorizontalOffsetProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.keytipplacementmodeproperty">UIElement.KeyTipPlacementModeProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.keytiptargetproperty">UIElement.KeyTipTargetProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.keytipverticaloffsetproperty">UIElement.KeyTipVerticalOffsetProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.keyupevent">UIElement.KeyUpEvent</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.keyboardacceleratorplacementmodeproperty">UIElement.KeyboardAcceleratorPlacementModeProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.keyboardacceleratorplacementtargetproperty">UIElement.KeyboardAcceleratorPlacementTargetProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.lightsproperty">UIElement.LightsProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.losingfocusevent">UIElement.LosingFocusEvent</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.manipulationcompletedevent">UIElement.ManipulationCompletedEvent</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.manipulationdeltaevent">UIElement.ManipulationDeltaEvent</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.manipulationinertiastartingevent">UIElement.ManipulationInertiaStartingEvent</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.manipulationmodeproperty">UIElement.ManipulationModeProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.manipulationstartedevent">UIElement.ManipulationStartedEvent</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.manipulationstartingevent">UIElement.ManipulationStartingEvent</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.nofocuscandidatefoundevent">UIElement.NoFocusCandidateFoundEvent</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.opacityproperty">UIElement.OpacityProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.pointercanceledevent">UIElement.PointerCanceledEvent</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.pointercapturelostevent">UIElement.PointerCaptureLostEvent</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.pointercapturesproperty">UIElement.PointerCapturesProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.pointerenteredevent">UIElement.PointerEnteredEvent</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.pointerexitedevent">UIElement.PointerExitedEvent</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.pointermovedevent">UIElement.PointerMovedEvent</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.pointerpressedevent">UIElement.PointerPressedEvent</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.pointerreleasedevent">UIElement.PointerReleasedEvent</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.pointerwheelchangedevent">UIElement.PointerWheelChangedEvent</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.previewkeydownevent">UIElement.PreviewKeyDownEvent</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.previewkeyupevent">UIElement.PreviewKeyUpEvent</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.projectionproperty">UIElement.ProjectionProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.rendertransformoriginproperty">UIElement.RenderTransformOriginProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.rendertransformproperty">UIElement.RenderTransformProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.righttappedevent">UIElement.RightTappedEvent</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.shadowproperty">UIElement.ShadowProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.tabfocusnavigationproperty">UIElement.TabFocusNavigationProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.tabindexproperty">UIElement.TabIndexProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.tappedevent">UIElement.TappedEvent</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.transform3dproperty">UIElement.Transform3DProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.transitionsproperty">UIElement.TransitionsProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.uselayoutroundingproperty">UIElement.UseLayoutRoundingProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.usesystemfocusvisualsproperty">UIElement.UseSystemFocusVisualsProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.visibilityproperty">UIElement.VisibilityProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.xyfocusdownnavigationstrategyproperty">UIElement.XYFocusDownNavigationStrategyProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.xyfocusdownproperty">UIElement.XYFocusDownProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.xyfocuskeyboardnavigationproperty">UIElement.XYFocusKeyboardNavigationProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.xyfocusleftnavigationstrategyproperty">UIElement.XYFocusLeftNavigationStrategyProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.xyfocusleftproperty">UIElement.XYFocusLeftProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.xyfocusrightnavigationstrategyproperty">UIElement.XYFocusRightNavigationStrategyProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.xyfocusrightproperty">UIElement.XYFocusRightProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.xyfocusupnavigationstrategyproperty">UIElement.XYFocusUpNavigationStrategyProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.xyfocusupproperty">UIElement.XYFocusUpProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.accesskey">UIElement.AccessKey</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.accesskeyscopeowner">UIElement.AccessKeyScopeOwner</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.actualoffset">UIElement.ActualOffset</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.actualsize">UIElement.ActualSize</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.allowdrop">UIElement.AllowDrop</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.cachemode">UIElement.CacheMode</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.canbescrollanchor">UIElement.CanBeScrollAnchor</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.candrag">UIElement.CanDrag</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.centerpoint">UIElement.CenterPoint</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.clip">UIElement.Clip</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.compositemode">UIElement.CompositeMode</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.contextflyout">UIElement.ContextFlyout</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.desiredsize">UIElement.DesiredSize</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.exitdisplaymodeonaccesskeyinvoked">UIElement.ExitDisplayModeOnAccessKeyInvoked</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.focusstate">UIElement.FocusState</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.highcontrastadjustment">UIElement.HighContrastAdjustment</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.isaccesskeyscope">UIElement.IsAccessKeyScope</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.isdoubletapenabled">UIElement.IsDoubleTapEnabled</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.ishittestvisible">UIElement.IsHitTestVisible</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.isholdingenabled">UIElement.IsHoldingEnabled</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.isrighttapenabled">UIElement.IsRightTapEnabled</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.istabstop">UIElement.IsTabStop</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.istapenabled">UIElement.IsTapEnabled</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.keytiphorizontaloffset">UIElement.KeyTipHorizontalOffset</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.keytipplacementmode">UIElement.KeyTipPlacementMode</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.keytiptarget">UIElement.KeyTipTarget</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.keytipverticaloffset">UIElement.KeyTipVerticalOffset</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.keyboardacceleratorplacementmode">UIElement.KeyboardAcceleratorPlacementMode</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.keyboardacceleratorplacementtarget">UIElement.KeyboardAcceleratorPlacementTarget</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.keyboardaccelerators">UIElement.KeyboardAccelerators</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.lights">UIElement.Lights</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.manipulationmode">UIElement.ManipulationMode</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.opacity">UIElement.Opacity</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.opacitytransition">UIElement.OpacityTransition</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.pointercaptures">UIElement.PointerCaptures</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.projection">UIElement.Projection</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.protectedcursor">UIElement.ProtectedCursor</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.rasterizationscale">UIElement.RasterizationScale</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.rendersize">UIElement.RenderSize</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.rendertransform">UIElement.RenderTransform</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.rendertransformorigin">UIElement.RenderTransformOrigin</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.rotation">UIElement.Rotation</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.rotationaxis">UIElement.RotationAxis</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.rotationtransition">UIElement.RotationTransition</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.scale">UIElement.Scale</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.scaletransition">UIElement.ScaleTransition</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.shadow">UIElement.Shadow</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.tabfocusnavigation">UIElement.TabFocusNavigation</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.tabindex">UIElement.TabIndex</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.transform3d">UIElement.Transform3D</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.transformmatrix">UIElement.TransformMatrix</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.transitions">UIElement.Transitions</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.translation">UIElement.Translation</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.translationtransition">UIElement.TranslationTransition</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.uselayoutrounding">UIElement.UseLayoutRounding</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.usesystemfocusvisuals">UIElement.UseSystemFocusVisuals</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.visibility">UIElement.Visibility</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.xyfocusdown">UIElement.XYFocusDown</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.xyfocusdownnavigationstrategy">UIElement.XYFocusDownNavigationStrategy</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.xyfocuskeyboardnavigation">UIElement.XYFocusKeyboardNavigation</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.xyfocusleft">UIElement.XYFocusLeft</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.xyfocusleftnavigationstrategy">UIElement.XYFocusLeftNavigationStrategy</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.xyfocusright">UIElement.XYFocusRight</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.xyfocusrightnavigationstrategy">UIElement.XYFocusRightNavigationStrategy</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.xyfocusup">UIElement.XYFocusUp</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.xyfocusupnavigationstrategy">UIElement.XYFocusUpNavigationStrategy</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.xamlroot">UIElement.XamlRoot</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.accesskeydisplaydismissed">UIElement.AccessKeyDisplayDismissed</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.accesskeydisplayrequested">UIElement.AccessKeyDisplayRequested</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.accesskeyinvoked">UIElement.AccessKeyInvoked</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.bringintoviewrequested">UIElement.BringIntoViewRequested</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.characterreceived">UIElement.CharacterReceived</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.contextcanceled">UIElement.ContextCanceled</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.contextrequested">UIElement.ContextRequested</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.doubletapped">UIElement.DoubleTapped</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.dragenter">UIElement.DragEnter</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.dragleave">UIElement.DragLeave</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.dragover">UIElement.DragOver</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.dragstarting">UIElement.DragStarting</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.drop">UIElement.Drop</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.dropcompleted">UIElement.DropCompleted</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.gettingfocus">UIElement.GettingFocus</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.gotfocus">UIElement.GotFocus</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.holding">UIElement.Holding</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.keydown">UIElement.KeyDown</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.keyup">UIElement.KeyUp</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.losingfocus">UIElement.LosingFocus</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.lostfocus">UIElement.LostFocus</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.manipulationcompleted">UIElement.ManipulationCompleted</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.manipulationdelta">UIElement.ManipulationDelta</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.manipulationinertiastarting">UIElement.ManipulationInertiaStarting</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.manipulationstarted">UIElement.ManipulationStarted</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.manipulationstarting">UIElement.ManipulationStarting</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.nofocuscandidatefound">UIElement.NoFocusCandidateFound</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.pointercanceled">UIElement.PointerCanceled</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.pointercapturelost">UIElement.PointerCaptureLost</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.pointerentered">UIElement.PointerEntered</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.pointerexited">UIElement.PointerExited</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.pointermoved">UIElement.PointerMoved</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.pointerpressed">UIElement.PointerPressed</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.pointerreleased">UIElement.PointerReleased</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.pointerwheelchanged">UIElement.PointerWheelChanged</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.previewkeydown">UIElement.PreviewKeyDown</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.previewkeyup">UIElement.PreviewKeyUp</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.processkeyboardaccelerators">UIElement.ProcessKeyboardAccelerators</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.righttapped">UIElement.RightTapped</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.uielement.tapped">UIElement.Tapped</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.dependencyobject.equals#microsoft-ui-xaml-dependencyobject-equals(microsoft-ui-xaml-dependencyobject)">DependencyObject.Equals(DependencyObject)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.dependencyobject.getvalue">DependencyObject.GetValue(DependencyProperty)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.dependencyobject.setvalue">DependencyObject.SetValue(DependencyProperty, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.dependencyobject.clearvalue">DependencyObject.ClearValue(DependencyProperty)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.dependencyobject.readlocalvalue">DependencyObject.ReadLocalValue(DependencyProperty)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.dependencyobject.getanimationbasevalue">DependencyObject.GetAnimationBaseValue(DependencyProperty)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.dependencyobject.registerpropertychangedcallback">DependencyObject.RegisterPropertyChangedCallback(DependencyProperty, DependencyPropertyChangedCallback)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.dependencyobject.unregisterpropertychangedcallback">DependencyObject.UnregisterPropertyChangedCallback(DependencyProperty, long)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.dependencyobject.dispatcher">DependencyObject.Dispatcher</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.dependencyobject.dispatcherqueue">DependencyObject.DispatcherQueue</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">object.Equals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype">object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone">object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals">object.ReferenceEquals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring">object.ToString()</a>
+    </div>
+  </dd></dl>
+
+
+
+
+
+
+  <h2 class="section" id="constructors">Constructors
+</h2>
+
+
+  <a id="HelixToolkit_WinUI_SharpDX_ModelContainer3DX__ctor_" data-uid="HelixToolkit.WinUI.SharpDX.ModelContainer3DX.#ctor*"></a>
+
+  <h3 id="HelixToolkit_WinUI_SharpDX_ModelContainer3DX__ctor" data-uid="HelixToolkit.WinUI.SharpDX.ModelContainer3DX.#ctor">
+  ModelContainer3DX()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX.SharedModel/Controls/ModelContainer3DX.cs/#L635"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ModelContainer3DX()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <h2 class="section" id="fields">Fields
+</h2>
+
+
+
+  <h3 id="HelixToolkit_WinUI_SharpDX_ModelContainer3DX_EffectsManagerProperty" data-uid="HelixToolkit.WinUI.SharpDX.ModelContainer3DX.EffectsManagerProperty">
+  EffectsManagerProperty
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX.SharedModel/Controls/ModelContainer3DX.cs/#L43"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>The EffectsManager property. Suggest to bind effects manager in viewmodel. Assign effect manager from code behind may cause memory leak</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly DependencyProperty EffectsManagerProperty</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.dependencyproperty">DependencyProperty</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+  <h2 class="section" id="properties">Properties
+</h2>
+
+
+  <a id="HelixToolkit_WinUI_SharpDX_ModelContainer3DX_ActualHeight_" data-uid="HelixToolkit.WinUI.SharpDX.ModelContainer3DX.ActualHeight*"></a>
+
+  <h3 id="HelixToolkit_WinUI_SharpDX_ModelContainer3DX_ActualHeight" data-uid="HelixToolkit.WinUI.SharpDX.ModelContainer3DX.ActualHeight">
+  ActualHeight
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX.SharedModel/Controls/ModelContainer3DX.cs/#L153"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the actual height.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float ActualHeight { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>The actual height.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_WinUI_SharpDX_ModelContainer3DX_ActualWidth_" data-uid="HelixToolkit.WinUI.SharpDX.ModelContainer3DX.ActualWidth*"></a>
+
+  <h3 id="HelixToolkit_WinUI_SharpDX_ModelContainer3DX_ActualWidth" data-uid="HelixToolkit.WinUI.SharpDX.ModelContainer3DX.ActualWidth">
+  ActualWidth
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX.SharedModel/Controls/ModelContainer3DX.cs/#L145"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the actual width.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float ActualWidth { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>The actual width.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_WinUI_SharpDX_ModelContainer3DX_ClearColor_" data-uid="HelixToolkit.WinUI.SharpDX.ModelContainer3DX.ClearColor*"></a>
+
+  <h3 id="HelixToolkit_WinUI_SharpDX_ModelContainer3DX_ClearColor" data-uid="HelixToolkit.WinUI.SharpDX.ModelContainer3DX.ClearColor">
+  ClearColor
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX.SharedModel/Controls/ModelContainer3DX.cs/#L404"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the color of the clear.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Color4 ClearColor { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Maths.Color4.html">Color4</a></dt>
+    <dd><p>The color of the clear.</p>
+</dd>
+  </dl>
+
+
+
+
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.notimplementedexception">NotImplementedException</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+  <a id="HelixToolkit_WinUI_SharpDX_ModelContainer3DX_CurrentRenderHost_" data-uid="HelixToolkit.WinUI.SharpDX.ModelContainer3DX.CurrentRenderHost*"></a>
+
+  <h3 id="HelixToolkit_WinUI_SharpDX_ModelContainer3DX_CurrentRenderHost" data-uid="HelixToolkit.WinUI.SharpDX.ModelContainer3DX.CurrentRenderHost">
+  CurrentRenderHost
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX.SharedModel/Controls/ModelContainer3DX.cs/#L115"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IRenderHost? CurrentRenderHost { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.IRenderHost.html">IRenderHost</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_WinUI_SharpDX_ModelContainer3DX_D2DTarget_" data-uid="HelixToolkit.WinUI.SharpDX.ModelContainer3DX.D2DTarget*"></a>
+
+  <h3 id="HelixToolkit_WinUI_SharpDX_ModelContainer3DX_D2DTarget" data-uid="HelixToolkit.WinUI.SharpDX.ModelContainer3DX.D2DTarget">
+  D2DTarget
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX.SharedModel/Controls/ModelContainer3DX.cs/#L582"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the d2d target.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public D2DTargetProxy? D2DTarget { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.Core2D.D2DTargetProxy.html">D2DTargetProxy</a></dt>
+    <dd><p>The d2d target.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_WinUI_SharpDX_ModelContainer3DX_DepthStencilBufferView_" data-uid="HelixToolkit.WinUI.SharpDX.ModelContainer3DX.DepthStencilBufferView*"></a>
+
+  <h3 id="HelixToolkit_WinUI_SharpDX_ModelContainer3DX_DepthStencilBufferView" data-uid="HelixToolkit.WinUI.SharpDX.ModelContainer3DX.DepthStencilBufferView">
+  DepthStencilBufferView
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX.SharedModel/Controls/ModelContainer3DX.cs/#L569"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the depth stencil buffer view.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public DepthStencilView? DepthStencilBufferView { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">DepthStencilView</span></dt>
+    <dd><p>The depth stencil buffer view.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_WinUI_SharpDX_ModelContainer3DX_Device_" data-uid="HelixToolkit.WinUI.SharpDX.ModelContainer3DX.Device*"></a>
+
+  <h3 id="HelixToolkit_WinUI_SharpDX_ModelContainer3DX_Device" data-uid="HelixToolkit.WinUI.SharpDX.ModelContainer3DX.Device">
+  Device
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX.SharedModel/Controls/ModelContainer3DX.cs/#L366"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the device.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Device1? Device { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">Device1</span></dt>
+    <dd><p>The device.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_WinUI_SharpDX_ModelContainer3DX_Device2D_" data-uid="HelixToolkit.WinUI.SharpDX.ModelContainer3DX.Device2D*"></a>
+
+  <h3 id="HelixToolkit_WinUI_SharpDX_ModelContainer3DX_Device2D" data-uid="HelixToolkit.WinUI.SharpDX.ModelContainer3DX.Device2D">
+  Device2D
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX.SharedModel/Controls/ModelContainer3DX.cs/#L380"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the device2d.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Device? Device2D { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">Device</span></dt>
+    <dd><p>The device2d.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_WinUI_SharpDX_ModelContainer3DX_DpiScale_" data-uid="HelixToolkit.WinUI.SharpDX.ModelContainer3DX.DpiScale*"></a>
+
+  <h3 id="HelixToolkit_WinUI_SharpDX_ModelContainer3DX_DpiScale" data-uid="HelixToolkit.WinUI.SharpDX.ModelContainer3DX.DpiScale">
+  DpiScale
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX.SharedModel/Controls/ModelContainer3DX.cs/#L160"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the dpi scale.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float DpiScale { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>The dpi scale.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_WinUI_SharpDX_ModelContainer3DX_EffectsManager_" data-uid="HelixToolkit.WinUI.SharpDX.ModelContainer3DX.EffectsManager*"></a>
+
+  <h3 id="HelixToolkit_WinUI_SharpDX_ModelContainer3DX_EffectsManager" data-uid="HelixToolkit.WinUI.SharpDX.ModelContainer3DX.EffectsManager">
+  EffectsManager
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX.SharedModel/Controls/ModelContainer3DX.cs/#L52"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the <a class="xref" href="HelixToolkit.WinUI.SharpDX.ModelContainer3DX.html#HelixToolkit_WinUI_SharpDX_ModelContainer3DX_EffectsManagerProperty">EffectsManagerProperty</a>.</p>
+<p>The EffectsManager property. Suggest bind effects manager in viewmodel. Assign effect manager from code behind may cause memory leak.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IEffectsManager? EffectsManager { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.IEffectsManager.html">IEffectsManager</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_WinUI_SharpDX_ModelContainer3DX_EnableParallelProcessing_" data-uid="HelixToolkit.WinUI.SharpDX.ModelContainer3DX.EnableParallelProcessing*"></a>
+
+  <h3 id="HelixToolkit_WinUI_SharpDX_ModelContainer3DX_EnableParallelProcessing" data-uid="HelixToolkit.WinUI.SharpDX.ModelContainer3DX.EnableParallelProcessing">
+  EnableParallelProcessing
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX.SharedModel/Controls/ModelContainer3DX.cs/#L633"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Use separate thread to do non-rendering related tasks during render call.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool EnableParallelProcessing { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_WinUI_SharpDX_ModelContainer3DX_EnableRenderFrustum_" data-uid="HelixToolkit.WinUI.SharpDX.ModelContainer3DX.EnableRenderFrustum*"></a>
+
+  <h3 id="HelixToolkit_WinUI_SharpDX_ModelContainer3DX_EnableRenderFrustum" data-uid="HelixToolkit.WinUI.SharpDX.ModelContainer3DX.EnableRenderFrustum">
+  EnableRenderFrustum
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX.SharedModel/Controls/ModelContainer3DX.cs/#L491"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets a value indicating whether [enable render frustum].</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool EnableRenderFrustum { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><code>true</code> if [enable render frustum]; otherwise, <code>false</code>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_WinUI_SharpDX_ModelContainer3DX_EnableSharingModelMode_" data-uid="HelixToolkit.WinUI.SharpDX.ModelContainer3DX.EnableSharingModelMode*"></a>
+
+  <h3 id="HelixToolkit_WinUI_SharpDX_ModelContainer3DX_EnableSharingModelMode" data-uid="HelixToolkit.WinUI.SharpDX.ModelContainer3DX.EnableSharingModelMode">
+  EnableSharingModelMode
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX.SharedModel/Controls/ModelContainer3DX.cs/#L540"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets a value indicating whether [enable sharing model mode].</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool EnableSharingModelMode { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><code>true</code> if [enable sharing model mode]; otherwise, <code>false</code>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_WinUI_SharpDX_ModelContainer3DX_FeatureLevel_" data-uid="HelixToolkit.WinUI.SharpDX.ModelContainer3DX.FeatureLevel*"></a>
+
+  <h3 id="HelixToolkit_WinUI_SharpDX_ModelContainer3DX_FeatureLevel" data-uid="HelixToolkit.WinUI.SharpDX.ModelContainer3DX.FeatureLevel">
+  FeatureLevel
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX.SharedModel/Controls/ModelContainer3DX.cs/#L444"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the feature level.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public FeatureLevel FeatureLevel { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">FeatureLevel</span></dt>
+    <dd><p>The feature level.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_WinUI_SharpDX_ModelContainer3DX_GUID_" data-uid="HelixToolkit.WinUI.SharpDX.ModelContainer3DX.GUID*"></a>
+
+  <h3 id="HelixToolkit_WinUI_SharpDX_ModelContainer3DX_GUID" data-uid="HelixToolkit.WinUI.SharpDX.ModelContainer3DX.GUID">
+  GUID
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX.SharedModel/Controls/ModelContainer3DX.cs/#L101"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the unique identifier.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Guid GUID { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.guid">Guid</a></dt>
+    <dd><p>The unique identifier.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_WinUI_SharpDX_ModelContainer3DX_ImmediateDeviceContext_" data-uid="HelixToolkit.WinUI.SharpDX.ModelContainer3DX.ImmediateDeviceContext*"></a>
+
+  <h3 id="HelixToolkit_WinUI_SharpDX_ModelContainer3DX_ImmediateDeviceContext" data-uid="HelixToolkit.WinUI.SharpDX.ModelContainer3DX.ImmediateDeviceContext">
+  ImmediateDeviceContext
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX.SharedModel/Controls/ModelContainer3DX.cs/#L139"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the immediate device context.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public DeviceContextProxy? ImmediateDeviceContext { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.Render.DeviceContextProxy.html">DeviceContextProxy</a></dt>
+    <dd><p>The immediate device context.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_WinUI_SharpDX_ModelContainer3DX_IsBusy_" data-uid="HelixToolkit.WinUI.SharpDX.ModelContainer3DX.IsBusy*"></a>
+
+  <h3 id="HelixToolkit_WinUI_SharpDX_ModelContainer3DX_IsBusy" data-uid="HelixToolkit.WinUI.SharpDX.ModelContainer3DX.IsBusy">
+  IsBusy
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX.SharedModel/Controls/ModelContainer3DX.cs/#L477"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Indicates if DPFCanvas busy on rendering.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsBusy { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_WinUI_SharpDX_ModelContainer3DX_IsDeferredLighting_" data-uid="HelixToolkit.WinUI.SharpDX.ModelContainer3DX.IsDeferredLighting*"></a>
+
+  <h3 id="HelixToolkit_WinUI_SharpDX_ModelContainer3DX_IsDeferredLighting" data-uid="HelixToolkit.WinUI.SharpDX.ModelContainer3DX.IsDeferredLighting">
+  IsDeferredLighting
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX.SharedModel/Controls/ModelContainer3DX.cs/#L511"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets a value indicating whether this instance is deferred lighting.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsDeferredLighting { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><code>true</code> if this instance is deferred lighting; otherwise, <code>false</code>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_WinUI_SharpDX_ModelContainer3DX_IsRendering_" data-uid="HelixToolkit.WinUI.SharpDX.ModelContainer3DX.IsRendering*"></a>
+
+  <h3 id="HelixToolkit_WinUI_SharpDX_ModelContainer3DX_IsRendering" data-uid="HelixToolkit.WinUI.SharpDX.ModelContainer3DX.IsRendering">
+  IsRendering
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX.SharedModel/Controls/ModelContainer3DX.cs/#L108"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets a value indicating whether this instance is rendering.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsRendering { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><code>true</code> if this instance is rendering; otherwise, <code>false</code>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_WinUI_SharpDX_ModelContainer3DX_IsShadowMapEnabled_" data-uid="HelixToolkit.WinUI.SharpDX.ModelContainer3DX.IsShadowMapEnabled*"></a>
+
+  <h3 id="HelixToolkit_WinUI_SharpDX_ModelContainer3DX_IsShadowMapEnabled" data-uid="HelixToolkit.WinUI.SharpDX.ModelContainer3DX.IsShadowMapEnabled">
+  IsShadowMapEnabled
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX.SharedModel/Controls/ModelContainer3DX.cs/#L422"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets a value indicating whether this instance is shadow map enabled.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsShadowMapEnabled { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><code>true</code> if this instance is shadow map enabled; otherwise, <code>false</code>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.notimplementedexception">NotImplementedException</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+  <a id="HelixToolkit_WinUI_SharpDX_ModelContainer3DX_MSAA_" data-uid="HelixToolkit.WinUI.SharpDX.ModelContainer3DX.MSAA*"></a>
+
+  <h3 id="HelixToolkit_WinUI_SharpDX_ModelContainer3DX_MSAA" data-uid="HelixToolkit.WinUI.SharpDX.ModelContainer3DX.MSAA">
+  MSAA
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX.SharedModel/Controls/ModelContainer3DX.cs/#L439"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the msaa.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public MSAALevel MSAA { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.MSAALevel.html">MSAALevel</a></dt>
+    <dd><p>The msaa.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_WinUI_SharpDX_ModelContainer3DX_MaxFPS_" data-uid="HelixToolkit.WinUI.SharpDX.ModelContainer3DX.MaxFPS*"></a>
+
+  <h3 id="HelixToolkit_WinUI_SharpDX_ModelContainer3DX_MaxFPS" data-uid="HelixToolkit.WinUI.SharpDX.ModelContainer3DX.MaxFPS">
+  MaxFPS
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX.SharedModel/Controls/ModelContainer3DX.cs/#L501"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the maximum FPS.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public uint MaxFPS { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.uint32">uint</a></dt>
+    <dd><p>The maximum FPS.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_WinUI_SharpDX_ModelContainer3DX_PerFrameFlattenedScene_" data-uid="HelixToolkit.WinUI.SharpDX.ModelContainer3DX.PerFrameFlattenedScene*"></a>
+
+  <h3 id="HelixToolkit_WinUI_SharpDX_ModelContainer3DX_PerFrameFlattenedScene" data-uid="HelixToolkit.WinUI.SharpDX.ModelContainer3DX.PerFrameFlattenedScene">
+  PerFrameFlattenedScene
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX.SharedModel/Controls/ModelContainer3DX.cs/#L171"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the current frame renderables for rendering.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public FastList&lt;KeyValuePair&lt;int, SceneNode&gt;&gt; PerFrameFlattenedScene { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.FastList-1.html">FastList</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.keyvaluepair-2">KeyValuePair</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a>, <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html">SceneNode</a>&gt;&gt;</dt>
+    <dd><p>The per frame renderable.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_WinUI_SharpDX_ModelContainer3DX_PerFrameLights_" data-uid="HelixToolkit.WinUI.SharpDX.ModelContainer3DX.PerFrameLights*"></a>
+
+  <h3 id="HelixToolkit_WinUI_SharpDX_ModelContainer3DX_PerFrameLights" data-uid="HelixToolkit.WinUI.SharpDX.ModelContainer3DX.PerFrameLights">
+  PerFrameLights
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX.SharedModel/Controls/ModelContainer3DX.cs/#L184"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the current frame Lights for rendering.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IEnumerable&lt;LightNode?&gt; PerFrameLights { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="HelixToolkit.SharpDX.Model.Scene.LightNode.html">LightNode</a>&gt;</dt>
+    <dd><p>The per frame renderable.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_WinUI_SharpDX_ModelContainer3DX_PerFrameNodesWithPostEffect_" data-uid="HelixToolkit.WinUI.SharpDX.ModelContainer3DX.PerFrameNodesWithPostEffect*"></a>
+
+  <h3 id="HelixToolkit_WinUI_SharpDX_ModelContainer3DX_PerFrameNodesWithPostEffect" data-uid="HelixToolkit.WinUI.SharpDX.ModelContainer3DX.PerFrameNodesWithPostEffect">
+  PerFrameNodesWithPostEffect
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX.SharedModel/Controls/ModelContainer3DX.cs/#L197"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the per frame post effect cores.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public FastList&lt;SceneNode&gt; PerFrameNodesWithPostEffect { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.FastList-1.html">FastList</a>&lt;<a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html">SceneNode</a>&gt;</dt>
+    <dd><p>The per frame post effect cores.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_WinUI_SharpDX_ModelContainer3DX_PerFrameOpaqueNodes_" data-uid="HelixToolkit.WinUI.SharpDX.ModelContainer3DX.PerFrameOpaqueNodes*"></a>
+
+  <h3 id="HelixToolkit_WinUI_SharpDX_ModelContainer3DX_PerFrameOpaqueNodes" data-uid="HelixToolkit.WinUI.SharpDX.ModelContainer3DX.PerFrameOpaqueNodes">
+  PerFrameOpaqueNodes
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX.SharedModel/Controls/ModelContainer3DX.cs/#L210"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the per frame general render cores.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public FastList&lt;SceneNode&gt; PerFrameOpaqueNodes { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.FastList-1.html">FastList</a>&lt;<a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html">SceneNode</a>&gt;</dt>
+    <dd><p>The per frame general render cores.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_WinUI_SharpDX_ModelContainer3DX_PerFrameOpaqueNodesInFrustum_" data-uid="HelixToolkit.WinUI.SharpDX.ModelContainer3DX.PerFrameOpaqueNodesInFrustum*"></a>
+
+  <h3 id="HelixToolkit_WinUI_SharpDX_ModelContainer3DX_PerFrameOpaqueNodesInFrustum" data-uid="HelixToolkit.WinUI.SharpDX.ModelContainer3DX.PerFrameOpaqueNodesInFrustum">
+  PerFrameOpaqueNodesInFrustum
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX.SharedModel/Controls/ModelContainer3DX.cs/#L223"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the per frame opaque nodes in frustum.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public FastList&lt;SceneNode&gt; PerFrameOpaqueNodesInFrustum { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.FastList-1.html">FastList</a>&lt;<a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html">SceneNode</a>&gt;</dt>
+    <dd><p>The per frame opaque nodes in frustum.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_WinUI_SharpDX_ModelContainer3DX_PerFrameParticleNodes_" data-uid="HelixToolkit.WinUI.SharpDX.ModelContainer3DX.PerFrameParticleNodes*"></a>
+
+  <h3 id="HelixToolkit_WinUI_SharpDX_ModelContainer3DX_PerFrameParticleNodes" data-uid="HelixToolkit.WinUI.SharpDX.ModelContainer3DX.PerFrameParticleNodes">
+  PerFrameParticleNodes
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX.SharedModel/Controls/ModelContainer3DX.cs/#L262"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the per frame particle nodes. <a class="xref" href="HelixToolkit.SharpDX.RenderType.html#HelixToolkit_SharpDX_RenderType_Particle">Particle</a></p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public FastList&lt;SceneNode&gt; PerFrameParticleNodes { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.FastList-1.html">FastList</a>&lt;<a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html">SceneNode</a>&gt;</dt>
+    <dd><p>The per frame particle nodes.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_WinUI_SharpDX_ModelContainer3DX_PerFrameTransparentNodes_" data-uid="HelixToolkit.WinUI.SharpDX.ModelContainer3DX.PerFrameTransparentNodes*"></a>
+
+  <h3 id="HelixToolkit_WinUI_SharpDX_ModelContainer3DX_PerFrameTransparentNodes" data-uid="HelixToolkit.WinUI.SharpDX.ModelContainer3DX.PerFrameTransparentNodes">
+  PerFrameTransparentNodes
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX.SharedModel/Controls/ModelContainer3DX.cs/#L236"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the per frame transparent nodes. , <a class="xref" href="HelixToolkit.SharpDX.RenderType.html#HelixToolkit_SharpDX_RenderType_Transparent">Transparent</a></p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public FastList&lt;SceneNode&gt; PerFrameTransparentNodes { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.FastList-1.html">FastList</a>&lt;<a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html">SceneNode</a>&gt;</dt>
+    <dd><p>The per frame transparent nodes.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_WinUI_SharpDX_ModelContainer3DX_PerFrameTransparentNodesInFrustum_" data-uid="HelixToolkit.WinUI.SharpDX.ModelContainer3DX.PerFrameTransparentNodesInFrustum*"></a>
+
+  <h3 id="HelixToolkit_WinUI_SharpDX_ModelContainer3DX_PerFrameTransparentNodesInFrustum" data-uid="HelixToolkit.WinUI.SharpDX.ModelContainer3DX.PerFrameTransparentNodesInFrustum">
+  PerFrameTransparentNodesInFrustum
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX.SharedModel/Controls/ModelContainer3DX.cs/#L249"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the per frame transparent nodes in frustum.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public FastList&lt;SceneNode&gt; PerFrameTransparentNodesInFrustum { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.FastList-1.html">FastList</a>&lt;<a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html">SceneNode</a>&gt;</dt>
+    <dd><p>The per frame transparent nodes in frustum.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_WinUI_SharpDX_ModelContainer3DX_RenderBuffer_" data-uid="HelixToolkit.WinUI.SharpDX.ModelContainer3DX.RenderBuffer*"></a>
+
+  <h3 id="HelixToolkit_WinUI_SharpDX_ModelContainer3DX_RenderBuffer" data-uid="HelixToolkit.WinUI.SharpDX.ModelContainer3DX.RenderBuffer">
+  RenderBuffer
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX.SharedModel/Controls/ModelContainer3DX.cs/#L623"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the render buffer.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public DX11RenderBufferProxyBase? RenderBuffer { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.Render.DX11RenderBufferProxyBase.html">DX11RenderBufferProxyBase</a></dt>
+    <dd><p>The render buffer.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_WinUI_SharpDX_ModelContainer3DX_RenderConfiguration_" data-uid="HelixToolkit.WinUI.SharpDX.ModelContainer3DX.RenderConfiguration*"></a>
+
+  <h3 id="HelixToolkit_WinUI_SharpDX_ModelContainer3DX_RenderConfiguration" data-uid="HelixToolkit.WinUI.SharpDX.ModelContainer3DX.RenderConfiguration">
+  RenderConfiguration
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX.SharedModel/Controls/ModelContainer3DX.cs/#L618"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the render configuration.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public DX11RenderHostConfiguration RenderConfiguration { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.Render.DX11RenderHostConfiguration.html">DX11RenderHostConfiguration</a></dt>
+    <dd><p>The render configuration.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_WinUI_SharpDX_ModelContainer3DX_RenderContext_" data-uid="HelixToolkit.WinUI.SharpDX.ModelContainer3DX.RenderContext*"></a>
+
+  <h3 id="HelixToolkit_WinUI_SharpDX_ModelContainer3DX_RenderContext" data-uid="HelixToolkit.WinUI.SharpDX.ModelContainer3DX.RenderContext">
+  RenderContext
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX.SharedModel/Controls/ModelContainer3DX.cs/#L467"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the render context.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public RenderContext? RenderContext { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.RenderContext.html">RenderContext</a></dt>
+    <dd><p>The render context.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_WinUI_SharpDX_ModelContainer3DX_RenderStatistics_" data-uid="HelixToolkit.WinUI.SharpDX.ModelContainer3DX.RenderStatistics*"></a>
+
+  <h3 id="HelixToolkit_WinUI_SharpDX_ModelContainer3DX_RenderStatistics" data-uid="HelixToolkit.WinUI.SharpDX.ModelContainer3DX.RenderStatistics">
+  RenderStatistics
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX.SharedModel/Controls/ModelContainer3DX.cs/#L595"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the render statistics.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IRenderStatistics? RenderStatistics { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.Utilities.IRenderStatistics.html">IRenderStatistics</a></dt>
+    <dd><p>The render statistics.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_WinUI_SharpDX_ModelContainer3DX_RenderTargetBufferView_" data-uid="HelixToolkit.WinUI.SharpDX.ModelContainer3DX.RenderTargetBufferView*"></a>
+
+  <h3 id="HelixToolkit_WinUI_SharpDX_ModelContainer3DX_RenderTargetBufferView" data-uid="HelixToolkit.WinUI.SharpDX.ModelContainer3DX.RenderTargetBufferView">
+  RenderTargetBufferView
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX.SharedModel/Controls/ModelContainer3DX.cs/#L556"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the color buffer view.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public RenderTargetView? RenderTargetBufferView { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">RenderTargetView</span></dt>
+    <dd><p>The color buffer view.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_WinUI_SharpDX_ModelContainer3DX_RenderTechnique_" data-uid="HelixToolkit.WinUI.SharpDX.ModelContainer3DX.RenderTechnique*"></a>
+
+  <h3 id="HelixToolkit_WinUI_SharpDX_ModelContainer3DX_RenderTechnique" data-uid="HelixToolkit.WinUI.SharpDX.ModelContainer3DX.RenderTechnique">
+  RenderTechnique
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX.SharedModel/Controls/ModelContainer3DX.cs/#L64"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>This technique is used for the entire render pass
+by all Element3D if not specified otherwise in
+the elements itself</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IRenderTechnique? RenderTechnique { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.IRenderTechnique.html">IRenderTechnique</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_WinUI_SharpDX_ModelContainer3DX_Renderables_" data-uid="HelixToolkit.WinUI.SharpDX.ModelContainer3DX.Renderables*"></a>
+
+  <h3 id="HelixToolkit_WinUI_SharpDX_ModelContainer3DX_Renderables" data-uid="HelixToolkit.WinUI.SharpDX.ModelContainer3DX.Renderables">
+  Renderables
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX.SharedModel/Controls/ModelContainer3DX.cs/#L350"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IEnumerable&lt;SceneNode?&gt; Renderables { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html">SceneNode</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_WinUI_SharpDX_ModelContainer3DX_Renderer_" data-uid="HelixToolkit.WinUI.SharpDX.ModelContainer3DX.Renderer*"></a>
+
+  <h3 id="HelixToolkit_WinUI_SharpDX_ModelContainer3DX_Renderer" data-uid="HelixToolkit.WinUI.SharpDX.ModelContainer3DX.Renderer">
+  Renderer
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX.SharedModel/Controls/ModelContainer3DX.cs/#L131"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Renderer</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IRenderer? Renderer { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.Render.IRenderer.html">IRenderer</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_WinUI_SharpDX_ModelContainer3DX_SharedModelContainer_" data-uid="HelixToolkit.WinUI.SharpDX.ModelContainer3DX.SharedModelContainer*"></a>
+
+  <h3 id="HelixToolkit_WinUI_SharpDX_ModelContainer3DX_SharedModelContainer" data-uid="HelixToolkit.WinUI.SharpDX.ModelContainer3DX.SharedModelContainer">
+  SharedModelContainer
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX.SharedModel/Controls/ModelContainer3DX.cs/#L524"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the shared model container.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IModelContainer? SharedModelContainer { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.IModelContainer.html">IModelContainer</a></dt>
+    <dd><p>The shared model container.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_WinUI_SharpDX_ModelContainer3DX_ShowRenderDetail_" data-uid="HelixToolkit.WinUI.SharpDX.ModelContainer3DX.ShowRenderDetail*"></a>
+
+  <h3 id="HelixToolkit_WinUI_SharpDX_ModelContainer3DX_ShowRenderDetail" data-uid="HelixToolkit.WinUI.SharpDX.ModelContainer3DX.ShowRenderDetail">
+  ShowRenderDetail
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX.SharedModel/Controls/ModelContainer3DX.cs/#L608"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets a value indicating whether [show statistics].</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public RenderDetail ShowRenderDetail { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.RenderDetail.html">RenderDetail</a></dt>
+    <dd><p><code>true</code> if [show statistics]; otherwise, <code>false</code>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_WinUI_SharpDX_ModelContainer3DX_Viewport_" data-uid="HelixToolkit.WinUI.SharpDX.ModelContainer3DX.Viewport*"></a>
+
+  <h3 id="HelixToolkit_WinUI_SharpDX_ModelContainer3DX_Viewport" data-uid="HelixToolkit.WinUI.SharpDX.ModelContainer3DX.Viewport">
+  Viewport
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX.SharedModel/Controls/ModelContainer3DX.cs/#L457"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the viewport.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IViewport3DX? Viewport { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.IViewport3DX.html">IViewport3DX</a></dt>
+    <dd><p>The viewport.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h2 class="section" id="methods">Methods
+</h2>
+
+
+  <a id="HelixToolkit_WinUI_SharpDX_ModelContainer3DX_Attach_" data-uid="HelixToolkit.WinUI.SharpDX.ModelContainer3DX.Attach*"></a>
+
+  <h3 id="HelixToolkit_WinUI_SharpDX_ModelContainer3DX_Attach_HelixToolkit_SharpDX_IRenderHost_" data-uid="HelixToolkit.WinUI.SharpDX.ModelContainer3DX.Attach(HelixToolkit.SharpDX.IRenderHost)">
+  Attach(IRenderHost)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX.SharedModel/Controls/ModelContainer3DX.cs/#L653"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Attaches the specified host.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Attach(IRenderHost host)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>host</code> <a class="xref" href="HelixToolkit.SharpDX.IRenderHost.html">IRenderHost</a></dt>
+    <dd><p>The host.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_WinUI_SharpDX_ModelContainer3DX_AttachViewport3DX_" data-uid="HelixToolkit.WinUI.SharpDX.ModelContainer3DX.AttachViewport3DX*"></a>
+
+  <h3 id="HelixToolkit_WinUI_SharpDX_ModelContainer3DX_AttachViewport3DX_HelixToolkit_SharpDX_IViewport3DX_" data-uid="HelixToolkit.WinUI.SharpDX.ModelContainer3DX.AttachViewport3DX(HelixToolkit.SharpDX.IViewport3DX)">
+  AttachViewport3DX(IViewport3DX)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX.SharedModel/Controls/ModelContainer3DX.cs/#L287"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void AttachViewport3DX(IViewport3DX viewport)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>viewport</code> <a class="xref" href="HelixToolkit.SharpDX.IViewport3DX.html">IViewport3DX</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_WinUI_SharpDX_ModelContainer3DX_ClearRenderTarget_" data-uid="HelixToolkit.WinUI.SharpDX.ModelContainer3DX.ClearRenderTarget*"></a>
+
+  <h3 id="HelixToolkit_WinUI_SharpDX_ModelContainer3DX_ClearRenderTarget_HelixToolkit_SharpDX_Render_DeviceContextProxy_System_Boolean_System_Boolean_" data-uid="HelixToolkit.WinUI.SharpDX.ModelContainer3DX.ClearRenderTarget(HelixToolkit.SharpDX.Render.DeviceContextProxy,System.Boolean,System.Boolean)">
+  ClearRenderTarget(DeviceContextProxy, bool, bool)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX.SharedModel/Controls/ModelContainer3DX.cs/#L769"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Clears the render target.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void ClearRenderTarget(DeviceContextProxy context, bool clearBackBuffer, bool clearDepthStencilBuffer)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>context</code> <a class="xref" href="HelixToolkit.SharpDX.Render.DeviceContextProxy.html">DeviceContextProxy</a></dt>
+    <dd><p>The context.</p>
+</dd>
+    <dt><code>clearBackBuffer</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p>if set to <code>true</code> [clear back buffer].</p>
+</dd>
+    <dt><code>clearDepthStencilBuffer</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p>if set to <code>true</code> [clear depth stencil buffer].</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_WinUI_SharpDX_ModelContainer3DX_Detach_" data-uid="HelixToolkit.WinUI.SharpDX.ModelContainer3DX.Detach*"></a>
+
+  <h3 id="HelixToolkit_WinUI_SharpDX_ModelContainer3DX_Detach_HelixToolkit_SharpDX_IRenderHost_" data-uid="HelixToolkit.WinUI.SharpDX.ModelContainer3DX.Detach(HelixToolkit.SharpDX.IRenderHost)">
+  Detach(IRenderHost)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX.SharedModel/Controls/ModelContainer3DX.cs/#L683"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Detaches this instance.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Detach(IRenderHost host)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>host</code> <a class="xref" href="HelixToolkit.SharpDX.IRenderHost.html">IRenderHost</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.indexoutofrangeexception">IndexOutOfRangeException</a></dt>
+    <dd><p>D3DCounter is negative.</p>
+</dd>
+  </dl>
+
+
+
+  <a id="HelixToolkit_WinUI_SharpDX_ModelContainer3DX_DettachViewport3DX_" data-uid="HelixToolkit.WinUI.SharpDX.ModelContainer3DX.DettachViewport3DX*"></a>
+
+  <h3 id="HelixToolkit_WinUI_SharpDX_ModelContainer3DX_DettachViewport3DX_HelixToolkit_SharpDX_IViewport3DX_" data-uid="HelixToolkit.WinUI.SharpDX.ModelContainer3DX.DettachViewport3DX(HelixToolkit.SharpDX.IViewport3DX)">
+  DettachViewport3DX(IViewport3DX)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX.SharedModel/Controls/ModelContainer3DX.cs/#L297"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void DettachViewport3DX(IViewport3DX viewport)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>viewport</code> <a class="xref" href="HelixToolkit.SharpDX.IViewport3DX.html">IViewport3DX</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_WinUI_SharpDX_ModelContainer3DX_Dispose_" data-uid="HelixToolkit.WinUI.SharpDX.ModelContainer3DX.Dispose*"></a>
+
+  <h3 id="HelixToolkit_WinUI_SharpDX_ModelContainer3DX_Dispose" data-uid="HelixToolkit.WinUI.SharpDX.ModelContainer3DX.Dispose">
+  Dispose()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX.SharedModel/Controls/ModelContainer3DX.cs/#L810"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Dispose()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_WinUI_SharpDX_ModelContainer3DX_Dispose_" data-uid="HelixToolkit.WinUI.SharpDX.ModelContainer3DX.Dispose*"></a>
+
+  <h3 id="HelixToolkit_WinUI_SharpDX_ModelContainer3DX_Dispose_System_Boolean_" data-uid="HelixToolkit.WinUI.SharpDX.ModelContainer3DX.Dispose(System.Boolean)">
+  Dispose(bool)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX.SharedModel/Controls/ModelContainer3DX.cs/#L776"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual void Dispose(bool disposing)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>disposing</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_WinUI_SharpDX_ModelContainer3DX_EndD3D_" data-uid="HelixToolkit.WinUI.SharpDX.ModelContainer3DX.EndD3D*"></a>
+
+  <h3 id="HelixToolkit_WinUI_SharpDX_ModelContainer3DX_EndD3D" data-uid="HelixToolkit.WinUI.SharpDX.ModelContainer3DX.EndD3D">
+  EndD3D()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX.SharedModel/Controls/ModelContainer3DX.cs/#L732"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Ends the d3 d.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void EndD3D()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_WinUI_SharpDX_ModelContainer3DX_Invalidate_" data-uid="HelixToolkit.WinUI.SharpDX.ModelContainer3DX.Invalidate*"></a>
+
+  <h3 id="HelixToolkit_WinUI_SharpDX_ModelContainer3DX_Invalidate_HelixToolkit_SharpDX_Model_Scene_InvalidateTypes_" data-uid="HelixToolkit.WinUI.SharpDX.ModelContainer3DX.Invalidate(HelixToolkit.SharpDX.Model.Scene.InvalidateTypes)">
+  Invalidate(InvalidateTypes)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX.SharedModel/Controls/ModelContainer3DX.cs/#L333"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Invalidate by InvalidateTypes</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Invalidate(InvalidateTypes type)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>type</code> <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.InvalidateTypes.html">InvalidateTypes</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_WinUI_SharpDX_ModelContainer3DX_InvalidatePerFrameRenderables_" data-uid="HelixToolkit.WinUI.SharpDX.ModelContainer3DX.InvalidatePerFrameRenderables*"></a>
+
+  <h3 id="HelixToolkit_WinUI_SharpDX_ModelContainer3DX_InvalidatePerFrameRenderables" data-uid="HelixToolkit.WinUI.SharpDX.ModelContainer3DX.InvalidatePerFrameRenderables">
+  InvalidatePerFrameRenderables()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX.SharedModel/Controls/ModelContainer3DX.cs/#L325"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Invalidates the per frame renderables.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void InvalidatePerFrameRenderables()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_WinUI_SharpDX_ModelContainer3DX_InvalidateRender_" data-uid="HelixToolkit.WinUI.SharpDX.ModelContainer3DX.InvalidateRender*"></a>
+
+  <h3 id="HelixToolkit_WinUI_SharpDX_ModelContainer3DX_InvalidateRender" data-uid="HelixToolkit.WinUI.SharpDX.ModelContainer3DX.InvalidateRender">
+  InvalidateRender()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX.SharedModel/Controls/ModelContainer3DX.cs/#L304"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Invalidates the render.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void InvalidateRender()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_WinUI_SharpDX_ModelContainer3DX_InvalidateSceneGraph_" data-uid="HelixToolkit.WinUI.SharpDX.ModelContainer3DX.InvalidateSceneGraph*"></a>
+
+  <h3 id="HelixToolkit_WinUI_SharpDX_ModelContainer3DX_InvalidateSceneGraph" data-uid="HelixToolkit.WinUI.SharpDX.ModelContainer3DX.InvalidateSceneGraph">
+  InvalidateSceneGraph()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX.SharedModel/Controls/ModelContainer3DX.cs/#L315"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Invalidates the scene graph.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void InvalidateSceneGraph()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_WinUI_SharpDX_ModelContainer3DX_Resize_" data-uid="HelixToolkit.WinUI.SharpDX.ModelContainer3DX.Resize*"></a>
+
+  <h3 id="HelixToolkit_WinUI_SharpDX_ModelContainer3DX_Resize_System_Int32_System_Int32_" data-uid="HelixToolkit.WinUI.SharpDX.ModelContainer3DX.Resize(System.Int32,System.Int32)">
+  Resize(int, int)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX.SharedModel/Controls/ModelContainer3DX.cs/#L758"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Resizes</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Resize(int width, int height)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>width</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The width.</p>
+</dd>
+    <dt><code>height</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The height.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_WinUI_SharpDX_ModelContainer3DX_SetDefaultRenderTargets_" data-uid="HelixToolkit.WinUI.SharpDX.ModelContainer3DX.SetDefaultRenderTargets*"></a>
+
+  <h3 id="HelixToolkit_WinUI_SharpDX_ModelContainer3DX_SetDefaultRenderTargets_System_Boolean_" data-uid="HelixToolkit.WinUI.SharpDX.ModelContainer3DX.SetDefaultRenderTargets(System.Boolean)">
+  SetDefaultRenderTargets(bool)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX.SharedModel/Controls/ModelContainer3DX.cs/#L344"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Sets the default render targets.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void SetDefaultRenderTargets(bool clear = true)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>clear</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p>if set to <code>true</code> [clear].</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_WinUI_SharpDX_ModelContainer3DX_StartD3D_" data-uid="HelixToolkit.WinUI.SharpDX.ModelContainer3DX.StartD3D*"></a>
+
+  <h3 id="HelixToolkit_WinUI_SharpDX_ModelContainer3DX_StartD3D_System_Int32_System_Int32_" data-uid="HelixToolkit.WinUI.SharpDX.ModelContainer3DX.StartD3D(System.Int32,System.Int32)">
+  StartD3D(int, int)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX.SharedModel/Controls/ModelContainer3DX.cs/#L725"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Starts the d3 d.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void StartD3D(int width, int height)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>width</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The width.</p>
+</dd>
+    <dt><code>height</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The height.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_WinUI_SharpDX_ModelContainer3DX_StartRendering_" data-uid="HelixToolkit.WinUI.SharpDX.ModelContainer3DX.StartRendering*"></a>
+
+  <h3 id="HelixToolkit_WinUI_SharpDX_ModelContainer3DX_StartRendering" data-uid="HelixToolkit.WinUI.SharpDX.ModelContainer3DX.StartRendering">
+  StartRendering()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX.SharedModel/Controls/ModelContainer3DX.cs/#L737"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Starts the rendering. Trigger <a class="xref" href="HelixToolkit.SharpDX.IRenderHost.html#HelixToolkit_SharpDX_IRenderHost_StartRenderLoop">StartRenderLoop</a></p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void StartRendering()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_WinUI_SharpDX_ModelContainer3DX_StopRendering_" data-uid="HelixToolkit.WinUI.SharpDX.ModelContainer3DX.StopRendering*"></a>
+
+  <h3 id="HelixToolkit_WinUI_SharpDX_ModelContainer3DX_StopRendering" data-uid="HelixToolkit.WinUI.SharpDX.ModelContainer3DX.StopRendering">
+  StopRendering()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX.SharedModel/Controls/ModelContainer3DX.cs/#L742"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Stops the rendering. Trigger <a class="xref" href="HelixToolkit.SharpDX.IRenderHost.html#HelixToolkit_SharpDX_IRenderHost_StopRenderLoop">StopRenderLoop</a></p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void StopRendering()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_WinUI_SharpDX_ModelContainer3DX_UpdateAndRender_" data-uid="HelixToolkit.WinUI.SharpDX.ModelContainer3DX.UpdateAndRender*"></a>
+
+  <h3 id="HelixToolkit_WinUI_SharpDX_ModelContainer3DX_UpdateAndRender" data-uid="HelixToolkit.WinUI.SharpDX.ModelContainer3DX.UpdateAndRender">
+  UpdateAndRender()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX.SharedModel/Controls/ModelContainer3DX.cs/#L749"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Updates the and render.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool UpdateAndRender()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <h2 class="section" id="events">Events
+</h2>
+
+
+
+  <h3 id="HelixToolkit_WinUI_SharpDX_ModelContainer3DX_EffectsManagerChanged" data-uid="HelixToolkit.WinUI.SharpDX.ModelContainer3DX.EffectsManagerChanged">
+  EffectsManagerChanged
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX.SharedModel/Controls/ModelContainer3DX.cs/#L631"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Occurs when effects manager is changed.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public event EventHandler&lt;IEffectsManager&gt;? EffectsManagerChanged</code></pre>
+  </div>
+
+
+
+
+
+
+  <h4 class="section">Event Type</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.eventhandler-1">EventHandler</a>&lt;<a class="xref" href="HelixToolkit.SharpDX.IEffectsManager.html">IEffectsManager</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_WinUI_SharpDX_ModelContainer3DX_ExceptionOccurred" data-uid="HelixToolkit.WinUI.SharpDX.ModelContainer3DX.ExceptionOccurred">
+  ExceptionOccurred
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX.SharedModel/Controls/ModelContainer3DX.cs/#L75"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Fired whenever an exception occurred on this object.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public event EventHandler&lt;RelayExceptionEventArgs&gt;? ExceptionOccurred</code></pre>
+  </div>
+
+
+
+
+
+
+  <h4 class="section">Event Type</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.eventhandler-1">EventHandler</a>&lt;<a class="xref" href="HelixToolkit.SharpDX.Utilities.RelayExceptionEventArgs.html">RelayExceptionEventArgs</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_WinUI_SharpDX_ModelContainer3DX_OnNewRenderTargetTexture" data-uid="HelixToolkit.WinUI.SharpDX.ModelContainer3DX.OnNewRenderTargetTexture">
+  OnNewRenderTargetTexture
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX.SharedModel/Controls/ModelContainer3DX.cs/#L79"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Occurs when [on new render target texture].</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public event EventHandler&lt;Texture2DArgs&gt;? OnNewRenderTargetTexture</code></pre>
+  </div>
+
+
+
+
+
+
+  <h4 class="section">Event Type</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.eventhandler-1">EventHandler</a>&lt;<a class="xref" href="HelixToolkit.SharpDX.Texture2DArgs.html">Texture2DArgs</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_WinUI_SharpDX_ModelContainer3DX_Rendered" data-uid="HelixToolkit.WinUI.SharpDX.ModelContainer3DX.Rendered">
+  Rendered
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX.SharedModel/Controls/ModelContainer3DX.cs/#L91"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Occurs when each render frame finished rendering.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public event EventHandler? Rendered</code></pre>
+  </div>
+
+
+
+
+
+
+  <h4 class="section">Event Type</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.eventhandler">EventHandler</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_WinUI_SharpDX_ModelContainer3DX_SceneGraphUpdated" data-uid="HelixToolkit.WinUI.SharpDX.ModelContainer3DX.SceneGraphUpdated">
+  SceneGraphUpdated
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX.SharedModel/Controls/ModelContainer3DX.cs/#L93"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Occurs when [scene graph updated].</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public event EventHandler? SceneGraphUpdated</code></pre>
+  </div>
+
+
+
+
+
+
+  <h4 class="section">Event Type</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.eventhandler">EventHandler</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_WinUI_SharpDX_ModelContainer3DX_StartRenderLoop" data-uid="HelixToolkit.WinUI.SharpDX.ModelContainer3DX.StartRenderLoop">
+  StartRenderLoop
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX.SharedModel/Controls/ModelContainer3DX.cs/#L83"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Occurs when [start render loop].</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public event EventHandler&lt;EventArgs&gt;? StartRenderLoop</code></pre>
+  </div>
+
+
+
+
+
+
+  <h4 class="section">Event Type</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.eventhandler-1">EventHandler</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.eventargs">EventArgs</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_WinUI_SharpDX_ModelContainer3DX_StopRenderLoop" data-uid="HelixToolkit.WinUI.SharpDX.ModelContainer3DX.StopRenderLoop">
+  StopRenderLoop
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX.SharedModel/Controls/ModelContainer3DX.cs/#L87"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Occurs when [stop render loop].</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public event EventHandler&lt;EventArgs&gt;? StopRenderLoop</code></pre>
+  </div>
+
+
+
+
+
+
+  <h4 class="section">Event Type</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.eventhandler-1">EventHandler</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.eventargs">EventArgs</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX.SharedModel/Controls/ModelContainer3DX.cs/#L38" class="edit-link">Edit this page</a>
+        </div>
+
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          Copyright (c) 2023 Helix Toolkit contributors
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

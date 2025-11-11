@@ -1,0 +1,1946 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Class QuaternionHelper | Helix Toolkit - 3D for .NET </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Class QuaternionHelper | Helix Toolkit - 3D for .NET ">
+      
+      <meta name="description" content="Represents a four dimensional mathematical quaternion.">
+      <link rel="icon" href="../images/favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/helix-toolkit/helix-toolkit/new/develop3/apiSpec/new?filename=HelixToolkit_Maths_QuaternionHelper.md&amp;value=---%0Auid%3A%20HelixToolkit.Maths.QuaternionHelper%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="ManagedReference">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../images/favicon.ico" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="HelixToolkit.Maths.QuaternionHelper">
+
+
+
+  <h1 id="HelixToolkit_Maths_QuaternionHelper" data-uid="HelixToolkit.Maths.QuaternionHelper" class="text-break">
+Class QuaternionHelper  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Quaternion.cs/#L37"><i class="bi bi-code-slash"></i></a>
+  </h1>
+
+  <div class="facts text-secondary">
+    <dl><dt>Namespace</dt><dd><a class="xref" href="HelixToolkit.html">HelixToolkit</a>.<a class="xref" href="HelixToolkit.Maths.html">Maths</a></dd></dl>
+  <dl><dt>Assembly</dt><dd>HelixToolkit.Maths.dll</dd></dl>
+  </div>
+
+  <div class="markdown summary"><p>Represents a four dimensional mathematical quaternion.</p>
+</div>
+  <div class="markdown conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static class QuaternionHelper</code></pre>
+  </div>
+
+
+
+
+  <dl class="typelist inheritance">
+    <dt>Inheritance</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
+      <div><span class="xref">QuaternionHelper</span></div>
+    </dd>
+  </dl>
+
+
+
+  <dl class="typelist inheritedMembers">
+    <dt>Inherited Members</dt>
+    <dd>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">object.Equals(object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">object.Equals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode">object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype">object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone">object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals">object.ReferenceEquals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring">object.ToString()</a>
+    </div>
+  </dd></dl>
+
+
+
+
+
+
+  <h2 class="section" id="fields">Fields
+</h2>
+
+
+
+  <h3 id="HelixToolkit_Maths_QuaternionHelper_Identity" data-uid="HelixToolkit.Maths.QuaternionHelper.Identity">
+  Identity
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Quaternion.cs/#L57"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>The identity <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.quaternion">Quaternion</a> (0, 0, 0, 1).</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly Quaternion Identity</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.quaternion">Quaternion</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_Maths_QuaternionHelper_One" data-uid="HelixToolkit.Maths.QuaternionHelper.One">
+  One
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Quaternion.cs/#L52"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>A <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.quaternion">Quaternion</a> with all of its components set to one.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly Quaternion One</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.quaternion">Quaternion</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_Maths_QuaternionHelper_SizeInBytes" data-uid="HelixToolkit.Maths.QuaternionHelper.SizeInBytes">
+  SizeInBytes
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Quaternion.cs/#L42"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>The size of the <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.quaternion">Quaternion</a> type, in bytes.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly int SizeInBytes</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_Maths_QuaternionHelper_Zero" data-uid="HelixToolkit.Maths.QuaternionHelper.Zero">
+  Zero
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Quaternion.cs/#L47"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>A <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.quaternion">Quaternion</a> with all of its components set to zero.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly Quaternion Zero</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.quaternion">Quaternion</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+  <h2 class="section" id="methods">Methods
+</h2>
+
+
+  <a id="HelixToolkit_Maths_QuaternionHelper_Angle_" data-uid="HelixToolkit.Maths.QuaternionHelper.Angle*"></a>
+
+  <h3 id="HelixToolkit_Maths_QuaternionHelper_Angle_System_Numerics_Quaternion_" data-uid="HelixToolkit.Maths.QuaternionHelper.Angle(System.Numerics.Quaternion)">
+  Angle(Quaternion)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Quaternion.cs/#L71"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the angle of the quaternion.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static float Angle(this Quaternion q)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>q</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.quaternion">Quaternion</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>The quaternion's angle.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_QuaternionHelper_AngleBetween_" data-uid="HelixToolkit.Maths.QuaternionHelper.AngleBetween*"></a>
+
+  <h3 id="HelixToolkit_Maths_QuaternionHelper_AngleBetween_System_Numerics_Quaternion__System_Numerics_Quaternion__" data-uid="HelixToolkit.Maths.QuaternionHelper.AngleBetween(System.Numerics.Quaternion@,System.Numerics.Quaternion@)">
+  AngleBetween(in Quaternion, in Quaternion)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Quaternion.cs/#L83"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Returns the absolute angle in radians between two <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.quaternion">Quaternion</a>/&gt;</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static float AngleBetween(this in Quaternion source, in Quaternion other)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>source</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.quaternion">Quaternion</a></dt>
+    <dd><p>The first <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.quaternion">Quaternion</a></p>
+</dd>
+    <dt><code>other</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.quaternion">Quaternion</a></dt>
+    <dd><p>The second <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.quaternion">Quaternion</a></p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_QuaternionHelper_Axis_" data-uid="HelixToolkit.Maths.QuaternionHelper.Axis*"></a>
+
+  <h3 id="HelixToolkit_Maths_QuaternionHelper_Axis_System_Numerics_Quaternion_" data-uid="HelixToolkit.Maths.QuaternionHelper.Axis(System.Numerics.Quaternion)">
+  Axis(Quaternion)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Quaternion.cs/#L93"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the axis components of the quaternion.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Vector3 Axis(this Quaternion q)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>q</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.quaternion">Quaternion</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd><p>The axis components of the quaternion.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_QuaternionHelper_Barycentric_" data-uid="HelixToolkit.Maths.QuaternionHelper.Barycentric*"></a>
+
+  <h3 id="HelixToolkit_Maths_QuaternionHelper_Barycentric_System_Numerics_Quaternion_System_Numerics_Quaternion_System_Numerics_Quaternion_System_Single_System_Single_" data-uid="HelixToolkit.Maths.QuaternionHelper.Barycentric(System.Numerics.Quaternion,System.Numerics.Quaternion,System.Numerics.Quaternion,System.Single,System.Single)">
+  Barycentric(Quaternion, Quaternion, Quaternion, float, float)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Quaternion.cs/#L184"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Returns a <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.quaternion">Quaternion</a> containing the 4D Cartesian coordinates of a point specified in Barycentric coordinates relative to a 2D triangle.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Quaternion Barycentric(Quaternion value1, Quaternion value2, Quaternion value3, float amount1, float amount2)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value1</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.quaternion">Quaternion</a></dt>
+    <dd><p>A <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.quaternion">Quaternion</a> containing the 4D Cartesian coordinates of vertex 1 of the triangle.</p>
+</dd>
+    <dt><code>value2</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.quaternion">Quaternion</a></dt>
+    <dd><p>A <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.quaternion">Quaternion</a> containing the 4D Cartesian coordinates of vertex 2 of the triangle.</p>
+</dd>
+    <dt><code>value3</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.quaternion">Quaternion</a></dt>
+    <dd><p>A <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.quaternion">Quaternion</a> containing the 4D Cartesian coordinates of vertex 3 of the triangle.</p>
+</dd>
+    <dt><code>amount1</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>Barycentric coordinate b2, which expresses the weighting factor toward vertex 2 (specified in <code class="paramref">value2</code>).</p>
+</dd>
+    <dt><code>amount2</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>Barycentric coordinate b3, which expresses the weighting factor toward vertex 3 (specified in <code class="paramref">value3</code>).</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.quaternion">Quaternion</a></dt>
+    <dd><p>A new <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.quaternion">Quaternion</a> containing the 4D Cartesian coordinates of the specified point.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_QuaternionHelper_Barycentric_" data-uid="HelixToolkit.Maths.QuaternionHelper.Barycentric*"></a>
+
+  <h3 id="HelixToolkit_Maths_QuaternionHelper_Barycentric_System_Numerics_Quaternion__System_Numerics_Quaternion__System_Numerics_Quaternion__System_Single_System_Single_System_Numerics_Quaternion__" data-uid="HelixToolkit.Maths.QuaternionHelper.Barycentric(System.Numerics.Quaternion@,System.Numerics.Quaternion@,System.Numerics.Quaternion@,System.Single,System.Single,System.Numerics.Quaternion@)">
+  Barycentric(ref Quaternion, ref Quaternion, ref Quaternion, float, float, out Quaternion)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Quaternion.cs/#L162"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Returns a <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.quaternion">Quaternion</a> containing the 4D Cartesian coordinates of a point specified in Barycentric coordinates relative to a 2D triangle.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void Barycentric(ref Quaternion value1, ref Quaternion value2, ref Quaternion value3, float amount1, float amount2, out Quaternion result)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value1</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.quaternion">Quaternion</a></dt>
+    <dd><p>A <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.quaternion">Quaternion</a> containing the 4D Cartesian coordinates of vertex 1 of the triangle.</p>
+</dd>
+    <dt><code>value2</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.quaternion">Quaternion</a></dt>
+    <dd><p>A <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.quaternion">Quaternion</a> containing the 4D Cartesian coordinates of vertex 2 of the triangle.</p>
+</dd>
+    <dt><code>value3</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.quaternion">Quaternion</a></dt>
+    <dd><p>A <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.quaternion">Quaternion</a> containing the 4D Cartesian coordinates of vertex 3 of the triangle.</p>
+</dd>
+    <dt><code>amount1</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>Barycentric coordinate b2, which expresses the weighting factor toward vertex 2 (specified in <code class="paramref">value2</code>).</p>
+</dd>
+    <dt><code>amount2</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>Barycentric coordinate b3, which expresses the weighting factor toward vertex 3 (specified in <code class="paramref">value3</code>).</p>
+</dd>
+    <dt><code>result</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.quaternion">Quaternion</a></dt>
+    <dd><p>When the method completes, contains a new <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.quaternion">Quaternion</a> containing the 4D Cartesian coordinates of the specified point.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_QuaternionHelper_BetweenDirections_" data-uid="HelixToolkit.Maths.QuaternionHelper.BetweenDirections*"></a>
+
+  <h3 id="HelixToolkit_Maths_QuaternionHelper_BetweenDirections_System_Numerics_Vector3__System_Numerics_Vector3__" data-uid="HelixToolkit.Maths.QuaternionHelper.BetweenDirections(System.Numerics.Vector3@,System.Numerics.Vector3@)">
+  BetweenDirections(ref Vector3, ref Vector3)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Quaternion.cs/#L341"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Computes a quaternion corresponding to the rotation transforming the vector <code class="paramref">source</code> to the vector <code class="paramref">target</code>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Quaternion BetweenDirections(ref Vector3 source, ref Vector3 target)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>source</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd><p>The source vector of the transformation.</p>
+</dd>
+    <dt><code>target</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd><p>The target vector of the transformation.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.quaternion">Quaternion</a></dt>
+    <dd><p>The resulting quaternion corresponding to the transformation of the source vector to the target vector.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_QuaternionHelper_BillboardLH_" data-uid="HelixToolkit.Maths.QuaternionHelper.BillboardLH*"></a>
+
+  <h3 id="HelixToolkit_Maths_QuaternionHelper_BillboardLH_System_Numerics_Vector3_System_Numerics_Vector3_System_Numerics_Vector3_System_Numerics_Vector3_" data-uid="HelixToolkit.Maths.QuaternionHelper.BillboardLH(System.Numerics.Vector3,System.Numerics.Vector3,System.Numerics.Vector3,System.Numerics.Vector3)">
+  BillboardLH(Vector3, Vector3, Vector3, Vector3)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Quaternion.cs/#L595"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Creates a left-handed spherical billboard that rotates around a specified object position.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Quaternion BillboardLH(Vector3 objectPosition, Vector3 cameraPosition, Vector3 cameraUpVector, Vector3 cameraForwardVector)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>objectPosition</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd><p>The position of the object around which the billboard will rotate.</p>
+</dd>
+    <dt><code>cameraPosition</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd><p>The position of the camera.</p>
+</dd>
+    <dt><code>cameraUpVector</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd><p>The up vector of the camera.</p>
+</dd>
+    <dt><code>cameraForwardVector</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd><p>The forward vector of the camera.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.quaternion">Quaternion</a></dt>
+    <dd><p>The created billboard quaternion.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_QuaternionHelper_BillboardLH_" data-uid="HelixToolkit.Maths.QuaternionHelper.BillboardLH*"></a>
+
+  <h3 id="HelixToolkit_Maths_QuaternionHelper_BillboardLH_System_Numerics_Vector3__System_Numerics_Vector3__System_Numerics_Vector3__System_Numerics_Vector3__System_Numerics_Quaternion__" data-uid="HelixToolkit.Maths.QuaternionHelper.BillboardLH(System.Numerics.Vector3@,System.Numerics.Vector3@,System.Numerics.Vector3@,System.Numerics.Vector3@,System.Numerics.Quaternion@)">
+  BillboardLH(ref Vector3, ref Vector3, ref Vector3, ref Vector3, out Quaternion)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Quaternion.cs/#L581"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Creates a left-handed spherical billboard that rotates around a specified object position.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void BillboardLH(ref Vector3 objectPosition, ref Vector3 cameraPosition, ref Vector3 cameraUpVector, ref Vector3 cameraForwardVector, out Quaternion result)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>objectPosition</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd><p>The position of the object around which the billboard will rotate.</p>
+</dd>
+    <dt><code>cameraPosition</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd><p>The position of the camera.</p>
+</dd>
+    <dt><code>cameraUpVector</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd><p>The up vector of the camera.</p>
+</dd>
+    <dt><code>cameraForwardVector</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd><p>The forward vector of the camera.</p>
+</dd>
+    <dt><code>result</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.quaternion">Quaternion</a></dt>
+    <dd><p>When the method completes, contains the created billboard quaternion.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_QuaternionHelper_BillboardRH_" data-uid="HelixToolkit.Maths.QuaternionHelper.BillboardRH*"></a>
+
+  <h3 id="HelixToolkit_Maths_QuaternionHelper_BillboardRH_System_Numerics_Vector3_System_Numerics_Vector3_System_Numerics_Vector3_System_Numerics_Vector3_" data-uid="HelixToolkit.Maths.QuaternionHelper.BillboardRH(System.Numerics.Vector3,System.Numerics.Vector3,System.Numerics.Vector3,System.Numerics.Vector3)">
+  BillboardRH(Vector3, Vector3, Vector3, Vector3)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Quaternion.cs/#L623"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Creates a right-handed spherical billboard that rotates around a specified object position.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Quaternion BillboardRH(Vector3 objectPosition, Vector3 cameraPosition, Vector3 cameraUpVector, Vector3 cameraForwardVector)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>objectPosition</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd><p>The position of the object around which the billboard will rotate.</p>
+</dd>
+    <dt><code>cameraPosition</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd><p>The position of the camera.</p>
+</dd>
+    <dt><code>cameraUpVector</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd><p>The up vector of the camera.</p>
+</dd>
+    <dt><code>cameraForwardVector</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd><p>The forward vector of the camera.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.quaternion">Quaternion</a></dt>
+    <dd><p>The created billboard quaternion.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_QuaternionHelper_BillboardRH_" data-uid="HelixToolkit.Maths.QuaternionHelper.BillboardRH*"></a>
+
+  <h3 id="HelixToolkit_Maths_QuaternionHelper_BillboardRH_System_Numerics_Vector3__System_Numerics_Vector3__System_Numerics_Vector3__System_Numerics_Vector3__System_Numerics_Quaternion__" data-uid="HelixToolkit.Maths.QuaternionHelper.BillboardRH(System.Numerics.Vector3@,System.Numerics.Vector3@,System.Numerics.Vector3@,System.Numerics.Vector3@,System.Numerics.Quaternion@)">
+  BillboardRH(ref Vector3, ref Vector3, ref Vector3, ref Vector3, out Quaternion)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Quaternion.cs/#L609"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Creates a right-handed spherical billboard that rotates around a specified object position.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void BillboardRH(ref Vector3 objectPosition, ref Vector3 cameraPosition, ref Vector3 cameraUpVector, ref Vector3 cameraForwardVector, out Quaternion result)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>objectPosition</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd><p>The position of the object around which the billboard will rotate.</p>
+</dd>
+    <dt><code>cameraPosition</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd><p>The position of the camera.</p>
+</dd>
+    <dt><code>cameraUpVector</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd><p>The up vector of the camera.</p>
+</dd>
+    <dt><code>cameraForwardVector</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd><p>The forward vector of the camera.</p>
+</dd>
+    <dt><code>result</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.quaternion">Quaternion</a></dt>
+    <dd><p>When the method completes, contains the created billboard quaternion.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_QuaternionHelper_Exponential_" data-uid="HelixToolkit.Maths.QuaternionHelper.Exponential*"></a>
+
+  <h3 id="HelixToolkit_Maths_QuaternionHelper_Exponential_System_Numerics_Quaternion_" data-uid="HelixToolkit.Maths.QuaternionHelper.Exponential(System.Numerics.Quaternion)">
+  Exponential(Quaternion)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Quaternion.cs/#L221"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Exponentiates a quaternion.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Quaternion Exponential(Quaternion value)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.quaternion">Quaternion</a></dt>
+    <dd><p>The quaternion to exponentiate.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.quaternion">Quaternion</a></dt>
+    <dd><p>The exponentiated quaternion.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_QuaternionHelper_Exponential_" data-uid="HelixToolkit.Maths.QuaternionHelper.Exponential*"></a>
+
+  <h3 id="HelixToolkit_Maths_QuaternionHelper_Exponential_System_Numerics_Quaternion__System_Numerics_Quaternion__" data-uid="HelixToolkit.Maths.QuaternionHelper.Exponential(System.Numerics.Quaternion@,System.Numerics.Quaternion@)">
+  Exponential(ref Quaternion, out Quaternion)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Quaternion.cs/#L195"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Exponentiates a quaternion.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void Exponential(ref Quaternion value, out Quaternion result)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.quaternion">Quaternion</a></dt>
+    <dd><p>The quaternion to exponentiate.</p>
+</dd>
+    <dt><code>result</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.quaternion">Quaternion</a></dt>
+    <dd><p>When the method completes, contains the exponentiated quaternion.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_QuaternionHelper_Get_" data-uid="HelixToolkit.Maths.QuaternionHelper.Get*"></a>
+
+  <h3 id="HelixToolkit_Maths_QuaternionHelper_Get_System_Numerics_Quaternion_System_Int32_" data-uid="HelixToolkit.Maths.QuaternionHelper.Get(System.Numerics.Quaternion,System.Int32)">
+  Get(Quaternion, int)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Quaternion.cs/#L113"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the component at the specified index.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static float Get(this Quaternion q, int index)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>q</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.quaternion">Quaternion</a></dt>
+    <dd></dd>
+    <dt><code>index</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The index of the component to access. Use 0 for the X component, 1 for the Y component, 2 for the Z component, and 3 for the W component.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>The value of the X, Y, Z, or W component, depending on the index.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentoutofrangeexception">ArgumentOutOfRangeException</a></dt>
+    <dd><p>Thrown when the <code class="paramref">index</code> is out of the range [0, 3].</p>
+</dd>
+  </dl>
+
+
+
+  <a id="HelixToolkit_Maths_QuaternionHelper_IsNormalized_" data-uid="HelixToolkit.Maths.QuaternionHelper.IsNormalized*"></a>
+
+  <h3 id="HelixToolkit_Maths_QuaternionHelper_IsNormalized_System_Numerics_Quaternion_" data-uid="HelixToolkit.Maths.QuaternionHelper.IsNormalized(System.Numerics.Quaternion)">
+  IsNormalized(Quaternion)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Quaternion.cs/#L62"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets a value indicting whether this instance is normalized.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool IsNormalized(this Quaternion q)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>q</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.quaternion">Quaternion</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_QuaternionHelper_Logarithm_" data-uid="HelixToolkit.Maths.QuaternionHelper.Logarithm*"></a>
+
+  <h3 id="HelixToolkit_Maths_QuaternionHelper_Logarithm_System_Numerics_Quaternion_" data-uid="HelixToolkit.Maths.QuaternionHelper.Logarithm(System.Numerics.Quaternion)">
+  Logarithm(Quaternion)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Quaternion.cs/#L265"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Calculates the natural logarithm of the specified quaternion.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Quaternion Logarithm(Quaternion value)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.quaternion">Quaternion</a></dt>
+    <dd><p>The quaternion whose logarithm will be calculated.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.quaternion">Quaternion</a></dt>
+    <dd><p>The natural logarithm of the quaternion.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_QuaternionHelper_Logarithm_" data-uid="HelixToolkit.Maths.QuaternionHelper.Logarithm*"></a>
+
+  <h3 id="HelixToolkit_Maths_QuaternionHelper_Logarithm_System_Numerics_Quaternion__System_Numerics_Quaternion__" data-uid="HelixToolkit.Maths.QuaternionHelper.Logarithm(System.Numerics.Quaternion@,System.Numerics.Quaternion@)">
+  Logarithm(ref Quaternion, out Quaternion)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Quaternion.cs/#L232"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Calculates the natural logarithm of the specified quaternion.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void Logarithm(ref Quaternion value, out Quaternion result)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.quaternion">Quaternion</a></dt>
+    <dd><p>The quaternion whose logarithm will be calculated.</p>
+</dd>
+    <dt><code>result</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.quaternion">Quaternion</a></dt>
+    <dd><p>When the method completes, contains the natural logarithm of the quaternion.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_QuaternionHelper_LookAtLH_" data-uid="HelixToolkit.Maths.QuaternionHelper.LookAtLH*"></a>
+
+  <h3 id="HelixToolkit_Maths_QuaternionHelper_LookAtLH_System_Numerics_Vector3_System_Numerics_Vector3_System_Numerics_Vector3_" data-uid="HelixToolkit.Maths.QuaternionHelper.LookAtLH(System.Numerics.Vector3,System.Numerics.Vector3,System.Numerics.Vector3)">
+  LookAtLH(Vector3, Vector3, Vector3)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Quaternion.cs/#L493"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Creates a left-handed, look-at quaternion.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Quaternion LookAtLH(Vector3 eye, Vector3 target, Vector3 up)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>eye</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd><p>The position of the viewer's eye.</p>
+</dd>
+    <dt><code>target</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd><p>The camera look-at target.</p>
+</dd>
+    <dt><code>up</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd><p>The camera's up vector.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.quaternion">Quaternion</a></dt>
+    <dd><p>The created look-at quaternion.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_QuaternionHelper_LookAtLH_" data-uid="HelixToolkit.Maths.QuaternionHelper.LookAtLH*"></a>
+
+  <h3 id="HelixToolkit_Maths_QuaternionHelper_LookAtLH_System_Numerics_Vector3__System_Numerics_Vector3__System_Numerics_Vector3__System_Numerics_Quaternion__" data-uid="HelixToolkit.Maths.QuaternionHelper.LookAtLH(System.Numerics.Vector3@,System.Numerics.Vector3@,System.Numerics.Vector3@,System.Numerics.Quaternion@)">
+  LookAtLH(ref Vector3, ref Vector3, ref Vector3, out Quaternion)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Quaternion.cs/#L480"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Creates a left-handed, look-at quaternion.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void LookAtLH(ref Vector3 eye, ref Vector3 target, ref Vector3 up, out Quaternion result)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>eye</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd><p>The position of the viewer's eye.</p>
+</dd>
+    <dt><code>target</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd><p>The camera look-at target.</p>
+</dd>
+    <dt><code>up</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd><p>The camera's up vector.</p>
+</dd>
+    <dt><code>result</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.quaternion">Quaternion</a></dt>
+    <dd><p>When the method completes, contains the created look-at quaternion.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_QuaternionHelper_LookAtRH_" data-uid="HelixToolkit.Maths.QuaternionHelper.LookAtRH*"></a>
+
+  <h3 id="HelixToolkit_Maths_QuaternionHelper_LookAtRH_System_Numerics_Vector3_System_Numerics_Vector3_System_Numerics_Vector3_" data-uid="HelixToolkit.Maths.QuaternionHelper.LookAtRH(System.Numerics.Vector3,System.Numerics.Vector3,System.Numerics.Vector3)">
+  LookAtRH(Vector3, Vector3, Vector3)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Quaternion.cs/#L543"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Creates a right-handed, look-at quaternion.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Quaternion LookAtRH(Vector3 eye, Vector3 target, Vector3 up)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>eye</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd><p>The position of the viewer's eye.</p>
+</dd>
+    <dt><code>target</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd><p>The camera look-at target.</p>
+</dd>
+    <dt><code>up</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd><p>The camera's up vector.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.quaternion">Quaternion</a></dt>
+    <dd><p>The created look-at quaternion.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_QuaternionHelper_LookAtRH_" data-uid="HelixToolkit.Maths.QuaternionHelper.LookAtRH*"></a>
+
+  <h3 id="HelixToolkit_Maths_QuaternionHelper_LookAtRH_System_Numerics_Vector3__System_Numerics_Vector3__System_Numerics_Vector3__System_Numerics_Quaternion__" data-uid="HelixToolkit.Maths.QuaternionHelper.LookAtRH(System.Numerics.Vector3@,System.Numerics.Vector3@,System.Numerics.Vector3@,System.Numerics.Quaternion@)">
+  LookAtRH(ref Vector3, ref Vector3, ref Vector3, out Quaternion)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Quaternion.cs/#L530"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Creates a right-handed, look-at quaternion.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void LookAtRH(ref Vector3 eye, ref Vector3 target, ref Vector3 up, out Quaternion result)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>eye</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd><p>The position of the viewer's eye.</p>
+</dd>
+    <dt><code>target</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd><p>The camera look-at target.</p>
+</dd>
+    <dt><code>up</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd><p>The camera's up vector.</p>
+</dd>
+    <dt><code>result</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.quaternion">Quaternion</a></dt>
+    <dd><p>When the method completes, contains the created look-at quaternion.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_QuaternionHelper_Rotate_" data-uid="HelixToolkit.Maths.QuaternionHelper.Rotate*"></a>
+
+  <h3 id="HelixToolkit_Maths_QuaternionHelper_Rotate_System_Numerics_Quaternion_System_Numerics_Vector3_" data-uid="HelixToolkit.Maths.QuaternionHelper.Rotate(System.Numerics.Quaternion,System.Numerics.Vector3)">
+  Rotate(Quaternion, Vector3)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Quaternion.cs/#L293"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Rotates a Vector3 by the specified quaternion rotation.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Vector3 Rotate(this Quaternion value, Vector3 vector)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.quaternion">Quaternion</a></dt>
+    <dd><p>The quaternion.</p>
+</dd>
+    <dt><code>vector</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd><p>The vector to rotate.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd><p>A newly Vector3 rotated by the specified quaternion rotation.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_QuaternionHelper_Rotate_" data-uid="HelixToolkit.Maths.QuaternionHelper.Rotate*"></a>
+
+  <h3 id="HelixToolkit_Maths_QuaternionHelper_Rotate_System_Numerics_Quaternion_System_Numerics_Vector3__" data-uid="HelixToolkit.Maths.QuaternionHelper.Rotate(System.Numerics.Quaternion,System.Numerics.Vector3@)">
+  Rotate(Quaternion, ref Vector3)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Quaternion.cs/#L276"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Rotates a Vector3 by the specified quaternion rotation.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void Rotate(Quaternion value, ref Vector3 vector)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.quaternion">Quaternion</a></dt>
+    <dd><p>The quaternion.</p>
+</dd>
+    <dt><code>vector</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd><p>The vector to rotate.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_QuaternionHelper_RotationAxis_" data-uid="HelixToolkit.Maths.QuaternionHelper.RotationAxis*"></a>
+
+  <h3 id="HelixToolkit_Maths_QuaternionHelper_RotationAxis_System_Numerics_Vector3_System_Single_" data-uid="HelixToolkit.Maths.QuaternionHelper.RotationAxis(System.Numerics.Vector3,System.Single)">
+  RotationAxis(Vector3, float)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Quaternion.cs/#L327"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Creates a quaternion given a rotation and an axis.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Quaternion RotationAxis(Vector3 axis, float angle)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>axis</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd><p>The axis of rotation.</p>
+</dd>
+    <dt><code>angle</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>The angle of rotation.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.quaternion">Quaternion</a></dt>
+    <dd><p>The newly created quaternion.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_QuaternionHelper_RotationAxis_" data-uid="HelixToolkit.Maths.QuaternionHelper.RotationAxis*"></a>
+
+  <h3 id="HelixToolkit_Maths_QuaternionHelper_RotationAxis_System_Numerics_Vector3__System_Single_System_Numerics_Quaternion__" data-uid="HelixToolkit.Maths.QuaternionHelper.RotationAxis(System.Numerics.Vector3@,System.Single,System.Numerics.Quaternion@)">
+  RotationAxis(ref Vector3, float, out Quaternion)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Quaternion.cs/#L305"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Creates a quaternion given a rotation and an axis.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void RotationAxis(ref Vector3 axis, float angle, out Quaternion result)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>axis</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd><p>The axis of rotation.</p>
+</dd>
+    <dt><code>angle</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>The angle of rotation.</p>
+</dd>
+    <dt><code>result</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.quaternion">Quaternion</a></dt>
+    <dd><p>When the method completes, contains the newly created quaternion.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_QuaternionHelper_RotationLookAtLH_" data-uid="HelixToolkit.Maths.QuaternionHelper.RotationLookAtLH*"></a>
+
+  <h3 id="HelixToolkit_Maths_QuaternionHelper_RotationLookAtLH_System_Numerics_Vector3_System_Numerics_Vector3_" data-uid="HelixToolkit.Maths.QuaternionHelper.RotationLookAtLH(System.Numerics.Vector3,System.Numerics.Vector3)">
+  RotationLookAtLH(Vector3, Vector3)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Quaternion.cs/#L517"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Creates a left-handed, look-at quaternion.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Quaternion RotationLookAtLH(Vector3 forward, Vector3 up)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>forward</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd><p>The camera's forward direction.</p>
+</dd>
+    <dt><code>up</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd><p>The camera's up vector.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.quaternion">Quaternion</a></dt>
+    <dd><p>The created look-at quaternion.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_QuaternionHelper_RotationLookAtLH_" data-uid="HelixToolkit.Maths.QuaternionHelper.RotationLookAtLH*"></a>
+
+  <h3 id="HelixToolkit_Maths_QuaternionHelper_RotationLookAtLH_System_Numerics_Vector3__System_Numerics_Vector3__System_Numerics_Quaternion__" data-uid="HelixToolkit.Maths.QuaternionHelper.RotationLookAtLH(System.Numerics.Vector3@,System.Numerics.Vector3@,System.Numerics.Quaternion@)">
+  RotationLookAtLH(ref Vector3, ref Vector3, out Quaternion)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Quaternion.cs/#L505"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Creates a left-handed, look-at quaternion.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void RotationLookAtLH(ref Vector3 forward, ref Vector3 up, out Quaternion result)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>forward</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd><p>The camera's forward direction.</p>
+</dd>
+    <dt><code>up</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd><p>The camera's up vector.</p>
+</dd>
+    <dt><code>result</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.quaternion">Quaternion</a></dt>
+    <dd><p>When the method completes, contains the created look-at quaternion.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_QuaternionHelper_RotationLookAtRH_" data-uid="HelixToolkit.Maths.QuaternionHelper.RotationLookAtRH*"></a>
+
+  <h3 id="HelixToolkit_Maths_QuaternionHelper_RotationLookAtRH_System_Numerics_Vector3_System_Numerics_Vector3_" data-uid="HelixToolkit.Maths.QuaternionHelper.RotationLookAtRH(System.Numerics.Vector3,System.Numerics.Vector3)">
+  RotationLookAtRH(Vector3, Vector3)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Quaternion.cs/#L567"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Creates a right-handed, look-at quaternion.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Quaternion RotationLookAtRH(Vector3 forward, Vector3 up)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>forward</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd><p>The camera's forward direction.</p>
+</dd>
+    <dt><code>up</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd><p>The camera's up vector.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.quaternion">Quaternion</a></dt>
+    <dd><p>The created look-at quaternion.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_QuaternionHelper_RotationLookAtRH_" data-uid="HelixToolkit.Maths.QuaternionHelper.RotationLookAtRH*"></a>
+
+  <h3 id="HelixToolkit_Maths_QuaternionHelper_RotationLookAtRH_System_Numerics_Vector3__System_Numerics_Vector3__System_Numerics_Quaternion__" data-uid="HelixToolkit.Maths.QuaternionHelper.RotationLookAtRH(System.Numerics.Vector3@,System.Numerics.Vector3@,System.Numerics.Quaternion@)">
+  RotationLookAtRH(ref Vector3, ref Vector3, out Quaternion)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Quaternion.cs/#L555"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Creates a right-handed, look-at quaternion.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void RotationLookAtRH(ref Vector3 forward, ref Vector3 up, out Quaternion result)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>forward</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd><p>The camera's forward direction.</p>
+</dd>
+    <dt><code>up</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd><p>The camera's up vector.</p>
+</dd>
+    <dt><code>result</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.quaternion">Quaternion</a></dt>
+    <dd><p>When the method completes, contains the created look-at quaternion.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_QuaternionHelper_RotationMatrix_" data-uid="HelixToolkit.Maths.QuaternionHelper.RotationMatrix*"></a>
+
+  <h3 id="HelixToolkit_Maths_QuaternionHelper_RotationMatrix_HelixToolkit_Maths_Matrix3x3__System_Numerics_Quaternion__" data-uid="HelixToolkit.Maths.QuaternionHelper.RotationMatrix(HelixToolkit.Maths.Matrix3x3@,System.Numerics.Quaternion@)">
+  RotationMatrix(ref Matrix3x3, out Quaternion)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Quaternion.cs/#L424"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Creates a quaternion given a rotation matrix.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void RotationMatrix(ref Matrix3x3 matrix, out Quaternion result)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>matrix</code> <a class="xref" href="HelixToolkit.Maths.Matrix3x3.html">Matrix3x3</a></dt>
+    <dd><p>The rotation matrix.</p>
+</dd>
+    <dt><code>result</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.quaternion">Quaternion</a></dt>
+    <dd><p>When the method completes, contains the newly created quaternion.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_QuaternionHelper_RotationMatrix_" data-uid="HelixToolkit.Maths.QuaternionHelper.RotationMatrix*"></a>
+
+  <h3 id="HelixToolkit_Maths_QuaternionHelper_RotationMatrix_System_Numerics_Matrix4x4_" data-uid="HelixToolkit.Maths.QuaternionHelper.RotationMatrix(System.Numerics.Matrix4x4)">
+  RotationMatrix(Matrix4x4)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Quaternion.cs/#L634"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Creates a quaternion given a rotation matrix.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Quaternion RotationMatrix(Matrix4x4 matrix)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>matrix</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.matrix4x4">Matrix4x4</a></dt>
+    <dd><p>The rotation matrix.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.quaternion">Quaternion</a></dt>
+    <dd><p>The newly created quaternion.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_QuaternionHelper_RotationMatrix_" data-uid="HelixToolkit.Maths.QuaternionHelper.RotationMatrix*"></a>
+
+  <h3 id="HelixToolkit_Maths_QuaternionHelper_RotationMatrix_System_Numerics_Matrix4x4__System_Numerics_Quaternion__" data-uid="HelixToolkit.Maths.QuaternionHelper.RotationMatrix(System.Numerics.Matrix4x4@,System.Numerics.Quaternion@)">
+  RotationMatrix(ref Matrix4x4, out Quaternion)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Quaternion.cs/#L370"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Creates a quaternion given a rotation matrix.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void RotationMatrix(ref Matrix4x4 matrix, out Quaternion result)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>matrix</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.matrix4x4">Matrix4x4</a></dt>
+    <dd><p>The rotation matrix.</p>
+</dd>
+    <dt><code>result</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.quaternion">Quaternion</a></dt>
+    <dd><p>When the method completes, contains the newly created quaternion.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_QuaternionHelper_RotationYawPitchRoll_" data-uid="HelixToolkit.Maths.QuaternionHelper.RotationYawPitchRoll*"></a>
+
+  <h3 id="HelixToolkit_Maths_QuaternionHelper_RotationYawPitchRoll_System_Single_System_Single_System_Single_" data-uid="HelixToolkit.Maths.QuaternionHelper.RotationYawPitchRoll(System.Single,System.Single,System.Single)">
+  RotationYawPitchRoll(float, float, float)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Quaternion.cs/#L674"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Creates a quaternion given a yaw, pitch, and roll value.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Quaternion RotationYawPitchRoll(float yaw, float pitch, float roll)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>yaw</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>The yaw of rotation.</p>
+</dd>
+    <dt><code>pitch</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>The pitch of rotation.</p>
+</dd>
+    <dt><code>roll</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>The roll of rotation.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.quaternion">Quaternion</a></dt>
+    <dd><p>The newly created quaternion.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_QuaternionHelper_RotationYawPitchRoll_" data-uid="HelixToolkit.Maths.QuaternionHelper.RotationYawPitchRoll*"></a>
+
+  <h3 id="HelixToolkit_Maths_QuaternionHelper_RotationYawPitchRoll_System_Single_System_Single_System_Single_System_Numerics_Quaternion__" data-uid="HelixToolkit.Maths.QuaternionHelper.RotationYawPitchRoll(System.Single,System.Single,System.Single,System.Numerics.Quaternion@)">
+  RotationYawPitchRoll(float, float, float, out Quaternion)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Quaternion.cs/#L647"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Creates a quaternion given a yaw, pitch, and roll value.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void RotationYawPitchRoll(float yaw, float pitch, float roll, out Quaternion result)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>yaw</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>The yaw of rotation.</p>
+</dd>
+    <dt><code>pitch</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>The pitch of rotation.</p>
+</dd>
+    <dt><code>roll</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>The roll of rotation.</p>
+</dd>
+    <dt><code>result</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.quaternion">Quaternion</a></dt>
+    <dd><p>When the method completes, contains the newly created quaternion.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_QuaternionHelper_Set_" data-uid="HelixToolkit.Maths.QuaternionHelper.Set*"></a>
+
+  <h3 id="HelixToolkit_Maths_QuaternionHelper_Set_System_Numerics_Quaternion__System_Int32_System_Single_" data-uid="HelixToolkit.Maths.QuaternionHelper.Set(System.Numerics.Quaternion@,System.Int32,System.Single)">
+  Set(ref Quaternion, int, float)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Quaternion.cs/#L132"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Sets the specified q.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void Set(ref Quaternion q, int index, float value)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>q</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.quaternion">Quaternion</a></dt>
+    <dd><p>The q.</p>
+</dd>
+    <dt><code>index</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The index.</p>
+</dd>
+    <dt><code>value</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>The value.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentoutofrangeexception">ArgumentOutOfRangeException</a></dt>
+    <dd><p>index - Indices for Quaternion run from 0 to 3, inclusive.</p>
+</dd>
+  </dl>
+
+
+
+  <a id="HelixToolkit_Maths_QuaternionHelper_Squad_" data-uid="HelixToolkit.Maths.QuaternionHelper.Squad*"></a>
+
+  <h3 id="HelixToolkit_Maths_QuaternionHelper_Squad_System_Numerics_Quaternion_System_Numerics_Quaternion_System_Numerics_Quaternion_System_Numerics_Quaternion_System_Single_" data-uid="HelixToolkit.Maths.QuaternionHelper.Squad(System.Numerics.Quaternion,System.Numerics.Quaternion,System.Numerics.Quaternion,System.Numerics.Quaternion,System.Single)">
+  Squad(Quaternion, Quaternion, Quaternion, Quaternion, float)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Quaternion.cs/#L707"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Interpolates between quaternions, using spherical quadrangle interpolation.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Quaternion Squad(Quaternion value1, Quaternion value2, Quaternion value3, Quaternion value4, float amount)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value1</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.quaternion">Quaternion</a></dt>
+    <dd><p>First source quaternion.</p>
+</dd>
+    <dt><code>value2</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.quaternion">Quaternion</a></dt>
+    <dd><p>Second source quaternion.</p>
+</dd>
+    <dt><code>value3</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.quaternion">Quaternion</a></dt>
+    <dd><p>Third source quaternion.</p>
+</dd>
+    <dt><code>value4</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.quaternion">Quaternion</a></dt>
+    <dd><p>Fourth source quaternion.</p>
+</dd>
+    <dt><code>amount</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>Value between 0 and 1 indicating the weight of interpolation.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.quaternion">Quaternion</a></dt>
+    <dd><p>The spherical quadrangle interpolation of the quaternions.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_QuaternionHelper_Squad_" data-uid="HelixToolkit.Maths.QuaternionHelper.Squad*"></a>
+
+  <h3 id="HelixToolkit_Maths_QuaternionHelper_Squad_System_Numerics_Quaternion__System_Numerics_Quaternion__System_Numerics_Quaternion__System_Numerics_Quaternion__System_Single_System_Numerics_Quaternion__" data-uid="HelixToolkit.Maths.QuaternionHelper.Squad(System.Numerics.Quaternion@,System.Numerics.Quaternion@,System.Numerics.Quaternion@,System.Numerics.Quaternion@,System.Single,System.Numerics.Quaternion@)">
+  Squad(ref Quaternion, ref Quaternion, ref Quaternion, ref Quaternion, float, out Quaternion)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Quaternion.cs/#L691"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Interpolates between quaternions, using spherical quadrangle interpolation.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void Squad(ref Quaternion value1, ref Quaternion value2, ref Quaternion value3, ref Quaternion value4, float amount, out Quaternion result)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value1</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.quaternion">Quaternion</a></dt>
+    <dd><p>First source quaternion.</p>
+</dd>
+    <dt><code>value2</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.quaternion">Quaternion</a></dt>
+    <dd><p>Second source quaternion.</p>
+</dd>
+    <dt><code>value3</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.quaternion">Quaternion</a></dt>
+    <dd><p>Third source quaternion.</p>
+</dd>
+    <dt><code>value4</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.quaternion">Quaternion</a></dt>
+    <dd><p>Fourth source quaternion.</p>
+</dd>
+    <dt><code>amount</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>Value between 0 and 1 indicating the weight of interpolation.</p>
+</dd>
+    <dt><code>result</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.quaternion">Quaternion</a></dt>
+    <dd><p>When the method completes, contains the spherical quadrangle interpolation of the quaternions.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_QuaternionHelper_SquadSetup_" data-uid="HelixToolkit.Maths.QuaternionHelper.SquadSetup*"></a>
+
+  <h3 id="HelixToolkit_Maths_QuaternionHelper_SquadSetup_System_Numerics_Quaternion_System_Numerics_Quaternion_System_Numerics_Quaternion_System_Numerics_Quaternion_" data-uid="HelixToolkit.Maths.QuaternionHelper.SquadSetup(System.Numerics.Quaternion,System.Numerics.Quaternion,System.Numerics.Quaternion,System.Numerics.Quaternion)">
+  SquadSetup(Quaternion, Quaternion, Quaternion, Quaternion)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Quaternion.cs/#L721"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Sets up control points for spherical quadrangle interpolation.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Quaternion[] SquadSetup(Quaternion value1, Quaternion value2, Quaternion value3, Quaternion value4)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value1</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.quaternion">Quaternion</a></dt>
+    <dd><p>First source quaternion.</p>
+</dd>
+    <dt><code>value2</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.quaternion">Quaternion</a></dt>
+    <dd><p>Second source quaternion.</p>
+</dd>
+    <dt><code>value3</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.quaternion">Quaternion</a></dt>
+    <dd><p>Third source quaternion.</p>
+</dd>
+    <dt><code>value4</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.quaternion">Quaternion</a></dt>
+    <dd><p>Fourth source quaternion.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.quaternion">Quaternion</a>[]</dt>
+    <dd><p>An array of three quaternions that represent control points for spherical quadrangle interpolation.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_QuaternionHelper_ToArray_" data-uid="HelixToolkit.Maths.QuaternionHelper.ToArray*"></a>
+
+  <h3 id="HelixToolkit_Maths_QuaternionHelper_ToArray_System_Numerics_Quaternion_" data-uid="HelixToolkit.Maths.QuaternionHelper.ToArray(System.Numerics.Quaternion)">
+  ToArray(Quaternion)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Quaternion.cs/#L148"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Creates an array containing the elements of the quaternion.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static float[] ToArray(this Quaternion q)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>q</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.quaternion">Quaternion</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a>[]</dt>
+    <dd><p>A four-element array containing the components of the quaternion.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_QuaternionHelper_ToMatrix_" data-uid="HelixToolkit.Maths.QuaternionHelper.ToMatrix*"></a>
+
+  <h3 id="HelixToolkit_Maths_QuaternionHelper_ToMatrix_System_Numerics_Quaternion_" data-uid="HelixToolkit.Maths.QuaternionHelper.ToMatrix(System.Numerics.Quaternion)">
+  ToMatrix(Quaternion)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Quaternion.cs/#L739"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Matrix4x4 ToMatrix(this Quaternion rotation)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>rotation</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.quaternion">Quaternion</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.matrix4x4">Matrix4x4</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Quaternion.cs/#L37" class="edit-link">Edit this page</a>
+        </div>
+
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          Copyright (c) 2023 Helix Toolkit contributors
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

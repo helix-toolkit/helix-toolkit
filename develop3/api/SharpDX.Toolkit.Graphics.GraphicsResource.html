@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Class GraphicsResource | Helix Toolkit - 3D for .NET </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Class GraphicsResource | Helix Toolkit - 3D for .NET ">
+      
+      <meta name="description" content="Base class for all .">
+      <link rel="icon" href="../images/favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/helix-toolkit/helix-toolkit/new/develop3/apiSpec/new?filename=SharpDX_Toolkit_Graphics_GraphicsResource.md&amp;value=---%0Auid%3A%20SharpDX.Toolkit.Graphics.GraphicsResource%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="ManagedReference">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../images/favicon.ico" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="SharpDX.Toolkit.Graphics.GraphicsResource">
+
+
+
+  <h1 id="SharpDX_Toolkit_Graphics_GraphicsResource" data-uid="SharpDX.Toolkit.Graphics.GraphicsResource" class="text-break">
+Class GraphicsResource  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/SharpDX.Toolkit/Graphics/GraphicsResource.cs/#L8"><i class="bi bi-code-slash"></i></a>
+  </h1>
+
+  <div class="facts text-secondary">
+    <dl><dt>Namespace</dt><dd><a class="xref" href="SharpDX.html">SharpDX</a>.<a class="xref" href="SharpDX.Toolkit.html">Toolkit</a>.<a class="xref" href="SharpDX.Toolkit.Graphics.html">Graphics</a></dd></dl>
+  <dl><dt>Assembly</dt><dd>HelixToolkit.SharpDX.dll</dd></dl>
+  </div>
+
+  <div class="markdown summary"><p>Base class for all <a class="xref" href="SharpDX.Toolkit.Graphics.GraphicsResource.html">GraphicsResource</a>.</p>
+</div>
+  <div class="markdown conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public abstract class GraphicsResource : Component, IComponent, INotifyPropertyChanged, IDisposable</code></pre>
+  </div>
+
+
+
+
+  <dl class="typelist inheritance">
+    <dt>Inheritance</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
+      <div><a class="xref" href="SharpDX.Toolkit.ComponentBase.html">ComponentBase</a></div>
+      <div><a class="xref" href="SharpDX.Toolkit.Component.html">Component</a></div>
+      <div><span class="xref">GraphicsResource</span></div>
+    </dd>
+  </dl>
+
+  <dl class="typelist implements">
+    <dt>Implements</dt>
+    <dd>
+      <div><a class="xref" href="SharpDX.IComponent.html">IComponent</a></div>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.componentmodel.inotifypropertychanged">INotifyPropertyChanged</a></div>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.idisposable">IDisposable</a></div>
+    </dd>
+  </dl>
+
+  <dl class="typelist derived">
+    <dt>Derived</dt>
+    <dd>
+      <div><a class="xref" href="SharpDX.Toolkit.Graphics.Texture.html">Texture</a></div>
+    </dd>
+  </dl>
+
+  <dl class="typelist inheritedMembers">
+    <dt>Inherited Members</dt>
+    <dd>
+    <div>
+      <a class="xref" href="SharpDX.Toolkit.Component.html#SharpDX_Toolkit_Component_DisposeCollector">Component.DisposeCollector</a>
+    </div>
+    <div>
+      <a class="xref" href="SharpDX.Toolkit.Component.html#SharpDX_Toolkit_Component_IsDisposed">Component.IsDisposed</a>
+    </div>
+    <div>
+      <a class="xref" href="SharpDX.Toolkit.Component.html#SharpDX_Toolkit_Component_IsDisposing">Component.IsDisposing</a>
+    </div>
+    <div>
+      <a class="xref" href="SharpDX.Toolkit.Component.html#SharpDX_Toolkit_Component_Disposing">Component.Disposing</a>
+    </div>
+    <div>
+      <a class="xref" href="SharpDX.Toolkit.Component.html#SharpDX_Toolkit_Component_Dispose">Component.Dispose()</a>
+    </div>
+    <div>
+      <a class="xref" href="SharpDX.Toolkit.Component.html#SharpDX_Toolkit_Component_ToDispose__1___0_">Component.ToDispose&lt;T&gt;(T)</a>
+    </div>
+    <div>
+      <a class="xref" href="SharpDX.Toolkit.Component.html#SharpDX_Toolkit_Component_RemoveAndDispose__1___0__">Component.RemoveAndDispose&lt;T&gt;(ref T)</a>
+    </div>
+    <div>
+      <a class="xref" href="SharpDX.Toolkit.Component.html#SharpDX_Toolkit_Component_RemoveToDispose__1___0_">Component.RemoveToDispose&lt;T&gt;(T)</a>
+    </div>
+    <div>
+      <a class="xref" href="SharpDX.Toolkit.ComponentBase.html#SharpDX_Toolkit_ComponentBase_Name">ComponentBase.Name</a>
+    </div>
+    <div>
+      <a class="xref" href="SharpDX.Toolkit.ComponentBase.html#SharpDX_Toolkit_ComponentBase_Tag">ComponentBase.Tag</a>
+    </div>
+    <div>
+      <a class="xref" href="SharpDX.Toolkit.ComponentBase.html#SharpDX_Toolkit_ComponentBase_PropertyChanged">ComponentBase.PropertyChanged</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">object.Equals(object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">object.Equals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode">object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype">object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone">object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals">object.ReferenceEquals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring">object.ToString()</a>
+    </div>
+  </dd></dl>
+
+
+
+
+
+
+  <h2 class="section" id="constructors">Constructors
+</h2>
+
+
+  <a id="SharpDX_Toolkit_Graphics_GraphicsResource__ctor_" data-uid="SharpDX.Toolkit.Graphics.GraphicsResource.#ctor*"></a>
+
+  <h3 id="SharpDX_Toolkit_Graphics_GraphicsResource__ctor_SharpDX_Direct3D11_Device_" data-uid="SharpDX.Toolkit.Graphics.GraphicsResource.#ctor(SharpDX.Direct3D11.Device)">
+  GraphicsResource(Device)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/SharpDX.Toolkit/Graphics/GraphicsResource.cs/#L31"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected GraphicsResource(Device graphicsDevice)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>graphicsDevice</code> <span class="xref">Device</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="SharpDX_Toolkit_Graphics_GraphicsResource__ctor_" data-uid="SharpDX.Toolkit.Graphics.GraphicsResource.#ctor*"></a>
+
+  <h3 id="SharpDX_Toolkit_Graphics_GraphicsResource__ctor_SharpDX_Direct3D11_Device_System_String_" data-uid="SharpDX.Toolkit.Graphics.GraphicsResource.#ctor(SharpDX.Direct3D11.Device,System.String)">
+  GraphicsResource(Device, string?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/SharpDX.Toolkit/Graphics/GraphicsResource.cs/#L40"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected GraphicsResource(Device graphicsDevice, string? name)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>graphicsDevice</code> <span class="xref">Device</span></dt>
+    <dd></dd>
+    <dt><code>name</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <h2 class="section" id="properties">Properties
+</h2>
+
+
+  <a id="SharpDX_Toolkit_Graphics_GraphicsResource_GraphicsDevice_" data-uid="SharpDX.Toolkit.Graphics.GraphicsResource.GraphicsDevice*"></a>
+
+  <h3 id="SharpDX_Toolkit_Graphics_GraphicsResource_GraphicsDevice" data-uid="SharpDX.Toolkit.Graphics.GraphicsResource.GraphicsDevice">
+  GraphicsDevice
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/SharpDX.Toolkit/Graphics/GraphicsResource.cs/#L13"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Device used to create this instance.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Device GraphicsDevice { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">Device</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h2 class="section" id="methods">Methods
+</h2>
+
+
+  <a id="SharpDX_Toolkit_Graphics_GraphicsResource_Dispose_" data-uid="SharpDX.Toolkit.Graphics.GraphicsResource.Dispose*"></a>
+
+  <h3 id="SharpDX_Toolkit_Graphics_GraphicsResource_Dispose_System_Boolean_" data-uid="SharpDX.Toolkit.Graphics.GraphicsResource.Dispose(System.Boolean)">
+  Dispose(bool)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/SharpDX.Toolkit/Graphics/GraphicsResource.cs/#L88"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected override void Dispose(bool disposeManagedResources)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>disposeManagedResources</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="SharpDX_Toolkit_Graphics_GraphicsResource_GetCpuAccessFlagsFromUsage_" data-uid="SharpDX.Toolkit.Graphics.GraphicsResource.GetCpuAccessFlagsFromUsage*"></a>
+
+  <h3 id="SharpDX_Toolkit_Graphics_GraphicsResource_GetCpuAccessFlagsFromUsage_SharpDX_Direct3D11_ResourceUsage_" data-uid="SharpDX.Toolkit.Graphics.GraphicsResource.GetCpuAccessFlagsFromUsage(SharpDX.Direct3D11.ResourceUsage)">
+  GetCpuAccessFlagsFromUsage(ResourceUsage)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/SharpDX.Toolkit/Graphics/GraphicsResource.cs/#L72"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the CPU access flags from the <span class="xref">SharpDX.Direct3D11.ResourceUsage</span>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected static CpuAccessFlags GetCpuAccessFlagsFromUsage(ResourceUsage usage)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>usage</code> <span class="xref">ResourceUsage</span></dt>
+    <dd><p>The usage.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><span class="xref">CpuAccessFlags</span></dt>
+    <dd><p>The CPU access flags</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="SharpDX_Toolkit_Graphics_GraphicsResource_Initialize_" data-uid="SharpDX.Toolkit.Graphics.GraphicsResource.Initialize*"></a>
+
+  <h3 id="SharpDX_Toolkit_Graphics_GraphicsResource_Initialize_SharpDX_Direct3D11_DeviceChild_" data-uid="SharpDX.Toolkit.Graphics.GraphicsResource.Initialize(SharpDX.Direct3D11.DeviceChild)">
+  Initialize(DeviceChild)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/SharpDX.Toolkit/Graphics/GraphicsResource.cs/#L49"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Initializes the specified device local.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual void Initialize(DeviceChild resource)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>resource</code> <span class="xref">DeviceChild</span></dt>
+    <dd><p>The resource.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="SharpDX_Toolkit_Graphics_GraphicsResource_OnPropertyChanged_" data-uid="SharpDX.Toolkit.Graphics.GraphicsResource.OnPropertyChanged*"></a>
+
+  <h3 id="SharpDX_Toolkit_Graphics_GraphicsResource_OnPropertyChanged_System_String_" data-uid="SharpDX.Toolkit.Graphics.GraphicsResource.OnPropertyChanged(System.String)">
+  OnPropertyChanged(string)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/SharpDX.Toolkit/Graphics/GraphicsResource.cs/#L98"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Called when name changed for this component.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected override void OnPropertyChanged(string propertyName)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>propertyName</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <h2 class="section" id="operators">Operators
+</h2>
+
+
+  <a id="SharpDX_Toolkit_Graphics_GraphicsResource_op_Implicit_" data-uid="SharpDX.Toolkit.Graphics.GraphicsResource.op_Implicit*"></a>
+
+  <h3 id="SharpDX_Toolkit_Graphics_GraphicsResource_op_Implicit_SharpDX_Toolkit_Graphics_GraphicsResource__SharpDX_Direct3D11_Resource" data-uid="SharpDX.Toolkit.Graphics.GraphicsResource.op_Implicit(SharpDX.Toolkit.Graphics.GraphicsResource)~SharpDX.Direct3D11.Resource">
+  implicit operator Resource?(GraphicsResource?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/SharpDX.Toolkit/Graphics/GraphicsResource.cs/#L62"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Implicit casting operator to <span class="xref">SharpDX.Direct3D11.Resource</span></p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static implicit operator Resource?(GraphicsResource? from)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>from</code> <a class="xref" href="SharpDX.Toolkit.Graphics.GraphicsResource.html">GraphicsResource</a></dt>
+    <dd><p>The GraphicsResource to convert from.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><span class="xref">Resource</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/SharpDX.Toolkit/Graphics/GraphicsResource.cs/#L8" class="edit-link">Edit this page</a>
+        </div>
+
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          Copyright (c) 2023 Helix Toolkit contributors
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

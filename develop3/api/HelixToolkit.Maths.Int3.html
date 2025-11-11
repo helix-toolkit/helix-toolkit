@@ -1,0 +1,2223 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Struct Int3 | Helix Toolkit - 3D for .NET </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Struct Int3 | Helix Toolkit - 3D for .NET ">
+      
+      <meta name="description" content="Represents a three dimensional mathematical int vector.">
+      <link rel="icon" href="../images/favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/helix-toolkit/helix-toolkit/new/develop3/apiSpec/new?filename=HelixToolkit_Maths_Int3.md&amp;value=---%0Auid%3A%20HelixToolkit.Maths.Int3%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="ManagedReference">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../images/favicon.ico" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="HelixToolkit.Maths.Int3">
+
+
+
+  <h1 id="HelixToolkit_Maths_Int3" data-uid="HelixToolkit.Maths.Int3" class="text-break">
+Struct Int3  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Int3.cs/#L37"><i class="bi bi-code-slash"></i></a>
+  </h1>
+
+  <div class="facts text-secondary">
+    <dl><dt>Namespace</dt><dd><a class="xref" href="HelixToolkit.html">HelixToolkit</a>.<a class="xref" href="HelixToolkit.Maths.html">Maths</a></dd></dl>
+  <dl><dt>Assembly</dt><dd>HelixToolkit.Maths.dll</dd></dl>
+  </div>
+
+  <div class="markdown summary"><p>Represents a three dimensional mathematical int vector.</p>
+</div>
+  <div class="markdown conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public struct Int3 : IEquatable&lt;Int3&gt;, IFormattable</code></pre>
+  </div>
+
+
+
+
+
+  <dl class="typelist implements">
+    <dt>Implements</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iequatable-1">IEquatable</a>&lt;<a class="xref" href="HelixToolkit.Maths.Int3.html">Int3</a>&gt;</div>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iformattable">IFormattable</a></div>
+    </dd>
+  </dl>
+
+
+  <dl class="typelist inheritedMembers">
+    <dt>Inherited Members</dt>
+    <dd>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">object.Equals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype">object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals">object.ReferenceEquals(object, object)</a>
+    </div>
+  </dd></dl>
+
+  <dl class="typelist extensionMethods">
+    <dt>Extension Methods</dt>
+    <dd>
+  <div>
+      <a class="xref" href="HelixToolkit.NativeHelper.html#HelixToolkit_NativeHelper_ToStruct__2___0_">NativeHelper.ToStruct&lt;T1, T2&gt;(T1)</a>
+  </div>
+  </dd></dl>
+
+
+
+
+
+  <h2 class="section" id="constructors">Constructors
+</h2>
+
+
+  <a id="HelixToolkit_Maths_Int3__ctor_" data-uid="HelixToolkit.Maths.Int3.#ctor*"></a>
+
+  <h3 id="HelixToolkit_Maths_Int3__ctor_System_Int32_" data-uid="HelixToolkit.Maths.Int3.#ctor(System.Int32)">
+  Int3(int)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Int3.cs/#L89"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="HelixToolkit.Maths.Int3.html">Int3</a> struct.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Int3(int value)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The value that will be assigned to all components.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_Int3__ctor_" data-uid="HelixToolkit.Maths.Int3.#ctor*"></a>
+
+  <h3 id="HelixToolkit_Maths_Int3__ctor_System_Int32_System_Int32_System_Int32_" data-uid="HelixToolkit.Maths.Int3.#ctor(System.Int32,System.Int32,System.Int32)">
+  Int3(int, int, int)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Int3.cs/#L102"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="HelixToolkit.Maths.Int3.html">Int3</a> struct.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Int3(int x, int y, int z)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>x</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>Initial value for the X component of the vector.</p>
+</dd>
+    <dt><code>y</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>Initial value for the Y component of the vector.</p>
+</dd>
+    <dt><code>z</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>Initial value for the Z component of the vector.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_Int3__ctor_" data-uid="HelixToolkit.Maths.Int3.#ctor*"></a>
+
+  <h3 id="HelixToolkit_Maths_Int3__ctor_System_Int32___" data-uid="HelixToolkit.Maths.Int3.#ctor(System.Int32[])">
+  Int3(int[])
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Int3.cs/#L116"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="HelixToolkit.Maths.Int3.html">Int3</a> struct.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Int3(int[] values)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>values</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a>[]</dt>
+    <dd><p>The values to assign to the X, Y, Z, and W components of the vector. This must be an array with four elements.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentnullexception">ArgumentNullException</a></dt>
+    <dd><p>Thrown when <code class="paramref">values</code> is <code>null</code>.</p>
+</dd>
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentoutofrangeexception">ArgumentOutOfRangeException</a></dt>
+    <dd><p>Thrown when <code class="paramref">values</code> contains more or less than four elements.</p>
+</dd>
+  </dl>
+
+
+
+  <h2 class="section" id="fields">Fields
+</h2>
+
+
+
+  <h3 id="HelixToolkit_Maths_Int3_One" data-uid="HelixToolkit.Maths.Int3.One">
+  One
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Int3.cs/#L68"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>A <a class="xref" href="HelixToolkit.Maths.Int3.html">Int3</a> with all of its components set to one.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly Int3 One</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Maths.Int3.html">Int3</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_Maths_Int3_SizeInBytes" data-uid="HelixToolkit.Maths.Int3.SizeInBytes">
+  SizeInBytes
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Int3.cs/#L43"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>The size of the <a class="xref" href="HelixToolkit.Maths.Int3.html">Int3</a> type, in bytes.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly int SizeInBytes</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_Maths_Int3_UnitX" data-uid="HelixToolkit.Maths.Int3.UnitX">
+  UnitX
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Int3.cs/#L53"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>The X unit <a class="xref" href="HelixToolkit.Maths.Int3.html">Int3</a> (1, 0, 0).</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly Int3 UnitX</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Maths.Int3.html">Int3</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_Maths_Int3_UnitY" data-uid="HelixToolkit.Maths.Int3.UnitY">
+  UnitY
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Int3.cs/#L58"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>The Y unit <a class="xref" href="HelixToolkit.Maths.Int3.html">Int3</a> (0, 1, 0).</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly Int3 UnitY</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Maths.Int3.html">Int3</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_Maths_Int3_UnitZ" data-uid="HelixToolkit.Maths.Int3.UnitZ">
+  UnitZ
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Int3.cs/#L63"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>The Z unit <a class="xref" href="HelixToolkit.Maths.Int3.html">Int3</a> (0, 0, 1).</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly Int3 UnitZ</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Maths.Int3.html">Int3</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_Maths_Int3_X" data-uid="HelixToolkit.Maths.Int3.X">
+  X
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Int3.cs/#L73"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>The X component of the vector.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int X</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_Maths_Int3_Y" data-uid="HelixToolkit.Maths.Int3.Y">
+  Y
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Int3.cs/#L78"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>The Y component of the vector.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int Y</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_Maths_Int3_Z" data-uid="HelixToolkit.Maths.Int3.Z">
+  Z
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Int3.cs/#L83"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>The Z component of the vector.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int Z</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_Maths_Int3_Zero" data-uid="HelixToolkit.Maths.Int3.Zero">
+  Zero
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Int3.cs/#L48"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>A <a class="xref" href="HelixToolkit.Maths.Int3.html">Int3</a> with all of its components set to zero.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly Int3 Zero</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Maths.Int3.html">Int3</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+  <h2 class="section" id="properties">Properties
+</h2>
+
+
+  <a id="HelixToolkit_Maths_Int3_Item_" data-uid="HelixToolkit.Maths.Int3.Item*"></a>
+
+  <h3 id="HelixToolkit_Maths_Int3_Item_System_Int32_" data-uid="HelixToolkit.Maths.Int3.Item(System.Int32)">
+  this[int]
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Int3.cs/#L141"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the component at the specified index.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int this[int index] { readonly get; set; }</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>index</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The index of the component to access. Use 0 for the X component, 1 for the Y component, 2 for the Z component, and 3 for the W component.</p>
+</dd>
+  </dl>
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The value of the X, Y, Z, or W component, depending on the index.</p>
+</dd>
+  </dl>
+
+
+
+
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentoutofrangeexception">ArgumentOutOfRangeException</a></dt>
+    <dd><p>Thrown when the <code class="paramref">index</code> is out of the range [0, 3].</p>
+</dd>
+  </dl>
+
+
+
+  <h2 class="section" id="methods">Methods
+</h2>
+
+
+  <a id="HelixToolkit_Maths_Int3_Add_" data-uid="HelixToolkit.Maths.Int3.Add*"></a>
+
+  <h3 id="HelixToolkit_Maths_Int3_Add_HelixToolkit_Maths_Int3_HelixToolkit_Maths_Int3_" data-uid="HelixToolkit.Maths.Int3.Add(HelixToolkit.Maths.Int3,HelixToolkit.Maths.Int3)">
+  Add(Int3, Int3)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Int3.cs/#L199"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Adds two vectors.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Int3 Add(Int3 left, Int3 right)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>left</code> <a class="xref" href="HelixToolkit.Maths.Int3.html">Int3</a></dt>
+    <dd><p>The first vector to add.</p>
+</dd>
+    <dt><code>right</code> <a class="xref" href="HelixToolkit.Maths.Int3.html">Int3</a></dt>
+    <dd><p>The second vector to add.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Maths.Int3.html">Int3</a></dt>
+    <dd><p>The sum of the two vectors.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_Int3_Add_" data-uid="HelixToolkit.Maths.Int3.Add*"></a>
+
+  <h3 id="HelixToolkit_Maths_Int3_Add_HelixToolkit_Maths_Int3__HelixToolkit_Maths_Int3__HelixToolkit_Maths_Int3__" data-uid="HelixToolkit.Maths.Int3.Add(HelixToolkit.Maths.Int3@,HelixToolkit.Maths.Int3@,HelixToolkit.Maths.Int3@)">
+  Add(ref Int3, ref Int3, out Int3)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Int3.cs/#L188"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Adds two vectors.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void Add(ref Int3 left, ref Int3 right, out Int3 result)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>left</code> <a class="xref" href="HelixToolkit.Maths.Int3.html">Int3</a></dt>
+    <dd><p>The first vector to add.</p>
+</dd>
+    <dt><code>right</code> <a class="xref" href="HelixToolkit.Maths.Int3.html">Int3</a></dt>
+    <dd><p>The second vector to add.</p>
+</dd>
+    <dt><code>result</code> <a class="xref" href="HelixToolkit.Maths.Int3.html">Int3</a></dt>
+    <dd><p>When the method completes, contains the sum of the two vectors.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_Int3_Clamp_" data-uid="HelixToolkit.Maths.Int3.Clamp*"></a>
+
+  <h3 id="HelixToolkit_Maths_Int3_Clamp_HelixToolkit_Maths_Int3_HelixToolkit_Maths_Int3_HelixToolkit_Maths_Int3_" data-uid="HelixToolkit.Maths.Int3.Clamp(HelixToolkit.Maths.Int3,HelixToolkit.Maths.Int3,HelixToolkit.Maths.Int3)">
+  Clamp(Int3, Int3, Int3)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Int3.cs/#L343"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Restricts a value to be within a specified range.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Int3 Clamp(Int3 value, Int3 min, Int3 max)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="HelixToolkit.Maths.Int3.html">Int3</a></dt>
+    <dd><p>The value to clamp.</p>
+</dd>
+    <dt><code>min</code> <a class="xref" href="HelixToolkit.Maths.Int3.html">Int3</a></dt>
+    <dd><p>The minimum value.</p>
+</dd>
+    <dt><code>max</code> <a class="xref" href="HelixToolkit.Maths.Int3.html">Int3</a></dt>
+    <dd><p>The maximum value.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Maths.Int3.html">Int3</a></dt>
+    <dd><p>The clamped value.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_Int3_Clamp_" data-uid="HelixToolkit.Maths.Int3.Clamp*"></a>
+
+  <h3 id="HelixToolkit_Maths_Int3_Clamp_HelixToolkit_Maths_Int3__HelixToolkit_Maths_Int3__HelixToolkit_Maths_Int3__HelixToolkit_Maths_Int3__" data-uid="HelixToolkit.Maths.Int3.Clamp(HelixToolkit.Maths.Int3@,HelixToolkit.Maths.Int3@,HelixToolkit.Maths.Int3@,HelixToolkit.Maths.Int3@)">
+  Clamp(ref Int3, ref Int3, ref Int3, out Int3)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Int3.cs/#L319"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Restricts a value to be within a specified range.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void Clamp(ref Int3 value, ref Int3 min, ref Int3 max, out Int3 result)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="HelixToolkit.Maths.Int3.html">Int3</a></dt>
+    <dd><p>The value to clamp.</p>
+</dd>
+    <dt><code>min</code> <a class="xref" href="HelixToolkit.Maths.Int3.html">Int3</a></dt>
+    <dd><p>The minimum value.</p>
+</dd>
+    <dt><code>max</code> <a class="xref" href="HelixToolkit.Maths.Int3.html">Int3</a></dt>
+    <dd><p>The maximum value.</p>
+</dd>
+    <dt><code>result</code> <a class="xref" href="HelixToolkit.Maths.Int3.html">Int3</a></dt>
+    <dd><p>When the method completes, contains the clamped value.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_Int3_Divide_" data-uid="HelixToolkit.Maths.Int3.Divide*"></a>
+
+  <h3 id="HelixToolkit_Maths_Int3_Divide_HelixToolkit_Maths_Int3_System_Int32_" data-uid="HelixToolkit.Maths.Int3.Divide(HelixToolkit.Maths.Int3,System.Int32)">
+  Divide(Int3, int)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Int3.cs/#L287"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Scales a vector by the given value.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Int3 Divide(Int3 value, int scale)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="HelixToolkit.Maths.Int3.html">Int3</a></dt>
+    <dd><p>The vector to scale.</p>
+</dd>
+    <dt><code>scale</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The amount by which to scale the vector.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Maths.Int3.html">Int3</a></dt>
+    <dd><p>The scaled vector.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_Int3_Divide_" data-uid="HelixToolkit.Maths.Int3.Divide*"></a>
+
+  <h3 id="HelixToolkit_Maths_Int3_Divide_HelixToolkit_Maths_Int3__System_Int32_HelixToolkit_Maths_Int3__" data-uid="HelixToolkit.Maths.Int3.Divide(HelixToolkit.Maths.Int3@,System.Int32,HelixToolkit.Maths.Int3@)">
+  Divide(ref Int3, int, out Int3)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Int3.cs/#L276"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Scales a vector by the given value.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void Divide(ref Int3 value, int scale, out Int3 result)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="HelixToolkit.Maths.Int3.html">Int3</a></dt>
+    <dd><p>The vector to scale.</p>
+</dd>
+    <dt><code>scale</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The amount by which to scale the vector.</p>
+</dd>
+    <dt><code>result</code> <a class="xref" href="HelixToolkit.Maths.Int3.html">Int3</a></dt>
+    <dd><p>When the method completes, contains the scaled vector.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_Int3_Equals_" data-uid="HelixToolkit.Maths.Int3.Equals*"></a>
+
+  <h3 id="HelixToolkit_Maths_Int3_Equals_HelixToolkit_Maths_Int3_" data-uid="HelixToolkit.Maths.Int3.Equals(HelixToolkit.Maths.Int3)">
+  Equals(Int3)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Int3.cs/#L613"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Determines whether the specified <a class="xref" href="HelixToolkit.Maths.Int3.html">Int3</a> is equal to this instance.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public readonly bool Equals(Int3 other)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>other</code> <a class="xref" href="HelixToolkit.Maths.Int3.html">Int3</a></dt>
+    <dd><p>The <a class="xref" href="HelixToolkit.Maths.Int3.html">Int3</a> to compare with this instance.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><code>true</code> if the specified <a class="xref" href="HelixToolkit.Maths.Int3.html">Int3</a> is equal to this instance; otherwise, <code>false</code>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_Int3_Equals_" data-uid="HelixToolkit.Maths.Int3.Equals*"></a>
+
+  <h3 id="HelixToolkit_Maths_Int3_Equals_HelixToolkit_Maths_Int3__" data-uid="HelixToolkit.Maths.Int3.Equals(HelixToolkit.Maths.Int3@)">
+  Equals(ref Int3)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Int3.cs/#L600"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Determines whether the specified <a class="xref" href="HelixToolkit.Maths.Int3.html">Int3</a> is equal to this instance.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public readonly bool Equals(ref Int3 other)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>other</code> <a class="xref" href="HelixToolkit.Maths.Int3.html">Int3</a></dt>
+    <dd><p>The <a class="xref" href="HelixToolkit.Maths.Int3.html">Int3</a> to compare with this instance.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><code>true</code> if the specified <a class="xref" href="HelixToolkit.Maths.Int3.html">Int3</a> is equal to this instance; otherwise, <code>false</code>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_Int3_Equals_" data-uid="HelixToolkit.Maths.Int3.Equals*"></a>
+
+  <h3 id="HelixToolkit_Maths_Int3_Equals_System_Object_" data-uid="HelixToolkit.Maths.Int3.Equals(System.Object)">
+  Equals(object?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Int3.cs/#L626"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Determines whether the specified <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a> is equal to this instance.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override readonly bool Equals(object? obj)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>obj</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></dt>
+    <dd><p>The <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a> to compare with this instance.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><code>true</code> if the specified <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a> is equal to this instance; otherwise, <code>false</code>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_Int3_GetHashCode_" data-uid="HelixToolkit.Maths.Int3.GetHashCode*"></a>
+
+  <h3 id="HelixToolkit_Maths_Int3_GetHashCode" data-uid="HelixToolkit.Maths.Int3.GetHashCode">
+  GetHashCode()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Int3.cs/#L582"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Returns a hash code for this instance.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override readonly int GetHashCode()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_Int3_Max_" data-uid="HelixToolkit.Maths.Int3.Max*"></a>
+
+  <h3 id="HelixToolkit_Maths_Int3_Max_HelixToolkit_Maths_Int3_HelixToolkit_Maths_Int3_" data-uid="HelixToolkit.Maths.Int3.Max(HelixToolkit.Maths.Int3,HelixToolkit.Maths.Int3)">
+  Max(Int3, Int3)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Int3.cs/#L368"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Returns a vector containing the largest components of the specified vectors.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Int3 Max(Int3 left, Int3 right)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>left</code> <a class="xref" href="HelixToolkit.Maths.Int3.html">Int3</a></dt>
+    <dd><p>The first source vector.</p>
+</dd>
+    <dt><code>right</code> <a class="xref" href="HelixToolkit.Maths.Int3.html">Int3</a></dt>
+    <dd><p>The second source vector.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Maths.Int3.html">Int3</a></dt>
+    <dd><p>A vector containing the largest components of the source vectors.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_Int3_Max_" data-uid="HelixToolkit.Maths.Int3.Max*"></a>
+
+  <h3 id="HelixToolkit_Maths_Int3_Max_HelixToolkit_Maths_Int3__HelixToolkit_Maths_Int3__HelixToolkit_Maths_Int3__" data-uid="HelixToolkit.Maths.Int3.Max(HelixToolkit.Maths.Int3@,HelixToolkit.Maths.Int3@,HelixToolkit.Maths.Int3@)">
+  Max(ref Int3, ref Int3, out Int3)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Int3.cs/#L355"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Returns a vector containing the smallest components of the specified vectors.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void Max(ref Int3 left, ref Int3 right, out Int3 result)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>left</code> <a class="xref" href="HelixToolkit.Maths.Int3.html">Int3</a></dt>
+    <dd><p>The first source vector.</p>
+</dd>
+    <dt><code>right</code> <a class="xref" href="HelixToolkit.Maths.Int3.html">Int3</a></dt>
+    <dd><p>The second source vector.</p>
+</dd>
+    <dt><code>result</code> <a class="xref" href="HelixToolkit.Maths.Int3.html">Int3</a></dt>
+    <dd><p>When the method completes, contains an new vector composed of the largest components of the source vectors.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_Int3_Min_" data-uid="HelixToolkit.Maths.Int3.Min*"></a>
+
+  <h3 id="HelixToolkit_Maths_Int3_Min_HelixToolkit_Maths_Int3_HelixToolkit_Maths_Int3_" data-uid="HelixToolkit.Maths.Int3.Min(HelixToolkit.Maths.Int3,HelixToolkit.Maths.Int3)">
+  Min(Int3, Int3)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Int3.cs/#L393"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Returns a vector containing the smallest components of the specified vectors.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Int3 Min(Int3 left, Int3 right)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>left</code> <a class="xref" href="HelixToolkit.Maths.Int3.html">Int3</a></dt>
+    <dd><p>The first source vector.</p>
+</dd>
+    <dt><code>right</code> <a class="xref" href="HelixToolkit.Maths.Int3.html">Int3</a></dt>
+    <dd><p>The second source vector.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Maths.Int3.html">Int3</a></dt>
+    <dd><p>A vector containing the smallest components of the source vectors.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_Int3_Min_" data-uid="HelixToolkit.Maths.Int3.Min*"></a>
+
+  <h3 id="HelixToolkit_Maths_Int3_Min_HelixToolkit_Maths_Int3__HelixToolkit_Maths_Int3__HelixToolkit_Maths_Int3__" data-uid="HelixToolkit.Maths.Int3.Min(HelixToolkit.Maths.Int3@,HelixToolkit.Maths.Int3@,HelixToolkit.Maths.Int3@)">
+  Min(ref Int3, ref Int3, out Int3)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Int3.cs/#L380"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Returns a vector containing the smallest components of the specified vectors.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void Min(ref Int3 left, ref Int3 right, out Int3 result)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>left</code> <a class="xref" href="HelixToolkit.Maths.Int3.html">Int3</a></dt>
+    <dd><p>The first source vector.</p>
+</dd>
+    <dt><code>right</code> <a class="xref" href="HelixToolkit.Maths.Int3.html">Int3</a></dt>
+    <dd><p>The second source vector.</p>
+</dd>
+    <dt><code>result</code> <a class="xref" href="HelixToolkit.Maths.Int3.html">Int3</a></dt>
+    <dd><p>When the method completes, contains an new vector composed of the smallest components of the source vectors.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_Int3_Modulate_" data-uid="HelixToolkit.Maths.Int3.Modulate*"></a>
+
+  <h3 id="HelixToolkit_Maths_Int3_Modulate_HelixToolkit_Maths_Int3_HelixToolkit_Maths_Int3_" data-uid="HelixToolkit.Maths.Int3.Modulate(HelixToolkit.Maths.Int3,HelixToolkit.Maths.Int3)">
+  Modulate(Int3, Int3)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Int3.cs/#L265"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Modulates a vector with another by performing component-wise multiplication.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Int3 Modulate(Int3 left, Int3 right)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>left</code> <a class="xref" href="HelixToolkit.Maths.Int3.html">Int3</a></dt>
+    <dd><p>The first vector to modulate.</p>
+</dd>
+    <dt><code>right</code> <a class="xref" href="HelixToolkit.Maths.Int3.html">Int3</a></dt>
+    <dd><p>The second vector to modulate.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Maths.Int3.html">Int3</a></dt>
+    <dd><p>The modulated vector.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_Int3_Modulate_" data-uid="HelixToolkit.Maths.Int3.Modulate*"></a>
+
+  <h3 id="HelixToolkit_Maths_Int3_Modulate_HelixToolkit_Maths_Int3__HelixToolkit_Maths_Int3__HelixToolkit_Maths_Int3__" data-uid="HelixToolkit.Maths.Int3.Modulate(HelixToolkit.Maths.Int3@,HelixToolkit.Maths.Int3@,HelixToolkit.Maths.Int3@)">
+  Modulate(ref Int3, ref Int3, out Int3)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Int3.cs/#L254"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Modulates a vector with another by performing component-wise multiplication.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void Modulate(ref Int3 left, ref Int3 right, out Int3 result)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>left</code> <a class="xref" href="HelixToolkit.Maths.Int3.html">Int3</a></dt>
+    <dd><p>The first vector to modulate.</p>
+</dd>
+    <dt><code>right</code> <a class="xref" href="HelixToolkit.Maths.Int3.html">Int3</a></dt>
+    <dd><p>The second vector to modulate.</p>
+</dd>
+    <dt><code>result</code> <a class="xref" href="HelixToolkit.Maths.Int3.html">Int3</a></dt>
+    <dd><p>When the method completes, contains the modulated vector.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_Int3_Multiply_" data-uid="HelixToolkit.Maths.Int3.Multiply*"></a>
+
+  <h3 id="HelixToolkit_Maths_Int3_Multiply_HelixToolkit_Maths_Int3_System_Int32_" data-uid="HelixToolkit.Maths.Int3.Multiply(HelixToolkit.Maths.Int3,System.Int32)">
+  Multiply(Int3, int)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Int3.cs/#L243"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Scales a vector by the given value.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Int3 Multiply(Int3 value, int scale)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="HelixToolkit.Maths.Int3.html">Int3</a></dt>
+    <dd><p>The vector to scale.</p>
+</dd>
+    <dt><code>scale</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The amount by which to scale the vector.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Maths.Int3.html">Int3</a></dt>
+    <dd><p>The scaled vector.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_Int3_Multiply_" data-uid="HelixToolkit.Maths.Int3.Multiply*"></a>
+
+  <h3 id="HelixToolkit_Maths_Int3_Multiply_HelixToolkit_Maths_Int3__System_Int32_HelixToolkit_Maths_Int3__" data-uid="HelixToolkit.Maths.Int3.Multiply(HelixToolkit.Maths.Int3@,System.Int32,HelixToolkit.Maths.Int3@)">
+  Multiply(ref Int3, int, out Int3)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Int3.cs/#L232"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Scales a vector by the given value.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void Multiply(ref Int3 value, int scale, out Int3 result)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="HelixToolkit.Maths.Int3.html">Int3</a></dt>
+    <dd><p>The vector to scale.</p>
+</dd>
+    <dt><code>scale</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The amount by which to scale the vector.</p>
+</dd>
+    <dt><code>result</code> <a class="xref" href="HelixToolkit.Maths.Int3.html">Int3</a></dt>
+    <dd><p>When the method completes, contains the scaled vector.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_Int3_Negate_" data-uid="HelixToolkit.Maths.Int3.Negate*"></a>
+
+  <h3 id="HelixToolkit_Maths_Int3_Negate_HelixToolkit_Maths_Int3_" data-uid="HelixToolkit.Maths.Int3.Negate(HelixToolkit.Maths.Int3)">
+  Negate(Int3)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Int3.cs/#L307"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Reverses the direction of a given vector.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Int3 Negate(Int3 value)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="HelixToolkit.Maths.Int3.html">Int3</a></dt>
+    <dd><p>The vector to negate.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Maths.Int3.html">Int3</a></dt>
+    <dd><p>A vector facing in the opposite direction.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_Int3_Negate_" data-uid="HelixToolkit.Maths.Int3.Negate*"></a>
+
+  <h3 id="HelixToolkit_Maths_Int3_Negate_HelixToolkit_Maths_Int3__HelixToolkit_Maths_Int3__" data-uid="HelixToolkit.Maths.Int3.Negate(HelixToolkit.Maths.Int3@,HelixToolkit.Maths.Int3@)">
+  Negate(ref Int3, out Int3)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Int3.cs/#L297"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Reverses the direction of a given vector.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void Negate(ref Int3 value, out Int3 result)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="HelixToolkit.Maths.Int3.html">Int3</a></dt>
+    <dd><p>The vector to negate.</p>
+</dd>
+    <dt><code>result</code> <a class="xref" href="HelixToolkit.Maths.Int3.html">Int3</a></dt>
+    <dd><p>When the method completes, contains a vector facing in the opposite direction.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_Int3_Subtract_" data-uid="HelixToolkit.Maths.Int3.Subtract*"></a>
+
+  <h3 id="HelixToolkit_Maths_Int3_Subtract_HelixToolkit_Maths_Int3_HelixToolkit_Maths_Int3_" data-uid="HelixToolkit.Maths.Int3.Subtract(HelixToolkit.Maths.Int3,HelixToolkit.Maths.Int3)">
+  Subtract(Int3, Int3)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Int3.cs/#L221"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Subtracts two vectors.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Int3 Subtract(Int3 left, Int3 right)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>left</code> <a class="xref" href="HelixToolkit.Maths.Int3.html">Int3</a></dt>
+    <dd><p>The first vector to subtract.</p>
+</dd>
+    <dt><code>right</code> <a class="xref" href="HelixToolkit.Maths.Int3.html">Int3</a></dt>
+    <dd><p>The second vector to subtract.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Maths.Int3.html">Int3</a></dt>
+    <dd><p>The difference of the two vectors.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_Int3_Subtract_" data-uid="HelixToolkit.Maths.Int3.Subtract*"></a>
+
+  <h3 id="HelixToolkit_Maths_Int3_Subtract_HelixToolkit_Maths_Int3__HelixToolkit_Maths_Int3__HelixToolkit_Maths_Int3__" data-uid="HelixToolkit.Maths.Int3.Subtract(HelixToolkit.Maths.Int3@,HelixToolkit.Maths.Int3@,HelixToolkit.Maths.Int3@)">
+  Subtract(ref Int3, ref Int3, out Int3)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Int3.cs/#L210"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Subtracts two vectors.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void Subtract(ref Int3 left, ref Int3 right, out Int3 result)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>left</code> <a class="xref" href="HelixToolkit.Maths.Int3.html">Int3</a></dt>
+    <dd><p>The first vector to subtract.</p>
+</dd>
+    <dt><code>right</code> <a class="xref" href="HelixToolkit.Maths.Int3.html">Int3</a></dt>
+    <dd><p>The second vector to subtract.</p>
+</dd>
+    <dt><code>result</code> <a class="xref" href="HelixToolkit.Maths.Int3.html">Int3</a></dt>
+    <dd><p>When the method completes, contains the difference of the two vectors.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_Int3_ToArray_" data-uid="HelixToolkit.Maths.Int3.ToArray*"></a>
+
+  <h3 id="HelixToolkit_Maths_Int3_ToArray" data-uid="HelixToolkit.Maths.Int3.ToArray">
+  ToArray()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Int3.cs/#L177"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Creates an array containing the elements of the vector.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public readonly int[] ToArray()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a>[]</dt>
+    <dd><p>A four-element array containing the components of the vector.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_Int3_ToString_" data-uid="HelixToolkit.Maths.Int3.ToString*"></a>
+
+  <h3 id="HelixToolkit_Maths_Int3_ToString" data-uid="HelixToolkit.Maths.Int3.ToString">
+  ToString()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Int3.cs/#L524"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Returns a <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a> that represents this instance.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override readonly string ToString()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>A <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a> that represents this instance.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_Int3_ToString_" data-uid="HelixToolkit.Maths.Int3.ToString*"></a>
+
+  <h3 id="HelixToolkit_Maths_Int3_ToString_System_IFormatProvider_" data-uid="HelixToolkit.Maths.Int3.ToString(System.IFormatProvider)">
+  ToString(IFormatProvider)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Int3.cs/#L553"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Returns a <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a> that represents this instance.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public readonly string ToString(IFormatProvider formatProvider)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>formatProvider</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iformatprovider">IFormatProvider</a></dt>
+    <dd><p>The format provider.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>A <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a> that represents this instance.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_Int3_ToString_" data-uid="HelixToolkit.Maths.Int3.ToString*"></a>
+
+  <h3 id="HelixToolkit_Maths_Int3_ToString_System_String_" data-uid="HelixToolkit.Maths.Int3.ToString(System.String)">
+  ToString(string)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Int3.cs/#L536"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Returns a <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a> that represents this instance.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public readonly string ToString(string format)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>format</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The format.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>A <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a> that represents this instance.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_Int3_ToString_" data-uid="HelixToolkit.Maths.Int3.ToString*"></a>
+
+  <h3 id="HelixToolkit_Maths_Int3_ToString_System_String_System_IFormatProvider_" data-uid="HelixToolkit.Maths.Int3.ToString(System.String,System.IFormatProvider)">
+  ToString(string?, IFormatProvider?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Int3.cs/#L566"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Returns a <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a> that represents this instance.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public readonly string ToString(string? format, IFormatProvider? formatProvider)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>format</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The format.</p>
+</dd>
+    <dt><code>formatProvider</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iformatprovider">IFormatProvider</a></dt>
+    <dd><p>The format provider.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>A <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a> that represents this instance.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <h2 class="section" id="operators">Operators
+</h2>
+
+
+  <a id="HelixToolkit_Maths_Int3_op_Addition_" data-uid="HelixToolkit.Maths.Int3.op_Addition*"></a>
+
+  <h3 id="HelixToolkit_Maths_Int3_op_Addition_HelixToolkit_Maths_Int3_HelixToolkit_Maths_Int3_" data-uid="HelixToolkit.Maths.Int3.op_Addition(HelixToolkit.Maths.Int3,HelixToolkit.Maths.Int3)">
+  operator +(Int3, Int3)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Int3.cs/#L405"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Adds two vectors.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Int3 operator +(Int3 left, Int3 right)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>left</code> <a class="xref" href="HelixToolkit.Maths.Int3.html">Int3</a></dt>
+    <dd><p>The first vector to add.</p>
+</dd>
+    <dt><code>right</code> <a class="xref" href="HelixToolkit.Maths.Int3.html">Int3</a></dt>
+    <dd><p>The second vector to add.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Maths.Int3.html">Int3</a></dt>
+    <dd><p>The sum of the two vectors.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_Int3_op_Division_" data-uid="HelixToolkit.Maths.Int3.op_Division*"></a>
+
+  <h3 id="HelixToolkit_Maths_Int3_op_Division_HelixToolkit_Maths_Int3_System_Int32_" data-uid="HelixToolkit.Maths.Int3.op_Division(HelixToolkit.Maths.Int3,System.Int32)">
+  operator /(Int3, int)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Int3.cs/#L469"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Scales a vector by the given value.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Int3 operator /(Int3 value, int scale)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="HelixToolkit.Maths.Int3.html">Int3</a></dt>
+    <dd><p>The vector to scale.</p>
+</dd>
+    <dt><code>scale</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The amount by which to scale the vector.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Maths.Int3.html">Int3</a></dt>
+    <dd><p>The scaled vector.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_Int3_op_Equality_" data-uid="HelixToolkit.Maths.Int3.op_Equality*"></a>
+
+  <h3 id="HelixToolkit_Maths_Int3_op_Equality_HelixToolkit_Maths_Int3_HelixToolkit_Maths_Int3_" data-uid="HelixToolkit.Maths.Int3.op_Equality(HelixToolkit.Maths.Int3,HelixToolkit.Maths.Int3)">
+  operator ==(Int3, Int3)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Int3.cs/#L480"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Tests for equality between two objects.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool operator ==(Int3 left, Int3 right)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>left</code> <a class="xref" href="HelixToolkit.Maths.Int3.html">Int3</a></dt>
+    <dd><p>The first value to compare.</p>
+</dd>
+    <dt><code>right</code> <a class="xref" href="HelixToolkit.Maths.Int3.html">Int3</a></dt>
+    <dd><p>The second value to compare.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><code>true</code> if <code class="paramref">left</code> has the same value as <code class="paramref">right</code>; otherwise, <code>false</code>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_Int3_op_Explicit_" data-uid="HelixToolkit.Maths.Int3.op_Explicit*"></a>
+
+  <h3 id="HelixToolkit_Maths_Int3_op_Explicit_HelixToolkit_Maths_Int3__System_Numerics_Vector2" data-uid="HelixToolkit.Maths.Int3.op_Explicit(HelixToolkit.Maths.Int3)~System.Numerics.Vector2">
+  explicit operator Vector2(Int3)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Int3.cs/#L503"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Performs an explicit conversion from <a class="xref" href="HelixToolkit.Maths.Int3.html">Int3</a> to <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector2">Vector2</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static explicit operator Vector2(Int3 value)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="HelixToolkit.Maths.Int3.html">Int3</a></dt>
+    <dd><p>The value.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector2">Vector2</a></dt>
+    <dd><p>The result of the conversion.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_Int3_op_Explicit_" data-uid="HelixToolkit.Maths.Int3.op_Explicit*"></a>
+
+  <h3 id="HelixToolkit_Maths_Int3_op_Explicit_HelixToolkit_Maths_Int3__System_Numerics_Vector3" data-uid="HelixToolkit.Maths.Int3.op_Explicit(HelixToolkit.Maths.Int3)~System.Numerics.Vector3">
+  explicit operator Vector3(Int3)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Int3.cs/#L513"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Performs an explicit conversion from <a class="xref" href="HelixToolkit.Maths.Int3.html">Int3</a> to <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static explicit operator Vector3(Int3 value)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="HelixToolkit.Maths.Int3.html">Int3</a></dt>
+    <dd><p>The value.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd><p>The result of the conversion.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_Int3_op_Implicit_" data-uid="HelixToolkit.Maths.Int3.op_Implicit*"></a>
+
+  <h3 id="HelixToolkit_Maths_Int3_op_Implicit_HelixToolkit_Maths_Int3__System_Int32__" data-uid="HelixToolkit.Maths.Int3.op_Implicit(HelixToolkit.Maths.Int3)~System.Int32[]">
+  implicit operator int[](Int3)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Int3.cs/#L646"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Performs an implicit conversion from <a class="xref" href="HelixToolkit.Maths.Int3.html">Int3</a> to <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a> array.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static implicit operator int[](Int3 input)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>input</code> <a class="xref" href="HelixToolkit.Maths.Int3.html">Int3</a></dt>
+    <dd><p>The input.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a>[]</dt>
+    <dd><p>The result of the conversion.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_Int3_op_Implicit_" data-uid="HelixToolkit.Maths.Int3.op_Implicit*"></a>
+
+  <h3 id="HelixToolkit_Maths_Int3_op_Implicit_System_Int32____HelixToolkit_Maths_Int3" data-uid="HelixToolkit.Maths.Int3.op_Implicit(System.Int32[])~HelixToolkit.Maths.Int3">
+  implicit operator Int3(int[])
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Int3.cs/#L636"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Performs an implicit conversion from <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a> array to <a class="xref" href="HelixToolkit.Maths.Int3.html">Int3</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static implicit operator Int3(int[] input)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>input</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a>[]</dt>
+    <dd><p>The input.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Maths.Int3.html">Int3</a></dt>
+    <dd><p>The result of the conversion.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_Int3_op_Inequality_" data-uid="HelixToolkit.Maths.Int3.op_Inequality*"></a>
+
+  <h3 id="HelixToolkit_Maths_Int3_op_Inequality_HelixToolkit_Maths_Int3_HelixToolkit_Maths_Int3_" data-uid="HelixToolkit.Maths.Int3.op_Inequality(HelixToolkit.Maths.Int3,HelixToolkit.Maths.Int3)">
+  operator !=(Int3, Int3)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Int3.cs/#L492"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Tests for inequality between two objects.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool operator !=(Int3 left, Int3 right)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>left</code> <a class="xref" href="HelixToolkit.Maths.Int3.html">Int3</a></dt>
+    <dd><p>The first value to compare.</p>
+</dd>
+    <dt><code>right</code> <a class="xref" href="HelixToolkit.Maths.Int3.html">Int3</a></dt>
+    <dd><p>The second value to compare.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><code>true</code> if <code class="paramref">left</code> has a different value than <code class="paramref">right</code>; otherwise, <code>false</code>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_Int3_op_Multiply_" data-uid="HelixToolkit.Maths.Int3.op_Multiply*"></a>
+
+  <h3 id="HelixToolkit_Maths_Int3_op_Multiply_HelixToolkit_Maths_Int3_System_Int32_" data-uid="HelixToolkit.Maths.Int3.op_Multiply(HelixToolkit.Maths.Int3,System.Int32)">
+  operator *(Int3, int)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Int3.cs/#L458"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Scales a vector by the given value.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Int3 operator *(Int3 value, int scale)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="HelixToolkit.Maths.Int3.html">Int3</a></dt>
+    <dd><p>The vector to scale.</p>
+</dd>
+    <dt><code>scale</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The amount by which to scale the vector.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Maths.Int3.html">Int3</a></dt>
+    <dd><p>The scaled vector.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_Int3_op_Multiply_" data-uid="HelixToolkit.Maths.Int3.op_Multiply*"></a>
+
+  <h3 id="HelixToolkit_Maths_Int3_op_Multiply_System_Int32_HelixToolkit_Maths_Int3_" data-uid="HelixToolkit.Maths.Int3.op_Multiply(System.Int32,HelixToolkit.Maths.Int3)">
+  operator *(int, Int3)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Int3.cs/#L447"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Scales a vector by the given value.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Int3 operator *(int scale, Int3 value)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>scale</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The amount by which to scale the vector.</p>
+</dd>
+    <dt><code>value</code> <a class="xref" href="HelixToolkit.Maths.Int3.html">Int3</a></dt>
+    <dd><p>The vector to scale.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Maths.Int3.html">Int3</a></dt>
+    <dd><p>The scaled vector.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_Int3_op_Subtraction_" data-uid="HelixToolkit.Maths.Int3.op_Subtraction*"></a>
+
+  <h3 id="HelixToolkit_Maths_Int3_op_Subtraction_HelixToolkit_Maths_Int3_HelixToolkit_Maths_Int3_" data-uid="HelixToolkit.Maths.Int3.op_Subtraction(HelixToolkit.Maths.Int3,HelixToolkit.Maths.Int3)">
+  operator -(Int3, Int3)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Int3.cs/#L426"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Subtracts two vectors.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Int3 operator -(Int3 left, Int3 right)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>left</code> <a class="xref" href="HelixToolkit.Maths.Int3.html">Int3</a></dt>
+    <dd><p>The first vector to subtract.</p>
+</dd>
+    <dt><code>right</code> <a class="xref" href="HelixToolkit.Maths.Int3.html">Int3</a></dt>
+    <dd><p>The second vector to subtract.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Maths.Int3.html">Int3</a></dt>
+    <dd><p>The difference of the two vectors.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_Int3_op_UnaryNegation_" data-uid="HelixToolkit.Maths.Int3.op_UnaryNegation*"></a>
+
+  <h3 id="HelixToolkit_Maths_Int3_op_UnaryNegation_HelixToolkit_Maths_Int3_" data-uid="HelixToolkit.Maths.Int3.op_UnaryNegation(HelixToolkit.Maths.Int3)">
+  operator -(Int3)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Int3.cs/#L436"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Reverses the direction of a given vector.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Int3 operator -(Int3 value)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="HelixToolkit.Maths.Int3.html">Int3</a></dt>
+    <dd><p>The vector to negate.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Maths.Int3.html">Int3</a></dt>
+    <dd><p>A vector facing in the opposite direction.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_Int3_op_UnaryPlus_" data-uid="HelixToolkit.Maths.Int3.op_UnaryPlus*"></a>
+
+  <h3 id="HelixToolkit_Maths_Int3_op_UnaryPlus_HelixToolkit_Maths_Int3_" data-uid="HelixToolkit.Maths.Int3.op_UnaryPlus(HelixToolkit.Maths.Int3)">
+  operator +(Int3)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Int3.cs/#L415"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Assert a vector (return it unchanged).</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Int3 operator +(Int3 value)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="HelixToolkit.Maths.Int3.html">Int3</a></dt>
+    <dd><p>The vector to assert (unchanged).</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Maths.Int3.html">Int3</a></dt>
+    <dd><p>The asserted (unchanged) vector.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Int3.cs/#L37" class="edit-link">Edit this page</a>
+        </div>
+
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          Copyright (c) 2023 Helix Toolkit contributors
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

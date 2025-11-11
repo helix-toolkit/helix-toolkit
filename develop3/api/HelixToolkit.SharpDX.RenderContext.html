@@ -1,0 +1,1851 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Class RenderContext | Helix Toolkit - 3D for .NET </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Class RenderContext | Helix Toolkit - 3D for .NET ">
+      
+      <meta name="description" content="The render-context is currently generated per frame Optimizations might be possible">
+      <link rel="icon" href="../images/favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/helix-toolkit/helix-toolkit/new/develop3/apiSpec/new?filename=HelixToolkit_SharpDX_RenderContext.md&amp;value=---%0Auid%3A%20HelixToolkit.SharpDX.RenderContext%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="ManagedReference">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../images/favicon.ico" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="HelixToolkit.SharpDX.RenderContext">
+
+
+
+  <h1 id="HelixToolkit_SharpDX_RenderContext" data-uid="HelixToolkit.SharpDX.RenderContext" class="text-break">
+Class RenderContext  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Render/RenderContext.cs/#L17"><i class="bi bi-code-slash"></i></a>
+  </h1>
+
+  <div class="facts text-secondary">
+    <dl><dt>Namespace</dt><dd><a class="xref" href="HelixToolkit.html">HelixToolkit</a>.<a class="xref" href="HelixToolkit.SharpDX.html">SharpDX</a></dd></dl>
+  <dl><dt>Assembly</dt><dd>HelixToolkit.SharpDX.dll</dd></dl>
+  </div>
+
+  <div class="markdown summary"><p>The render-context is currently generated per frame
+Optimizations might be possible</p>
+</div>
+  <div class="markdown conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public sealed class RenderContext : DisposeObject, IDisposable, IRenderMatrices</code></pre>
+  </div>
+
+
+
+
+  <dl class="typelist inheritance">
+    <dt>Inheritance</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
+      <div><a class="xref" href="HelixToolkit.SharpDX.DisposeObject.html">DisposeObject</a></div>
+      <div><span class="xref">RenderContext</span></div>
+    </dd>
+  </dl>
+
+  <dl class="typelist implements">
+    <dt>Implements</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.idisposable">IDisposable</a></div>
+      <div><a class="xref" href="HelixToolkit.SharpDX.IRenderMatrices.html">IRenderMatrices</a></div>
+    </dd>
+  </dl>
+
+
+  <dl class="typelist inheritedMembers">
+    <dt>Inherited Members</dt>
+    <dd>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.DisposeObject.html#HelixToolkit_SharpDX_DisposeObject_RemoveAndDispose__1___0__">DisposeObject.RemoveAndDispose&lt;T&gt;(ref T)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.DisposeObject.html#HelixToolkit_SharpDX_DisposeObject_RemoveAndDispose__1___0_">DisposeObject.RemoveAndDispose&lt;T&gt;(T)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.DisposeObject.html#HelixToolkit_SharpDX_DisposeObject_RefCount">DisposeObject.RefCount</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.DisposeObject.html#HelixToolkit_SharpDX_DisposeObject_IncRef">DisposeObject.IncRef()</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.DisposeObject.html#HelixToolkit_SharpDX_DisposeObject_ForceDispose">DisposeObject.ForceDispose()</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.DisposeObject.html#HelixToolkit_SharpDX_DisposeObject_IsDisposed">DisposeObject.IsDisposed</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.DisposeObject.html#HelixToolkit_SharpDX_DisposeObject_Dispose">DisposeObject.Dispose()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">object.Equals(object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">object.Equals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode">object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype">object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals">object.ReferenceEquals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring">object.ToString()</a>
+    </div>
+  </dd></dl>
+
+  <dl class="typelist extensionMethods">
+    <dt>Extension Methods</dt>
+    <dd>
+  <div>
+      <a class="xref" href="HelixToolkit.SharpDX.IRenderMetricesExtensions.html#HelixToolkit_SharpDX_IRenderMetricesExtensions_Project_HelixToolkit_SharpDX_IRenderMatrices_System_Numerics_Vector3_">IRenderMetricesExtensions.Project(IRenderMatrices, Vector3)</a>
+  </div>
+  <div>
+      <a class="xref" href="HelixToolkit.SharpDX.IRenderMetricesExtensions.html#HelixToolkit_SharpDX_IRenderMetricesExtensions_UnProject_HelixToolkit_SharpDX_IRenderMatrices_System_Numerics_Vector2_HelixToolkit_Maths_Ray__">IRenderMetricesExtensions.UnProject(IRenderMatrices, Vector2, out Ray)</a>
+  </div>
+  </dd></dl>
+
+
+
+
+
+  <h2 class="section" id="constructors">Constructors
+</h2>
+
+
+  <a id="HelixToolkit_SharpDX_RenderContext__ctor_" data-uid="HelixToolkit.SharpDX.RenderContext.#ctor*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_RenderContext__ctor_HelixToolkit_SharpDX_IRenderHost_" data-uid="HelixToolkit.SharpDX.RenderContext.#ctor(HelixToolkit.SharpDX.IRenderHost)">
+  RenderContext(IRenderHost)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Render/RenderContext.cs/#L421"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="HelixToolkit.SharpDX.RenderContext.html">RenderContext</a> class.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public RenderContext(IRenderHost renderHost)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>renderHost</code> <a class="xref" href="HelixToolkit.SharpDX.IRenderHost.html">IRenderHost</a></dt>
+    <dd><p>The render host.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <h2 class="section" id="fields">Fields
+</h2>
+
+
+
+  <h3 id="HelixToolkit_SharpDX_RenderContext_AutoUpdateOctree" data-uid="HelixToolkit.SharpDX.RenderContext.AutoUpdateOctree">
+  AutoUpdateOctree
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Render/RenderContext.cs/#L267"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets a value indicating whether [update octree] automatically.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool AutoUpdateOctree</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><code>true</code> if [update octree]; otherwise, <code>false</code>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_SharpDX_RenderContext_BoundingFrustum" data-uid="HelixToolkit.SharpDX.RenderContext.BoundingFrustum">
+  BoundingFrustum
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Render/RenderContext.cs/#L25"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the bounding frustum.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public BoundingFrustum BoundingFrustum</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Maths.BoundingFrustum.html">BoundingFrustum</a></dt>
+    <dd><p>The bounding frustum.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_SharpDX_RenderContext_CustomPassName" data-uid="HelixToolkit.SharpDX.RenderContext.CustomPassName">
+  CustomPassName
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Render/RenderContext.cs/#L217"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the name of the custom pass.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string CustomPassName</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The name of the custom pass.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_SharpDX_RenderContext_EnableBoundingFrustum" data-uid="HelixToolkit.SharpDX.RenderContext.EnableBoundingFrustum">
+  EnableBoundingFrustum
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Render/RenderContext.cs/#L105"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets a value indicating whether [enable bounding frustum].</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool EnableBoundingFrustum</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><code>true</code> if [enable bounding frustum]; otherwise, <code>false</code>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_SharpDX_RenderContext_IsDeferredPass" data-uid="HelixToolkit.SharpDX.RenderContext.IsDeferredPass">
+  IsDeferredPass
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Render/RenderContext.cs/#L201"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets a value indicating whether is deferred pass.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsDeferredPass</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><code>true</code> if this instance is deferred pass; otherwise, <code>false</code>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_SharpDX_RenderContext_IsInvertCullMode" data-uid="HelixToolkit.SharpDX.RenderContext.IsInvertCullMode">
+  IsInvertCullMode
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Render/RenderContext.cs/#L277"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets a value indicating whether this render pass is using inverted cull mode.
+If <span class="xref">SharpDX.Direct3D11.CullMode</span>=<span class="xref">SharpDX.Direct3D11.CullMode.None</span>, default state is used.
+This is usually used when rendering <a class="xref" href="HelixToolkit.SharpDX.Core.DynamicCubeMapCore.html">DynamicCubeMapCore</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsInvertCullMode</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><code>true</code> Set invert cullmode flag; otherwise, <code>false</code>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_SharpDX_RenderContext_OITRenderStage" data-uid="HelixToolkit.SharpDX.RenderContext.OITRenderStage">
+  OITRenderStage
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Render/RenderContext.cs/#L209"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets a value indicating order independent transparent pass stage.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public OITRenderStage OITRenderStage</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.OITRenderStage.html">OITRenderStage</a></dt>
+    <dd><p><code>None</code> It is not using oit pass <code>false</code>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_SharpDX_RenderContext_TimeStamp" data-uid="HelixToolkit.SharpDX.RenderContext.TimeStamp">
+  TimeStamp
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Render/RenderContext.cs/#L225"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the time stamp.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public TimeSpan TimeStamp</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.timespan">TimeSpan</a></dt>
+    <dd><p>The time stamp.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+  <h2 class="section" id="properties">Properties
+</h2>
+
+
+  <a id="HelixToolkit_SharpDX_RenderContext_ActualHeight_" data-uid="HelixToolkit.SharpDX.RenderContext.ActualHeight*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_RenderContext_ActualHeight" data-uid="HelixToolkit.SharpDX.RenderContext.ActualHeight">
+  ActualHeight
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Render/RenderContext.cs/#L127"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the actual height.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float ActualHeight { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>The actual height.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_RenderContext_ActualWidth_" data-uid="HelixToolkit.SharpDX.RenderContext.ActualWidth*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_RenderContext_ActualWidth" data-uid="HelixToolkit.SharpDX.RenderContext.ActualWidth">
+  ActualWidth
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Render/RenderContext.cs/#L113"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the actual width.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float ActualWidth { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>The actual width.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_RenderContext_Camera_" data-uid="HelixToolkit.SharpDX.RenderContext.Camera*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_RenderContext_Camera" data-uid="HelixToolkit.SharpDX.RenderContext.Camera">
+  Camera
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Render/RenderContext.cs/#L157"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the camera.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public CameraCore? Camera { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.Cameras.CameraCore.html">CameraCore</a></dt>
+    <dd><p>The camera.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_RenderContext_CameraParams_" data-uid="HelixToolkit.SharpDX.RenderContext.CameraParams*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_RenderContext_CameraParams" data-uid="HelixToolkit.SharpDX.RenderContext.CameraParams">
+  CameraParams
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Render/RenderContext.cs/#L32"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the camera parameters.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public FrustumCameraParams CameraParams { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Maths.FrustumCameraParams.html">FrustumCameraParams</a></dt>
+    <dd><p>The camera parameters.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_RenderContext_DpiScale_" data-uid="HelixToolkit.SharpDX.RenderContext.DpiScale*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_RenderContext_DpiScale" data-uid="HelixToolkit.SharpDX.RenderContext.DpiScale">
+  DpiScale
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Render/RenderContext.cs/#L140"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the dpi scale.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float DpiScale { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>The dpi scale.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_RenderContext_GlobalTransform_" data-uid="HelixToolkit.SharpDX.RenderContext.GlobalTransform*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_RenderContext_GlobalTransform" data-uid="HelixToolkit.SharpDX.RenderContext.GlobalTransform">
+  GlobalTransform
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Render/RenderContext.cs/#L245"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the global transform.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public GlobalTransformStruct GlobalTransform { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.GlobalTransformStruct.html">GlobalTransformStruct</a></dt>
+    <dd><p>The global transform.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_RenderContext_IsPerspective_" data-uid="HelixToolkit.SharpDX.RenderContext.IsPerspective*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_RenderContext_IsPerspective" data-uid="HelixToolkit.SharpDX.RenderContext.IsPerspective">
+  IsPerspective
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Render/RenderContext.cs/#L39"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets a value indicating whether this instance is perspective.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsPerspective { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><code>true</code> if this instance is perspective; otherwise, <code>false</code>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_RenderContext_IsShadowMapEnabled_" data-uid="HelixToolkit.SharpDX.RenderContext.IsShadowMapEnabled*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_RenderContext_IsShadowMapEnabled" data-uid="HelixToolkit.SharpDX.RenderContext.IsShadowMapEnabled">
+  IsShadowMapEnabled
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Render/RenderContext.cs/#L412"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets a value indicating whether this instance is shadow map enabled.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsShadowMapEnabled { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><code>true</code> if this instance is shadow map enabled; otherwise, <code>false</code>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_RenderContext_LightScene_" data-uid="HelixToolkit.SharpDX.RenderContext.LightScene*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_RenderContext_LightScene" data-uid="HelixToolkit.SharpDX.RenderContext.LightScene">
+  LightScene
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Render/RenderContext.cs/#L233"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the light scene.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Light3DSceneShared? LightScene { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.Model.Light3DSceneShared.html">Light3DSceneShared</a></dt>
+    <dd><p>The light scene.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_RenderContext_OITWeightDepthSlope_" data-uid="HelixToolkit.SharpDX.RenderContext.OITWeightDepthSlope*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_RenderContext_OITWeightDepthSlope" data-uid="HelixToolkit.SharpDX.RenderContext.OITWeightDepthSlope">
+  OITWeightDepthSlope
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Render/RenderContext.cs/#L304"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the oit weight depth slope. Used to increase resolution for particular range of depth values.</p>
+<p>If value = 2, the depth range from 0-0.5 expands to 0-1 to increase resolution. However, values from 0.5 - 1 will be pushed to 1</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float OITWeightDepthSlope { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>The oit weight depth slope.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_RenderContext_OITWeightMode_" data-uid="HelixToolkit.SharpDX.RenderContext.OITWeightMode*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_RenderContext_OITWeightMode" data-uid="HelixToolkit.SharpDX.RenderContext.OITWeightMode">
+  OITWeightMode
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Render/RenderContext.cs/#L323"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the oit weight mode.</p>
+<p>Please refer to http://jcgt.org/published/0002/02/09/ </p>
+<p>Linear0: eq7; Linear1: eq8; Linear2: eq9; NonLinear: eq10</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public OITWeightMode OITWeightMode { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.OITWeightMode.html">OITWeightMode</a></dt>
+    <dd><p>The oit weight mode.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_RenderContext_OITWeightPower_" data-uid="HelixToolkit.SharpDX.RenderContext.OITWeightPower*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_RenderContext_OITWeightPower" data-uid="HelixToolkit.SharpDX.RenderContext.OITWeightPower">
+  OITWeightPower
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Render/RenderContext.cs/#L285"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the oit weight power used for color weight calculation. Default = 3;</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float OITWeightPower { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>The oit weight power.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_RenderContext_ProjectionMatrix_" data-uid="HelixToolkit.SharpDX.RenderContext.ProjectionMatrix*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_RenderContext_ProjectionMatrix" data-uid="HelixToolkit.SharpDX.RenderContext.ProjectionMatrix">
+  ProjectionMatrix
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Render/RenderContext.cs/#L69"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the projection matrix.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Matrix4x4 ProjectionMatrix { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.matrix4x4">Matrix4x4</a></dt>
+    <dd><p>The projection matrix.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_RenderContext_RenderHost_" data-uid="HelixToolkit.SharpDX.RenderContext.RenderHost*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_RenderContext_RenderHost" data-uid="HelixToolkit.SharpDX.RenderContext.RenderHost">
+  RenderHost
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Render/RenderContext.cs/#L190"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the render host.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IRenderHost RenderHost { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.IRenderHost.html">IRenderHost</a></dt>
+    <dd><p>The render host.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_RenderContext_SSAOBias_" data-uid="HelixToolkit.SharpDX.RenderContext.SSAOBias*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_RenderContext_SSAOBias" data-uid="HelixToolkit.SharpDX.RenderContext.SSAOBias">
+  SSAOBias
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Render/RenderContext.cs/#L358"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the ssao bias.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float SSAOBias { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>The ssao bias.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_RenderContext_SSAOEnabled_" data-uid="HelixToolkit.SharpDX.RenderContext.SSAOEnabled*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_RenderContext_SSAOEnabled" data-uid="HelixToolkit.SharpDX.RenderContext.SSAOEnabled">
+  SSAOEnabled
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Render/RenderContext.cs/#L341"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets a value indicating whether [ssao enabled].</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool SSAOEnabled { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><code>true</code> if [ssao enabled]; otherwise, <code>false</code>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_RenderContext_SSAOIntensity_" data-uid="HelixToolkit.SharpDX.RenderContext.SSAOIntensity*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_RenderContext_SSAOIntensity" data-uid="HelixToolkit.SharpDX.RenderContext.SSAOIntensity">
+  SSAOIntensity
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Render/RenderContext.cs/#L375"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the ssao intensity.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float SSAOIntensity { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>The ssao intensity.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_RenderContext_ScreenViewProjectionMatrix_" data-uid="HelixToolkit.SharpDX.RenderContext.ScreenViewProjectionMatrix*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_RenderContext_ScreenViewProjectionMatrix" data-uid="HelixToolkit.SharpDX.RenderContext.ScreenViewProjectionMatrix">
+  ScreenViewProjectionMatrix
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Render/RenderContext.cs/#L97"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the screen view projection matrix.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Matrix4x4 ScreenViewProjectionMatrix { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.matrix4x4">Matrix4x4</a></dt>
+    <dd><p>The screen view projection matrix.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_RenderContext_SharedResource_" data-uid="HelixToolkit.SharpDX.RenderContext.SharedResource*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_RenderContext_SharedResource" data-uid="HelixToolkit.SharpDX.RenderContext.SharedResource">
+  SharedResource
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Render/RenderContext.cs/#L259"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the shared resource.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ContextSharedResource? SharedResource { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.Model.ContextSharedResource.html">ContextSharedResource</a></dt>
+    <dd><p>The shared resource.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_RenderContext_ViewMatrix_" data-uid="HelixToolkit.SharpDX.RenderContext.ViewMatrix*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_RenderContext_ViewMatrix" data-uid="HelixToolkit.SharpDX.RenderContext.ViewMatrix">
+  ViewMatrix
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Render/RenderContext.cs/#L49"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the view matrix.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Matrix4x4 ViewMatrix { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.matrix4x4">Matrix4x4</a></dt>
+    <dd><p>The view matrix.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_RenderContext_ViewMatrixInv_" data-uid="HelixToolkit.SharpDX.RenderContext.ViewMatrixInv*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_RenderContext_ViewMatrixInv" data-uid="HelixToolkit.SharpDX.RenderContext.ViewMatrixInv">
+  ViewMatrixInv
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Render/RenderContext.cs/#L59"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the inversed view matrix.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Matrix4x4 ViewMatrixInv { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.matrix4x4">Matrix4x4</a></dt>
+    <dd><p>The inversed view matrix.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_RenderContext_Viewport_" data-uid="HelixToolkit.SharpDX.RenderContext.Viewport*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_RenderContext_Viewport" data-uid="HelixToolkit.SharpDX.RenderContext.Viewport">
+  Viewport
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Render/RenderContext.cs/#L147"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Current viewport setting</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ViewportF Viewport { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Maths.ViewportF.html">ViewportF</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_RenderContext_ViewportMatrix_" data-uid="HelixToolkit.SharpDX.RenderContext.ViewportMatrix*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_RenderContext_ViewportMatrix" data-uid="HelixToolkit.SharpDX.RenderContext.ViewportMatrix">
+  ViewportMatrix
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Render/RenderContext.cs/#L80"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the viewport matrix.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Matrix4x4 ViewportMatrix { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.matrix4x4">Matrix4x4</a></dt>
+    <dd><p>The viewport matrix.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_RenderContext_updatePerFrameRenderableRequested_" data-uid="HelixToolkit.SharpDX.RenderContext.updatePerFrameRenderableRequested*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_RenderContext_updatePerFrameRenderableRequested" data-uid="HelixToolkit.SharpDX.RenderContext.updatePerFrameRenderableRequested">
+  updatePerFrameRenderableRequested
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Render/RenderContext.cs/#L402"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets a value indicating whether [update per frame renderable requested] in this frame.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool updatePerFrameRenderableRequested { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><code>true</code> if [update per frame renderable requested]; otherwise, <code>false</code>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_RenderContext_updateSceneGraphRequested_" data-uid="HelixToolkit.SharpDX.RenderContext.updateSceneGraphRequested*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_RenderContext_updateSceneGraphRequested" data-uid="HelixToolkit.SharpDX.RenderContext.updateSceneGraphRequested">
+  updateSceneGraphRequested
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Render/RenderContext.cs/#L392"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets a value indicating whether [update scene graph requested] in this frame.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool updateSceneGraphRequested { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><code>true</code> if [update scene graph requested]; otherwise, <code>false</code>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h2 class="section" id="methods">Methods
+</h2>
+
+
+  <a id="HelixToolkit_SharpDX_RenderContext_GetOffScreenDS_" data-uid="HelixToolkit.SharpDX.RenderContext.GetOffScreenDS*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_RenderContext_GetOffScreenDS_HelixToolkit_SharpDX_OffScreenTextureSize_SharpDX_DXGI_Format_" data-uid="HelixToolkit.SharpDX.RenderContext.GetOffScreenDS(HelixToolkit.SharpDX.OffScreenTextureSize,SharpDX.DXGI.Format)">
+  GetOffScreenDS(OffScreenTextureSize, Format)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Render/RenderContext.cs/#L591"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the off screen depth stencil.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ShaderResourceViewProxy? GetOffScreenDS(OffScreenTextureSize size, Format format)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>size</code> <a class="xref" href="HelixToolkit.SharpDX.OffScreenTextureSize.html">OffScreenTextureSize</a></dt>
+    <dd><p>The size.</p>
+</dd>
+    <dt><code>format</code> <span class="xref">Format</span></dt>
+    <dd><p>The format.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.Utilities.ShaderResourceViewProxy.html">ShaderResourceViewProxy</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_RenderContext_GetOffScreenDS_" data-uid="HelixToolkit.SharpDX.RenderContext.GetOffScreenDS*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_RenderContext_GetOffScreenDS_HelixToolkit_SharpDX_OffScreenTextureSize_SharpDX_DXGI_Format_System_Int32__System_Int32__" data-uid="HelixToolkit.SharpDX.RenderContext.GetOffScreenDS(HelixToolkit.SharpDX.OffScreenTextureSize,SharpDX.DXGI.Format,System.Int32@,System.Int32@)">
+  GetOffScreenDS(OffScreenTextureSize, Format, out int, out int)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Render/RenderContext.cs/#L610"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the off screen ds.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ShaderResourceViewProxy? GetOffScreenDS(OffScreenTextureSize size, Format format, out int width, out int height)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>size</code> <a class="xref" href="HelixToolkit.SharpDX.OffScreenTextureSize.html">OffScreenTextureSize</a></dt>
+    <dd><p>The size.</p>
+</dd>
+    <dt><code>format</code> <span class="xref">Format</span></dt>
+    <dd><p>The format.</p>
+</dd>
+    <dt><code>width</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The width.</p>
+</dd>
+    <dt><code>height</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The height.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.Utilities.ShaderResourceViewProxy.html">ShaderResourceViewProxy</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_RenderContext_GetOffScreenRT_" data-uid="HelixToolkit.SharpDX.RenderContext.GetOffScreenRT*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_RenderContext_GetOffScreenRT_HelixToolkit_SharpDX_OffScreenTextureSize_SharpDX_DXGI_Format_" data-uid="HelixToolkit.SharpDX.RenderContext.GetOffScreenRT(HelixToolkit.SharpDX.OffScreenTextureSize,SharpDX.DXGI.Format)">
+  GetOffScreenRT(OffScreenTextureSize, Format)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Render/RenderContext.cs/#L543"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the off screen render target.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ShaderResourceViewProxy? GetOffScreenRT(OffScreenTextureSize size, Format format)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>size</code> <a class="xref" href="HelixToolkit.SharpDX.OffScreenTextureSize.html">OffScreenTextureSize</a></dt>
+    <dd><p>The size.</p>
+</dd>
+    <dt><code>format</code> <span class="xref">Format</span></dt>
+    <dd><p>The format.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.Utilities.ShaderResourceViewProxy.html">ShaderResourceViewProxy</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_RenderContext_GetOffScreenRT_" data-uid="HelixToolkit.SharpDX.RenderContext.GetOffScreenRT*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_RenderContext_GetOffScreenRT_HelixToolkit_SharpDX_OffScreenTextureSize_SharpDX_DXGI_Format_System_Int32__System_Int32__" data-uid="HelixToolkit.SharpDX.RenderContext.GetOffScreenRT(HelixToolkit.SharpDX.OffScreenTextureSize,SharpDX.DXGI.Format,System.Int32@,System.Int32@)">
+  GetOffScreenRT(OffScreenTextureSize, Format, out int, out int)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Render/RenderContext.cs/#L563"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the off screen rt.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ShaderResourceViewProxy? GetOffScreenRT(OffScreenTextureSize size, Format format, out int width, out int height)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>size</code> <a class="xref" href="HelixToolkit.SharpDX.OffScreenTextureSize.html">OffScreenTextureSize</a></dt>
+    <dd><p>The size.</p>
+</dd>
+    <dt><code>format</code> <span class="xref">Format</span></dt>
+    <dd><p>The format.</p>
+</dd>
+    <dt><code>width</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The width.</p>
+</dd>
+    <dt><code>height</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The height.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.Utilities.ShaderResourceViewProxy.html">ShaderResourceViewProxy</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_RenderContext_GetOffScreenTexture_" data-uid="HelixToolkit.SharpDX.RenderContext.GetOffScreenTexture*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_RenderContext_GetOffScreenTexture_HelixToolkit_SharpDX_OffScreenTextureType_HelixToolkit_SharpDX_OffScreenTextureSize_SharpDX_DXGI_Format_" data-uid="HelixToolkit.SharpDX.RenderContext.GetOffScreenTexture(HelixToolkit.SharpDX.OffScreenTextureType,HelixToolkit.SharpDX.OffScreenTextureSize,SharpDX.DXGI.Format)">
+  GetOffScreenTexture(OffScreenTextureType, OffScreenTextureSize, Format)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Render/RenderContext.cs/#L527"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the off screen texture. Same as <a class="xref" href="HelixToolkit.SharpDX.RenderContext.html#HelixToolkit_SharpDX_RenderContext_GetOffScreenRT_HelixToolkit_SharpDX_OffScreenTextureSize_SharpDX_DXGI_Format_">GetOffScreenRT(OffScreenTextureSize, Format)</a> or <a class="xref" href="HelixToolkit.SharpDX.RenderContext.html#HelixToolkit_SharpDX_RenderContext_GetOffScreenDS_HelixToolkit_SharpDX_OffScreenTextureSize_SharpDX_DXGI_Format_">GetOffScreenDS(OffScreenTextureSize, Format)</a></p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ShaderResourceViewProxy? GetOffScreenTexture(OffScreenTextureType type, OffScreenTextureSize size, Format format)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>type</code> <a class="xref" href="HelixToolkit.SharpDX.OffScreenTextureType.html">OffScreenTextureType</a></dt>
+    <dd><p>The type.</p>
+</dd>
+    <dt><code>size</code> <a class="xref" href="HelixToolkit.SharpDX.OffScreenTextureSize.html">OffScreenTextureSize</a></dt>
+    <dd><p>The size.</p>
+</dd>
+    <dt><code>format</code> <span class="xref">Format</span></dt>
+    <dd><p>The format.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.Utilities.ShaderResourceViewProxy.html">ShaderResourceViewProxy</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_RenderContext_GetPingPongBufferCurrentRTV_" data-uid="HelixToolkit.SharpDX.RenderContext.GetPingPongBufferCurrentRTV*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_RenderContext_GetPingPongBufferCurrentRTV" data-uid="HelixToolkit.SharpDX.RenderContext.GetPingPongBufferCurrentRTV">
+  GetPingPongBufferCurrentRTV()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Render/RenderContext.cs/#L639"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ShaderResourceViewProxy? GetPingPongBufferCurrentRTV()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.Utilities.ShaderResourceViewProxy.html">ShaderResourceViewProxy</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_RenderContext_GetPingPongBufferNextRTV_" data-uid="HelixToolkit.SharpDX.RenderContext.GetPingPongBufferNextRTV*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_RenderContext_GetPingPongBufferNextRTV" data-uid="HelixToolkit.SharpDX.RenderContext.GetPingPongBufferNextRTV">
+  GetPingPongBufferNextRTV()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Render/RenderContext.cs/#L633"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ShaderResourceViewProxy? GetPingPongBufferNextRTV()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.Utilities.ShaderResourceViewProxy.html">ShaderResourceViewProxy</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_RenderContext_OnDispose_" data-uid="HelixToolkit.SharpDX.RenderContext.OnDispose*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_RenderContext_OnDispose_System_Boolean_" data-uid="HelixToolkit.SharpDX.RenderContext.OnDispose(System.Boolean)">
+  OnDispose(bool)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Render/RenderContext.cs/#L645"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Disposes of object resources.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected override void OnDispose(bool disposeManagedResources)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>disposeManagedResources</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p>If true, managed resources should be
+disposed of in addition to unmanaged resources.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_RenderContext_RestoreGlobalTransform_" data-uid="HelixToolkit.SharpDX.RenderContext.RestoreGlobalTransform*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_RenderContext_RestoreGlobalTransform" data-uid="HelixToolkit.SharpDX.RenderContext.RestoreGlobalTransform">
+  RestoreGlobalTransform()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Render/RenderContext.cs/#L478"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void RestoreGlobalTransform()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_RenderContext_Set_" data-uid="HelixToolkit.SharpDX.RenderContext.Set*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_RenderContext_Set_HelixToolkit_SharpDX_GlobalTransformStruct__HelixToolkit_Maths_ViewportF_" data-uid="HelixToolkit.SharpDX.RenderContext.Set(HelixToolkit.SharpDX.GlobalTransformStruct@,HelixToolkit.Maths.ViewportF)">
+  Set(ref GlobalTransformStruct, ViewportF)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Render/RenderContext.cs/#L464"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Set(ref GlobalTransformStruct transforms, ViewportF viewport)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>transforms</code> <a class="xref" href="HelixToolkit.SharpDX.GlobalTransformStruct.html">GlobalTransformStruct</a></dt>
+    <dd></dd>
+    <dt><code>viewport</code> <a class="xref" href="HelixToolkit.Maths.ViewportF.html">ViewportF</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_RenderContext_Set_" data-uid="HelixToolkit.SharpDX.RenderContext.Set*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_RenderContext_Set_HelixToolkit_SharpDX_GlobalTransformStruct__HelixToolkit_Maths_ViewportF__" data-uid="HelixToolkit.SharpDX.RenderContext.Set(HelixToolkit.SharpDX.GlobalTransformStruct@,HelixToolkit.Maths.ViewportF@)">
+  Set(ref GlobalTransformStruct, ref ViewportF)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Render/RenderContext.cs/#L470"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Set(ref GlobalTransformStruct transforms, ref ViewportF viewport)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>transforms</code> <a class="xref" href="HelixToolkit.SharpDX.GlobalTransformStruct.html">GlobalTransformStruct</a></dt>
+    <dd></dd>
+    <dt><code>viewport</code> <a class="xref" href="HelixToolkit.Maths.ViewportF.html">ViewportF</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_RenderContext_Update_" data-uid="HelixToolkit.SharpDX.RenderContext.Update*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_RenderContext_Update" data-uid="HelixToolkit.SharpDX.RenderContext.Update">
+  Update()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Render/RenderContext.cs/#L438"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Updates all the internal metrices.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Update()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_RenderContext_UpdatePerFrameData_" data-uid="HelixToolkit.SharpDX.RenderContext.UpdatePerFrameData*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_RenderContext_UpdatePerFrameData_HelixToolkit_SharpDX_Render_DeviceContextProxy_" data-uid="HelixToolkit.SharpDX.RenderContext.UpdatePerFrameData(HelixToolkit.SharpDX.Render.DeviceContextProxy)">
+  UpdatePerFrameData(DeviceContextProxy)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Render/RenderContext.cs/#L497"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Call to update constant buffer for per frame</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void UpdatePerFrameData(DeviceContextProxy deviceContext)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>deviceContext</code> <a class="xref" href="HelixToolkit.SharpDX.Render.DeviceContextProxy.html">DeviceContextProxy</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_RenderContext_UpdatePerFrameData_" data-uid="HelixToolkit.SharpDX.RenderContext.UpdatePerFrameData*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_RenderContext_UpdatePerFrameData_System_Boolean_System_Boolean_HelixToolkit_SharpDX_Render_DeviceContextProxy_" data-uid="HelixToolkit.SharpDX.RenderContext.UpdatePerFrameData(System.Boolean,System.Boolean,HelixToolkit.SharpDX.Render.DeviceContextProxy)">
+  UpdatePerFrameData(bool, bool, DeviceContextProxy)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Render/RenderContext.cs/#L506"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Call to update constant buffer for per frame</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void UpdatePerFrameData(bool updateGlobalTransform, bool updateLights, DeviceContextProxy deviceContext)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>updateGlobalTransform</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+    <dt><code>updateLights</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+    <dt><code>deviceContext</code> <a class="xref" href="HelixToolkit.SharpDX.Render.DeviceContextProxy.html">DeviceContextProxy</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Render/RenderContext.cs/#L17" class="edit-link">Edit this page</a>
+        </div>
+
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          Copyright (c) 2023 Helix Toolkit contributors
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

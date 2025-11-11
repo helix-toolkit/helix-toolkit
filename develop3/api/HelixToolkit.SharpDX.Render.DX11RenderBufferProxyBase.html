@@ -1,0 +1,1712 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Class DX11RenderBufferProxyBase | Helix Toolkit - 3D for .NET </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Class DX11RenderBufferProxyBase | Helix Toolkit - 3D for .NET ">
+      
+      
+      <link rel="icon" href="../images/favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/helix-toolkit/helix-toolkit/new/develop3/apiSpec/new?filename=HelixToolkit_SharpDX_Render_DX11RenderBufferProxyBase.md&amp;value=---%0Auid%3A%20HelixToolkit.SharpDX.Render.DX11RenderBufferProxyBase%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="ManagedReference">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../images/favicon.ico" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="HelixToolkit.SharpDX.Render.DX11RenderBufferProxyBase">
+
+
+
+  <h1 id="HelixToolkit_SharpDX_Render_DX11RenderBufferProxyBase" data-uid="HelixToolkit.SharpDX.Render.DX11RenderBufferProxyBase" class="text-break">
+Class DX11RenderBufferProxyBase  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Render/RenderBuffers/DX11RenderBufferProxyBase.cs/#L15"><i class="bi bi-code-slash"></i></a>
+  </h1>
+
+  <div class="facts text-secondary">
+    <dl><dt>Namespace</dt><dd><a class="xref" href="HelixToolkit.html">HelixToolkit</a>.<a class="xref" href="HelixToolkit.SharpDX.html">SharpDX</a>.<a class="xref" href="HelixToolkit.SharpDX.Render.html">Render</a></dd></dl>
+  <dl><dt>Assembly</dt><dd>HelixToolkit.SharpDX.dll</dd></dl>
+  </div>
+
+  <div class="markdown summary"></div>
+  <div class="markdown conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public abstract class DX11RenderBufferProxyBase : DisposeObject, IDisposable</code></pre>
+  </div>
+
+
+
+
+  <dl class="typelist inheritance">
+    <dt>Inheritance</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
+      <div><a class="xref" href="HelixToolkit.SharpDX.DisposeObject.html">DisposeObject</a></div>
+      <div><span class="xref">DX11RenderBufferProxyBase</span></div>
+    </dd>
+  </dl>
+
+  <dl class="typelist implements">
+    <dt>Implements</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.idisposable">IDisposable</a></div>
+    </dd>
+  </dl>
+
+  <dl class="typelist derived">
+    <dt>Derived</dt>
+    <dd>
+      <div><a class="xref" href="HelixToolkit.SharpDX.Render.DX11SwapChainCompositionRenderBufferProxy.html">DX11SwapChainCompositionRenderBufferProxy</a></div>
+      <div><a class="xref" href="HelixToolkit.SharpDX.Render.DX11SwapChainRenderBufferProxy.html">DX11SwapChainRenderBufferProxy</a></div>
+      <div><a class="xref" href="HelixToolkit.SharpDX.Render.DX11Texture2DRenderBufferProxy.html">DX11Texture2DRenderBufferProxy</a></div>
+    </dd>
+  </dl>
+
+  <dl class="typelist inheritedMembers">
+    <dt>Inherited Members</dt>
+    <dd>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.DisposeObject.html#HelixToolkit_SharpDX_DisposeObject_RemoveAndDispose__1___0__">DisposeObject.RemoveAndDispose&lt;T&gt;(ref T)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.DisposeObject.html#HelixToolkit_SharpDX_DisposeObject_RemoveAndDispose__1___0_">DisposeObject.RemoveAndDispose&lt;T&gt;(T)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.DisposeObject.html#HelixToolkit_SharpDX_DisposeObject_RefCount">DisposeObject.RefCount</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.DisposeObject.html#HelixToolkit_SharpDX_DisposeObject_IncRef">DisposeObject.IncRef()</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.DisposeObject.html#HelixToolkit_SharpDX_DisposeObject_ForceDispose">DisposeObject.ForceDispose()</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.DisposeObject.html#HelixToolkit_SharpDX_DisposeObject_IsDisposed">DisposeObject.IsDisposed</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.DisposeObject.html#HelixToolkit_SharpDX_DisposeObject_Dispose">DisposeObject.Dispose()</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.DisposeObject.html#HelixToolkit_SharpDX_DisposeObject_Set__1___0____0_">DisposeObject.Set&lt;T&gt;(ref T, T)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">object.Equals(object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">object.Equals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode">object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype">object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone">object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals">object.ReferenceEquals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring">object.ToString()</a>
+    </div>
+  </dd></dl>
+
+
+
+
+
+
+  <h2 class="section" id="constructors">Constructors
+</h2>
+
+
+  <a id="HelixToolkit_SharpDX_Render_DX11RenderBufferProxyBase__ctor_" data-uid="HelixToolkit.SharpDX.Render.DX11RenderBufferProxyBase.#ctor*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Render_DX11RenderBufferProxyBase__ctor_HelixToolkit_SharpDX_IDeviceResources_System_Boolean_" data-uid="HelixToolkit.SharpDX.Render.DX11RenderBufferProxyBase.#ctor(HelixToolkit.SharpDX.IDeviceResources,System.Boolean)">
+  DX11RenderBufferProxyBase(IDeviceResources, bool)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Render/RenderBuffers/DX11RenderBufferProxyBase.cs/#L287"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="HelixToolkit.SharpDX.Render.DX11RenderBufferProxyBase.html">DX11RenderBufferProxyBase</a> class.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public DX11RenderBufferProxyBase(IDeviceResources deviceResource, bool useDepthStencilBuffer = true)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>deviceResource</code> <a class="xref" href="HelixToolkit.SharpDX.IDeviceResources.html">IDeviceResources</a></dt>
+    <dd><p>The device resources.</p>
+</dd>
+    <dt><code>useDepthStencilBuffer</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <h2 class="section" id="fields">Fields
+</h2>
+
+
+
+  <h3 id="HelixToolkit_SharpDX_Render_DX11RenderBufferProxyBase_VSyncInterval" data-uid="HelixToolkit.SharpDX.Render.DX11RenderBufferProxyBase.VSyncInterval">
+  VSyncInterval
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Render/RenderBuffers/DX11RenderBufferProxyBase.cs/#L212"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>The vertical synchronize internal. Only valid under swapchain rendering mode. Default = 0</p>
+<p>0: disable; 1: Sync with frame; More detail: <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">Present(int, PresentFlags)</a></p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int VSyncInterval</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_SharpDX_Render_DX11RenderBufferProxyBase_d2dTarget" data-uid="HelixToolkit.SharpDX.Render.DX11RenderBufferProxyBase.d2dTarget">
+  d2dTarget
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Render/RenderBuffers/DX11RenderBufferProxyBase.cs/#L79"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>The D2D controls</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected D2DTargetProxy? d2dTarget</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.Core2D.D2DTargetProxy.html">D2DTargetProxy</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+  <h2 class="section" id="properties">Properties
+</h2>
+
+
+  <a id="HelixToolkit_SharpDX_Render_DX11RenderBufferProxyBase_BackBuffer_" data-uid="HelixToolkit.SharpDX.Render.DX11RenderBufferProxyBase.BackBuffer*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Render_DX11RenderBufferProxyBase_BackBuffer" data-uid="HelixToolkit.SharpDX.Render.DX11RenderBufferProxyBase.BackBuffer">
+  BackBuffer
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Render/RenderBuffers/DX11RenderBufferProxyBase.cs/#L40"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ShaderResourceViewProxy? BackBuffer { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.Utilities.ShaderResourceViewProxy.html">ShaderResourceViewProxy</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Render_DX11RenderBufferProxyBase_ColorBuffer_" data-uid="HelixToolkit.SharpDX.Render.DX11RenderBufferProxyBase.ColorBuffer*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Render_DX11RenderBufferProxyBase_ColorBuffer" data-uid="HelixToolkit.SharpDX.Render.DX11RenderBufferProxyBase.ColorBuffer">
+  ColorBuffer
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Render/RenderBuffers/DX11RenderBufferProxyBase.cs/#L29"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ShaderResourceViewProxy? ColorBuffer { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.Utilities.ShaderResourceViewProxy.html">ShaderResourceViewProxy</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Render_DX11RenderBufferProxyBase_ColorBufferSampleDesc_" data-uid="HelixToolkit.SharpDX.Render.DX11RenderBufferProxyBase.ColorBufferSampleDesc*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Render_DX11RenderBufferProxyBase_ColorBufferSampleDesc" data-uid="HelixToolkit.SharpDX.Render.DX11RenderBufferProxyBase.ColorBufferSampleDesc">
+  ColorBufferSampleDesc
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Render/RenderBuffers/DX11RenderBufferProxyBase.cs/#L273"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the sample description.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public SampleDescription ColorBufferSampleDesc { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">SampleDescription</span></dt>
+    <dd><p>The sample description.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Render_DX11RenderBufferProxyBase_D2DTarget_" data-uid="HelixToolkit.SharpDX.Render.DX11RenderBufferProxyBase.D2DTarget*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Render_DX11RenderBufferProxyBase_D2DTarget" data-uid="HelixToolkit.SharpDX.Render.DX11RenderBufferProxyBase.D2DTarget">
+  D2DTarget
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Render/RenderBuffers/DX11RenderBufferProxyBase.cs/#L86"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the d2 d controls.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public D2DTargetProxy? D2DTarget { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.Core2D.D2DTargetProxy.html">D2DTargetProxy</a></dt>
+    <dd><p>The d2 d controls.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Render_DX11RenderBufferProxyBase_DepthStencilBuffer_" data-uid="HelixToolkit.SharpDX.Render.DX11RenderBufferProxyBase.DepthStencilBuffer*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Render_DX11RenderBufferProxyBase_DepthStencilBuffer" data-uid="HelixToolkit.SharpDX.Render.DX11RenderBufferProxyBase.DepthStencilBuffer">
+  DepthStencilBuffer
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Render/RenderBuffers/DX11RenderBufferProxyBase.cs/#L54"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>The depth stencil buffer</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ShaderResourceViewProxy? DepthStencilBuffer { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.Utilities.ShaderResourceViewProxy.html">ShaderResourceViewProxy</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Render_DX11RenderBufferProxyBase_DepthStencilBufferNoMSAA_" data-uid="HelixToolkit.SharpDX.Render.DX11RenderBufferProxyBase.DepthStencilBufferNoMSAA*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Render_DX11RenderBufferProxyBase_DepthStencilBufferNoMSAA" data-uid="HelixToolkit.SharpDX.Render.DX11RenderBufferProxyBase.DepthStencilBufferNoMSAA">
+  DepthStencilBufferNoMSAA
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Render/RenderBuffers/DX11RenderBufferProxyBase.cs/#L69"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>The depth stencil buffer</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ShaderResourceViewProxy? DepthStencilBufferNoMSAA { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.Utilities.ShaderResourceViewProxy.html">ShaderResourceViewProxy</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Render_DX11RenderBufferProxyBase_Device_" data-uid="HelixToolkit.SharpDX.Render.DX11RenderBufferProxyBase.Device*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Render_DX11RenderBufferProxyBase_Device" data-uid="HelixToolkit.SharpDX.Render.DX11RenderBufferProxyBase.Device">
+  Device
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Render/RenderBuffers/DX11RenderBufferProxyBase.cs/#L216"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>The currently used Direct3D Device</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Device1? Device { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">Device1</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Render_DX11RenderBufferProxyBase_Device2D_" data-uid="HelixToolkit.SharpDX.Render.DX11RenderBufferProxyBase.Device2D*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Render_DX11RenderBufferProxyBase_Device2D" data-uid="HelixToolkit.SharpDX.Render.DX11RenderBufferProxyBase.Device2D">
+  Device2D
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Render/RenderBuffers/DX11RenderBufferProxyBase.cs/#L229"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the device2 d.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Device? Device2D { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">Device</span></dt>
+    <dd><p>The device2 d.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Render_DX11RenderBufferProxyBase_DeviceContext2D_" data-uid="HelixToolkit.SharpDX.Render.DX11RenderBufferProxyBase.DeviceContext2D*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Render_DX11RenderBufferProxyBase_DeviceContext2D" data-uid="HelixToolkit.SharpDX.Render.DX11RenderBufferProxyBase.DeviceContext2D">
+  DeviceContext2D
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Render/RenderBuffers/DX11RenderBufferProxyBase.cs/#L242"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the device context2 d.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public DeviceContext? DeviceContext2D { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">DeviceContext</span></dt>
+    <dd><p>The device context2 d.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Render_DX11RenderBufferProxyBase_DeviceContextPool_" data-uid="HelixToolkit.SharpDX.Render.DX11RenderBufferProxyBase.DeviceContextPool*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Render_DX11RenderBufferProxyBase_DeviceContextPool" data-uid="HelixToolkit.SharpDX.Render.DX11RenderBufferProxyBase.DeviceContextPool">
+  DeviceContextPool
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Render/RenderBuffers/DX11RenderBufferProxyBase.cs/#L120"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the device context pool.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IDeviceContextPool? DeviceContextPool { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.Render.IDeviceContextPool.html">IDeviceContextPool</a></dt>
+    <dd><p>The device context pool.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Render_DX11RenderBufferProxyBase_DeviceResources_" data-uid="HelixToolkit.SharpDX.Render.DX11RenderBufferProxyBase.DeviceResources*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Render_DX11RenderBufferProxyBase_DeviceResources" data-uid="HelixToolkit.SharpDX.Render.DX11RenderBufferProxyBase.DeviceResources">
+  DeviceResources
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Render/RenderBuffers/DX11RenderBufferProxyBase.cs/#L255"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the device resources.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected IDeviceResources DeviceResources { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.IDeviceResources.html">IDeviceResources</a></dt>
+    <dd><p>The device resources.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Render_DX11RenderBufferProxyBase_Format_" data-uid="HelixToolkit.SharpDX.Render.DX11RenderBufferProxyBase.Format*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Render_DX11RenderBufferProxyBase_Format" data-uid="HelixToolkit.SharpDX.Render.DX11RenderBufferProxyBase.Format">
+  Format
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Render/RenderBuffers/DX11RenderBufferProxyBase.cs/#L198"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the texture format.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Format Format { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">Format</span></dt>
+    <dd><p>The format.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Render_DX11RenderBufferProxyBase_FullResDepthStencilPool_" data-uid="HelixToolkit.SharpDX.Render.DX11RenderBufferProxyBase.FullResDepthStencilPool*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Render_DX11RenderBufferProxyBase_FullResDepthStencilPool" data-uid="HelixToolkit.SharpDX.Render.DX11RenderBufferProxyBase.FullResDepthStencilPool">
+  FullResDepthStencilPool
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Render/RenderBuffers/DX11RenderBufferProxyBase.cs/#L132"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public TexturePool? FullResDepthStencilPool { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.Render.TexturePool.html">TexturePool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Render_DX11RenderBufferProxyBase_FullResPPBuffer_" data-uid="HelixToolkit.SharpDX.Render.DX11RenderBufferProxyBase.FullResPPBuffer*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Render_DX11RenderBufferProxyBase_FullResPPBuffer" data-uid="HelixToolkit.SharpDX.Render.DX11RenderBufferProxyBase.FullResPPBuffer">
+  FullResPPBuffer
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Render/RenderBuffers/DX11RenderBufferProxyBase.cs/#L123"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public PingPongColorBuffers? FullResPPBuffer { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.Render.PingPongColorBuffers.html">PingPongColorBuffers</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Render_DX11RenderBufferProxyBase_FullResRenderTargetPool_" data-uid="HelixToolkit.SharpDX.Render.DX11RenderBufferProxyBase.FullResRenderTargetPool*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Render_DX11RenderBufferProxyBase_FullResRenderTargetPool" data-uid="HelixToolkit.SharpDX.Render.DX11RenderBufferProxyBase.FullResRenderTargetPool">
+  FullResRenderTargetPool
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Render/RenderBuffers/DX11RenderBufferProxyBase.cs/#L141"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public TexturePool? FullResRenderTargetPool { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.Render.TexturePool.html">TexturePool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Render_DX11RenderBufferProxyBase_HalfResDepthStencilPool_" data-uid="HelixToolkit.SharpDX.Render.DX11RenderBufferProxyBase.HalfResDepthStencilPool*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Render_DX11RenderBufferProxyBase_HalfResDepthStencilPool" data-uid="HelixToolkit.SharpDX.Render.DX11RenderBufferProxyBase.HalfResDepthStencilPool">
+  HalfResDepthStencilPool
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Render/RenderBuffers/DX11RenderBufferProxyBase.cs/#L150"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public TexturePool? HalfResDepthStencilPool { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.Render.TexturePool.html">TexturePool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Render_DX11RenderBufferProxyBase_HalfResRenderTargetPool_" data-uid="HelixToolkit.SharpDX.Render.DX11RenderBufferProxyBase.HalfResRenderTargetPool*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Render_DX11RenderBufferProxyBase_HalfResRenderTargetPool" data-uid="HelixToolkit.SharpDX.Render.DX11RenderBufferProxyBase.HalfResRenderTargetPool">
+  HalfResRenderTargetPool
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Render/RenderBuffers/DX11RenderBufferProxyBase.cs/#L159"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public TexturePool? HalfResRenderTargetPool { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.Render.TexturePool.html">TexturePool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Render_DX11RenderBufferProxyBase_HasMSAA_" data-uid="HelixToolkit.SharpDX.Render.DX11RenderBufferProxyBase.HasMSAA*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Render_DX11RenderBufferProxyBase_HasMSAA" data-uid="HelixToolkit.SharpDX.Render.DX11RenderBufferProxyBase.HasMSAA">
+  HasMSAA
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Render/RenderBuffers/DX11RenderBufferProxyBase.cs/#L280"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Whether render target/depth stencil buffer are MSAA buffers.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool HasMSAA { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Render_DX11RenderBufferProxyBase_Initialized_" data-uid="HelixToolkit.SharpDX.Render.DX11RenderBufferProxyBase.Initialized*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Render_DX11RenderBufferProxyBase_Initialized" data-uid="HelixToolkit.SharpDX.Render.DX11RenderBufferProxyBase.Initialized">
+  Initialized
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Render/RenderBuffers/DX11RenderBufferProxyBase.cs/#L191"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets a value indicating whether this is initialized.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool Initialized { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><code>true</code> if initialized; otherwise, <code>false</code>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Render_DX11RenderBufferProxyBase_MSAA_" data-uid="HelixToolkit.SharpDX.Render.DX11RenderBufferProxyBase.MSAA*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Render_DX11RenderBufferProxyBase_MSAA" data-uid="HelixToolkit.SharpDX.Render.DX11RenderBufferProxyBase.MSAA">
+  MSAA
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Render/RenderBuffers/DX11RenderBufferProxyBase.cs/#L203"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Set MSAA level. If set to Two/Four/Eight, the actual level is set to minimum between Maximum and Two/Four/Eight</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public MSAALevel MSAA { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.MSAALevel.html">MSAALevel</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Render_DX11RenderBufferProxyBase_QuarterResDepthStencilPool_" data-uid="HelixToolkit.SharpDX.Render.DX11RenderBufferProxyBase.QuarterResDepthStencilPool*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Render_DX11RenderBufferProxyBase_QuarterResDepthStencilPool" data-uid="HelixToolkit.SharpDX.Render.DX11RenderBufferProxyBase.QuarterResDepthStencilPool">
+  QuarterResDepthStencilPool
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Render/RenderBuffers/DX11RenderBufferProxyBase.cs/#L168"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public TexturePool? QuarterResDepthStencilPool { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.Render.TexturePool.html">TexturePool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Render_DX11RenderBufferProxyBase_QuarterResRenderTargetPool_" data-uid="HelixToolkit.SharpDX.Render.DX11RenderBufferProxyBase.QuarterResRenderTargetPool*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Render_DX11RenderBufferProxyBase_QuarterResRenderTargetPool" data-uid="HelixToolkit.SharpDX.Render.DX11RenderBufferProxyBase.QuarterResRenderTargetPool">
+  QuarterResRenderTargetPool
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Render/RenderBuffers/DX11RenderBufferProxyBase.cs/#L177"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public TexturePool? QuarterResRenderTargetPool { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.Render.TexturePool.html">TexturePool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Render_DX11RenderBufferProxyBase_TargetHeight_" data-uid="HelixToolkit.SharpDX.Render.DX11RenderBufferProxyBase.TargetHeight*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Render_DX11RenderBufferProxyBase_TargetHeight" data-uid="HelixToolkit.SharpDX.Render.DX11RenderBufferProxyBase.TargetHeight">
+  TargetHeight
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Render/RenderBuffers/DX11RenderBufferProxyBase.cs/#L109"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the height of the target.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int TargetHeight { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The height of the target.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Render_DX11RenderBufferProxyBase_TargetWidth_" data-uid="HelixToolkit.SharpDX.Render.DX11RenderBufferProxyBase.TargetWidth*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Render_DX11RenderBufferProxyBase_TargetWidth" data-uid="HelixToolkit.SharpDX.Render.DX11RenderBufferProxyBase.TargetWidth">
+  TargetWidth
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Render/RenderBuffers/DX11RenderBufferProxyBase.cs/#L99"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the width of the target.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int TargetWidth { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The width of the target.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Render_DX11RenderBufferProxyBase_UseDepthStencilBuffer_" data-uid="HelixToolkit.SharpDX.Render.DX11RenderBufferProxyBase.UseDepthStencilBuffer*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Render_DX11RenderBufferProxyBase_UseDepthStencilBuffer" data-uid="HelixToolkit.SharpDX.Render.DX11RenderBufferProxyBase.UseDepthStencilBuffer">
+  UseDepthStencilBuffer
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Render/RenderBuffers/DX11RenderBufferProxyBase.cs/#L265"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets a value indicating whether [use depth stencil buffer].</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool UseDepthStencilBuffer { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><code>true</code> if [use depth stencil buffer]; otherwise, <code>false</code>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h2 class="section" id="methods">Methods
+</h2>
+
+
+  <a id="HelixToolkit_SharpDX_Render_DX11RenderBufferProxyBase_BeginDraw_" data-uid="HelixToolkit.SharpDX.Render.DX11RenderBufferProxyBase.BeginDraw*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Render_DX11RenderBufferProxyBase_BeginDraw" data-uid="HelixToolkit.SharpDX.Render.DX11RenderBufferProxyBase.BeginDraw">
+  BeginDraw()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Render/RenderBuffers/DX11RenderBufferProxyBase.cs/#L639"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Begins the draw.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual bool BeginDraw()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Render_DX11RenderBufferProxyBase_ClearRenderTarget_" data-uid="HelixToolkit.SharpDX.Render.DX11RenderBufferProxyBase.ClearRenderTarget*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Render_DX11RenderBufferProxyBase_ClearRenderTarget_HelixToolkit_SharpDX_Render_DeviceContextProxy_HelixToolkit_Maths_Color4_" data-uid="HelixToolkit.SharpDX.Render.DX11RenderBufferProxyBase.ClearRenderTarget(HelixToolkit.SharpDX.Render.DeviceContextProxy,HelixToolkit.Maths.Color4)">
+  ClearRenderTarget(DeviceContextProxy, Color4)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Render/RenderBuffers/DX11RenderBufferProxyBase.cs/#L591"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Clears the render target.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void ClearRenderTarget(DeviceContextProxy context, Color4 color)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>context</code> <a class="xref" href="HelixToolkit.SharpDX.Render.DeviceContextProxy.html">DeviceContextProxy</a></dt>
+    <dd><p>The context.</p>
+</dd>
+    <dt><code>color</code> <a class="xref" href="HelixToolkit.Maths.Color4.html">Color4</a></dt>
+    <dd><p>The color.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Render_DX11RenderBufferProxyBase_ClearRenderTarget_" data-uid="HelixToolkit.SharpDX.Render.DX11RenderBufferProxyBase.ClearRenderTarget*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Render_DX11RenderBufferProxyBase_ClearRenderTarget_HelixToolkit_SharpDX_Render_DeviceContextProxy_HelixToolkit_Maths_Color4_System_Boolean_System_Boolean_" data-uid="HelixToolkit.SharpDX.Render.DX11RenderBufferProxyBase.ClearRenderTarget(HelixToolkit.SharpDX.Render.DeviceContextProxy,HelixToolkit.Maths.Color4,System.Boolean,System.Boolean)">
+  ClearRenderTarget(DeviceContextProxy, Color4, bool, bool)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Render/RenderBuffers/DX11RenderBufferProxyBase.cs/#L602"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Clears the buffers with the clear-color</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void ClearRenderTarget(DeviceContextProxy context, Color4 color, bool clearBackBuffer, bool clearDepthStencilBuffer)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>context</code> <a class="xref" href="HelixToolkit.SharpDX.Render.DeviceContextProxy.html">DeviceContextProxy</a></dt>
+    <dd></dd>
+    <dt><code>color</code> <a class="xref" href="HelixToolkit.Maths.Color4.html">Color4</a></dt>
+    <dd></dd>
+    <dt><code>clearBackBuffer</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+    <dt><code>clearDepthStencilBuffer</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Render_DX11RenderBufferProxyBase_ClearRenderTargetBinding_" data-uid="HelixToolkit.SharpDX.Render.DX11RenderBufferProxyBase.ClearRenderTargetBinding*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Render_DX11RenderBufferProxyBase_ClearRenderTargetBinding_HelixToolkit_SharpDX_Render_DeviceContextProxy_" data-uid="HelixToolkit.SharpDX.Render.DX11RenderBufferProxyBase.ClearRenderTargetBinding(HelixToolkit.SharpDX.Render.DeviceContextProxy)">
+  ClearRenderTargetBinding(DeviceContextProxy)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Render/RenderBuffers/DX11RenderBufferProxyBase.cs/#L582"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Clears the render target binding.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void ClearRenderTargetBinding(DeviceContextProxy context)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>context</code> <a class="xref" href="HelixToolkit.SharpDX.Render.DeviceContextProxy.html">DeviceContextProxy</a></dt>
+    <dd><p>The context.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Render_DX11RenderBufferProxyBase_DisposeBuffers_" data-uid="HelixToolkit.SharpDX.Render.DX11RenderBufferProxyBase.DisposeBuffers*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Render_DX11RenderBufferProxyBase_DisposeBuffers" data-uid="HelixToolkit.SharpDX.Render.DX11RenderBufferProxyBase.DisposeBuffers">
+  DisposeBuffers()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Render/RenderBuffers/DX11RenderBufferProxyBase.cs/#L449"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Disposes the buffers.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual void DisposeBuffers()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Render_DX11RenderBufferProxyBase_EndDraw_" data-uid="HelixToolkit.SharpDX.Render.DX11RenderBufferProxyBase.EndDraw*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Render_DX11RenderBufferProxyBase_EndDraw" data-uid="HelixToolkit.SharpDX.Render.DX11RenderBufferProxyBase.EndDraw">
+  EndDraw()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Render/RenderBuffers/DX11RenderBufferProxyBase.cs/#L647"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Ends the draw.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual bool EndDraw()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Render_DX11RenderBufferProxyBase_GetMSAASampleDescription_" data-uid="HelixToolkit.SharpDX.Render.DX11RenderBufferProxyBase.GetMSAASampleDescription*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Render_DX11RenderBufferProxyBase_GetMSAASampleDescription" data-uid="HelixToolkit.SharpDX.Render.DX11RenderBufferProxyBase.GetMSAASampleDescription">
+  GetMSAASampleDescription()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Render/RenderBuffers/DX11RenderBufferProxyBase.cs/#L466"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual SampleDescription GetMSAASampleDescription()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><span class="xref">SampleDescription</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Render_DX11RenderBufferProxyBase_Initialize_" data-uid="HelixToolkit.SharpDX.Render.DX11RenderBufferProxyBase.Initialize*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Render_DX11RenderBufferProxyBase_Initialize_System_Int32_System_Int32_HelixToolkit_SharpDX_MSAALevel_" data-uid="HelixToolkit.SharpDX.Render.DX11RenderBufferProxyBase.Initialize(System.Int32,System.Int32,HelixToolkit.SharpDX.MSAALevel)">
+  Initialize(int, int, MSAALevel)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Render/RenderBuffers/DX11RenderBufferProxyBase.cs/#L621"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Initializes.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ShaderResourceViewProxy? Initialize(int width, int height, MSAALevel msaa)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>width</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The width.</p>
+</dd>
+    <dt><code>height</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The height.</p>
+</dd>
+    <dt><code>msaa</code> <a class="xref" href="HelixToolkit.SharpDX.MSAALevel.html">MSAALevel</a></dt>
+    <dd><p>The msaa.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.Utilities.ShaderResourceViewProxy.html">ShaderResourceViewProxy</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Render_DX11RenderBufferProxyBase_OnCreateBackBuffer_" data-uid="HelixToolkit.SharpDX.Render.DX11RenderBufferProxyBase.OnCreateBackBuffer*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Render_DX11RenderBufferProxyBase_OnCreateBackBuffer_System_Int32_System_Int32_" data-uid="HelixToolkit.SharpDX.Render.DX11RenderBufferProxyBase.OnCreateBackBuffer(System.Int32,System.Int32)">
+  OnCreateBackBuffer(int, int)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Render/RenderBuffers/DX11RenderBufferProxyBase.cs/#L464"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected abstract ShaderResourceViewProxy? OnCreateBackBuffer(int width, int height)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>width</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+    <dt><code>height</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.Utilities.ShaderResourceViewProxy.html">ShaderResourceViewProxy</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Render_DX11RenderBufferProxyBase_OnCreateRenderTargetAndDepthBuffers_" data-uid="HelixToolkit.SharpDX.Render.DX11RenderBufferProxyBase.OnCreateRenderTargetAndDepthBuffers*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Render_DX11RenderBufferProxyBase_OnCreateRenderTargetAndDepthBuffers_System_Int32_System_Int32_System_Boolean_HelixToolkit_SharpDX_Utilities_ShaderResourceViewProxy__HelixToolkit_SharpDX_Utilities_ShaderResourceViewProxy__" data-uid="HelixToolkit.SharpDX.Render.DX11RenderBufferProxyBase.OnCreateRenderTargetAndDepthBuffers(System.Int32,System.Int32,System.Boolean,HelixToolkit.SharpDX.Utilities.ShaderResourceViewProxy@,HelixToolkit.SharpDX.Utilities.ShaderResourceViewProxy@)">
+  OnCreateRenderTargetAndDepthBuffers(int, int, bool, out ShaderResourceViewProxy?, out ShaderResourceViewProxy?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Render/RenderBuffers/DX11RenderBufferProxyBase.cs/#L501"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual void OnCreateRenderTargetAndDepthBuffers(int width, int height, bool createDepthStencilBuffer, out ShaderResourceViewProxy? colorBuffer, out ShaderResourceViewProxy? depthStencilBuffer)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>width</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+    <dt><code>height</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+    <dt><code>createDepthStencilBuffer</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+    <dt><code>colorBuffer</code> <a class="xref" href="HelixToolkit.SharpDX.Utilities.ShaderResourceViewProxy.html">ShaderResourceViewProxy</a></dt>
+    <dd></dd>
+    <dt><code>depthStencilBuffer</code> <a class="xref" href="HelixToolkit.SharpDX.Utilities.ShaderResourceViewProxy.html">ShaderResourceViewProxy</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Render_DX11RenderBufferProxyBase_OnDispose_" data-uid="HelixToolkit.SharpDX.Render.DX11RenderBufferProxyBase.OnDispose*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Render_DX11RenderBufferProxyBase_OnDispose_System_Boolean_" data-uid="HelixToolkit.SharpDX.Render.DX11RenderBufferProxyBase.OnDispose(System.Boolean)">
+  OnDispose(bool)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Render/RenderBuffers/DX11RenderBufferProxyBase.cs/#L664"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Releases unmanaged and - optionally - managed resources.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected override void OnDispose(bool disposeManagedResources)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>disposeManagedResources</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><code>true</code> to release both managed and unmanaged resources; <code>false</code> to release only unmanaged resources.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Render_DX11RenderBufferProxyBase_Present_" data-uid="HelixToolkit.SharpDX.Render.DX11RenderBufferProxyBase.Present*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Render_DX11RenderBufferProxyBase_Present" data-uid="HelixToolkit.SharpDX.Render.DX11RenderBufferProxyBase.Present">
+  Present()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Render/RenderBuffers/DX11RenderBufferProxyBase.cs/#L655"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Presents this drawing..</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual bool Present()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Render_DX11RenderBufferProxyBase_RaiseOnDeviceLost_" data-uid="HelixToolkit.SharpDX.Render.DX11RenderBufferProxyBase.RaiseOnDeviceLost*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Render_DX11RenderBufferProxyBase_RaiseOnDeviceLost" data-uid="HelixToolkit.SharpDX.Render.DX11RenderBufferProxyBase.RaiseOnDeviceLost">
+  RaiseOnDeviceLost()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Render/RenderBuffers/DX11RenderBufferProxyBase.cs/#L679"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Raises the on device lost.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected void RaiseOnDeviceLost()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Render_DX11RenderBufferProxyBase_Resize_" data-uid="HelixToolkit.SharpDX.Render.DX11RenderBufferProxyBase.Resize*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Render_DX11RenderBufferProxyBase_Resize_System_Int32_System_Int32_" data-uid="HelixToolkit.SharpDX.Render.DX11RenderBufferProxyBase.Resize(System.Int32,System.Int32)">
+  Resize(int, int)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Render/RenderBuffers/DX11RenderBufferProxyBase.cs/#L631"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Resize render target and depthbuffer resolution</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual ShaderResourceViewProxy? Resize(int width, int height)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>width</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+    <dt><code>height</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.Utilities.ShaderResourceViewProxy.html">ShaderResourceViewProxy</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Render_DX11RenderBufferProxyBase_SetDefaultRenderTargets_" data-uid="HelixToolkit.SharpDX.Render.DX11RenderBufferProxyBase.SetDefaultRenderTargets*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Render_DX11RenderBufferProxyBase_SetDefaultRenderTargets_HelixToolkit_SharpDX_Render_DeviceContextProxy_System_Boolean_" data-uid="HelixToolkit.SharpDX.Render.DX11RenderBufferProxyBase.SetDefaultRenderTargets(HelixToolkit.SharpDX.Render.DeviceContextProxy,System.Boolean)">
+  SetDefaultRenderTargets(DeviceContextProxy, bool)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Render/RenderBuffers/DX11RenderBufferProxyBase.cs/#L570"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Sets the default render-targets</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void SetDefaultRenderTargets(DeviceContextProxy context, bool isColorBuffer = true)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>context</code> <a class="xref" href="HelixToolkit.SharpDX.Render.DeviceContextProxy.html">DeviceContextProxy</a></dt>
+    <dd></dd>
+    <dt><code>isColorBuffer</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <h2 class="section" id="events">Events
+</h2>
+
+
+
+  <h3 id="HelixToolkit_SharpDX_Render_DX11RenderBufferProxyBase_DeviceLost" data-uid="HelixToolkit.SharpDX.Render.DX11RenderBufferProxyBase.DeviceLost">
+  DeviceLost
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Render/RenderBuffers/DX11RenderBufferProxyBase.cs/#L24"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Occurs when [on device lost].</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public event EventHandler&lt;EventArgs&gt;? DeviceLost</code></pre>
+  </div>
+
+
+
+
+
+
+  <h4 class="section">Event Type</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.eventhandler-1">EventHandler</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.eventargs">EventArgs</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_SharpDX_Render_DX11RenderBufferProxyBase_OnNewBufferCreated" data-uid="HelixToolkit.SharpDX.Render.DX11RenderBufferProxyBase.OnNewBufferCreated">
+  OnNewBufferCreated
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Render/RenderBuffers/DX11RenderBufferProxyBase.cs/#L20"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Occurs when [on new buffer created].</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public event EventHandler&lt;Texture2DArgs&gt;? OnNewBufferCreated</code></pre>
+  </div>
+
+
+
+
+
+
+  <h4 class="section">Event Type</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.eventhandler-1">EventHandler</a>&lt;<a class="xref" href="HelixToolkit.SharpDX.Texture2DArgs.html">Texture2DArgs</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Render/RenderBuffers/DX11RenderBufferProxyBase.cs/#L15" class="edit-link">Edit this page</a>
+        </div>
+
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          Copyright (c) 2023 Helix Toolkit contributors
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,967 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Class PointNode | Helix Toolkit - 3D for .NET </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Class PointNode | Helix Toolkit - 3D for .NET ">
+      
+      
+      <link rel="icon" href="../images/favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/helix-toolkit/helix-toolkit/new/develop3/apiSpec/new?filename=HelixToolkit_SharpDX_Model_Scene_PointNode.md&amp;value=---%0Auid%3A%20HelixToolkit.SharpDX.Model.Scene.PointNode%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="ManagedReference">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../images/favicon.ico" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="HelixToolkit.SharpDX.Model.Scene.PointNode">
+
+
+
+  <h1 id="HelixToolkit_SharpDX_Model_Scene_PointNode" data-uid="HelixToolkit.SharpDX.Model.Scene.PointNode" class="text-break">
+Class PointNode  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene/PointNode.cs/#L10"><i class="bi bi-code-slash"></i></a>
+  </h1>
+
+  <div class="facts text-secondary">
+    <dl><dt>Namespace</dt><dd><a class="xref" href="HelixToolkit.html">HelixToolkit</a>.<a class="xref" href="HelixToolkit.SharpDX.html">SharpDX</a>.<a class="xref" href="HelixToolkit.SharpDX.Model.html">Model</a>.<a class="xref" href="HelixToolkit.SharpDX.Model.Scene.html">Scene</a></dd></dl>
+  <dl><dt>Assembly</dt><dd>HelixToolkit.SharpDX.dll</dd></dl>
+  </div>
+
+  <div class="markdown summary"></div>
+  <div class="markdown conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class PointNode : MaterialGeometryNode, IDisposable, IComparable&lt;SceneNode&gt;, IAnimationNode, IHitable, IThrowingShadow, IInstancing, IBoundable, IApplyPostEffect</code></pre>
+  </div>
+
+
+
+
+  <dl class="typelist inheritance">
+    <dt>Inheritance</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
+      <div><a class="xref" href="HelixToolkit.SharpDX.DisposeObject.html">DisposeObject</a></div>
+      <div><a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html">SceneNode</a></div>
+      <div><a class="xref" href="HelixToolkit.SharpDX.Model.Scene.GeometryNode.html">GeometryNode</a></div>
+      <div><a class="xref" href="HelixToolkit.SharpDX.Model.Scene.MaterialGeometryNode.html">MaterialGeometryNode</a></div>
+      <div><span class="xref">PointNode</span></div>
+    </dd>
+  </dl>
+
+  <dl class="typelist implements">
+    <dt>Implements</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.idisposable">IDisposable</a></div>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.icomparable-1">IComparable</a>&lt;<a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html">SceneNode</a>&gt;</div>
+      <div><a class="xref" href="HelixToolkit.SharpDX.Animations.IAnimationNode.html">IAnimationNode</a></div>
+      <div><a class="xref" href="HelixToolkit.SharpDX.IHitable.html">IHitable</a></div>
+      <div><a class="xref" href="HelixToolkit.SharpDX.Core.IThrowingShadow.html">IThrowingShadow</a></div>
+      <div><a class="xref" href="HelixToolkit.SharpDX.IInstancing.html">IInstancing</a></div>
+      <div><a class="xref" href="HelixToolkit.SharpDX.IBoundable.html">IBoundable</a></div>
+      <div><a class="xref" href="HelixToolkit.SharpDX.IApplyPostEffect.html">IApplyPostEffect</a></div>
+    </dd>
+  </dl>
+
+
+  <dl class="typelist inheritedMembers">
+    <dt>Inherited Members</dt>
+    <dd>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.MaterialGeometryNode.html#HelixToolkit_SharpDX_Model_Scene_MaterialGeometryNode_IsTransparent">MaterialGeometryNode.IsTransparent</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.MaterialGeometryNode.html#HelixToolkit_SharpDX_Model_Scene_MaterialGeometryNode_Material">MaterialGeometryNode.Material</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.MaterialGeometryNode.html#HelixToolkit_SharpDX_Model_Scene_MaterialGeometryNode_AttachMaterial">MaterialGeometryNode.AttachMaterial()</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.MaterialGeometryNode.html#HelixToolkit_SharpDX_Model_Scene_MaterialGeometryNode_OnUpdateRenderOrderKey">MaterialGeometryNode.OnUpdateRenderOrderKey()</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.MaterialGeometryNode.html#HelixToolkit_SharpDX_Model_Scene_MaterialGeometryNode_OnAttach_HelixToolkit_SharpDX_IEffectsManager_">MaterialGeometryNode.OnAttach(IEffectsManager)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.MaterialGeometryNode.html#HelixToolkit_SharpDX_Model_Scene_MaterialGeometryNode_OnDetach">MaterialGeometryNode.OnDetach()</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.GeometryNode.html#HelixToolkit_SharpDX_Model_Scene_GeometryNode_Geometry">GeometryNode.Geometry</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.GeometryNode.html#HelixToolkit_SharpDX_Model_Scene_GeometryNode_Instances">GeometryNode.Instances</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.GeometryNode.html#HelixToolkit_SharpDX_Model_Scene_GeometryNode_HasInstances">GeometryNode.HasInstances</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.GeometryNode.html#HelixToolkit_SharpDX_Model_Scene_GeometryNode_InstanceBuffer">GeometryNode.InstanceBuffer</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.GeometryNode.html#HelixToolkit_SharpDX_Model_Scene_GeometryNode_InstancesChanged">GeometryNode.InstancesChanged()</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.GeometryNode.html#HelixToolkit_SharpDX_Model_Scene_GeometryNode_reuseVertexArrayBuffer">GeometryNode.reuseVertexArrayBuffer</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.GeometryNode.html#HelixToolkit_SharpDX_Model_Scene_GeometryNode_OnCreateRasterState">GeometryNode.OnCreateRasterState</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.GeometryNode.html#HelixToolkit_SharpDX_Model_Scene_GeometryNode_BufferModelInternal">GeometryNode.BufferModelInternal</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.GeometryNode.html#HelixToolkit_SharpDX_Model_Scene_GeometryNode_GeometryValid">GeometryNode.GeometryValid</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.GeometryNode.html#HelixToolkit_SharpDX_Model_Scene_GeometryNode_BoundManager">GeometryNode.BoundManager</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.GeometryNode.html#HelixToolkit_SharpDX_Model_Scene_GeometryNode_OriginalBounds">GeometryNode.OriginalBounds</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.GeometryNode.html#HelixToolkit_SharpDX_Model_Scene_GeometryNode_OriginalBoundsSphere">GeometryNode.OriginalBoundsSphere</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.GeometryNode.html#HelixToolkit_SharpDX_Model_Scene_GeometryNode_Bounds">GeometryNode.Bounds</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.GeometryNode.html#HelixToolkit_SharpDX_Model_Scene_GeometryNode_BoundsWithTransform">GeometryNode.BoundsWithTransform</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.GeometryNode.html#HelixToolkit_SharpDX_Model_Scene_GeometryNode_BoundsSphere">GeometryNode.BoundsSphere</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.GeometryNode.html#HelixToolkit_SharpDX_Model_Scene_GeometryNode_BoundsSphereWithTransform">GeometryNode.BoundsSphereWithTransform</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.GeometryNode.html#HelixToolkit_SharpDX_Model_Scene_GeometryNode_DepthBias">GeometryNode.DepthBias</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.GeometryNode.html#HelixToolkit_SharpDX_Model_Scene_GeometryNode_SlopeScaledDepthBias">GeometryNode.SlopeScaledDepthBias</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.GeometryNode.html#HelixToolkit_SharpDX_Model_Scene_GeometryNode_IsMSAAEnabled">GeometryNode.IsMSAAEnabled</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.GeometryNode.html#HelixToolkit_SharpDX_Model_Scene_GeometryNode_IsScissorEnabled">GeometryNode.IsScissorEnabled</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.GeometryNode.html#HelixToolkit_SharpDX_Model_Scene_GeometryNode_FillMode">GeometryNode.FillMode</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.GeometryNode.html#HelixToolkit_SharpDX_Model_Scene_GeometryNode_IsDepthClipEnabled">GeometryNode.IsDepthClipEnabled</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.GeometryNode.html#HelixToolkit_SharpDX_Model_Scene_GeometryNode_EnableViewFrustumCheck">GeometryNode.EnableViewFrustumCheck</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.GeometryNode.html#HelixToolkit_SharpDX_Model_Scene_GeometryNode_PostEffects">GeometryNode.PostEffects</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.GeometryNode.html#HelixToolkit_SharpDX_Model_Scene_GeometryNode_IsThrowingShadow">GeometryNode.IsThrowingShadow</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.GeometryNode.html#HelixToolkit_SharpDX_Model_Scene_GeometryNode_OnRasterStateChanged">GeometryNode.OnRasterStateChanged()</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.GeometryNode.html#HelixToolkit_SharpDX_Model_Scene_GeometryNode_OnGeometryChanged_HelixToolkit_SharpDX_Geometry3D_HelixToolkit_SharpDX_Geometry3D_">GeometryNode.OnGeometryChanged(Geometry3D, Geometry3D)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.GeometryNode.html#HelixToolkit_SharpDX_Model_Scene_GeometryNode_OnAttached">GeometryNode.OnAttached()</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.GeometryNode.html#HelixToolkit_SharpDX_Model_Scene_GeometryNode_TestViewFrustum_HelixToolkit_Maths_BoundingFrustum__">GeometryNode.TestViewFrustum(ref BoundingFrustum)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.GeometryNode.html#HelixToolkit_SharpDX_Model_Scene_GeometryNode_HitTest_HelixToolkit_SharpDX_HitTestContext_System_Collections_Generic_List_HelixToolkit_SharpDX_HitTestResult___">GeometryNode.HitTest(HitTestContext, ref List&lt;HitTestResult&gt;)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.GeometryNode.html#HelixToolkit_SharpDX_Model_Scene_GeometryNode_CanHitTest_HelixToolkit_SharpDX_HitTestContext_">GeometryNode.CanHitTest(HitTestContext)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.GeometryNode.html#HelixToolkit_SharpDX_Model_Scene_GeometryNode_UpdateNotRender_HelixToolkit_SharpDX_RenderContext_">GeometryNode.UpdateNotRender(RenderContext)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.GeometryNode.html#HelixToolkit_SharpDX_Model_Scene_GeometryNode_OnDispose_System_Boolean_">GeometryNode.OnDispose(bool)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html#HelixToolkit_SharpDX_Model_Scene_SceneNode_GUID">SceneNode.GUID</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html#HelixToolkit_SharpDX_Model_Scene_SceneNode_Name">SceneNode.Name</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html#HelixToolkit_SharpDX_Model_Scene_SceneNode_TotalModelMatrix">SceneNode.TotalModelMatrix</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html#HelixToolkit_SharpDX_Model_Scene_SceneNode_RenderOrderKey">SceneNode.RenderOrderKey</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html#HelixToolkit_SharpDX_Model_Scene_SceneNode_RenderOrder">SceneNode.RenderOrder</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html#HelixToolkit_SharpDX_Model_Scene_SceneNode_NeedMatrixUpdate">SceneNode.NeedMatrixUpdate</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html#HelixToolkit_SharpDX_Model_Scene_SceneNode_ModelMatrix">SceneNode.ModelMatrix</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html#HelixToolkit_SharpDX_Model_Scene_SceneNode_Parent">SceneNode.Parent</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html#HelixToolkit_SharpDX_Model_Scene_SceneNode_Visible">SceneNode.Visible</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html#HelixToolkit_SharpDX_Model_Scene_SceneNode_IsRenderable">SceneNode.IsRenderable</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html#HelixToolkit_SharpDX_Model_Scene_SceneNode_IsAttached">SceneNode.IsAttached</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html#HelixToolkit_SharpDX_Model_Scene_SceneNode_EffectsManager">SceneNode.EffectsManager</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html#HelixToolkit_SharpDX_Model_Scene_SceneNode_Items">SceneNode.Items</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html#HelixToolkit_SharpDX_Model_Scene_SceneNode_ItemsCount">SceneNode.ItemsCount</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html#HelixToolkit_SharpDX_Model_Scene_SceneNode_IsHitTestVisible">SceneNode.IsHitTestVisible</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html#HelixToolkit_SharpDX_Model_Scene_SceneNode_AlwaysHittable">SceneNode.AlwaysHittable</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html#HelixToolkit_SharpDX_Model_Scene_SceneNode_RenderType">SceneNode.RenderType</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html#HelixToolkit_SharpDX_Model_Scene_SceneNode_EffectTechnique">SceneNode.EffectTechnique</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html#HelixToolkit_SharpDX_Model_Scene_SceneNode_IsAnimationNode">SceneNode.IsAnimationNode</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html#HelixToolkit_SharpDX_Model_Scene_SceneNode_IsAnimationNodeRoot">SceneNode.IsAnimationNodeRoot</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html#HelixToolkit_SharpDX_Model_Scene_SceneNode_AffectsGlobalVariable">SceneNode.AffectsGlobalVariable</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html#HelixToolkit_SharpDX_Model_Scene_SceneNode_OnTransformChanged_System_Numerics_Matrix4x4__">SceneNode.OnTransformChanged(ref Matrix4x4)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html#HelixToolkit_SharpDX_Model_Scene_SceneNode_TransformChanged">SceneNode.TransformChanged</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html#HelixToolkit_SharpDX_Model_Scene_SceneNode_RenderCore">SceneNode.RenderCore</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html#HelixToolkit_SharpDX_Model_Scene_SceneNode_OnSetRenderTechnique">SceneNode.OnSetRenderTechnique</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html#HelixToolkit_SharpDX_Model_Scene_SceneNode_AssignDefaultValuesToCore_HelixToolkit_SharpDX_Core_RenderCore_">SceneNode.AssignDefaultValuesToCore(RenderCore)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html#HelixToolkit_SharpDX_Model_Scene_SceneNode_WrapperSource">SceneNode.WrapperSource</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html#HelixToolkit_SharpDX_Model_Scene_SceneNode_Tag">SceneNode.Tag</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html#HelixToolkit_SharpDX_Model_Scene_SceneNode_IsInFrustum">SceneNode.IsInFrustum</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html#HelixToolkit_SharpDX_Model_Scene_SceneNode_NameChanged">SceneNode.NameChanged</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html#HelixToolkit_SharpDX_Model_Scene_SceneNode_VisibleChanged">SceneNode.VisibleChanged</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html#HelixToolkit_SharpDX_Model_Scene_SceneNode_Attached">SceneNode.Attached</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html#HelixToolkit_SharpDX_Model_Scene_SceneNode_Detached">SceneNode.Detached</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html#HelixToolkit_SharpDX_Model_Scene_SceneNode_MouseDown">SceneNode.MouseDown</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html#HelixToolkit_SharpDX_Model_Scene_SceneNode_MouseMove">SceneNode.MouseMove</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html#HelixToolkit_SharpDX_Model_Scene_SceneNode_MouseUp">SceneNode.MouseUp</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html#HelixToolkit_SharpDX_Model_Scene_SceneNode_Invalidated">SceneNode.Invalidated</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html#HelixToolkit_SharpDX_Model_Scene_SceneNode_Attach_HelixToolkit_SharpDX_IEffectsManager_">SceneNode.Attach(IEffectsManager)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html#HelixToolkit_SharpDX_Model_Scene_SceneNode_Detach">SceneNode.Detach()</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html#HelixToolkit_SharpDX_Model_Scene_SceneNode_InvalidateRenderEvent_System_Object_System_EventArgs_">SceneNode.InvalidateRenderEvent(object, EventArgs)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html#HelixToolkit_SharpDX_Model_Scene_SceneNode_InvalidateRender">SceneNode.InvalidateRender()</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html#HelixToolkit_SharpDX_Model_Scene_SceneNode_InvalidateSceneGraph">SceneNode.InvalidateSceneGraph()</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html#HelixToolkit_SharpDX_Model_Scene_SceneNode_InvalidatePerFrameRenderables">SceneNode.InvalidatePerFrameRenderables()</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html#HelixToolkit_SharpDX_Model_Scene_SceneNode_Invalidate_HelixToolkit_SharpDX_Model_Scene_InvalidateTypes_">SceneNode.Invalidate(InvalidateTypes)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html#HelixToolkit_SharpDX_Model_Scene_SceneNode_Update_HelixToolkit_SharpDX_RenderContext_">SceneNode.Update(RenderContext)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html#HelixToolkit_SharpDX_Model_Scene_SceneNode_ComputeTransformMatrix">SceneNode.ComputeTransformMatrix()</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html#HelixToolkit_SharpDX_Model_Scene_SceneNode_UpdateRenderOrderKey">SceneNode.UpdateRenderOrderKey()</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html#HelixToolkit_SharpDX_Model_Scene_SceneNode_Render_HelixToolkit_SharpDX_RenderContext_HelixToolkit_SharpDX_Render_DeviceContextProxy_">SceneNode.Render(RenderContext, DeviceContextProxy)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html#HelixToolkit_SharpDX_Model_Scene_SceneNode_RenderShadow_HelixToolkit_SharpDX_RenderContext_HelixToolkit_SharpDX_Render_DeviceContextProxy_">SceneNode.RenderShadow(RenderContext, DeviceContextProxy)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html#HelixToolkit_SharpDX_Model_Scene_SceneNode_RenderCustom_HelixToolkit_SharpDX_RenderContext_HelixToolkit_SharpDX_Render_DeviceContextProxy_">SceneNode.RenderCustom(RenderContext, DeviceContextProxy)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html#HelixToolkit_SharpDX_Model_Scene_SceneNode_RenderDepth_HelixToolkit_SharpDX_RenderContext_HelixToolkit_SharpDX_Render_DeviceContextProxy_HelixToolkit_SharpDX_Shaders_ShaderPass_">SceneNode.RenderDepth(RenderContext, DeviceContextProxy, ShaderPass)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html#HelixToolkit_SharpDX_Model_Scene_SceneNode_MaxBound">SceneNode.MaxBound</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html#HelixToolkit_SharpDX_Model_Scene_SceneNode_MaxBoundSphere">SceneNode.MaxBoundSphere</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html#HelixToolkit_SharpDX_Model_Scene_SceneNode_HasBound">SceneNode.HasBound</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html#HelixToolkit_SharpDX_Model_Scene_SceneNode_BoundChanged">SceneNode.BoundChanged</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html#HelixToolkit_SharpDX_Model_Scene_SceneNode_TransformBoundChanged">SceneNode.TransformBoundChanged</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html#HelixToolkit_SharpDX_Model_Scene_SceneNode_BoundSphereChanged">SceneNode.BoundSphereChanged</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html#HelixToolkit_SharpDX_Model_Scene_SceneNode_TransformBoundSphereChanged">SceneNode.TransformBoundSphereChanged</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html#HelixToolkit_SharpDX_Model_Scene_SceneNode_RaiseOnTransformBoundChanged_HelixToolkit_SharpDX_BoundChangeArgs_HelixToolkit_Maths_BoundingBox__">SceneNode.RaiseOnTransformBoundChanged(BoundChangeArgs&lt;BoundingBox&gt;)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html#HelixToolkit_SharpDX_Model_Scene_SceneNode_RaiseOnBoundChanged_HelixToolkit_SharpDX_BoundChangeArgs_HelixToolkit_Maths_BoundingBox__">SceneNode.RaiseOnBoundChanged(BoundChangeArgs&lt;BoundingBox&gt;)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html#HelixToolkit_SharpDX_Model_Scene_SceneNode_RaiseOnTransformBoundSphereChanged_HelixToolkit_SharpDX_BoundChangeArgs_HelixToolkit_Maths_BoundingSphere__">SceneNode.RaiseOnTransformBoundSphereChanged(BoundChangeArgs&lt;BoundingSphere&gt;)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html#HelixToolkit_SharpDX_Model_Scene_SceneNode_RaiseOnBoundSphereChanged_HelixToolkit_SharpDX_BoundChangeArgs_HelixToolkit_Maths_BoundingSphere__">SceneNode.RaiseOnBoundSphereChanged(BoundChangeArgs&lt;BoundingSphere&gt;)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html#HelixToolkit_SharpDX_Model_Scene_SceneNode_PostEffectNames">SceneNode.PostEffectNames</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html#HelixToolkit_SharpDX_Model_Scene_SceneNode_HasAnyPostEffect">SceneNode.HasAnyPostEffect</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html#HelixToolkit_SharpDX_Model_Scene_SceneNode_AddPostEffect_HelixToolkit_SharpDX_Model_IEffectAttributes_">SceneNode.AddPostEffect(IEffectAttributes)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html#HelixToolkit_SharpDX_Model_Scene_SceneNode_RemovePostEffect_System_String_">SceneNode.RemovePostEffect(string)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html#HelixToolkit_SharpDX_Model_Scene_SceneNode_HasPostEffect_System_String_">SceneNode.HasPostEffect(string)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html#HelixToolkit_SharpDX_Model_Scene_SceneNode_TryGetPostEffect_System_String_HelixToolkit_SharpDX_Model_IEffectAttributes__">SceneNode.TryGetPostEffect(string, out IEffectAttributes)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html#HelixToolkit_SharpDX_Model_Scene_SceneNode_ClearPostEffect">SceneNode.ClearPostEffect()</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html#HelixToolkit_SharpDX_Model_Scene_SceneNode_RemoveSelf">SceneNode.RemoveSelf()</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html#HelixToolkit_SharpDX_Model_Scene_SceneNode_CompareTo_HelixToolkit_SharpDX_Model_Scene_SceneNode_">SceneNode.CompareTo(SceneNode)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html#HelixToolkit_SharpDX_Model_Scene_SceneNode_RaiseMouseDownEvent_HelixToolkit_SharpDX_IViewport3DX_System_Numerics_Vector2_HelixToolkit_SharpDX_HitTestResult_System_Object_">SceneNode.RaiseMouseDownEvent(IViewport3DX, Vector2, HitTestResult, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html#HelixToolkit_SharpDX_Model_Scene_SceneNode_RaiseMouseMoveEvent_HelixToolkit_SharpDX_IViewport3DX_System_Numerics_Vector2_HelixToolkit_SharpDX_HitTestResult_System_Object_">SceneNode.RaiseMouseMoveEvent(IViewport3DX, Vector2, HitTestResult, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html#HelixToolkit_SharpDX_Model_Scene_SceneNode_RaiseMouseUpEvent_HelixToolkit_SharpDX_IViewport3DX_System_Numerics_Vector2_HelixToolkit_SharpDX_HitTestResult_System_Object_">SceneNode.RaiseMouseUpEvent(IViewport3DX, Vector2, HitTestResult, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html#HelixToolkit_SharpDX_Model_Scene_SceneNode_SetAffectsRender__1___0____0_">SceneNode.SetAffectsRender&lt;T&gt;(ref T, T)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html#HelixToolkit_SharpDX_Model_Scene_SceneNode_SetAffectsSceneGraph__1___0____0_">SceneNode.SetAffectsSceneGraph&lt;T&gt;(ref T, T)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.DisposeObject.html#HelixToolkit_SharpDX_DisposeObject_RemoveAndDispose__1___0__">DisposeObject.RemoveAndDispose&lt;T&gt;(ref T)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.DisposeObject.html#HelixToolkit_SharpDX_DisposeObject_RemoveAndDispose__1___0_">DisposeObject.RemoveAndDispose&lt;T&gt;(T)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.DisposeObject.html#HelixToolkit_SharpDX_DisposeObject_RefCount">DisposeObject.RefCount</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.DisposeObject.html#HelixToolkit_SharpDX_DisposeObject_IncRef">DisposeObject.IncRef()</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.DisposeObject.html#HelixToolkit_SharpDX_DisposeObject_ForceDispose">DisposeObject.ForceDispose()</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.DisposeObject.html#HelixToolkit_SharpDX_DisposeObject_IsDisposed">DisposeObject.IsDisposed</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.DisposeObject.html#HelixToolkit_SharpDX_DisposeObject_Dispose">DisposeObject.Dispose()</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.DisposeObject.html#HelixToolkit_SharpDX_DisposeObject_Set__1___0____0_">DisposeObject.Set&lt;T&gt;(ref T, T)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">object.Equals(object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">object.Equals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode">object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype">object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone">object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals">object.ReferenceEquals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring">object.ToString()</a>
+    </div>
+  </dd></dl>
+
+  <dl class="typelist extensionMethods">
+    <dt>Extension Methods</dt>
+    <dd>
+  <div>
+      <a class="xref" href="HelixToolkit.SharpDX.SceneNodeExtensions.html#HelixToolkit_SharpDX_SceneNodeExtensions_GetSceneNodeByType__1_HelixToolkit_SharpDX_Model_Scene_SceneNode_">SceneNodeExtensions.GetSceneNodeByType&lt;T&gt;(SceneNode)</a>
+  </div>
+  <div>
+      <a class="xref" href="HelixToolkit.SharpDX.SceneNodeExtensions.html#HelixToolkit_SharpDX_SceneNodeExtensions_TryGetBound_HelixToolkit_SharpDX_Model_Scene_SceneNode_HelixToolkit_Maths_BoundingBox__">SceneNodeExtensions.TryGetBound(SceneNode, out BoundingBox)</a>
+  </div>
+  <div>
+      <a class="xref" href="HelixToolkit.SharpDX.SceneNodeExtensions.html#HelixToolkit_SharpDX_SceneNodeExtensions_TryGetCentroid_HelixToolkit_SharpDX_Model_Scene_SceneNode_System_Numerics_Vector3__">SceneNodeExtensions.TryGetCentroid(SceneNode, out Vector3)</a>
+  </div>
+  <div>
+      <a class="xref" href="HelixToolkit.SharpDX.SceneNodeExtensions.html#HelixToolkit_SharpDX_SceneNodeExtensions_UpdateAllTransformMatrix_HelixToolkit_SharpDX_Model_Scene_SceneNode_">SceneNodeExtensions.UpdateAllTransformMatrix(SceneNode)</a>
+  </div>
+  <div>
+      <a class="xref" href="HelixToolkit.SharpDX.TreeTraverser.html#HelixToolkit_SharpDX_TreeTraverser_ForceUpdateTransformsAndBounds_HelixToolkit_SharpDX_Model_Scene_SceneNode_">TreeTraverser.ForceUpdateTransformsAndBounds(SceneNode)</a>
+  </div>
+  <div>
+      <a class="xref" href="HelixToolkit.SharpDX.TreeTraverser.html#HelixToolkit_SharpDX_TreeTraverser_Traverse_HelixToolkit_SharpDX_Model_Scene_SceneNode_System_Boolean_System_Collections_Generic_Stack_System_Collections_Generic_IEnumerator_HelixToolkit_SharpDX_Model_Scene_SceneNode___">TreeTraverser.Traverse(SceneNode, bool, Stack&lt;IEnumerator&lt;SceneNode&gt;&gt;?)</a>
+  </div>
+  <div>
+      <a class="xref" href="HelixToolkit.SharpDX.TreeTraverser.html#HelixToolkit_SharpDX_TreeTraverser_TraverseUp_HelixToolkit_SharpDX_Model_Scene_SceneNode_">TreeTraverser.TraverseUp(SceneNode?)</a>
+  </div>
+  </dd></dl>
+
+
+
+
+
+  <h2 class="section" id="properties">Properties
+</h2>
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene_PointNode_HitTestThickness_" data-uid="HelixToolkit.SharpDX.Model.Scene.PointNode.HitTestThickness*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene_PointNode_HitTestThickness" data-uid="HelixToolkit.SharpDX.Model.Scene.PointNode.HitTestThickness">
+  HitTestThickness
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene/PointNode.cs/#L17"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Used only for point/line hit test</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public double HitTestThickness { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h2 class="section" id="methods">Methods
+</h2>
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene_PointNode_CanRender_" data-uid="HelixToolkit.SharpDX.Model.Scene.PointNode.CanRender*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene_PointNode_CanRender_HelixToolkit_SharpDX_RenderContext_" data-uid="HelixToolkit.SharpDX.Model.Scene.PointNode.CanRender(HelixToolkit.SharpDX.RenderContext)">
+  CanRender(RenderContext)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene/PointNode.cs/#L96"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Determine if this can be rendered.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected override bool CanRender(RenderContext context)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>context</code> <a class="xref" href="HelixToolkit.SharpDX.RenderContext.html">RenderContext</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene_PointNode_CreateRasterState_" data-uid="HelixToolkit.SharpDX.Model.Scene.PointNode.CreateRasterState*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene_PointNode_CreateRasterState" data-uid="HelixToolkit.SharpDX.Model.Scene.PointNode.CreateRasterState">
+  CreateRasterState()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene/PointNode.cs/#L70"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Create raster state description.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected override RasterizerStateDescription CreateRasterState()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><span class="xref">RasterizerStateDescription</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene_PointNode_DistanceRayToPoint_" data-uid="HelixToolkit.SharpDX.Model.Scene.PointNode.DistanceRayToPoint*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene_PointNode_DistanceRayToPoint_HelixToolkit_Maths_Ray_System_Numerics_Vector3_" data-uid="HelixToolkit.SharpDX.Model.Scene.PointNode.DistanceRayToPoint(HelixToolkit.Maths.Ray,System.Numerics.Vector3)">
+  DistanceRayToPoint(Ray, Vector3)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene/PointNode.cs/#L30"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Distances the ray to point.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static double DistanceRayToPoint(Ray r, Vector3 p)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>r</code> <a class="xref" href="HelixToolkit.Maths.Ray.html">Ray</a></dt>
+    <dd><p>The r.</p>
+</dd>
+    <dt><code>p</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd><p>The p.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene_PointNode_OnCheckGeometry_" data-uid="HelixToolkit.SharpDX.Model.Scene.PointNode.OnCheckGeometry*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene_PointNode_OnCheckGeometry_HelixToolkit_SharpDX_Geometry3D_" data-uid="HelixToolkit.SharpDX.Model.Scene.PointNode.OnCheckGeometry(HelixToolkit.SharpDX.Geometry3D)">
+  OnCheckGeometry(Geometry3D?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene/PointNode.cs/#L108"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Called when [check geometry].</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected override bool OnCheckGeometry(Geometry3D? geometry)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>geometry</code> <a class="xref" href="HelixToolkit.SharpDX.Geometry3D.html">Geometry3D</a></dt>
+    <dd><p>The geometry.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene_PointNode_OnCreateBufferModel_" data-uid="HelixToolkit.SharpDX.Model.Scene.PointNode.OnCreateBufferModel*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene_PointNode_OnCreateBufferModel_System_Guid_HelixToolkit_SharpDX_Geometry3D_" data-uid="HelixToolkit.SharpDX.Model.Scene.PointNode.OnCreateBufferModel(System.Guid,HelixToolkit.SharpDX.Geometry3D)">
+  OnCreateBufferModel(Guid, Geometry3D?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene/PointNode.cs/#L49"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Called when [create buffer model].</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected override IAttachableBufferModel OnCreateBufferModel(Guid modelGuid, Geometry3D? geometry)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>modelGuid</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.guid">Guid</a></dt>
+    <dd></dd>
+    <dt><code>geometry</code> <a class="xref" href="HelixToolkit.SharpDX.Geometry3D.html">Geometry3D</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.IAttachableBufferModel.html">IAttachableBufferModel</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene_PointNode_OnCreateRenderCore_" data-uid="HelixToolkit.SharpDX.Model.Scene.PointNode.OnCreateRenderCore*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene_PointNode_OnCreateRenderCore" data-uid="HelixToolkit.SharpDX.Model.Scene.PointNode.OnCreateRenderCore">
+  OnCreateRenderCore()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene/PointNode.cs/#L61"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Called when [create render core].</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected override RenderCore OnCreateRenderCore()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.Core.RenderCore.html">RenderCore</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene_PointNode_OnCreateRenderTechnique_" data-uid="HelixToolkit.SharpDX.Model.Scene.PointNode.OnCreateRenderTechnique*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene_PointNode_OnCreateRenderTechnique_HelixToolkit_SharpDX_IEffectsManager_" data-uid="HelixToolkit.SharpDX.Model.Scene.PointNode.OnCreateRenderTechnique(HelixToolkit.SharpDX.IEffectsManager)">
+  OnCreateRenderTechnique(IEffectsManager)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene/PointNode.cs/#L86"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Override this function to set render technique during Attach Host.</p>
+<p>If <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html#HelixToolkit_SharpDX_Model_Scene_SceneNode_OnSetRenderTechnique">OnSetRenderTechnique</a> is set, then <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html#HelixToolkit_SharpDX_Model_Scene_SceneNode_OnSetRenderTechnique">OnSetRenderTechnique</a> instead of <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html#HelixToolkit_SharpDX_Model_Scene_SceneNode_OnCreateRenderTechnique_HelixToolkit_SharpDX_IEffectsManager_">OnCreateRenderTechnique(IEffectsManager)</a> function will be called.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected override IRenderTechnique? OnCreateRenderTechnique(IEffectsManager effectsManager)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>effectsManager</code> <a class="xref" href="HelixToolkit.SharpDX.IEffectsManager.html">IEffectsManager</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.IRenderTechnique.html">IRenderTechnique</a></dt>
+    <dd><p>Return RenderTechnique</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene_PointNode_OnHitTest_" data-uid="HelixToolkit.SharpDX.Model.Scene.PointNode.OnHitTest*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene_PointNode_OnHitTest_HelixToolkit_SharpDX_HitTestContext_System_Numerics_Matrix4x4_System_Collections_Generic_List_HelixToolkit_SharpDX_HitTestResult___" data-uid="HelixToolkit.SharpDX.Model.Scene.PointNode.OnHitTest(HelixToolkit.SharpDX.HitTestContext,System.Numerics.Matrix4x4,System.Collections.Generic.List{HelixToolkit.SharpDX.HitTestResult}@)">
+  OnHitTest(HitTestContext?, Matrix4x4, ref List&lt;HitTestResult&gt;)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene/PointNode.cs/#L135"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Called when [hit test].</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected override bool OnHitTest(HitTestContext? context, Matrix4x4 totalModelMatrix, ref List&lt;HitTestResult&gt; hits)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>context</code> <a class="xref" href="HelixToolkit.SharpDX.HitTestContext.html">HitTestContext</a></dt>
+    <dd><p>The context.</p>
+</dd>
+    <dt><code>totalModelMatrix</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.matrix4x4">Matrix4x4</a></dt>
+    <dd><p>The total model matrix.</p>
+</dd>
+    <dt><code>hits</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1">List</a>&lt;<a class="xref" href="HelixToolkit.SharpDX.HitTestResult.html">HitTestResult</a>&gt;</dt>
+    <dd><p>The hits.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene_PointNode_PreHitTestOnBounds_" data-uid="HelixToolkit.SharpDX.Model.Scene.PointNode.PreHitTestOnBounds*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene_PointNode_PreHitTestOnBounds_HelixToolkit_SharpDX_HitTestContext_" data-uid="HelixToolkit.SharpDX.Model.Scene.PointNode.PreHitTestOnBounds(HelixToolkit.SharpDX.HitTestContext)">
+  PreHitTestOnBounds(HitTestContext?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene/PointNode.cs/#L113"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Pre hit test on <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.GeometryNode.html#HelixToolkit_SharpDX_Model_Scene_GeometryNode_BoundsWithTransform">BoundsWithTransform</a> and <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.GeometryNode.html#HelixToolkit_SharpDX_Model_Scene_GeometryNode_BoundsSphereWithTransform">BoundsSphereWithTransform</a>.
+If return false, <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html#HelixToolkit_SharpDX_Model_Scene_SceneNode_OnHitTest_HelixToolkit_SharpDX_HitTestContext_System_Numerics_Matrix4x4_System_Collections_Generic_List_HelixToolkit_SharpDX_HitTestResult___">OnHitTest(HitTestContext?, Matrix4x4, ref List&lt;HitTestResult&gt;)</a> will not be called.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected override bool PreHitTestOnBounds(HitTestContext? context)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>context</code> <a class="xref" href="HelixToolkit.SharpDX.HitTestContext.html">HitTestContext</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene/PointNode.cs/#L10" class="edit-link">Edit this page</a>
+        </div>
+
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          Copyright (c) 2023 Helix Toolkit contributors
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

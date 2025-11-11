@@ -1,0 +1,3391 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Struct ColorBGRA | Helix Toolkit - 3D for .NET </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Struct ColorBGRA | Helix Toolkit - 3D for .NET ">
+      
+      <meta name="description" content="Represents a 32-bit color (4 bytes) in the form of BGRA (in byte order: B, G, B, A).">
+      <link rel="icon" href="../images/favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/helix-toolkit/helix-toolkit/new/develop3/apiSpec/new?filename=HelixToolkit_Maths_ColorBGRA.md&amp;value=---%0Auid%3A%20HelixToolkit.Maths.ColorBGRA%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="ManagedReference">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../images/favicon.ico" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="HelixToolkit.Maths.ColorBGRA">
+
+
+
+  <h1 id="HelixToolkit_Maths_ColorBGRA" data-uid="HelixToolkit.Maths.ColorBGRA" class="text-break">
+Struct ColorBGRA  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/ColorBGRA.cs/#L37"><i class="bi bi-code-slash"></i></a>
+  </h1>
+
+  <div class="facts text-secondary">
+    <dl><dt>Namespace</dt><dd><a class="xref" href="HelixToolkit.html">HelixToolkit</a>.<a class="xref" href="HelixToolkit.Maths.html">Maths</a></dd></dl>
+  <dl><dt>Assembly</dt><dd>HelixToolkit.Maths.dll</dd></dl>
+  </div>
+
+  <div class="markdown summary"><p>Represents a 32-bit color (4 bytes) in the form of BGRA (in byte order: B, G, B, A).</p>
+</div>
+  <div class="markdown conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public struct ColorBGRA : IEquatable&lt;ColorBGRA&gt;, IFormattable</code></pre>
+  </div>
+
+
+
+
+
+  <dl class="typelist implements">
+    <dt>Implements</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iequatable-1">IEquatable</a>&lt;<a class="xref" href="HelixToolkit.Maths.ColorBGRA.html">ColorBGRA</a>&gt;</div>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iformattable">IFormattable</a></div>
+    </dd>
+  </dl>
+
+
+  <dl class="typelist inheritedMembers">
+    <dt>Inherited Members</dt>
+    <dd>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">object.Equals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype">object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals">object.ReferenceEquals(object, object)</a>
+    </div>
+  </dd></dl>
+
+  <dl class="typelist extensionMethods">
+    <dt>Extension Methods</dt>
+    <dd>
+  <div>
+      <a class="xref" href="HelixToolkit.NativeHelper.html#HelixToolkit_NativeHelper_ToStruct__2___0_">NativeHelper.ToStruct&lt;T1, T2&gt;(T1)</a>
+  </div>
+  </dd></dl>
+
+
+
+
+
+  <h2 class="section" id="constructors">Constructors
+</h2>
+
+
+  <a id="HelixToolkit_Maths_ColorBGRA__ctor_" data-uid="HelixToolkit.Maths.ColorBGRA.#ctor*"></a>
+
+  <h3 id="HelixToolkit_Maths_ColorBGRA__ctor_System_Byte_" data-uid="HelixToolkit.Maths.ColorBGRA.#ctor(System.Byte)">
+  ColorBGRA(byte)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/ColorBGRA.cs/#L66"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="HelixToolkit.Maths.ColorBGRA.html">ColorBGRA</a> struct.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ColorBGRA(byte value)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">byte</a></dt>
+    <dd><p>The value that will be assigned to all components.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_ColorBGRA__ctor_" data-uid="HelixToolkit.Maths.ColorBGRA.#ctor*"></a>
+
+  <h3 id="HelixToolkit_Maths_ColorBGRA__ctor_System_Byte_System_Byte_System_Byte_System_Byte_" data-uid="HelixToolkit.Maths.ColorBGRA.#ctor(System.Byte,System.Byte,System.Byte,System.Byte)">
+  ColorBGRA(byte, byte, byte, byte)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/ColorBGRA.cs/#L87"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="HelixToolkit.Maths.ColorBGRA.html">ColorBGRA</a> struct.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ColorBGRA(byte red, byte green, byte blue, byte alpha)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>red</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">byte</a></dt>
+    <dd><p>The red component of the color.</p>
+</dd>
+    <dt><code>green</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">byte</a></dt>
+    <dd><p>The green component of the color.</p>
+</dd>
+    <dt><code>blue</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">byte</a></dt>
+    <dd><p>The blue component of the color.</p>
+</dd>
+    <dt><code>alpha</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">byte</a></dt>
+    <dd><p>The alpha component of the color.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_ColorBGRA__ctor_" data-uid="HelixToolkit.Maths.ColorBGRA.#ctor*"></a>
+
+  <h3 id="HelixToolkit_Maths_ColorBGRA__ctor_System_Byte___" data-uid="HelixToolkit.Maths.ColorBGRA.#ctor(System.Byte[])">
+  ColorBGRA(byte[])
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/ColorBGRA.cs/#L189"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="HelixToolkit.Maths.ColorBGRA.html">ColorBGRA</a> struct.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ColorBGRA(byte[] values)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>values</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">byte</a>[]</dt>
+    <dd><p>The values to assign to the red, green, and blue, alpha components of the color. This must be an array with four elements.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentnullexception">ArgumentNullException</a></dt>
+    <dd><p>Thrown when <code class="paramref">values</code> is <code>null</code>.</p>
+</dd>
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentoutofrangeexception">ArgumentOutOfRangeException</a></dt>
+    <dd><p>Thrown when <code class="paramref">values</code> contains more or less than four elements.</p>
+</dd>
+  </dl>
+
+
+
+  <a id="HelixToolkit_Maths_ColorBGRA__ctor_" data-uid="HelixToolkit.Maths.ColorBGRA.#ctor*"></a>
+
+  <h3 id="HelixToolkit_Maths_ColorBGRA__ctor_System_Int32_" data-uid="HelixToolkit.Maths.ColorBGRA.#ctor(System.Int32)">
+  ColorBGRA(int)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/ColorBGRA.cs/#L151"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="HelixToolkit.Maths.ColorBGRA.html">ColorBGRA</a> struct.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ColorBGRA(int bgra)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>bgra</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>A packed integer containing all four color components in BGRA.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_ColorBGRA__ctor_" data-uid="HelixToolkit.Maths.ColorBGRA.#ctor*"></a>
+
+  <h3 id="HelixToolkit_Maths_ColorBGRA__ctor_System_Numerics_Vector3_System_Single_" data-uid="HelixToolkit.Maths.ColorBGRA.#ctor(System.Numerics.Vector3,System.Single)">
+  ColorBGRA(Vector3, float)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/ColorBGRA.cs/#L127"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="HelixToolkit.Maths.ColorBGRA.html">ColorBGRA</a> struct.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ColorBGRA(Vector3 value, float alpha)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd><p>The red, green, and blue components of the color.</p>
+</dd>
+    <dt><code>alpha</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>The alpha component of the color.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_ColorBGRA__ctor_" data-uid="HelixToolkit.Maths.ColorBGRA.#ctor*"></a>
+
+  <h3 id="HelixToolkit_Maths_ColorBGRA__ctor_System_Numerics_Vector4_" data-uid="HelixToolkit.Maths.ColorBGRA.#ctor(System.Numerics.Vector4)">
+  ColorBGRA(Vector4)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/ColorBGRA.cs/#L114"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="HelixToolkit.Maths.ColorBGRA.html">ColorBGRA</a> struct.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ColorBGRA(Vector4 value)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector4">Vector4</a></dt>
+    <dd><p>The red, green, blue, and alpha components of the color.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_ColorBGRA__ctor_" data-uid="HelixToolkit.Maths.ColorBGRA.#ctor*"></a>
+
+  <h3 id="HelixToolkit_Maths_ColorBGRA__ctor_System_Single_" data-uid="HelixToolkit.Maths.ColorBGRA.#ctor(System.Single)">
+  ColorBGRA(float)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/ColorBGRA.cs/#L75"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="HelixToolkit.Maths.ColorBGRA.html">ColorBGRA</a> struct.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ColorBGRA(float value)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>The value that will be assigned to all components.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_ColorBGRA__ctor_" data-uid="HelixToolkit.Maths.ColorBGRA.#ctor*"></a>
+
+  <h3 id="HelixToolkit_Maths_ColorBGRA__ctor_System_Single_System_Single_System_Single_System_Single_" data-uid="HelixToolkit.Maths.ColorBGRA.#ctor(System.Single,System.Single,System.Single,System.Single)">
+  ColorBGRA(float, float, float, float)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/ColorBGRA.cs/#L102"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="HelixToolkit.Maths.ColorBGRA.html">ColorBGRA</a> struct.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ColorBGRA(float red, float green, float blue, float alpha)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>red</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>The red component of the color.</p>
+</dd>
+    <dt><code>green</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>The green component of the color.</p>
+</dd>
+    <dt><code>blue</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>The blue component of the color.</p>
+</dd>
+    <dt><code>alpha</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>The alpha component of the color.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_ColorBGRA__ctor_" data-uid="HelixToolkit.Maths.ColorBGRA.#ctor*"></a>
+
+  <h3 id="HelixToolkit_Maths_ColorBGRA__ctor_System_Single___" data-uid="HelixToolkit.Maths.ColorBGRA.#ctor(System.Single[])">
+  ColorBGRA(float[])
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/ColorBGRA.cs/#L165"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="HelixToolkit.Maths.ColorBGRA.html">ColorBGRA</a> struct.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ColorBGRA(float[] values)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>values</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a>[]</dt>
+    <dd><p>The values to assign to the red, green, and blue, alpha components of the color. This must be an array with four elements.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentnullexception">ArgumentNullException</a></dt>
+    <dd><p>Thrown when <code class="paramref">values</code> is <code>null</code>.</p>
+</dd>
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentoutofrangeexception">ArgumentOutOfRangeException</a></dt>
+    <dd><p>Thrown when <code class="paramref">values</code> contains more or less than four elements.</p>
+</dd>
+  </dl>
+
+
+
+  <a id="HelixToolkit_Maths_ColorBGRA__ctor_" data-uid="HelixToolkit.Maths.ColorBGRA.#ctor*"></a>
+
+  <h3 id="HelixToolkit_Maths_ColorBGRA__ctor_System_UInt32_" data-uid="HelixToolkit.Maths.ColorBGRA.#ctor(System.UInt32)">
+  ColorBGRA(uint)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/ColorBGRA.cs/#L139"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="HelixToolkit.Maths.ColorBGRA.html">ColorBGRA</a> struct.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ColorBGRA(uint bgra)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>bgra</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.uint32">uint</a></dt>
+    <dd><p>A packed integer containing all four color components in BGRA order.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <h2 class="section" id="fields">Fields
+</h2>
+
+
+
+  <h3 id="HelixToolkit_Maths_ColorBGRA_A" data-uid="HelixToolkit.Maths.ColorBGRA.A">
+  A
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/ColorBGRA.cs/#L60"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>The alpha component of the color.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public byte A</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">byte</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_Maths_ColorBGRA_B" data-uid="HelixToolkit.Maths.ColorBGRA.B">
+  B
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/ColorBGRA.cs/#L45"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>The blue component of the color.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public byte B</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">byte</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_Maths_ColorBGRA_G" data-uid="HelixToolkit.Maths.ColorBGRA.G">
+  G
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/ColorBGRA.cs/#L50"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>The green component of the color.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public byte G</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">byte</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_Maths_ColorBGRA_R" data-uid="HelixToolkit.Maths.ColorBGRA.R">
+  R
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/ColorBGRA.cs/#L55"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>The red component of the color.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public byte R</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">byte</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+  <h2 class="section" id="properties">Properties
+</h2>
+
+
+  <a id="HelixToolkit_Maths_ColorBGRA_Item_" data-uid="HelixToolkit.Maths.ColorBGRA.Item*"></a>
+
+  <h3 id="HelixToolkit_Maths_ColorBGRA_Item_System_Int32_" data-uid="HelixToolkit.Maths.ColorBGRA.Item(System.Int32)">
+  this[int]
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/ColorBGRA.cs/#L214"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the component at the specified index.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public byte this[int index] { readonly get; set; }</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>index</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The index of the component to access. Use 0 for the alpha component, 1 for the red component, 2 for the green component, and 3 for the blue component.</p>
+</dd>
+  </dl>
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">byte</a></dt>
+    <dd><p>The value of the alpha, red, green, or blue component, depending on the index.</p>
+</dd>
+  </dl>
+
+
+
+
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentoutofrangeexception">ArgumentOutOfRangeException</a></dt>
+    <dd><p>Thrown when the <code class="paramref">index</code> is out of the range [0, 3].</p>
+</dd>
+  </dl>
+
+
+
+  <h2 class="section" id="methods">Methods
+</h2>
+
+
+  <a id="HelixToolkit_Maths_ColorBGRA_Add_" data-uid="HelixToolkit.Maths.ColorBGRA.Add*"></a>
+
+  <h3 id="HelixToolkit_Maths_ColorBGRA_Add_HelixToolkit_Maths_ColorBGRA_HelixToolkit_Maths_ColorBGRA_" data-uid="HelixToolkit.Maths.ColorBGRA.Add(HelixToolkit.Maths.ColorBGRA,HelixToolkit.Maths.ColorBGRA)">
+  Add(ColorBGRA, ColorBGRA)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/ColorBGRA.cs/#L513"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Adds two colors.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static ColorBGRA Add(ColorBGRA left, ColorBGRA right)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>left</code> <a class="xref" href="HelixToolkit.Maths.ColorBGRA.html">ColorBGRA</a></dt>
+    <dd><p>The first color to add.</p>
+</dd>
+    <dt><code>right</code> <a class="xref" href="HelixToolkit.Maths.ColorBGRA.html">ColorBGRA</a></dt>
+    <dd><p>The second color to add.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Maths.ColorBGRA.html">ColorBGRA</a></dt>
+    <dd><p>The sum of the two colors.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_ColorBGRA_Add_" data-uid="HelixToolkit.Maths.ColorBGRA.Add*"></a>
+
+  <h3 id="HelixToolkit_Maths_ColorBGRA_Add_HelixToolkit_Maths_ColorBGRA__HelixToolkit_Maths_ColorBGRA__HelixToolkit_Maths_ColorBGRA__" data-uid="HelixToolkit.Maths.ColorBGRA.Add(HelixToolkit.Maths.ColorBGRA@,HelixToolkit.Maths.ColorBGRA@,HelixToolkit.Maths.ColorBGRA@)">
+  Add(ref ColorBGRA, ref ColorBGRA, out ColorBGRA)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/ColorBGRA.cs/#L499"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Adds two colors.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void Add(ref ColorBGRA left, ref ColorBGRA right, out ColorBGRA result)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>left</code> <a class="xref" href="HelixToolkit.Maths.ColorBGRA.html">ColorBGRA</a></dt>
+    <dd><p>The first color to add.</p>
+</dd>
+    <dt><code>right</code> <a class="xref" href="HelixToolkit.Maths.ColorBGRA.html">ColorBGRA</a></dt>
+    <dd><p>The second color to add.</p>
+</dd>
+    <dt><code>result</code> <a class="xref" href="HelixToolkit.Maths.ColorBGRA.html">ColorBGRA</a></dt>
+    <dd><p>When the method completes, completes the sum of the two colors.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_ColorBGRA_AdjustContrast_" data-uid="HelixToolkit.Maths.ColorBGRA.AdjustContrast*"></a>
+
+  <h3 id="HelixToolkit_Maths_ColorBGRA_AdjustContrast_HelixToolkit_Maths_ColorBGRA_System_Single_" data-uid="HelixToolkit.Maths.ColorBGRA.AdjustContrast(HelixToolkit.Maths.ColorBGRA,System.Single)">
+  AdjustContrast(ColorBGRA, float)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/ColorBGRA.cs/#L789"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Adjusts the contrast of a color.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static ColorBGRA AdjustContrast(ColorBGRA value, float contrast)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="HelixToolkit.Maths.ColorBGRA.html">ColorBGRA</a></dt>
+    <dd><p>The color whose contrast is to be adjusted.</p>
+</dd>
+    <dt><code>contrast</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>The amount by which to adjust the contrast.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Maths.ColorBGRA.html">ColorBGRA</a></dt>
+    <dd><p>The adjusted color.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_ColorBGRA_AdjustContrast_" data-uid="HelixToolkit.Maths.ColorBGRA.AdjustContrast*"></a>
+
+  <h3 id="HelixToolkit_Maths_ColorBGRA_AdjustContrast_HelixToolkit_Maths_ColorBGRA__System_Single_HelixToolkit_Maths_ColorBGRA__" data-uid="HelixToolkit.Maths.ColorBGRA.AdjustContrast(HelixToolkit.Maths.ColorBGRA@,System.Single,HelixToolkit.Maths.ColorBGRA@)">
+  AdjustContrast(ref ColorBGRA, float, out ColorBGRA)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/ColorBGRA.cs/#L775"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Adjusts the contrast of a color.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void AdjustContrast(ref ColorBGRA value, float contrast, out ColorBGRA result)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="HelixToolkit.Maths.ColorBGRA.html">ColorBGRA</a></dt>
+    <dd><p>The color whose contrast is to be adjusted.</p>
+</dd>
+    <dt><code>contrast</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>The amount by which to adjust the contrast.</p>
+</dd>
+    <dt><code>result</code> <a class="xref" href="HelixToolkit.Maths.ColorBGRA.html">ColorBGRA</a></dt>
+    <dd><p>When the method completes, contains the adjusted color.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_ColorBGRA_AdjustSaturation_" data-uid="HelixToolkit.Maths.ColorBGRA.AdjustSaturation*"></a>
+
+  <h3 id="HelixToolkit_Maths_ColorBGRA_AdjustSaturation_HelixToolkit_Maths_ColorBGRA_System_Single_" data-uid="HelixToolkit.Maths.ColorBGRA.AdjustSaturation(HelixToolkit.Maths.ColorBGRA,System.Single)">
+  AdjustSaturation(ColorBGRA, float)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/ColorBGRA.cs/#L820"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Adjusts the saturation of a color.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static ColorBGRA AdjustSaturation(ColorBGRA value, float saturation)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="HelixToolkit.Maths.ColorBGRA.html">ColorBGRA</a></dt>
+    <dd><p>The color whose saturation is to be adjusted.</p>
+</dd>
+    <dt><code>saturation</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>The amount by which to adjust the saturation.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Maths.ColorBGRA.html">ColorBGRA</a></dt>
+    <dd><p>The adjusted color.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_ColorBGRA_AdjustSaturation_" data-uid="HelixToolkit.Maths.ColorBGRA.AdjustSaturation*"></a>
+
+  <h3 id="HelixToolkit_Maths_ColorBGRA_AdjustSaturation_HelixToolkit_Maths_ColorBGRA__System_Single_HelixToolkit_Maths_ColorBGRA__" data-uid="HelixToolkit.Maths.ColorBGRA.AdjustSaturation(HelixToolkit.Maths.ColorBGRA@,System.Single,HelixToolkit.Maths.ColorBGRA@)">
+  AdjustSaturation(ref ColorBGRA, float, out ColorBGRA)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/ColorBGRA.cs/#L804"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Adjusts the saturation of a color.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void AdjustSaturation(ref ColorBGRA value, float saturation, out ColorBGRA result)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="HelixToolkit.Maths.ColorBGRA.html">ColorBGRA</a></dt>
+    <dd><p>The color whose saturation is to be adjusted.</p>
+</dd>
+    <dt><code>saturation</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>The amount by which to adjust the saturation.</p>
+</dd>
+    <dt><code>result</code> <a class="xref" href="HelixToolkit.Maths.ColorBGRA.html">ColorBGRA</a></dt>
+    <dd><p>When the method completes, contains the adjusted color.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_ColorBGRA_Clamp_" data-uid="HelixToolkit.Maths.ColorBGRA.Clamp*"></a>
+
+  <h3 id="HelixToolkit_Maths_ColorBGRA_Clamp_HelixToolkit_Maths_ColorBGRA_HelixToolkit_Maths_ColorBGRA_HelixToolkit_Maths_ColorBGRA_" data-uid="HelixToolkit.Maths.ColorBGRA.Clamp(HelixToolkit.Maths.ColorBGRA,HelixToolkit.Maths.ColorBGRA,HelixToolkit.Maths.ColorBGRA)">
+  Clamp(ColorBGRA, ColorBGRA, ColorBGRA)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/ColorBGRA.cs/#L651"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Restricts a value to be within a specified range.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static ColorBGRA Clamp(ColorBGRA value, ColorBGRA min, ColorBGRA max)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="HelixToolkit.Maths.ColorBGRA.html">ColorBGRA</a></dt>
+    <dd><p>The value to clamp.</p>
+</dd>
+    <dt><code>min</code> <a class="xref" href="HelixToolkit.Maths.ColorBGRA.html">ColorBGRA</a></dt>
+    <dd><p>The minimum value.</p>
+</dd>
+    <dt><code>max</code> <a class="xref" href="HelixToolkit.Maths.ColorBGRA.html">ColorBGRA</a></dt>
+    <dd><p>The maximum value.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Maths.ColorBGRA.html">ColorBGRA</a></dt>
+    <dd><p>The clamped value.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_ColorBGRA_Clamp_" data-uid="HelixToolkit.Maths.ColorBGRA.Clamp*"></a>
+
+  <h3 id="HelixToolkit_Maths_ColorBGRA_Clamp_HelixToolkit_Maths_ColorBGRA__HelixToolkit_Maths_ColorBGRA__HelixToolkit_Maths_ColorBGRA__HelixToolkit_Maths_ColorBGRA__" data-uid="HelixToolkit.Maths.ColorBGRA.Clamp(HelixToolkit.Maths.ColorBGRA@,HelixToolkit.Maths.ColorBGRA@,HelixToolkit.Maths.ColorBGRA@,HelixToolkit.Maths.ColorBGRA@)">
+  Clamp(ref ColorBGRA, ref ColorBGRA, ref ColorBGRA, out ColorBGRA)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/ColorBGRA.cs/#L623"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Restricts a value to be within a specified range.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void Clamp(ref ColorBGRA value, ref ColorBGRA min, ref ColorBGRA max, out ColorBGRA result)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="HelixToolkit.Maths.ColorBGRA.html">ColorBGRA</a></dt>
+    <dd><p>The value to clamp.</p>
+</dd>
+    <dt><code>min</code> <a class="xref" href="HelixToolkit.Maths.ColorBGRA.html">ColorBGRA</a></dt>
+    <dd><p>The minimum value.</p>
+</dd>
+    <dt><code>max</code> <a class="xref" href="HelixToolkit.Maths.ColorBGRA.html">ColorBGRA</a></dt>
+    <dd><p>The maximum value.</p>
+</dd>
+    <dt><code>result</code> <a class="xref" href="HelixToolkit.Maths.ColorBGRA.html">ColorBGRA</a></dt>
+    <dd><p>When the method completes, contains the clamped value.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_ColorBGRA_Equals_" data-uid="HelixToolkit.Maths.ColorBGRA.Equals*"></a>
+
+  <h3 id="HelixToolkit_Maths_ColorBGRA_Equals_HelixToolkit_Maths_ColorBGRA_" data-uid="HelixToolkit.Maths.ColorBGRA.Equals(HelixToolkit.Maths.ColorBGRA)">
+  Equals(ColorBGRA)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/ColorBGRA.cs/#L1174"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Determines whether the specified <a class="xref" href="HelixToolkit.Maths.ColorBGRA.html">ColorBGRA</a> is equal to this instance.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public readonly bool Equals(ColorBGRA other)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>other</code> <a class="xref" href="HelixToolkit.Maths.ColorBGRA.html">ColorBGRA</a></dt>
+    <dd><p>The <a class="xref" href="HelixToolkit.Maths.ColorBGRA.html">ColorBGRA</a> to compare with this instance.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><code>true</code> if the specified <a class="xref" href="HelixToolkit.Maths.ColorBGRA.html">ColorBGRA</a> is equal to this instance; otherwise, <code>false</code>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_ColorBGRA_Equals_" data-uid="HelixToolkit.Maths.ColorBGRA.Equals*"></a>
+
+  <h3 id="HelixToolkit_Maths_ColorBGRA_Equals_HelixToolkit_Maths_ColorBGRA__" data-uid="HelixToolkit.Maths.ColorBGRA.Equals(HelixToolkit.Maths.ColorBGRA@)">
+  Equals(ref ColorBGRA)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/ColorBGRA.cs/#L1161"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Determines whether the specified <a class="xref" href="HelixToolkit.Maths.ColorBGRA.html">ColorBGRA</a> is equal to this instance.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public readonly bool Equals(ref ColorBGRA other)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>other</code> <a class="xref" href="HelixToolkit.Maths.ColorBGRA.html">ColorBGRA</a></dt>
+    <dd><p>The <a class="xref" href="HelixToolkit.Maths.ColorBGRA.html">ColorBGRA</a> to compare with this instance.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><code>true</code> if the specified <a class="xref" href="HelixToolkit.Maths.ColorBGRA.html">ColorBGRA</a> is equal to this instance; otherwise, <code>false</code>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_ColorBGRA_Equals_" data-uid="HelixToolkit.Maths.ColorBGRA.Equals*"></a>
+
+  <h3 id="HelixToolkit_Maths_ColorBGRA_Equals_System_Object_" data-uid="HelixToolkit.Maths.ColorBGRA.Equals(System.Object)">
+  Equals(object?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/ColorBGRA.cs/#L1187"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Determines whether the specified <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a> is equal to this instance.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override readonly bool Equals(object? obj)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>obj</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></dt>
+    <dd><p>The <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a> to compare with this instance.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><code>true</code> if the specified <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a> is equal to this instance; otherwise, <code>false</code>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_ColorBGRA_FromBgra_" data-uid="HelixToolkit.Maths.ColorBGRA.FromBgra*"></a>
+
+  <h3 id="HelixToolkit_Maths_ColorBGRA_FromBgra_System_Int32_" data-uid="HelixToolkit.Maths.ColorBGRA.FromBgra(System.Int32)">
+  FromBgra(int)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/ColorBGRA.cs/#L458"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Converts the color from a packed BGRA integer.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static ColorBGRA FromBgra(int color)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>color</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>A packed integer containing all four color components in BGRA order</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Maths.ColorBGRA.html">ColorBGRA</a></dt>
+    <dd><p>A color.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_ColorBGRA_FromBgra_" data-uid="HelixToolkit.Maths.ColorBGRA.FromBgra*"></a>
+
+  <h3 id="HelixToolkit_Maths_ColorBGRA_FromBgra_System_UInt32_" data-uid="HelixToolkit.Maths.ColorBGRA.FromBgra(System.UInt32)">
+  FromBgra(uint)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/ColorBGRA.cs/#L468"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Converts the color from a packed BGRA integer.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static ColorBGRA FromBgra(uint color)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>color</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.uint32">uint</a></dt>
+    <dd><p>A packed integer containing all four color components in BGRA order</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Maths.ColorBGRA.html">ColorBGRA</a></dt>
+    <dd><p>A color.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_ColorBGRA_FromRgba_" data-uid="HelixToolkit.Maths.ColorBGRA.FromRgba*"></a>
+
+  <h3 id="HelixToolkit_Maths_ColorBGRA_FromRgba_System_Int32_" data-uid="HelixToolkit.Maths.ColorBGRA.FromRgba(System.Int32)">
+  FromRgba(int)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/ColorBGRA.cs/#L478"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Converts the color from a packed RGBA integer.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static ColorBGRA FromRgba(int color)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>color</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>A packed integer containing all four color components in RGBA order</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Maths.ColorBGRA.html">ColorBGRA</a></dt>
+    <dd><p>A color.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_ColorBGRA_FromRgba_" data-uid="HelixToolkit.Maths.ColorBGRA.FromRgba*"></a>
+
+  <h3 id="HelixToolkit_Maths_ColorBGRA_FromRgba_System_UInt32_" data-uid="HelixToolkit.Maths.ColorBGRA.FromRgba(System.UInt32)">
+  FromRgba(uint)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/ColorBGRA.cs/#L488"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Converts the color from a packed RGBA integer.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static ColorBGRA FromRgba(uint color)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>color</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.uint32">uint</a></dt>
+    <dd><p>A packed integer containing all four color components in RGBA order</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Maths.ColorBGRA.html">ColorBGRA</a></dt>
+    <dd><p>A color.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_ColorBGRA_GetBrightness_" data-uid="HelixToolkit.Maths.ColorBGRA.GetBrightness*"></a>
+
+  <h3 id="HelixToolkit_Maths_ColorBGRA_GetBrightness" data-uid="HelixToolkit.Maths.ColorBGRA.GetBrightness">
+  GetBrightness()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/ColorBGRA.cs/#L309"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the brightness.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public readonly float GetBrightness()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>The Hue-Saturation-Brightness (HSB) saturation for this <a class="xref" href="HelixToolkit.Maths.Color.html">Color</a></p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_ColorBGRA_GetHashCode_" data-uid="HelixToolkit.Maths.ColorBGRA.GetHashCode*"></a>
+
+  <h3 id="HelixToolkit_Maths_ColorBGRA_GetHashCode" data-uid="HelixToolkit.Maths.ColorBGRA.GetHashCode">
+  GetHashCode()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/ColorBGRA.cs/#L1142"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Returns a hash code for this instance.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override readonly int GetHashCode()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_ColorBGRA_GetHue_" data-uid="HelixToolkit.Maths.ColorBGRA.GetHue*"></a>
+
+  <h3 id="HelixToolkit_Maths_ColorBGRA_GetHue" data-uid="HelixToolkit.Maths.ColorBGRA.GetHue">
+  GetHue()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/ColorBGRA.cs/#L346"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the hue.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public readonly float GetHue()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>The Hue-Saturation-Brightness (HSB) saturation for this <a class="xref" href="HelixToolkit.Maths.Color.html">Color</a></p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_ColorBGRA_GetSaturation_" data-uid="HelixToolkit.Maths.ColorBGRA.GetSaturation*"></a>
+
+  <h3 id="HelixToolkit_Maths_ColorBGRA_GetSaturation" data-uid="HelixToolkit.Maths.ColorBGRA.GetSaturation">
+  GetSaturation()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/ColorBGRA.cs/#L410"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the saturation.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public readonly float GetSaturation()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>The Hue-Saturation-Brightness (HSB) saturation for this <a class="xref" href="HelixToolkit.Maths.Color.html">Color</a></p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_ColorBGRA_Lerp_" data-uid="HelixToolkit.Maths.ColorBGRA.Lerp*"></a>
+
+  <h3 id="HelixToolkit_Maths_ColorBGRA_Lerp_HelixToolkit_Maths_ColorBGRA_HelixToolkit_Maths_ColorBGRA_System_Single_" data-uid="HelixToolkit.Maths.ColorBGRA.Lerp(HelixToolkit.Maths.ColorBGRA,HelixToolkit.Maths.ColorBGRA,System.Single)">
+  Lerp(ColorBGRA, ColorBGRA, float)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/ColorBGRA.cs/#L685"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Performs a linear interpolation between two colors.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static ColorBGRA Lerp(ColorBGRA start, ColorBGRA end, float amount)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>start</code> <a class="xref" href="HelixToolkit.Maths.ColorBGRA.html">ColorBGRA</a></dt>
+    <dd><p>Start color.</p>
+</dd>
+    <dt><code>end</code> <a class="xref" href="HelixToolkit.Maths.ColorBGRA.html">ColorBGRA</a></dt>
+    <dd><p>End color.</p>
+</dd>
+    <dt><code>amount</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>Value between 0 and 1 indicating the weight of <code class="paramref">end</code>.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Maths.ColorBGRA.html">ColorBGRA</a></dt>
+    <dd><p>The linear interpolation of the two colors.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+  <h4 class="section" id="HelixToolkit_Maths_ColorBGRA_Lerp_HelixToolkit_Maths_ColorBGRA_HelixToolkit_Maths_ColorBGRA_System_Single__remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>Passing <code class="paramref">amount</code> a value of 0 will cause <code class="paramref">start</code> to be returned; a value of 1 will cause <code class="paramref">end</code> to be returned.</p>
+</div>
+
+
+
+
+  <a id="HelixToolkit_Maths_ColorBGRA_Lerp_" data-uid="HelixToolkit.Maths.ColorBGRA.Lerp*"></a>
+
+  <h3 id="HelixToolkit_Maths_ColorBGRA_Lerp_HelixToolkit_Maths_ColorBGRA__HelixToolkit_Maths_ColorBGRA__System_Single_HelixToolkit_Maths_ColorBGRA__" data-uid="HelixToolkit.Maths.ColorBGRA.Lerp(HelixToolkit.Maths.ColorBGRA@,HelixToolkit.Maths.ColorBGRA@,System.Single,HelixToolkit.Maths.ColorBGRA@)">
+  Lerp(ref ColorBGRA, ref ColorBGRA, float, out ColorBGRA)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/ColorBGRA.cs/#L667"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Performs a linear interpolation between two colors.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void Lerp(ref ColorBGRA start, ref ColorBGRA end, float amount, out ColorBGRA result)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>start</code> <a class="xref" href="HelixToolkit.Maths.ColorBGRA.html">ColorBGRA</a></dt>
+    <dd><p>Start color.</p>
+</dd>
+    <dt><code>end</code> <a class="xref" href="HelixToolkit.Maths.ColorBGRA.html">ColorBGRA</a></dt>
+    <dd><p>End color.</p>
+</dd>
+    <dt><code>amount</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>Value between 0 and 1 indicating the weight of <code class="paramref">end</code>.</p>
+</dd>
+    <dt><code>result</code> <a class="xref" href="HelixToolkit.Maths.ColorBGRA.html">ColorBGRA</a></dt>
+    <dd><p>When the method completes, contains the linear interpolation of the two colors.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h4 class="section" id="HelixToolkit_Maths_ColorBGRA_Lerp_HelixToolkit_Maths_ColorBGRA__HelixToolkit_Maths_ColorBGRA__System_Single_HelixToolkit_Maths_ColorBGRA___remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>Passing <code class="paramref">amount</code> a value of 0 will cause <code class="paramref">start</code> to be returned; a value of 1 will cause <code class="paramref">end</code> to be returned.</p>
+</div>
+
+
+
+
+  <a id="HelixToolkit_Maths_ColorBGRA_Max_" data-uid="HelixToolkit.Maths.ColorBGRA.Max*"></a>
+
+  <h3 id="HelixToolkit_Maths_ColorBGRA_Max_HelixToolkit_Maths_ColorBGRA_HelixToolkit_Maths_ColorBGRA_" data-uid="HelixToolkit.Maths.ColorBGRA.Max(HelixToolkit.Maths.ColorBGRA,HelixToolkit.Maths.ColorBGRA)">
+  Max(ColorBGRA, ColorBGRA)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/ColorBGRA.cs/#L737"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Returns a color containing the largest components of the specified colorss.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static ColorBGRA Max(ColorBGRA left, ColorBGRA right)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>left</code> <a class="xref" href="HelixToolkit.Maths.ColorBGRA.html">ColorBGRA</a></dt>
+    <dd><p>The first source color.</p>
+</dd>
+    <dt><code>right</code> <a class="xref" href="HelixToolkit.Maths.ColorBGRA.html">ColorBGRA</a></dt>
+    <dd><p>The second source color.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Maths.ColorBGRA.html">ColorBGRA</a></dt>
+    <dd><p>A color containing the largest components of the source colors.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_ColorBGRA_Max_" data-uid="HelixToolkit.Maths.ColorBGRA.Max*"></a>
+
+  <h3 id="HelixToolkit_Maths_ColorBGRA_Max_HelixToolkit_Maths_ColorBGRA__HelixToolkit_Maths_ColorBGRA__HelixToolkit_Maths_ColorBGRA__" data-uid="HelixToolkit.Maths.ColorBGRA.Max(HelixToolkit.Maths.ColorBGRA@,HelixToolkit.Maths.ColorBGRA@,HelixToolkit.Maths.ColorBGRA@)">
+  Max(ref ColorBGRA, ref ColorBGRA, out ColorBGRA)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/ColorBGRA.cs/#L723"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Returns a color containing the smallest components of the specified colorss.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void Max(ref ColorBGRA left, ref ColorBGRA right, out ColorBGRA result)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>left</code> <a class="xref" href="HelixToolkit.Maths.ColorBGRA.html">ColorBGRA</a></dt>
+    <dd><p>The first source color.</p>
+</dd>
+    <dt><code>right</code> <a class="xref" href="HelixToolkit.Maths.ColorBGRA.html">ColorBGRA</a></dt>
+    <dd><p>The second source color.</p>
+</dd>
+    <dt><code>result</code> <a class="xref" href="HelixToolkit.Maths.ColorBGRA.html">ColorBGRA</a></dt>
+    <dd><p>When the method completes, contains an new color composed of the largest components of the source colorss.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_ColorBGRA_Min_" data-uid="HelixToolkit.Maths.ColorBGRA.Min*"></a>
+
+  <h3 id="HelixToolkit_Maths_ColorBGRA_Min_HelixToolkit_Maths_ColorBGRA_HelixToolkit_Maths_ColorBGRA_" data-uid="HelixToolkit.Maths.ColorBGRA.Min(HelixToolkit.Maths.ColorBGRA,HelixToolkit.Maths.ColorBGRA)">
+  Min(ColorBGRA, ColorBGRA)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/ColorBGRA.cs/#L763"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Returns a color containing the smallest components of the specified colors.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static ColorBGRA Min(ColorBGRA left, ColorBGRA right)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>left</code> <a class="xref" href="HelixToolkit.Maths.ColorBGRA.html">ColorBGRA</a></dt>
+    <dd><p>The first source color.</p>
+</dd>
+    <dt><code>right</code> <a class="xref" href="HelixToolkit.Maths.ColorBGRA.html">ColorBGRA</a></dt>
+    <dd><p>The second source color.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Maths.ColorBGRA.html">ColorBGRA</a></dt>
+    <dd><p>A color containing the smallest components of the source colors.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_ColorBGRA_Min_" data-uid="HelixToolkit.Maths.ColorBGRA.Min*"></a>
+
+  <h3 id="HelixToolkit_Maths_ColorBGRA_Min_HelixToolkit_Maths_ColorBGRA__HelixToolkit_Maths_ColorBGRA__HelixToolkit_Maths_ColorBGRA__" data-uid="HelixToolkit.Maths.ColorBGRA.Min(HelixToolkit.Maths.ColorBGRA@,HelixToolkit.Maths.ColorBGRA@,HelixToolkit.Maths.ColorBGRA@)">
+  Min(ref ColorBGRA, ref ColorBGRA, out ColorBGRA)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/ColorBGRA.cs/#L749"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Returns a color containing the smallest components of the specified colors.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void Min(ref ColorBGRA left, ref ColorBGRA right, out ColorBGRA result)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>left</code> <a class="xref" href="HelixToolkit.Maths.ColorBGRA.html">ColorBGRA</a></dt>
+    <dd><p>The first source color.</p>
+</dd>
+    <dt><code>right</code> <a class="xref" href="HelixToolkit.Maths.ColorBGRA.html">ColorBGRA</a></dt>
+    <dd><p>The second source color.</p>
+</dd>
+    <dt><code>result</code> <a class="xref" href="HelixToolkit.Maths.ColorBGRA.html">ColorBGRA</a></dt>
+    <dd><p>When the method completes, contains an new color composed of the smallest components of the source colors.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_ColorBGRA_Modulate_" data-uid="HelixToolkit.Maths.ColorBGRA.Modulate*"></a>
+
+  <h3 id="HelixToolkit_Maths_ColorBGRA_Modulate_HelixToolkit_Maths_ColorBGRA_HelixToolkit_Maths_ColorBGRA_" data-uid="HelixToolkit.Maths.ColorBGRA.Modulate(HelixToolkit.Maths.ColorBGRA,HelixToolkit.Maths.ColorBGRA)">
+  Modulate(ColorBGRA, ColorBGRA)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/ColorBGRA.cs/#L563"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Modulates two colors.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static ColorBGRA Modulate(ColorBGRA left, ColorBGRA right)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>left</code> <a class="xref" href="HelixToolkit.Maths.ColorBGRA.html">ColorBGRA</a></dt>
+    <dd><p>The first color to modulate.</p>
+</dd>
+    <dt><code>right</code> <a class="xref" href="HelixToolkit.Maths.ColorBGRA.html">ColorBGRA</a></dt>
+    <dd><p>The second color to modulate.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Maths.ColorBGRA.html">ColorBGRA</a></dt>
+    <dd><p>The modulated color.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_ColorBGRA_Modulate_" data-uid="HelixToolkit.Maths.ColorBGRA.Modulate*"></a>
+
+  <h3 id="HelixToolkit_Maths_ColorBGRA_Modulate_HelixToolkit_Maths_ColorBGRA__HelixToolkit_Maths_ColorBGRA__HelixToolkit_Maths_ColorBGRA__" data-uid="HelixToolkit.Maths.ColorBGRA.Modulate(HelixToolkit.Maths.ColorBGRA@,HelixToolkit.Maths.ColorBGRA@,HelixToolkit.Maths.ColorBGRA@)">
+  Modulate(ref ColorBGRA, ref ColorBGRA, out ColorBGRA)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/ColorBGRA.cs/#L549"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Modulates two colors.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void Modulate(ref ColorBGRA left, ref ColorBGRA right, out ColorBGRA result)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>left</code> <a class="xref" href="HelixToolkit.Maths.ColorBGRA.html">ColorBGRA</a></dt>
+    <dd><p>The first color to modulate.</p>
+</dd>
+    <dt><code>right</code> <a class="xref" href="HelixToolkit.Maths.ColorBGRA.html">ColorBGRA</a></dt>
+    <dd><p>The second color to modulate.</p>
+</dd>
+    <dt><code>result</code> <a class="xref" href="HelixToolkit.Maths.ColorBGRA.html">ColorBGRA</a></dt>
+    <dd><p>When the method completes, contains the modulated color.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_ColorBGRA_Negate_" data-uid="HelixToolkit.Maths.ColorBGRA.Negate*"></a>
+
+  <h3 id="HelixToolkit_Maths_ColorBGRA_Negate_HelixToolkit_Maths_ColorBGRA_" data-uid="HelixToolkit.Maths.ColorBGRA.Negate(HelixToolkit.Maths.ColorBGRA)">
+  Negate(ColorBGRA)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/ColorBGRA.cs/#L611"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Negates a color.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static ColorBGRA Negate(ColorBGRA value)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="HelixToolkit.Maths.ColorBGRA.html">ColorBGRA</a></dt>
+    <dd><p>The color to negate.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Maths.ColorBGRA.html">ColorBGRA</a></dt>
+    <dd><p>The negated color.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_ColorBGRA_Negate_" data-uid="HelixToolkit.Maths.ColorBGRA.Negate*"></a>
+
+  <h3 id="HelixToolkit_Maths_ColorBGRA_Negate_HelixToolkit_Maths_ColorBGRA__HelixToolkit_Maths_ColorBGRA__" data-uid="HelixToolkit.Maths.ColorBGRA.Negate(HelixToolkit.Maths.ColorBGRA@,HelixToolkit.Maths.ColorBGRA@)">
+  Negate(ref ColorBGRA, out ColorBGRA)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/ColorBGRA.cs/#L598"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Negates a color.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void Negate(ref ColorBGRA value, out ColorBGRA result)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="HelixToolkit.Maths.ColorBGRA.html">ColorBGRA</a></dt>
+    <dd><p>The color to negate.</p>
+</dd>
+    <dt><code>result</code> <a class="xref" href="HelixToolkit.Maths.ColorBGRA.html">ColorBGRA</a></dt>
+    <dd><p>When the method completes, contains the negated color.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_ColorBGRA_Premultiply_" data-uid="HelixToolkit.Maths.ColorBGRA.Premultiply*"></a>
+
+  <h3 id="HelixToolkit_Maths_ColorBGRA_Premultiply_HelixToolkit_Maths_ColorBGRA_" data-uid="HelixToolkit.Maths.ColorBGRA.Premultiply(HelixToolkit.Maths.ColorBGRA)">
+  Premultiply(ColorBGRA)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/ColorBGRA.cs/#L850"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Computes the premultiplied value of the provided color.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static ColorBGRA Premultiply(ColorBGRA value)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="HelixToolkit.Maths.ColorBGRA.html">ColorBGRA</a></dt>
+    <dd><p>The non-premultiplied value.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Maths.ColorBGRA.html">ColorBGRA</a></dt>
+    <dd><p>The premultiplied result.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_ColorBGRA_Premultiply_" data-uid="HelixToolkit.Maths.ColorBGRA.Premultiply*"></a>
+
+  <h3 id="HelixToolkit_Maths_ColorBGRA_Premultiply_HelixToolkit_Maths_ColorBGRA__HelixToolkit_Maths_ColorBGRA__" data-uid="HelixToolkit.Maths.ColorBGRA.Premultiply(HelixToolkit.Maths.ColorBGRA@,HelixToolkit.Maths.ColorBGRA@)">
+  Premultiply(ref ColorBGRA, out ColorBGRA)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/ColorBGRA.cs/#L836"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Computes the premultiplied value of the provided color.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void Premultiply(ref ColorBGRA value, out ColorBGRA result)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="HelixToolkit.Maths.ColorBGRA.html">ColorBGRA</a></dt>
+    <dd><p>The non-premultiplied value.</p>
+</dd>
+    <dt><code>result</code> <a class="xref" href="HelixToolkit.Maths.ColorBGRA.html">ColorBGRA</a></dt>
+    <dd><p>The premultiplied result.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_ColorBGRA_Scale_" data-uid="HelixToolkit.Maths.ColorBGRA.Scale*"></a>
+
+  <h3 id="HelixToolkit_Maths_ColorBGRA_Scale_HelixToolkit_Maths_ColorBGRA_System_Single_" data-uid="HelixToolkit.Maths.ColorBGRA.Scale(HelixToolkit.Maths.ColorBGRA,System.Single)">
+  Scale(ColorBGRA, float)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/ColorBGRA.cs/#L588"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Scales a color.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static ColorBGRA Scale(ColorBGRA value, float scale)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="HelixToolkit.Maths.ColorBGRA.html">ColorBGRA</a></dt>
+    <dd><p>The color to scale.</p>
+</dd>
+    <dt><code>scale</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>The amount by which to scale.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Maths.ColorBGRA.html">ColorBGRA</a></dt>
+    <dd><p>The scaled color.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_ColorBGRA_Scale_" data-uid="HelixToolkit.Maths.ColorBGRA.Scale*"></a>
+
+  <h3 id="HelixToolkit_Maths_ColorBGRA_Scale_HelixToolkit_Maths_ColorBGRA__System_Single_HelixToolkit_Maths_ColorBGRA__" data-uid="HelixToolkit.Maths.ColorBGRA.Scale(HelixToolkit.Maths.ColorBGRA@,System.Single,HelixToolkit.Maths.ColorBGRA@)">
+  Scale(ref ColorBGRA, float, out ColorBGRA)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/ColorBGRA.cs/#L574"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Scales a color.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void Scale(ref ColorBGRA value, float scale, out ColorBGRA result)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="HelixToolkit.Maths.ColorBGRA.html">ColorBGRA</a></dt>
+    <dd><p>The color to scale.</p>
+</dd>
+    <dt><code>scale</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>The amount by which to scale.</p>
+</dd>
+    <dt><code>result</code> <a class="xref" href="HelixToolkit.Maths.ColorBGRA.html">ColorBGRA</a></dt>
+    <dd><p>When the method completes, contains the scaled color.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_ColorBGRA_SmoothStep_" data-uid="HelixToolkit.Maths.ColorBGRA.SmoothStep*"></a>
+
+  <h3 id="HelixToolkit_Maths_ColorBGRA_SmoothStep_HelixToolkit_Maths_ColorBGRA_HelixToolkit_Maths_ColorBGRA_System_Single_" data-uid="HelixToolkit.Maths.ColorBGRA.SmoothStep(HelixToolkit.Maths.ColorBGRA,HelixToolkit.Maths.ColorBGRA,System.Single)">
+  SmoothStep(ColorBGRA, ColorBGRA, float)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/ColorBGRA.cs/#L711"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Performs a cubic interpolation between two colors.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static ColorBGRA SmoothStep(ColorBGRA start, ColorBGRA end, float amount)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>start</code> <a class="xref" href="HelixToolkit.Maths.ColorBGRA.html">ColorBGRA</a></dt>
+    <dd><p>Start color.</p>
+</dd>
+    <dt><code>end</code> <a class="xref" href="HelixToolkit.Maths.ColorBGRA.html">ColorBGRA</a></dt>
+    <dd><p>End color.</p>
+</dd>
+    <dt><code>amount</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>Value between 0 and 1 indicating the weight of <code class="paramref">end</code>.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Maths.ColorBGRA.html">ColorBGRA</a></dt>
+    <dd><p>The cubic interpolation of the two colors.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_ColorBGRA_SmoothStep_" data-uid="HelixToolkit.Maths.ColorBGRA.SmoothStep*"></a>
+
+  <h3 id="HelixToolkit_Maths_ColorBGRA_SmoothStep_HelixToolkit_Maths_ColorBGRA__HelixToolkit_Maths_ColorBGRA__System_Single_HelixToolkit_Maths_ColorBGRA__" data-uid="HelixToolkit.Maths.ColorBGRA.SmoothStep(HelixToolkit.Maths.ColorBGRA@,HelixToolkit.Maths.ColorBGRA@,System.Single,HelixToolkit.Maths.ColorBGRA@)">
+  SmoothStep(ref ColorBGRA, ref ColorBGRA, float, out ColorBGRA)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/ColorBGRA.cs/#L698"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Performs a cubic interpolation between two colors.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void SmoothStep(ref ColorBGRA start, ref ColorBGRA end, float amount, out ColorBGRA result)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>start</code> <a class="xref" href="HelixToolkit.Maths.ColorBGRA.html">ColorBGRA</a></dt>
+    <dd><p>Start color.</p>
+</dd>
+    <dt><code>end</code> <a class="xref" href="HelixToolkit.Maths.ColorBGRA.html">ColorBGRA</a></dt>
+    <dd><p>End color.</p>
+</dd>
+    <dt><code>amount</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>Value between 0 and 1 indicating the weight of <code class="paramref">end</code>.</p>
+</dd>
+    <dt><code>result</code> <a class="xref" href="HelixToolkit.Maths.ColorBGRA.html">ColorBGRA</a></dt>
+    <dd><p>When the method completes, contains the cubic interpolation of the two colors.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_ColorBGRA_Subtract_" data-uid="HelixToolkit.Maths.ColorBGRA.Subtract*"></a>
+
+  <h3 id="HelixToolkit_Maths_ColorBGRA_Subtract_HelixToolkit_Maths_ColorBGRA_HelixToolkit_Maths_ColorBGRA_" data-uid="HelixToolkit.Maths.ColorBGRA.Subtract(HelixToolkit.Maths.ColorBGRA,HelixToolkit.Maths.ColorBGRA)">
+  Subtract(ColorBGRA, ColorBGRA)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/ColorBGRA.cs/#L538"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Subtracts two colors.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static ColorBGRA Subtract(ColorBGRA left, ColorBGRA right)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>left</code> <a class="xref" href="HelixToolkit.Maths.ColorBGRA.html">ColorBGRA</a></dt>
+    <dd><p>The first color to subtract.</p>
+</dd>
+    <dt><code>right</code> <a class="xref" href="HelixToolkit.Maths.ColorBGRA.html">ColorBGRA</a></dt>
+    <dd><p>The second color to subtract</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Maths.ColorBGRA.html">ColorBGRA</a></dt>
+    <dd><p>The difference of the two colors.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_ColorBGRA_Subtract_" data-uid="HelixToolkit.Maths.ColorBGRA.Subtract*"></a>
+
+  <h3 id="HelixToolkit_Maths_ColorBGRA_Subtract_HelixToolkit_Maths_ColorBGRA__HelixToolkit_Maths_ColorBGRA__HelixToolkit_Maths_ColorBGRA__" data-uid="HelixToolkit.Maths.ColorBGRA.Subtract(HelixToolkit.Maths.ColorBGRA@,HelixToolkit.Maths.ColorBGRA@,HelixToolkit.Maths.ColorBGRA@)">
+  Subtract(ref ColorBGRA, ref ColorBGRA, out ColorBGRA)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/ColorBGRA.cs/#L524"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Subtracts two colors.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void Subtract(ref ColorBGRA left, ref ColorBGRA right, out ColorBGRA result)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>left</code> <a class="xref" href="HelixToolkit.Maths.ColorBGRA.html">ColorBGRA</a></dt>
+    <dd><p>The first color to subtract.</p>
+</dd>
+    <dt><code>right</code> <a class="xref" href="HelixToolkit.Maths.ColorBGRA.html">ColorBGRA</a></dt>
+    <dd><p>The second color to subtract.</p>
+</dd>
+    <dt><code>result</code> <a class="xref" href="HelixToolkit.Maths.ColorBGRA.html">ColorBGRA</a></dt>
+    <dd><p>WHen the method completes, contains the difference of the two colors.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_ColorBGRA_ToArray_" data-uid="HelixToolkit.Maths.ColorBGRA.ToArray*"></a>
+
+  <h3 id="HelixToolkit_Maths_ColorBGRA_ToArray" data-uid="HelixToolkit.Maths.ColorBGRA.ToArray">
+  ToArray()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/ColorBGRA.cs/#L300"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Creates an array containing the elements of the color.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public readonly byte[] ToArray()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">byte</a>[]</dt>
+    <dd><p>A four-element array containing the components of the color in BGRA order.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_ColorBGRA_ToBgra_" data-uid="HelixToolkit.Maths.ColorBGRA.ToBgra*"></a>
+
+  <h3 id="HelixToolkit_Maths_ColorBGRA_ToBgra" data-uid="HelixToolkit.Maths.ColorBGRA.ToBgra">
+  ToBgra()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/ColorBGRA.cs/#L245"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Converts the color into a packed integer.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public readonly int ToBgra()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>A packed integer containing all four color components.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_ColorBGRA_ToColor3_" data-uid="HelixToolkit.Maths.ColorBGRA.ToColor3*"></a>
+
+  <h3 id="HelixToolkit_Maths_ColorBGRA_ToColor3" data-uid="HelixToolkit.Maths.ColorBGRA.ToColor3">
+  ToColor3()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/ColorBGRA.cs/#L282"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Converts the color into a three component color.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public readonly Color3 ToColor3()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Maths.Color3.html">Color3</a></dt>
+    <dd><p>A three component color containing the red, green, and blue components of the color.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_ColorBGRA_ToRgba_" data-uid="HelixToolkit.Maths.ColorBGRA.ToRgba*"></a>
+
+  <h3 id="HelixToolkit_Maths_ColorBGRA_ToRgba" data-uid="HelixToolkit.Maths.ColorBGRA.ToRgba">
+  ToRgba()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/ColorBGRA.cs/#L259"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Converts the color into a packed integer.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public readonly int ToRgba()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>A packed integer containing all four color components.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_ColorBGRA_ToString_" data-uid="HelixToolkit.Maths.ColorBGRA.ToString*"></a>
+
+  <h3 id="HelixToolkit_Maths_ColorBGRA_ToString" data-uid="HelixToolkit.Maths.ColorBGRA.ToString">
+  ToString()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/ColorBGRA.cs/#L1085"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Returns a <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a> that represents this instance.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override readonly string ToString()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>A <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a> that represents this instance.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_ColorBGRA_ToString_" data-uid="HelixToolkit.Maths.ColorBGRA.ToString*"></a>
+
+  <h3 id="HelixToolkit_Maths_ColorBGRA_ToString_System_IFormatProvider_" data-uid="HelixToolkit.Maths.ColorBGRA.ToString(System.IFormatProvider)">
+  ToString(IFormatProvider)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/ColorBGRA.cs/#L1109"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Returns a <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a> that represents this instance.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public readonly string ToString(IFormatProvider formatProvider)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>formatProvider</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iformatprovider">IFormatProvider</a></dt>
+    <dd><p>The format provider.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>A <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a> that represents this instance.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_ColorBGRA_ToString_" data-uid="HelixToolkit.Maths.ColorBGRA.ToString*"></a>
+
+  <h3 id="HelixToolkit_Maths_ColorBGRA_ToString_System_String_" data-uid="HelixToolkit.Maths.ColorBGRA.ToString(System.String)">
+  ToString(string)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/ColorBGRA.cs/#L1097"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Returns a <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a> that represents this instance.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public readonly string ToString(string format)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>format</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The format to apply to each channel (byte).</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>A <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a> that represents this instance.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_ColorBGRA_ToString_" data-uid="HelixToolkit.Maths.ColorBGRA.ToString*"></a>
+
+  <h3 id="HelixToolkit_Maths_ColorBGRA_ToString_System_String_System_IFormatProvider_" data-uid="HelixToolkit.Maths.ColorBGRA.ToString(System.String,System.IFormatProvider)">
+  ToString(string?, IFormatProvider?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/ColorBGRA.cs/#L1122"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Returns a <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a> that represents this instance.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public readonly string ToString(string? format, IFormatProvider? formatProvider)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>format</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The format to apply to each channel (byte).</p>
+</dd>
+    <dt><code>formatProvider</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iformatprovider">IFormatProvider</a></dt>
+    <dd><p>The format provider.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>A <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a> that represents this instance.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_ColorBGRA_ToVector3_" data-uid="HelixToolkit.Maths.ColorBGRA.ToVector3*"></a>
+
+  <h3 id="HelixToolkit_Maths_ColorBGRA_ToVector3" data-uid="HelixToolkit.Maths.ColorBGRA.ToVector3">
+  ToVector3()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/ColorBGRA.cs/#L273"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Converts the color into a three component vector.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public readonly Vector3 ToVector3()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd><p>A three component vector containing the red, green, and blue components of the color.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_ColorBGRA_ToVector4_" data-uid="HelixToolkit.Maths.ColorBGRA.ToVector4*"></a>
+
+  <h3 id="HelixToolkit_Maths_ColorBGRA_ToVector4" data-uid="HelixToolkit.Maths.ColorBGRA.ToVector4">
+  ToVector4()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/ColorBGRA.cs/#L291"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Converts the color into a four component vector.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public readonly Vector4 ToVector4()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector4">Vector4</a></dt>
+    <dd><p>A four component vector containing all four color components.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <h2 class="section" id="operators">Operators
+</h2>
+
+
+  <a id="HelixToolkit_Maths_ColorBGRA_op_Addition_" data-uid="HelixToolkit.Maths.ColorBGRA.op_Addition*"></a>
+
+  <h3 id="HelixToolkit_Maths_ColorBGRA_op_Addition_HelixToolkit_Maths_ColorBGRA_HelixToolkit_Maths_ColorBGRA_" data-uid="HelixToolkit.Maths.ColorBGRA.op_Addition(HelixToolkit.Maths.ColorBGRA,HelixToolkit.Maths.ColorBGRA)">
+  operator +(ColorBGRA, ColorBGRA)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/ColorBGRA.cs/#L862"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Adds two colors.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static ColorBGRA operator +(ColorBGRA left, ColorBGRA right)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>left</code> <a class="xref" href="HelixToolkit.Maths.ColorBGRA.html">ColorBGRA</a></dt>
+    <dd><p>The first color to add.</p>
+</dd>
+    <dt><code>right</code> <a class="xref" href="HelixToolkit.Maths.ColorBGRA.html">ColorBGRA</a></dt>
+    <dd><p>The second color to add.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Maths.ColorBGRA.html">ColorBGRA</a></dt>
+    <dd><p>The sum of the two colors.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_ColorBGRA_op_Equality_" data-uid="HelixToolkit.Maths.ColorBGRA.op_Equality*"></a>
+
+  <h3 id="HelixToolkit_Maths_ColorBGRA_op_Equality_HelixToolkit_Maths_ColorBGRA_HelixToolkit_Maths_ColorBGRA_" data-uid="HelixToolkit.Maths.ColorBGRA.op_Equality(HelixToolkit.Maths.ColorBGRA,HelixToolkit.Maths.ColorBGRA)">
+  operator ==(ColorBGRA, ColorBGRA)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/ColorBGRA.cs/#L937"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Tests for equality between two objects.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool operator ==(ColorBGRA left, ColorBGRA right)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>left</code> <a class="xref" href="HelixToolkit.Maths.ColorBGRA.html">ColorBGRA</a></dt>
+    <dd><p>The first value to compare.</p>
+</dd>
+    <dt><code>right</code> <a class="xref" href="HelixToolkit.Maths.ColorBGRA.html">ColorBGRA</a></dt>
+    <dd><p>The second value to compare.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><code>true</code> if <code class="paramref">left</code> has the same value as <code class="paramref">right</code>; otherwise, <code>false</code>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_ColorBGRA_op_Explicit_" data-uid="HelixToolkit.Maths.ColorBGRA.op_Explicit*"></a>
+
+  <h3 id="HelixToolkit_Maths_ColorBGRA_op_Explicit_HelixToolkit_Maths_Color3__HelixToolkit_Maths_ColorBGRA" data-uid="HelixToolkit.Maths.ColorBGRA.op_Explicit(HelixToolkit.Maths.Color3)~HelixToolkit.Maths.ColorBGRA">
+  explicit operator ColorBGRA(Color3)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/ColorBGRA.cs/#L1010"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Performs an explicit conversion from <a class="xref" href="HelixToolkit.Maths.Color3.html">Color3</a> to <a class="xref" href="HelixToolkit.Maths.ColorBGRA.html">ColorBGRA</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static explicit operator ColorBGRA(Color3 value)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="HelixToolkit.Maths.Color3.html">Color3</a></dt>
+    <dd><p>The value.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Maths.ColorBGRA.html">ColorBGRA</a></dt>
+    <dd><p>The result of the conversion.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_ColorBGRA_op_Explicit_" data-uid="HelixToolkit.Maths.ColorBGRA.op_Explicit*"></a>
+
+  <h3 id="HelixToolkit_Maths_ColorBGRA_op_Explicit_HelixToolkit_Maths_Color4__HelixToolkit_Maths_ColorBGRA" data-uid="HelixToolkit.Maths.ColorBGRA.op_Explicit(HelixToolkit.Maths.Color4)~HelixToolkit.Maths.ColorBGRA">
+  explicit operator ColorBGRA(Color4)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/ColorBGRA.cs/#L1030"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Performs an explicit conversion from <a class="xref" href="HelixToolkit.Maths.Color4.html">Color4</a> to <a class="xref" href="HelixToolkit.Maths.ColorBGRA.html">ColorBGRA</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static explicit operator ColorBGRA(Color4 value)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="HelixToolkit.Maths.Color4.html">Color4</a></dt>
+    <dd><p>The value.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Maths.ColorBGRA.html">ColorBGRA</a></dt>
+    <dd><p>The result of the conversion.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_ColorBGRA_op_Explicit_" data-uid="HelixToolkit.Maths.ColorBGRA.op_Explicit*"></a>
+
+  <h3 id="HelixToolkit_Maths_ColorBGRA_op_Explicit_HelixToolkit_Maths_ColorBGRA__HelixToolkit_Maths_Color3" data-uid="HelixToolkit.Maths.ColorBGRA.op_Explicit(HelixToolkit.Maths.ColorBGRA)~HelixToolkit.Maths.Color3">
+  explicit operator Color3(ColorBGRA)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/ColorBGRA.cs/#L960"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Performs an explicit conversion from <a class="xref" href="HelixToolkit.Maths.ColorBGRA.html">ColorBGRA</a> to <a class="xref" href="HelixToolkit.Maths.Color3.html">Color3</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static explicit operator Color3(ColorBGRA value)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="HelixToolkit.Maths.ColorBGRA.html">ColorBGRA</a></dt>
+    <dd><p>The value.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Maths.Color3.html">Color3</a></dt>
+    <dd><p>The result of the conversion.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_ColorBGRA_op_Explicit_" data-uid="HelixToolkit.Maths.ColorBGRA.op_Explicit*"></a>
+
+  <h3 id="HelixToolkit_Maths_ColorBGRA_op_Explicit_HelixToolkit_Maths_ColorBGRA__HelixToolkit_Maths_Color4" data-uid="HelixToolkit.Maths.ColorBGRA.op_Explicit(HelixToolkit.Maths.ColorBGRA)~HelixToolkit.Maths.Color4">
+  explicit operator Color4(ColorBGRA)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/ColorBGRA.cs/#L990"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Performs an explicit conversion from <a class="xref" href="HelixToolkit.Maths.ColorBGRA.html">ColorBGRA</a> to <a class="xref" href="HelixToolkit.Maths.Color4.html">Color4</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static explicit operator Color4(ColorBGRA value)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="HelixToolkit.Maths.ColorBGRA.html">ColorBGRA</a></dt>
+    <dd><p>The value.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Maths.Color4.html">Color4</a></dt>
+    <dd><p>The result of the conversion.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_ColorBGRA_op_Explicit_" data-uid="HelixToolkit.Maths.ColorBGRA.op_Explicit*"></a>
+
+  <h3 id="HelixToolkit_Maths_ColorBGRA_op_Explicit_HelixToolkit_Maths_ColorBGRA__System_Int32" data-uid="HelixToolkit.Maths.ColorBGRA.op_Explicit(HelixToolkit.Maths.ColorBGRA)~System.Int32">
+  explicit operator int(ColorBGRA)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/ColorBGRA.cs/#L1062"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Performs an explicit conversion from <a class="xref" href="HelixToolkit.Maths.ColorBGRA.html">ColorBGRA</a> to <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static explicit operator int(ColorBGRA value)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="HelixToolkit.Maths.ColorBGRA.html">ColorBGRA</a></dt>
+    <dd><p>The value.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The result of the conversion.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_ColorBGRA_op_Explicit_" data-uid="HelixToolkit.Maths.ColorBGRA.op_Explicit*"></a>
+
+  <h3 id="HelixToolkit_Maths_ColorBGRA_op_Explicit_HelixToolkit_Maths_ColorBGRA__System_Numerics_Vector3" data-uid="HelixToolkit.Maths.ColorBGRA.op_Explicit(HelixToolkit.Maths.ColorBGRA)~System.Numerics.Vector3">
+  explicit operator Vector3(ColorBGRA)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/ColorBGRA.cs/#L970"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Performs an explicit conversion from <a class="xref" href="HelixToolkit.Maths.ColorBGRA.html">ColorBGRA</a> to <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static explicit operator Vector3(ColorBGRA value)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="HelixToolkit.Maths.ColorBGRA.html">ColorBGRA</a></dt>
+    <dd><p>The value.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd><p>The result of the conversion.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_ColorBGRA_op_Explicit_" data-uid="HelixToolkit.Maths.ColorBGRA.op_Explicit*"></a>
+
+  <h3 id="HelixToolkit_Maths_ColorBGRA_op_Explicit_HelixToolkit_Maths_ColorBGRA__System_Numerics_Vector4" data-uid="HelixToolkit.Maths.ColorBGRA.op_Explicit(HelixToolkit.Maths.ColorBGRA)~System.Numerics.Vector4">
+  explicit operator Vector4(ColorBGRA)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/ColorBGRA.cs/#L980"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Performs an explicit conversion from <a class="xref" href="HelixToolkit.Maths.ColorBGRA.html">ColorBGRA</a> to <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector4">Vector4</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static explicit operator Vector4(ColorBGRA value)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="HelixToolkit.Maths.ColorBGRA.html">ColorBGRA</a></dt>
+    <dd><p>The value.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector4">Vector4</a></dt>
+    <dd><p>The result of the conversion.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_ColorBGRA_op_Explicit_" data-uid="HelixToolkit.Maths.ColorBGRA.op_Explicit*"></a>
+
+  <h3 id="HelixToolkit_Maths_ColorBGRA_op_Explicit_System_Int32__HelixToolkit_Maths_ColorBGRA" data-uid="HelixToolkit.Maths.ColorBGRA.op_Explicit(System.Int32)~HelixToolkit.Maths.ColorBGRA">
+  explicit operator ColorBGRA(int)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/ColorBGRA.cs/#L1074"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Performs an explicit conversion from <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a> to <a class="xref" href="HelixToolkit.Maths.ColorBGRA.html">ColorBGRA</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static explicit operator ColorBGRA(int value)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The value.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Maths.ColorBGRA.html">ColorBGRA</a></dt>
+    <dd><p>The result of the conversion.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_ColorBGRA_op_Explicit_" data-uid="HelixToolkit.Maths.ColorBGRA.op_Explicit*"></a>
+
+  <h3 id="HelixToolkit_Maths_ColorBGRA_op_Explicit_System_Numerics_Vector3__HelixToolkit_Maths_ColorBGRA" data-uid="HelixToolkit.Maths.ColorBGRA.op_Explicit(System.Numerics.Vector3)~HelixToolkit.Maths.ColorBGRA">
+  explicit operator ColorBGRA(Vector3)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/ColorBGRA.cs/#L1000"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Performs an explicit conversion from <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a> to <a class="xref" href="HelixToolkit.Maths.ColorBGRA.html">ColorBGRA</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static explicit operator ColorBGRA(Vector3 value)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd><p>The value.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Maths.ColorBGRA.html">ColorBGRA</a></dt>
+    <dd><p>The result of the conversion.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_ColorBGRA_op_Explicit_" data-uid="HelixToolkit.Maths.ColorBGRA.op_Explicit*"></a>
+
+  <h3 id="HelixToolkit_Maths_ColorBGRA_op_Explicit_System_Numerics_Vector4__HelixToolkit_Maths_ColorBGRA" data-uid="HelixToolkit.Maths.ColorBGRA.op_Explicit(System.Numerics.Vector4)~HelixToolkit.Maths.ColorBGRA">
+  explicit operator ColorBGRA(Vector4)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/ColorBGRA.cs/#L1020"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Performs an explicit conversion from <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector4">Vector4</a> to <a class="xref" href="HelixToolkit.Maths.ColorBGRA.html">ColorBGRA</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static explicit operator ColorBGRA(Vector4 value)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector4">Vector4</a></dt>
+    <dd><p>The value.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Maths.ColorBGRA.html">ColorBGRA</a></dt>
+    <dd><p>The result of the conversion.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_ColorBGRA_op_Implicit_" data-uid="HelixToolkit.Maths.ColorBGRA.op_Implicit*"></a>
+
+  <h3 id="HelixToolkit_Maths_ColorBGRA_op_Implicit_HelixToolkit_Maths_Color__HelixToolkit_Maths_ColorBGRA" data-uid="HelixToolkit.Maths.ColorBGRA.op_Implicit(HelixToolkit.Maths.Color)~HelixToolkit.Maths.ColorBGRA">
+  implicit operator ColorBGRA(Color)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/ColorBGRA.cs/#L1040"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Performs an implicit conversion from <a class="xref" href="HelixToolkit.Maths.Color.html">Color</a> to <a class="xref" href="HelixToolkit.Maths.ColorBGRA.html">ColorBGRA</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static implicit operator ColorBGRA(Color value)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="HelixToolkit.Maths.Color.html">Color</a></dt>
+    <dd><p>The value.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Maths.ColorBGRA.html">ColorBGRA</a></dt>
+    <dd><p>The result of the conversion.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_ColorBGRA_op_Implicit_" data-uid="HelixToolkit.Maths.ColorBGRA.op_Implicit*"></a>
+
+  <h3 id="HelixToolkit_Maths_ColorBGRA_op_Implicit_HelixToolkit_Maths_ColorBGRA__HelixToolkit_Maths_Color" data-uid="HelixToolkit.Maths.ColorBGRA.op_Implicit(HelixToolkit.Maths.ColorBGRA)~HelixToolkit.Maths.Color">
+  implicit operator Color(ColorBGRA)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/ColorBGRA.cs/#L1050"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Performs an implicit conversion from <a class="xref" href="HelixToolkit.Maths.ColorBGRA.html">ColorBGRA</a> to <a class="xref" href="HelixToolkit.Maths.Color.html">Color</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static implicit operator Color(ColorBGRA value)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="HelixToolkit.Maths.ColorBGRA.html">ColorBGRA</a></dt>
+    <dd><p>The value.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Maths.Color.html">Color</a></dt>
+    <dd><p>The result of the conversion.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_ColorBGRA_op_Inequality_" data-uid="HelixToolkit.Maths.ColorBGRA.op_Inequality*"></a>
+
+  <h3 id="HelixToolkit_Maths_ColorBGRA_op_Inequality_HelixToolkit_Maths_ColorBGRA_HelixToolkit_Maths_ColorBGRA_" data-uid="HelixToolkit.Maths.ColorBGRA.op_Inequality(HelixToolkit.Maths.ColorBGRA,HelixToolkit.Maths.ColorBGRA)">
+  operator !=(ColorBGRA, ColorBGRA)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/ColorBGRA.cs/#L949"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Tests for inequality between two objects.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool operator !=(ColorBGRA left, ColorBGRA right)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>left</code> <a class="xref" href="HelixToolkit.Maths.ColorBGRA.html">ColorBGRA</a></dt>
+    <dd><p>The first value to compare.</p>
+</dd>
+    <dt><code>right</code> <a class="xref" href="HelixToolkit.Maths.ColorBGRA.html">ColorBGRA</a></dt>
+    <dd><p>The second value to compare.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><code>true</code> if <code class="paramref">left</code> has a different value than <code class="paramref">right</code>; otherwise, <code>false</code>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_ColorBGRA_op_Multiply_" data-uid="HelixToolkit.Maths.ColorBGRA.op_Multiply*"></a>
+
+  <h3 id="HelixToolkit_Maths_ColorBGRA_op_Multiply_HelixToolkit_Maths_ColorBGRA_HelixToolkit_Maths_ColorBGRA_" data-uid="HelixToolkit.Maths.ColorBGRA.op_Multiply(HelixToolkit.Maths.ColorBGRA,HelixToolkit.Maths.ColorBGRA)">
+  operator *(ColorBGRA, ColorBGRA)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/ColorBGRA.cs/#L926"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Modulates two colors.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static ColorBGRA operator *(ColorBGRA left, ColorBGRA right)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>left</code> <a class="xref" href="HelixToolkit.Maths.ColorBGRA.html">ColorBGRA</a></dt>
+    <dd><p>The first color to modulate.</p>
+</dd>
+    <dt><code>right</code> <a class="xref" href="HelixToolkit.Maths.ColorBGRA.html">ColorBGRA</a></dt>
+    <dd><p>The second color to modulate.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Maths.ColorBGRA.html">ColorBGRA</a></dt>
+    <dd><p>The modulated color.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_ColorBGRA_op_Multiply_" data-uid="HelixToolkit.Maths.ColorBGRA.op_Multiply*"></a>
+
+  <h3 id="HelixToolkit_Maths_ColorBGRA_op_Multiply_HelixToolkit_Maths_ColorBGRA_System_Single_" data-uid="HelixToolkit.Maths.ColorBGRA.op_Multiply(HelixToolkit.Maths.ColorBGRA,System.Single)">
+  operator *(ColorBGRA, float)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/ColorBGRA.cs/#L915"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Scales a color.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static ColorBGRA operator *(ColorBGRA value, float scale)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="HelixToolkit.Maths.ColorBGRA.html">ColorBGRA</a></dt>
+    <dd><p>The factor by which to scale the color.</p>
+</dd>
+    <dt><code>scale</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>The color to scale.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Maths.ColorBGRA.html">ColorBGRA</a></dt>
+    <dd><p>The scaled color.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_ColorBGRA_op_Multiply_" data-uid="HelixToolkit.Maths.ColorBGRA.op_Multiply*"></a>
+
+  <h3 id="HelixToolkit_Maths_ColorBGRA_op_Multiply_System_Single_HelixToolkit_Maths_ColorBGRA_" data-uid="HelixToolkit.Maths.ColorBGRA.op_Multiply(System.Single,HelixToolkit.Maths.ColorBGRA)">
+  operator *(float, ColorBGRA)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/ColorBGRA.cs/#L904"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Scales a color.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static ColorBGRA operator *(float scale, ColorBGRA value)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>scale</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>The factor by which to scale the color.</p>
+</dd>
+    <dt><code>value</code> <a class="xref" href="HelixToolkit.Maths.ColorBGRA.html">ColorBGRA</a></dt>
+    <dd><p>The color to scale.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Maths.ColorBGRA.html">ColorBGRA</a></dt>
+    <dd><p>The scaled color.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_ColorBGRA_op_Subtraction_" data-uid="HelixToolkit.Maths.ColorBGRA.op_Subtraction*"></a>
+
+  <h3 id="HelixToolkit_Maths_ColorBGRA_op_Subtraction_HelixToolkit_Maths_ColorBGRA_HelixToolkit_Maths_ColorBGRA_" data-uid="HelixToolkit.Maths.ColorBGRA.op_Subtraction(HelixToolkit.Maths.ColorBGRA,HelixToolkit.Maths.ColorBGRA)">
+  operator -(ColorBGRA, ColorBGRA)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/ColorBGRA.cs/#L883"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Subtracts two colors.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static ColorBGRA operator -(ColorBGRA left, ColorBGRA right)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>left</code> <a class="xref" href="HelixToolkit.Maths.ColorBGRA.html">ColorBGRA</a></dt>
+    <dd><p>The first color to subtract.</p>
+</dd>
+    <dt><code>right</code> <a class="xref" href="HelixToolkit.Maths.ColorBGRA.html">ColorBGRA</a></dt>
+    <dd><p>The second color to subtract.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Maths.ColorBGRA.html">ColorBGRA</a></dt>
+    <dd><p>The difference of the two colors.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_ColorBGRA_op_UnaryNegation_" data-uid="HelixToolkit.Maths.ColorBGRA.op_UnaryNegation*"></a>
+
+  <h3 id="HelixToolkit_Maths_ColorBGRA_op_UnaryNegation_HelixToolkit_Maths_ColorBGRA_" data-uid="HelixToolkit.Maths.ColorBGRA.op_UnaryNegation(HelixToolkit.Maths.ColorBGRA)">
+  operator -(ColorBGRA)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/ColorBGRA.cs/#L893"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Negates a color.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static ColorBGRA operator -(ColorBGRA value)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="HelixToolkit.Maths.ColorBGRA.html">ColorBGRA</a></dt>
+    <dd><p>The color to negate.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Maths.ColorBGRA.html">ColorBGRA</a></dt>
+    <dd><p>A negated color.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_ColorBGRA_op_UnaryPlus_" data-uid="HelixToolkit.Maths.ColorBGRA.op_UnaryPlus*"></a>
+
+  <h3 id="HelixToolkit_Maths_ColorBGRA_op_UnaryPlus_HelixToolkit_Maths_ColorBGRA_" data-uid="HelixToolkit.Maths.ColorBGRA.op_UnaryPlus(HelixToolkit.Maths.ColorBGRA)">
+  operator +(ColorBGRA)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/ColorBGRA.cs/#L872"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Assert a color (return it unchanged).</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static ColorBGRA operator +(ColorBGRA value)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="HelixToolkit.Maths.ColorBGRA.html">ColorBGRA</a></dt>
+    <dd><p>The color to assert (unchange).</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Maths.ColorBGRA.html">ColorBGRA</a></dt>
+    <dd><p>The asserted (unchanged) color.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/ColorBGRA.cs/#L37" class="edit-link">Edit this page</a>
+        </div>
+
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          Copyright (c) 2023 Helix Toolkit contributors
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

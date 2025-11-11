@@ -1,0 +1,2652 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Class CameraController | Helix Toolkit - 3D for .NET </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Class CameraController | Helix Toolkit - 3D for .NET ">
+      
+      <meta name="description" content="Provides a control that manipulates the camera by mouse and keyboard gestures.">
+      <link rel="icon" href="../images/favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/helix-toolkit/helix-toolkit/new/develop3/apiSpec/new?filename=HelixToolkit_Avalonia_SharpDX_CameraController.md&amp;value=---%0Auid%3A%20HelixToolkit.Avalonia.SharpDX.CameraController%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="ManagedReference">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../images/favicon.ico" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="HelixToolkit.Avalonia.SharpDX.CameraController">
+
+
+
+  <h1 id="HelixToolkit_Avalonia_SharpDX_CameraController" data-uid="HelixToolkit.Avalonia.SharpDX.CameraController" class="text-break">
+Class CameraController  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Avalonia.SharpDX/Controls/CameraController.cs/#L13"><i class="bi bi-code-slash"></i></a>
+  </h1>
+
+  <div class="facts text-secondary">
+    <dl><dt>Namespace</dt><dd><a class="xref" href="HelixToolkit.html">HelixToolkit</a>.<a class="xref" href="HelixToolkit.Avalonia.html">Avalonia</a>.<a class="xref" href="HelixToolkit.Avalonia.SharpDX.html">SharpDX</a></dd></dl>
+  <dl><dt>Assembly</dt><dd>HelixToolkit.Avalonia.SharpDX.dll</dd></dl>
+  </div>
+
+  <div class="markdown summary"><p>Provides a control that manipulates the camera by mouse and keyboard gestures.</p>
+</div>
+  <div class="markdown conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class CameraController</code></pre>
+  </div>
+
+
+
+
+  <dl class="typelist inheritance">
+    <dt>Inheritance</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
+      <div><span class="xref">CameraController</span></div>
+    </dd>
+  </dl>
+
+
+
+  <dl class="typelist inheritedMembers">
+    <dt>Inherited Members</dt>
+    <dd>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">object.Equals(object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">object.Equals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode">object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype">object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone">object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals">object.ReferenceEquals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring">object.ToString()</a>
+    </div>
+  </dd></dl>
+
+
+
+
+
+
+  <h2 class="section" id="constructors">Constructors
+</h2>
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_CameraController__ctor_" data-uid="HelixToolkit.Avalonia.SharpDX.CameraController.#ctor*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_CameraController__ctor_HelixToolkit_Avalonia_SharpDX_Viewport3DX_" data-uid="HelixToolkit.Avalonia.SharpDX.CameraController.#ctor(HelixToolkit.Avalonia.SharpDX.Viewport3DX)">
+  CameraController(Viewport3DX)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Avalonia.SharpDX/Controls/CameraController.cs/#L163"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="HelixToolkit.Avalonia.SharpDX.CameraController.html">CameraController</a> class.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public CameraController(Viewport3DX viewport)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>viewport</code> <a class="xref" href="HelixToolkit.Avalonia.SharpDX.Viewport3DX.html">Viewport3DX</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <h2 class="section" id="fields">Fields
+</h2>
+
+
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_CameraController_CameraMode" data-uid="HelixToolkit.Avalonia.SharpDX.CameraController.CameraMode">
+  CameraMode
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Avalonia.SharpDX/Controls/CameraController.cs/#L223"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets CameraMode.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public CameraMode CameraMode</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.CameraMode.html">CameraMode</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_CameraController_CameraRotationMode" data-uid="HelixToolkit.Avalonia.SharpDX.CameraController.CameraRotationMode">
+  CameraRotationMode
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Avalonia.SharpDX/Controls/CameraController.cs/#L252"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets CameraRotationMode.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public CameraRotationMode CameraRotationMode</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.CameraRotationMode.html">CameraRotationMode</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_CameraController_ChangeFieldOfViewCursor" data-uid="HelixToolkit.Avalonia.SharpDX.CameraController.ChangeFieldOfViewCursor">
+  ChangeFieldOfViewCursor
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Avalonia.SharpDX/Controls/CameraController.cs/#L298"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the change field of view cursor.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Cursor ChangeFieldOfViewCursor</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">Cursor</span></dt>
+    <dd><p>The change field of view cursor.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_CameraController_DefaultCamera" data-uid="HelixToolkit.Avalonia.SharpDX.CameraController.DefaultCamera">
+  DefaultCamera
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Avalonia.SharpDX/Controls/CameraController.cs/#L304"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the default camera (used when resetting the view).</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ProjectionCamera? DefaultCamera</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Avalonia.SharpDX.ProjectionCamera.html">ProjectionCamera</a></dt>
+    <dd><p>The default camera.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_CameraController_InertiaFactor" data-uid="HelixToolkit.Avalonia.SharpDX.CameraController.InertiaFactor">
+  InertiaFactor
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Avalonia.SharpDX/Controls/CameraController.cs/#L309"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets InertiaFactor.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public double InertiaFactor</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_CameraController_InfiniteSpin" data-uid="HelixToolkit.Avalonia.SharpDX.CameraController.InfiniteSpin">
+  InfiniteSpin
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Avalonia.SharpDX/Controls/CameraController.cs/#L314"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets a value indicating whether InfiniteSpin.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool InfiniteSpin</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_CameraController_IsChangeFieldOfViewEnabled" data-uid="HelixToolkit.Avalonia.SharpDX.CameraController.IsChangeFieldOfViewEnabled">
+  IsChangeFieldOfViewEnabled
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Avalonia.SharpDX/Controls/CameraController.cs/#L319"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets a value indicating whether field of view can be changed.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsChangeFieldOfViewEnabled</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_CameraController_IsInertiaEnabled" data-uid="HelixToolkit.Avalonia.SharpDX.CameraController.IsInertiaEnabled">
+  IsInertiaEnabled
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Avalonia.SharpDX/Controls/CameraController.cs/#L325"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets a value indicating whether inertia is enabled for the camera manipulations.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsInertiaEnabled</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><code>true</code> if inertia is enabled; otherwise, <code>false</code>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_CameraController_IsMoveEnabled" data-uid="HelixToolkit.Avalonia.SharpDX.CameraController.IsMoveEnabled">
+  IsMoveEnabled
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Avalonia.SharpDX/Controls/CameraController.cs/#L331"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets a value indicating whether move is enabled.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsMoveEnabled</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><code>true</code> if move is enabled; otherwise, <code>false</code> .</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_CameraController_IsPanEnabled" data-uid="HelixToolkit.Avalonia.SharpDX.CameraController.IsPanEnabled">
+  IsPanEnabled
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Avalonia.SharpDX/Controls/CameraController.cs/#L336"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets a value indicating whether pan is enabled.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsPanEnabled</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_CameraController_IsRotationEnabled" data-uid="HelixToolkit.Avalonia.SharpDX.CameraController.IsRotationEnabled">
+  IsRotationEnabled
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Avalonia.SharpDX/Controls/CameraController.cs/#L341"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets a value indicating whether IsRotationEnabled.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsRotationEnabled</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_CameraController_IsZoomEnabled" data-uid="HelixToolkit.Avalonia.SharpDX.CameraController.IsZoomEnabled">
+  IsZoomEnabled
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Avalonia.SharpDX/Controls/CameraController.cs/#L346"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets a value indicating whether IsZoomEnabled.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsZoomEnabled</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_CameraController_LeftRightPanSensitivity" data-uid="HelixToolkit.Avalonia.SharpDX.CameraController.LeftRightPanSensitivity">
+  LeftRightPanSensitivity
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Avalonia.SharpDX/Controls/CameraController.cs/#L355"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the sensitivity for pan by the left and right keys.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public double LeftRightPanSensitivity</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd><p>The pan sensitivity.</p>
+</dd>
+  </dl>
+
+
+
+
+
+  <h4 class="section" id="HelixToolkit_Avalonia_SharpDX_CameraController_LeftRightPanSensitivity_remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>Use -1 to invert the pan direction.</p>
+</div>
+
+
+
+
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_CameraController_LeftRightRotationSensitivity" data-uid="HelixToolkit.Avalonia.SharpDX.CameraController.LeftRightRotationSensitivity">
+  LeftRightRotationSensitivity
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Avalonia.SharpDX/Controls/CameraController.cs/#L364"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the sensitivity for rotation by the left and right keys.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public double LeftRightRotationSensitivity</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd><p>The rotation sensitivity.</p>
+</dd>
+  </dl>
+
+
+
+
+
+  <h4 class="section" id="HelixToolkit_Avalonia_SharpDX_CameraController_LeftRightRotationSensitivity_remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>Use -1 to invert the rotation direction.</p>
+</div>
+
+
+
+
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_CameraController_MaximumFieldOfView" data-uid="HelixToolkit.Avalonia.SharpDX.CameraController.MaximumFieldOfView">
+  MaximumFieldOfView
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Avalonia.SharpDX/Controls/CameraController.cs/#L370"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the maximum field of view.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public double MaximumFieldOfView</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd><p>The maximum field of view.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_CameraController_MinimumFieldOfView" data-uid="HelixToolkit.Avalonia.SharpDX.CameraController.MinimumFieldOfView">
+  MinimumFieldOfView
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Avalonia.SharpDX/Controls/CameraController.cs/#L376"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the minimum field of view.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public double MinimumFieldOfView</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd><p>The minimum field of view.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_CameraController_ModelUpDirection" data-uid="HelixToolkit.Avalonia.SharpDX.CameraController.ModelUpDirection">
+  ModelUpDirection
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Avalonia.SharpDX/Controls/CameraController.cs/#L381"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the model up direction.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Vector3 ModelUpDirection</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_CameraController_MoveSensitivity" data-uid="HelixToolkit.Avalonia.SharpDX.CameraController.MoveSensitivity">
+  MoveSensitivity
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Avalonia.SharpDX/Controls/CameraController.cs/#L387"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the move sensitivity.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public double MoveSensitivity</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd><p>The move sensitivity.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_CameraController_PageUpDownZoomSensitivity" data-uid="HelixToolkit.Avalonia.SharpDX.CameraController.PageUpDownZoomSensitivity">
+  PageUpDownZoomSensitivity
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Avalonia.SharpDX/Controls/CameraController.cs/#L396"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the sensitivity for zoom by the page up and page down keys.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public double PageUpDownZoomSensitivity</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd><p>The zoom sensitivity.</p>
+</dd>
+  </dl>
+
+
+
+
+
+  <h4 class="section" id="HelixToolkit_Avalonia_SharpDX_CameraController_PageUpDownZoomSensitivity_remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>Use -1 to invert the zoom direction.</p>
+</div>
+
+
+
+
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_CameraController_PanCursor" data-uid="HelixToolkit.Avalonia.SharpDX.CameraController.PanCursor">
+  PanCursor
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Avalonia.SharpDX/Controls/CameraController.cs/#L402"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the pan cursor.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Cursor PanCursor</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">Cursor</span></dt>
+    <dd><p>The pan cursor.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_CameraController_RotateAroundMouseDownPoint" data-uid="HelixToolkit.Avalonia.SharpDX.CameraController.RotateAroundMouseDownPoint">
+  RotateAroundMouseDownPoint
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Avalonia.SharpDX/Controls/CameraController.cs/#L408"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets a value indicating whether to rotate around the mouse down point.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool RotateAroundMouseDownPoint</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><code>true</code> if rotation around the mouse down point is enabled; otherwise, <code>false</code> .</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_CameraController_RotateCursor" data-uid="HelixToolkit.Avalonia.SharpDX.CameraController.RotateCursor">
+  RotateCursor
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Avalonia.SharpDX/Controls/CameraController.cs/#L414"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the rotate cursor.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Cursor RotateCursor</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">Cursor</span></dt>
+    <dd><p>The rotate cursor.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_CameraController_RotationSensitivity" data-uid="HelixToolkit.Avalonia.SharpDX.CameraController.RotationSensitivity">
+  RotationSensitivity
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Avalonia.SharpDX/Controls/CameraController.cs/#L420"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the rotation sensitivity (degrees/pixel).</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public double RotationSensitivity</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd><p>The rotation sensitivity.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_CameraController_ShowCameraTarget" data-uid="HelixToolkit.Avalonia.SharpDX.CameraController.ShowCameraTarget">
+  ShowCameraTarget
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Avalonia.SharpDX/Controls/CameraController.cs/#L425"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets a value indicating whether to show a target adorner when manipulating the camera.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool ShowCameraTarget</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_CameraController_SpinReleaseTime" data-uid="HelixToolkit.Avalonia.SharpDX.CameraController.SpinReleaseTime">
+  SpinReleaseTime
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Avalonia.SharpDX/Controls/CameraController.cs/#L433"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the max duration of mouse drag to activate spin.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int SpinReleaseTime</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+  <h4 class="section" id="HelixToolkit_Avalonia_SharpDX_CameraController_SpinReleaseTime_remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>If the time between mouse down and mouse up is less than this value, spin is activated.</p>
+</div>
+
+
+
+
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_CameraController_UpDownPanSensitivity" data-uid="HelixToolkit.Avalonia.SharpDX.CameraController.UpDownPanSensitivity">
+  UpDownPanSensitivity
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Avalonia.SharpDX/Controls/CameraController.cs/#L442"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the sensitivity for pan by the up and down keys.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public double UpDownPanSensitivity</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd><p>The pan sensitivity.</p>
+</dd>
+  </dl>
+
+
+
+
+
+  <h4 class="section" id="HelixToolkit_Avalonia_SharpDX_CameraController_UpDownPanSensitivity_remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>Use -1 to invert the pan direction.</p>
+</div>
+
+
+
+
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_CameraController_UpDownRotationSensitivity" data-uid="HelixToolkit.Avalonia.SharpDX.CameraController.UpDownRotationSensitivity">
+  UpDownRotationSensitivity
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Avalonia.SharpDX/Controls/CameraController.cs/#L451"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the sensitivity for rotation by the up and down keys.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public double UpDownRotationSensitivity</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd><p>The rotation sensitivity.</p>
+</dd>
+  </dl>
+
+
+
+
+
+  <h4 class="section" id="HelixToolkit_Avalonia_SharpDX_CameraController_UpDownRotationSensitivity_remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>Use -1 to invert the rotation direction.</p>
+</div>
+
+
+
+
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_CameraController_ZoomAroundMouseDownPoint" data-uid="HelixToolkit.Avalonia.SharpDX.CameraController.ZoomAroundMouseDownPoint">
+  ZoomAroundMouseDownPoint
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Avalonia.SharpDX/Controls/CameraController.cs/#L465"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets a value indicating whether to zoom around mouse down point.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool ZoomAroundMouseDownPoint</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><code>true</code> if zooming around the mouse down point is enabled; otherwise, <code>false</code> .</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_CameraController_ZoomCursor" data-uid="HelixToolkit.Avalonia.SharpDX.CameraController.ZoomCursor">
+  ZoomCursor
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Avalonia.SharpDX/Controls/CameraController.cs/#L471"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the zoom cursor.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Cursor ZoomCursor</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">Cursor</span></dt>
+    <dd><p>The zoom cursor.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_CameraController_ZoomDistanceLimitFar" data-uid="HelixToolkit.Avalonia.SharpDX.CameraController.ZoomDistanceLimitFar">
+  ZoomDistanceLimitFar
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Avalonia.SharpDX/Controls/CameraController.cs/#L489"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the zoom distance limit far.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public double ZoomDistanceLimitFar</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd><p>The zoom distance limit far.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_CameraController_ZoomDistanceLimitNear" data-uid="HelixToolkit.Avalonia.SharpDX.CameraController.ZoomDistanceLimitNear">
+  ZoomDistanceLimitNear
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Avalonia.SharpDX/Controls/CameraController.cs/#L496"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the zoom distance limit near.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public double ZoomDistanceLimitNear</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd><p>The zoom distance limit near.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_CameraController_ZoomRectangleCursor" data-uid="HelixToolkit.Avalonia.SharpDX.CameraController.ZoomRectangleCursor">
+  ZoomRectangleCursor
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Avalonia.SharpDX/Controls/CameraController.cs/#L477"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the zoom rectangle cursor.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Cursor ZoomRectangleCursor</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">Cursor</span></dt>
+    <dd><p>The zoom rectangle cursor.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_CameraController_ZoomSensitivity" data-uid="HelixToolkit.Avalonia.SharpDX.CameraController.ZoomSensitivity">
+  ZoomSensitivity
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Avalonia.SharpDX/Controls/CameraController.cs/#L482"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets ZoomSensitivity.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public double ZoomSensitivity</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+  <h2 class="section" id="properties">Properties
+</h2>
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_CameraController_ActualCamera_" data-uid="HelixToolkit.Avalonia.SharpDX.CameraController.ActualCamera*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_CameraController_ActualCamera" data-uid="HelixToolkit.Avalonia.SharpDX.CameraController.ActualCamera">
+  ActualCamera
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Avalonia.SharpDX/Controls/CameraController.cs/#L180"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets ActualCamera.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Camera? ActualCamera { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Avalonia.SharpDX.Camera.html">Camera</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_CameraController_AllowRotateXY_" data-uid="HelixToolkit.Avalonia.SharpDX.CameraController.AllowRotateXY*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_CameraController_AllowRotateXY" data-uid="HelixToolkit.Avalonia.SharpDX.CameraController.AllowRotateXY">
+  AllowRotateXY
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Avalonia.SharpDX/Controls/CameraController.cs/#L575"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets to allow rotate x direction and y direction globally. X, Y is screen space.</p>
+<p>X = 1: Allow left/right rotation. Y = 1: Allow up/down rotation</p>
+<p>Default is (1, 1)</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Vector2 AllowRotateXY { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector2">Vector2</a></dt>
+    <dd><p>The allow rotate xy.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_CameraController_CameraLookDirection_" data-uid="HelixToolkit.Avalonia.SharpDX.CameraController.CameraLookDirection*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_CameraController_CameraLookDirection" data-uid="HelixToolkit.Avalonia.SharpDX.CameraController.CameraLookDirection">
+  CameraLookDirection
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Avalonia.SharpDX/Controls/CameraController.cs/#L199"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets CameraLookDirection.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Vector3 CameraLookDirection { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_CameraController_CameraPosition_" data-uid="HelixToolkit.Avalonia.SharpDX.CameraController.CameraPosition*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_CameraController_CameraPosition" data-uid="HelixToolkit.Avalonia.SharpDX.CameraController.CameraPosition">
+  CameraPosition
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Avalonia.SharpDX/Controls/CameraController.cs/#L228"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets CameraPosition.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Vector3 CameraPosition { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_CameraController_CameraTarget_" data-uid="HelixToolkit.Avalonia.SharpDX.CameraController.CameraTarget*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_CameraController_CameraTarget" data-uid="HelixToolkit.Avalonia.SharpDX.CameraController.CameraTarget">
+  CameraTarget
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Avalonia.SharpDX/Controls/CameraController.cs/#L257"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets CameraTarget.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Vector3 CameraTarget { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_CameraController_CameraUpDirection_" data-uid="HelixToolkit.Avalonia.SharpDX.CameraController.CameraUpDirection*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_CameraController_CameraUpDirection" data-uid="HelixToolkit.Avalonia.SharpDX.CameraController.CameraUpDirection">
+  CameraUpDirection
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Avalonia.SharpDX/Controls/CameraController.cs/#L273"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets CameraUpDirection.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Vector3 CameraUpDirection { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_CameraController_EnablePinchZoom_" data-uid="HelixToolkit.Avalonia.SharpDX.CameraController.EnablePinchZoom*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_CameraController_EnablePinchZoom" data-uid="HelixToolkit.Avalonia.SharpDX.CameraController.EnablePinchZoom">
+  EnablePinchZoom
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Avalonia.SharpDX/Controls/CameraController.cs/#L582"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool EnablePinchZoom { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_CameraController_EnableThreeFingerPan_" data-uid="HelixToolkit.Avalonia.SharpDX.CameraController.EnableThreeFingerPan*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_CameraController_EnableThreeFingerPan" data-uid="HelixToolkit.Avalonia.SharpDX.CameraController.EnableThreeFingerPan">
+  EnableThreeFingerPan
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Avalonia.SharpDX/Controls/CameraController.cs/#L583"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool EnableThreeFingerPan { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_CameraController_EnableTouchRotate_" data-uid="HelixToolkit.Avalonia.SharpDX.CameraController.EnableTouchRotate*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_CameraController_EnableTouchRotate" data-uid="HelixToolkit.Avalonia.SharpDX.CameraController.EnableTouchRotate">
+  EnableTouchRotate
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Avalonia.SharpDX/Controls/CameraController.cs/#L581"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool EnableTouchRotate { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_CameraController_FixedRotationPoint_" data-uid="HelixToolkit.Avalonia.SharpDX.CameraController.FixedRotationPoint*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_CameraController_FixedRotationPoint" data-uid="HelixToolkit.Avalonia.SharpDX.CameraController.FixedRotationPoint">
+  FixedRotationPoint
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Avalonia.SharpDX/Controls/CameraController.cs/#L562"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the fixed rotation point.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Vector3 FixedRotationPoint { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd><p>The fixed rotation point.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_CameraController_FixedRotationPointEnabled_" data-uid="HelixToolkit.Avalonia.SharpDX.CameraController.FixedRotationPointEnabled*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_CameraController_FixedRotationPointEnabled" data-uid="HelixToolkit.Avalonia.SharpDX.CameraController.FixedRotationPointEnabled">
+  FixedRotationPointEnabled
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Avalonia.SharpDX/Controls/CameraController.cs/#L551"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets a value indicating whether [fixed rotation point enabled].</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool FixedRotationPointEnabled { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><code>true</code> if [fixed rotation point enabled]; otherwise, <code>false</code>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_CameraController_IsOrthographicCamera_" data-uid="HelixToolkit.Avalonia.SharpDX.CameraController.IsOrthographicCamera*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_CameraController_IsOrthographicCamera" data-uid="HelixToolkit.Avalonia.SharpDX.CameraController.IsOrthographicCamera">
+  IsOrthographicCamera
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Avalonia.SharpDX/Controls/CameraController.cs/#L504"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets a value indicating whether IsOrthographicCamera.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected bool IsOrthographicCamera { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_CameraController_IsPerspectiveCamera_" data-uid="HelixToolkit.Avalonia.SharpDX.CameraController.IsPerspectiveCamera*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_CameraController_IsPerspectiveCamera" data-uid="HelixToolkit.Avalonia.SharpDX.CameraController.IsPerspectiveCamera">
+  IsPerspectiveCamera
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Avalonia.SharpDX/Controls/CameraController.cs/#L515"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets a value indicating whether IsPerspectiveCamera.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected bool IsPerspectiveCamera { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_CameraController_OrthographicCamera_" data-uid="HelixToolkit.Avalonia.SharpDX.CameraController.OrthographicCamera*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_CameraController_OrthographicCamera" data-uid="HelixToolkit.Avalonia.SharpDX.CameraController.OrthographicCamera">
+  OrthographicCamera
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Avalonia.SharpDX/Controls/CameraController.cs/#L526"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets OrthographicCamera.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected OrthographicCamera? OrthographicCamera { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Avalonia.SharpDX.OrthographicCamera.html">OrthographicCamera</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_CameraController_PerspectiveCamera_" data-uid="HelixToolkit.Avalonia.SharpDX.CameraController.PerspectiveCamera*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_CameraController_PerspectiveCamera" data-uid="HelixToolkit.Avalonia.SharpDX.CameraController.PerspectiveCamera">
+  PerspectiveCamera
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Avalonia.SharpDX/Controls/CameraController.cs/#L537"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets PerspectiveCamera.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected PerspectiveCamera? PerspectiveCamera { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Avalonia.SharpDX.PerspectiveCamera.html">PerspectiveCamera</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_CameraController_PinchZoomAtCenter_" data-uid="HelixToolkit.Avalonia.SharpDX.CameraController.PinchZoomAtCenter*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_CameraController_PinchZoomAtCenter" data-uid="HelixToolkit.Avalonia.SharpDX.CameraController.PinchZoomAtCenter">
+  PinchZoomAtCenter
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Avalonia.SharpDX/Controls/CameraController.cs/#L584"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool PinchZoomAtCenter { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_CameraController_Viewport_" data-uid="HelixToolkit.Avalonia.SharpDX.CameraController.Viewport*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_CameraController_Viewport" data-uid="HelixToolkit.Avalonia.SharpDX.CameraController.Viewport">
+  Viewport
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Avalonia.SharpDX/Controls/CameraController.cs/#L456"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets Viewport.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Viewport3DX Viewport { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Avalonia.SharpDX.Viewport3DX.html">Viewport3DX</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h2 class="section" id="methods">Methods
+</h2>
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_CameraController_AddMoveForce_" data-uid="HelixToolkit.Avalonia.SharpDX.CameraController.AddMoveForce*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_CameraController_AddMoveForce_System_Numerics_Vector3_" data-uid="HelixToolkit.Avalonia.SharpDX.CameraController.AddMoveForce(System.Numerics.Vector3)">
+  AddMoveForce(Vector3)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Avalonia.SharpDX/Controls/CameraController.cs/#L610"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Adds the specified move force.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void AddMoveForce(Vector3 delta)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>delta</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd><p>The delta.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_CameraController_AddMoveForce_" data-uid="HelixToolkit.Avalonia.SharpDX.CameraController.AddMoveForce*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_CameraController_AddMoveForce_System_Single_System_Single_System_Single_" data-uid="HelixToolkit.Avalonia.SharpDX.CameraController.AddMoveForce(System.Single,System.Single,System.Single)">
+  AddMoveForce(float, float, float)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Avalonia.SharpDX/Controls/CameraController.cs/#L599"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Adds the specified move force.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void AddMoveForce(float dx, float dy, float dz)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>dx</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>The delta x.</p>
+</dd>
+    <dt><code>dy</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>The delta y.</p>
+</dd>
+    <dt><code>dz</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>The delta z.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_CameraController_AddPanForce_" data-uid="HelixToolkit.Avalonia.SharpDX.CameraController.AddPanForce*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_CameraController_AddPanForce_System_Numerics_Vector3_" data-uid="HelixToolkit.Avalonia.SharpDX.CameraController.AddPanForce(System.Numerics.Vector3)">
+  AddPanForce(Vector3)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Avalonia.SharpDX/Controls/CameraController.cs/#L642"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>The add pan force.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void AddPanForce(Vector3 pan)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>pan</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd><p>The pan.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_CameraController_AddPanForce_" data-uid="HelixToolkit.Avalonia.SharpDX.CameraController.AddPanForce*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_CameraController_AddPanForce_System_Single_System_Single_" data-uid="HelixToolkit.Avalonia.SharpDX.CameraController.AddPanForce(System.Single,System.Single)">
+  AddPanForce(float, float)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Avalonia.SharpDX/Controls/CameraController.cs/#L631"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Adds the specified pan force.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void AddPanForce(float dx, float dy)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>dx</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>The delta x.</p>
+</dd>
+    <dt><code>dy</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>The delta y.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_CameraController_AddRotateForce_" data-uid="HelixToolkit.Avalonia.SharpDX.CameraController.AddRotateForce*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_CameraController_AddRotateForce_System_Single_System_Single_" data-uid="HelixToolkit.Avalonia.SharpDX.CameraController.AddRotateForce(System.Single,System.Single)">
+  AddRotateForce(float, float)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Avalonia.SharpDX/Controls/CameraController.cs/#L670"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>The add rotate force.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void AddRotateForce(float dx, float dy)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>dx</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>The delta x.</p>
+</dd>
+    <dt><code>dy</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>The delta y.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_CameraController_AddZoomForce_" data-uid="HelixToolkit.Avalonia.SharpDX.CameraController.AddZoomForce*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_CameraController_AddZoomForce_System_Single_" data-uid="HelixToolkit.Avalonia.SharpDX.CameraController.AddZoomForce(System.Single)">
+  AddZoomForce(float)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Avalonia.SharpDX/Controls/CameraController.cs/#L706"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Adds the zoom force.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void AddZoomForce(float delta)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>delta</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>The delta.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_CameraController_AddZoomForce_" data-uid="HelixToolkit.Avalonia.SharpDX.CameraController.AddZoomForce*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_CameraController_AddZoomForce_System_Single_System_Numerics_Vector3_" data-uid="HelixToolkit.Avalonia.SharpDX.CameraController.AddZoomForce(System.Single,System.Numerics.Vector3)">
+  AddZoomForce(float, Vector3)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Avalonia.SharpDX/Controls/CameraController.cs/#L720"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Adds the zoom force.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void AddZoomForce(float delta, Vector3 zoomOrigin)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>delta</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>The delta.</p>
+</dd>
+    <dt><code>zoomOrigin</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd><p>The zoom origin.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_CameraController_ChangeDirection_" data-uid="HelixToolkit.Avalonia.SharpDX.CameraController.ChangeDirection*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_CameraController_ChangeDirection_System_Numerics_Vector3_System_Double_" data-uid="HelixToolkit.Avalonia.SharpDX.CameraController.ChangeDirection(System.Numerics.Vector3,System.Double)">
+  ChangeDirection(Vector3, double)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Avalonia.SharpDX/Controls/CameraController.cs/#L786"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Changes the direction of the camera.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void ChangeDirection(Vector3 lookDir, double animationTime = 500)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>lookDir</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd><p>The look direction.</p>
+</dd>
+    <dt><code>animationTime</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd><p>The animation time.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_CameraController_ChangeDirection_" data-uid="HelixToolkit.Avalonia.SharpDX.CameraController.ChangeDirection*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_CameraController_ChangeDirection_System_Numerics_Vector3_System_Numerics_Vector3_System_Double_" data-uid="HelixToolkit.Avalonia.SharpDX.CameraController.ChangeDirection(System.Numerics.Vector3,System.Numerics.Vector3,System.Double)">
+  ChangeDirection(Vector3, Vector3, double)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Avalonia.SharpDX/Controls/CameraController.cs/#L752"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Changes the direction of the camera.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void ChangeDirection(Vector3 lookDir, Vector3 upDir, double animationTime = 500)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>lookDir</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd><p>The look direction.</p>
+</dd>
+    <dt><code>upDir</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd><p>The up direction.</p>
+</dd>
+    <dt><code>animationTime</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd><p>The animation time.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_CameraController_LookAt_" data-uid="HelixToolkit.Avalonia.SharpDX.CameraController.LookAt*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_CameraController_LookAt_System_Numerics_Vector3_System_Double_" data-uid="HelixToolkit.Avalonia.SharpDX.CameraController.LookAt(System.Numerics.Vector3,System.Double)">
+  LookAt(Vector3, double)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Avalonia.SharpDX/Controls/CameraController.cs/#L807"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Change the &quot;look-at&quot; point.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[Obsolete]
+public void LookAt(Vector3 target, double animationTime)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>target</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd><p>The target.</p>
+</dd>
+    <dt><code>animationTime</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd><p>The animation time.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_CameraController_OnCompositionTargetRendering_" data-uid="HelixToolkit.Avalonia.SharpDX.CameraController.OnCompositionTargetRendering*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_CameraController_OnCompositionTargetRendering_System_Int64_" data-uid="HelixToolkit.Avalonia.SharpDX.CameraController.OnCompositionTargetRendering(System.Int64)">
+  OnCompositionTargetRendering(long)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Avalonia.SharpDX/Controls/CameraController.cs/#L1343"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Called when [composition target rendering].</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void OnCompositionTargetRendering(long ticks)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>ticks</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int64">long</a></dt>
+    <dd><p>The ticks.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_CameraController_OnKeyDown_" data-uid="HelixToolkit.Avalonia.SharpDX.CameraController.OnKeyDown*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_CameraController_OnKeyDown_Avalonia_Input_KeyEventArgs_" data-uid="HelixToolkit.Avalonia.SharpDX.CameraController.OnKeyDown(Avalonia.Input.KeyEventArgs)">
+  OnKeyDown(KeyEventArgs)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Avalonia.SharpDX/Controls/CameraController.cs/#L1354"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Called when a key is pressed.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void OnKeyDown(KeyEventArgs e)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>e</code> <span class="xref">KeyEventArgs</span></dt>
+    <dd><p>The <span class="xref">Avalonia.Input.KeyEventArgs</span> instance containing the event data.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_CameraController_OnMouseDown_" data-uid="HelixToolkit.Avalonia.SharpDX.CameraController.OnMouseDown*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_CameraController_OnMouseDown_Avalonia_Input_PointerPressedEventArgs_" data-uid="HelixToolkit.Avalonia.SharpDX.CameraController.OnMouseDown(Avalonia.Input.PointerPressedEventArgs)">
+  OnMouseDown(PointerPressedEventArgs)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Avalonia.SharpDX/Controls/CameraController.cs/#L1154"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Invoked when an unhandled MouseDown attached event reaches an element in its route that is derived from this class. Implement this method to add class handling for this event.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void OnMouseDown(PointerPressedEventArgs e)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>e</code> <span class="xref">PointerPressedEventArgs</span></dt>
+    <dd><p>The <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.input.mousebuttoneventargs">MouseButtonEventArgs</a> that contains the event data. This event data reports details about the mouse button that was pressed and the handled state.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_CameraController_OnMouseWheel_" data-uid="HelixToolkit.Avalonia.SharpDX.CameraController.OnMouseWheel*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_CameraController_OnMouseWheel_System_Object_Avalonia_Input_PointerWheelEventArgs_" data-uid="HelixToolkit.Avalonia.SharpDX.CameraController.OnMouseWheel(System.Object,Avalonia.Input.PointerWheelEventArgs)">
+  OnMouseWheel(object?, PointerWheelEventArgs)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Avalonia.SharpDX/Controls/CameraController.cs/#L1456"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Called when the mouse wheel is moved.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void OnMouseWheel(object? sender, PointerWheelEventArgs e)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>sender</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></dt>
+    <dd><p>The sender.</p>
+</dd>
+    <dt><code>e</code> <span class="xref">PointerWheelEventArgs</span></dt>
+    <dd><p>The <span class="xref">Avalonia.Input.PointerWheelEventArgs</span> instance containing the event data.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_CameraController_PushCameraSetting_" data-uid="HelixToolkit.Avalonia.SharpDX.CameraController.PushCameraSetting*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_CameraController_PushCameraSetting" data-uid="HelixToolkit.Avalonia.SharpDX.CameraController.PushCameraSetting">
+  PushCameraSetting()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Avalonia.SharpDX/Controls/CameraController.cs/#L822"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Push the current camera settings on an internal stack.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void PushCameraSetting()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_CameraController_ResetCamera_" data-uid="HelixToolkit.Avalonia.SharpDX.CameraController.ResetCamera*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_CameraController_ResetCamera" data-uid="HelixToolkit.Avalonia.SharpDX.CameraController.ResetCamera">
+  ResetCamera()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Avalonia.SharpDX/Controls/CameraController.cs/#L834"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Resets the camera.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void ResetCamera()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_CameraController_ResetCameraUpDirection_" data-uid="HelixToolkit.Avalonia.SharpDX.CameraController.ResetCameraUpDirection*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_CameraController_ResetCameraUpDirection" data-uid="HelixToolkit.Avalonia.SharpDX.CameraController.ResetCameraUpDirection">
+  ResetCameraUpDirection()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Avalonia.SharpDX/Controls/CameraController.cs/#L856"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Resets the camera up direction.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void ResetCameraUpDirection()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_CameraController_RestoreCameraSetting_" data-uid="HelixToolkit.Avalonia.SharpDX.CameraController.RestoreCameraSetting*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_CameraController_RestoreCameraSetting" data-uid="HelixToolkit.Avalonia.SharpDX.CameraController.RestoreCameraSetting">
+  RestoreCameraSetting()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Avalonia.SharpDX/Controls/CameraController.cs/#L865"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Restores the most recent camera setting from the internal stack.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool RestoreCameraSetting()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p>The restore camera setting.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_CameraController_StartSpin_" data-uid="HelixToolkit.Avalonia.SharpDX.CameraController.StartSpin*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_CameraController_StartSpin_System_Numerics_Vector2_Avalonia_Point_System_Numerics_Vector3_" data-uid="HelixToolkit.Avalonia.SharpDX.CameraController.StartSpin(System.Numerics.Vector2,Avalonia.Point,System.Numerics.Vector3)">
+  StartSpin(Vector2, Point, Vector3)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Avalonia.SharpDX/Controls/CameraController.cs/#L895"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Starts the spin.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void StartSpin(Vector2 speed, Point position, Vector3 aroundPoint)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>speed</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector2">Vector2</a></dt>
+    <dd><p>The speed.</p>
+</dd>
+    <dt><code>position</code> <span class="xref">Point</span></dt>
+    <dd><p>The position.</p>
+</dd>
+    <dt><code>aroundPoint</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd><p>The spin around point.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_CameraController_StopAnimations_" data-uid="HelixToolkit.Avalonia.SharpDX.CameraController.StopAnimations*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_CameraController_StopAnimations" data-uid="HelixToolkit.Avalonia.SharpDX.CameraController.StopAnimations">
+  StopAnimations()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Avalonia.SharpDX/Controls/CameraController.cs/#L1622"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>The stop animations.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void StopAnimations()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_CameraController_StopPanning_" data-uid="HelixToolkit.Avalonia.SharpDX.CameraController.StopPanning*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_CameraController_StopPanning" data-uid="HelixToolkit.Avalonia.SharpDX.CameraController.StopPanning">
+  StopPanning()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Avalonia.SharpDX/Controls/CameraController.cs/#L921"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Stops the panning.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void StopPanning()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_CameraController_StopSpin_" data-uid="HelixToolkit.Avalonia.SharpDX.CameraController.StopSpin*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_CameraController_StopSpin" data-uid="HelixToolkit.Avalonia.SharpDX.CameraController.StopSpin">
+  StopSpin()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Avalonia.SharpDX/Controls/CameraController.cs/#L906"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Stops the spin.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void StopSpin()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_CameraController_StopZooming_" data-uid="HelixToolkit.Avalonia.SharpDX.CameraController.StopZooming*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_CameraController_StopZooming" data-uid="HelixToolkit.Avalonia.SharpDX.CameraController.StopZooming">
+  StopZooming()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Avalonia.SharpDX/Controls/CameraController.cs/#L914"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Stops the zooming inertia.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void StopZooming()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_CameraController_Zoom_" data-uid="HelixToolkit.Avalonia.SharpDX.CameraController.Zoom*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_CameraController_Zoom_System_Double_" data-uid="HelixToolkit.Avalonia.SharpDX.CameraController.Zoom(System.Double)">
+  Zoom(double)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Avalonia.SharpDX/Controls/CameraController.cs/#L931"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Zooms by the specified delta value.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Zoom(double delta)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>delta</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd><p>The delta value.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_CameraController_ZoomExtents_" data-uid="HelixToolkit.Avalonia.SharpDX.CameraController.ZoomExtents*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_CameraController_ZoomExtents_System_Double_" data-uid="HelixToolkit.Avalonia.SharpDX.CameraController.ZoomExtents(System.Double)">
+  ZoomExtents(double)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Avalonia.SharpDX/Controls/CameraController.cs/#L942"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Zooms to the extents of the model.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void ZoomExtents(double animationTime = 200)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>animationTime</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd><p>The animation time (milliseconds).</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Avalonia.SharpDX/Controls/CameraController.cs/#L13" class="edit-link">Edit this page</a>
+        </div>
+
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          Copyright (c) 2023 Helix Toolkit contributors
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

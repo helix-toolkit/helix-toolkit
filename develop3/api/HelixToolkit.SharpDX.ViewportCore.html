@@ -1,0 +1,2078 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Class ViewportCore | Helix Toolkit - 3D for .NET </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Class ViewportCore | Helix Toolkit - 3D for .NET ">
+      
+      
+      <link rel="icon" href="../images/favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/helix-toolkit/helix-toolkit/new/develop3/apiSpec/new?filename=HelixToolkit_SharpDX_ViewportCore.md&amp;value=---%0Auid%3A%20HelixToolkit.SharpDX.ViewportCore%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="ManagedReference">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../images/favicon.ico" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="HelixToolkit.SharpDX.ViewportCore">
+
+
+
+  <h1 id="HelixToolkit_SharpDX_ViewportCore" data-uid="HelixToolkit.SharpDX.ViewportCore" class="text-break">
+Class ViewportCore  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Viewport/ViewportCore_Properties.cs/#L8"><i class="bi bi-code-slash"></i></a>
+  </h1>
+
+  <div class="facts text-secondary">
+    <dl><dt>Namespace</dt><dd><a class="xref" href="HelixToolkit.html">HelixToolkit</a>.<a class="xref" href="HelixToolkit.SharpDX.html">SharpDX</a></dd></dl>
+  <dl><dt>Assembly</dt><dd>HelixToolkit.SharpDX.dll</dd></dl>
+  </div>
+
+  <div class="markdown summary"></div>
+  <div class="markdown conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class ViewportCore : DisposeObject, IViewport3DX, IDisposable</code></pre>
+  </div>
+
+
+
+
+  <dl class="typelist inheritance">
+    <dt>Inheritance</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
+      <div><a class="xref" href="HelixToolkit.SharpDX.DisposeObject.html">DisposeObject</a></div>
+      <div><span class="xref">ViewportCore</span></div>
+    </dd>
+  </dl>
+
+  <dl class="typelist implements">
+    <dt>Implements</dt>
+    <dd>
+      <div><a class="xref" href="HelixToolkit.SharpDX.IViewport3DX.html">IViewport3DX</a></div>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.idisposable">IDisposable</a></div>
+    </dd>
+  </dl>
+
+
+  <dl class="typelist inheritedMembers">
+    <dt>Inherited Members</dt>
+    <dd>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.DisposeObject.html#HelixToolkit_SharpDX_DisposeObject_RemoveAndDispose__1___0__">DisposeObject.RemoveAndDispose&lt;T&gt;(ref T)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.DisposeObject.html#HelixToolkit_SharpDX_DisposeObject_RemoveAndDispose__1___0_">DisposeObject.RemoveAndDispose&lt;T&gt;(T)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.DisposeObject.html#HelixToolkit_SharpDX_DisposeObject_RefCount">DisposeObject.RefCount</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.DisposeObject.html#HelixToolkit_SharpDX_DisposeObject_IncRef">DisposeObject.IncRef()</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.DisposeObject.html#HelixToolkit_SharpDX_DisposeObject_ForceDispose">DisposeObject.ForceDispose()</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.DisposeObject.html#HelixToolkit_SharpDX_DisposeObject_IsDisposed">DisposeObject.IsDisposed</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.DisposeObject.html#HelixToolkit_SharpDX_DisposeObject_Dispose">DisposeObject.Dispose()</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.DisposeObject.html#HelixToolkit_SharpDX_DisposeObject_Set__1___0____0_">DisposeObject.Set&lt;T&gt;(ref T, T)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">object.Equals(object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">object.Equals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode">object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype">object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone">object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals">object.ReferenceEquals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring">object.ToString()</a>
+    </div>
+  </dd></dl>
+
+  <dl class="typelist extensionMethods">
+    <dt>Extension Methods</dt>
+    <dd>
+  <div>
+      <a class="xref" href="HelixToolkit.SharpDX.IViewportExtensions.html#HelixToolkit_SharpDX_IViewportExtensions_FindBounds_HelixToolkit_SharpDX_IViewport3DX_">IViewportExtensions.FindBounds(IViewport3DX)</a>
+  </div>
+  <div>
+      <a class="xref" href="HelixToolkit.SharpDX.IViewportExtensions.html#HelixToolkit_SharpDX_IViewportExtensions_FindBoundsInternal_HelixToolkit_SharpDX_IViewport3DX_">IViewportExtensions.FindBoundsInternal(IViewport3DX)</a>
+  </div>
+  <div>
+      <a class="xref" href="HelixToolkit.SharpDX.IViewportExtensions.html#HelixToolkit_SharpDX_IViewportExtensions_FindHits_HelixToolkit_SharpDX_IViewport3DX_System_Numerics_Vector2_">IViewportExtensions.FindHits(IViewport3DX, Vector2)</a>
+  </div>
+  <div>
+      <a class="xref" href="HelixToolkit.SharpDX.IViewportExtensions.html#HelixToolkit_SharpDX_IViewportExtensions_FindHits_HelixToolkit_SharpDX_IViewport3DX_System_Numerics_Vector2_System_Collections_Generic_List_HelixToolkit_SharpDX_HitTestResult___">IViewportExtensions.FindHits(IViewport3DX, Vector2, ref List&lt;HitTestResult&gt;)</a>
+  </div>
+  <div>
+      <a class="xref" href="HelixToolkit.SharpDX.IViewportExtensions.html#HelixToolkit_SharpDX_IViewportExtensions_FindHitsInFrustum_HelixToolkit_SharpDX_IViewport3DX_System_Numerics_Vector2_System_Collections_Generic_List_HelixToolkit_SharpDX_HitTestResult___">IViewportExtensions.FindHitsInFrustum(IViewport3DX, Vector2, ref List&lt;HitTestResult&gt;)</a>
+  </div>
+  <div>
+      <a class="xref" href="HelixToolkit.SharpDX.IViewportExtensions.html#HelixToolkit_SharpDX_IViewportExtensions_FindNearest_HelixToolkit_SharpDX_IViewport3DX_System_Numerics_Vector2_System_Numerics_Vector3__System_Numerics_Vector3__System_Object__">IViewportExtensions.FindNearest(IViewport3DX, Vector2, out Vector3, out Vector3, out object?)</a>
+  </div>
+  <div>
+      <a class="xref" href="HelixToolkit.SharpDX.IViewportExtensions.html#HelixToolkit_SharpDX_IViewportExtensions_ForceUpdateTransformsAndBounds_HelixToolkit_SharpDX_IViewport3DX_">IViewportExtensions.ForceUpdateTransformsAndBounds(IViewport3DX)</a>
+  </div>
+  <div>
+      <a class="xref" href="HelixToolkit.SharpDX.IViewportExtensions.html#HelixToolkit_SharpDX_IViewportExtensions_GetProjectionMatrix_HelixToolkit_SharpDX_IViewport3DX_">IViewportExtensions.GetProjectionMatrix(IViewport3DX)</a>
+  </div>
+  <div>
+      <a class="xref" href="HelixToolkit.SharpDX.IViewportExtensions.html#HelixToolkit_SharpDX_IViewportExtensions_GetScreenViewProjectionMatrix_HelixToolkit_SharpDX_IViewport3DX_">IViewportExtensions.GetScreenViewProjectionMatrix(IViewport3DX)</a>
+  </div>
+  <div>
+      <a class="xref" href="HelixToolkit.SharpDX.IViewportExtensions.html#HelixToolkit_SharpDX_IViewportExtensions_GetViewProjectionMatrix_HelixToolkit_SharpDX_IViewport3DX_">IViewportExtensions.GetViewProjectionMatrix(IViewport3DX)</a>
+  </div>
+  <div>
+      <a class="xref" href="HelixToolkit.SharpDX.IViewportExtensions.html#HelixToolkit_SharpDX_IViewportExtensions_GetViewportMatrix_HelixToolkit_SharpDX_IViewport3DX_">IViewportExtensions.GetViewportMatrix(IViewport3DX)</a>
+  </div>
+  <div>
+      <a class="xref" href="HelixToolkit.SharpDX.IViewportExtensions.html#HelixToolkit_SharpDX_IViewportExtensions_Project_HelixToolkit_SharpDX_IViewport3DX_System_Numerics_Vector3_">IViewportExtensions.Project(IViewport3DX, Vector3)</a>
+  </div>
+  <div>
+      <a class="xref" href="HelixToolkit.SharpDX.IViewportExtensions.html#HelixToolkit_SharpDX_IViewportExtensions_RenderToBitmapStream_HelixToolkit_SharpDX_IViewport3DX_">IViewportExtensions.RenderToBitmapStream(IViewport3DX)</a>
+  </div>
+  <div>
+      <a class="xref" href="HelixToolkit.SharpDX.IViewportExtensions.html#HelixToolkit_SharpDX_IViewportExtensions_Traverse_HelixToolkit_SharpDX_IViewport3DX_System_Action_HelixToolkit_SharpDX_Model_Scene_SceneNode__">IViewportExtensions.Traverse(IViewport3DX, Action&lt;SceneNode&gt;)</a>
+  </div>
+  <div>
+      <a class="xref" href="HelixToolkit.SharpDX.IViewportExtensions.html#HelixToolkit_SharpDX_IViewportExtensions_Traverse_HelixToolkit_SharpDX_IViewport3DX_System_Func_HelixToolkit_SharpDX_Model_Scene_SceneNode_System_Boolean__">IViewportExtensions.Traverse(IViewport3DX, Func&lt;SceneNode, bool&gt;)</a>
+  </div>
+  <div>
+      <a class="xref" href="HelixToolkit.SharpDX.IViewportExtensions.html#HelixToolkit_SharpDX_IViewportExtensions_UnProject_HelixToolkit_SharpDX_IViewport3DX_System_Numerics_Vector2_HelixToolkit_Maths_Ray__">IViewportExtensions.UnProject(IViewport3DX, Vector2, out Ray)</a>
+  </div>
+  <div>
+      <a class="xref" href="HelixToolkit.SharpDX.IViewportExtensions.html#HelixToolkit_SharpDX_IViewportExtensions_UnProjectOnPlane_HelixToolkit_SharpDX_IViewport3DX_System_Numerics_Vector2_System_Numerics_Vector3_System_Numerics_Vector3_">IViewportExtensions.UnProjectOnPlane(IViewport3DX, Vector2, Vector3, Vector3)</a>
+  </div>
+  <div>
+      <a class="xref" href="HelixToolkit.SharpDX.IViewportExtensions.html#HelixToolkit_SharpDX_IViewportExtensions_UnProjectOnPlane_HelixToolkit_SharpDX_IViewport3DX_System_Numerics_Vector2_System_Numerics_Vector3_System_Numerics_Vector3_System_Numerics_Vector3__">IViewportExtensions.UnProjectOnPlane(IViewport3DX, Vector2, Vector3, Vector3, out Vector3)</a>
+  </div>
+  </dd></dl>
+
+
+
+
+
+  <h2 class="section" id="constructors">Constructors
+</h2>
+
+
+  <a id="HelixToolkit_SharpDX_ViewportCore__ctor_" data-uid="HelixToolkit.SharpDX.ViewportCore.#ctor*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_ViewportCore__ctor" data-uid="HelixToolkit.SharpDX.ViewportCore.#ctor">
+  ViewportCore()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Viewport/ViewportCore.cs/#L24"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="HelixToolkit.SharpDX.ViewportCore.html">ViewportCore</a> class.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ViewportCore()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_ViewportCore__ctor_" data-uid="HelixToolkit.SharpDX.ViewportCore.#ctor*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_ViewportCore__ctor_HelixToolkit_SharpDX_IRenderHost_" data-uid="HelixToolkit.SharpDX.ViewportCore.#ctor(HelixToolkit.SharpDX.IRenderHost)">
+  ViewportCore(IRenderHost)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Viewport/ViewportCore.cs/#L33"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="HelixToolkit.SharpDX.ViewportCore.html">ViewportCore</a> class.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ViewportCore(IRenderHost renderHost)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>renderHost</code> <a class="xref" href="HelixToolkit.SharpDX.IRenderHost.html">IRenderHost</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_ViewportCore__ctor_" data-uid="HelixToolkit.SharpDX.ViewportCore.#ctor*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_ViewportCore__ctor_System_IntPtr_System_Boolean_" data-uid="HelixToolkit.SharpDX.ViewportCore.#ctor(System.IntPtr,System.Boolean)">
+  ViewportCore(nint, bool)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Viewport/ViewportCore.cs/#L14"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="HelixToolkit.SharpDX.ViewportCore.html">ViewportCore</a> class.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ViewportCore(nint nativeWindowPointer, bool deferred = false)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>nativeWindowPointer</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.intptr">nint</a></dt>
+    <dd><p>The native window pointer.</p>
+</dd>
+    <dt><code>deferred</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p>if set to <code>true</code> [deferred].</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <h2 class="section" id="properties">Properties
+</h2>
+
+
+  <a id="HelixToolkit_SharpDX_ViewportCore_ActualHeight_" data-uid="HelixToolkit.SharpDX.ViewportCore.ActualHeight*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_ViewportCore_ActualHeight" data-uid="HelixToolkit.SharpDX.ViewportCore.ActualHeight">
+  ActualHeight
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Viewport/ViewportCore_Properties.cs/#L284"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the actual height.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public double ActualHeight { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd><p>The actual height.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_ViewportCore_ActualWidth_" data-uid="HelixToolkit.SharpDX.ViewportCore.ActualWidth*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_ViewportCore_ActualWidth" data-uid="HelixToolkit.SharpDX.ViewportCore.ActualWidth">
+  ActualWidth
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Viewport/ViewportCore_Properties.cs/#L277"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the actual width.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public double ActualWidth { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd><p>The actual width.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_ViewportCore_BackgroundColor_" data-uid="HelixToolkit.SharpDX.ViewportCore.BackgroundColor*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_ViewportCore_BackgroundColor" data-uid="HelixToolkit.SharpDX.ViewportCore.BackgroundColor">
+  BackgroundColor
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Viewport/ViewportCore_Properties.cs/#L164"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the color of the background.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Color4 BackgroundColor { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Maths.Color4.html">Color4</a></dt>
+    <dd><p>The color of the background.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_ViewportCore_CameraCore_" data-uid="HelixToolkit.SharpDX.ViewportCore.CameraCore*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_ViewportCore_CameraCore" data-uid="HelixToolkit.SharpDX.ViewportCore.CameraCore">
+  CameraCore
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Viewport/ViewportCore_Properties.cs/#L55"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the camera core.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public CameraCore? CameraCore { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.Cameras.CameraCore.html">CameraCore</a></dt>
+    <dd><p>The camera core.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_ViewportCore_CoordinateSystemAxisXLabel_" data-uid="HelixToolkit.SharpDX.ViewportCore.CoordinateSystemAxisXLabel*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_ViewportCore_CoordinateSystemAxisXLabel" data-uid="HelixToolkit.SharpDX.ViewportCore.CoordinateSystemAxisXLabel">
+  CoordinateSystemAxisXLabel
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Viewport/ViewportCore_Properties.cs/#L349"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the coordinate system axis x label.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string CoordinateSystemAxisXLabel { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The coordinate system axis x label.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_ViewportCore_CoordinateSystemAxisYLabel_" data-uid="HelixToolkit.SharpDX.ViewportCore.CoordinateSystemAxisYLabel*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_ViewportCore_CoordinateSystemAxisYLabel" data-uid="HelixToolkit.SharpDX.ViewportCore.CoordinateSystemAxisYLabel">
+  CoordinateSystemAxisYLabel
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Viewport/ViewportCore_Properties.cs/#L360"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the coordinate system axis y label.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string CoordinateSystemAxisYLabel { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The coordinate system axis y label.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_ViewportCore_CoordinateSystemAxisZLabel_" data-uid="HelixToolkit.SharpDX.ViewportCore.CoordinateSystemAxisZLabel*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_ViewportCore_CoordinateSystemAxisZLabel" data-uid="HelixToolkit.SharpDX.ViewportCore.CoordinateSystemAxisZLabel">
+  CoordinateSystemAxisZLabel
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Viewport/ViewportCore_Properties.cs/#L371"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the coordinate system axis z label.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string CoordinateSystemAxisZLabel { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The coordinate system axis z label.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_ViewportCore_CoordinateSystemLabelColor_" data-uid="HelixToolkit.SharpDX.ViewportCore.CoordinateSystemLabelColor*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_ViewportCore_CoordinateSystemLabelColor" data-uid="HelixToolkit.SharpDX.ViewportCore.CoordinateSystemLabelColor">
+  CoordinateSystemLabelColor
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Viewport/ViewportCore_Properties.cs/#L338"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the color of the coordinate system label.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Color4 CoordinateSystemLabelColor { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Maths.Color4.html">Color4</a></dt>
+    <dd><p>The color of the coordinate system label.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_ViewportCore_D2DRenderables_" data-uid="HelixToolkit.SharpDX.ViewportCore.D2DRenderables*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_ViewportCore_D2DRenderables" data-uid="HelixToolkit.SharpDX.ViewportCore.D2DRenderables">
+  D2DRenderables
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Viewport/ViewportCore_Properties.cs/#L84"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the d2 d renderables.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IEnumerable&lt;SceneNode2D&gt; D2DRenderables { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.html">SceneNode2D</a>&gt;</dt>
+    <dd><p>The d2 d renderables.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_ViewportCore_DpiScale_" data-uid="HelixToolkit.SharpDX.ViewportCore.DpiScale*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_ViewportCore_DpiScale" data-uid="HelixToolkit.SharpDX.ViewportCore.DpiScale">
+  DpiScale
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Viewport/ViewportCore_Properties.cs/#L287"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public double DpiScale { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_ViewportCore_EffectsManager_" data-uid="HelixToolkit.SharpDX.ViewportCore.EffectsManager*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_ViewportCore_EffectsManager" data-uid="HelixToolkit.SharpDX.ViewportCore.EffectsManager">
+  EffectsManager
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Viewport/ViewportCore_Properties.cs/#L33"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the effects manager.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IEffectsManager? EffectsManager { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.IEffectsManager.html">IEffectsManager</a></dt>
+    <dd><p>The effects manager.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_ViewportCore_EnableOITDepthPeelingDynamicIteration_" data-uid="HelixToolkit.SharpDX.ViewportCore.EnableOITDepthPeelingDynamicIteration*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_ViewportCore_EnableOITDepthPeelingDynamicIteration" data-uid="HelixToolkit.SharpDX.ViewportCore.EnableOITDepthPeelingDynamicIteration">
+  EnableOITDepthPeelingDynamicIteration
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Viewport/ViewportCore_Properties.cs/#L262"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool EnableOITDepthPeelingDynamicIteration { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_ViewportCore_EnableRenderFrustum_" data-uid="HelixToolkit.SharpDX.ViewportCore.EnableRenderFrustum*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_ViewportCore_EnableRenderFrustum" data-uid="HelixToolkit.SharpDX.ViewportCore.EnableRenderFrustum">
+  EnableRenderFrustum
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Viewport/ViewportCore_Properties.cs/#L186"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets a value indicating whether [enable render frustum].</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool EnableRenderFrustum { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><code>true</code> if [enable render frustum]; otherwise, <code>false</code>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_ViewportCore_EnableRenderOrder_" data-uid="HelixToolkit.SharpDX.ViewportCore.EnableRenderOrder*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_ViewportCore_EnableRenderOrder" data-uid="HelixToolkit.SharpDX.ViewportCore.EnableRenderOrder">
+  EnableRenderOrder
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Viewport/ViewportCore_Properties.cs/#L242"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets a value indicating whether [enable render order].</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool EnableRenderOrder { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><code>true</code> if [enable render order]; otherwise, <code>false</code>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_ViewportCore_EnableSSAO_" data-uid="HelixToolkit.SharpDX.ViewportCore.EnableSSAO*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_ViewportCore_EnableSSAO" data-uid="HelixToolkit.SharpDX.ViewportCore.EnableSSAO">
+  EnableSSAO
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Viewport/ViewportCore_Properties.cs/#L230"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets a value indicating whether [enable ssao].</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool EnableSSAO { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><code>true</code> if [enable ssao]; otherwise, <code>false</code>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_ViewportCore_EnableVSync_" data-uid="HelixToolkit.SharpDX.ViewportCore.EnableVSync*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_ViewportCore_EnableVSync" data-uid="HelixToolkit.SharpDX.ViewportCore.EnableVSync">
+  EnableVSync
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Viewport/ViewportCore_Properties.cs/#L218"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets a value indicating whether [enable vertical synchronize].</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool EnableVSync { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><code>true</code> if [enable vertical synchronize]; otherwise, <code>false</code>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_ViewportCore_FXAALevel_" data-uid="HelixToolkit.SharpDX.ViewportCore.FXAALevel*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_ViewportCore_FXAALevel" data-uid="HelixToolkit.SharpDX.ViewportCore.FXAALevel">
+  FXAALevel
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Viewport/ViewportCore_Properties.cs/#L175"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the FXAA level.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public FXAALevel FXAALevel { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.FXAALevel.html">FXAALevel</a></dt>
+    <dd><p>The FXAA level.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_ViewportCore_IsShadowMappingEnabled_" data-uid="HelixToolkit.SharpDX.ViewportCore.IsShadowMappingEnabled*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_ViewportCore_IsShadowMappingEnabled" data-uid="HelixToolkit.SharpDX.ViewportCore.IsShadowMappingEnabled">
+  IsShadowMappingEnabled
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Viewport/ViewportCore_Properties.cs/#L24"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets a value indicating whether this instance is shadow mapping enabled.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsShadowMappingEnabled { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><code>true</code> if this instance is shadow mapping enabled; otherwise, <code>false</code>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_ViewportCore_Items_" data-uid="HelixToolkit.SharpDX.ViewportCore.Items*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_ViewportCore_Items" data-uid="HelixToolkit.SharpDX.ViewportCore.Items">
+  Items
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Viewport/ViewportCore_Properties.cs/#L91"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the items.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public GroupNode Items { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.Model.Scene.GroupNode.html">GroupNode</a></dt>
+    <dd><p>The items.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_ViewportCore_Items2D_" data-uid="HelixToolkit.SharpDX.ViewportCore.Items2D*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_ViewportCore_Items2D" data-uid="HelixToolkit.SharpDX.ViewportCore.Items2D">
+  Items2D
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Viewport/ViewportCore_Properties.cs/#L98"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the items2 d.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public SceneNode2D Items2D { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.html">SceneNode2D</a></dt>
+    <dd><p>The items2 d.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_ViewportCore_ModelUpDirection_" data-uid="HelixToolkit.SharpDX.ViewportCore.ModelUpDirection*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_ViewportCore_ModelUpDirection" data-uid="HelixToolkit.SharpDX.ViewportCore.ModelUpDirection">
+  ModelUpDirection
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Viewport/ViewportCore_Properties.cs/#L310"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the model up direction.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Vector3 ModelUpDirection { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd><p>The model up direction.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_ViewportCore_OITDepthPeelingIteration_" data-uid="HelixToolkit.SharpDX.ViewportCore.OITDepthPeelingIteration*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_ViewportCore_OITDepthPeelingIteration" data-uid="HelixToolkit.SharpDX.ViewportCore.OITDepthPeelingIteration">
+  OITDepthPeelingIteration
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Viewport/ViewportCore_Properties.cs/#L256"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int OITDepthPeelingIteration { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_ViewportCore_OITRenderType_" data-uid="HelixToolkit.SharpDX.ViewportCore.OITRenderType*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_ViewportCore_OITRenderType" data-uid="HelixToolkit.SharpDX.ViewportCore.OITRenderType">
+  OITRenderType
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Viewport/ViewportCore_Properties.cs/#L250"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the order independent transparency render type.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public OITRenderType OITRenderType { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.OITRenderType.html">OITRenderType</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_ViewportCore_RenderConfiguration_" data-uid="HelixToolkit.SharpDX.ViewportCore.RenderConfiguration*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_ViewportCore_RenderConfiguration" data-uid="HelixToolkit.SharpDX.ViewportCore.RenderConfiguration">
+  RenderConfiguration
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Viewport/ViewportCore_Properties.cs/#L270"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the render configuration.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public DX11RenderHostConfiguration RenderConfiguration { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.Render.DX11RenderHostConfiguration.html">DX11RenderHostConfiguration</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_ViewportCore_RenderContext_" data-uid="HelixToolkit.SharpDX.ViewportCore.RenderContext*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_ViewportCore_RenderContext" data-uid="HelixToolkit.SharpDX.ViewportCore.RenderContext">
+  RenderContext
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Viewport/ViewportCore_Properties.cs/#L204"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the render context.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public RenderContext? RenderContext { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.RenderContext.html">RenderContext</a></dt>
+    <dd><p>The render context.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_ViewportCore_RenderD2D_" data-uid="HelixToolkit.SharpDX.ViewportCore.RenderD2D*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_ViewportCore_RenderD2D" data-uid="HelixToolkit.SharpDX.ViewportCore.RenderD2D">
+  RenderD2D
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Viewport/ViewportCore_Properties.cs/#L153"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets a value indicating whether [render d2d].</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool RenderD2D { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><code>true</code> if [render d2d]; otherwise, <code>false</code>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_ViewportCore_RenderHost_" data-uid="HelixToolkit.SharpDX.ViewportCore.RenderHost*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_ViewportCore_RenderHost" data-uid="HelixToolkit.SharpDX.ViewportCore.RenderHost">
+  RenderHost
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Viewport/ViewportCore_Properties.cs/#L17"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the render host.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IRenderHost RenderHost { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.IRenderHost.html">IRenderHost</a></dt>
+    <dd><p>The render host.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_ViewportCore_RenderStat_" data-uid="HelixToolkit.SharpDX.ViewportCore.RenderStat*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_ViewportCore_RenderStat" data-uid="HelixToolkit.SharpDX.ViewportCore.RenderStat">
+  RenderStat
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Viewport/ViewportCore_Properties.cs/#L211"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the render stat.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IRenderStatistics? RenderStat { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.Utilities.IRenderStatistics.html">IRenderStatistics</a></dt>
+    <dd><p>The render stat.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_ViewportCore_Renderables_" data-uid="HelixToolkit.SharpDX.ViewportCore.Renderables*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_ViewportCore_Renderables" data-uid="HelixToolkit.SharpDX.ViewportCore.Renderables">
+  Renderables
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Viewport/ViewportCore_Properties.cs/#L66"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the renderables.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IEnumerable&lt;SceneNode&gt; Renderables { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html">SceneNode</a>&gt;</dt>
+    <dd><p>The renderables.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_ViewportCore_ShowCoordinateSystem_" data-uid="HelixToolkit.SharpDX.ViewportCore.ShowCoordinateSystem*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_ViewportCore_ShowCoordinateSystem" data-uid="HelixToolkit.SharpDX.ViewportCore.ShowCoordinateSystem">
+  ShowCoordinateSystem
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Viewport/ViewportCore_Properties.cs/#L327"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets a value indicating whether [show coordinate system].</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool ShowCoordinateSystem { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><code>true</code> if [show coordinate system]; otherwise, <code>false</code>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_ViewportCore_ShowFPS_" data-uid="HelixToolkit.SharpDX.ViewportCore.ShowFPS*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_ViewportCore_ShowFPS" data-uid="HelixToolkit.SharpDX.ViewportCore.ShowFPS">
+  ShowFPS
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Viewport/ViewportCore_Properties.cs/#L105"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets a value indicating whether [show FPS].</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool ShowFPS { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><code>true</code> if [show FPS]; otherwise, <code>false</code>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_ViewportCore_ShowRenderDetail_" data-uid="HelixToolkit.SharpDX.ViewportCore.ShowRenderDetail*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_ViewportCore_ShowRenderDetail" data-uid="HelixToolkit.SharpDX.ViewportCore.ShowRenderDetail">
+  ShowRenderDetail
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Viewport/ViewportCore_Properties.cs/#L129"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets a value indicating whether [show render detail].</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool ShowRenderDetail { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><code>true</code> if [show render detail]; otherwise, <code>false</code>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_ViewportCore_ShowViewCube_" data-uid="HelixToolkit.SharpDX.ViewportCore.ShowViewCube*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_ViewportCore_ShowViewCube" data-uid="HelixToolkit.SharpDX.ViewportCore.ShowViewCube">
+  ShowViewCube
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Viewport/ViewportCore_Properties.cs/#L382"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets a value indicating whether [show view cube].</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool ShowViewCube { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><code>true</code> if [show view cube]; otherwise, <code>false</code>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_ViewportCore_ViewportRectangle_" data-uid="HelixToolkit.SharpDX.ViewportCore.ViewportRectangle*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_ViewportCore_ViewportRectangle" data-uid="HelixToolkit.SharpDX.ViewportCore.ViewportRectangle">
+  ViewportRectangle
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Viewport/ViewportCore_Properties.cs/#L197"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the viewport rectangle.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Rectangle ViewportRectangle { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Maths.Rectangle.html">Rectangle</a></dt>
+    <dd><p>The viewport rectangle.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h2 class="section" id="methods">Methods
+</h2>
+
+
+  <a id="HelixToolkit_SharpDX_ViewportCore_Attach_" data-uid="HelixToolkit.SharpDX.ViewportCore.Attach*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_ViewportCore_Attach_HelixToolkit_SharpDX_IRenderHost_" data-uid="HelixToolkit.SharpDX.ViewportCore.Attach(HelixToolkit.SharpDX.IRenderHost)">
+  Attach(IRenderHost)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Viewport/ViewportCore.cs/#L72"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Attaches the specified host.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Attach(IRenderHost host)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>host</code> <a class="xref" href="HelixToolkit.SharpDX.IRenderHost.html">IRenderHost</a></dt>
+    <dd><p>The host.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_ViewportCore_Detach_" data-uid="HelixToolkit.SharpDX.ViewportCore.Detach*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_ViewportCore_Detach" data-uid="HelixToolkit.SharpDX.ViewportCore.Detach">
+  Detach()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Viewport/ViewportCore.cs/#L91"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Detaches this instance.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Detach()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_ViewportCore_EndD3D_" data-uid="HelixToolkit.SharpDX.ViewportCore.EndD3D*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_ViewportCore_EndD3D" data-uid="HelixToolkit.SharpDX.ViewportCore.EndD3D">
+  EndD3D()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Viewport/ViewportCore.cs/#L64"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Ends the d3 d.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void EndD3D()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_ViewportCore_InvalidateRender_" data-uid="HelixToolkit.SharpDX.ViewportCore.InvalidateRender*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_ViewportCore_InvalidateRender" data-uid="HelixToolkit.SharpDX.ViewportCore.InvalidateRender">
+  InvalidateRender()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Viewport/ViewportCore.cs/#L104"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Invalidates the render.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void InvalidateRender()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_ViewportCore_InvalidateSceneGraph_" data-uid="HelixToolkit.SharpDX.ViewportCore.InvalidateSceneGraph*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_ViewportCore_InvalidateSceneGraph" data-uid="HelixToolkit.SharpDX.ViewportCore.InvalidateSceneGraph">
+  InvalidateSceneGraph()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Viewport/ViewportCore.cs/#L111"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Invalidates the scene graph.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void InvalidateSceneGraph()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_ViewportCore_MouseDown_" data-uid="HelixToolkit.SharpDX.ViewportCore.MouseDown*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_ViewportCore_MouseDown_System_Numerics_Vector2_" data-uid="HelixToolkit.SharpDX.ViewportCore.MouseDown(System.Numerics.Vector2)">
+  MouseDown(Vector2)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Viewport/ViewportCore.cs/#L119"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Mouses down.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void MouseDown(Vector2 position)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>position</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector2">Vector2</a></dt>
+    <dd><p>The position.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_ViewportCore_MouseMove_" data-uid="HelixToolkit.SharpDX.ViewportCore.MouseMove*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_ViewportCore_MouseMove_System_Numerics_Vector2_" data-uid="HelixToolkit.SharpDX.ViewportCore.MouseMove(System.Numerics.Vector2)">
+  MouseMove(Vector2)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Viewport/ViewportCore.cs/#L142"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Mouses the move.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void MouseMove(Vector2 position)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>position</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector2">Vector2</a></dt>
+    <dd><p>The position.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_ViewportCore_MouseUp_" data-uid="HelixToolkit.SharpDX.ViewportCore.MouseUp*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_ViewportCore_MouseUp_System_Numerics_Vector2_" data-uid="HelixToolkit.SharpDX.ViewportCore.MouseUp(System.Numerics.Vector2)">
+  MouseUp(Vector2)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Viewport/ViewportCore.cs/#L154"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Mouses up.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void MouseUp(Vector2 position)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>position</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector2">Vector2</a></dt>
+    <dd><p>The position.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_ViewportCore_OnDispose_" data-uid="HelixToolkit.SharpDX.ViewportCore.OnDispose*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_ViewportCore_OnDispose_System_Boolean_" data-uid="HelixToolkit.SharpDX.ViewportCore.OnDispose(System.Boolean)">
+  OnDispose(bool)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Viewport/ViewportCore.cs/#L240"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Disposes of object resources.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected override void OnDispose(bool disposeManagedResources)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>disposeManagedResources</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p>If true, managed resources should be
+disposed of in addition to unmanaged resources.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_ViewportCore_Render_" data-uid="HelixToolkit.SharpDX.ViewportCore.Render*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_ViewportCore_Render" data-uid="HelixToolkit.SharpDX.ViewportCore.Render">
+  Render()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Viewport/ViewportCore.cs/#L48"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Renders this instance.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Render()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_ViewportCore_Resize_" data-uid="HelixToolkit.SharpDX.ViewportCore.Resize*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_ViewportCore_Resize_System_Int32_System_Int32_" data-uid="HelixToolkit.SharpDX.ViewportCore.Resize(System.Int32,System.Int32)">
+  Resize(int, int)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Viewport/ViewportCore.cs/#L176"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Resizes the specified width.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Resize(int width, int height)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>width</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The width.</p>
+</dd>
+    <dt><code>height</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The height.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_ViewportCore_StartD3D_" data-uid="HelixToolkit.SharpDX.ViewportCore.StartD3D*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_ViewportCore_StartD3D_System_Int32_System_Int32_" data-uid="HelixToolkit.SharpDX.ViewportCore.StartD3D(System.Int32,System.Int32)">
+  StartD3D(int, int)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Viewport/ViewportCore.cs/#L57"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Starts the d3 d.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void StartD3D(int width, int height)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>width</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The width.</p>
+</dd>
+    <dt><code>height</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The height.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_ViewportCore_Update_" data-uid="HelixToolkit.SharpDX.ViewportCore.Update*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_ViewportCore_Update_System_TimeSpan_" data-uid="HelixToolkit.SharpDX.ViewportCore.Update(System.TimeSpan)">
+  Update(TimeSpan)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Viewport/ViewportCore.cs/#L167"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Update(TimeSpan timeStamp)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>timeStamp</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.timespan">TimeSpan</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <h2 class="section" id="events">Events
+</h2>
+
+
+
+  <h3 id="HelixToolkit_SharpDX_ViewportCore_ErrorOccurred" data-uid="HelixToolkit.SharpDX.ViewportCore.ErrorOccurred">
+  ErrorOccurred
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Viewport/ViewportCore_Properties.cs/#L401"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Occurs when [on error occurred].</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public event EventHandler&lt;Exception&gt;? ErrorOccurred</code></pre>
+  </div>
+
+
+
+
+
+
+  <h4 class="section">Event Type</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.eventhandler-1">EventHandler</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.exception">Exception</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_SharpDX_ViewportCore_NodeHitOnMouseDown" data-uid="HelixToolkit.SharpDX.ViewportCore.NodeHitOnMouseDown">
+  NodeHitOnMouseDown
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Viewport/ViewportCore_Properties.cs/#L403"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public event EventHandler&lt;SceneNodeMouseDownArgs&gt;? NodeHitOnMouseDown</code></pre>
+  </div>
+
+
+
+
+
+
+  <h4 class="section">Event Type</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.eventhandler-1">EventHandler</a>&lt;<a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNodeMouseDownArgs.html">SceneNodeMouseDownArgs</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_SharpDX_ViewportCore_NodeHitOnMouseMove" data-uid="HelixToolkit.SharpDX.ViewportCore.NodeHitOnMouseMove">
+  NodeHitOnMouseMove
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Viewport/ViewportCore_Properties.cs/#L405"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public event EventHandler&lt;SceneNodeMouseMoveArgs&gt;? NodeHitOnMouseMove</code></pre>
+  </div>
+
+
+
+
+
+
+  <h4 class="section">Event Type</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.eventhandler-1">EventHandler</a>&lt;<a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNodeMouseMoveArgs.html">SceneNodeMouseMoveArgs</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_SharpDX_ViewportCore_NodeHitOnMouseUp" data-uid="HelixToolkit.SharpDX.ViewportCore.NodeHitOnMouseUp">
+  NodeHitOnMouseUp
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Viewport/ViewportCore_Properties.cs/#L404"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public event EventHandler&lt;SceneNodeMouseUpArgs&gt;? NodeHitOnMouseUp</code></pre>
+  </div>
+
+
+
+
+
+
+  <h4 class="section">Event Type</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.eventhandler-1">EventHandler</a>&lt;<a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNodeMouseUpArgs.html">SceneNodeMouseUpArgs</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_SharpDX_ViewportCore_StartRendering" data-uid="HelixToolkit.SharpDX.ViewportCore.StartRendering">
+  StartRendering
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Viewport/ViewportCore_Properties.cs/#L393"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Occurs when [on start rendering].</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public event EventHandler? StartRendering</code></pre>
+  </div>
+
+
+
+
+
+
+  <h4 class="section">Event Type</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.eventhandler">EventHandler</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_SharpDX_ViewportCore_StopRendering" data-uid="HelixToolkit.SharpDX.ViewportCore.StopRendering">
+  StopRendering
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Viewport/ViewportCore_Properties.cs/#L397"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Occurs when [on stop rendering].</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public event EventHandler? StopRendering</code></pre>
+  </div>
+
+
+
+
+
+
+  <h4 class="section">Event Type</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.eventhandler">EventHandler</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Viewport/ViewportCore_Properties.cs/#L8" class="edit-link">Edit this page</a>
+        </div>
+
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          Copyright (c) 2023 Helix Toolkit contributors
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

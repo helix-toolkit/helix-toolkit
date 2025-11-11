@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Class TreeTraverser | Helix Toolkit - 3D for .NET </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Class TreeTraverser | Helix Toolkit - 3D for .NET ">
+      
+      
+      <link rel="icon" href="../images/favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/helix-toolkit/helix-toolkit/new/develop3/apiSpec/new?filename=HelixToolkit_SharpDX_TreeTraverser.md&amp;value=---%0Auid%3A%20HelixToolkit.SharpDX.TreeTraverser%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="ManagedReference">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../images/favicon.ico" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="HelixToolkit.SharpDX.TreeTraverser">
+
+
+
+  <h1 id="HelixToolkit_SharpDX_TreeTraverser" data-uid="HelixToolkit.SharpDX.TreeTraverser" class="text-break">
+Class TreeTraverser  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Utilities/TreeTraverser.cs/#L8"><i class="bi bi-code-slash"></i></a>
+  </h1>
+
+  <div class="facts text-secondary">
+    <dl><dt>Namespace</dt><dd><a class="xref" href="HelixToolkit.html">HelixToolkit</a>.<a class="xref" href="HelixToolkit.SharpDX.html">SharpDX</a></dd></dl>
+  <dl><dt>Assembly</dt><dd>HelixToolkit.SharpDX.dll</dd></dl>
+  </div>
+
+  <div class="markdown summary"></div>
+  <div class="markdown conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static class TreeTraverser</code></pre>
+  </div>
+
+
+
+
+  <dl class="typelist inheritance">
+    <dt>Inheritance</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
+      <div><span class="xref">TreeTraverser</span></div>
+    </dd>
+  </dl>
+
+
+
+  <dl class="typelist inheritedMembers">
+    <dt>Inherited Members</dt>
+    <dd>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">object.Equals(object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">object.Equals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode">object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype">object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone">object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals">object.ReferenceEquals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring">object.ToString()</a>
+    </div>
+  </dd></dl>
+
+
+
+
+
+
+  <h2 class="section" id="methods">Methods
+</h2>
+
+
+  <a id="HelixToolkit_SharpDX_TreeTraverser_ForceUpdateTransformsAndBounds_" data-uid="HelixToolkit.SharpDX.TreeTraverser.ForceUpdateTransformsAndBounds*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_TreeTraverser_ForceUpdateTransformsAndBounds_HelixToolkit_SharpDX_Model_Scene_SceneNode_" data-uid="HelixToolkit.SharpDX.TreeTraverser.ForceUpdateTransformsAndBounds(HelixToolkit.SharpDX.Model.Scene.SceneNode)">
+  ForceUpdateTransformsAndBounds(SceneNode)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Utilities/TreeTraverser.cs/#L28"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Forces to update transform and bounds.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void ForceUpdateTransformsAndBounds(this SceneNode root)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>root</code> <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html">SceneNode</a></dt>
+    <dd><p>The root.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_TreeTraverser_ForceUpdateTransformsAndBounds_" data-uid="HelixToolkit.SharpDX.TreeTraverser.ForceUpdateTransformsAndBounds*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_TreeTraverser_ForceUpdateTransformsAndBounds_System_Collections_Generic_IEnumerable_HelixToolkit_SharpDX_Model_Scene_SceneNode__" data-uid="HelixToolkit.SharpDX.TreeTraverser.ForceUpdateTransformsAndBounds(System.Collections.Generic.IEnumerable{HelixToolkit.SharpDX.Model.Scene.SceneNode})">
+  ForceUpdateTransformsAndBounds(IEnumerable&lt;SceneNode&gt;)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Utilities/TreeTraverser.cs/#L40"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Forces the update transform and bounds.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void ForceUpdateTransformsAndBounds(this IEnumerable&lt;SceneNode&gt; nodes)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>nodes</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html">SceneNode</a>&gt;</dt>
+    <dd><p>The nodes.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_TreeTraverser_PreorderDFT_" data-uid="HelixToolkit.SharpDX.TreeTraverser.PreorderDFT*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_TreeTraverser_PreorderDFT_System_Collections_Generic_IEnumerable_HelixToolkit_SharpDX_Model_Scene_SceneNode__System_Func_HelixToolkit_SharpDX_Model_Scene_SceneNode_System_Boolean__System_Collections_Generic_Stack_System_Collections_Generic_IEnumerator_HelixToolkit_SharpDX_Model_Scene_SceneNode___" data-uid="HelixToolkit.SharpDX.TreeTraverser.PreorderDFT(System.Collections.Generic.IEnumerable{HelixToolkit.SharpDX.Model.Scene.SceneNode},System.Func{HelixToolkit.SharpDX.Model.Scene.SceneNode,System.Boolean},System.Collections.Generic.Stack{System.Collections.Generic.IEnumerator{HelixToolkit.SharpDX.Model.Scene.SceneNode}})">
+  PreorderDFT(IEnumerable&lt;SceneNode&gt;, Func&lt;SceneNode, bool&gt;, Stack&lt;IEnumerator&lt;SceneNode&gt;&gt;?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Utilities/TreeTraverser.cs/#L79"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Pre-ordered depth first traverse</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static IEnumerable&lt;SceneNode&gt; PreorderDFT(this IEnumerable&lt;SceneNode&gt; nodes, Func&lt;SceneNode, bool&gt; condition, Stack&lt;IEnumerator&lt;SceneNode&gt;&gt;? stackCache = null)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>nodes</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html">SceneNode</a>&gt;</dt>
+    <dd></dd>
+    <dt><code>condition</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.func-2">Func</a>&lt;<a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html">SceneNode</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a>&gt;</dt>
+    <dd></dd>
+    <dt><code>stackCache</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.stack-1">Stack</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerator-1">IEnumerator</a>&lt;<a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html">SceneNode</a>&gt;&gt;</dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html">SceneNode</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_TreeTraverser_PreorderDFT_" data-uid="HelixToolkit.SharpDX.TreeTraverser.PreorderDFT*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_TreeTraverser_PreorderDFT_System_Collections_Generic_IList_HelixToolkit_SharpDX_Model_Scene_SceneNode__HelixToolkit_SharpDX_RenderContext_System_Func_HelixToolkit_SharpDX_Model_Scene_SceneNode_HelixToolkit_SharpDX_RenderContext_System_Boolean__System_Collections_Generic_IList_System_Collections_Generic_KeyValuePair_System_Int32_HelixToolkit_SharpDX_Model_Scene_SceneNode___System_Collections_Generic_Stack_System_Collections_Generic_KeyValuePair_System_Int32_System_Collections_Generic_IList_HelixToolkit_SharpDX_Model_Scene_SceneNode____" data-uid="HelixToolkit.SharpDX.TreeTraverser.PreorderDFT(System.Collections.Generic.IList{HelixToolkit.SharpDX.Model.Scene.SceneNode},HelixToolkit.SharpDX.RenderContext,System.Func{HelixToolkit.SharpDX.Model.Scene.SceneNode,HelixToolkit.SharpDX.RenderContext,System.Boolean},System.Collections.Generic.IList{System.Collections.Generic.KeyValuePair{System.Int32,HelixToolkit.SharpDX.Model.Scene.SceneNode}},System.Collections.Generic.Stack{System.Collections.Generic.KeyValuePair{System.Int32,System.Collections.Generic.IList{HelixToolkit.SharpDX.Model.Scene.SceneNode}}})">
+  PreorderDFT(IList&lt;SceneNode&gt;, RenderContext, Func&lt;SceneNode, RenderContext, bool&gt;, IList&lt;KeyValuePair&lt;int, SceneNode&gt;&gt;, Stack&lt;KeyValuePair&lt;int, IList&lt;SceneNode&gt;&gt;&gt;?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Utilities/TreeTraverser.cs/#L124"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Preorders the DFT without using Linq.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void PreorderDFT(this IList&lt;SceneNode&gt; nodes, RenderContext context, Func&lt;SceneNode, RenderContext, bool&gt; condition, IList&lt;KeyValuePair&lt;int, SceneNode&gt;&gt; results, Stack&lt;KeyValuePair&lt;int, IList&lt;SceneNode&gt;&gt;&gt;? stackCache = null)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>nodes</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ilist-1">IList</a>&lt;<a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html">SceneNode</a>&gt;</dt>
+    <dd><p>The nodes.</p>
+</dd>
+    <dt><code>context</code> <a class="xref" href="HelixToolkit.SharpDX.RenderContext.html">RenderContext</a></dt>
+    <dd><p>The context.</p>
+</dd>
+    <dt><code>condition</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.func-3">Func</a>&lt;<a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html">SceneNode</a>, <a class="xref" href="HelixToolkit.SharpDX.RenderContext.html">RenderContext</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a>&gt;</dt>
+    <dd><p>The condition.</p>
+</dd>
+    <dt><code>results</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ilist-1">IList</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.keyvaluepair-2">KeyValuePair</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a>, <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html">SceneNode</a>&gt;&gt;</dt>
+    <dd><p>The results.</p>
+</dd>
+    <dt><code>stackCache</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.stack-1">Stack</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.keyvaluepair-2">KeyValuePair</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ilist-1">IList</a>&lt;<a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html">SceneNode</a>&gt;&gt;&gt;</dt>
+    <dd><p>The stack cache.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_TreeTraverser_PreorderDFTGetCores_" data-uid="HelixToolkit.SharpDX.TreeTraverser.PreorderDFTGetCores*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_TreeTraverser_PreorderDFTGetCores_System_Collections_Generic_IEnumerable_HelixToolkit_SharpDX_Model_Scene_SceneNode__System_Func_HelixToolkit_SharpDX_Model_Scene_SceneNode_System_Boolean__System_Collections_Generic_Stack_System_Collections_Generic_IEnumerator_HelixToolkit_SharpDX_Model_Scene_SceneNode___" data-uid="HelixToolkit.SharpDX.TreeTraverser.PreorderDFTGetCores(System.Collections.Generic.IEnumerable{HelixToolkit.SharpDX.Model.Scene.SceneNode},System.Func{HelixToolkit.SharpDX.Model.Scene.SceneNode,System.Boolean},System.Collections.Generic.Stack{System.Collections.Generic.IEnumerator{HelixToolkit.SharpDX.Model.Scene.SceneNode}})">
+  PreorderDFTGetCores(IEnumerable&lt;SceneNode&gt;, Func&lt;SceneNode, bool&gt;, Stack&lt;IEnumerator&lt;SceneNode&gt;&gt;?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Utilities/TreeTraverser.cs/#L172"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Get render cores by Pre-ordered depth first traverse</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static IEnumerable&lt;RenderCore&gt; PreorderDFTGetCores(this IEnumerable&lt;SceneNode&gt; nodes, Func&lt;SceneNode, bool&gt; condition, Stack&lt;IEnumerator&lt;SceneNode&gt;&gt;? stackCache = null)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>nodes</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html">SceneNode</a>&gt;</dt>
+    <dd></dd>
+    <dt><code>condition</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.func-2">Func</a>&lt;<a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html">SceneNode</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a>&gt;</dt>
+    <dd></dd>
+    <dt><code>stackCache</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.stack-1">Stack</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerator-1">IEnumerator</a>&lt;<a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html">SceneNode</a>&gt;&gt;</dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="HelixToolkit.SharpDX.Core.RenderCore.html">RenderCore</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_TreeTraverser_PreorderDFTGetCores_" data-uid="HelixToolkit.SharpDX.TreeTraverser.PreorderDFTGetCores*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_TreeTraverser_PreorderDFTGetCores_System_Collections_Generic_IEnumerable_HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D__System_Func_HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_System_Boolean__System_Collections_Generic_Stack_System_Collections_Generic_IEnumerator_HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D___" data-uid="HelixToolkit.SharpDX.TreeTraverser.PreorderDFTGetCores(System.Collections.Generic.IEnumerable{HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D},System.Func{HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D,System.Boolean},System.Collections.Generic.Stack{System.Collections.Generic.IEnumerator{HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D}})">
+  PreorderDFTGetCores(IEnumerable&lt;SceneNode2D&gt;, Func&lt;SceneNode2D, bool&gt;, Stack&lt;IEnumerator&lt;SceneNode2D&gt;&gt;?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Utilities/TreeTraverser.cs/#L255"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Get render cores by Pre-ordered depth first traverse</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static IEnumerable&lt;RenderCore2D?&gt; PreorderDFTGetCores(this IEnumerable&lt;SceneNode2D&gt; nodes, Func&lt;SceneNode2D, bool&gt; condition, Stack&lt;IEnumerator&lt;SceneNode2D&gt;&gt;? stackCache = null)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>nodes</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.html">SceneNode2D</a>&gt;</dt>
+    <dd></dd>
+    <dt><code>condition</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.func-2">Func</a>&lt;<a class="xref" href="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.html">SceneNode2D</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a>&gt;</dt>
+    <dd></dd>
+    <dt><code>stackCache</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.stack-1">Stack</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerator-1">IEnumerator</a>&lt;<a class="xref" href="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.html">SceneNode2D</a>&gt;&gt;</dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="HelixToolkit.SharpDX.Core2D.RenderCore2D.html">RenderCore2D</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_TreeTraverser_PreorderDFTRun_" data-uid="HelixToolkit.SharpDX.TreeTraverser.PreorderDFTRun*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_TreeTraverser_PreorderDFTRun_System_Collections_Generic_IList_HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D__System_Func_HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_System_Boolean__System_Collections_Generic_Stack_System_Collections_Generic_KeyValuePair_System_Int32_System_Collections_Generic_IList_HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D____" data-uid="HelixToolkit.SharpDX.TreeTraverser.PreorderDFTRun(System.Collections.Generic.IList{HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D},System.Func{HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D,System.Boolean},System.Collections.Generic.Stack{System.Collections.Generic.KeyValuePair{System.Int32,System.Collections.Generic.IList{HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D}}})">
+  PreorderDFTRun(IList&lt;SceneNode2D&gt;, Func&lt;SceneNode2D, bool&gt;, Stack&lt;KeyValuePair&lt;int, IList&lt;SceneNode2D&gt;&gt;&gt;?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Utilities/TreeTraverser.cs/#L215"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Preorders the DFT without Linq;</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void PreorderDFTRun(this IList&lt;SceneNode2D&gt; nodes, Func&lt;SceneNode2D, bool&gt; condition, Stack&lt;KeyValuePair&lt;int, IList&lt;SceneNode2D&gt;&gt;&gt;? stackCache = null)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>nodes</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ilist-1">IList</a>&lt;<a class="xref" href="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.html">SceneNode2D</a>&gt;</dt>
+    <dd><p>The nodes.</p>
+</dd>
+    <dt><code>condition</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.func-2">Func</a>&lt;<a class="xref" href="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.html">SceneNode2D</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a>&gt;</dt>
+    <dd><p>The condition.</p>
+</dd>
+    <dt><code>stackCache</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.stack-1">Stack</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.keyvaluepair-2">KeyValuePair</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ilist-1">IList</a>&lt;<a class="xref" href="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.html">SceneNode2D</a>&gt;&gt;&gt;</dt>
+    <dd><p>The stack cache.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_TreeTraverser_Traverse_" data-uid="HelixToolkit.SharpDX.TreeTraverser.Traverse*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_TreeTraverser_Traverse_HelixToolkit_SharpDX_Model_Scene_SceneNode_System_Boolean_System_Collections_Generic_Stack_System_Collections_Generic_IEnumerator_HelixToolkit_SharpDX_Model_Scene_SceneNode___" data-uid="HelixToolkit.SharpDX.TreeTraverser.Traverse(HelixToolkit.SharpDX.Model.Scene.SceneNode,System.Boolean,System.Collections.Generic.Stack{System.Collections.Generic.IEnumerator{HelixToolkit.SharpDX.Model.Scene.SceneNode}})">
+  Traverse(SceneNode, bool, Stack&lt;IEnumerator&lt;SceneNode&gt;&gt;?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Utilities/TreeTraverser.cs/#L54"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Traverses the specified only rendering.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static IEnumerable&lt;SceneNode&gt; Traverse(this SceneNode root, bool onlyRendering = false, Stack&lt;IEnumerator&lt;SceneNode&gt;&gt;? stackCache = null)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>root</code> <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html">SceneNode</a></dt>
+    <dd><p>The root.</p>
+</dd>
+    <dt><code>onlyRendering</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p>if set to <code>true</code> [only rendering].</p>
+</dd>
+    <dt><code>stackCache</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.stack-1">Stack</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerator-1">IEnumerator</a>&lt;<a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html">SceneNode</a>&gt;&gt;</dt>
+    <dd><p>The stack cache.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html">SceneNode</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_TreeTraverser_Traverse_" data-uid="HelixToolkit.SharpDX.TreeTraverser.Traverse*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_TreeTraverser_Traverse_System_Collections_Generic_IEnumerable_HelixToolkit_SharpDX_Model_Scene_SceneNode__System_Boolean_System_Collections_Generic_Stack_System_Collections_Generic_IEnumerator_HelixToolkit_SharpDX_Model_Scene_SceneNode___" data-uid="HelixToolkit.SharpDX.TreeTraverser.Traverse(System.Collections.Generic.IEnumerable{HelixToolkit.SharpDX.Model.Scene.SceneNode},System.Boolean,System.Collections.Generic.Stack{System.Collections.Generic.IEnumerator{HelixToolkit.SharpDX.Model.Scene.SceneNode}})">
+  Traverse(IEnumerable&lt;SceneNode&gt;, bool, Stack&lt;IEnumerator&lt;SceneNode&gt;&gt;?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Utilities/TreeTraverser.cs/#L67"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Traverses the specified condition.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static IEnumerable&lt;SceneNode&gt; Traverse(this IEnumerable&lt;SceneNode&gt; nodes, bool onlyRendering = false, Stack&lt;IEnumerator&lt;SceneNode&gt;&gt;? stackCache = null)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>nodes</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html">SceneNode</a>&gt;</dt>
+    <dd><p>The nodes.</p>
+</dd>
+    <dt><code>onlyRendering</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p>Only the node is currently rendering. The nodes set to be Visible = false or IsRendering = false will not be traversed.</p>
+</dd>
+    <dt><code>stackCache</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.stack-1">Stack</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerator-1">IEnumerator</a>&lt;<a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html">SceneNode</a>&gt;&gt;</dt>
+    <dd><p>The stack cache.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html">SceneNode</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_TreeTraverser_TraverseUp_" data-uid="HelixToolkit.SharpDX.TreeTraverser.TraverseUp*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_TreeTraverser_TraverseUp_HelixToolkit_SharpDX_Model_Scene_SceneNode_" data-uid="HelixToolkit.SharpDX.TreeTraverser.TraverseUp(HelixToolkit.SharpDX.Model.Scene.SceneNode)">
+  TraverseUp(SceneNode?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Utilities/TreeTraverser.cs/#L15"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Traverses up to the root</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static IEnumerable&lt;SceneNode&gt; TraverseUp(this SceneNode? node)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>node</code> <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html">SceneNode</a></dt>
+    <dd><p>The node.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html">SceneNode</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Utilities/TreeTraverser.cs/#L8" class="edit-link">Edit this page</a>
+        </div>
+
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          Copyright (c) 2023 Helix Toolkit contributors
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

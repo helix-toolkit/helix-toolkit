@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Interface IModelContainer | Helix Toolkit - 3D for .NET </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Interface IModelContainer | Helix Toolkit - 3D for .NET ">
+      
+      
+      <link rel="icon" href="../images/favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/helix-toolkit/helix-toolkit/new/develop3/apiSpec/new?filename=HelixToolkit_SharpDX_IModelContainer.md&amp;value=---%0Auid%3A%20HelixToolkit.SharpDX.IModelContainer%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="ManagedReference">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../images/favicon.ico" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="HelixToolkit.SharpDX.IModelContainer">
+
+
+
+  <h1 id="HelixToolkit_SharpDX_IModelContainer" data-uid="HelixToolkit.SharpDX.IModelContainer" class="text-break">
+Interface IModelContainer  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Interface/IModelContainer.cs/#L8"><i class="bi bi-code-slash"></i></a>
+  </h1>
+
+  <div class="facts text-secondary">
+    <dl><dt>Namespace</dt><dd><a class="xref" href="HelixToolkit.html">HelixToolkit</a>.<a class="xref" href="HelixToolkit.SharpDX.html">SharpDX</a></dd></dl>
+  <dl><dt>Assembly</dt><dd>HelixToolkit.SharpDX.dll</dd></dl>
+  </div>
+
+  <div class="markdown summary"></div>
+  <div class="markdown conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public interface IModelContainer : IRenderHost, IGUID, IDisposable</code></pre>
+  </div>
+
+
+
+
+
+
+
+  <dl class="typelist inheritedMembers">
+    <dt>Inherited Members</dt>
+    <dd>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.IRenderHost.html#HelixToolkit_SharpDX_IRenderHost_ExceptionOccurred">IRenderHost.ExceptionOccurred</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.IRenderHost.html#HelixToolkit_SharpDX_IRenderHost_OnNewRenderTargetTexture">IRenderHost.OnNewRenderTargetTexture</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.IRenderHost.html#HelixToolkit_SharpDX_IRenderHost_StartRenderLoop">IRenderHost.StartRenderLoop</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.IRenderHost.html#HelixToolkit_SharpDX_IRenderHost_StopRenderLoop">IRenderHost.StopRenderLoop</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.IRenderHost.html#HelixToolkit_SharpDX_IRenderHost_Rendered">IRenderHost.Rendered</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.IRenderHost.html#HelixToolkit_SharpDX_IRenderHost_Device">IRenderHost.Device</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.IRenderHost.html#HelixToolkit_SharpDX_IRenderHost_ImmediateDeviceContext">IRenderHost.ImmediateDeviceContext</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.IRenderHost.html#HelixToolkit_SharpDX_IRenderHost_Device2D">IRenderHost.Device2D</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.IRenderHost.html#HelixToolkit_SharpDX_IRenderHost_ClearColor">IRenderHost.ClearColor</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.IRenderHost.html#HelixToolkit_SharpDX_IRenderHost_IsShadowMapEnabled">IRenderHost.IsShadowMapEnabled</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.IRenderHost.html#HelixToolkit_SharpDX_IRenderHost_MSAA">IRenderHost.MSAA</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.IRenderHost.html#HelixToolkit_SharpDX_IRenderHost_Viewport">IRenderHost.Viewport</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.IRenderHost.html#HelixToolkit_SharpDX_IRenderHost_RenderContext">IRenderHost.RenderContext</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.IRenderHost.html#HelixToolkit_SharpDX_IRenderHost_Renderer">IRenderHost.Renderer</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.IRenderHost.html#HelixToolkit_SharpDX_IRenderHost_SetDefaultRenderTargets_System_Boolean_">IRenderHost.SetDefaultRenderTargets(bool)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.IRenderHost.html#HelixToolkit_SharpDX_IRenderHost_EffectsManager">IRenderHost.EffectsManager</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.IRenderHost.html#HelixToolkit_SharpDX_IRenderHost_RenderTechnique">IRenderHost.RenderTechnique</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.IRenderHost.html#HelixToolkit_SharpDX_IRenderHost_FeatureLevel">IRenderHost.FeatureLevel</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.IRenderHost.html#HelixToolkit_SharpDX_IRenderHost_IsDeferredLighting">IRenderHost.IsDeferredLighting</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.IRenderHost.html#HelixToolkit_SharpDX_IRenderHost_ActualHeight">IRenderHost.ActualHeight</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.IRenderHost.html#HelixToolkit_SharpDX_IRenderHost_ActualWidth">IRenderHost.ActualWidth</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.IRenderHost.html#HelixToolkit_SharpDX_IRenderHost_DpiScale">IRenderHost.DpiScale</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.IRenderHost.html#HelixToolkit_SharpDX_IRenderHost_IsBusy">IRenderHost.IsBusy</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.IRenderHost.html#HelixToolkit_SharpDX_IRenderHost_EnableRenderFrustum">IRenderHost.EnableRenderFrustum</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.IRenderHost.html#HelixToolkit_SharpDX_IRenderHost_EnableSharingModelMode">IRenderHost.EnableSharingModelMode</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.IRenderHost.html#HelixToolkit_SharpDX_IRenderHost_SharedModelContainer">IRenderHost.SharedModelContainer</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.IRenderHost.html#HelixToolkit_SharpDX_IRenderHost_IsRendering">IRenderHost.IsRendering</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.IRenderHost.html#HelixToolkit_SharpDX_IRenderHost_RenderTargetBufferView">IRenderHost.RenderTargetBufferView</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.IRenderHost.html#HelixToolkit_SharpDX_IRenderHost_DepthStencilBufferView">IRenderHost.DepthStencilBufferView</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.IRenderHost.html#HelixToolkit_SharpDX_IRenderHost_D2DTarget">IRenderHost.D2DTarget</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.IRenderHost.html#HelixToolkit_SharpDX_IRenderHost_PerFrameFlattenedScene">IRenderHost.PerFrameFlattenedScene</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.IRenderHost.html#HelixToolkit_SharpDX_IRenderHost_PerFrameLights">IRenderHost.PerFrameLights</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.IRenderHost.html#HelixToolkit_SharpDX_IRenderHost_PerFrameNodesWithPostEffect">IRenderHost.PerFrameNodesWithPostEffect</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.IRenderHost.html#HelixToolkit_SharpDX_IRenderHost_PerFrameOpaqueNodes">IRenderHost.PerFrameOpaqueNodes</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.IRenderHost.html#HelixToolkit_SharpDX_IRenderHost_PerFrameOpaqueNodesInFrustum">IRenderHost.PerFrameOpaqueNodesInFrustum</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.IRenderHost.html#HelixToolkit_SharpDX_IRenderHost_PerFrameTransparentNodesInFrustum">IRenderHost.PerFrameTransparentNodesInFrustum</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.IRenderHost.html#HelixToolkit_SharpDX_IRenderHost_PerFrameParticleNodes">IRenderHost.PerFrameParticleNodes</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.IRenderHost.html#HelixToolkit_SharpDX_IRenderHost_PerFrameTransparentNodes">IRenderHost.PerFrameTransparentNodes</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.IRenderHost.html#HelixToolkit_SharpDX_IRenderHost_StartD3D_System_Int32_System_Int32_">IRenderHost.StartD3D(int, int)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.IRenderHost.html#HelixToolkit_SharpDX_IRenderHost_EndD3D">IRenderHost.EndD3D()</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.IRenderHost.html#HelixToolkit_SharpDX_IRenderHost_StartRendering">IRenderHost.StartRendering()</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.IRenderHost.html#HelixToolkit_SharpDX_IRenderHost_StopRendering">IRenderHost.StopRendering()</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.IRenderHost.html#HelixToolkit_SharpDX_IRenderHost_UpdateAndRender">IRenderHost.UpdateAndRender()</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.IRenderHost.html#HelixToolkit_SharpDX_IRenderHost_InvalidateRender">IRenderHost.InvalidateRender()</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.IRenderHost.html#HelixToolkit_SharpDX_IRenderHost_InvalidateSceneGraph">IRenderHost.InvalidateSceneGraph()</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.IRenderHost.html#HelixToolkit_SharpDX_IRenderHost_InvalidatePerFrameRenderables">IRenderHost.InvalidatePerFrameRenderables()</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.IRenderHost.html#HelixToolkit_SharpDX_IRenderHost_Invalidate_HelixToolkit_SharpDX_Model_Scene_InvalidateTypes_">IRenderHost.Invalidate(InvalidateTypes)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.IRenderHost.html#HelixToolkit_SharpDX_IRenderHost_Resize_System_Int32_System_Int32_">IRenderHost.Resize(int, int)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.IRenderHost.html#HelixToolkit_SharpDX_IRenderHost_ShowRenderDetail">IRenderHost.ShowRenderDetail</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.IRenderHost.html#HelixToolkit_SharpDX_IRenderHost_RenderStatistics">IRenderHost.RenderStatistics</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.IRenderHost.html#HelixToolkit_SharpDX_IRenderHost_RenderConfiguration">IRenderHost.RenderConfiguration</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.IRenderHost.html#HelixToolkit_SharpDX_IRenderHost_RenderBuffer">IRenderHost.RenderBuffer</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.IRenderHost.html#HelixToolkit_SharpDX_IRenderHost_SceneGraphUpdated">IRenderHost.SceneGraphUpdated</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.IRenderHost.html#HelixToolkit_SharpDX_IRenderHost_EffectsManagerChanged">IRenderHost.EffectsManagerChanged</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.IRenderHost.html#HelixToolkit_SharpDX_IRenderHost_ClearRenderTarget_HelixToolkit_SharpDX_Render_DeviceContextProxy_System_Boolean_System_Boolean_">IRenderHost.ClearRenderTarget(DeviceContextProxy, bool, bool)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.IRenderHost.html#HelixToolkit_SharpDX_IRenderHost_EnableParallelProcessing">IRenderHost.EnableParallelProcessing</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.IGUID.html#HelixToolkit_SharpDX_IGUID_GUID">IGUID.GUID</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.idisposable.dispose">IDisposable.Dispose()</a>
+    </div>
+  </dd></dl>
+
+
+
+
+
+
+  <h2 class="section" id="properties">Properties
+</h2>
+
+
+  <a id="HelixToolkit_SharpDX_IModelContainer_CurrentRenderHost_" data-uid="HelixToolkit.SharpDX.IModelContainer.CurrentRenderHost*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_IModelContainer_CurrentRenderHost" data-uid="HelixToolkit.SharpDX.IModelContainer.CurrentRenderHost">
+  CurrentRenderHost
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Interface/IModelContainer.cs/#L30"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">IRenderHost? CurrentRenderHost { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.IRenderHost.html">IRenderHost</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_IModelContainer_Renderables_" data-uid="HelixToolkit.SharpDX.IModelContainer.Renderables*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_IModelContainer_Renderables" data-uid="HelixToolkit.SharpDX.IModelContainer.Renderables">
+  Renderables
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Interface/IModelContainer.cs/#L13"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">IEnumerable&lt;SceneNode?&gt; Renderables { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html">SceneNode</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h2 class="section" id="methods">Methods
+</h2>
+
+
+  <a id="HelixToolkit_SharpDX_IModelContainer_Attach_" data-uid="HelixToolkit.SharpDX.IModelContainer.Attach*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_IModelContainer_Attach_HelixToolkit_SharpDX_IRenderHost_" data-uid="HelixToolkit.SharpDX.IModelContainer.Attach(HelixToolkit.SharpDX.IRenderHost)">
+  Attach(IRenderHost)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Interface/IModelContainer.cs/#L35"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">void Attach(IRenderHost host)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>host</code> <a class="xref" href="HelixToolkit.SharpDX.IRenderHost.html">IRenderHost</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_IModelContainer_AttachViewport3DX_" data-uid="HelixToolkit.SharpDX.IModelContainer.AttachViewport3DX*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_IModelContainer_AttachViewport3DX_HelixToolkit_SharpDX_IViewport3DX_" data-uid="HelixToolkit.SharpDX.IModelContainer.AttachViewport3DX(HelixToolkit.SharpDX.IViewport3DX)">
+  AttachViewport3DX(IViewport3DX)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Interface/IModelContainer.cs/#L21"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">void AttachViewport3DX(IViewport3DX viewport)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>viewport</code> <a class="xref" href="HelixToolkit.SharpDX.IViewport3DX.html">IViewport3DX</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_IModelContainer_Detach_" data-uid="HelixToolkit.SharpDX.IModelContainer.Detach*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_IModelContainer_Detach_HelixToolkit_SharpDX_IRenderHost_" data-uid="HelixToolkit.SharpDX.IModelContainer.Detach(HelixToolkit.SharpDX.IRenderHost)">
+  Detach(IRenderHost)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Interface/IModelContainer.cs/#L36"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">void Detach(IRenderHost host)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>host</code> <a class="xref" href="HelixToolkit.SharpDX.IRenderHost.html">IRenderHost</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_IModelContainer_DettachViewport3DX_" data-uid="HelixToolkit.SharpDX.IModelContainer.DettachViewport3DX*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_IModelContainer_DettachViewport3DX_HelixToolkit_SharpDX_IViewport3DX_" data-uid="HelixToolkit.SharpDX.IModelContainer.DettachViewport3DX(HelixToolkit.SharpDX.IViewport3DX)">
+  DettachViewport3DX(IViewport3DX)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Interface/IModelContainer.cs/#L26"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">void DettachViewport3DX(IViewport3DX viewport)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>viewport</code> <a class="xref" href="HelixToolkit.SharpDX.IViewport3DX.html">IViewport3DX</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Interface/IModelContainer.cs/#L8" class="edit-link">Edit this page</a>
+        </div>
+
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          Copyright (c) 2023 Helix Toolkit contributors
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

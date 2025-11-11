@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Class SwapChainCompositionRenderHost | Helix Toolkit - 3D for .NET </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Class SwapChainCompositionRenderHost | Helix Toolkit - 3D for .NET ">
+      
+      
+      <link rel="icon" href="../images/favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/helix-toolkit/helix-toolkit/new/develop3/apiSpec/new?filename=HelixToolkit_WinUI_SharpDX_SwapChainCompositionRenderHost.md&amp;value=---%0Auid%3A%20HelixToolkit.WinUI.SharpDX.SwapChainCompositionRenderHost%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="ManagedReference">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../images/favicon.ico" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="HelixToolkit.WinUI.SharpDX.SwapChainCompositionRenderHost">
+
+
+
+  <h1 id="HelixToolkit_WinUI_SharpDX_SwapChainCompositionRenderHost" data-uid="HelixToolkit.WinUI.SharpDX.SwapChainCompositionRenderHost" class="text-break">
+Class SwapChainCompositionRenderHost  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.WinUI.SharpDX/SwapChainCompositionRenderHost.cs/#L11"><i class="bi bi-code-slash"></i></a>
+  </h1>
+
+  <div class="facts text-secondary">
+    <dl><dt>Namespace</dt><dd><a class="xref" href="HelixToolkit.html">HelixToolkit</a>.<a class="xref" href="HelixToolkit.WinUI.html">WinUI</a>.<a class="xref" href="HelixToolkit.WinUI.SharpDX.html">SharpDX</a></dd></dl>
+  <dl><dt>Assembly</dt><dd>HelixToolkit.WinUI.SharpDX.dll</dd></dl>
+  </div>
+
+  <div class="markdown summary"></div>
+  <div class="markdown conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class SwapChainCompositionRenderHost : DefaultRenderHost, IRenderHost, IGUID, IDisposable</code></pre>
+  </div>
+
+
+
+
+  <dl class="typelist inheritance">
+    <dt>Inheritance</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
+      <div><a class="xref" href="HelixToolkit.SharpDX.DisposeObject.html">DisposeObject</a></div>
+      <div><a class="xref" href="HelixToolkit.SharpDX.Render.DX11RenderHostBase.html">DX11RenderHostBase</a></div>
+      <div><a class="xref" href="HelixToolkit.SharpDX.Render.DefaultRenderHost.html">DefaultRenderHost</a></div>
+      <div><span class="xref">SwapChainCompositionRenderHost</span></div>
+    </dd>
+  </dl>
+
+  <dl class="typelist implements">
+    <dt>Implements</dt>
+    <dd>
+      <div><a class="xref" href="HelixToolkit.SharpDX.IRenderHost.html">IRenderHost</a></div>
+      <div><a class="xref" href="HelixToolkit.SharpDX.IGUID.html">IGUID</a></div>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.idisposable">IDisposable</a></div>
+    </dd>
+  </dl>
+
+
+  <dl class="typelist inheritedMembers">
+    <dt>Inherited Members</dt>
+    <dd>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Render.DefaultRenderHost.html#HelixToolkit_SharpDX_Render_DefaultRenderHost_PreRender_System_Boolean_System_Boolean_">DefaultRenderHost.PreRender(bool, bool)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Render.DefaultRenderHost.html#HelixToolkit_SharpDX_Render_DefaultRenderHost_OnRender_System_TimeSpan_">DefaultRenderHost.OnRender(TimeSpan)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Render.DefaultRenderHost.html#HelixToolkit_SharpDX_Render_DefaultRenderHost_PostRender">DefaultRenderHost.PostRender()</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Render.DefaultRenderHost.html#HelixToolkit_SharpDX_Render_DefaultRenderHost_OnRender2D_System_TimeSpan_">DefaultRenderHost.OnRender2D(TimeSpan)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Render.DefaultRenderHost.html#HelixToolkit_SharpDX_Render_DefaultRenderHost_OnStartD3D">DefaultRenderHost.OnStartD3D()</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Render.DefaultRenderHost.html#HelixToolkit_SharpDX_Render_DefaultRenderHost_OnEndingD3D">DefaultRenderHost.OnEndingD3D()</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Render.DefaultRenderHost.html#HelixToolkit_SharpDX_Render_DefaultRenderHost_OnDispose_System_Boolean_">DefaultRenderHost.OnDispose(bool)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Render.DefaultRenderHost.html#HelixToolkit_SharpDX_Render_DefaultRenderHost_SetupFrustumTestFunctions">DefaultRenderHost.SetupFrustumTestFunctions()</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Render.DefaultRenderHost.html#HelixToolkit_SharpDX_Render_DefaultRenderHost_viewportRenderables">DefaultRenderHost.viewportRenderables</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Render.DefaultRenderHost.html#HelixToolkit_SharpDX_Render_DefaultRenderHost_perFrameFlattenedScene">DefaultRenderHost.perFrameFlattenedScene</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Render.DefaultRenderHost.html#HelixToolkit_SharpDX_Render_DefaultRenderHost_lightNodes">DefaultRenderHost.lightNodes</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Render.DefaultRenderHost.html#HelixToolkit_SharpDX_Render_DefaultRenderHost_opaqueNodes">DefaultRenderHost.opaqueNodes</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Render.DefaultRenderHost.html#HelixToolkit_SharpDX_Render_DefaultRenderHost_opaqueNodesInFrustum">DefaultRenderHost.opaqueNodesInFrustum</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Render.DefaultRenderHost.html#HelixToolkit_SharpDX_Render_DefaultRenderHost_transparentNodes">DefaultRenderHost.transparentNodes</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Render.DefaultRenderHost.html#HelixToolkit_SharpDX_Render_DefaultRenderHost_transparentNodesInFrustum">DefaultRenderHost.transparentNodesInFrustum</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Render.DefaultRenderHost.html#HelixToolkit_SharpDX_Render_DefaultRenderHost_particleNodes">DefaultRenderHost.particleNodes</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Render.DefaultRenderHost.html#HelixToolkit_SharpDX_Render_DefaultRenderHost_preProcNodes">DefaultRenderHost.preProcNodes</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Render.DefaultRenderHost.html#HelixToolkit_SharpDX_Render_DefaultRenderHost_postEffectNodes">DefaultRenderHost.postEffectNodes</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Render.DefaultRenderHost.html#HelixToolkit_SharpDX_Render_DefaultRenderHost_globalEffectNodes">DefaultRenderHost.globalEffectNodes</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Render.DefaultRenderHost.html#HelixToolkit_SharpDX_Render_DefaultRenderHost_nodesWithPostEffect">DefaultRenderHost.nodesWithPostEffect</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Render.DefaultRenderHost.html#HelixToolkit_SharpDX_Render_DefaultRenderHost_screenSpacedNodes">DefaultRenderHost.screenSpacedNodes</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Render.DefaultRenderHost.html#HelixToolkit_SharpDX_Render_DefaultRenderHost_viewportRenderable2D">DefaultRenderHost.viewportRenderable2D</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Render.DefaultRenderHost.html#HelixToolkit_SharpDX_Render_DefaultRenderHost_PerFrameFlattenedScene">DefaultRenderHost.PerFrameFlattenedScene</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Render.DefaultRenderHost.html#HelixToolkit_SharpDX_Render_DefaultRenderHost_PerFrameLights">DefaultRenderHost.PerFrameLights</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Render.DefaultRenderHost.html#HelixToolkit_SharpDX_Render_DefaultRenderHost_PerFrameOpaqueNodes">DefaultRenderHost.PerFrameOpaqueNodes</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Render.DefaultRenderHost.html#HelixToolkit_SharpDX_Render_DefaultRenderHost_PerFrameOpaqueNodesInFrustum">DefaultRenderHost.PerFrameOpaqueNodesInFrustum</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Render.DefaultRenderHost.html#HelixToolkit_SharpDX_Render_DefaultRenderHost_PerFrameTransparentNodesInFrustum">DefaultRenderHost.PerFrameTransparentNodesInFrustum</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Render.DefaultRenderHost.html#HelixToolkit_SharpDX_Render_DefaultRenderHost_PerFrameTransparentNodes">DefaultRenderHost.PerFrameTransparentNodes</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Render.DefaultRenderHost.html#HelixToolkit_SharpDX_Render_DefaultRenderHost_PerFrameParticleNodes">DefaultRenderHost.PerFrameParticleNodes</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Render.DefaultRenderHost.html#HelixToolkit_SharpDX_Render_DefaultRenderHost_PerFrameNodesWithPostEffect">DefaultRenderHost.PerFrameNodesWithPostEffect</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Render.DX11RenderHostBase.html#HelixToolkit_SharpDX_Render_DX11RenderHostBase_GUID">DX11RenderHostBase.GUID</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Render.DX11RenderHostBase.html#HelixToolkit_SharpDX_Render_DX11RenderHostBase_RenderBuffer">DX11RenderHostBase.RenderBuffer</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Render.DX11RenderHostBase.html#HelixToolkit_SharpDX_Render_DX11RenderHostBase_Device">DX11RenderHostBase.Device</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Render.DX11RenderHostBase.html#HelixToolkit_SharpDX_Render_DX11RenderHostBase_ImmediateDeviceContext">DX11RenderHostBase.ImmediateDeviceContext</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Render.DX11RenderHostBase.html#HelixToolkit_SharpDX_Render_DX11RenderHostBase_Device2D">DX11RenderHostBase.Device2D</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Render.DX11RenderHostBase.html#HelixToolkit_SharpDX_Render_DX11RenderHostBase_ClearColor">DX11RenderHostBase.ClearColor</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Render.DX11RenderHostBase.html#HelixToolkit_SharpDX_Render_DX11RenderHostBase_IsShadowMapEnabled">DX11RenderHostBase.IsShadowMapEnabled</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Render.DX11RenderHostBase.html#HelixToolkit_SharpDX_Render_DX11RenderHostBase_MSAA">DX11RenderHostBase.MSAA</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Render.DX11RenderHostBase.html#HelixToolkit_SharpDX_Render_DX11RenderHostBase_Viewport">DX11RenderHostBase.Viewport</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Render.DX11RenderHostBase.html#HelixToolkit_SharpDX_Render_DX11RenderHostBase_renderContext">DX11RenderHostBase.renderContext</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Render.DX11RenderHostBase.html#HelixToolkit_SharpDX_Render_DX11RenderHostBase_RenderContext">DX11RenderHostBase.RenderContext</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Render.DX11RenderHostBase.html#HelixToolkit_SharpDX_Render_DX11RenderHostBase_RenderContext2D">DX11RenderHostBase.RenderContext2D</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Render.DX11RenderHostBase.html#HelixToolkit_SharpDX_Render_DX11RenderHostBase_EffectsManager">DX11RenderHostBase.EffectsManager</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Render.DX11RenderHostBase.html#HelixToolkit_SharpDX_Render_DX11RenderHostBase_RenderTechnique">DX11RenderHostBase.RenderTechnique</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Render.DX11RenderHostBase.html#HelixToolkit_SharpDX_Render_DX11RenderHostBase_IsDeferredLighting">DX11RenderHostBase.IsDeferredLighting</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Render.DX11RenderHostBase.html#HelixToolkit_SharpDX_Render_DX11RenderHostBase_ActualHeight">DX11RenderHostBase.ActualHeight</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Render.DX11RenderHostBase.html#HelixToolkit_SharpDX_Render_DX11RenderHostBase_ActualWidth">DX11RenderHostBase.ActualWidth</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Render.DX11RenderHostBase.html#HelixToolkit_SharpDX_Render_DX11RenderHostBase_DpiScale">DX11RenderHostBase.DpiScale</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Render.DX11RenderHostBase.html#HelixToolkit_SharpDX_Render_DX11RenderHostBase_IsBusy">DX11RenderHostBase.IsBusy</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Render.DX11RenderHostBase.html#HelixToolkit_SharpDX_Render_DX11RenderHostBase_EnableRenderFrustum">DX11RenderHostBase.EnableRenderFrustum</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Render.DX11RenderHostBase.html#HelixToolkit_SharpDX_Render_DX11RenderHostBase_EnableSharingModelMode">DX11RenderHostBase.EnableSharingModelMode</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Render.DX11RenderHostBase.html#HelixToolkit_SharpDX_Render_DX11RenderHostBase_SharedModelContainer">DX11RenderHostBase.SharedModelContainer</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Render.DX11RenderHostBase.html#HelixToolkit_SharpDX_Render_DX11RenderHostBase_IsRendering">DX11RenderHostBase.IsRendering</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Render.DX11RenderHostBase.html#HelixToolkit_SharpDX_Render_DX11RenderHostBase_IsInitialized">DX11RenderHostBase.IsInitialized</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Render.DX11RenderHostBase.html#HelixToolkit_SharpDX_Render_DX11RenderHostBase_RenderTargetBufferView">DX11RenderHostBase.RenderTargetBufferView</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Render.DX11RenderHostBase.html#HelixToolkit_SharpDX_Render_DX11RenderHostBase_DepthStencilBufferView">DX11RenderHostBase.DepthStencilBufferView</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Render.DX11RenderHostBase.html#HelixToolkit_SharpDX_Render_DX11RenderHostBase_D2DTarget">DX11RenderHostBase.D2DTarget</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Render.DX11RenderHostBase.html#HelixToolkit_SharpDX_Render_DX11RenderHostBase_RenderStatistics">DX11RenderHostBase.RenderStatistics</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Render.DX11RenderHostBase.html#HelixToolkit_SharpDX_Render_DX11RenderHostBase_renderStatistics">DX11RenderHostBase.renderStatistics</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Render.DX11RenderHostBase.html#HelixToolkit_SharpDX_Render_DX11RenderHostBase_ShowRenderDetail">DX11RenderHostBase.ShowRenderDetail</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Render.DX11RenderHostBase.html#HelixToolkit_SharpDX_Render_DX11RenderHostBase_RenderConfiguration">DX11RenderHostBase.RenderConfiguration</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Render.DX11RenderHostBase.html#HelixToolkit_SharpDX_Render_DX11RenderHostBase_FeatureLevel">DX11RenderHostBase.FeatureLevel</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Render.DX11RenderHostBase.html#HelixToolkit_SharpDX_Render_DX11RenderHostBase_EnableParallelProcessing">DX11RenderHostBase.EnableParallelProcessing</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Render.DX11RenderHostBase.html#HelixToolkit_SharpDX_Render_DX11RenderHostBase_ExceptionOccurred">DX11RenderHostBase.ExceptionOccurred</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Render.DX11RenderHostBase.html#HelixToolkit_SharpDX_Render_DX11RenderHostBase_StartRenderLoop">DX11RenderHostBase.StartRenderLoop</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Render.DX11RenderHostBase.html#HelixToolkit_SharpDX_Render_DX11RenderHostBase_StopRenderLoop">DX11RenderHostBase.StopRenderLoop</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Render.DX11RenderHostBase.html#HelixToolkit_SharpDX_Render_DX11RenderHostBase_OnNewRenderTargetTexture">DX11RenderHostBase.OnNewRenderTargetTexture</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Render.DX11RenderHostBase.html#HelixToolkit_SharpDX_Render_DX11RenderHostBase_Rendered">DX11RenderHostBase.Rendered</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Render.DX11RenderHostBase.html#HelixToolkit_SharpDX_Render_DX11RenderHostBase_FrustumEnabledChanged">DX11RenderHostBase.FrustumEnabledChanged</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Render.DX11RenderHostBase.html#HelixToolkit_SharpDX_Render_DX11RenderHostBase_SceneGraphUpdated">DX11RenderHostBase.SceneGraphUpdated</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Render.DX11RenderHostBase.html#HelixToolkit_SharpDX_Render_DX11RenderHostBase_EffectsManagerChanged">DX11RenderHostBase.EffectsManagerChanged</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Render.DX11RenderHostBase.html#HelixToolkit_SharpDX_Render_DX11RenderHostBase_renderer">DX11RenderHostBase.renderer</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Render.DX11RenderHostBase.html#HelixToolkit_SharpDX_Render_DX11RenderHostBase_Renderer">DX11RenderHostBase.Renderer</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Render.DX11RenderHostBase.html#HelixToolkit_SharpDX_Render_DX11RenderHostBase_UpdateRequested">DX11RenderHostBase.UpdateRequested</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Render.DX11RenderHostBase.html#HelixToolkit_SharpDX_Render_DX11RenderHostBase_InvalidateRender">DX11RenderHostBase.InvalidateRender()</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Render.DX11RenderHostBase.html#HelixToolkit_SharpDX_Render_DX11RenderHostBase_InvalidateSceneGraph">DX11RenderHostBase.InvalidateSceneGraph()</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Render.DX11RenderHostBase.html#HelixToolkit_SharpDX_Render_DX11RenderHostBase_InvalidatePerFrameRenderables">DX11RenderHostBase.InvalidatePerFrameRenderables()</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Render.DX11RenderHostBase.html#HelixToolkit_SharpDX_Render_DX11RenderHostBase_Invalidate_HelixToolkit_SharpDX_Model_Scene_InvalidateTypes_">DX11RenderHostBase.Invalidate(InvalidateTypes)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Render.DX11RenderHostBase.html#HelixToolkit_SharpDX_Render_DX11RenderHostBase_CanRender">DX11RenderHostBase.CanRender()</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Render.DX11RenderHostBase.html#HelixToolkit_SharpDX_Render_DX11RenderHostBase_UpdateAndRender">DX11RenderHostBase.UpdateAndRender()</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Render.DX11RenderHostBase.html#HelixToolkit_SharpDX_Render_DX11RenderHostBase_ClearRenderTarget_HelixToolkit_SharpDX_Render_DeviceContextProxy_System_Boolean_System_Boolean_">DX11RenderHostBase.ClearRenderTarget(DeviceContextProxy, bool, bool)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Render.DX11RenderHostBase.html#HelixToolkit_SharpDX_Render_DX11RenderHostBase_SetDefaultRenderTargets_HelixToolkit_SharpDX_Render_DeviceContextProxy_System_Boolean_">DX11RenderHostBase.SetDefaultRenderTargets(DeviceContextProxy, bool)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Render.DX11RenderHostBase.html#HelixToolkit_SharpDX_Render_DX11RenderHostBase_Restart_System_Boolean_">DX11RenderHostBase.Restart(bool)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Render.DX11RenderHostBase.html#HelixToolkit_SharpDX_Render_DX11RenderHostBase_StartD3D_System_Int32_System_Int32_">DX11RenderHostBase.StartD3D(int, int)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Render.DX11RenderHostBase.html#HelixToolkit_SharpDX_Render_DX11RenderHostBase_StartRendering">DX11RenderHostBase.StartRendering()</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Render.DX11RenderHostBase.html#HelixToolkit_SharpDX_Render_DX11RenderHostBase_CreateAndBindBuffers">DX11RenderHostBase.CreateAndBindBuffers()</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Render.DX11RenderHostBase.html#HelixToolkit_SharpDX_Render_DX11RenderHostBase_OnInitializeBuffers_HelixToolkit_SharpDX_Render_DX11RenderBufferProxyBase_HelixToolkit_SharpDX_Render_IRenderer_">DX11RenderHostBase.OnInitializeBuffers(DX11RenderBufferProxyBase, IRenderer)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Render.DX11RenderHostBase.html#HelixToolkit_SharpDX_Render_DX11RenderHostBase_AttachRenderable_HelixToolkit_SharpDX_IDeviceResources_">DX11RenderHostBase.AttachRenderable(IDeviceResources)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Render.DX11RenderHostBase.html#HelixToolkit_SharpDX_Render_DX11RenderHostBase_CreateRenderContext">DX11RenderHostBase.CreateRenderContext()</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Render.DX11RenderHostBase.html#HelixToolkit_SharpDX_Render_DX11RenderHostBase_CreateRenderContext2D_SharpDX_Direct2D1_DeviceContext_">DX11RenderHostBase.CreateRenderContext2D(DeviceContext)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Render.DX11RenderHostBase.html#HelixToolkit_SharpDX_Render_DX11RenderHostBase_EndD3D">DX11RenderHostBase.EndD3D()</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Render.DX11RenderHostBase.html#HelixToolkit_SharpDX_Render_DX11RenderHostBase_StopRendering">DX11RenderHostBase.StopRendering()</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Render.DX11RenderHostBase.html#HelixToolkit_SharpDX_Render_DX11RenderHostBase_DisposeBuffers">DX11RenderHostBase.DisposeBuffers()</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Render.DX11RenderHostBase.html#HelixToolkit_SharpDX_Render_DX11RenderHostBase_DetachRenderable">DX11RenderHostBase.DetachRenderable()</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Render.DX11RenderHostBase.html#HelixToolkit_SharpDX_Render_DX11RenderHostBase_Resize_System_Int32_System_Int32_">DX11RenderHostBase.Resize(int, int)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Render.DX11RenderHostBase.html#HelixToolkit_SharpDX_Render_DX11RenderHostBase_SetDefaultRenderTargets_System_Boolean_">DX11RenderHostBase.SetDefaultRenderTargets(bool)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Render.DX11RenderHostBase.html#HelixToolkit_SharpDX_Render_DX11RenderHostBase_ReinitializeEffectsManager">DX11RenderHostBase.ReinitializeEffectsManager()</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Render.DX11RenderHostBase.html#HelixToolkit_SharpDX_Render_DX11RenderHostBase_TriggerSceneGraphUpdated">DX11RenderHostBase.TriggerSceneGraphUpdated()</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.DisposeObject.html#HelixToolkit_SharpDX_DisposeObject_RemoveAndDispose__1___0__">DisposeObject.RemoveAndDispose&lt;T&gt;(ref T)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.DisposeObject.html#HelixToolkit_SharpDX_DisposeObject_RemoveAndDispose__1___0_">DisposeObject.RemoveAndDispose&lt;T&gt;(T)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.DisposeObject.html#HelixToolkit_SharpDX_DisposeObject_RefCount">DisposeObject.RefCount</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.DisposeObject.html#HelixToolkit_SharpDX_DisposeObject_IncRef">DisposeObject.IncRef()</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.DisposeObject.html#HelixToolkit_SharpDX_DisposeObject_ForceDispose">DisposeObject.ForceDispose()</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.DisposeObject.html#HelixToolkit_SharpDX_DisposeObject_IsDisposed">DisposeObject.IsDisposed</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.DisposeObject.html#HelixToolkit_SharpDX_DisposeObject_Dispose">DisposeObject.Dispose()</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.DisposeObject.html#HelixToolkit_SharpDX_DisposeObject_Set__1___0____0_">DisposeObject.Set&lt;T&gt;(ref T, T)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">object.Equals(object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">object.Equals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode">object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype">object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone">object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals">object.ReferenceEquals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring">object.ToString()</a>
+    </div>
+  </dd></dl>
+
+
+
+
+
+
+  <h2 class="section" id="constructors">Constructors
+</h2>
+
+
+  <a id="HelixToolkit_WinUI_SharpDX_SwapChainCompositionRenderHost__ctor_" data-uid="HelixToolkit.WinUI.SharpDX.SwapChainCompositionRenderHost.#ctor*"></a>
+
+  <h3 id="HelixToolkit_WinUI_SharpDX_SwapChainCompositionRenderHost__ctor" data-uid="HelixToolkit.WinUI.SharpDX.SwapChainCompositionRenderHost.#ctor">
+  SwapChainCompositionRenderHost()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.WinUI.SharpDX/SwapChainCompositionRenderHost.cs/#L17"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="HelixToolkit.SharpDX.Render.SwapChainRenderHost.html">SwapChainRenderHost</a> class.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public SwapChainCompositionRenderHost()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_WinUI_SharpDX_SwapChainCompositionRenderHost__ctor_" data-uid="HelixToolkit.WinUI.SharpDX.SwapChainCompositionRenderHost.#ctor*"></a>
+
+  <h3 id="HelixToolkit_WinUI_SharpDX_SwapChainCompositionRenderHost__ctor_System_Func_HelixToolkit_SharpDX_IDevice3DResources_HelixToolkit_SharpDX_Render_IRenderer__" data-uid="HelixToolkit.WinUI.SharpDX.SwapChainCompositionRenderHost.#ctor(System.Func{HelixToolkit.SharpDX.IDevice3DResources,HelixToolkit.SharpDX.Render.IRenderer})">
+  SwapChainCompositionRenderHost(Func&lt;IDevice3DResources, IRenderer&gt;)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.WinUI.SharpDX/SwapChainCompositionRenderHost.cs/#L25"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="HelixToolkit.SharpDX.Render.SwapChainRenderHost.html">SwapChainRenderHost</a> class.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public SwapChainCompositionRenderHost(Func&lt;IDevice3DResources, IRenderer&gt; createRenderer)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>createRenderer</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.func-2">Func</a>&lt;<a class="xref" href="HelixToolkit.SharpDX.IDevice3DResources.html">IDevice3DResources</a>, <a class="xref" href="HelixToolkit.SharpDX.Render.IRenderer.html">IRenderer</a>&gt;</dt>
+    <dd><p>The create renderer.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <h2 class="section" id="methods">Methods
+</h2>
+
+
+  <a id="HelixToolkit_WinUI_SharpDX_SwapChainCompositionRenderHost_CreateRenderBuffer_" data-uid="HelixToolkit.WinUI.SharpDX.SwapChainCompositionRenderHost.CreateRenderBuffer*"></a>
+
+  <h3 id="HelixToolkit_WinUI_SharpDX_SwapChainCompositionRenderHost_CreateRenderBuffer" data-uid="HelixToolkit.WinUI.SharpDX.SwapChainCompositionRenderHost.CreateRenderBuffer">
+  CreateRenderBuffer()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.WinUI.SharpDX/SwapChainCompositionRenderHost.cs/#L33"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Creates the render buffer.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected override DX11RenderBufferProxyBase? CreateRenderBuffer()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.Render.DX11RenderBufferProxyBase.html">DX11RenderBufferProxyBase</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.WinUI.SharpDX/SwapChainCompositionRenderHost.cs/#L11" class="edit-link">Edit this page</a>
+        </div>
+
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          Copyright (c) 2023 Helix Toolkit contributors
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,866 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Class MeshGeometry3D | Helix Toolkit - 3D for .NET </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Class MeshGeometry3D | Helix Toolkit - 3D for .NET ">
+      
+      
+      <link rel="icon" href="../images/favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/helix-toolkit/helix-toolkit/new/develop3/apiSpec/new?filename=HelixToolkit_SharpDX_MeshGeometry3D.md&amp;value=---%0Auid%3A%20HelixToolkit.SharpDX.MeshGeometry3D%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="ManagedReference">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../images/favicon.ico" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="HelixToolkit.SharpDX.MeshGeometry3D">
+
+
+
+  <h1 id="HelixToolkit_SharpDX_MeshGeometry3D" data-uid="HelixToolkit.SharpDX.MeshGeometry3D" class="text-break">
+Class MeshGeometry3D  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Geometry/MeshGeometry3D.cs/#L10"><i class="bi bi-code-slash"></i></a>
+  </h1>
+
+  <div class="facts text-secondary">
+    <dl><dt>Namespace</dt><dd><a class="xref" href="HelixToolkit.html">HelixToolkit</a>.<a class="xref" href="HelixToolkit.SharpDX.html">SharpDX</a></dd></dl>
+  <dl><dt>Assembly</dt><dd>HelixToolkit.SharpDX.dll</dd></dl>
+  </div>
+
+  <div class="markdown summary"></div>
+  <div class="markdown conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[Serializable]
+[DataContract]
+public class MeshGeometry3D : Geometry3D, INotifyPropertyChanged, IGUID</code></pre>
+  </div>
+
+
+
+
+  <dl class="typelist inheritance">
+    <dt>Inheritance</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
+      <div><a class="xref" href="HelixToolkit.SharpDX.Model.ObservableObject.html">ObservableObject</a></div>
+      <div><a class="xref" href="HelixToolkit.SharpDX.Geometry3D.html">Geometry3D</a></div>
+      <div><span class="xref">MeshGeometry3D</span></div>
+    </dd>
+  </dl>
+
+  <dl class="typelist implements">
+    <dt>Implements</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.componentmodel.inotifypropertychanged">INotifyPropertyChanged</a></div>
+      <div><a class="xref" href="HelixToolkit.SharpDX.IGUID.html">IGUID</a></div>
+    </dd>
+  </dl>
+
+  <dl class="typelist derived">
+    <dt>Derived</dt>
+    <dd>
+      <div><a class="xref" href="HelixToolkit.SharpDX.BoneSkinnedMeshGeometry3D.html">BoneSkinnedMeshGeometry3D</a></div>
+    </dd>
+  </dl>
+
+  <dl class="typelist inheritedMembers">
+    <dt>Inherited Members</dt>
+    <dd>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Geometry3D.html#HelixToolkit_SharpDX_Geometry3D_VertexBuffer">Geometry3D.VertexBuffer</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Geometry3D.html#HelixToolkit_SharpDX_Geometry3D_TriangleBuffer">Geometry3D.TriangleBuffer</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Geometry3D.html#HelixToolkit_SharpDX_Geometry3D_GUID">Geometry3D.GUID</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Geometry3D.html#HelixToolkit_SharpDX_Geometry3D_Indices">Geometry3D.Indices</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Geometry3D.html#HelixToolkit_SharpDX_Geometry3D_Positions">Geometry3D.Positions</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Geometry3D.html#HelixToolkit_SharpDX_Geometry3D_Bound">Geometry3D.Bound</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Geometry3D.html#HelixToolkit_SharpDX_Geometry3D_BoundingSphere">Geometry3D.BoundingSphere</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Geometry3D.html#HelixToolkit_SharpDX_Geometry3D_Colors">Geometry3D.Colors</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Geometry3D.html#HelixToolkit_SharpDX_Geometry3D_Octree">Geometry3D.Octree</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Geometry3D.html#HelixToolkit_SharpDX_Geometry3D_OctreeDirty">Geometry3D.OctreeDirty</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Geometry3D.html#HelixToolkit_SharpDX_Geometry3D_IsDynamic">Geometry3D.IsDynamic</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Geometry3D.html#HelixToolkit_SharpDX_Geometry3D_PreDefinedVertexCount">Geometry3D.PreDefinedVertexCount</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Geometry3D.html#HelixToolkit_SharpDX_Geometry3D_PreDefinedIndexCount">Geometry3D.PreDefinedIndexCount</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Geometry3D.html#HelixToolkit_SharpDX_Geometry3D_IsTransient">Geometry3D.IsTransient</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Geometry3D.html#HelixToolkit_SharpDX_Geometry3D_DisableUpdateBound">Geometry3D.DisableUpdateBound</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Geometry3D.html#HelixToolkit_SharpDX_Geometry3D_OctreeParameter">Geometry3D.OctreeParameter</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Geometry3D.html#HelixToolkit_SharpDX_Geometry3D_UpdateVertices">Geometry3D.UpdateVertices()</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Geometry3D.html#HelixToolkit_SharpDX_Geometry3D_UpdateTriangles">Geometry3D.UpdateTriangles()</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Geometry3D.html#HelixToolkit_SharpDX_Geometry3D_UpdateColors">Geometry3D.UpdateColors()</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Geometry3D.html#HelixToolkit_SharpDX_Geometry3D_UpdateOctree_System_Boolean_">Geometry3D.UpdateOctree(bool)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Geometry3D.html#HelixToolkit_SharpDX_Geometry3D_CanCreateOctree">Geometry3D.CanCreateOctree()</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Geometry3D.html#HelixToolkit_SharpDX_Geometry3D_ClearOctree">Geometry3D.ClearOctree()</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Geometry3D.html#HelixToolkit_SharpDX_Geometry3D_ManualSetOctree_HelixToolkit_SharpDX_IOctreeBasic_">Geometry3D.ManualSetOctree(IOctreeBasic)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Geometry3D.html#HelixToolkit_SharpDX_Geometry3D_AssignTo_HelixToolkit_SharpDX_Geometry3D_">Geometry3D.AssignTo(Geometry3D)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Geometry3D.html#HelixToolkit_SharpDX_Geometry3D_UpdateBounds">Geometry3D.UpdateBounds()</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Geometry3D.html#HelixToolkit_SharpDX_Geometry3D_SetAsTransient">Geometry3D.SetAsTransient()</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Geometry3D.html#HelixToolkit_SharpDX_Geometry3D_ClearAllGeometryData">Geometry3D.ClearAllGeometryData()</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.ObservableObject.html#HelixToolkit_SharpDX_Model_ObservableObject_DisablePropertyChangedEvent">ObservableObject.DisablePropertyChangedEvent</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.ObservableObject.html#HelixToolkit_SharpDX_Model_ObservableObject_PropertyChanged">ObservableObject.PropertyChanged</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.ObservableObject.html#HelixToolkit_SharpDX_Model_ObservableObject_RaisePropertyChanged_System_String_">ObservableObject.RaisePropertyChanged(string)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.ObservableObject.html#HelixToolkit_SharpDX_Model_ObservableObject_RaisePropertyChanged_System_ComponentModel_PropertyChangedEventArgs_">ObservableObject.RaisePropertyChanged(PropertyChangedEventArgs)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.ObservableObject.html#HelixToolkit_SharpDX_Model_ObservableObject_Set__1___0____0_System_String_">ObservableObject.Set&lt;T&gt;(ref T, T, string)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.ObservableObject.html#HelixToolkit_SharpDX_Model_ObservableObject_Set__1___0____0_System_Boolean_System_String_">ObservableObject.Set&lt;T&gt;(ref T, T, bool, string)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">object.Equals(object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">object.Equals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode">object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype">object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone">object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals">object.ReferenceEquals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring">object.ToString()</a>
+    </div>
+  </dd></dl>
+
+  <dl class="typelist extensionMethods">
+    <dt>Extension Methods</dt>
+    <dd>
+  <div>
+      <a class="xref" href="HelixToolkit.Avalonia.SharpDX.Geometry3DExtensions.html#HelixToolkit_Avalonia_SharpDX_Geometry3DExtensions_ToUnshared__1___0_">Geometry3DExtensions.ToUnshared&lt;T&gt;(T)</a>
+  </div>
+  <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Converter.html#HelixToolkit_SharpDX_Converter_ToWndMeshGeometry3D_HelixToolkit_SharpDX_MeshGeometry3D_">Converter.ToWndMeshGeometry3D(MeshGeometry3D)</a>
+  </div>
+  </dd></dl>
+
+
+
+
+
+  <h2 class="section" id="fields">Fields
+</h2>
+
+
+
+  <h3 id="HelixToolkit_SharpDX_MeshGeometry3D_EnableSmallTriangleHitTestScaling" data-uid="HelixToolkit.SharpDX.MeshGeometry3D.EnableSmallTriangleHitTestScaling">
+  EnableSmallTriangleHitTestScaling
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Geometry/MeshGeometry3D.cs/#L31"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Used to enable small triangle hit test. It uses <a class="xref" href="HelixToolkit.SharpDX.MeshGeometry3D.html#HelixToolkit_SharpDX_MeshGeometry3D_SmallTriangleEdgeLengthSquare">SmallTriangleEdgeLengthSquare</a>
+to determine if triangle is too small. If it is too small, scale up the triangle before
+hit test.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool EnableSmallTriangleHitTestScaling</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_SharpDX_MeshGeometry3D_SmallTriangleEdgeLengthSquare" data-uid="HelixToolkit.SharpDX.MeshGeometry3D.SmallTriangleEdgeLengthSquare">
+  SmallTriangleEdgeLengthSquare
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Geometry/MeshGeometry3D.cs/#L25"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Used to determine if the triangle is small.
+Small triangle is defined as any edge length square is smaller than
+<a class="xref" href="HelixToolkit.SharpDX.MeshGeometry3D.html#HelixToolkit_SharpDX_MeshGeometry3D_SmallTriangleEdgeLengthSquare">SmallTriangleEdgeLengthSquare</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static float SmallTriangleEdgeLengthSquare</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_SharpDX_MeshGeometry3D_SmallTriangleHitTestScaling" data-uid="HelixToolkit.SharpDX.MeshGeometry3D.SmallTriangleHitTestScaling">
+  SmallTriangleHitTestScaling
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Geometry/MeshGeometry3D.cs/#L19"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Used to scale up small triangle during hit test.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static float SmallTriangleHitTestScaling</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+  <h2 class="section" id="properties">Properties
+</h2>
+
+
+  <a id="HelixToolkit_SharpDX_MeshGeometry3D_BiTangents_" data-uid="HelixToolkit.SharpDX.MeshGeometry3D.BiTangents*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_MeshGeometry3D_BiTangents" data-uid="HelixToolkit.SharpDX.MeshGeometry3D.BiTangents">
+  BiTangents
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Geometry/MeshGeometry3D.cs/#L72"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Does not raise property changed event</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[DataMember]
+public Vector3Collection? BiTangents { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Vector3Collection.html">Vector3Collection</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_MeshGeometry3D_Normals_" data-uid="HelixToolkit.SharpDX.MeshGeometry3D.Normals*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_MeshGeometry3D_Normals" data-uid="HelixToolkit.SharpDX.MeshGeometry3D.Normals">
+  Normals
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Geometry/MeshGeometry3D.cs/#L35"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Does not raise property changed event</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[DataMember]
+public Vector3Collection? Normals { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Vector3Collection.html">Vector3Collection</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_MeshGeometry3D_ReturnMultipleHitsOnHitTest_" data-uid="HelixToolkit.SharpDX.MeshGeometry3D.ReturnMultipleHitsOnHitTest*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_MeshGeometry3D_ReturnMultipleHitsOnHitTest" data-uid="HelixToolkit.SharpDX.MeshGeometry3D.ReturnMultipleHitsOnHitTest">
+  ReturnMultipleHitsOnHitTest
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Geometry/MeshGeometry3D.cs/#L219"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Callers should set this property to true before calling HitTest if the callers need multiple hits throughout the geometry.
+This is useful when the geometry is cut by a plane.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool ReturnMultipleHitsOnHitTest { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_MeshGeometry3D_Tangents_" data-uid="HelixToolkit.SharpDX.MeshGeometry3D.Tangents*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_MeshGeometry3D_Tangents" data-uid="HelixToolkit.SharpDX.MeshGeometry3D.Tangents">
+  Tangents
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Geometry/MeshGeometry3D.cs/#L63"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Does not raise property changed event</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[DataMember]
+public Vector3Collection? Tangents { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Vector3Collection.html">Vector3Collection</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_MeshGeometry3D_TextureCoordinates_" data-uid="HelixToolkit.SharpDX.MeshGeometry3D.TextureCoordinates*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_MeshGeometry3D_TextureCoordinates" data-uid="HelixToolkit.SharpDX.MeshGeometry3D.TextureCoordinates">
+  TextureCoordinates
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Geometry/MeshGeometry3D.cs/#L45"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Texture Coordinates</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[DataMember]
+public Vector2Collection? TextureCoordinates { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Vector2Collection.html">Vector2Collection</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_MeshGeometry3D_TriangleIndices_" data-uid="HelixToolkit.SharpDX.MeshGeometry3D.TriangleIndices*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_MeshGeometry3D_TriangleIndices" data-uid="HelixToolkit.SharpDX.MeshGeometry3D.TriangleIndices">
+  TriangleIndices
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Geometry/MeshGeometry3D.cs/#L95"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>A proxy member for <a class="xref" href="HelixToolkit.SharpDX.Geometry3D.html#HelixToolkit_SharpDX_Geometry3D_Indices">Indices</a></p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[IgnoreDataMember]
+public IntCollection? TriangleIndices { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.IntCollection.html">IntCollection</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_MeshGeometry3D_Triangles_" data-uid="HelixToolkit.SharpDX.MeshGeometry3D.Triangles*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_MeshGeometry3D_Triangles" data-uid="HelixToolkit.SharpDX.MeshGeometry3D.Triangles">
+  Triangles
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Geometry/MeshGeometry3D.cs/#L78"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IEnumerable&lt;Geometry3D.Triangle&gt; Triangles { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="HelixToolkit.SharpDX.Geometry3D.html">Geometry3D</a>.<a class="xref" href="HelixToolkit.SharpDX.Geometry3D.Triangle.html">Triangle</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h2 class="section" id="methods">Methods
+</h2>
+
+
+  <a id="HelixToolkit_SharpDX_MeshGeometry3D_CreateOctree_" data-uid="HelixToolkit.SharpDX.MeshGeometry3D.CreateOctree*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_MeshGeometry3D_CreateOctree_HelixToolkit_SharpDX_OctreeBuildParameter_" data-uid="HelixToolkit.SharpDX.MeshGeometry3D.CreateOctree(HelixToolkit.SharpDX.OctreeBuildParameter)">
+  CreateOctree(OctreeBuildParameter)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Geometry/MeshGeometry3D.cs/#L176"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Override to create different octree in subclasses.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected override IOctreeBasic? CreateOctree(OctreeBuildParameter parameter)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>parameter</code> <a class="xref" href="HelixToolkit.SharpDX.OctreeBuildParameter.html">OctreeBuildParameter</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.IOctreeBasic.html">IOctreeBasic</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_MeshGeometry3D_HitTest_" data-uid="HelixToolkit.SharpDX.MeshGeometry3D.HitTest*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_MeshGeometry3D_HitTest_HelixToolkit_SharpDX_HitTestContext_System_Numerics_Matrix4x4_System_Collections_Generic_List_HelixToolkit_SharpDX_HitTestResult___System_Object_" data-uid="HelixToolkit.SharpDX.MeshGeometry3D.HitTest(HelixToolkit.SharpDX.HitTestContext,System.Numerics.Matrix4x4,System.Collections.Generic.List{HelixToolkit.SharpDX.HitTestResult}@,System.Object)">
+  HitTest(HitTestContext?, Matrix4x4, ref List&lt;HitTestResult&gt;, object?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Geometry/MeshGeometry3D.cs/#L221"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual bool HitTest(HitTestContext? context, Matrix4x4 modelMatrix, ref List&lt;HitTestResult&gt; hits, object? originalSource)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>context</code> <a class="xref" href="HelixToolkit.SharpDX.HitTestContext.html">HitTestContext</a></dt>
+    <dd></dd>
+    <dt><code>modelMatrix</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.matrix4x4">Matrix4x4</a></dt>
+    <dd></dd>
+    <dt><code>hits</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1">List</a>&lt;<a class="xref" href="HelixToolkit.SharpDX.HitTestResult.html">HitTestResult</a>&gt;</dt>
+    <dd></dd>
+    <dt><code>originalSource</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_MeshGeometry3D_Merge_" data-uid="HelixToolkit.SharpDX.MeshGeometry3D.Merge*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_MeshGeometry3D_Merge_HelixToolkit_SharpDX_MeshGeometry3D___" data-uid="HelixToolkit.SharpDX.MeshGeometry3D.Merge(HelixToolkit.SharpDX.MeshGeometry3D[])">
+  Merge(params MeshGeometry3D[])
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Geometry/MeshGeometry3D.cs/#L113"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Merge meshes into one</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static MeshGeometry3D Merge(params MeshGeometry3D[] meshes)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>meshes</code> <a class="xref" href="HelixToolkit.SharpDX.MeshGeometry3D.html">MeshGeometry3D</a>[]</dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.MeshGeometry3D.html">MeshGeometry3D</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_MeshGeometry3D_OnAssignTo_" data-uid="HelixToolkit.SharpDX.MeshGeometry3D.OnAssignTo*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_MeshGeometry3D_OnAssignTo_HelixToolkit_SharpDX_Geometry3D_" data-uid="HelixToolkit.SharpDX.MeshGeometry3D.OnAssignTo(HelixToolkit.SharpDX.Geometry3D)">
+  OnAssignTo(Geometry3D)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Geometry/MeshGeometry3D.cs/#L186"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected override void OnAssignTo(Geometry3D target)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>target</code> <a class="xref" href="HelixToolkit.SharpDX.Geometry3D.html">Geometry3D</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_MeshGeometry3D_OnClearAllGeometryData_" data-uid="HelixToolkit.SharpDX.MeshGeometry3D.OnClearAllGeometryData*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_MeshGeometry3D_OnClearAllGeometryData" data-uid="HelixToolkit.SharpDX.MeshGeometry3D.OnClearAllGeometryData">
+  OnClearAllGeometryData()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Geometry/MeshGeometry3D.cs/#L334"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected override void OnClearAllGeometryData()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_MeshGeometry3D_UpdateNormals_" data-uid="HelixToolkit.SharpDX.MeshGeometry3D.UpdateNormals*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_MeshGeometry3D_UpdateNormals" data-uid="HelixToolkit.SharpDX.MeshGeometry3D.UpdateNormals">
+  UpdateNormals()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Geometry/MeshGeometry3D.cs/#L198"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void UpdateNormals()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_MeshGeometry3D_UpdateTextureCoordinates_" data-uid="HelixToolkit.SharpDX.MeshGeometry3D.UpdateTextureCoordinates*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_MeshGeometry3D_UpdateTextureCoordinates" data-uid="HelixToolkit.SharpDX.MeshGeometry3D.UpdateTextureCoordinates">
+  UpdateTextureCoordinates()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Geometry/MeshGeometry3D.cs/#L329"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Call to manually update texture coordinate buffer.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void UpdateTextureCoordinates()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Geometry/MeshGeometry3D.cs/#L10" class="edit-link">Edit this page</a>
+        </div>
+
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          Copyright (c) 2023 Helix Toolkit contributors
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

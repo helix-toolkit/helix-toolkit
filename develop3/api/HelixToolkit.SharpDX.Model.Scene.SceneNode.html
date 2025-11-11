@@ -1,0 +1,3493 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Class SceneNode | Helix Toolkit - 3D for .NET </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Class SceneNode | Helix Toolkit - 3D for .NET ">
+      
+      
+      <link rel="icon" href="../images/favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/helix-toolkit/helix-toolkit/new/develop3/apiSpec/new?filename=HelixToolkit_SharpDX_Model_Scene_SceneNode.md&amp;value=---%0Auid%3A%20HelixToolkit.SharpDX.Model.Scene.SceneNode%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="ManagedReference">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../images/favicon.ico" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="HelixToolkit.SharpDX.Model.Scene.SceneNode">
+
+
+
+  <h1 id="HelixToolkit_SharpDX_Model_Scene_SceneNode" data-uid="HelixToolkit.SharpDX.Model.Scene.SceneNode" class="text-break">
+Class SceneNode  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene/Abstract/SceneNode.cs/#L13"><i class="bi bi-code-slash"></i></a>
+  </h1>
+
+  <div class="facts text-secondary">
+    <dl><dt>Namespace</dt><dd><a class="xref" href="HelixToolkit.html">HelixToolkit</a>.<a class="xref" href="HelixToolkit.SharpDX.html">SharpDX</a>.<a class="xref" href="HelixToolkit.SharpDX.Model.html">Model</a>.<a class="xref" href="HelixToolkit.SharpDX.Model.Scene.html">Scene</a></dd></dl>
+  <dl><dt>Assembly</dt><dd>HelixToolkit.SharpDX.dll</dd></dl>
+  </div>
+
+  <div class="markdown summary"></div>
+  <div class="markdown conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public abstract class SceneNode : DisposeObject, IDisposable, IComparable&lt;SceneNode&gt;, IAnimationNode</code></pre>
+  </div>
+
+
+
+
+  <dl class="typelist inheritance">
+    <dt>Inheritance</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
+      <div><a class="xref" href="HelixToolkit.SharpDX.DisposeObject.html">DisposeObject</a></div>
+      <div><span class="xref">SceneNode</span></div>
+    </dd>
+  </dl>
+
+  <dl class="typelist implements">
+    <dt>Implements</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.idisposable">IDisposable</a></div>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.icomparable-1">IComparable</a>&lt;<a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html">SceneNode</a>&gt;</div>
+      <div><a class="xref" href="HelixToolkit.SharpDX.Animations.IAnimationNode.html">IAnimationNode</a></div>
+    </dd>
+  </dl>
+
+  <dl class="typelist derived">
+    <dt>Derived</dt>
+    <dd>
+      <div><a class="xref" href="HelixToolkit.SharpDX.Model.Scene.AxisPlaneGridNode.html">AxisPlaneGridNode</a></div>
+      <div><a class="xref" href="HelixToolkit.SharpDX.Model.Scene.BatchedMeshNode.html">BatchedMeshNode</a></div>
+      <div><a class="xref" href="HelixToolkit.SharpDX.Model.Scene.ContinuousRenderNode.html">ContinuousRenderNode</a></div>
+      <div><a class="xref" href="HelixToolkit.SharpDX.Model.Scene.DepthPrepassNode.html">DepthPrepassNode</a></div>
+      <div><a class="xref" href="HelixToolkit.SharpDX.Model.Scene.EnvironmentMapNode.html">EnvironmentMapNode</a></div>
+      <div><a class="xref" href="HelixToolkit.SharpDX.Model.Scene.GeometryNode.html">GeometryNode</a></div>
+      <div><a class="xref" href="HelixToolkit.SharpDX.Model.Scene.GroupNodeBase.html">GroupNodeBase</a></div>
+      <div><a class="xref" href="HelixToolkit.SharpDX.Model.Scene.LightNode.html">LightNode</a></div>
+      <div><a class="xref" href="HelixToolkit.SharpDX.Model.Scene.NodePostEffectBloom.html">NodePostEffectBloom</a></div>
+      <div><a class="xref" href="HelixToolkit.SharpDX.Model.Scene.NodePostEffectMeshOutlineBlur.html">NodePostEffectMeshOutlineBlur</a></div>
+      <div><a class="xref" href="HelixToolkit.SharpDX.Model.Scene.NodePostEffectXRay.html">NodePostEffectXRay</a></div>
+      <div><a class="xref" href="HelixToolkit.SharpDX.Model.Scene.NodePostEffectXRayGrid.html">NodePostEffectXRayGrid</a></div>
+      <div><a class="xref" href="HelixToolkit.SharpDX.Model.Scene.ParticleStormNode.html">ParticleStormNode</a></div>
+      <div><a class="xref" href="HelixToolkit.SharpDX.Model.Scene.ScreenDuplicationNode.html">ScreenDuplicationNode</a></div>
+      <div><a class="xref" href="HelixToolkit.SharpDX.Model.Scene.ScreenQuadNode.html">ScreenQuadNode</a></div>
+      <div><a class="xref" href="HelixToolkit.SharpDX.Model.Scene.ShadowMapNode.html">ShadowMapNode</a></div>
+      <div><a class="xref" href="HelixToolkit.SharpDX.Model.Scene.Sprite2DNode.html">Sprite2DNode</a></div>
+      <div><a class="xref" href="HelixToolkit.SharpDX.Model.Scene.VolumeTextureNode.html">VolumeTextureNode</a></div>
+    </dd>
+  </dl>
+
+  <dl class="typelist inheritedMembers">
+    <dt>Inherited Members</dt>
+    <dd>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.DisposeObject.html#HelixToolkit_SharpDX_DisposeObject_RemoveAndDispose__1___0__">DisposeObject.RemoveAndDispose&lt;T&gt;(ref T)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.DisposeObject.html#HelixToolkit_SharpDX_DisposeObject_RemoveAndDispose__1___0_">DisposeObject.RemoveAndDispose&lt;T&gt;(T)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.DisposeObject.html#HelixToolkit_SharpDX_DisposeObject_RefCount">DisposeObject.RefCount</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.DisposeObject.html#HelixToolkit_SharpDX_DisposeObject_IncRef">DisposeObject.IncRef()</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.DisposeObject.html#HelixToolkit_SharpDX_DisposeObject_ForceDispose">DisposeObject.ForceDispose()</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.DisposeObject.html#HelixToolkit_SharpDX_DisposeObject_IsDisposed">DisposeObject.IsDisposed</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.DisposeObject.html#HelixToolkit_SharpDX_DisposeObject_Dispose">DisposeObject.Dispose()</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.DisposeObject.html#HelixToolkit_SharpDX_DisposeObject_Set__1___0____0_">DisposeObject.Set&lt;T&gt;(ref T, T)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">object.Equals(object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">object.Equals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode">object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype">object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone">object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals">object.ReferenceEquals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring">object.ToString()</a>
+    </div>
+  </dd></dl>
+
+  <dl class="typelist extensionMethods">
+    <dt>Extension Methods</dt>
+    <dd>
+  <div>
+      <a class="xref" href="HelixToolkit.SharpDX.SceneNodeExtensions.html#HelixToolkit_SharpDX_SceneNodeExtensions_GetSceneNodeByType__1_HelixToolkit_SharpDX_Model_Scene_SceneNode_">SceneNodeExtensions.GetSceneNodeByType&lt;T&gt;(SceneNode)</a>
+  </div>
+  <div>
+      <a class="xref" href="HelixToolkit.SharpDX.SceneNodeExtensions.html#HelixToolkit_SharpDX_SceneNodeExtensions_TryGetBound_HelixToolkit_SharpDX_Model_Scene_SceneNode_HelixToolkit_Maths_BoundingBox__">SceneNodeExtensions.TryGetBound(SceneNode, out BoundingBox)</a>
+  </div>
+  <div>
+      <a class="xref" href="HelixToolkit.SharpDX.SceneNodeExtensions.html#HelixToolkit_SharpDX_SceneNodeExtensions_TryGetCentroid_HelixToolkit_SharpDX_Model_Scene_SceneNode_System_Numerics_Vector3__">SceneNodeExtensions.TryGetCentroid(SceneNode, out Vector3)</a>
+  </div>
+  <div>
+      <a class="xref" href="HelixToolkit.SharpDX.SceneNodeExtensions.html#HelixToolkit_SharpDX_SceneNodeExtensions_UpdateAllTransformMatrix_HelixToolkit_SharpDX_Model_Scene_SceneNode_">SceneNodeExtensions.UpdateAllTransformMatrix(SceneNode)</a>
+  </div>
+  <div>
+      <a class="xref" href="HelixToolkit.SharpDX.TreeTraverser.html#HelixToolkit_SharpDX_TreeTraverser_ForceUpdateTransformsAndBounds_HelixToolkit_SharpDX_Model_Scene_SceneNode_">TreeTraverser.ForceUpdateTransformsAndBounds(SceneNode)</a>
+  </div>
+  <div>
+      <a class="xref" href="HelixToolkit.SharpDX.TreeTraverser.html#HelixToolkit_SharpDX_TreeTraverser_Traverse_HelixToolkit_SharpDX_Model_Scene_SceneNode_System_Boolean_System_Collections_Generic_Stack_System_Collections_Generic_IEnumerator_HelixToolkit_SharpDX_Model_Scene_SceneNode___">TreeTraverser.Traverse(SceneNode, bool, Stack&lt;IEnumerator&lt;SceneNode&gt;&gt;?)</a>
+  </div>
+  <div>
+      <a class="xref" href="HelixToolkit.SharpDX.TreeTraverser.html#HelixToolkit_SharpDX_TreeTraverser_TraverseUp_HelixToolkit_SharpDX_Model_Scene_SceneNode_">TreeTraverser.TraverseUp(SceneNode?)</a>
+  </div>
+  </dd></dl>
+
+
+
+
+
+  <h2 class="section" id="constructors">Constructors
+</h2>
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene_SceneNode__ctor_" data-uid="HelixToolkit.SharpDX.Model.Scene.SceneNode.#ctor*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene_SceneNode__ctor" data-uid="HelixToolkit.SharpDX.Model.Scene.SceneNode.#ctor">
+  SceneNode()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene/Abstract/SceneNode.cs/#L486"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html">SceneNode</a> class.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public SceneNode()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene_SceneNode__ctor_" data-uid="HelixToolkit.SharpDX.Model.Scene.SceneNode.#ctor*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene_SceneNode__ctor_System_String_" data-uid="HelixToolkit.SharpDX.Model.Scene.SceneNode.#ctor(System.String)">
+  SceneNode(string)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene/Abstract/SceneNode.cs/#L500"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html">SceneNode</a> class.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public SceneNode(string name)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>name</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The name.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <h2 class="section" id="fields">Fields
+</h2>
+
+
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene_SceneNode_MaxBound" data-uid="HelixToolkit.SharpDX.Model.Scene.SceneNode.MaxBound">
+  MaxBound
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene/Abstract/SceneNode.cs/#L821"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>The maximum bound</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly BoundingBox MaxBound</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Maths.BoundingBox.html">BoundingBox</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene_SceneNode_MaxBoundSphere" data-uid="HelixToolkit.SharpDX.Model.Scene.SceneNode.MaxBoundSphere">
+  MaxBoundSphere
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene/Abstract/SceneNode.cs/#L826"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>The maximum bound sphere</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly BoundingSphere MaxBoundSphere</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Maths.BoundingSphere.html">BoundingSphere</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene_SceneNode_NeedMatrixUpdate" data-uid="HelixToolkit.SharpDX.Model.Scene.SceneNode.NeedMatrixUpdate">
+  NeedMatrixUpdate
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene/Abstract/SceneNode.cs/#L101"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets a value indicating whether [need matrix update].</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected bool NeedMatrixUpdate</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><code>true</code> if [need matrix update]; otherwise, <code>false</code>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene_SceneNode_OnSetRenderTechnique" data-uid="HelixToolkit.SharpDX.Model.Scene.SceneNode.OnSetRenderTechnique">
+  OnSetRenderTechnique
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene/Abstract/SceneNode.cs/#L377"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>A delegate function to change render technique.</p>
+<p>There are two ways to set render technique, one is use this <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html#HelixToolkit_SharpDX_Model_Scene_SceneNode_OnSetRenderTechnique">OnSetRenderTechnique</a> delegate.
+The other one is to override the <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html#HelixToolkit_SharpDX_Model_Scene_SceneNode_OnCreateRenderTechnique_HelixToolkit_SharpDX_IEffectsManager_">OnCreateRenderTechnique(IEffectsManager)</a> function.</p>
+<p>If <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html#HelixToolkit_SharpDX_Model_Scene_SceneNode_OnSetRenderTechnique">OnSetRenderTechnique</a> is set, then <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html#HelixToolkit_SharpDX_Model_Scene_SceneNode_OnSetRenderTechnique">OnSetRenderTechnique</a> instead of <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html#HelixToolkit_SharpDX_Model_Scene_SceneNode_OnCreateRenderTechnique_HelixToolkit_SharpDX_IEffectsManager_">OnCreateRenderTechnique(IEffectsManager)</a> function will be called.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public SceneNode.SetRenderTechniqueFunc? OnSetRenderTechnique</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html">SceneNode</a>.<a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.SetRenderTechniqueFunc.html">SetRenderTechniqueFunc</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+  <h2 class="section" id="properties">Properties
+</h2>
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene_SceneNode_AffectsGlobalVariable_" data-uid="HelixToolkit.SharpDX.Model.Scene.SceneNode.AffectsGlobalVariable*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene_SceneNode_AffectsGlobalVariable" data-uid="HelixToolkit.SharpDX.Model.Scene.SceneNode.AffectsGlobalVariable">
+  AffectsGlobalVariable
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene/Abstract/SceneNode.cs/#L332"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Set this to true if this node updates global variable.</p>
+<p>Currently only used by screenspaced node and topmost node</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool AffectsGlobalVariable { get; protected set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene_SceneNode_AlwaysHittable_" data-uid="HelixToolkit.SharpDX.Model.Scene.SceneNode.AlwaysHittable*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene_SceneNode_AlwaysHittable" data-uid="HelixToolkit.SharpDX.Model.Scene.SceneNode.AlwaysHittable">
+  AlwaysHittable
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene/Abstract/SceneNode.cs/#L260"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets a value indicating whether [always hittable] even it is not rendered.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool AlwaysHittable { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><code>true</code> if [always hittable]; otherwise, <code>false</code>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene_SceneNode_Bounds_" data-uid="HelixToolkit.SharpDX.Model.Scene.SceneNode.Bounds*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene_SceneNode_Bounds" data-uid="HelixToolkit.SharpDX.Model.Scene.SceneNode.Bounds">
+  Bounds
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene/Abstract/SceneNode.cs/#L862"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p><a class="xref" href="HelixToolkit.SharpDX.IBoundable.html#HelixToolkit_SharpDX_IBoundable_Bounds">Bounds</a></p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual BoundingBox Bounds { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Maths.BoundingBox.html">BoundingBox</a></dt>
+    <dd><p>The bounds.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene_SceneNode_BoundsSphere_" data-uid="HelixToolkit.SharpDX.Model.Scene.SceneNode.BoundsSphere*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene_SceneNode_BoundsSphere" data-uid="HelixToolkit.SharpDX.Model.Scene.SceneNode.BoundsSphere">
+  BoundsSphere
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene/Abstract/SceneNode.cs/#L890"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p><a class="xref" href="HelixToolkit.SharpDX.IBoundable.html#HelixToolkit_SharpDX_IBoundable_BoundsSphere">BoundsSphere</a></p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual BoundingSphere BoundsSphere { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Maths.BoundingSphere.html">BoundingSphere</a></dt>
+    <dd><p>The bounds sphere.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene_SceneNode_BoundsSphereWithTransform_" data-uid="HelixToolkit.SharpDX.Model.Scene.SceneNode.BoundsSphereWithTransform*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene_SceneNode_BoundsSphereWithTransform" data-uid="HelixToolkit.SharpDX.Model.Scene.SceneNode.BoundsSphereWithTransform">
+  BoundsSphereWithTransform
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene/Abstract/SceneNode.cs/#L904"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p><a class="xref" href="HelixToolkit.SharpDX.IBoundable.html#HelixToolkit_SharpDX_IBoundable_BoundsSphereWithTransform">BoundsSphereWithTransform</a></p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual BoundingSphere BoundsSphereWithTransform { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Maths.BoundingSphere.html">BoundingSphere</a></dt>
+    <dd><p>The bounds sphere with transform.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene_SceneNode_BoundsWithTransform_" data-uid="HelixToolkit.SharpDX.Model.Scene.SceneNode.BoundsWithTransform*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene_SceneNode_BoundsWithTransform" data-uid="HelixToolkit.SharpDX.Model.Scene.SceneNode.BoundsWithTransform">
+  BoundsWithTransform
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene/Abstract/SceneNode.cs/#L876"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p><a class="xref" href="HelixToolkit.SharpDX.IBoundable.html#HelixToolkit_SharpDX_IBoundable_BoundsWithTransform">BoundsWithTransform</a></p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual BoundingBox BoundsWithTransform { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Maths.BoundingBox.html">BoundingBox</a></dt>
+    <dd><p>The bounds with transform.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene_SceneNode_EffectTechnique_" data-uid="HelixToolkit.SharpDX.Model.Scene.SceneNode.EffectTechnique*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene_SceneNode_EffectTechnique" data-uid="HelixToolkit.SharpDX.Model.Scene.SceneNode.EffectTechnique">
+  EffectTechnique
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene/Abstract/SceneNode.cs/#L293"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the effects technique.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IRenderTechnique? EffectTechnique { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.IRenderTechnique.html">IRenderTechnique</a></dt>
+    <dd><p>The effects technique.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene_SceneNode_EffectsManager_" data-uid="HelixToolkit.SharpDX.Model.Scene.SceneNode.EffectsManager*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene_SceneNode_EffectsManager" data-uid="HelixToolkit.SharpDX.Model.Scene.SceneNode.EffectsManager">
+  EffectsManager
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene/Abstract/SceneNode.cs/#L208"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the effects manager.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IEffectsManager? EffectsManager { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.IEffectsManager.html">IEffectsManager</a></dt>
+    <dd><p>The effects manager.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene_SceneNode_GUID_" data-uid="HelixToolkit.SharpDX.Model.Scene.SceneNode.GUID*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene_SceneNode_GUID" data-uid="HelixToolkit.SharpDX.Model.Scene.SceneNode.GUID">
+  GUID
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene/Abstract/SceneNode.cs/#L20"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Guid GUID { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.guid">Guid</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene_SceneNode_HasAnyPostEffect_" data-uid="HelixToolkit.SharpDX.Model.Scene.SceneNode.HasAnyPostEffect*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene_SceneNode_HasAnyPostEffect" data-uid="HelixToolkit.SharpDX.Model.Scene.SceneNode.HasAnyPostEffect">
+  HasAnyPostEffect
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene/Abstract/SceneNode.cs/#L1006"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets a value indicating whether this instance has any post effect.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool HasAnyPostEffect { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><code>true</code> if this instance has any post effect; otherwise, <code>false</code>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene_SceneNode_HasBound_" data-uid="HelixToolkit.SharpDX.Model.Scene.SceneNode.HasBound*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene_SceneNode_HasBound" data-uid="HelixToolkit.SharpDX.Model.Scene.SceneNode.HasBound">
+  HasBound
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene/Abstract/SceneNode.cs/#L918"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets a value indicating whether this instance has bound.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool HasBound { get; protected set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><code>true</code> if this instance has bound; otherwise, <code>false</code>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene_SceneNode_IsAnimationNode_" data-uid="HelixToolkit.SharpDX.Model.Scene.SceneNode.IsAnimationNode*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene_SceneNode_IsAnimationNode" data-uid="HelixToolkit.SharpDX.Model.Scene.SceneNode.IsAnimationNode">
+  IsAnimationNode
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene/Abstract/SceneNode.cs/#L307"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets a value indicating whether this node is animation node.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsAnimationNode { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><code>true</code> if this instance is animation node; otherwise, <code>false</code>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene_SceneNode_IsAnimationNodeRoot_" data-uid="HelixToolkit.SharpDX.Model.Scene.SceneNode.IsAnimationNodeRoot*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene_SceneNode_IsAnimationNodeRoot" data-uid="HelixToolkit.SharpDX.Model.Scene.SceneNode.IsAnimationNodeRoot">
+  IsAnimationNodeRoot
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene/Abstract/SceneNode.cs/#L314"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets a value indicating whether this node is animation node root.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsAnimationNodeRoot { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><code>true</code> if this node is animation node root; otherwise, <code>false</code>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene_SceneNode_IsAttached_" data-uid="HelixToolkit.SharpDX.Model.Scene.SceneNode.IsAttached*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene_SceneNode_IsAttached" data-uid="HelixToolkit.SharpDX.Model.Scene.SceneNode.IsAttached">
+  IsAttached
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene/Abstract/SceneNode.cs/#L197"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>If this has been attached onto renderhost.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsAttached { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene_SceneNode_IsHitTestVisible_" data-uid="HelixToolkit.SharpDX.Model.Scene.SceneNode.IsHitTestVisible*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene_SceneNode_IsHitTestVisible" data-uid="HelixToolkit.SharpDX.Model.Scene.SceneNode.IsHitTestVisible">
+  IsHitTestVisible
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene/Abstract/SceneNode.cs/#L249"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets a value indicating whether this instance is hit test visible.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsHitTestVisible { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><code>true</code> if this instance is hit test visible; otherwise, <code>false</code>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene_SceneNode_IsInFrustum_" data-uid="HelixToolkit.SharpDX.Model.Scene.SceneNode.IsInFrustum*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene_SceneNode_IsInFrustum" data-uid="HelixToolkit.SharpDX.Model.Scene.SceneNode.IsInFrustum">
+  IsInFrustum
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene/Abstract/SceneNode.cs/#L443"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets a value indicating whether this instance is in frustum in current frame.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsInFrustum { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><code>true</code> if this instance is in frustum; otherwise, <code>false</code>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene_SceneNode_IsRenderable_" data-uid="HelixToolkit.SharpDX.Model.Scene.SceneNode.IsRenderable*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene_SceneNode_IsRenderable" data-uid="HelixToolkit.SharpDX.Model.Scene.SceneNode.IsRenderable">
+  IsRenderable
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene/Abstract/SceneNode.cs/#L179"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets a value indicating whether this instance is renderable.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsRenderable { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><code>true</code> if this instance is renderable; otherwise, <code>false</code>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene_SceneNode_Items_" data-uid="HelixToolkit.SharpDX.Model.Scene.SceneNode.Items*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene_SceneNode_Items" data-uid="HelixToolkit.SharpDX.Model.Scene.SceneNode.Items">
+  Items
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene/Abstract/SceneNode.cs/#L230"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the readonly child items from outside UI component access.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ReadOnlyObservableFastList&lt;SceneNode&gt; Items { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.Utilities.ReadOnlyObservableFastList-1.html">ReadOnlyObservableFastList</a>&lt;<a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html">SceneNode</a>&gt;</dt>
+    <dd><p>The children.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene_SceneNode_ItemsCount_" data-uid="HelixToolkit.SharpDX.Model.Scene.SceneNode.ItemsCount*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene_SceneNode_ItemsCount" data-uid="HelixToolkit.SharpDX.Model.Scene.SceneNode.ItemsCount">
+  ItemsCount
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene/Abstract/SceneNode.cs/#L237"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the items count.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int ItemsCount { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The items count.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene_SceneNode_ModelMatrix_" data-uid="HelixToolkit.SharpDX.Model.Scene.SceneNode.ModelMatrix*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene_SceneNode_ModelMatrix" data-uid="HelixToolkit.SharpDX.Model.Scene.SceneNode.ModelMatrix">
+  ModelMatrix
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene/Abstract/SceneNode.cs/#L111"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the model matrix.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Matrix4x4 ModelMatrix { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.matrix4x4">Matrix4x4</a></dt>
+    <dd><p>The model matrix.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene_SceneNode_Name_" data-uid="HelixToolkit.SharpDX.Model.Scene.SceneNode.Name*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene_SceneNode_Name" data-uid="HelixToolkit.SharpDX.Model.Scene.SceneNode.Name">
+  Name
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene/Abstract/SceneNode.cs/#L34"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the name.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string Name { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The name.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene_SceneNode_OriginalBounds_" data-uid="HelixToolkit.SharpDX.Model.Scene.SceneNode.OriginalBounds*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene_SceneNode_OriginalBounds" data-uid="HelixToolkit.SharpDX.Model.Scene.SceneNode.OriginalBounds">
+  OriginalBounds
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene/Abstract/SceneNode.cs/#L834"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p><a class="xref" href="HelixToolkit.SharpDX.IBoundable.html#HelixToolkit_SharpDX_IBoundable_OriginalBounds">OriginalBounds</a></p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual BoundingBox OriginalBounds { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Maths.BoundingBox.html">BoundingBox</a></dt>
+    <dd><p>The original bounds.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene_SceneNode_OriginalBoundsSphere_" data-uid="HelixToolkit.SharpDX.Model.Scene.SceneNode.OriginalBoundsSphere*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene_SceneNode_OriginalBoundsSphere" data-uid="HelixToolkit.SharpDX.Model.Scene.SceneNode.OriginalBoundsSphere">
+  OriginalBoundsSphere
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene/Abstract/SceneNode.cs/#L848"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p><a class="xref" href="HelixToolkit.SharpDX.IBoundable.html#HelixToolkit_SharpDX_IBoundable_OriginalBoundsSphere">OriginalBoundsSphere</a></p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual BoundingSphere OriginalBoundsSphere { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Maths.BoundingSphere.html">BoundingSphere</a></dt>
+    <dd><p>The original bounds sphere.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene_SceneNode_Parent_" data-uid="HelixToolkit.SharpDX.Model.Scene.SceneNode.Parent*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene_SceneNode_Parent" data-uid="HelixToolkit.SharpDX.Model.Scene.SceneNode.Parent">
+  Parent
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene/Abstract/SceneNode.cs/#L133"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the parent.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public SceneNode? Parent { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html">SceneNode</a></dt>
+    <dd><p>The parent.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene_SceneNode_PostEffectNames_" data-uid="HelixToolkit.SharpDX.Model.Scene.SceneNode.PostEffectNames*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene_SceneNode_PostEffectNames" data-uid="HelixToolkit.SharpDX.Model.Scene.SceneNode.PostEffectNames">
+  PostEffectNames
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene/Abstract/SceneNode.cs/#L993"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the post effect names.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IEnumerable&lt;string&gt; PostEffectNames { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>&gt;</dt>
+    <dd><p>The post effect names.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene_SceneNode_RenderCore_" data-uid="HelixToolkit.SharpDX.Model.Scene.SceneNode.RenderCore*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene_SceneNode_RenderCore" data-uid="HelixToolkit.SharpDX.Model.Scene.SceneNode.RenderCore">
+  RenderCore
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene/Abstract/SceneNode.cs/#L356"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public RenderCore RenderCore { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.Core.RenderCore.html">RenderCore</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene_SceneNode_RenderOrder_" data-uid="HelixToolkit.SharpDX.Model.Scene.SceneNode.RenderOrder*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene_SceneNode_RenderOrder" data-uid="HelixToolkit.SharpDX.Model.Scene.SceneNode.RenderOrder">
+  RenderOrder
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene/Abstract/SceneNode.cs/#L79"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the render order. Manually specify the render order</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ushort RenderOrder { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.uint16">ushort</a></dt>
+    <dd><p>The render order.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene_SceneNode_RenderOrderKey_" data-uid="HelixToolkit.SharpDX.Model.Scene.SceneNode.RenderOrderKey*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene_SceneNode_RenderOrderKey" data-uid="HelixToolkit.SharpDX.Model.Scene.SceneNode.RenderOrderKey">
+  RenderOrderKey
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene/Abstract/SceneNode.cs/#L66"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the order key.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public OrderKey RenderOrderKey { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.Model.OrderKey.html">OrderKey</a></dt>
+    <dd><p>The render order key.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene_SceneNode_RenderType_" data-uid="HelixToolkit.SharpDX.Model.Scene.SceneNode.RenderType*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene_SceneNode_RenderType" data-uid="HelixToolkit.SharpDX.Model.Scene.SceneNode.RenderType">
+  RenderType
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene/Abstract/SceneNode.cs/#L270"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the type of the render.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public RenderType RenderType { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.RenderType.html">RenderType</a></dt>
+    <dd><p>The type of the render.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene_SceneNode_Tag_" data-uid="HelixToolkit.SharpDX.Model.Scene.SceneNode.Tag*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene_SceneNode_Tag" data-uid="HelixToolkit.SharpDX.Model.Scene.SceneNode.Tag">
+  Tag
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene/Abstract/SceneNode.cs/#L432"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the tag. This can be used to attach an external view model or property class object</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public object? Tag { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></dt>
+    <dd><p>The tag.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene_SceneNode_TotalModelMatrix_" data-uid="HelixToolkit.SharpDX.Model.Scene.SceneNode.TotalModelMatrix*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene_SceneNode_TotalModelMatrix" data-uid="HelixToolkit.SharpDX.Model.Scene.SceneNode.TotalModelMatrix">
+  TotalModelMatrix
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene/Abstract/SceneNode.cs/#L56"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the total model matrix.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Matrix4x4 TotalModelMatrix { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.matrix4x4">Matrix4x4</a></dt>
+    <dd><p>The total model matrix.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene_SceneNode_Visible_" data-uid="HelixToolkit.SharpDX.Model.Scene.SceneNode.Visible*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene_SceneNode_Visible" data-uid="HelixToolkit.SharpDX.Model.Scene.SceneNode.Visible">
+  Visible
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene/Abstract/SceneNode.cs/#L157"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets a value indicating whether this <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html">SceneNode</a> is visible.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool Visible { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><code>true</code> if visible; otherwise, <code>false</code>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene_SceneNode_WrapperSource_" data-uid="HelixToolkit.SharpDX.Model.Scene.SceneNode.WrapperSource*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene_SceneNode_WrapperSource" data-uid="HelixToolkit.SharpDX.Model.Scene.SceneNode.WrapperSource">
+  WrapperSource
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene/Abstract/SceneNode.cs/#L420"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the wrapper source used for such as hit test model, etc. The wrapper must set this so the <a class="xref" href="HelixToolkit.SharpDX.HitTestResult.html#HelixToolkit_SharpDX_HitTestResult_ModelHit">ModelHit</a> is the wrapper.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public object? WrapperSource { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></dt>
+    <dd><p>The hit test source.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h2 class="section" id="methods">Methods
+</h2>
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene_SceneNode_AddPostEffect_" data-uid="HelixToolkit.SharpDX.Model.Scene.SceneNode.AddPostEffect*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene_SceneNode_AddPostEffect_HelixToolkit_SharpDX_Model_IEffectAttributes_" data-uid="HelixToolkit.SharpDX.Model.Scene.SceneNode.AddPostEffect(HelixToolkit.SharpDX.Model.IEffectAttributes)">
+  AddPostEffect(IEffectAttributes)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene/Abstract/SceneNode.cs/#L1017"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Adds the post effect.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void AddPostEffect(IEffectAttributes effect)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>effect</code> <a class="xref" href="HelixToolkit.SharpDX.Model.IEffectAttributes.html">IEffectAttributes</a></dt>
+    <dd><p>The effect.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene_SceneNode_AssignDefaultValuesToCore_" data-uid="HelixToolkit.SharpDX.Model.Scene.SceneNode.AssignDefaultValuesToCore*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene_SceneNode_AssignDefaultValuesToCore_HelixToolkit_SharpDX_Core_RenderCore_" data-uid="HelixToolkit.SharpDX.Model.Scene.SceneNode.AssignDefaultValuesToCore(HelixToolkit.SharpDX.Core.RenderCore)">
+  AssignDefaultValuesToCore(RenderCore)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene/Abstract/SceneNode.cs/#L403"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Assigns the default values to core.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual void AssignDefaultValuesToCore(RenderCore core)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>core</code> <a class="xref" href="HelixToolkit.SharpDX.Core.RenderCore.html">RenderCore</a></dt>
+    <dd><p>The core.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene_SceneNode_Attach_" data-uid="HelixToolkit.SharpDX.Model.Scene.SceneNode.Attach*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene_SceneNode_Attach_HelixToolkit_SharpDX_IEffectsManager_" data-uid="HelixToolkit.SharpDX.Model.Scene.SceneNode.Attach(HelixToolkit.SharpDX.IEffectsManager)">
+  Attach(IEffectsManager?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene/Abstract/SceneNode.cs/#L511"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Attaches the element to the specified effectsManager and initialize all necessary graphics resources.</p>
+<p>To overide Attach, please override <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html#HelixToolkit_SharpDX_Model_Scene_SceneNode_OnAttach_HelixToolkit_SharpDX_IEffectsManager_">OnAttach(IEffectsManager)</a> function.</p>
+<p>To set different render technique instead of using technique from host, override <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html#HelixToolkit_SharpDX_Model_Scene_SceneNode_OnCreateRenderTechnique_HelixToolkit_SharpDX_IEffectsManager_">OnCreateRenderTechnique(IEffectsManager)</a></p>
+<p>Attach Flow: <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html#HelixToolkit_SharpDX_Model_Scene_SceneNode_OnCreateRenderTechnique_HelixToolkit_SharpDX_IEffectsManager_">OnCreateRenderTechnique(IEffectsManager)</a> -&gt; Set RenderHost -&gt; Get Effect -&gt; <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html#HelixToolkit_SharpDX_Model_Scene_SceneNode_OnAttach_HelixToolkit_SharpDX_IEffectsManager_">OnAttach(IEffectsManager)</a> -&gt; <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html#HelixToolkit_SharpDX_Model_Scene_SceneNode_InvalidateSceneGraph">InvalidateSceneGraph()</a></p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Attach(IEffectsManager? effectsManager)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>effectsManager</code> <a class="xref" href="HelixToolkit.SharpDX.IEffectsManager.html">IEffectsManager</a></dt>
+    <dd><p>The effectsManager.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene_SceneNode_CanHitTest_" data-uid="HelixToolkit.SharpDX.Model.Scene.SceneNode.CanHitTest*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene_SceneNode_CanHitTest_HelixToolkit_SharpDX_HitTestContext_" data-uid="HelixToolkit.SharpDX.Model.Scene.SceneNode.CanHitTest(HelixToolkit.SharpDX.HitTestContext)">
+  CanHitTest(HitTestContext?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene/Abstract/SceneNode.cs/#L800"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Determines whether this instance [can hit test] the specified context.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual bool CanHitTest(HitTestContext? context)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>context</code> <a class="xref" href="HelixToolkit.SharpDX.HitTestContext.html">HitTestContext</a></dt>
+    <dd><p>The context.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><code>true</code> if this instance [can hit test] the specified context; otherwise, <code>false</code>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene_SceneNode_CanRender_" data-uid="HelixToolkit.SharpDX.Model.Scene.SceneNode.CanRender*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene_SceneNode_CanRender_HelixToolkit_SharpDX_RenderContext_" data-uid="HelixToolkit.SharpDX.Model.Scene.SceneNode.CanRender(HelixToolkit.SharpDX.RenderContext)">
+  CanRender(RenderContext)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene/Abstract/SceneNode.cs/#L691"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual bool CanRender(RenderContext context)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>context</code> <a class="xref" href="HelixToolkit.SharpDX.RenderContext.html">RenderContext</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene_SceneNode_ClearPostEffect_" data-uid="HelixToolkit.SharpDX.Model.Scene.SceneNode.ClearPostEffect*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene_SceneNode_ClearPostEffect" data-uid="HelixToolkit.SharpDX.Model.Scene.SceneNode.ClearPostEffect">
+  ClearPostEffect()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene/Abstract/SceneNode.cs/#L1063"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Clears the post effect.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void ClearPostEffect()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene_SceneNode_CompareTo_" data-uid="HelixToolkit.SharpDX.Model.Scene.SceneNode.CompareTo*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene_SceneNode_CompareTo_HelixToolkit_SharpDX_Model_Scene_SceneNode_" data-uid="HelixToolkit.SharpDX.Model.Scene.SceneNode.CompareTo(HelixToolkit.SharpDX.Model.Scene.SceneNode)">
+  CompareTo(SceneNode?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene/Abstract/SceneNode.cs/#L1100"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Compares the current instance with another object of the same type and returns an integer that indicates whether the current instance precedes, follows, or occurs in the same position in the sort order as the other object.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int CompareTo(SceneNode? other)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>other</code> <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html">SceneNode</a></dt>
+    <dd><p>An object to compare with this instance.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>A value that indicates the relative order of the objects being compared. The return value has these meanings:</p>
+ <table><thead><tr><th class="term"> Value</th><th class="description"> Meaning</th></tr></thead><tbody><tr><td class="term"> Less than zero</td><td class="description"> This instance precedes <code class="paramref">other</code> in the sort order.</td></tr><tr><td class="term"> Zero</td><td class="description"> This instance occurs in the same position in the sort order as <code class="paramref">other</code>.</td></tr><tr><td class="term"> Greater than zero</td><td class="description"> This instance follows <code class="paramref">other</code> in the sort order.</td></tr></tbody></table>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene_SceneNode_ComputeTransformMatrix_" data-uid="HelixToolkit.SharpDX.Model.Scene.SceneNode.ComputeTransformMatrix*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene_SceneNode_ComputeTransformMatrix" data-uid="HelixToolkit.SharpDX.Model.Scene.SceneNode.ComputeTransformMatrix">
+  ComputeTransformMatrix()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene/Abstract/SceneNode.cs/#L648"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void ComputeTransformMatrix()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene_SceneNode_Detach_" data-uid="HelixToolkit.SharpDX.Model.Scene.SceneNode.Detach*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene_SceneNode_Detach" data-uid="HelixToolkit.SharpDX.Model.Scene.SceneNode.Detach">
+  Detach()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene/Abstract/SceneNode.cs/#L564"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Detaches the element from the effectsManager and release all graphics resources. Override <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html#HelixToolkit_SharpDX_Model_Scene_SceneNode_OnDetach">OnDetach()</a></p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Detach()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene_SceneNode_HasPostEffect_" data-uid="HelixToolkit.SharpDX.Model.Scene.SceneNode.HasPostEffect*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene_SceneNode_HasPostEffect_System_String_" data-uid="HelixToolkit.SharpDX.Model.Scene.SceneNode.HasPostEffect(System.String)">
+  HasPostEffect(string)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene/Abstract/SceneNode.cs/#L1044"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Determines whether [has post effect] [the specified effect name].</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool HasPostEffect(string effectName)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>effectName</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>Name of the effect.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><code>true</code> if [has post effect] [the specified effect name]; otherwise, <code>false</code>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene_SceneNode_HitTest_" data-uid="HelixToolkit.SharpDX.Model.Scene.SceneNode.HitTest*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene_SceneNode_HitTest_HelixToolkit_SharpDX_HitTestContext_System_Collections_Generic_List_HelixToolkit_SharpDX_HitTestResult___" data-uid="HelixToolkit.SharpDX.Model.Scene.SceneNode.HitTest(HelixToolkit.SharpDX.HitTestContext,System.Collections.Generic.List{HelixToolkit.SharpDX.HitTestResult}@)">
+  HitTest(HitTestContext?, ref List&lt;HitTestResult&gt;)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene/Abstract/SceneNode.cs/#L781"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Hits the test.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual bool HitTest(HitTestContext? context, ref List&lt;HitTestResult&gt; hits)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>context</code> <a class="xref" href="HelixToolkit.SharpDX.HitTestContext.html">HitTestContext</a></dt>
+    <dd><p>The context.</p>
+</dd>
+    <dt><code>hits</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1">List</a>&lt;<a class="xref" href="HelixToolkit.SharpDX.HitTestResult.html">HitTestResult</a>&gt;</dt>
+    <dd><p>The hits.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene_SceneNode_Invalidate_" data-uid="HelixToolkit.SharpDX.Model.Scene.SceneNode.Invalidate*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene_SceneNode_Invalidate_HelixToolkit_SharpDX_Model_Scene_InvalidateTypes_" data-uid="HelixToolkit.SharpDX.Model.Scene.SceneNode.Invalidate(HelixToolkit.SharpDX.Model.Scene.InvalidateTypes)">
+  Invalidate(InvalidateTypes)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene/Abstract/SceneNode.cs/#L621"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Invalidate by type</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected void Invalidate(InvalidateTypes type)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>type</code> <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.InvalidateTypes.html">InvalidateTypes</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene_SceneNode_InvalidatePerFrameRenderables_" data-uid="HelixToolkit.SharpDX.Model.Scene.SceneNode.InvalidatePerFrameRenderables*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene_SceneNode_InvalidatePerFrameRenderables" data-uid="HelixToolkit.SharpDX.Model.Scene.SceneNode.InvalidatePerFrameRenderables">
+  InvalidatePerFrameRenderables()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene/Abstract/SceneNode.cs/#L612"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Invalidates the per frame renderables.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected void InvalidatePerFrameRenderables()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene_SceneNode_InvalidateRender_" data-uid="HelixToolkit.SharpDX.Model.Scene.SceneNode.InvalidateRender*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene_SceneNode_InvalidateRender" data-uid="HelixToolkit.SharpDX.Model.Scene.SceneNode.InvalidateRender">
+  InvalidateRender()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene/Abstract/SceneNode.cs/#L594"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Tries to invalidate the current render, causes re-render</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void InvalidateRender()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene_SceneNode_InvalidateRenderEvent_" data-uid="HelixToolkit.SharpDX.Model.Scene.SceneNode.InvalidateRenderEvent*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene_SceneNode_InvalidateRenderEvent_System_Object_System_EventArgs_" data-uid="HelixToolkit.SharpDX.Model.Scene.SceneNode.InvalidateRenderEvent(System.Object,System.EventArgs)">
+  InvalidateRenderEvent(object?, EventArgs)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene/Abstract/SceneNode.cs/#L586"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected void InvalidateRenderEvent(object? sender, EventArgs arg)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>sender</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></dt>
+    <dd></dd>
+    <dt><code>arg</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.eventargs">EventArgs</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene_SceneNode_InvalidateSceneGraph_" data-uid="HelixToolkit.SharpDX.Model.Scene.SceneNode.InvalidateSceneGraph*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene_SceneNode_InvalidateSceneGraph" data-uid="HelixToolkit.SharpDX.Model.Scene.SceneNode.InvalidateSceneGraph">
+  InvalidateSceneGraph()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene/Abstract/SceneNode.cs/#L603"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Invalidates the scene graph. Use this if scene graph has been changed.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected void InvalidateSceneGraph()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene_SceneNode_OnAttach_" data-uid="HelixToolkit.SharpDX.Model.Scene.SceneNode.OnAttach*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene_SceneNode_OnAttach_HelixToolkit_SharpDX_IEffectsManager_" data-uid="HelixToolkit.SharpDX.Model.Scene.SceneNode.OnAttach(HelixToolkit.SharpDX.IEffectsManager)">
+  OnAttach(IEffectsManager)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene/Abstract/SceneNode.cs/#L547"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>To override Attach routine, please override this.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual bool OnAttach(IEffectsManager effectsManager)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>effectsManager</code> <a class="xref" href="HelixToolkit.SharpDX.IEffectsManager.html">IEffectsManager</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p>Return true if attached</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene_SceneNode_OnAttached_" data-uid="HelixToolkit.SharpDX.Model.Scene.SceneNode.OnAttached*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene_SceneNode_OnAttached" data-uid="HelixToolkit.SharpDX.Model.Scene.SceneNode.OnAttached">
+  OnAttached()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene/Abstract/SceneNode.cs/#L557"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Called when [attached] and <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html#HelixToolkit_SharpDX_Model_Scene_SceneNode_IsAttached">IsAttached</a> = true.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual void OnAttached()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene_SceneNode_OnCreateRenderCore_" data-uid="HelixToolkit.SharpDX.Model.Scene.SceneNode.OnCreateRenderCore*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene_SceneNode_OnCreateRenderCore" data-uid="HelixToolkit.SharpDX.Model.Scene.SceneNode.OnCreateRenderCore">
+  OnCreateRenderCore()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene/Abstract/SceneNode.cs/#L394"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Called when [create render core].</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual RenderCore OnCreateRenderCore()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.Core.RenderCore.html">RenderCore</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene_SceneNode_OnCreateRenderTechnique_" data-uid="HelixToolkit.SharpDX.Model.Scene.SceneNode.OnCreateRenderTechnique*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene_SceneNode_OnCreateRenderTechnique_HelixToolkit_SharpDX_IEffectsManager_" data-uid="HelixToolkit.SharpDX.Model.Scene.SceneNode.OnCreateRenderTechnique(HelixToolkit.SharpDX.IEffectsManager)">
+  OnCreateRenderTechnique(IEffectsManager)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene/Abstract/SceneNode.cs/#L385"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Override this function to set render technique during Attach Host.</p>
+<p>If <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html#HelixToolkit_SharpDX_Model_Scene_SceneNode_OnSetRenderTechnique">OnSetRenderTechnique</a> is set, then <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html#HelixToolkit_SharpDX_Model_Scene_SceneNode_OnSetRenderTechnique">OnSetRenderTechnique</a> instead of <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html#HelixToolkit_SharpDX_Model_Scene_SceneNode_OnCreateRenderTechnique_HelixToolkit_SharpDX_IEffectsManager_">OnCreateRenderTechnique(IEffectsManager)</a> function will be called.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual IRenderTechnique? OnCreateRenderTechnique(IEffectsManager effectsManager)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>effectsManager</code> <a class="xref" href="HelixToolkit.SharpDX.IEffectsManager.html">IEffectsManager</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.IRenderTechnique.html">IRenderTechnique</a></dt>
+    <dd><p>Return RenderTechnique</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene_SceneNode_OnDetach_" data-uid="HelixToolkit.SharpDX.Model.Scene.SceneNode.OnDetach*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene_SceneNode_OnDetach" data-uid="HelixToolkit.SharpDX.Model.Scene.SceneNode.OnDetach">
+  OnDetach()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene/Abstract/SceneNode.cs/#L581"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Used to override Detach</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual void OnDetach()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene_SceneNode_OnDispose_" data-uid="HelixToolkit.SharpDX.Model.Scene.SceneNode.OnDispose*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene_SceneNode_OnDispose_System_Boolean_" data-uid="HelixToolkit.SharpDX.Model.Scene.SceneNode.OnDispose(System.Boolean)">
+  OnDispose(bool)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene/Abstract/SceneNode.cs/#L1070"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Disposes of object resources.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected override void OnDispose(bool disposeManagedResources)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>disposeManagedResources</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p>If true, managed resources should be
+disposed of in addition to unmanaged resources.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene_SceneNode_OnHitTest_" data-uid="HelixToolkit.SharpDX.Model.Scene.SceneNode.OnHitTest*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene_SceneNode_OnHitTest_HelixToolkit_SharpDX_HitTestContext_System_Numerics_Matrix4x4_System_Collections_Generic_List_HelixToolkit_SharpDX_HitTestResult___" data-uid="HelixToolkit.SharpDX.Model.Scene.SceneNode.OnHitTest(HelixToolkit.SharpDX.HitTestContext,System.Numerics.Matrix4x4,System.Collections.Generic.List{HelixToolkit.SharpDX.HitTestResult}@)">
+  OnHitTest(HitTestContext?, Matrix4x4, ref List&lt;HitTestResult&gt;)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene/Abstract/SceneNode.cs/#L812"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Called when [hit test].</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected abstract bool OnHitTest(HitTestContext? context, Matrix4x4 totalModelMatrix, ref List&lt;HitTestResult&gt; hits)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>context</code> <a class="xref" href="HelixToolkit.SharpDX.HitTestContext.html">HitTestContext</a></dt>
+    <dd><p>The context.</p>
+</dd>
+    <dt><code>totalModelMatrix</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.matrix4x4">Matrix4x4</a></dt>
+    <dd><p>The total model matrix.</p>
+</dd>
+    <dt><code>hits</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1">List</a>&lt;<a class="xref" href="HelixToolkit.SharpDX.HitTestResult.html">HitTestResult</a>&gt;</dt>
+    <dd><p>The hits.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene_SceneNode_OnTransformChanged_" data-uid="HelixToolkit.SharpDX.Model.Scene.SceneNode.OnTransformChanged*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene_SceneNode_OnTransformChanged_System_Numerics_Matrix4x4__" data-uid="HelixToolkit.SharpDX.Model.Scene.SceneNode.OnTransformChanged(System.Numerics.Matrix4x4@)">
+  OnTransformChanged(ref Matrix4x4)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene/Abstract/SceneNode.cs/#L342"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Transforms the changed.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual void OnTransformChanged(ref Matrix4x4 totalTransform)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>totalTransform</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.matrix4x4">Matrix4x4</a></dt>
+    <dd><p>The total transform.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene_SceneNode_OnUpdateRenderOrderKey_" data-uid="HelixToolkit.SharpDX.Model.Scene.SceneNode.OnUpdateRenderOrderKey*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene_SceneNode_OnUpdateRenderOrderKey" data-uid="HelixToolkit.SharpDX.Model.Scene.SceneNode.OnUpdateRenderOrderKey">
+  OnUpdateRenderOrderKey()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene/Abstract/SceneNode.cs/#L672"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual OrderKey OnUpdateRenderOrderKey()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.Model.OrderKey.html">OrderKey</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene_SceneNode_RaiseMouseDownEvent_" data-uid="HelixToolkit.SharpDX.Model.Scene.SceneNode.RaiseMouseDownEvent*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene_SceneNode_RaiseMouseDownEvent_HelixToolkit_SharpDX_IViewport3DX_System_Numerics_Vector2_HelixToolkit_SharpDX_HitTestResult_System_Object_" data-uid="HelixToolkit.SharpDX.Model.Scene.SceneNode.RaiseMouseDownEvent(HelixToolkit.SharpDX.IViewport3DX,System.Numerics.Vector2,HelixToolkit.SharpDX.HitTestResult,System.Object)">
+  RaiseMouseDownEvent(IViewport3DX, Vector2, HitTestResult, object?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene/Abstract/SceneNode.cs/#L1105"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void RaiseMouseDownEvent(IViewport3DX viewport, Vector2 pos, HitTestResult hit, object? originalInputEventArgs = null)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>viewport</code> <a class="xref" href="HelixToolkit.SharpDX.IViewport3DX.html">IViewport3DX</a></dt>
+    <dd></dd>
+    <dt><code>pos</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector2">Vector2</a></dt>
+    <dd></dd>
+    <dt><code>hit</code> <a class="xref" href="HelixToolkit.SharpDX.HitTestResult.html">HitTestResult</a></dt>
+    <dd></dd>
+    <dt><code>originalInputEventArgs</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene_SceneNode_RaiseMouseMoveEvent_" data-uid="HelixToolkit.SharpDX.Model.Scene.SceneNode.RaiseMouseMoveEvent*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene_SceneNode_RaiseMouseMoveEvent_HelixToolkit_SharpDX_IViewport3DX_System_Numerics_Vector2_HelixToolkit_SharpDX_HitTestResult_System_Object_" data-uid="HelixToolkit.SharpDX.Model.Scene.SceneNode.RaiseMouseMoveEvent(HelixToolkit.SharpDX.IViewport3DX,System.Numerics.Vector2,HelixToolkit.SharpDX.HitTestResult,System.Object)">
+  RaiseMouseMoveEvent(IViewport3DX, Vector2, HitTestResult, object?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene/Abstract/SceneNode.cs/#L1110"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void RaiseMouseMoveEvent(IViewport3DX viewport, Vector2 pos, HitTestResult hit, object? originalInputEventArgs = null)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>viewport</code> <a class="xref" href="HelixToolkit.SharpDX.IViewport3DX.html">IViewport3DX</a></dt>
+    <dd></dd>
+    <dt><code>pos</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector2">Vector2</a></dt>
+    <dd></dd>
+    <dt><code>hit</code> <a class="xref" href="HelixToolkit.SharpDX.HitTestResult.html">HitTestResult</a></dt>
+    <dd></dd>
+    <dt><code>originalInputEventArgs</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene_SceneNode_RaiseMouseUpEvent_" data-uid="HelixToolkit.SharpDX.Model.Scene.SceneNode.RaiseMouseUpEvent*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene_SceneNode_RaiseMouseUpEvent_HelixToolkit_SharpDX_IViewport3DX_System_Numerics_Vector2_HelixToolkit_SharpDX_HitTestResult_System_Object_" data-uid="HelixToolkit.SharpDX.Model.Scene.SceneNode.RaiseMouseUpEvent(HelixToolkit.SharpDX.IViewport3DX,System.Numerics.Vector2,HelixToolkit.SharpDX.HitTestResult,System.Object)">
+  RaiseMouseUpEvent(IViewport3DX, Vector2, HitTestResult, object?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene/Abstract/SceneNode.cs/#L1115"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void RaiseMouseUpEvent(IViewport3DX viewport, Vector2 pos, HitTestResult hit, object? originalInputEventArgs = null)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>viewport</code> <a class="xref" href="HelixToolkit.SharpDX.IViewport3DX.html">IViewport3DX</a></dt>
+    <dd></dd>
+    <dt><code>pos</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector2">Vector2</a></dt>
+    <dd></dd>
+    <dt><code>hit</code> <a class="xref" href="HelixToolkit.SharpDX.HitTestResult.html">HitTestResult</a></dt>
+    <dd></dd>
+    <dt><code>originalInputEventArgs</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene_SceneNode_RaiseOnBoundChanged_" data-uid="HelixToolkit.SharpDX.Model.Scene.SceneNode.RaiseOnBoundChanged*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene_SceneNode_RaiseOnBoundChanged_HelixToolkit_SharpDX_BoundChangeArgs_HelixToolkit_Maths_BoundingBox__" data-uid="HelixToolkit.SharpDX.Model.Scene.SceneNode.RaiseOnBoundChanged(HelixToolkit.SharpDX.BoundChangeArgs{HelixToolkit.Maths.BoundingBox})">
+  RaiseOnBoundChanged(BoundChangeArgs&lt;BoundingBox&gt;)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene/Abstract/SceneNode.cs/#L953"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Raises the on bound changed.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected void RaiseOnBoundChanged(BoundChangeArgs&lt;BoundingBox&gt; args)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>args</code> <a class="xref" href="HelixToolkit.SharpDX.BoundChangeArgs-1.html">BoundChangeArgs</a>&lt;<a class="xref" href="HelixToolkit.Maths.BoundingBox.html">BoundingBox</a>&gt;</dt>
+    <dd><p>The arguments.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene_SceneNode_RaiseOnBoundSphereChanged_" data-uid="HelixToolkit.SharpDX.Model.Scene.SceneNode.RaiseOnBoundSphereChanged*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene_SceneNode_RaiseOnBoundSphereChanged_HelixToolkit_SharpDX_BoundChangeArgs_HelixToolkit_Maths_BoundingSphere__" data-uid="HelixToolkit.SharpDX.Model.Scene.SceneNode.RaiseOnBoundSphereChanged(HelixToolkit.SharpDX.BoundChangeArgs{HelixToolkit.Maths.BoundingSphere})">
+  RaiseOnBoundSphereChanged(BoundChangeArgs&lt;BoundingSphere&gt;)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene/Abstract/SceneNode.cs/#L971"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Raises the on bound sphere changed.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected void RaiseOnBoundSphereChanged(BoundChangeArgs&lt;BoundingSphere&gt; args)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>args</code> <a class="xref" href="HelixToolkit.SharpDX.BoundChangeArgs-1.html">BoundChangeArgs</a>&lt;<a class="xref" href="HelixToolkit.Maths.BoundingSphere.html">BoundingSphere</a>&gt;</dt>
+    <dd><p>The arguments.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene_SceneNode_RaiseOnTransformBoundChanged_" data-uid="HelixToolkit.SharpDX.Model.Scene.SceneNode.RaiseOnTransformBoundChanged*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene_SceneNode_RaiseOnTransformBoundChanged_HelixToolkit_SharpDX_BoundChangeArgs_HelixToolkit_Maths_BoundingBox__" data-uid="HelixToolkit.SharpDX.Model.Scene.SceneNode.RaiseOnTransformBoundChanged(HelixToolkit.SharpDX.BoundChangeArgs{HelixToolkit.Maths.BoundingBox})">
+  RaiseOnTransformBoundChanged(BoundChangeArgs&lt;BoundingBox&gt;)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene/Abstract/SceneNode.cs/#L944"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Raises the on transform bound changed.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected void RaiseOnTransformBoundChanged(BoundChangeArgs&lt;BoundingBox&gt; args)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>args</code> <a class="xref" href="HelixToolkit.SharpDX.BoundChangeArgs-1.html">BoundChangeArgs</a>&lt;<a class="xref" href="HelixToolkit.Maths.BoundingBox.html">BoundingBox</a>&gt;</dt>
+    <dd><p>The arguments.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene_SceneNode_RaiseOnTransformBoundSphereChanged_" data-uid="HelixToolkit.SharpDX.Model.Scene.SceneNode.RaiseOnTransformBoundSphereChanged*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene_SceneNode_RaiseOnTransformBoundSphereChanged_HelixToolkit_SharpDX_BoundChangeArgs_HelixToolkit_Maths_BoundingSphere__" data-uid="HelixToolkit.SharpDX.Model.Scene.SceneNode.RaiseOnTransformBoundSphereChanged(HelixToolkit.SharpDX.BoundChangeArgs{HelixToolkit.Maths.BoundingSphere})">
+  RaiseOnTransformBoundSphereChanged(BoundChangeArgs&lt;BoundingSphere&gt;)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene/Abstract/SceneNode.cs/#L962"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Raises the on transform bound sphere changed.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected void RaiseOnTransformBoundSphereChanged(BoundChangeArgs&lt;BoundingSphere&gt; args)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>args</code> <a class="xref" href="HelixToolkit.SharpDX.BoundChangeArgs-1.html">BoundChangeArgs</a>&lt;<a class="xref" href="HelixToolkit.Maths.BoundingSphere.html">BoundingSphere</a>&gt;</dt>
+    <dd><p>The arguments.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene_SceneNode_RemovePostEffect_" data-uid="HelixToolkit.SharpDX.Model.Scene.SceneNode.RemovePostEffect*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene_SceneNode_RemovePostEffect_System_String_" data-uid="HelixToolkit.SharpDX.Model.Scene.SceneNode.RemovePostEffect(System.String)">
+  RemovePostEffect(string)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene/Abstract/SceneNode.cs/#L1030"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Removes the post effect.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void RemovePostEffect(string effectName)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>effectName</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>Name of the effect.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene_SceneNode_RemoveSelf_" data-uid="HelixToolkit.SharpDX.Model.Scene.SceneNode.RemoveSelf*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene_SceneNode_RemoveSelf" data-uid="HelixToolkit.SharpDX.Model.Scene.SceneNode.RemoveSelf">
+  RemoveSelf()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene/Abstract/SceneNode.cs/#L1095"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Removes self from scene graph.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool RemoveSelf()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene_SceneNode_Render_" data-uid="HelixToolkit.SharpDX.Model.Scene.SceneNode.Render*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene_SceneNode_Render_HelixToolkit_SharpDX_RenderContext_HelixToolkit_SharpDX_Render_DeviceContextProxy_" data-uid="HelixToolkit.SharpDX.Model.Scene.SceneNode.Render(HelixToolkit.SharpDX.RenderContext,HelixToolkit.SharpDX.Render.DeviceContextProxy)">
+  Render(RenderContext, DeviceContextProxy)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene/Abstract/SceneNode.cs/#L701"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Renders the specified context.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Render(RenderContext context, DeviceContextProxy deviceContext)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>context</code> <a class="xref" href="HelixToolkit.SharpDX.RenderContext.html">RenderContext</a></dt>
+    <dd><p>The context.</p>
+</dd>
+    <dt><code>deviceContext</code> <a class="xref" href="HelixToolkit.SharpDX.Render.DeviceContextProxy.html">DeviceContextProxy</a></dt>
+    <dd><p>The device context.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene_SceneNode_RenderCustom_" data-uid="HelixToolkit.SharpDX.Model.Scene.SceneNode.RenderCustom*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene_SceneNode_RenderCustom_HelixToolkit_SharpDX_RenderContext_HelixToolkit_SharpDX_Render_DeviceContextProxy_" data-uid="HelixToolkit.SharpDX.Model.Scene.SceneNode.RenderCustom(HelixToolkit.SharpDX.RenderContext,HelixToolkit.SharpDX.Render.DeviceContextProxy)">
+  RenderCustom(RenderContext, DeviceContextProxy)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene/Abstract/SceneNode.cs/#L734"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Renders the custom.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void RenderCustom(RenderContext context, DeviceContextProxy deviceContext)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>context</code> <a class="xref" href="HelixToolkit.SharpDX.RenderContext.html">RenderContext</a></dt>
+    <dd><p>The context.</p>
+</dd>
+    <dt><code>deviceContext</code> <a class="xref" href="HelixToolkit.SharpDX.Render.DeviceContextProxy.html">DeviceContextProxy</a></dt>
+    <dd><p>The device context.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene_SceneNode_RenderDepth_" data-uid="HelixToolkit.SharpDX.Model.Scene.SceneNode.RenderDepth*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene_SceneNode_RenderDepth_HelixToolkit_SharpDX_RenderContext_HelixToolkit_SharpDX_Render_DeviceContextProxy_HelixToolkit_SharpDX_Shaders_ShaderPass_" data-uid="HelixToolkit.SharpDX.Model.Scene.SceneNode.RenderDepth(HelixToolkit.SharpDX.RenderContext,HelixToolkit.SharpDX.Render.DeviceContextProxy,HelixToolkit.SharpDX.Shaders.ShaderPass)">
+  RenderDepth(RenderContext, DeviceContextProxy, ShaderPass?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene/Abstract/SceneNode.cs/#L751"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Renders the custom.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void RenderDepth(RenderContext context, DeviceContextProxy deviceContext, ShaderPass? pass)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>context</code> <a class="xref" href="HelixToolkit.SharpDX.RenderContext.html">RenderContext</a></dt>
+    <dd><p>The context.</p>
+</dd>
+    <dt><code>deviceContext</code> <a class="xref" href="HelixToolkit.SharpDX.Render.DeviceContextProxy.html">DeviceContextProxy</a></dt>
+    <dd><p>The device context.</p>
+</dd>
+    <dt><code>pass</code> <a class="xref" href="HelixToolkit.SharpDX.Shaders.ShaderPass.html">ShaderPass</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene_SceneNode_RenderShadow_" data-uid="HelixToolkit.SharpDX.Model.Scene.SceneNode.RenderShadow*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene_SceneNode_RenderShadow_HelixToolkit_SharpDX_RenderContext_HelixToolkit_SharpDX_Render_DeviceContextProxy_" data-uid="HelixToolkit.SharpDX.Model.Scene.SceneNode.RenderShadow(HelixToolkit.SharpDX.RenderContext,HelixToolkit.SharpDX.Render.DeviceContextProxy)">
+  RenderShadow(RenderContext, DeviceContextProxy)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene/Abstract/SceneNode.cs/#L718"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Renders the shadow.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void RenderShadow(RenderContext context, DeviceContextProxy deviceContext)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>context</code> <a class="xref" href="HelixToolkit.SharpDX.RenderContext.html">RenderContext</a></dt>
+    <dd><p>The context.</p>
+</dd>
+    <dt><code>deviceContext</code> <a class="xref" href="HelixToolkit.SharpDX.Render.DeviceContextProxy.html">DeviceContextProxy</a></dt>
+    <dd><p>The device context.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene_SceneNode_SetAffectsRender_" data-uid="HelixToolkit.SharpDX.Model.Scene.SceneNode.SetAffectsRender*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene_SceneNode_SetAffectsRender__1___0____0_" data-uid="HelixToolkit.SharpDX.Model.Scene.SceneNode.SetAffectsRender``1(``0@,``0)">
+  SetAffectsRender&lt;T&gt;(ref T, T)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene/Abstract/SceneNode.cs/#L1128"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected bool SetAffectsRender&lt;T&gt;(ref T backingField, T value)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>backingField</code> <span class="xref">T</span></dt>
+    <dd></dd>
+    <dt><code>value</code> <span class="xref">T</span></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Type Parameters</h4>
+  <dl class="parameters">
+    <dt><code>T</code></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene_SceneNode_SetAffectsSceneGraph_" data-uid="HelixToolkit.SharpDX.Model.Scene.SceneNode.SetAffectsSceneGraph*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene_SceneNode_SetAffectsSceneGraph__1___0____0_" data-uid="HelixToolkit.SharpDX.Model.Scene.SceneNode.SetAffectsSceneGraph``1(``0@,``0)">
+  SetAffectsSceneGraph&lt;T&gt;(ref T, T)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene/Abstract/SceneNode.cs/#L1147"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Sets the affects scene graph.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected bool SetAffectsSceneGraph&lt;T&gt;(ref T backingField, T value)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>backingField</code> <span class="xref">T</span></dt>
+    <dd><p>The backing field.</p>
+</dd>
+    <dt><code>value</code> <span class="xref">T</span></dt>
+    <dd><p>The value.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Type Parameters</h4>
+  <dl class="parameters">
+    <dt><code>T</code></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene_SceneNode_TestViewFrustum_" data-uid="HelixToolkit.SharpDX.Model.Scene.SceneNode.TestViewFrustum*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene_SceneNode_TestViewFrustum_HelixToolkit_Maths_BoundingFrustum__" data-uid="HelixToolkit.SharpDX.Model.Scene.SceneNode.TestViewFrustum(HelixToolkit.Maths.BoundingFrustum@)">
+  TestViewFrustum(ref BoundingFrustum)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene/Abstract/SceneNode.cs/#L767"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>View frustum test.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual bool TestViewFrustum(ref BoundingFrustum viewFrustum)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>viewFrustum</code> <a class="xref" href="HelixToolkit.Maths.BoundingFrustum.html">BoundingFrustum</a></dt>
+    <dd><p>The frustum.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene_SceneNode_TryGetPostEffect_" data-uid="HelixToolkit.SharpDX.Model.Scene.SceneNode.TryGetPostEffect*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene_SceneNode_TryGetPostEffect_System_String_HelixToolkit_SharpDX_Model_IEffectAttributes__" data-uid="HelixToolkit.SharpDX.Model.Scene.SceneNode.TryGetPostEffect(System.String,HelixToolkit.SharpDX.Model.IEffectAttributes@)">
+  TryGetPostEffect(string, out IEffectAttributes?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene/Abstract/SceneNode.cs/#L1055"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Tries the get post effect.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool TryGetPostEffect(string effectName, out IEffectAttributes? effect)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>effectName</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>Name of the effect.</p>
+</dd>
+    <dt><code>effect</code> <a class="xref" href="HelixToolkit.SharpDX.Model.IEffectAttributes.html">IEffectAttributes</a></dt>
+    <dd><p>The effect.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene_SceneNode_Update_" data-uid="HelixToolkit.SharpDX.Model.Scene.SceneNode.Update*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene_SceneNode_Update_HelixToolkit_SharpDX_RenderContext_" data-uid="HelixToolkit.SharpDX.Model.Scene.SceneNode.Update(HelixToolkit.SharpDX.RenderContext)">
+  Update(RenderContext)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene/Abstract/SceneNode.cs/#L637"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Updates the element total transforms, determine renderability, etc. by the specified time span.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual void Update(RenderContext context)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>context</code> <a class="xref" href="HelixToolkit.SharpDX.RenderContext.html">RenderContext</a></dt>
+    <dd><p>The time since last update.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene_SceneNode_UpdateNotRender_" data-uid="HelixToolkit.SharpDX.Model.Scene.SceneNode.UpdateNotRender*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene_SceneNode_UpdateNotRender_HelixToolkit_SharpDX_RenderContext_" data-uid="HelixToolkit.SharpDX.Model.Scene.SceneNode.UpdateNotRender(HelixToolkit.SharpDX.RenderContext)">
+  UpdateNotRender(RenderContext)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene/Abstract/SceneNode.cs/#L680"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual void UpdateNotRender(RenderContext context)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>context</code> <a class="xref" href="HelixToolkit.SharpDX.RenderContext.html">RenderContext</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene_SceneNode_UpdateRenderOrderKey_" data-uid="HelixToolkit.SharpDX.Model.Scene.SceneNode.UpdateRenderOrderKey*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene_SceneNode_UpdateRenderOrderKey" data-uid="HelixToolkit.SharpDX.Model.Scene.SceneNode.UpdateRenderOrderKey">
+  UpdateRenderOrderKey()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene/Abstract/SceneNode.cs/#L667"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Updates the render order key.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void UpdateRenderOrderKey()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <h2 class="section" id="events">Events
+</h2>
+
+
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene_SceneNode_Attached" data-uid="HelixToolkit.SharpDX.Model.Scene.SceneNode.Attached">
+  Attached
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene/Abstract/SceneNode.cs/#L458"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Occurs when [attached].</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public event EventHandler? Attached</code></pre>
+  </div>
+
+
+
+
+
+
+  <h4 class="section">Event Type</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.eventhandler">EventHandler</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene_SceneNode_BoundChanged" data-uid="HelixToolkit.SharpDX.Model.Scene.SceneNode.BoundChanged">
+  BoundChanged
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene/Abstract/SceneNode.cs/#L923"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Occurs when [on bound changed].</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public event EventHandler&lt;BoundChangeArgs&lt;BoundingBox&gt;&gt;? BoundChanged</code></pre>
+  </div>
+
+
+
+
+
+
+  <h4 class="section">Event Type</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.eventhandler-1">EventHandler</a>&lt;<a class="xref" href="HelixToolkit.SharpDX.BoundChangeArgs-1.html">BoundChangeArgs</a>&lt;<a class="xref" href="HelixToolkit.Maths.BoundingBox.html">BoundingBox</a>&gt;&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene_SceneNode_BoundSphereChanged" data-uid="HelixToolkit.SharpDX.Model.Scene.SceneNode.BoundSphereChanged">
+  BoundSphereChanged
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene/Abstract/SceneNode.cs/#L933"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Occurs when [on bound sphere changed].</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public event EventHandler&lt;BoundChangeArgs&lt;BoundingSphere&gt;&gt;? BoundSphereChanged</code></pre>
+  </div>
+
+
+
+
+
+
+  <h4 class="section">Event Type</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.eventhandler-1">EventHandler</a>&lt;<a class="xref" href="HelixToolkit.SharpDX.BoundChangeArgs-1.html">BoundChangeArgs</a>&lt;<a class="xref" href="HelixToolkit.Maths.BoundingSphere.html">BoundingSphere</a>&gt;&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene_SceneNode_Detached" data-uid="HelixToolkit.SharpDX.Model.Scene.SceneNode.Detached">
+  Detached
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene/Abstract/SceneNode.cs/#L462"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Occurs when [detached].</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public event EventHandler? Detached</code></pre>
+  </div>
+
+
+
+
+
+
+  <h4 class="section">Event Type</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.eventhandler">EventHandler</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene_SceneNode_Invalidated" data-uid="HelixToolkit.SharpDX.Model.Scene.SceneNode.Invalidated">
+  Invalidated
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene/Abstract/SceneNode.cs/#L479"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Occurs when invalidation has happened.
+This is a bubble up event.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public event EventHandler&lt;InvalidateTypes&gt;? Invalidated</code></pre>
+  </div>
+
+
+
+
+
+
+  <h4 class="section">Event Type</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.eventhandler-1">EventHandler</a>&lt;<a class="xref" href="HelixToolkit.SharpDX.Model.Scene.InvalidateTypes.html">InvalidateTypes</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene_SceneNode_MouseDown" data-uid="HelixToolkit.SharpDX.Model.Scene.SceneNode.MouseDown">
+  MouseDown
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene/Abstract/SceneNode.cs/#L466"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Occurs when [mouse down].</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public event EventHandler&lt;SceneNodeMouseDownArgs&gt;? MouseDown</code></pre>
+  </div>
+
+
+
+
+
+
+  <h4 class="section">Event Type</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.eventhandler-1">EventHandler</a>&lt;<a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNodeMouseDownArgs.html">SceneNodeMouseDownArgs</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene_SceneNode_MouseMove" data-uid="HelixToolkit.SharpDX.Model.Scene.SceneNode.MouseMove">
+  MouseMove
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene/Abstract/SceneNode.cs/#L470"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Occurs when [mouse move].</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public event EventHandler&lt;SceneNodeMouseMoveArgs&gt;? MouseMove</code></pre>
+  </div>
+
+
+
+
+
+
+  <h4 class="section">Event Type</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.eventhandler-1">EventHandler</a>&lt;<a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNodeMouseMoveArgs.html">SceneNodeMouseMoveArgs</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene_SceneNode_MouseUp" data-uid="HelixToolkit.SharpDX.Model.Scene.SceneNode.MouseUp">
+  MouseUp
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene/Abstract/SceneNode.cs/#L474"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Occurs when [mouse up].</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public event EventHandler&lt;SceneNodeMouseUpArgs&gt;? MouseUp</code></pre>
+  </div>
+
+
+
+
+
+
+  <h4 class="section">Event Type</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.eventhandler-1">EventHandler</a>&lt;<a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNodeMouseUpArgs.html">SceneNodeMouseUpArgs</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene_SceneNode_NameChanged" data-uid="HelixToolkit.SharpDX.Model.Scene.SceneNode.NameChanged">
+  NameChanged
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene/Abstract/SceneNode.cs/#L450"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public event EventHandler&lt;StringArgs&gt;? NameChanged</code></pre>
+  </div>
+
+
+
+
+
+
+  <h4 class="section">Event Type</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.eventhandler-1">EventHandler</a>&lt;<a class="xref" href="HelixToolkit.SharpDX.StringArgs.html">StringArgs</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene_SceneNode_TransformBoundChanged" data-uid="HelixToolkit.SharpDX.Model.Scene.SceneNode.TransformBoundChanged">
+  TransformBoundChanged
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene/Abstract/SceneNode.cs/#L928"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Occurs when [on transform bound changed].</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public event EventHandler&lt;BoundChangeArgs&lt;BoundingBox&gt;&gt;? TransformBoundChanged</code></pre>
+  </div>
+
+
+
+
+
+
+  <h4 class="section">Event Type</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.eventhandler-1">EventHandler</a>&lt;<a class="xref" href="HelixToolkit.SharpDX.BoundChangeArgs-1.html">BoundChangeArgs</a>&lt;<a class="xref" href="HelixToolkit.Maths.BoundingBox.html">BoundingBox</a>&gt;&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene_SceneNode_TransformBoundSphereChanged" data-uid="HelixToolkit.SharpDX.Model.Scene.SceneNode.TransformBoundSphereChanged">
+  TransformBoundSphereChanged
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene/Abstract/SceneNode.cs/#L938"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Occurs when [on transform bound sphere changed].</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public event EventHandler&lt;BoundChangeArgs&lt;BoundingSphere&gt;&gt;? TransformBoundSphereChanged</code></pre>
+  </div>
+
+
+
+
+
+
+  <h4 class="section">Event Type</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.eventhandler-1">EventHandler</a>&lt;<a class="xref" href="HelixToolkit.SharpDX.BoundChangeArgs-1.html">BoundChangeArgs</a>&lt;<a class="xref" href="HelixToolkit.Maths.BoundingSphere.html">BoundingSphere</a>&gt;&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene_SceneNode_TransformChanged" data-uid="HelixToolkit.SharpDX.Model.Scene.SceneNode.TransformChanged">
+  TransformChanged
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene/Abstract/SceneNode.cs/#L349"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Occurs when [on transform changed].</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public event EventHandler&lt;TransformArgs&gt;? TransformChanged</code></pre>
+  </div>
+
+
+
+
+
+
+  <h4 class="section">Event Type</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.eventhandler-1">EventHandler</a>&lt;<a class="xref" href="HelixToolkit.SharpDX.TransformArgs.html">TransformArgs</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene_SceneNode_VisibleChanged" data-uid="HelixToolkit.SharpDX.Model.Scene.SceneNode.VisibleChanged">
+  VisibleChanged
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene/Abstract/SceneNode.cs/#L454"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Occurs when [visible changed].</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public event EventHandler&lt;BoolArgs&gt;? VisibleChanged</code></pre>
+  </div>
+
+
+
+
+
+
+  <h4 class="section">Event Type</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.eventhandler-1">EventHandler</a>&lt;<a class="xref" href="HelixToolkit.SharpDX.BoolArgs.html">BoolArgs</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene/Abstract/SceneNode.cs/#L13" class="edit-link">Edit this page</a>
+        </div>
+
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          Copyright (c) 2023 Helix Toolkit contributors
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

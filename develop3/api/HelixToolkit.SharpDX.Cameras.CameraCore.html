@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Class CameraCore | Helix Toolkit - 3D for .NET </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Class CameraCore | Helix Toolkit - 3D for .NET ">
+      
+      
+      <link rel="icon" href="../images/favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/helix-toolkit/helix-toolkit/new/develop3/apiSpec/new?filename=HelixToolkit_SharpDX_Cameras_CameraCore.md&amp;value=---%0Auid%3A%20HelixToolkit.SharpDX.Cameras.CameraCore%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="ManagedReference">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../images/favicon.ico" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="HelixToolkit.SharpDX.Cameras.CameraCore">
+
+
+
+  <h1 id="HelixToolkit_SharpDX_Cameras_CameraCore" data-uid="HelixToolkit.SharpDX.Cameras.CameraCore" class="text-break">
+Class CameraCore  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Cameras/CameraCore.cs/#L7"><i class="bi bi-code-slash"></i></a>
+  </h1>
+
+  <div class="facts text-secondary">
+    <dl><dt>Namespace</dt><dd><a class="xref" href="HelixToolkit.html">HelixToolkit</a>.<a class="xref" href="HelixToolkit.SharpDX.html">SharpDX</a>.<a class="xref" href="HelixToolkit.SharpDX.Cameras.html">Cameras</a></dd></dl>
+  <dl><dt>Assembly</dt><dd>HelixToolkit.SharpDX.dll</dd></dl>
+  </div>
+
+  <div class="markdown summary"></div>
+  <div class="markdown conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public abstract class CameraCore : ObservableObject, INotifyPropertyChanged, ICamera</code></pre>
+  </div>
+
+
+
+
+  <dl class="typelist inheritance">
+    <dt>Inheritance</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
+      <div><a class="xref" href="HelixToolkit.SharpDX.Model.ObservableObject.html">ObservableObject</a></div>
+      <div><span class="xref">CameraCore</span></div>
+    </dd>
+  </dl>
+
+  <dl class="typelist implements">
+    <dt>Implements</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.componentmodel.inotifypropertychanged">INotifyPropertyChanged</a></div>
+      <div><a class="xref" href="HelixToolkit.SharpDX.ICamera.html">ICamera</a></div>
+    </dd>
+  </dl>
+
+  <dl class="typelist derived">
+    <dt>Derived</dt>
+    <dd>
+      <div><a class="xref" href="HelixToolkit.SharpDX.Cameras.ProjectionCameraCore.html">ProjectionCameraCore</a></div>
+    </dd>
+  </dl>
+
+  <dl class="typelist inheritedMembers">
+    <dt>Inherited Members</dt>
+    <dd>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.ObservableObject.html#HelixToolkit_SharpDX_Model_ObservableObject_DisablePropertyChangedEvent">ObservableObject.DisablePropertyChangedEvent</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.ObservableObject.html#HelixToolkit_SharpDX_Model_ObservableObject_PropertyChanged">ObservableObject.PropertyChanged</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.ObservableObject.html#HelixToolkit_SharpDX_Model_ObservableObject_RaisePropertyChanged_System_String_">ObservableObject.RaisePropertyChanged(string)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.ObservableObject.html#HelixToolkit_SharpDX_Model_ObservableObject_RaisePropertyChanged_System_ComponentModel_PropertyChangedEventArgs_">ObservableObject.RaisePropertyChanged(PropertyChangedEventArgs)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.ObservableObject.html#HelixToolkit_SharpDX_Model_ObservableObject_Set__1___0____0_System_String_">ObservableObject.Set&lt;T&gt;(ref T, T, string)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.ObservableObject.html#HelixToolkit_SharpDX_Model_ObservableObject_Set__1___0____0_System_Boolean_System_String_">ObservableObject.Set&lt;T&gt;(ref T, T, bool, string)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">object.Equals(object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">object.Equals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode">object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype">object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone">object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals">object.ReferenceEquals(object, object)</a>
+    </div>
+  </dd></dl>
+
+  <dl class="typelist extensionMethods">
+    <dt>Extension Methods</dt>
+    <dd>
+  <div>
+      <a class="xref" href="HelixToolkit.Avalonia.SharpDX.CameraExtensions.html#HelixToolkit_Avalonia_SharpDX_CameraExtensions_GetInverseViewProjectionMatrix_HelixToolkit_SharpDX_Cameras_CameraCore_System_Double_">CameraExtensions.GetInverseViewProjectionMatrix(CameraCore?, double)</a>
+  </div>
+  <div>
+      <a class="xref" href="HelixToolkit.Avalonia.SharpDX.CameraExtensions.html#HelixToolkit_Avalonia_SharpDX_CameraExtensions_GetInversedViewMatrix_HelixToolkit_SharpDX_Cameras_CameraCore_">CameraExtensions.GetInversedViewMatrix(CameraCore?)</a>
+  </div>
+  <div>
+      <a class="xref" href="HelixToolkit.Avalonia.SharpDX.CameraExtensions.html#HelixToolkit_Avalonia_SharpDX_CameraExtensions_GetProjectionMatrix_HelixToolkit_SharpDX_Cameras_CameraCore_System_Double_">CameraExtensions.GetProjectionMatrix(CameraCore?, double)</a>
+  </div>
+  <div>
+      <a class="xref" href="HelixToolkit.Avalonia.SharpDX.CameraExtensions.html#HelixToolkit_Avalonia_SharpDX_CameraExtensions_GetViewMatrix_HelixToolkit_SharpDX_Cameras_CameraCore_">CameraExtensions.GetViewMatrix(CameraCore?)</a>
+  </div>
+  <div>
+      <a class="xref" href="HelixToolkit.Avalonia.SharpDX.CameraExtensions.html#HelixToolkit_Avalonia_SharpDX_CameraExtensions_GetViewProjectionMatrix_HelixToolkit_SharpDX_Cameras_CameraCore_System_Double_">CameraExtensions.GetViewProjectionMatrix(CameraCore?, double)</a>
+  </div>
+  <div>
+      <a class="xref" href="HelixToolkit.SharpDX.CameraCoreExtensions.html#HelixToolkit_SharpDX_CameraCoreExtensions_ChangeDirection_HelixToolkit_SharpDX_Cameras_CameraCore_System_Numerics_Vector3_System_Numerics_Vector3_System_Single_">CameraCoreExtensions.ChangeDirection(CameraCore, Vector3, Vector3, float)</a>
+  </div>
+  <div>
+      <a class="xref" href="HelixToolkit.SharpDX.CameraCoreExtensions.html#HelixToolkit_SharpDX_CameraCoreExtensions_CreateFrustum_HelixToolkit_SharpDX_Cameras_CameraCore_System_Single_">CameraCoreExtensions.CreateFrustum(CameraCore, float)</a>
+  </div>
+  <div>
+      <a class="xref" href="HelixToolkit.SharpDX.CameraCoreExtensions.html#HelixToolkit_SharpDX_CameraCoreExtensions_LookAt_HelixToolkit_SharpDX_Cameras_CameraCore_System_Numerics_Vector3_System_Numerics_Vector3_System_Numerics_Vector3_System_Single_">CameraCoreExtensions.LookAt(CameraCore, Vector3, Vector3, Vector3, float)</a>
+  </div>
+  <div>
+      <a class="xref" href="HelixToolkit.SharpDX.CameraCoreExtensions.html#HelixToolkit_SharpDX_CameraCoreExtensions_LookAt_HelixToolkit_SharpDX_Cameras_CameraCore_System_Numerics_Vector3_System_Numerics_Vector3_System_Single_">CameraCoreExtensions.LookAt(CameraCore, Vector3, Vector3, float)</a>
+  </div>
+  <div>
+      <a class="xref" href="HelixToolkit.SharpDX.CameraCoreExtensions.html#HelixToolkit_SharpDX_CameraCoreExtensions_LookAt_HelixToolkit_SharpDX_Cameras_CameraCore_System_Numerics_Vector3_System_Single_">CameraCoreExtensions.LookAt(CameraCore, Vector3, float)</a>
+  </div>
+  <div>
+      <a class="xref" href="HelixToolkit.SharpDX.CameraCoreExtensions.html#HelixToolkit_SharpDX_CameraCoreExtensions_Reset_HelixToolkit_SharpDX_Cameras_CameraCore_">CameraCoreExtensions.Reset(CameraCore)</a>
+  </div>
+  <div>
+      <a class="xref" href="HelixToolkit.SharpDX.CameraCoreExtensions.html#HelixToolkit_SharpDX_CameraCoreExtensions_ZoomExtents_HelixToolkit_SharpDX_Cameras_CameraCore_HelixToolkit_SharpDX_ViewportCore_HelixToolkit_Maths_BoundingBox_System_Single_">CameraCoreExtensions.ZoomExtents(CameraCore, ViewportCore, BoundingBox, float)</a>
+  </div>
+  <div>
+      <a class="xref" href="HelixToolkit.SharpDX.CameraCoreExtensions.html#HelixToolkit_SharpDX_CameraCoreExtensions_ZoomExtents_HelixToolkit_SharpDX_Cameras_CameraCore_HelixToolkit_SharpDX_ViewportCore_System_Numerics_Vector3_System_Single_System_Single_">CameraCoreExtensions.ZoomExtents(CameraCore, ViewportCore, Vector3, float, float)</a>
+  </div>
+  <div>
+      <a class="xref" href="HelixToolkit.SharpDX.CameraCoreExtensions.html#HelixToolkit_SharpDX_CameraCoreExtensions_ZoomExtents_HelixToolkit_SharpDX_Cameras_CameraCore_HelixToolkit_SharpDX_ViewportCore_System_Single_">CameraCoreExtensions.ZoomExtents(CameraCore, ViewportCore, float)</a>
+  </div>
+  <div>
+      <a class="xref" href="HelixToolkit.SharpDX.CameraCoreExtensions.html#HelixToolkit_SharpDX_CameraCoreExtensions_ZoomToRectangle_HelixToolkit_SharpDX_Cameras_CameraCore_HelixToolkit_SharpDX_ViewportCore_HelixToolkit_Maths_RectangleF_">CameraCoreExtensions.ZoomToRectangle(CameraCore, ViewportCore, RectangleF)</a>
+  </div>
+  </dd></dl>
+
+
+
+
+
+  <h2 class="section" id="properties">Properties
+</h2>
+
+
+  <a id="HelixToolkit_SharpDX_Cameras_CameraCore_CreateLeftHandSystem_" data-uid="HelixToolkit.SharpDX.Cameras.CameraCore.CreateLeftHandSystem*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Cameras_CameraCore_CreateLeftHandSystem" data-uid="HelixToolkit.SharpDX.Cameras.CameraCore.CreateLeftHandSystem">
+  CreateLeftHandSystem
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Cameras/CameraCore.cs/#L63"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets a value indicating whether to create a left hand system.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool CreateLeftHandSystem { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><code>true</code> if creating a left hand system; otherwise, <code>false</code>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Cameras_CameraCore_LookDirection_" data-uid="HelixToolkit.SharpDX.Cameras.CameraCore.LookDirection*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Cameras_CameraCore_LookDirection" data-uid="HelixToolkit.SharpDX.Cameras.CameraCore.LookDirection">
+  LookDirection
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Cameras/CameraCore.cs/#L23"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the look direction.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Vector3 LookDirection { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd><p>The look direction.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Cameras_CameraCore_Position_" data-uid="HelixToolkit.SharpDX.Cameras.CameraCore.Position*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Cameras_CameraCore_Position" data-uid="HelixToolkit.SharpDX.Cameras.CameraCore.Position">
+  Position
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Cameras/CameraCore.cs/#L10"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the position.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Vector3 Position { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd><p>The position.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Cameras_CameraCore_Target_" data-uid="HelixToolkit.SharpDX.Cameras.CameraCore.Target*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Cameras_CameraCore_Target" data-uid="HelixToolkit.SharpDX.Cameras.CameraCore.Target">
+  Target
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Cameras/CameraCore.cs/#L48"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Vector3 Target { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Cameras_CameraCore_UpDirection_" data-uid="HelixToolkit.SharpDX.Cameras.CameraCore.UpDirection*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Cameras_CameraCore_UpDirection" data-uid="HelixToolkit.SharpDX.Cameras.CameraCore.UpDirection">
+  UpDirection
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Cameras/CameraCore.cs/#L36"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets up direction.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Vector3 UpDirection { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd><p>Up direction.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h2 class="section" id="methods">Methods
+</h2>
+
+
+  <a id="HelixToolkit_SharpDX_Cameras_CameraCore_AnimateTo_" data-uid="HelixToolkit.SharpDX.Cameras.CameraCore.AnimateTo*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Cameras_CameraCore_AnimateTo_System_Numerics_Vector3_System_Numerics_Vector3_System_Numerics_Vector3_System_Single_" data-uid="HelixToolkit.SharpDX.Cameras.CameraCore.AnimateTo(System.Numerics.Vector3,System.Numerics.Vector3,System.Numerics.Vector3,System.Single)">
+  AnimateTo(Vector3, Vector3, Vector3, float)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Cameras/CameraCore.cs/#L129"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Animates to.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void AnimateTo(Vector3 newPosition, Vector3 newDirection, Vector3 newUpDirection, float animationTime)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>newPosition</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd><p>The new position.</p>
+</dd>
+    <dt><code>newDirection</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd><p>The new direction.</p>
+</dd>
+    <dt><code>newUpDirection</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd><p>The new up direction.</p>
+</dd>
+    <dt><code>animationTime</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>The animation time.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Cameras_CameraCore_CreateCameraParams_" data-uid="HelixToolkit.SharpDX.Cameras.CameraCore.CreateCameraParams*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Cameras_CameraCore_CreateCameraParams_System_Single_" data-uid="HelixToolkit.SharpDX.Cameras.CameraCore.CreateCameraParams(System.Single)">
+  CreateCameraParams(float)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Cameras/CameraCore.cs/#L81"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public abstract FrustumCameraParams CreateCameraParams(float aspectRatio)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>aspectRatio</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Maths.FrustumCameraParams.html">FrustumCameraParams</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Cameras_CameraCore_CreateCameraParams_" data-uid="HelixToolkit.SharpDX.Cameras.CameraCore.CreateCameraParams*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Cameras_CameraCore_CreateCameraParams_System_Single_System_Single_System_Single_" data-uid="HelixToolkit.SharpDX.Cameras.CameraCore.CreateCameraParams(System.Single,System.Single,System.Single)">
+  CreateCameraParams(float, float, float)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Cameras/CameraCore.cs/#L82"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public abstract FrustumCameraParams CreateCameraParams(float aspectRatio, float nearPlane, float farPlane)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>aspectRatio</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd></dd>
+    <dt><code>nearPlane</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd></dd>
+    <dt><code>farPlane</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Maths.FrustumCameraParams.html">FrustumCameraParams</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Cameras_CameraCore_CreateProjectionMatrix_" data-uid="HelixToolkit.SharpDX.Cameras.CameraCore.CreateProjectionMatrix*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Cameras_CameraCore_CreateProjectionMatrix_System_Single_" data-uid="HelixToolkit.SharpDX.Cameras.CameraCore.CreateProjectionMatrix(System.Single)">
+  CreateProjectionMatrix(float)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Cameras/CameraCore.cs/#L75"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Creates the projection matrix.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public abstract Matrix4x4 CreateProjectionMatrix(float aspectRatio)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>aspectRatio</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>The aspect ratio.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.matrix4x4">Matrix4x4</a></dt>
+    <dd><p>A <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.matrix4x4">Matrix4x4</a>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Cameras_CameraCore_CreateProjectionMatrix_" data-uid="HelixToolkit.SharpDX.Cameras.CameraCore.CreateProjectionMatrix*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Cameras_CameraCore_CreateProjectionMatrix_System_Single_System_Single_System_Single_" data-uid="HelixToolkit.SharpDX.Cameras.CameraCore.CreateProjectionMatrix(System.Single,System.Single,System.Single)">
+  CreateProjectionMatrix(float, float, float)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Cameras/CameraCore.cs/#L77"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Creates the projection matrix.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public abstract Matrix4x4 CreateProjectionMatrix(float aspectRatio, float nearPlane, float farPlane)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>aspectRatio</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>The aspect ratio.</p>
+</dd>
+    <dt><code>nearPlane</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>The near plane.</p>
+</dd>
+    <dt><code>farPlane</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>The far plane.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.matrix4x4">Matrix4x4</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Cameras_CameraCore_CreateViewMatrix_" data-uid="HelixToolkit.SharpDX.Cameras.CameraCore.CreateViewMatrix*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Cameras_CameraCore_CreateViewMatrix" data-uid="HelixToolkit.SharpDX.Cameras.CameraCore.CreateViewMatrix">
+  CreateViewMatrix()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Cameras/CameraCore.cs/#L79"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Creates the view matrix.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public abstract Matrix4x4 CreateViewMatrix()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.matrix4x4">Matrix4x4</a></dt>
+    <dd><p>A <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.matrix4x4">Matrix4x4</a>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Cameras_CameraCore_OnTimeStep_" data-uid="HelixToolkit.SharpDX.Cameras.CameraCore.OnTimeStep*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Cameras_CameraCore_OnTimeStep" data-uid="HelixToolkit.SharpDX.Cameras.CameraCore.OnTimeStep">
+  OnTimeStep()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Cameras/CameraCore.cs/#L160"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Called when [time step] to update camera animation.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual bool OnTimeStep()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Cameras_CameraCore_OnUpdateAnimation_" data-uid="HelixToolkit.SharpDX.Cameras.CameraCore.OnUpdateAnimation*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Cameras_CameraCore_OnUpdateAnimation_System_Single_" data-uid="HelixToolkit.SharpDX.Cameras.CameraCore.OnUpdateAnimation(System.Single)">
+  OnUpdateAnimation(float)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Cameras/CameraCore.cs/#L168"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual bool OnUpdateAnimation(float ellapsed)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>ellapsed</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Cameras_CameraCore_StopAnimation_" data-uid="HelixToolkit.SharpDX.Cameras.CameraCore.StopAnimation*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Cameras_CameraCore_StopAnimation" data-uid="HelixToolkit.SharpDX.Cameras.CameraCore.StopAnimation">
+  StopAnimation()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Cameras/CameraCore.cs/#L196"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void StopAnimation()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Cameras_CameraCore_ToString_" data-uid="HelixToolkit.SharpDX.Cameras.CameraCore.ToString*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Cameras_CameraCore_ToString" data-uid="HelixToolkit.SharpDX.Cameras.CameraCore.ToString">
+  ToString()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Cameras/CameraCore.cs/#L83"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Returns a string that represents the current object.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override string ToString()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>A string that represents the current object.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Cameras/CameraCore.cs/#L7" class="edit-link">Edit this page</a>
+        </div>
+
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          Copyright (c) 2023 Helix Toolkit contributors
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

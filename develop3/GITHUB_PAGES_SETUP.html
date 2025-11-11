@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Setting up GitHub Pages for Documentation | Helix Toolkit - 3D for .NET </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Setting up GitHub Pages for Documentation | Helix Toolkit - 3D for .NET ">
+      
+      
+      <link rel="icon" href="images/favicon.ico">
+      <link rel="stylesheet" href="public/docfx.min.css">
+      <link rel="stylesheet" href="public/main.css">
+      <meta name="docfx:navrel" content="toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/Documentation/GITHUB_PAGES_SETUP.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="index.html">
+            <img id="logo" class="svg" src="images/favicon.ico" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+
+      <div class="content">
+        <div class="actionbar">
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="setting-up-github-pages-for-documentation">Setting up GitHub Pages for Documentation</h1>
+
+<p>This guide is for repository maintainers who need to configure GitHub Pages to host the automatically generated documentation.</p>
+<h2 id="prerequisites">Prerequisites</h2>
+<ul>
+<li>Admin access to the repository</li>
+<li>GitHub Actions workflow successfully building documentation</li>
+</ul>
+<h2 id="setup-steps">Setup Steps</h2>
+<h3 id="1-enable-github-pages">1. Enable GitHub Pages</h3>
+<ol>
+<li>Go to your repository on GitHub</li>
+<li>Click on <strong>Settings</strong> (top navigation)</li>
+<li>Scroll down to <strong>Pages</strong> in the left sidebar</li>
+<li>Under <strong>Build and deployment</strong>, select:
+<ul>
+<li><strong>Source</strong>: GitHub Actions</li>
+</ul>
+</li>
+<li>Click <strong>Save</strong></li>
+</ol>
+<h3 id="2-verify-workflow-permissions">2. Verify Workflow Permissions</h3>
+<ol>
+<li>In <strong>Settings</strong>, go to <strong>Actions</strong> → <strong>General</strong></li>
+<li>Scroll to <strong>Workflow permissions</strong></li>
+<li>Ensure the following is selected:
+<ul>
+<li><strong>Read and write permissions</strong></li>
+<li>Check <strong>Allow GitHub Actions to create and approve pull requests</strong> (optional but recommended)</li>
+</ul>
+</li>
+<li>Click <strong>Save</strong></li>
+</ol>
+<h3 id="3-configure-pages-permissions">3. Configure Pages Permissions</h3>
+<ol>
+<li>In <strong>Settings</strong>, go to <strong>Pages</strong></li>
+<li>Under <strong>Build and deployment</strong>:
+<ul>
+<li>Source: GitHub Actions (should already be set)</li>
+</ul>
+</li>
+<li>Note the URL where your site will be published (e.g., <code>https://helix-toolkit.github.io/helix-toolkit/</code>)</li>
+</ol>
+<h3 id="4-trigger-documentation-build">4. Trigger Documentation Build</h3>
+<p>The documentation will be automatically built and deployed when:</p>
+<ul>
+<li>Changes are pushed to the <code>main</code> branch</li>
+<li>Changes affect files in <code>Source/**/*.cs</code> or <code>Source/Documentation/**</code></li>
+</ul>
+<p>To manually trigger a build:</p>
+<ol>
+<li>Go to <strong>Actions</strong> tab</li>
+<li>Select <strong>Documentation</strong> workflow</li>
+<li>Click <strong>Run workflow</strong></li>
+<li>Select the branch (usually <code>main</code>)</li>
+<li>Click <strong>Run workflow</strong></li>
+</ol>
+<h3 id="5-verify-deployment">5. Verify Deployment</h3>
+<ol>
+<li>Wait for the workflow to complete (check in the Actions tab)</li>
+<li>Once successful, visit your GitHub Pages URL</li>
+<li>You should see the generated documentation</li>
+</ol>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<h3 id="pages-is-not-enabled-error">&quot;Pages is not enabled&quot; Error</h3>
+<p>If you see an error about Pages not being enabled:</p>
+<ol>
+<li>Go to Settings → Pages</li>
+<li>Select &quot;GitHub Actions&quot; as the source</li>
+<li>Save and try again</li>
+</ol>
+<h3 id="permission-denied-error">&quot;Permission denied&quot; Error</h3>
+<p>If the workflow fails with permission errors:</p>
+<ol>
+<li>Go to Settings → Actions → General</li>
+<li>Under &quot;Workflow permissions&quot;, select &quot;Read and write permissions&quot;</li>
+<li>Save and re-run the workflow</li>
+</ol>
+<h3 id="documentation-not-updating">Documentation Not Updating</h3>
+<ol>
+<li>Check the Actions tab for workflow run status</li>
+<li>Review workflow logs for errors</li>
+<li>Ensure the main branch has the latest changes</li>
+<li>Verify that the workflow file is in <code>.github/workflows/documentation.yml</code></li>
+</ol>
+<h3 id="404-on-github-pages">404 on GitHub Pages</h3>
+<ol>
+<li>Wait a few minutes after the first deployment (can take 5-10 minutes)</li>
+<li>Verify the workflow completed successfully</li>
+<li>Check that files were uploaded in the &quot;Upload artifact for GitHub Pages&quot; step</li>
+<li>Clear your browser cache and try again</li>
+</ol>
+<h2 id="custom-domain-optional">Custom Domain (Optional)</h2>
+<p>To use a custom domain for your documentation:</p>
+<ol>
+<li>In Settings → Pages</li>
+<li>Under &quot;Custom domain&quot;, enter your domain (e.g., <code>docs.helixtoolkit.org</code>)</li>
+<li>Add a CNAME record in your DNS settings pointing to <code>&lt;username&gt;.github.io</code></li>
+<li>Wait for DNS propagation (can take up to 24 hours)</li>
+<li>Enable &quot;Enforce HTTPS&quot; once the certificate is provisioned</li>
+</ol>
+<h2 id="security-considerations">Security Considerations</h2>
+<ul>
+<li>The documentation workflow only has permissions to deploy to GitHub Pages</li>
+<li>No secrets or sensitive information should be included in documentation</li>
+<li>The workflow uses OIDC tokens for secure authentication with GitHub Pages</li>
+</ul>
+<h2 id="additional-resources">Additional Resources</h2>
+<ul>
+<li><a href="https://docs.github.com/en/pages">GitHub Pages Documentation</a></li>
+<li><a href="https://github.com/actions/deploy-pages">GitHub Actions for Pages</a></li>
+<li><a href="https://dotnet.github.io/docfx/">DocFX Documentation</a></li>
+</ul>
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/Documentation/GITHUB_PAGES_SETUP.md/#L1" class="edit-link">Edit this page</a>
+        </div>
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          Copyright (c) 2023 Helix Toolkit contributors
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

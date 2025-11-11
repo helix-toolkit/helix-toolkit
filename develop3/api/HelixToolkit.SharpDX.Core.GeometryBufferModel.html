@@ -1,0 +1,1086 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Class GeometryBufferModel | Helix Toolkit - 3D for .NET </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Class GeometryBufferModel | Helix Toolkit - 3D for .NET ">
+      
+      <meta name="description" content="General Geometry Buffer Model.">
+      <link rel="icon" href="../images/favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/helix-toolkit/helix-toolkit/new/develop3/apiSpec/new?filename=HelixToolkit_SharpDX_Core_GeometryBufferModel.md&amp;value=---%0Auid%3A%20HelixToolkit.SharpDX.Core.GeometryBufferModel%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="ManagedReference">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../images/favicon.ico" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="HelixToolkit.SharpDX.Core.GeometryBufferModel">
+
+
+
+  <h1 id="HelixToolkit_SharpDX_Core_GeometryBufferModel" data-uid="HelixToolkit.SharpDX.Core.GeometryBufferModel" class="text-break">
+Class GeometryBufferModel  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Core/GeometryBufferModel.cs/#L13"><i class="bi bi-code-slash"></i></a>
+  </h1>
+
+  <div class="facts text-secondary">
+    <dl><dt>Namespace</dt><dd><a class="xref" href="HelixToolkit.html">HelixToolkit</a>.<a class="xref" href="HelixToolkit.SharpDX.html">SharpDX</a>.<a class="xref" href="HelixToolkit.SharpDX.Core.html">Core</a></dd></dl>
+  <dl><dt>Assembly</dt><dd>HelixToolkit.SharpDX.dll</dd></dl>
+  </div>
+
+  <div class="markdown summary"><p>General Geometry Buffer Model.</p>
+</div>
+  <div class="markdown conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public abstract class GeometryBufferModel : DisposeObject, IGeometryBufferModel, IAttachableBufferModel, IGUID, IDisposable</code></pre>
+  </div>
+
+
+
+
+  <dl class="typelist inheritance">
+    <dt>Inheritance</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
+      <div><a class="xref" href="HelixToolkit.SharpDX.DisposeObject.html">DisposeObject</a></div>
+      <div><span class="xref">GeometryBufferModel</span></div>
+    </dd>
+  </dl>
+
+  <dl class="typelist implements">
+    <dt>Implements</dt>
+    <dd>
+      <div><a class="xref" href="HelixToolkit.SharpDX.IGeometryBufferModel.html">IGeometryBufferModel</a></div>
+      <div><a class="xref" href="HelixToolkit.SharpDX.IAttachableBufferModel.html">IAttachableBufferModel</a></div>
+      <div><a class="xref" href="HelixToolkit.SharpDX.IGUID.html">IGUID</a></div>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.idisposable">IDisposable</a></div>
+    </dd>
+  </dl>
+
+  <dl class="typelist derived">
+    <dt>Derived</dt>
+    <dd>
+      <div><a class="xref" href="HelixToolkit.SharpDX.Core.BillboardBufferModel-1.html">BillboardBufferModel&lt;VertexStruct&gt;</a></div>
+      <div><a class="xref" href="HelixToolkit.SharpDX.Core.LineGeometryBufferModel-1.html">LineGeometryBufferModel&lt;VertexStruct&gt;</a></div>
+      <div><a class="xref" href="HelixToolkit.SharpDX.Core.MeshGeometryBufferModel-1.html">MeshGeometryBufferModel&lt;VertexStruct&gt;</a></div>
+      <div><a class="xref" href="HelixToolkit.SharpDX.Core.PointGeometryBufferModel-1.html">PointGeometryBufferModel&lt;VertexStruct&gt;</a></div>
+    </dd>
+  </dl>
+
+  <dl class="typelist inheritedMembers">
+    <dt>Inherited Members</dt>
+    <dd>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.DisposeObject.html#HelixToolkit_SharpDX_DisposeObject_RemoveAndDispose__1___0__">DisposeObject.RemoveAndDispose&lt;T&gt;(ref T)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.DisposeObject.html#HelixToolkit_SharpDX_DisposeObject_RemoveAndDispose__1___0_">DisposeObject.RemoveAndDispose&lt;T&gt;(T)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.DisposeObject.html#HelixToolkit_SharpDX_DisposeObject_RefCount">DisposeObject.RefCount</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.DisposeObject.html#HelixToolkit_SharpDX_DisposeObject_IncRef">DisposeObject.IncRef()</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.DisposeObject.html#HelixToolkit_SharpDX_DisposeObject_ForceDispose">DisposeObject.ForceDispose()</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.DisposeObject.html#HelixToolkit_SharpDX_DisposeObject_IsDisposed">DisposeObject.IsDisposed</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.DisposeObject.html#HelixToolkit_SharpDX_DisposeObject_Dispose">DisposeObject.Dispose()</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.DisposeObject.html#HelixToolkit_SharpDX_DisposeObject_Set__1___0____0_">DisposeObject.Set&lt;T&gt;(ref T, T)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">object.Equals(object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">object.Equals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode">object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype">object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone">object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals">object.ReferenceEquals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring">object.ToString()</a>
+    </div>
+  </dd></dl>
+
+
+
+
+
+
+  <h2 class="section" id="constructors">Constructors
+</h2>
+
+
+  <a id="HelixToolkit_SharpDX_Core_GeometryBufferModel__ctor_" data-uid="HelixToolkit.SharpDX.Core.GeometryBufferModel.#ctor*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Core_GeometryBufferModel__ctor_SharpDX_Direct3D_PrimitiveTopology_HelixToolkit_SharpDX_Utilities_IElementsBufferProxy_HelixToolkit_SharpDX_Utilities_IElementsBufferProxy_" data-uid="HelixToolkit.SharpDX.Core.GeometryBufferModel.#ctor(SharpDX.Direct3D.PrimitiveTopology,HelixToolkit.SharpDX.Utilities.IElementsBufferProxy,HelixToolkit.SharpDX.Utilities.IElementsBufferProxy)">
+  GeometryBufferModel(PrimitiveTopology, IElementsBufferProxy?, IElementsBufferProxy?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Core/GeometryBufferModel.cs/#L129"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="HelixToolkit.SharpDX.Core.GeometryBufferModel.html">GeometryBufferModel</a> class.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected GeometryBufferModel(PrimitiveTopology topology, IElementsBufferProxy? vertexBuffer, IElementsBufferProxy? indexBuffer)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>topology</code> <span class="xref">PrimitiveTopology</span></dt>
+    <dd><p>The topology.</p>
+</dd>
+    <dt><code>vertexBuffer</code> <a class="xref" href="HelixToolkit.SharpDX.Utilities.IElementsBufferProxy.html">IElementsBufferProxy</a></dt>
+    <dd><p>The vertex buffer.</p>
+</dd>
+    <dt><code>indexBuffer</code> <a class="xref" href="HelixToolkit.SharpDX.Utilities.IElementsBufferProxy.html">IElementsBufferProxy</a></dt>
+    <dd><p>The index buffer.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Core_GeometryBufferModel__ctor_" data-uid="HelixToolkit.SharpDX.Core.GeometryBufferModel.#ctor*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Core_GeometryBufferModel__ctor_SharpDX_Direct3D_PrimitiveTopology_HelixToolkit_SharpDX_Utilities_IElementsBufferProxy___HelixToolkit_SharpDX_Utilities_IElementsBufferProxy_" data-uid="HelixToolkit.SharpDX.Core.GeometryBufferModel.#ctor(SharpDX.Direct3D.PrimitiveTopology,HelixToolkit.SharpDX.Utilities.IElementsBufferProxy[],HelixToolkit.SharpDX.Utilities.IElementsBufferProxy)">
+  GeometryBufferModel(PrimitiveTopology, IElementsBufferProxy[]?, IElementsBufferProxy?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Core/GeometryBufferModel.cs/#L142"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="HelixToolkit.SharpDX.Core.GeometryBufferModel.html">GeometryBufferModel</a> class.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected GeometryBufferModel(PrimitiveTopology topology, IElementsBufferProxy[]? vertexBuffer, IElementsBufferProxy? indexBuffer)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>topology</code> <span class="xref">PrimitiveTopology</span></dt>
+    <dd><p>The topology.</p>
+</dd>
+    <dt><code>vertexBuffer</code> <a class="xref" href="HelixToolkit.SharpDX.Utilities.IElementsBufferProxy.html">IElementsBufferProxy</a>[]</dt>
+    <dd><p>The vertex buffer.</p>
+</dd>
+    <dt><code>indexBuffer</code> <a class="xref" href="HelixToolkit.SharpDX.Utilities.IElementsBufferProxy.html">IElementsBufferProxy</a></dt>
+    <dd><p>The index buffer.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <h2 class="section" id="fields">Fields
+</h2>
+
+
+
+  <h3 id="HelixToolkit_SharpDX_Core_GeometryBufferModel_IndexChanged" data-uid="HelixToolkit.SharpDX.Core.GeometryBufferModel.IndexChanged">
+  IndexChanged
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Core/GeometryBufferModel.cs/#L35"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets a value indicating whether [index changed].</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected volatile bool IndexChanged</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><code>true</code> if [index changed]; otherwise, <code>false</code>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_SharpDX_Core_GeometryBufferModel_VertexChanged" data-uid="HelixToolkit.SharpDX.Core.GeometryBufferModel.VertexChanged">
+  VertexChanged
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Core/GeometryBufferModel.cs/#L28"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>change flags</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected volatile uint VertexChanged</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.uint32">uint</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+  <h2 class="section" id="properties">Properties
+</h2>
+
+
+  <a id="HelixToolkit_SharpDX_Core_GeometryBufferModel_EffectsManager_" data-uid="HelixToolkit.SharpDX.Core.GeometryBufferModel.EffectsManager*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Core_GeometryBufferModel_EffectsManager" data-uid="HelixToolkit.SharpDX.Core.GeometryBufferModel.EffectsManager">
+  EffectsManager
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Core/GeometryBufferModel.cs/#L117"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the effects manager.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IEffectsManager? EffectsManager { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.IEffectsManager.html">IEffectsManager</a></dt>
+    <dd><p>The effects manager.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Core_GeometryBufferModel_GUID_" data-uid="HelixToolkit.SharpDX.Core.GeometryBufferModel.GUID*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Core_GeometryBufferModel_GUID" data-uid="HelixToolkit.SharpDX.Core.GeometryBufferModel.GUID">
+  GUID
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Core/GeometryBufferModel.cs/#L23"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the unique identifier.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Guid GUID { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.guid">Guid</a></dt>
+    <dd><p>The unique identifier.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Core_GeometryBufferModel_Geometry_" data-uid="HelixToolkit.SharpDX.Core.GeometryBufferModel.Geometry*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Core_GeometryBufferModel_Geometry" data-uid="HelixToolkit.SharpDX.Core.GeometryBufferModel.Geometry">
+  Geometry
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Core/GeometryBufferModel.cs/#L87"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the geometry.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Geometry3D? Geometry { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.Geometry3D.html">Geometry3D</a></dt>
+    <dd><p>The geometry.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Core_GeometryBufferModel_IndexBuffer_" data-uid="HelixToolkit.SharpDX.Core.GeometryBufferModel.IndexBuffer*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Core_GeometryBufferModel_IndexBuffer" data-uid="HelixToolkit.SharpDX.Core.GeometryBufferModel.IndexBuffer">
+  IndexBuffer
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Core/GeometryBufferModel.cs/#L68"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the index buffer.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IElementsBufferProxy? IndexBuffer { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.Utilities.IElementsBufferProxy.html">IElementsBufferProxy</a></dt>
+    <dd><p>The index buffer.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Core_GeometryBufferModel_Topology_" data-uid="HelixToolkit.SharpDX.Core.GeometryBufferModel.Topology*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Core_GeometryBufferModel_Topology" data-uid="HelixToolkit.SharpDX.Core.GeometryBufferModel.Topology">
+  Topology
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Core/GeometryBufferModel.cs/#L75"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the topology.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public PrimitiveTopology Topology { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">PrimitiveTopology</span></dt>
+    <dd><p>The topology.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Core_GeometryBufferModel_VertexBuffer_" data-uid="HelixToolkit.SharpDX.Core.GeometryBufferModel.VertexBuffer*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Core_GeometryBufferModel_VertexBuffer" data-uid="HelixToolkit.SharpDX.Core.GeometryBufferModel.VertexBuffer">
+  VertexBuffer
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Core/GeometryBufferModel.cs/#L44"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the vertex buffer.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IElementsBufferProxy[] VertexBuffer { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.Utilities.IElementsBufferProxy.html">IElementsBufferProxy</a>[]</dt>
+    <dd><p>The vertex buffer.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Core_GeometryBufferModel_VertexBufferBindings_" data-uid="HelixToolkit.SharpDX.Core.GeometryBufferModel.VertexBufferBindings*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Core_GeometryBufferModel_VertexBufferBindings" data-uid="HelixToolkit.SharpDX.Core.GeometryBufferModel.VertexBufferBindings">
+  VertexBufferBindings
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Core/GeometryBufferModel.cs/#L46"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected VertexBufferBinding[] VertexBufferBindings { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">VertexBufferBinding</span>[]</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Core_GeometryBufferModel_VertexStructSize_" data-uid="HelixToolkit.SharpDX.Core.GeometryBufferModel.VertexStructSize*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Core_GeometryBufferModel_VertexStructSize" data-uid="HelixToolkit.SharpDX.Core.GeometryBufferModel.VertexStructSize">
+  VertexStructSize
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Core/GeometryBufferModel.cs/#L53"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the size of the vertex structure.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IEnumerable&lt;int&gt; VertexStructSize { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a>&gt;</dt>
+    <dd><p>The size of the vertex structure.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h2 class="section" id="methods">Methods
+</h2>
+
+
+  <a id="HelixToolkit_SharpDX_Core_GeometryBufferModel_AttachBuffers_" data-uid="HelixToolkit.SharpDX.Core.GeometryBufferModel.AttachBuffers*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Core_GeometryBufferModel_AttachBuffers_HelixToolkit_SharpDX_Render_DeviceContextProxy_System_Int32__HelixToolkit_SharpDX_IDeviceResources_" data-uid="HelixToolkit.SharpDX.Core.GeometryBufferModel.AttachBuffers(HelixToolkit.SharpDX.Render.DeviceContextProxy,System.Int32@,HelixToolkit.SharpDX.IDeviceResources)">
+  AttachBuffers(DeviceContextProxy, ref int, IDeviceResources?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Core/GeometryBufferModel.cs/#L214"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Attaches the buffers.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool AttachBuffers(DeviceContextProxy context, ref int vertexBufferStartSlot, IDeviceResources? deviceResources)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>context</code> <a class="xref" href="HelixToolkit.SharpDX.Render.DeviceContextProxy.html">DeviceContextProxy</a></dt>
+    <dd><p>The context.</p>
+</dd>
+    <dt><code>vertexBufferStartSlot</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The vertex buffer slot.</p>
+</dd>
+    <dt><code>deviceResources</code> <a class="xref" href="HelixToolkit.SharpDX.IDeviceResources.html">IDeviceResources</a></dt>
+    <dd><p>The device resources.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Core_GeometryBufferModel_InvalidateRenderer_" data-uid="HelixToolkit.SharpDX.Core.GeometryBufferModel.InvalidateRenderer*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Core_GeometryBufferModel_InvalidateRenderer" data-uid="HelixToolkit.SharpDX.Core.GeometryBufferModel.InvalidateRenderer">
+  InvalidateRenderer()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Core/GeometryBufferModel.cs/#L180"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Invalidates the renderer.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected void InvalidateRenderer()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Core_GeometryBufferModel_IsIndexBufferChanged_" data-uid="HelixToolkit.SharpDX.Core.GeometryBufferModel.IsIndexBufferChanged*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Core_GeometryBufferModel_IsIndexBufferChanged_System_String_" data-uid="HelixToolkit.SharpDX.Core.GeometryBufferModel.IsIndexBufferChanged(System.String)">
+  IsIndexBufferChanged(string)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Core/GeometryBufferModel.cs/#L203"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Determines whether [is index buffer changed] [the specified property name].</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual bool IsIndexBufferChanged(string propertyName)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>propertyName</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>Name of the property.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><code>true</code> if [is index buffer changed] [the specified property name]; otherwise, <code>false</code>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Core_GeometryBufferModel_IsVertexBufferChanged_" data-uid="HelixToolkit.SharpDX.Core.GeometryBufferModel.IsVertexBufferChanged*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Core_GeometryBufferModel_IsVertexBufferChanged_System_String_System_Int32_" data-uid="HelixToolkit.SharpDX.Core.GeometryBufferModel.IsVertexBufferChanged(System.String,System.Int32)">
+  IsVertexBufferChanged(string, int)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Core/GeometryBufferModel.cs/#L192"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Determines whether [is vertex buffer changed] [the specified property name].</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual bool IsVertexBufferChanged(string propertyName, int vertexBufferIndex)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>propertyName</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>Name of the property.</p>
+</dd>
+    <dt><code>vertexBufferIndex</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><code>true</code> if [is vertex buffer changed] [the specified property name]; otherwise, <code>false</code>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Core_GeometryBufferModel_OnAttachBuffer_" data-uid="HelixToolkit.SharpDX.Core.GeometryBufferModel.OnAttachBuffer*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Core_GeometryBufferModel_OnAttachBuffer_HelixToolkit_SharpDX_Render_DeviceContextProxy_System_Int32__" data-uid="HelixToolkit.SharpDX.Core.GeometryBufferModel.OnAttachBuffer(HelixToolkit.SharpDX.Render.DeviceContextProxy,System.Int32@)">
+  OnAttachBuffer(DeviceContextProxy, ref int)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Core/GeometryBufferModel.cs/#L305"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Called when [attach buffer].</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual bool OnAttachBuffer(DeviceContextProxy context, ref int vertexBufferStartSlot)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>context</code> <a class="xref" href="HelixToolkit.SharpDX.Render.DeviceContextProxy.html">DeviceContextProxy</a></dt>
+    <dd><p>The context.</p>
+</dd>
+    <dt><code>vertexBufferStartSlot</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The vertex buffer start slot. It will be changed to the next available slot after binding</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Core_GeometryBufferModel_OnCreateIndexBuffer_" data-uid="HelixToolkit.SharpDX.Core.GeometryBufferModel.OnCreateIndexBuffer*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Core_GeometryBufferModel_OnCreateIndexBuffer_HelixToolkit_SharpDX_Render_DeviceContextProxy_HelixToolkit_SharpDX_Utilities_IElementsBufferProxy_HelixToolkit_SharpDX_Geometry3D_HelixToolkit_SharpDX_IDeviceResources_" data-uid="HelixToolkit.SharpDX.Core.GeometryBufferModel.OnCreateIndexBuffer(HelixToolkit.SharpDX.Render.DeviceContextProxy,HelixToolkit.SharpDX.Utilities.IElementsBufferProxy,HelixToolkit.SharpDX.Geometry3D,HelixToolkit.SharpDX.IDeviceResources)">
+  OnCreateIndexBuffer(DeviceContextProxy, IElementsBufferProxy, Geometry3D?, IDeviceResources?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Core/GeometryBufferModel.cs/#L298"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Called when [create index buffer].</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected abstract void OnCreateIndexBuffer(DeviceContextProxy context, IElementsBufferProxy buffer, Geometry3D? geometry, IDeviceResources? deviceResources)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>context</code> <a class="xref" href="HelixToolkit.SharpDX.Render.DeviceContextProxy.html">DeviceContextProxy</a></dt>
+    <dd><p>The context.</p>
+</dd>
+    <dt><code>buffer</code> <a class="xref" href="HelixToolkit.SharpDX.Utilities.IElementsBufferProxy.html">IElementsBufferProxy</a></dt>
+    <dd><p>The buffer.</p>
+</dd>
+    <dt><code>geometry</code> <a class="xref" href="HelixToolkit.SharpDX.Geometry3D.html">Geometry3D</a></dt>
+    <dd><p>The geometry.</p>
+</dd>
+    <dt><code>deviceResources</code> <a class="xref" href="HelixToolkit.SharpDX.IDeviceResources.html">IDeviceResources</a></dt>
+    <dd><p>The device resources.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Core_GeometryBufferModel_OnCreateVertexBuffer_" data-uid="HelixToolkit.SharpDX.Core.GeometryBufferModel.OnCreateVertexBuffer*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Core_GeometryBufferModel_OnCreateVertexBuffer_HelixToolkit_SharpDX_Render_DeviceContextProxy_HelixToolkit_SharpDX_Utilities_IElementsBufferProxy_System_Int32_HelixToolkit_SharpDX_Geometry3D_HelixToolkit_SharpDX_IDeviceResources_" data-uid="HelixToolkit.SharpDX.Core.GeometryBufferModel.OnCreateVertexBuffer(HelixToolkit.SharpDX.Render.DeviceContextProxy,HelixToolkit.SharpDX.Utilities.IElementsBufferProxy,System.Int32,HelixToolkit.SharpDX.Geometry3D,HelixToolkit.SharpDX.IDeviceResources)">
+  OnCreateVertexBuffer(DeviceContextProxy, IElementsBufferProxy, int, Geometry3D?, IDeviceResources?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Core/GeometryBufferModel.cs/#L290"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Called when [create vertex buffer].</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected abstract void OnCreateVertexBuffer(DeviceContextProxy context, IElementsBufferProxy buffer, int bufferIndex, Geometry3D? geometry, IDeviceResources? deviceResources)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>context</code> <a class="xref" href="HelixToolkit.SharpDX.Render.DeviceContextProxy.html">DeviceContextProxy</a></dt>
+    <dd><p>The context.</p>
+</dd>
+    <dt><code>buffer</code> <a class="xref" href="HelixToolkit.SharpDX.Utilities.IElementsBufferProxy.html">IElementsBufferProxy</a></dt>
+    <dd><p>The buffer.</p>
+</dd>
+    <dt><code>bufferIndex</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+    <dt><code>geometry</code> <a class="xref" href="HelixToolkit.SharpDX.Geometry3D.html">Geometry3D</a></dt>
+    <dd><p>The geometry.</p>
+</dd>
+    <dt><code>deviceResources</code> <a class="xref" href="HelixToolkit.SharpDX.IDeviceResources.html">IDeviceResources</a></dt>
+    <dd><p>The device resources.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Core_GeometryBufferModel_OnCreateVertexBufferBinding_" data-uid="HelixToolkit.SharpDX.Core.GeometryBufferModel.OnCreateVertexBufferBinding*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Core_GeometryBufferModel_OnCreateVertexBufferBinding" data-uid="HelixToolkit.SharpDX.Core.GeometryBufferModel.OnCreateVertexBufferBinding">
+  OnCreateVertexBufferBinding()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Core/GeometryBufferModel.cs/#L278"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual VertexBufferBinding[] OnCreateVertexBufferBinding()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><span class="xref">VertexBufferBinding</span>[]</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Core_GeometryBufferModel_OnDispose_" data-uid="HelixToolkit.SharpDX.Core.GeometryBufferModel.OnDispose*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Core_GeometryBufferModel_OnDispose_System_Boolean_" data-uid="HelixToolkit.SharpDX.Core.GeometryBufferModel.OnDispose(System.Boolean)">
+  OnDispose(bool)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Core/GeometryBufferModel.cs/#L336"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Releases unmanaged and - optionally - managed resources.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected override void OnDispose(bool disposeManagedResources)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>disposeManagedResources</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><code>true</code> to release both managed and unmanaged resources; <code>false</code> to release only unmanaged resources.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Core_GeometryBufferModel_UpdateBuffers_" data-uid="HelixToolkit.SharpDX.Core.GeometryBufferModel.UpdateBuffers*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Core_GeometryBufferModel_UpdateBuffers_HelixToolkit_SharpDX_Render_DeviceContextProxy_HelixToolkit_SharpDX_IDeviceResources_" data-uid="HelixToolkit.SharpDX.Core.GeometryBufferModel.UpdateBuffers(HelixToolkit.SharpDX.Render.DeviceContextProxy,HelixToolkit.SharpDX.IDeviceResources)">
+  UpdateBuffers(DeviceContextProxy, IDeviceResources?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Core/GeometryBufferModel.cs/#L226"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Updates the buffers.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual bool UpdateBuffers(DeviceContextProxy context, IDeviceResources? deviceResources)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>context</code> <a class="xref" href="HelixToolkit.SharpDX.Render.DeviceContextProxy.html">DeviceContextProxy</a></dt>
+    <dd><p>The context.</p>
+</dd>
+    <dt><code>deviceResources</code> <a class="xref" href="HelixToolkit.SharpDX.IDeviceResources.html">IDeviceResources</a></dt>
+    <dd><p>The device resources.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <h2 class="section" id="events">Events
+</h2>
+
+
+
+  <h3 id="HelixToolkit_SharpDX_Core_GeometryBufferModel_IndexBufferUpdated" data-uid="HelixToolkit.SharpDX.Core.GeometryBufferModel.IndexBufferUpdated">
+  IndexBufferUpdated
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Core/GeometryBufferModel.cs/#L16"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public event EventHandler? IndexBufferUpdated</code></pre>
+  </div>
+
+
+
+
+
+
+  <h4 class="section">Event Type</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.eventhandler">EventHandler</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_SharpDX_Core_GeometryBufferModel_VertexBufferUpdated" data-uid="HelixToolkit.SharpDX.Core.GeometryBufferModel.VertexBufferUpdated">
+  VertexBufferUpdated
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Core/GeometryBufferModel.cs/#L15"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public event EventHandler? VertexBufferUpdated</code></pre>
+  </div>
+
+
+
+
+
+
+  <h4 class="section">Event Type</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.eventhandler">EventHandler</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Core/GeometryBufferModel.cs/#L13" class="edit-link">Edit this page</a>
+        </div>
+
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          Copyright (c) 2023 Helix Toolkit contributors
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

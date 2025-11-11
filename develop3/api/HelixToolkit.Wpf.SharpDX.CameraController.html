@@ -1,0 +1,2823 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Class CameraController | Helix Toolkit - 3D for .NET </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Class CameraController | Helix Toolkit - 3D for .NET ">
+      
+      <meta name="description" content="Provides a control that manipulates the camera by mouse and keyboard gestures.">
+      <link rel="icon" href="../images/favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/helix-toolkit/helix-toolkit/new/develop3/apiSpec/new?filename=HelixToolkit_Wpf_SharpDX_CameraController.md&amp;value=---%0Auid%3A%20HelixToolkit.Wpf.SharpDX.CameraController%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="ManagedReference">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../images/favicon.ico" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="HelixToolkit.Wpf.SharpDX.CameraController">
+
+
+
+  <h1 id="HelixToolkit_Wpf_SharpDX_CameraController" data-uid="HelixToolkit.Wpf.SharpDX.CameraController" class="text-break">
+Class CameraController  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Wpf.SharpDX/Controls/CameraController.cs/#L12"><i class="bi bi-code-slash"></i></a>
+  </h1>
+
+  <div class="facts text-secondary">
+    <dl><dt>Namespace</dt><dd><a class="xref" href="HelixToolkit.html">HelixToolkit</a>.<a class="xref" href="HelixToolkit.Wpf.html">Wpf</a>.<a class="xref" href="HelixToolkit.Wpf.SharpDX.html">SharpDX</a></dd></dl>
+  <dl><dt>Assembly</dt><dd>HelixToolkit.Wpf.SharpDX.dll</dd></dl>
+  </div>
+
+  <div class="markdown summary"><p>Provides a control that manipulates the camera by mouse and keyboard gestures.</p>
+</div>
+  <div class="markdown conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class CameraController</code></pre>
+  </div>
+
+
+
+
+  <dl class="typelist inheritance">
+    <dt>Inheritance</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
+      <div><span class="xref">CameraController</span></div>
+    </dd>
+  </dl>
+
+
+
+  <dl class="typelist inheritedMembers">
+    <dt>Inherited Members</dt>
+    <dd>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">object.Equals(object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">object.Equals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode">object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype">object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone">object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals">object.ReferenceEquals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring">object.ToString()</a>
+    </div>
+  </dd></dl>
+
+
+
+
+
+
+  <h2 class="section" id="constructors">Constructors
+</h2>
+
+
+  <a id="HelixToolkit_Wpf_SharpDX_CameraController__ctor_" data-uid="HelixToolkit.Wpf.SharpDX.CameraController.#ctor*"></a>
+
+  <h3 id="HelixToolkit_Wpf_SharpDX_CameraController__ctor_HelixToolkit_Wpf_SharpDX_Viewport3DX_" data-uid="HelixToolkit.Wpf.SharpDX.CameraController.#ctor(HelixToolkit.Wpf.SharpDX.Viewport3DX)">
+  CameraController(Viewport3DX)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Wpf.SharpDX/Controls/CameraController.cs/#L161"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="HelixToolkit.Wpf.SharpDX.CameraController.html">CameraController</a> class.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public CameraController(Viewport3DX viewport)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>viewport</code> <a class="xref" href="HelixToolkit.Wpf.SharpDX.Viewport3DX.html">Viewport3DX</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <h2 class="section" id="fields">Fields
+</h2>
+
+
+
+  <h3 id="HelixToolkit_Wpf_SharpDX_CameraController_CameraMode" data-uid="HelixToolkit.Wpf.SharpDX.CameraController.CameraMode">
+  CameraMode
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Wpf.SharpDX/Controls/CameraController.cs/#L221"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets CameraMode.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public CameraMode CameraMode</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.CameraMode.html">CameraMode</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_Wpf_SharpDX_CameraController_CameraRotationMode" data-uid="HelixToolkit.Wpf.SharpDX.CameraController.CameraRotationMode">
+  CameraRotationMode
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Wpf.SharpDX/Controls/CameraController.cs/#L250"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets CameraRotationMode.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public CameraRotationMode CameraRotationMode</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.CameraRotationMode.html">CameraRotationMode</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_Wpf_SharpDX_CameraController_ChangeFieldOfViewCursor" data-uid="HelixToolkit.Wpf.SharpDX.CameraController.ChangeFieldOfViewCursor">
+  ChangeFieldOfViewCursor
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Wpf.SharpDX/Controls/CameraController.cs/#L296"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the change field of view cursor.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Cursor ChangeFieldOfViewCursor</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.input.cursor">Cursor</a></dt>
+    <dd><p>The change field of view cursor.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_Wpf_SharpDX_CameraController_DefaultCamera" data-uid="HelixToolkit.Wpf.SharpDX.CameraController.DefaultCamera">
+  DefaultCamera
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Wpf.SharpDX/Controls/CameraController.cs/#L302"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the default camera (used when resetting the view).</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ProjectionCamera? DefaultCamera</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Wpf.SharpDX.ProjectionCamera.html">ProjectionCamera</a></dt>
+    <dd><p>The default camera.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_Wpf_SharpDX_CameraController_InertiaFactor" data-uid="HelixToolkit.Wpf.SharpDX.CameraController.InertiaFactor">
+  InertiaFactor
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Wpf.SharpDX/Controls/CameraController.cs/#L307"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets InertiaFactor.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public double InertiaFactor</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_Wpf_SharpDX_CameraController_InfiniteSpin" data-uid="HelixToolkit.Wpf.SharpDX.CameraController.InfiniteSpin">
+  InfiniteSpin
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Wpf.SharpDX/Controls/CameraController.cs/#L312"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets a value indicating whether InfiniteSpin.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool InfiniteSpin</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_Wpf_SharpDX_CameraController_IsChangeFieldOfViewEnabled" data-uid="HelixToolkit.Wpf.SharpDX.CameraController.IsChangeFieldOfViewEnabled">
+  IsChangeFieldOfViewEnabled
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Wpf.SharpDX/Controls/CameraController.cs/#L317"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets a value indicating whether field of view can be changed.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsChangeFieldOfViewEnabled</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_Wpf_SharpDX_CameraController_IsInertiaEnabled" data-uid="HelixToolkit.Wpf.SharpDX.CameraController.IsInertiaEnabled">
+  IsInertiaEnabled
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Wpf.SharpDX/Controls/CameraController.cs/#L323"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets a value indicating whether inertia is enabled for the camera manipulations.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsInertiaEnabled</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><code>true</code> if inertia is enabled; otherwise, <code>false</code>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_Wpf_SharpDX_CameraController_IsMoveEnabled" data-uid="HelixToolkit.Wpf.SharpDX.CameraController.IsMoveEnabled">
+  IsMoveEnabled
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Wpf.SharpDX/Controls/CameraController.cs/#L329"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets a value indicating whether move is enabled.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsMoveEnabled</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><code>true</code> if move is enabled; otherwise, <code>false</code> .</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_Wpf_SharpDX_CameraController_IsPanEnabled" data-uid="HelixToolkit.Wpf.SharpDX.CameraController.IsPanEnabled">
+  IsPanEnabled
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Wpf.SharpDX/Controls/CameraController.cs/#L334"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets a value indicating whether pan is enabled.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsPanEnabled</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_Wpf_SharpDX_CameraController_IsRotationEnabled" data-uid="HelixToolkit.Wpf.SharpDX.CameraController.IsRotationEnabled">
+  IsRotationEnabled
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Wpf.SharpDX/Controls/CameraController.cs/#L339"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets a value indicating whether IsRotationEnabled.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsRotationEnabled</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_Wpf_SharpDX_CameraController_IsZoomEnabled" data-uid="HelixToolkit.Wpf.SharpDX.CameraController.IsZoomEnabled">
+  IsZoomEnabled
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Wpf.SharpDX/Controls/CameraController.cs/#L344"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets a value indicating whether IsZoomEnabled.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsZoomEnabled</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_Wpf_SharpDX_CameraController_LeftRightPanSensitivity" data-uid="HelixToolkit.Wpf.SharpDX.CameraController.LeftRightPanSensitivity">
+  LeftRightPanSensitivity
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Wpf.SharpDX/Controls/CameraController.cs/#L353"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the sensitivity for pan by the left and right keys.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public double LeftRightPanSensitivity</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd><p>The pan sensitivity.</p>
+</dd>
+  </dl>
+
+
+
+
+
+  <h4 class="section" id="HelixToolkit_Wpf_SharpDX_CameraController_LeftRightPanSensitivity_remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>Use -1 to invert the pan direction.</p>
+</div>
+
+
+
+
+
+  <h3 id="HelixToolkit_Wpf_SharpDX_CameraController_LeftRightRotationSensitivity" data-uid="HelixToolkit.Wpf.SharpDX.CameraController.LeftRightRotationSensitivity">
+  LeftRightRotationSensitivity
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Wpf.SharpDX/Controls/CameraController.cs/#L362"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the sensitivity for rotation by the left and right keys.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public double LeftRightRotationSensitivity</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd><p>The rotation sensitivity.</p>
+</dd>
+  </dl>
+
+
+
+
+
+  <h4 class="section" id="HelixToolkit_Wpf_SharpDX_CameraController_LeftRightRotationSensitivity_remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>Use -1 to invert the rotation direction.</p>
+</div>
+
+
+
+
+
+  <h3 id="HelixToolkit_Wpf_SharpDX_CameraController_MaximumFieldOfView" data-uid="HelixToolkit.Wpf.SharpDX.CameraController.MaximumFieldOfView">
+  MaximumFieldOfView
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Wpf.SharpDX/Controls/CameraController.cs/#L368"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the maximum field of view.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public double MaximumFieldOfView</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd><p>The maximum field of view.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_Wpf_SharpDX_CameraController_MinimumFieldOfView" data-uid="HelixToolkit.Wpf.SharpDX.CameraController.MinimumFieldOfView">
+  MinimumFieldOfView
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Wpf.SharpDX/Controls/CameraController.cs/#L374"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the minimum field of view.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public double MinimumFieldOfView</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd><p>The minimum field of view.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_Wpf_SharpDX_CameraController_ModelUpDirection" data-uid="HelixToolkit.Wpf.SharpDX.CameraController.ModelUpDirection">
+  ModelUpDirection
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Wpf.SharpDX/Controls/CameraController.cs/#L379"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the model up direction.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Vector3 ModelUpDirection</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_Wpf_SharpDX_CameraController_MoveSensitivity" data-uid="HelixToolkit.Wpf.SharpDX.CameraController.MoveSensitivity">
+  MoveSensitivity
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Wpf.SharpDX/Controls/CameraController.cs/#L385"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the move sensitivity.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public double MoveSensitivity</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd><p>The move sensitivity.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_Wpf_SharpDX_CameraController_PageUpDownZoomSensitivity" data-uid="HelixToolkit.Wpf.SharpDX.CameraController.PageUpDownZoomSensitivity">
+  PageUpDownZoomSensitivity
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Wpf.SharpDX/Controls/CameraController.cs/#L394"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the sensitivity for zoom by the page up and page down keys.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public double PageUpDownZoomSensitivity</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd><p>The zoom sensitivity.</p>
+</dd>
+  </dl>
+
+
+
+
+
+  <h4 class="section" id="HelixToolkit_Wpf_SharpDX_CameraController_PageUpDownZoomSensitivity_remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>Use -1 to invert the zoom direction.</p>
+</div>
+
+
+
+
+
+  <h3 id="HelixToolkit_Wpf_SharpDX_CameraController_PanCursor" data-uid="HelixToolkit.Wpf.SharpDX.CameraController.PanCursor">
+  PanCursor
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Wpf.SharpDX/Controls/CameraController.cs/#L400"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the pan cursor.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Cursor PanCursor</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.input.cursor">Cursor</a></dt>
+    <dd><p>The pan cursor.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_Wpf_SharpDX_CameraController_RotateAroundMouseDownPoint" data-uid="HelixToolkit.Wpf.SharpDX.CameraController.RotateAroundMouseDownPoint">
+  RotateAroundMouseDownPoint
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Wpf.SharpDX/Controls/CameraController.cs/#L406"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets a value indicating whether to rotate around the mouse down point.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool RotateAroundMouseDownPoint</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><code>true</code> if rotation around the mouse down point is enabled; otherwise, <code>false</code> .</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_Wpf_SharpDX_CameraController_RotateCursor" data-uid="HelixToolkit.Wpf.SharpDX.CameraController.RotateCursor">
+  RotateCursor
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Wpf.SharpDX/Controls/CameraController.cs/#L412"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the rotate cursor.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Cursor RotateCursor</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.input.cursor">Cursor</a></dt>
+    <dd><p>The rotate cursor.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_Wpf_SharpDX_CameraController_RotationSensitivity" data-uid="HelixToolkit.Wpf.SharpDX.CameraController.RotationSensitivity">
+  RotationSensitivity
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Wpf.SharpDX/Controls/CameraController.cs/#L418"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the rotation sensitivity (degrees/pixel).</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public double RotationSensitivity</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd><p>The rotation sensitivity.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_Wpf_SharpDX_CameraController_ShowCameraTarget" data-uid="HelixToolkit.Wpf.SharpDX.CameraController.ShowCameraTarget">
+  ShowCameraTarget
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Wpf.SharpDX/Controls/CameraController.cs/#L423"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets a value indicating whether to show a target adorner when manipulating the camera.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool ShowCameraTarget</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_Wpf_SharpDX_CameraController_SpinReleaseTime" data-uid="HelixToolkit.Wpf.SharpDX.CameraController.SpinReleaseTime">
+  SpinReleaseTime
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Wpf.SharpDX/Controls/CameraController.cs/#L431"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the max duration of mouse drag to activate spin.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int SpinReleaseTime</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+  <h4 class="section" id="HelixToolkit_Wpf_SharpDX_CameraController_SpinReleaseTime_remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>If the time between mouse down and mouse up is less than this value, spin is activated.</p>
+</div>
+
+
+
+
+
+  <h3 id="HelixToolkit_Wpf_SharpDX_CameraController_UpDownPanSensitivity" data-uid="HelixToolkit.Wpf.SharpDX.CameraController.UpDownPanSensitivity">
+  UpDownPanSensitivity
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Wpf.SharpDX/Controls/CameraController.cs/#L440"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the sensitivity for pan by the up and down keys.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public double UpDownPanSensitivity</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd><p>The pan sensitivity.</p>
+</dd>
+  </dl>
+
+
+
+
+
+  <h4 class="section" id="HelixToolkit_Wpf_SharpDX_CameraController_UpDownPanSensitivity_remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>Use -1 to invert the pan direction.</p>
+</div>
+
+
+
+
+
+  <h3 id="HelixToolkit_Wpf_SharpDX_CameraController_UpDownRotationSensitivity" data-uid="HelixToolkit.Wpf.SharpDX.CameraController.UpDownRotationSensitivity">
+  UpDownRotationSensitivity
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Wpf.SharpDX/Controls/CameraController.cs/#L449"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the sensitivity for rotation by the up and down keys.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public double UpDownRotationSensitivity</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd><p>The rotation sensitivity.</p>
+</dd>
+  </dl>
+
+
+
+
+
+  <h4 class="section" id="HelixToolkit_Wpf_SharpDX_CameraController_UpDownRotationSensitivity_remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>Use -1 to invert the rotation direction.</p>
+</div>
+
+
+
+
+
+  <h3 id="HelixToolkit_Wpf_SharpDX_CameraController_ZoomAroundMouseDownPoint" data-uid="HelixToolkit.Wpf.SharpDX.CameraController.ZoomAroundMouseDownPoint">
+  ZoomAroundMouseDownPoint
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Wpf.SharpDX/Controls/CameraController.cs/#L463"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets a value indicating whether to zoom around mouse down point.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool ZoomAroundMouseDownPoint</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><code>true</code> if zooming around the mouse down point is enabled; otherwise, <code>false</code> .</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_Wpf_SharpDX_CameraController_ZoomCursor" data-uid="HelixToolkit.Wpf.SharpDX.CameraController.ZoomCursor">
+  ZoomCursor
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Wpf.SharpDX/Controls/CameraController.cs/#L469"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the zoom cursor.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Cursor ZoomCursor</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.input.cursor">Cursor</a></dt>
+    <dd><p>The zoom cursor.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_Wpf_SharpDX_CameraController_ZoomDistanceLimitFar" data-uid="HelixToolkit.Wpf.SharpDX.CameraController.ZoomDistanceLimitFar">
+  ZoomDistanceLimitFar
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Wpf.SharpDX/Controls/CameraController.cs/#L487"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the zoom distance limit far.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public double ZoomDistanceLimitFar</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd><p>The zoom distance limit far.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_Wpf_SharpDX_CameraController_ZoomDistanceLimitNear" data-uid="HelixToolkit.Wpf.SharpDX.CameraController.ZoomDistanceLimitNear">
+  ZoomDistanceLimitNear
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Wpf.SharpDX/Controls/CameraController.cs/#L494"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the zoom distance limit near.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public double ZoomDistanceLimitNear</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd><p>The zoom distance limit near.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_Wpf_SharpDX_CameraController_ZoomRectangleCursor" data-uid="HelixToolkit.Wpf.SharpDX.CameraController.ZoomRectangleCursor">
+  ZoomRectangleCursor
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Wpf.SharpDX/Controls/CameraController.cs/#L475"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the zoom rectangle cursor.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Cursor ZoomRectangleCursor</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.input.cursor">Cursor</a></dt>
+    <dd><p>The zoom rectangle cursor.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_Wpf_SharpDX_CameraController_ZoomSensitivity" data-uid="HelixToolkit.Wpf.SharpDX.CameraController.ZoomSensitivity">
+  ZoomSensitivity
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Wpf.SharpDX/Controls/CameraController.cs/#L480"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets ZoomSensitivity.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public double ZoomSensitivity</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+  <h2 class="section" id="properties">Properties
+</h2>
+
+
+  <a id="HelixToolkit_Wpf_SharpDX_CameraController_ActualCamera_" data-uid="HelixToolkit.Wpf.SharpDX.CameraController.ActualCamera*"></a>
+
+  <h3 id="HelixToolkit_Wpf_SharpDX_CameraController_ActualCamera" data-uid="HelixToolkit.Wpf.SharpDX.CameraController.ActualCamera">
+  ActualCamera
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Wpf.SharpDX/Controls/CameraController.cs/#L178"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets ActualCamera.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Camera? ActualCamera { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Wpf.SharpDX.Camera.html">Camera</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_SharpDX_CameraController_AllowRotateXY_" data-uid="HelixToolkit.Wpf.SharpDX.CameraController.AllowRotateXY*"></a>
+
+  <h3 id="HelixToolkit_Wpf_SharpDX_CameraController_AllowRotateXY" data-uid="HelixToolkit.Wpf.SharpDX.CameraController.AllowRotateXY">
+  AllowRotateXY
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Wpf.SharpDX/Controls/CameraController.cs/#L573"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets to allow rotate x direction and y direction globally. X, Y is screen space.</p>
+<p>X = 1: Allow left/right rotation. Y = 1: Allow up/down rotation</p>
+<p>Default is (1, 1)</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Vector2 AllowRotateXY { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector2">Vector2</a></dt>
+    <dd><p>The allow rotate xy.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_SharpDX_CameraController_CameraLookDirection_" data-uid="HelixToolkit.Wpf.SharpDX.CameraController.CameraLookDirection*"></a>
+
+  <h3 id="HelixToolkit_Wpf_SharpDX_CameraController_CameraLookDirection" data-uid="HelixToolkit.Wpf.SharpDX.CameraController.CameraLookDirection">
+  CameraLookDirection
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Wpf.SharpDX/Controls/CameraController.cs/#L197"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets CameraLookDirection.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Vector3 CameraLookDirection { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_SharpDX_CameraController_CameraPosition_" data-uid="HelixToolkit.Wpf.SharpDX.CameraController.CameraPosition*"></a>
+
+  <h3 id="HelixToolkit_Wpf_SharpDX_CameraController_CameraPosition" data-uid="HelixToolkit.Wpf.SharpDX.CameraController.CameraPosition">
+  CameraPosition
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Wpf.SharpDX/Controls/CameraController.cs/#L226"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets CameraPosition.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Vector3 CameraPosition { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_SharpDX_CameraController_CameraTarget_" data-uid="HelixToolkit.Wpf.SharpDX.CameraController.CameraTarget*"></a>
+
+  <h3 id="HelixToolkit_Wpf_SharpDX_CameraController_CameraTarget" data-uid="HelixToolkit.Wpf.SharpDX.CameraController.CameraTarget">
+  CameraTarget
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Wpf.SharpDX/Controls/CameraController.cs/#L255"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets CameraTarget.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Vector3 CameraTarget { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_SharpDX_CameraController_CameraUpDirection_" data-uid="HelixToolkit.Wpf.SharpDX.CameraController.CameraUpDirection*"></a>
+
+  <h3 id="HelixToolkit_Wpf_SharpDX_CameraController_CameraUpDirection" data-uid="HelixToolkit.Wpf.SharpDX.CameraController.CameraUpDirection">
+  CameraUpDirection
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Wpf.SharpDX/Controls/CameraController.cs/#L271"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets CameraUpDirection.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Vector3 CameraUpDirection { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_SharpDX_CameraController_EnablePinchZoom_" data-uid="HelixToolkit.Wpf.SharpDX.CameraController.EnablePinchZoom*"></a>
+
+  <h3 id="HelixToolkit_Wpf_SharpDX_CameraController_EnablePinchZoom" data-uid="HelixToolkit.Wpf.SharpDX.CameraController.EnablePinchZoom">
+  EnablePinchZoom
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Wpf.SharpDX/Controls/CameraController.cs/#L580"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool EnablePinchZoom { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_SharpDX_CameraController_EnableThreeFingerPan_" data-uid="HelixToolkit.Wpf.SharpDX.CameraController.EnableThreeFingerPan*"></a>
+
+  <h3 id="HelixToolkit_Wpf_SharpDX_CameraController_EnableThreeFingerPan" data-uid="HelixToolkit.Wpf.SharpDX.CameraController.EnableThreeFingerPan">
+  EnableThreeFingerPan
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Wpf.SharpDX/Controls/CameraController.cs/#L581"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool EnableThreeFingerPan { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_SharpDX_CameraController_EnableTouchRotate_" data-uid="HelixToolkit.Wpf.SharpDX.CameraController.EnableTouchRotate*"></a>
+
+  <h3 id="HelixToolkit_Wpf_SharpDX_CameraController_EnableTouchRotate" data-uid="HelixToolkit.Wpf.SharpDX.CameraController.EnableTouchRotate">
+  EnableTouchRotate
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Wpf.SharpDX/Controls/CameraController.cs/#L579"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool EnableTouchRotate { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_SharpDX_CameraController_FixedRotationPoint_" data-uid="HelixToolkit.Wpf.SharpDX.CameraController.FixedRotationPoint*"></a>
+
+  <h3 id="HelixToolkit_Wpf_SharpDX_CameraController_FixedRotationPoint" data-uid="HelixToolkit.Wpf.SharpDX.CameraController.FixedRotationPoint">
+  FixedRotationPoint
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Wpf.SharpDX/Controls/CameraController.cs/#L560"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the fixed rotation point.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Vector3 FixedRotationPoint { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd><p>The fixed rotation point.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_SharpDX_CameraController_FixedRotationPointEnabled_" data-uid="HelixToolkit.Wpf.SharpDX.CameraController.FixedRotationPointEnabled*"></a>
+
+  <h3 id="HelixToolkit_Wpf_SharpDX_CameraController_FixedRotationPointEnabled" data-uid="HelixToolkit.Wpf.SharpDX.CameraController.FixedRotationPointEnabled">
+  FixedRotationPointEnabled
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Wpf.SharpDX/Controls/CameraController.cs/#L549"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets a value indicating whether [fixed rotation point enabled].</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool FixedRotationPointEnabled { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><code>true</code> if [fixed rotation point enabled]; otherwise, <code>false</code>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_SharpDX_CameraController_IsOrthographicCamera_" data-uid="HelixToolkit.Wpf.SharpDX.CameraController.IsOrthographicCamera*"></a>
+
+  <h3 id="HelixToolkit_Wpf_SharpDX_CameraController_IsOrthographicCamera" data-uid="HelixToolkit.Wpf.SharpDX.CameraController.IsOrthographicCamera">
+  IsOrthographicCamera
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Wpf.SharpDX/Controls/CameraController.cs/#L502"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets a value indicating whether IsOrthographicCamera.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected bool IsOrthographicCamera { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_SharpDX_CameraController_IsPerspectiveCamera_" data-uid="HelixToolkit.Wpf.SharpDX.CameraController.IsPerspectiveCamera*"></a>
+
+  <h3 id="HelixToolkit_Wpf_SharpDX_CameraController_IsPerspectiveCamera" data-uid="HelixToolkit.Wpf.SharpDX.CameraController.IsPerspectiveCamera">
+  IsPerspectiveCamera
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Wpf.SharpDX/Controls/CameraController.cs/#L513"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets a value indicating whether IsPerspectiveCamera.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected bool IsPerspectiveCamera { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_SharpDX_CameraController_OrthographicCamera_" data-uid="HelixToolkit.Wpf.SharpDX.CameraController.OrthographicCamera*"></a>
+
+  <h3 id="HelixToolkit_Wpf_SharpDX_CameraController_OrthographicCamera" data-uid="HelixToolkit.Wpf.SharpDX.CameraController.OrthographicCamera">
+  OrthographicCamera
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Wpf.SharpDX/Controls/CameraController.cs/#L524"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets OrthographicCamera.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected OrthographicCamera? OrthographicCamera { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Wpf.SharpDX.OrthographicCamera.html">OrthographicCamera</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_SharpDX_CameraController_PerspectiveCamera_" data-uid="HelixToolkit.Wpf.SharpDX.CameraController.PerspectiveCamera*"></a>
+
+  <h3 id="HelixToolkit_Wpf_SharpDX_CameraController_PerspectiveCamera" data-uid="HelixToolkit.Wpf.SharpDX.CameraController.PerspectiveCamera">
+  PerspectiveCamera
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Wpf.SharpDX/Controls/CameraController.cs/#L535"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets PerspectiveCamera.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected PerspectiveCamera? PerspectiveCamera { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Wpf.SharpDX.PerspectiveCamera.html">PerspectiveCamera</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_SharpDX_CameraController_PinchZoomAtCenter_" data-uid="HelixToolkit.Wpf.SharpDX.CameraController.PinchZoomAtCenter*"></a>
+
+  <h3 id="HelixToolkit_Wpf_SharpDX_CameraController_PinchZoomAtCenter" data-uid="HelixToolkit.Wpf.SharpDX.CameraController.PinchZoomAtCenter">
+  PinchZoomAtCenter
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Wpf.SharpDX/Controls/CameraController.cs/#L582"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool PinchZoomAtCenter { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_SharpDX_CameraController_Viewport_" data-uid="HelixToolkit.Wpf.SharpDX.CameraController.Viewport*"></a>
+
+  <h3 id="HelixToolkit_Wpf_SharpDX_CameraController_Viewport" data-uid="HelixToolkit.Wpf.SharpDX.CameraController.Viewport">
+  Viewport
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Wpf.SharpDX/Controls/CameraController.cs/#L454"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets Viewport.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Viewport3DX Viewport { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Wpf.SharpDX.Viewport3DX.html">Viewport3DX</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h2 class="section" id="methods">Methods
+</h2>
+
+
+  <a id="HelixToolkit_Wpf_SharpDX_CameraController_AddMoveForce_" data-uid="HelixToolkit.Wpf.SharpDX.CameraController.AddMoveForce*"></a>
+
+  <h3 id="HelixToolkit_Wpf_SharpDX_CameraController_AddMoveForce_System_Numerics_Vector3_" data-uid="HelixToolkit.Wpf.SharpDX.CameraController.AddMoveForce(System.Numerics.Vector3)">
+  AddMoveForce(Vector3)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Wpf.SharpDX/Controls/CameraController.cs/#L608"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Adds the specified move force.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void AddMoveForce(Vector3 delta)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>delta</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd><p>The delta.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_SharpDX_CameraController_AddMoveForce_" data-uid="HelixToolkit.Wpf.SharpDX.CameraController.AddMoveForce*"></a>
+
+  <h3 id="HelixToolkit_Wpf_SharpDX_CameraController_AddMoveForce_System_Single_System_Single_System_Single_" data-uid="HelixToolkit.Wpf.SharpDX.CameraController.AddMoveForce(System.Single,System.Single,System.Single)">
+  AddMoveForce(float, float, float)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Wpf.SharpDX/Controls/CameraController.cs/#L597"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Adds the specified move force.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void AddMoveForce(float dx, float dy, float dz)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>dx</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>The delta x.</p>
+</dd>
+    <dt><code>dy</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>The delta y.</p>
+</dd>
+    <dt><code>dz</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>The delta z.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_SharpDX_CameraController_AddPanForce_" data-uid="HelixToolkit.Wpf.SharpDX.CameraController.AddPanForce*"></a>
+
+  <h3 id="HelixToolkit_Wpf_SharpDX_CameraController_AddPanForce_System_Numerics_Vector3_" data-uid="HelixToolkit.Wpf.SharpDX.CameraController.AddPanForce(System.Numerics.Vector3)">
+  AddPanForce(Vector3)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Wpf.SharpDX/Controls/CameraController.cs/#L640"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>The add pan force.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void AddPanForce(Vector3 pan)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>pan</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd><p>The pan.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_SharpDX_CameraController_AddPanForce_" data-uid="HelixToolkit.Wpf.SharpDX.CameraController.AddPanForce*"></a>
+
+  <h3 id="HelixToolkit_Wpf_SharpDX_CameraController_AddPanForce_System_Single_System_Single_" data-uid="HelixToolkit.Wpf.SharpDX.CameraController.AddPanForce(System.Single,System.Single)">
+  AddPanForce(float, float)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Wpf.SharpDX/Controls/CameraController.cs/#L629"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Adds the specified pan force.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void AddPanForce(float dx, float dy)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>dx</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>The delta x.</p>
+</dd>
+    <dt><code>dy</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>The delta y.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_SharpDX_CameraController_AddRotateForce_" data-uid="HelixToolkit.Wpf.SharpDX.CameraController.AddRotateForce*"></a>
+
+  <h3 id="HelixToolkit_Wpf_SharpDX_CameraController_AddRotateForce_System_Single_System_Single_" data-uid="HelixToolkit.Wpf.SharpDX.CameraController.AddRotateForce(System.Single,System.Single)">
+  AddRotateForce(float, float)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Wpf.SharpDX/Controls/CameraController.cs/#L668"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>The add rotate force.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void AddRotateForce(float dx, float dy)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>dx</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>The delta x.</p>
+</dd>
+    <dt><code>dy</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>The delta y.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_SharpDX_CameraController_AddZoomForce_" data-uid="HelixToolkit.Wpf.SharpDX.CameraController.AddZoomForce*"></a>
+
+  <h3 id="HelixToolkit_Wpf_SharpDX_CameraController_AddZoomForce_System_Single_" data-uid="HelixToolkit.Wpf.SharpDX.CameraController.AddZoomForce(System.Single)">
+  AddZoomForce(float)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Wpf.SharpDX/Controls/CameraController.cs/#L704"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Adds the zoom force.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void AddZoomForce(float delta)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>delta</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>The delta.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_SharpDX_CameraController_AddZoomForce_" data-uid="HelixToolkit.Wpf.SharpDX.CameraController.AddZoomForce*"></a>
+
+  <h3 id="HelixToolkit_Wpf_SharpDX_CameraController_AddZoomForce_System_Single_System_Numerics_Vector3_" data-uid="HelixToolkit.Wpf.SharpDX.CameraController.AddZoomForce(System.Single,System.Numerics.Vector3)">
+  AddZoomForce(float, Vector3)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Wpf.SharpDX/Controls/CameraController.cs/#L718"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Adds the zoom force.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void AddZoomForce(float delta, Vector3 zoomOrigin)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>delta</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>The delta.</p>
+</dd>
+    <dt><code>zoomOrigin</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd><p>The zoom origin.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_SharpDX_CameraController_ChangeDirection_" data-uid="HelixToolkit.Wpf.SharpDX.CameraController.ChangeDirection*"></a>
+
+  <h3 id="HelixToolkit_Wpf_SharpDX_CameraController_ChangeDirection_System_Numerics_Vector3_System_Double_" data-uid="HelixToolkit.Wpf.SharpDX.CameraController.ChangeDirection(System.Numerics.Vector3,System.Double)">
+  ChangeDirection(Vector3, double)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Wpf.SharpDX/Controls/CameraController.cs/#L780"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Changes the direction of the camera.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void ChangeDirection(Vector3 lookDir, double animationTime = 500)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>lookDir</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd><p>The look direction.</p>
+</dd>
+    <dt><code>animationTime</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd><p>The animation time.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_SharpDX_CameraController_ChangeDirection_" data-uid="HelixToolkit.Wpf.SharpDX.CameraController.ChangeDirection*"></a>
+
+  <h3 id="HelixToolkit_Wpf_SharpDX_CameraController_ChangeDirection_System_Numerics_Vector3_System_Numerics_Vector3_System_Double_" data-uid="HelixToolkit.Wpf.SharpDX.CameraController.ChangeDirection(System.Numerics.Vector3,System.Numerics.Vector3,System.Double)">
+  ChangeDirection(Vector3, Vector3, double)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Wpf.SharpDX/Controls/CameraController.cs/#L750"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Changes the direction of the camera.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void ChangeDirection(Vector3 lookDir, Vector3 upDir, double animationTime = 500)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>lookDir</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd><p>The look direction.</p>
+</dd>
+    <dt><code>upDir</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd><p>The up direction.</p>
+</dd>
+    <dt><code>animationTime</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd><p>The animation time.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_SharpDX_CameraController_ChangeDirection_" data-uid="HelixToolkit.Wpf.SharpDX.CameraController.ChangeDirection*"></a>
+
+  <h3 id="HelixToolkit_Wpf_SharpDX_CameraController_ChangeDirection_System_Windows_Media_Media3D_Vector3D_System_Windows_Media_Media3D_Vector3D_System_Double_" data-uid="HelixToolkit.Wpf.SharpDX.CameraController.ChangeDirection(System.Windows.Media.Media3D.Vector3D,System.Windows.Media.Media3D.Vector3D,System.Double)">
+  ChangeDirection(Vector3D, Vector3D, double)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Wpf.SharpDX/Controls/CameraController.cs/#L760"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Changes the direction.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void ChangeDirection(Vector3D lookDir, Vector3D upDir, double animationTime = 500)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>lookDir</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.media3d.vector3d">Vector3D</a></dt>
+    <dd><p>The look dir.</p>
+</dd>
+    <dt><code>upDir</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.media3d.vector3d">Vector3D</a></dt>
+    <dd><p>Up dir.</p>
+</dd>
+    <dt><code>animationTime</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd><p>The animation time.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_SharpDX_CameraController_LookAt_" data-uid="HelixToolkit.Wpf.SharpDX.CameraController.LookAt*"></a>
+
+  <h3 id="HelixToolkit_Wpf_SharpDX_CameraController_LookAt_System_Numerics_Vector3_System_Double_" data-uid="HelixToolkit.Wpf.SharpDX.CameraController.LookAt(System.Numerics.Vector3,System.Double)">
+  LookAt(Vector3, double)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Wpf.SharpDX/Controls/CameraController.cs/#L801"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Change the &quot;look-at&quot; point.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[Obsolete]
+public void LookAt(Vector3 target, double animationTime)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>target</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd><p>The target.</p>
+</dd>
+    <dt><code>animationTime</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd><p>The animation time.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_SharpDX_CameraController_OnCompositionTargetRendering_" data-uid="HelixToolkit.Wpf.SharpDX.CameraController.OnCompositionTargetRendering*"></a>
+
+  <h3 id="HelixToolkit_Wpf_SharpDX_CameraController_OnCompositionTargetRendering_System_Int64_" data-uid="HelixToolkit.Wpf.SharpDX.CameraController.OnCompositionTargetRendering(System.Int64)">
+  OnCompositionTargetRendering(long)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Wpf.SharpDX/Controls/CameraController.cs/#L1333"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Called when [composition target rendering].</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void OnCompositionTargetRendering(long ticks)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>ticks</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int64">long</a></dt>
+    <dd><p>The ticks.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_SharpDX_CameraController_OnKeyDown_" data-uid="HelixToolkit.Wpf.SharpDX.CameraController.OnKeyDown*"></a>
+
+  <h3 id="HelixToolkit_Wpf_SharpDX_CameraController_OnKeyDown_System_Windows_Input_KeyEventArgs_" data-uid="HelixToolkit.Wpf.SharpDX.CameraController.OnKeyDown(System.Windows.Input.KeyEventArgs)">
+  OnKeyDown(KeyEventArgs)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Wpf.SharpDX/Controls/CameraController.cs/#L1344"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Called when a key is pressed.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void OnKeyDown(KeyEventArgs e)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>e</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.input.keyeventargs">KeyEventArgs</a></dt>
+    <dd><p>The <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.input.keyeventargs">KeyEventArgs</a> instance containing the event data.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_SharpDX_CameraController_OnManipulationCompleted_" data-uid="HelixToolkit.Wpf.SharpDX.CameraController.OnManipulationCompleted*"></a>
+
+  <h3 id="HelixToolkit_Wpf_SharpDX_CameraController_OnManipulationCompleted_System_Windows_Input_ManipulationCompletedEventArgs_" data-uid="HelixToolkit.Wpf.SharpDX.CameraController.OnManipulationCompleted(System.Windows.Input.ManipulationCompletedEventArgs)">
+  OnManipulationCompleted(ManipulationCompletedEventArgs)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Wpf.SharpDX/Controls/CameraController.cs/#L953"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Called when the <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.uielement.manipulationcompleted">ManipulationCompleted</a> event occurs.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void OnManipulationCompleted(ManipulationCompletedEventArgs e)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>e</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.input.manipulationcompletedeventargs">ManipulationCompletedEventArgs</a></dt>
+    <dd><p>The data for the event.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_SharpDX_CameraController_OnManipulationDelta_" data-uid="HelixToolkit.Wpf.SharpDX.CameraController.OnManipulationDelta*"></a>
+
+  <h3 id="HelixToolkit_Wpf_SharpDX_CameraController_OnManipulationDelta_System_Windows_Input_ManipulationDeltaEventArgs_" data-uid="HelixToolkit.Wpf.SharpDX.CameraController.OnManipulationDelta(System.Windows.Input.ManipulationDeltaEventArgs)">
+  OnManipulationDelta(ManipulationDeltaEventArgs)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Wpf.SharpDX/Controls/CameraController.cs/#L979"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Called when the <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.uielement.manipulationdelta">ManipulationDelta</a> event occurs.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void OnManipulationDelta(ManipulationDeltaEventArgs e)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>e</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.input.manipulationdeltaeventargs">ManipulationDeltaEventArgs</a></dt>
+    <dd><p>The data for the event.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_SharpDX_CameraController_OnManipulationStarted_" data-uid="HelixToolkit.Wpf.SharpDX.CameraController.OnManipulationStarted*"></a>
+
+  <h3 id="HelixToolkit_Wpf_SharpDX_CameraController_OnManipulationStarted_System_Windows_Input_ManipulationStartedEventArgs_" data-uid="HelixToolkit.Wpf.SharpDX.CameraController.OnManipulationStarted(System.Windows.Input.ManipulationStartedEventArgs)">
+  OnManipulationStarted(ManipulationStartedEventArgs)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Wpf.SharpDX/Controls/CameraController.cs/#L1105"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Called when the <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.uielement.manipulationstarted">ManipulationStarted</a> event occurs.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void OnManipulationStarted(ManipulationStartedEventArgs e)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>e</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.input.manipulationstartedeventargs">ManipulationStartedEventArgs</a></dt>
+    <dd><p>The data for the event.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_SharpDX_CameraController_OnMouseDown_" data-uid="HelixToolkit.Wpf.SharpDX.CameraController.OnMouseDown*"></a>
+
+  <h3 id="HelixToolkit_Wpf_SharpDX_CameraController_OnMouseDown_System_Windows_Input_MouseButtonEventArgs_" data-uid="HelixToolkit.Wpf.SharpDX.CameraController.OnMouseDown(System.Windows.Input.MouseButtonEventArgs)">
+  OnMouseDown(MouseButtonEventArgs)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Wpf.SharpDX/Controls/CameraController.cs/#L1146"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Invoked when an unhandled MouseDown attached event reaches an element in its route that is derived from this class. Implement this method to add class handling for this event.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void OnMouseDown(MouseButtonEventArgs e)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>e</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.input.mousebuttoneventargs">MouseButtonEventArgs</a></dt>
+    <dd><p>The <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.input.mousebuttoneventargs">MouseButtonEventArgs</a> that contains the event data. This event data reports details about the mouse button that was pressed and the handled state.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_SharpDX_CameraController_OnMouseWheel_" data-uid="HelixToolkit.Wpf.SharpDX.CameraController.OnMouseWheel*"></a>
+
+  <h3 id="HelixToolkit_Wpf_SharpDX_CameraController_OnMouseWheel_System_Object_System_Windows_Input_MouseWheelEventArgs_" data-uid="HelixToolkit.Wpf.SharpDX.CameraController.OnMouseWheel(System.Object,System.Windows.Input.MouseWheelEventArgs)">
+  OnMouseWheel(object?, MouseWheelEventArgs)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Wpf.SharpDX/Controls/CameraController.cs/#L1446"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Called when the mouse wheel is moved.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void OnMouseWheel(object? sender, MouseWheelEventArgs e)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>sender</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></dt>
+    <dd><p>The sender.</p>
+</dd>
+    <dt><code>e</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.input.mousewheeleventargs">MouseWheelEventArgs</a></dt>
+    <dd><p>The <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.input.mousewheeleventargs">MouseWheelEventArgs</a> instance containing the event data.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_SharpDX_CameraController_OnStylusSystemGesture_" data-uid="HelixToolkit.Wpf.SharpDX.CameraController.OnStylusSystemGesture*"></a>
+
+  <h3 id="HelixToolkit_Wpf_SharpDX_CameraController_OnStylusSystemGesture_System_Windows_Input_StylusSystemGestureEventArgs_" data-uid="HelixToolkit.Wpf.SharpDX.CameraController.OnStylusSystemGesture(System.Windows.Input.StylusSystemGestureEventArgs)">
+  OnStylusSystemGesture(StylusSystemGestureEventArgs)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Wpf.SharpDX/Controls/CameraController.cs/#L1160"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Invoked when an unhandled StylusSystemGesture attached event reaches an element in its route that is derived from this class. Implement this method to add class handling for this event.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void OnStylusSystemGesture(StylusSystemGestureEventArgs e)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>e</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.input.stylussystemgestureeventargs">StylusSystemGestureEventArgs</a></dt>
+    <dd><p>The <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.input.stylussystemgestureeventargs">StylusSystemGestureEventArgs</a> that contains the event data.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_SharpDX_CameraController_PushCameraSetting_" data-uid="HelixToolkit.Wpf.SharpDX.CameraController.PushCameraSetting*"></a>
+
+  <h3 id="HelixToolkit_Wpf_SharpDX_CameraController_PushCameraSetting" data-uid="HelixToolkit.Wpf.SharpDX.CameraController.PushCameraSetting">
+  PushCameraSetting()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Wpf.SharpDX/Controls/CameraController.cs/#L816"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Push the current camera settings on an internal stack.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void PushCameraSetting()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_SharpDX_CameraController_ResetCamera_" data-uid="HelixToolkit.Wpf.SharpDX.CameraController.ResetCamera*"></a>
+
+  <h3 id="HelixToolkit_Wpf_SharpDX_CameraController_ResetCamera" data-uid="HelixToolkit.Wpf.SharpDX.CameraController.ResetCamera">
+  ResetCamera()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Wpf.SharpDX/Controls/CameraController.cs/#L828"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Resets the camera.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void ResetCamera()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_SharpDX_CameraController_ResetCameraUpDirection_" data-uid="HelixToolkit.Wpf.SharpDX.CameraController.ResetCameraUpDirection*"></a>
+
+  <h3 id="HelixToolkit_Wpf_SharpDX_CameraController_ResetCameraUpDirection" data-uid="HelixToolkit.Wpf.SharpDX.CameraController.ResetCameraUpDirection">
+  ResetCameraUpDirection()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Wpf.SharpDX/Controls/CameraController.cs/#L850"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Resets the camera up direction.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void ResetCameraUpDirection()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_SharpDX_CameraController_RestoreCameraSetting_" data-uid="HelixToolkit.Wpf.SharpDX.CameraController.RestoreCameraSetting*"></a>
+
+  <h3 id="HelixToolkit_Wpf_SharpDX_CameraController_RestoreCameraSetting" data-uid="HelixToolkit.Wpf.SharpDX.CameraController.RestoreCameraSetting">
+  RestoreCameraSetting()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Wpf.SharpDX/Controls/CameraController.cs/#L859"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Restores the most recent camera setting from the internal stack.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool RestoreCameraSetting()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p>The restore camera setting.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_SharpDX_CameraController_StartSpin_" data-uid="HelixToolkit.Wpf.SharpDX.CameraController.StartSpin*"></a>
+
+  <h3 id="HelixToolkit_Wpf_SharpDX_CameraController_StartSpin_System_Numerics_Vector2_System_Windows_Point_System_Numerics_Vector3_" data-uid="HelixToolkit.Wpf.SharpDX.CameraController.StartSpin(System.Numerics.Vector2,System.Windows.Point,System.Numerics.Vector3)">
+  StartSpin(Vector2, Point, Vector3)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Wpf.SharpDX/Controls/CameraController.cs/#L889"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Starts the spin.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void StartSpin(Vector2 speed, Point position, Vector3 aroundPoint)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>speed</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector2">Vector2</a></dt>
+    <dd><p>The speed.</p>
+</dd>
+    <dt><code>position</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.point">Point</a></dt>
+    <dd><p>The position.</p>
+</dd>
+    <dt><code>aroundPoint</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd><p>The spin around point.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_SharpDX_CameraController_StopAnimations_" data-uid="HelixToolkit.Wpf.SharpDX.CameraController.StopAnimations*"></a>
+
+  <h3 id="HelixToolkit_Wpf_SharpDX_CameraController_StopAnimations" data-uid="HelixToolkit.Wpf.SharpDX.CameraController.StopAnimations">
+  StopAnimations()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Wpf.SharpDX/Controls/CameraController.cs/#L1612"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>The stop animations.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void StopAnimations()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_SharpDX_CameraController_StopPanning_" data-uid="HelixToolkit.Wpf.SharpDX.CameraController.StopPanning*"></a>
+
+  <h3 id="HelixToolkit_Wpf_SharpDX_CameraController_StopPanning" data-uid="HelixToolkit.Wpf.SharpDX.CameraController.StopPanning">
+  StopPanning()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Wpf.SharpDX/Controls/CameraController.cs/#L915"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Stops the panning.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void StopPanning()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_SharpDX_CameraController_StopSpin_" data-uid="HelixToolkit.Wpf.SharpDX.CameraController.StopSpin*"></a>
+
+  <h3 id="HelixToolkit_Wpf_SharpDX_CameraController_StopSpin" data-uid="HelixToolkit.Wpf.SharpDX.CameraController.StopSpin">
+  StopSpin()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Wpf.SharpDX/Controls/CameraController.cs/#L900"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Stops the spin.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void StopSpin()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_SharpDX_CameraController_StopZooming_" data-uid="HelixToolkit.Wpf.SharpDX.CameraController.StopZooming*"></a>
+
+  <h3 id="HelixToolkit_Wpf_SharpDX_CameraController_StopZooming" data-uid="HelixToolkit.Wpf.SharpDX.CameraController.StopZooming">
+  StopZooming()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Wpf.SharpDX/Controls/CameraController.cs/#L908"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Stops the zooming inertia.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void StopZooming()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_SharpDX_CameraController_Zoom_" data-uid="HelixToolkit.Wpf.SharpDX.CameraController.Zoom*"></a>
+
+  <h3 id="HelixToolkit_Wpf_SharpDX_CameraController_Zoom_System_Double_" data-uid="HelixToolkit.Wpf.SharpDX.CameraController.Zoom(System.Double)">
+  Zoom(double)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Wpf.SharpDX/Controls/CameraController.cs/#L925"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Zooms by the specified delta value.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Zoom(double delta)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>delta</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd><p>The delta value.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_SharpDX_CameraController_ZoomExtents_" data-uid="HelixToolkit.Wpf.SharpDX.CameraController.ZoomExtents*"></a>
+
+  <h3 id="HelixToolkit_Wpf_SharpDX_CameraController_ZoomExtents_System_Double_" data-uid="HelixToolkit.Wpf.SharpDX.CameraController.ZoomExtents(System.Double)">
+  ZoomExtents(double)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Wpf.SharpDX/Controls/CameraController.cs/#L936"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Zooms to the extents of the model.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void ZoomExtents(double animationTime = 200)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>animationTime</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd><p>The animation time (milliseconds).</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Wpf.SharpDX/Controls/CameraController.cs/#L12" class="edit-link">Edit this page</a>
+        </div>
+
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          Copyright (c) 2023 Helix Toolkit contributors
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

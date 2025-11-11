@@ -1,0 +1,2662 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Class SceneNode2D | Helix Toolkit - 3D for .NET </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Class SceneNode2D | Helix Toolkit - 3D for .NET ">
+      
+      
+      <link rel="icon" href="../images/favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/helix-toolkit/helix-toolkit/new/develop3/apiSpec/new?filename=HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D.md&amp;value=---%0Auid%3A%20HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="ManagedReference">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../images/favicon.ico" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D">
+
+
+
+  <h1 id="HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D" data-uid="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D" class="text-break">
+Class SceneNode2D  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene2D/Abstract/SceneNode2DLayout.cs/#L9"><i class="bi bi-code-slash"></i></a>
+  </h1>
+
+  <div class="facts text-secondary">
+    <dl><dt>Namespace</dt><dd><a class="xref" href="HelixToolkit.html">HelixToolkit</a>.<a class="xref" href="HelixToolkit.SharpDX.html">SharpDX</a>.<a class="xref" href="HelixToolkit.SharpDX.Model.html">Model</a>.<a class="xref" href="HelixToolkit.SharpDX.Model.Scene2D.html">Scene2D</a></dd></dl>
+  <dl><dt>Assembly</dt><dd>HelixToolkit.SharpDX.dll</dd></dl>
+  </div>
+
+  <div class="markdown summary"></div>
+  <div class="markdown conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public abstract class SceneNode2D : DisposeObject, IDisposable, IHitable2D</code></pre>
+  </div>
+
+
+
+
+  <dl class="typelist inheritance">
+    <dt>Inheritance</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
+      <div><a class="xref" href="HelixToolkit.SharpDX.DisposeObject.html">DisposeObject</a></div>
+      <div><span class="xref">SceneNode2D</span></div>
+    </dd>
+  </dl>
+
+  <dl class="typelist implements">
+    <dt>Implements</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.idisposable">IDisposable</a></div>
+      <div><a class="xref" href="HelixToolkit.SharpDX.IHitable2D.html">IHitable2D</a></div>
+    </dd>
+  </dl>
+
+  <dl class="typelist derived">
+    <dt>Derived</dt>
+    <dd>
+      <div><a class="xref" href="HelixToolkit.SharpDX.Model.Scene2D.FrameStatisticsNode2D.html">FrameStatisticsNode2D</a></div>
+      <div><a class="xref" href="HelixToolkit.SharpDX.Model.Scene2D.ImageNode2D.html">ImageNode2D</a></div>
+      <div><a class="xref" href="HelixToolkit.SharpDX.Model.Scene2D.PanelNode2D.html">PanelNode2D</a></div>
+      <div><a class="xref" href="HelixToolkit.SharpDX.Model.Scene2D.PresenterNode2D.html">PresenterNode2D</a></div>
+      <div><a class="xref" href="HelixToolkit.SharpDX.Model.Scene2D.ShapeNode2D.html">ShapeNode2D</a></div>
+      <div><a class="xref" href="HelixToolkit.SharpDX.Model.Scene2D.TextNode2D.html">TextNode2D</a></div>
+    </dd>
+  </dl>
+
+  <dl class="typelist inheritedMembers">
+    <dt>Inherited Members</dt>
+    <dd>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.DisposeObject.html#HelixToolkit_SharpDX_DisposeObject_RemoveAndDispose__1___0__">DisposeObject.RemoveAndDispose&lt;T&gt;(ref T)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.DisposeObject.html#HelixToolkit_SharpDX_DisposeObject_RemoveAndDispose__1___0_">DisposeObject.RemoveAndDispose&lt;T&gt;(T)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.DisposeObject.html#HelixToolkit_SharpDX_DisposeObject_RefCount">DisposeObject.RefCount</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.DisposeObject.html#HelixToolkit_SharpDX_DisposeObject_IncRef">DisposeObject.IncRef()</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.DisposeObject.html#HelixToolkit_SharpDX_DisposeObject_ForceDispose">DisposeObject.ForceDispose()</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.DisposeObject.html#HelixToolkit_SharpDX_DisposeObject_IsDisposed">DisposeObject.IsDisposed</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.DisposeObject.html#HelixToolkit_SharpDX_DisposeObject_Dispose">DisposeObject.Dispose()</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.DisposeObject.html#HelixToolkit_SharpDX_DisposeObject_Set__1___0____0_">DisposeObject.Set&lt;T&gt;(ref T, T)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">object.Equals(object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">object.Equals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode">object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype">object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone">object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals">object.ReferenceEquals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring">object.ToString()</a>
+    </div>
+  </dd></dl>
+
+
+
+
+
+
+  <h2 class="section" id="constructors">Constructors
+</h2>
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D__ctor_" data-uid="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.#ctor*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D__ctor" data-uid="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.#ctor">
+  SceneNode2D()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene2D/Abstract/SceneNode2D.cs/#L330"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.html">SceneNode2D</a> class.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public SceneNode2D()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <h2 class="section" id="properties">Properties
+</h2>
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_ClipEnabled_" data-uid="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.ClipEnabled*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_ClipEnabled" data-uid="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.ClipEnabled">
+  ClipEnabled
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene2D/Abstract/SceneNode2DLayout.cs/#L290"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool ClipEnabled { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_ClipToBound_" data-uid="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.ClipToBound*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_ClipToBound" data-uid="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.ClipToBound">
+  ClipToBound
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene2D/Abstract/SceneNode2DLayout.cs/#L292"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool ClipToBound { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_DesiredSize_" data-uid="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.DesiredSize*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_DesiredSize" data-uid="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.DesiredSize">
+  DesiredSize
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene2D/Abstract/SceneNode2DLayout.cs/#L269"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the size of the desired size after measure.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Vector2 DesiredSize { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector2">Vector2</a></dt>
+    <dd><p>The size of the desired.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_DpiScale_" data-uid="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.DpiScale*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_DpiScale" data-uid="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.DpiScale">
+  DpiScale
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene2D/Abstract/SceneNode2D.cs/#L322"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float DpiScale { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_EnableBitmapCache_" data-uid="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.EnableBitmapCache*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_EnableBitmapCache" data-uid="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.EnableBitmapCache">
+  EnableBitmapCache
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene2D/Abstract/SceneNode2DCache.cs/#L25"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets a value indicating whether [enable bitmap cache].</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool EnableBitmapCache { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><code>true</code> if [enable bitmap cache]; otherwise, <code>false</code>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_GUID_" data-uid="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.GUID*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_GUID" data-uid="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.GUID">
+  GUID
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene2D/Abstract/SceneNode2D.cs/#L36"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the unique identifier.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Guid GUID { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.guid">Guid</a></dt>
+    <dd><p>The unique identifier.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_Height_" data-uid="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.Height*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_Height" data-uid="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.Height">
+  Height
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene2D/Abstract/SceneNode2DLayout.cs/#L89"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float Height { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_HorizontalAlignment_" data-uid="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.HorizontalAlignment*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_HorizontalAlignment" data-uid="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.HorizontalAlignment">
+  HorizontalAlignment
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene2D/Abstract/SceneNode2DLayout.cs/#L174"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public HorizontalAlignment HorizontalAlignment { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.Model.Scene2D.HorizontalAlignment.html">HorizontalAlignment</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_IsArrangeDirty_" data-uid="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.IsArrangeDirty*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_IsArrangeDirty" data-uid="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.IsArrangeDirty">
+  IsArrangeDirty
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene2D/Abstract/SceneNode2DLayout.cs/#L29"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets a value indicating whether this instance is arrange dirty.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsArrangeDirty { get; protected set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><code>true</code> if this instance is arrange dirty; otherwise, <code>false</code>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_IsAttached_" data-uid="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.IsAttached*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_IsAttached" data-uid="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.IsAttached">
+  IsAttached
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene2D/Abstract/SceneNode2D.cs/#L110"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets a value indicating whether this instance is attached.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsAttached { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><code>true</code> if this instance is attached; otherwise, <code>false</code>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_IsBitmapCacheValid_" data-uid="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.IsBitmapCacheValid*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_IsBitmapCacheValid" data-uid="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.IsBitmapCacheValid">
+  IsBitmapCacheValid
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene2D/Abstract/SceneNode2DCache.cs/#L33"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets a value indicating whether this instance is bitmap cache valid.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsBitmapCacheValid { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><code>true</code> if this instance is bitmap cache valid; otherwise, <code>false</code>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_IsHitTestVisible_" data-uid="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.IsHitTestVisible*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_IsHitTestVisible" data-uid="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.IsHitTestVisible">
+  IsHitTestVisible
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene2D/Abstract/SceneNode2D.cs/#L91"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets a value indicating whether this instance is hit test visible.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsHitTestVisible { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><code>true</code> if this instance is hit test visible; otherwise, <code>false</code>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_IsMeasureDirty_" data-uid="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.IsMeasureDirty*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_IsMeasureDirty" data-uid="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.IsMeasureDirty">
+  IsMeasureDirty
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene2D/Abstract/SceneNode2DLayout.cs/#L21"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets a value indicating whether this instance is measure dirty.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsMeasureDirty { get; protected set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><code>true</code> if this instance is measure dirty; otherwise, <code>false</code>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_IsMouseOver_" data-uid="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.IsMouseOver*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_IsMouseOver" data-uid="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.IsMouseOver">
+  IsMouseOver
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene2D/Abstract/SceneNode2D.cs/#L310"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets a value indicating whether this instance is mouse over.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsMouseOver { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><code>true</code> if this instance is mouse over; otherwise, <code>false</code>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_IsRenderable_" data-uid="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.IsRenderable*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_IsRenderable" data-uid="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.IsRenderable">
+  IsRenderable
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene2D/Abstract/SceneNode2D.cs/#L121"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets a value indicating whether this instance is renderable.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsRenderable { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><code>true</code> if this instance is renderable; otherwise, <code>false</code>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_IsTransformDirty_" data-uid="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.IsTransformDirty*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_IsTransformDirty" data-uid="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.IsTransformDirty">
+  IsTransformDirty
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene2D/Abstract/SceneNode2DLayout.cs/#L37"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets a value indicating whether this instance is transform dirty.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsTransformDirty { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><code>true</code> if this instance is transform dirty; otherwise, <code>false</code>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_IsVisualDirty_" data-uid="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.IsVisualDirty*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_IsVisualDirty" data-uid="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.IsVisualDirty">
+  IsVisualDirty
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene2D/Abstract/SceneNode2DLayout.cs/#L45"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets a value indicating whether this instance is visual dirty.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsVisualDirty { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><code>true</code> if this instance is visual dirty; otherwise, <code>false</code>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_Items_" data-uid="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.Items*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_Items" data-uid="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.Items">
+  Items
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene2D/Abstract/SceneNode2D.cs/#L182"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the items as readonly. Expose for outside for UI access or bindings</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ReadOnlyObservableFastList&lt;SceneNode2D&gt; Items { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.Utilities.ReadOnlyObservableFastList-1.html">ReadOnlyObservableFastList</a>&lt;<a class="xref" href="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.html">SceneNode2D</a>&gt;</dt>
+    <dd><p>The items.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_LayoutBound_" data-uid="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.LayoutBound*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_LayoutBound" data-uid="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.LayoutBound">
+  LayoutBound
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene2D/Abstract/SceneNode2DLayout.cs/#L315"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the size of the actual layout bound without margin.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public RectangleF LayoutBound { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Maths.RectangleF.html">RectangleF</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_LayoutBoundWithTransform_" data-uid="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.LayoutBoundWithTransform*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_LayoutBoundWithTransform" data-uid="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.LayoutBoundWithTransform">
+  LayoutBoundWithTransform
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene2D/Abstract/SceneNode2D.cs/#L299"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the layout bound with transform.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public RectangleF LayoutBoundWithTransform { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Maths.RectangleF.html">RectangleF</a></dt>
+    <dd><p>The layout bound with transform.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_LayoutClipBound_" data-uid="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.LayoutClipBound*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_LayoutClipBound" data-uid="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.LayoutClipBound">
+  LayoutClipBound
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene2D/Abstract/SceneNode2DLayout.cs/#L300"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the layout clip bound. This bound includes the margin.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public RectangleF LayoutClipBound { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Maths.RectangleF.html">RectangleF</a></dt>
+    <dd><p>The layout clip bound.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_LayoutOffsets_" data-uid="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.LayoutOffsets*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_LayoutOffsets" data-uid="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.LayoutOffsets">
+  LayoutOffsets
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene2D/Abstract/SceneNode2DLayout.cs/#L208"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Vector2 LayoutOffsets { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector2">Vector2</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_LayoutTranslate_" data-uid="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.LayoutTranslate*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_LayoutTranslate" data-uid="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.LayoutTranslate">
+  LayoutTranslate
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene2D/Abstract/SceneNode2D.cs/#L216"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the layout translate.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Matrix3x2 LayoutTranslate { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.matrix3x2">Matrix3x2</a></dt>
+    <dd><p>The layout translate.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_Margin_" data-uid="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.Margin*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_Margin" data-uid="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.Margin">
+  Margin
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene2D/Abstract/SceneNode2DLayout.cs/#L49"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Thickness Margin { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.Model.Scene2D.Thickness.html">Thickness</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_MarginWidthHeight_" data-uid="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.MarginWidthHeight*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_MarginWidthHeight" data-uid="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.MarginWidthHeight">
+  MarginWidthHeight
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene2D/Abstract/SceneNode2DLayout.cs/#L65"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected Vector2 MarginWidthHeight { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector2">Vector2</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_MaximumHeight_" data-uid="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.MaximumHeight*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_MaximumHeight" data-uid="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.MaximumHeight">
+  MaximumHeight
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene2D/Abstract/SceneNode2DLayout.cs/#L157"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float MaximumHeight { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_MaximumWidth_" data-uid="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.MaximumWidth*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_MaximumWidth" data-uid="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.MaximumWidth">
+  MaximumWidth
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene2D/Abstract/SceneNode2DLayout.cs/#L140"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float MaximumWidth { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_MinimumHeight_" data-uid="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.MinimumHeight*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_MinimumHeight" data-uid="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.MinimumHeight">
+  MinimumHeight
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene2D/Abstract/SceneNode2DLayout.cs/#L123"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float MinimumHeight { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_MinimumWidth_" data-uid="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.MinimumWidth*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_MinimumWidth" data-uid="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.MinimumWidth">
+  MinimumWidth
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene2D/Abstract/SceneNode2DLayout.cs/#L106"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float MinimumWidth { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_ModelMatrix_" data-uid="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.ModelMatrix*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_ModelMatrix" data-uid="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.ModelMatrix">
+  ModelMatrix
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene2D/Abstract/SceneNode2D.cs/#L192"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the model matrix.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Matrix3x2 ModelMatrix { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.matrix3x2">Matrix3x2</a></dt>
+    <dd><p>The model matrix.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_Parent_" data-uid="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.Parent*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_Parent" data-uid="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.Parent">
+  Parent
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene2D/Abstract/SceneNode2D.cs/#L45"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the parent.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public SceneNode2D? Parent { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.html">SceneNode2D</a></dt>
+    <dd><p>The parent.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_ParentMatrix_" data-uid="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.ParentMatrix*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_ParentMatrix" data-uid="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.ParentMatrix">
+  ParentMatrix
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene2D/Abstract/SceneNode2D.cs/#L239"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the parent matrix.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Matrix3x2 ParentMatrix { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.matrix3x2">Matrix3x2</a></dt>
+    <dd><p>The parent matrix.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_RenderCore_" data-uid="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.RenderCore*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_RenderCore" data-uid="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.RenderCore">
+  RenderCore
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene2D/Abstract/SceneNode2D.cs/#L131"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the render core.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public RenderCore2D RenderCore { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.Core2D.RenderCore2D.html">RenderCore2D</a></dt>
+    <dd><p>The render core.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_RenderHost_" data-uid="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.RenderHost*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_RenderHost" data-uid="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.RenderHost">
+  RenderHost
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene2D/Abstract/SceneNode2D.cs/#L164"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the render host.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected IRenderHost? RenderHost { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.IRenderHost.html">IRenderHost</a></dt>
+    <dd><p>The render host.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_RenderSize_" data-uid="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.RenderSize*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_RenderSize" data-uid="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.RenderSize">
+  RenderSize
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene2D/Abstract/SceneNode2DLayout.cs/#L231"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the render size. Same as the <a class="xref" href="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.html#HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_LayoutBound">LayoutBound</a> size</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Vector2 RenderSize { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector2">Vector2</a></dt>
+    <dd><p>The size of the render.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_RenderTransformOrigin_" data-uid="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.RenderTransformOrigin*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_RenderTransformOrigin" data-uid="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.RenderTransformOrigin">
+  RenderTransformOrigin
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene2D/Abstract/SceneNode2DLayout.cs/#L248"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Vector2 RenderTransformOrigin { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector2">Vector2</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_TotalModelMatrix_" data-uid="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.TotalModelMatrix*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_TotalModelMatrix" data-uid="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.TotalModelMatrix">
+  TotalModelMatrix
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene2D/Abstract/SceneNode2D.cs/#L262"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the total model matrix.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Matrix3x2 TotalModelMatrix { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.matrix3x2">Matrix3x2</a></dt>
+    <dd><p>The total model matrix.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_UnclippedDesiredSize_" data-uid="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.UnclippedDesiredSize*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_UnclippedDesiredSize" data-uid="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.UnclippedDesiredSize">
+  UnclippedDesiredSize
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene2D/Abstract/SceneNode2DLayout.cs/#L280"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the size of the unclipped desired size after measure.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Vector2 UnclippedDesiredSize { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector2">Vector2</a></dt>
+    <dd><p>The size of the unclipped desired.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_VerticalAlignment_" data-uid="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.VerticalAlignment*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_VerticalAlignment" data-uid="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.VerticalAlignment">
+  VerticalAlignment
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene2D/Abstract/SceneNode2DLayout.cs/#L191"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public VerticalAlignment VerticalAlignment { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.Model.Scene2D.VerticalAlignment.html">VerticalAlignment</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_Visibility_" data-uid="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.Visibility*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_Visibility" data-uid="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.Visibility">
+  Visibility
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene2D/Abstract/SceneNode2D.cs/#L70"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets a value indicating whether this <a class="xref" href="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.html">SceneNode2D</a> is visible.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Visibility Visibility { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.Model.Scene2D.Visibility.html">Visibility</a></dt>
+    <dd><p><code>true</code> if visible; otherwise, <code>false</code>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_Width_" data-uid="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.Width*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_Width" data-uid="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.Width">
+  Width
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene2D/Abstract/SceneNode2DLayout.cs/#L72"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float Width { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_WrapperSource_" data-uid="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.WrapperSource*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_WrapperSource" data-uid="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.WrapperSource">
+  WrapperSource
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene2D/Abstract/SceneNode2D.cs/#L99"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the wrapper source used to link the external wrapper with the node.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public object WrapperSource { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></dt>
+    <dd><p>The hit test source.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h2 class="section" id="methods">Methods
+</h2>
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_Arrange_" data-uid="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.Arrange*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_Arrange_HelixToolkit_Maths_RectangleF_" data-uid="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.Arrange(HelixToolkit.Maths.RectangleF)">
+  Arrange(RectangleF)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene2D/Abstract/SceneNode2DLayout.cs/#L512"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Arrange(RectangleF rect)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>rect</code> <a class="xref" href="HelixToolkit.Maths.RectangleF.html">RectangleF</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_ArrangeOverride_" data-uid="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.ArrangeOverride*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_ArrangeOverride_HelixToolkit_Maths_RectangleF_" data-uid="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.ArrangeOverride(HelixToolkit.Maths.RectangleF)">
+  ArrangeOverride(RectangleF)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene2D/Abstract/SceneNode2DLayout.cs/#L713"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual RectangleF ArrangeOverride(RectangleF finalSize)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>finalSize</code> <a class="xref" href="HelixToolkit.Maths.RectangleF.html">RectangleF</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Maths.RectangleF.html">RectangleF</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_Attach_" data-uid="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.Attach*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_Attach_HelixToolkit_SharpDX_IRenderHost_" data-uid="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.Attach(HelixToolkit.SharpDX.IRenderHost)">
+  Attach(IRenderHost?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene2D/Abstract/SceneNode2D.cs/#L350"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Attaches the element to the specified host. To overide Attach, please override <a class="xref" href="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.html#HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_OnAttach_HelixToolkit_SharpDX_IRenderHost_">OnAttach(IRenderHost)</a> function.</p>
+<p>Attach Flow: Set RenderHost -&gt; Get Effect -&gt;
+<a class="xref" href="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.html#HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_OnAttach_HelixToolkit_SharpDX_IRenderHost_">OnAttach(IRenderHost)</a> -&gt; <a class="xref" href="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.html#HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_OnAttach_HelixToolkit_SharpDX_IRenderHost_">OnAttach(IRenderHost)</a> -&gt; <a class="xref" href="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.html#HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_InvalidateRender">InvalidateRender()</a></p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Attach(IRenderHost? host)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>host</code> <a class="xref" href="HelixToolkit.SharpDX.IRenderHost.html">IRenderHost</a></dt>
+    <dd><p>The host.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_CanHitTest_" data-uid="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.CanHitTest*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_CanHitTest" data-uid="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.CanHitTest">
+  CanHitTest()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene2D/Abstract/SceneNode2D.cs/#L561"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Determines whether this instance [can hit test].</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual bool CanHitTest()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><code>true</code> if this instance [can hit test]; otherwise, <code>false</code>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_CanRender_" data-uid="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.CanRender*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_CanRender_HelixToolkit_SharpDX_RenderContext2D_" data-uid="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.CanRender(HelixToolkit.SharpDX.RenderContext2D)">
+  CanRender(RenderContext2D)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene2D/Abstract/SceneNode2D.cs/#L453"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Determine if this can be rendered.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual bool CanRender(RenderContext2D context)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>context</code> <a class="xref" href="HelixToolkit.SharpDX.RenderContext2D.html">RenderContext2D</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_CreateRenderCore_" data-uid="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.CreateRenderCore*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_CreateRenderCore" data-uid="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.CreateRenderCore">
+  CreateRenderCore()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene2D/Abstract/SceneNode2D.cs/#L339"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Creates the render core.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual RenderCore2D CreateRenderCore()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.Core2D.RenderCore2D.html">RenderCore2D</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_Detach_" data-uid="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.Detach*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_Detach" data-uid="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.Detach">
+  Detach()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene2D/Abstract/SceneNode2D.cs/#L380"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Detaches this instance.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Detach()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_HitTest_" data-uid="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.HitTest*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_HitTest_System_Numerics_Vector2_HelixToolkit_SharpDX_HitTest2DResult__" data-uid="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.HitTest(System.Numerics.Vector2,HelixToolkit.SharpDX.HitTest2DResult@)">
+  HitTest(Vector2, out HitTest2DResult?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene2D/Abstract/SceneNode2D.cs/#L580"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Hits the test.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool HitTest(Vector2 mousePoint, out HitTest2DResult? hitResult)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>mousePoint</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector2">Vector2</a></dt>
+    <dd><p>The mouse point.</p>
+</dd>
+    <dt><code>hitResult</code> <a class="xref" href="HelixToolkit.SharpDX.HitTest2DResult.html">HitTest2DResult</a></dt>
+    <dd><p>The hit result.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_InvalidateAll_" data-uid="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.InvalidateAll*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_InvalidateAll" data-uid="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.InvalidateAll">
+  InvalidateAll()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene2D/Abstract/SceneNode2DLayout.cs/#L406"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void InvalidateAll()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_InvalidateArrange_" data-uid="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.InvalidateArrange*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_InvalidateArrange" data-uid="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.InvalidateArrange">
+  InvalidateArrange()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene2D/Abstract/SceneNode2DLayout.cs/#L352"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void InvalidateArrange()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_InvalidateMeasure_" data-uid="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.InvalidateMeasure*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_InvalidateMeasure" data-uid="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.InvalidateMeasure">
+  InvalidateMeasure()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene2D/Abstract/SceneNode2DLayout.cs/#L332"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void InvalidateMeasure()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_InvalidateRender_" data-uid="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.InvalidateRender*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_InvalidateRender" data-uid="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.InvalidateRender">
+  InvalidateRender()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene2D/Abstract/SceneNode2D.cs/#L611"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Invalidates the render.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void InvalidateRender()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_InvalidateTransform_" data-uid="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.InvalidateTransform*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_InvalidateTransform" data-uid="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.InvalidateTransform">
+  InvalidateTransform()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene2D/Abstract/SceneNode2DLayout.cs/#L388"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void InvalidateTransform()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_InvalidateVisual_" data-uid="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.InvalidateVisual*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_InvalidateVisual" data-uid="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.InvalidateVisual">
+  InvalidateVisual()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene2D/Abstract/SceneNode2DLayout.cs/#L370"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void InvalidateVisual()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_Measure_" data-uid="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.Measure*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_Measure_System_Numerics_Vector2_" data-uid="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.Measure(System.Numerics.Vector2)">
+  Measure(Vector2)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene2D/Abstract/SceneNode2DLayout.cs/#L444"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Measure(Vector2 size)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>size</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector2">Vector2</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_MeasureOverride_" data-uid="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.MeasureOverride*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_MeasureOverride_System_Numerics_Vector2_" data-uid="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.MeasureOverride(System.Numerics.Vector2)">
+  MeasureOverride(Vector2)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene2D/Abstract/SceneNode2DLayout.cs/#L722"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual Vector2 MeasureOverride(Vector2 availableSize)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>availableSize</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector2">Vector2</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector2">Vector2</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_OnAttach_" data-uid="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.OnAttach*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_OnAttach_HelixToolkit_SharpDX_IRenderHost_" data-uid="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.OnAttach(HelixToolkit.SharpDX.IRenderHost)">
+  OnAttach(IRenderHost)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene2D/Abstract/SceneNode2D.cs/#L371"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>To override Attach routine, please override this.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual bool OnAttach(IRenderHost host)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>host</code> <a class="xref" href="HelixToolkit.SharpDX.IRenderHost.html">IRenderHost</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p>Return true if attached</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_OnDetach_" data-uid="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.OnDetach*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_OnDetach" data-uid="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.OnDetach">
+  OnDetach()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene2D/Abstract/SceneNode2D.cs/#L395"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Called when [detach].</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual void OnDetach()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_OnDispose_" data-uid="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.OnDispose*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_OnDispose_System_Boolean_" data-uid="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.OnDispose(System.Boolean)">
+  OnDispose(bool)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene2D/Abstract/SceneNode2D.cs/#L616"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Disposes of object resources.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected override void OnDispose(bool disposeManagedResources)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>disposeManagedResources</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p>If true, managed resources should be
+disposed of in addition to unmanaged resources.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_OnHitTest_" data-uid="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.OnHitTest*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_OnHitTest_System_Numerics_Vector2__HelixToolkit_SharpDX_HitTest2DResult__" data-uid="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.OnHitTest(System.Numerics.Vector2@,HelixToolkit.SharpDX.HitTest2DResult@)">
+  OnHitTest(ref Vector2, out HitTest2DResult?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene2D/Abstract/SceneNode2D.cs/#L572"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Called when [hit test].</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected abstract bool OnHitTest(ref Vector2 mousePoint, out HitTest2DResult? hitResult)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>mousePoint</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector2">Vector2</a></dt>
+    <dd><p>The mouse point.</p>
+</dd>
+    <dt><code>hitResult</code> <a class="xref" href="HelixToolkit.SharpDX.HitTest2DResult.html">HitTest2DResult</a></dt>
+    <dd><p>The hit result.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_OnRender_" data-uid="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.OnRender*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_OnRender_HelixToolkit_SharpDX_RenderContext2D_" data-uid="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.OnRender(HelixToolkit.SharpDX.RenderContext2D)">
+  OnRender(RenderContext2D)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene2D/Abstract/SceneNode2D.cs/#L544"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Called when [render].</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual void OnRender(RenderContext2D context)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>context</code> <a class="xref" href="HelixToolkit.SharpDX.RenderContext2D.html">RenderContext2D</a></dt>
+    <dd><p>The context.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_Render_" data-uid="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.Render*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_Render_HelixToolkit_SharpDX_RenderContext2D_" data-uid="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.Render(HelixToolkit.SharpDX.RenderContext2D)">
+  Render(RenderContext2D)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene2D/Abstract/SceneNode2D.cs/#L463"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Renders the element in the specified context. To override Render, please override <a class="xref" href="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.html#HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_OnRender_HelixToolkit_SharpDX_RenderContext2D_">OnRender(RenderContext2D)</a></p>
+<p>Uses <a class="xref" href="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.html#HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_CanRender_HelixToolkit_SharpDX_RenderContext2D_">CanRender(RenderContext2D)</a>  to call OnRender or not. </p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Render(RenderContext2D context)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>context</code> <a class="xref" href="HelixToolkit.SharpDX.RenderContext2D.html">RenderContext2D</a></dt>
+    <dd><p>The context.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_RenderBitmapCache_" data-uid="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.RenderBitmapCache*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_RenderBitmapCache_HelixToolkit_SharpDX_RenderContext2D_" data-uid="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.RenderBitmapCache(HelixToolkit.SharpDX.RenderContext2D)">
+  RenderBitmapCache(RenderContext2D)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene2D/Abstract/SceneNode2D.cs/#L526"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Renders the bitmap cache to a render target only.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void RenderBitmapCache(RenderContext2D context)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>context</code> <a class="xref" href="HelixToolkit.SharpDX.RenderContext2D.html">RenderContext2D</a></dt>
+    <dd><p>The context.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_SetAffectsMeasure_" data-uid="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.SetAffectsMeasure*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_SetAffectsMeasure__1___0____0_" data-uid="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.SetAffectsMeasure``1(``0@,``0)">
+  SetAffectsMeasure&lt;T&gt;(ref T, T)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene2D/Abstract/SceneNode2D.cs/#L649"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected bool SetAffectsMeasure&lt;T&gt;(ref T backingField, T value)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>backingField</code> <span class="xref">T</span></dt>
+    <dd></dd>
+    <dt><code>value</code> <span class="xref">T</span></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Type Parameters</h4>
+  <dl class="parameters">
+    <dt><code>T</code></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_SetAffectsRender_" data-uid="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.SetAffectsRender*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_SetAffectsRender__1___0____0_" data-uid="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.SetAffectsRender``1(``0@,``0)">
+  SetAffectsRender&lt;T&gt;(ref T, T)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene2D/Abstract/SceneNode2D.cs/#L630"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected bool SetAffectsRender&lt;T&gt;(ref T backingField, T value)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>backingField</code> <span class="xref">T</span></dt>
+    <dd></dd>
+    <dt><code>value</code> <span class="xref">T</span></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Type Parameters</h4>
+  <dl class="parameters">
+    <dt><code>T</code></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_TransformChanged_" data-uid="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.TransformChanged*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_TransformChanged_System_Numerics_Matrix3x2__" data-uid="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.TransformChanged(System.Numerics.Matrix3x2@)">
+  TransformChanged(ref Matrix3x2)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene2D/Abstract/SceneNode2D.cs/#L416"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Transforms the changed.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual void TransformChanged(ref Matrix3x2 totalTransform)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>totalTransform</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.matrix3x2">Matrix3x2</a></dt>
+    <dd><p>The total transform.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_TraverseUp_" data-uid="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.TraverseUp*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_TraverseUp_HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_System_Func_HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_System_Boolean__" data-uid="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.TraverseUp(HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D,System.Func{HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D,System.Boolean})">
+  TraverseUp(SceneNode2D, Func&lt;SceneNode2D, bool&gt;)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene2D/Abstract/SceneNode2DLayout.cs/#L430"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected static void TraverseUp(SceneNode2D core, Func&lt;SceneNode2D, bool&gt; action)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>core</code> <a class="xref" href="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.html">SceneNode2D</a></dt>
+    <dd></dd>
+    <dt><code>action</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.func-2">Func</a>&lt;<a class="xref" href="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.html">SceneNode2D</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_Update_" data-uid="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.Update*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_Update_HelixToolkit_SharpDX_RenderContext2D_" data-uid="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.Update(HelixToolkit.SharpDX.RenderContext2D)">
+  Update(RenderContext2D)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene2D/Abstract/SceneNode2D.cs/#L404"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Updates the specified context.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual void Update(RenderContext2D context)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>context</code> <a class="xref" href="HelixToolkit.SharpDX.RenderContext2D.html">RenderContext2D</a></dt>
+    <dd><p>The context.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <h2 class="section" id="events">Events
+</h2>
+
+
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_Attached" data-uid="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.Attached">
+  Attached
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene2D/Abstract/SceneNode2D.cs/#L432"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Occurs when [on attached].</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public event EventHandler? Attached</code></pre>
+  </div>
+
+
+
+
+
+
+  <h4 class="section">Event Type</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.eventhandler">EventHandler</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_Detached" data-uid="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.Detached">
+  Detached
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene2D/Abstract/SceneNode2D.cs/#L437"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Occurs when [on detached].</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public event EventHandler? Detached</code></pre>
+  </div>
+
+
+
+
+
+
+  <h4 class="section">Event Type</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.eventhandler">EventHandler</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_OnTransformChanged" data-uid="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.OnTransformChanged">
+  OnTransformChanged
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene2D/Abstract/SceneNode2D.cs/#L423"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Occurs when [on transform changed].</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public event EventHandler&lt;Transform2DArgs&gt;? OnTransformChanged</code></pre>
+  </div>
+
+
+
+
+
+
+  <h4 class="section">Event Type</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.eventhandler-1">EventHandler</a>&lt;<a class="xref" href="HelixToolkit.SharpDX.Transform2DArgs.html">Transform2DArgs</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_UpdateRequested" data-uid="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.UpdateRequested">
+  UpdateRequested
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene2D/Abstract/SceneNode2D.cs/#L442"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Occurs when [on update].</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public event EventHandler&lt;SceneNode2D.UpdateEventArgs&gt;? UpdateRequested</code></pre>
+  </div>
+
+
+
+
+
+
+  <h4 class="section">Event Type</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.eventhandler-1">EventHandler</a>&lt;<a class="xref" href="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.html">SceneNode2D</a>.<a class="xref" href="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.UpdateEventArgs.html">UpdateEventArgs</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Scene2D/Abstract/SceneNode2DLayout.cs/#L9" class="edit-link">Edit this page</a>
+        </div>
+
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          Copyright (c) 2023 Helix Toolkit contributors
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

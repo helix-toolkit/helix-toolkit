@@ -1,0 +1,1736 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Class PBRMaterialCore | Helix Toolkit - 3D for .NET </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Class PBRMaterialCore | Helix Toolkit - 3D for .NET ">
+      
+      
+      <link rel="icon" href="../images/favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/helix-toolkit/helix-toolkit/new/develop3/apiSpec/new?filename=HelixToolkit_SharpDX_Model_PBRMaterialCore.md&amp;value=---%0Auid%3A%20HelixToolkit.SharpDX.Model.PBRMaterialCore%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="ManagedReference">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../images/favicon.ico" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="HelixToolkit.SharpDX.Model.PBRMaterialCore">
+
+
+
+  <h1 id="HelixToolkit_SharpDX_Model_PBRMaterialCore" data-uid="HelixToolkit.SharpDX.Model.PBRMaterialCore" class="text-break">
+Class PBRMaterialCore  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Material/PBRMaterialCore.cs/#L7"><i class="bi bi-code-slash"></i></a>
+  </h1>
+
+  <div class="facts text-secondary">
+    <dl><dt>Namespace</dt><dd><a class="xref" href="HelixToolkit.html">HelixToolkit</a>.<a class="xref" href="HelixToolkit.SharpDX.html">SharpDX</a>.<a class="xref" href="HelixToolkit.SharpDX.Model.html">Model</a></dd></dl>
+  <dl><dt>Assembly</dt><dd>HelixToolkit.SharpDX.dll</dd></dl>
+  </div>
+
+  <div class="markdown summary"></div>
+  <div class="markdown conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class PBRMaterialCore : MaterialCore, IMaterial, INotifyPropertyChanged</code></pre>
+  </div>
+
+
+
+
+  <dl class="typelist inheritance">
+    <dt>Inheritance</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
+      <div><a class="xref" href="HelixToolkit.SharpDX.Model.ObservableObject.html">ObservableObject</a></div>
+      <div><a class="xref" href="HelixToolkit.SharpDX.Model.MaterialCore.html">MaterialCore</a></div>
+      <div><span class="xref">PBRMaterialCore</span></div>
+    </dd>
+  </dl>
+
+  <dl class="typelist implements">
+    <dt>Implements</dt>
+    <dd>
+      <div><a class="xref" href="HelixToolkit.SharpDX.IMaterial.html">IMaterial</a></div>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.componentmodel.inotifypropertychanged">INotifyPropertyChanged</a></div>
+    </dd>
+  </dl>
+
+
+  <dl class="typelist inheritedMembers">
+    <dt>Inherited Members</dt>
+    <dd>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.MaterialCore.html#HelixToolkit_SharpDX_Model_MaterialCore_Name">MaterialCore.Name</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.MaterialCore.html#HelixToolkit_SharpDX_Model_MaterialCore_Guid">MaterialCore.Guid</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.ObservableObject.html#HelixToolkit_SharpDX_Model_ObservableObject_DisablePropertyChangedEvent">ObservableObject.DisablePropertyChangedEvent</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.ObservableObject.html#HelixToolkit_SharpDX_Model_ObservableObject_PropertyChanged">ObservableObject.PropertyChanged</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.ObservableObject.html#HelixToolkit_SharpDX_Model_ObservableObject_RaisePropertyChanged_System_String_">ObservableObject.RaisePropertyChanged(string)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.ObservableObject.html#HelixToolkit_SharpDX_Model_ObservableObject_RaisePropertyChanged_System_ComponentModel_PropertyChangedEventArgs_">ObservableObject.RaisePropertyChanged(PropertyChangedEventArgs)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.ObservableObject.html#HelixToolkit_SharpDX_Model_ObservableObject_Set__1___0____0_System_String_">ObservableObject.Set&lt;T&gt;(ref T, T, string)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.ObservableObject.html#HelixToolkit_SharpDX_Model_ObservableObject_Set__1___0____0_System_Boolean_System_String_">ObservableObject.Set&lt;T&gt;(ref T, T, bool, string)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">object.Equals(object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">object.Equals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode">object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype">object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone">object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals">object.ReferenceEquals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring">object.ToString()</a>
+    </div>
+  </dd></dl>
+
+  <dl class="typelist extensionMethods">
+    <dt>Extension Methods</dt>
+    <dd>
+  <div>
+      <a class="xref" href="HelixToolkit.Avalonia.SharpDX.MaterialExtension.html#HelixToolkit_Avalonia_SharpDX_MaterialExtension_ConvertToMaterial_HelixToolkit_SharpDX_Model_MaterialCore_">MaterialExtension.ConvertToMaterial(MaterialCore?)</a>
+  </div>
+  <div>
+      <a class="xref" href="HelixToolkit.Avalonia.SharpDX.MaterialExtension.html#HelixToolkit_Avalonia_SharpDX_MaterialExtension_ConvertToPBRMaterial_HelixToolkit_SharpDX_Model_PBRMaterialCore_">MaterialExtension.ConvertToPBRMaterial(PBRMaterialCore?)</a>
+  </div>
+  </dd></dl>
+
+
+
+
+
+  <h2 class="section" id="properties">Properties
+</h2>
+
+
+  <a id="HelixToolkit_SharpDX_Model_PBRMaterialCore_AlbedoColor_" data-uid="HelixToolkit.SharpDX.Model.PBRMaterialCore.AlbedoColor*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_PBRMaterialCore_AlbedoColor" data-uid="HelixToolkit.SharpDX.Model.PBRMaterialCore.AlbedoColor">
+  AlbedoColor
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Material/PBRMaterialCore.cs/#L17"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the color of the albedo.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Color4 AlbedoColor { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Maths.Color4.html">Color4</a></dt>
+    <dd><p>The color of the albedo.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_PBRMaterialCore_AlbedoMap_" data-uid="HelixToolkit.SharpDX.Model.PBRMaterialCore.AlbedoMap*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_PBRMaterialCore_AlbedoMap" data-uid="HelixToolkit.SharpDX.Model.PBRMaterialCore.AlbedoMap">
+  AlbedoMap
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Material/PBRMaterialCore.cs/#L218"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the albedo map.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public TextureModel? AlbedoMap { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.TextureModel.html">TextureModel</a></dt>
+    <dd><p>The albedo map.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_PBRMaterialCore_AlbedoMapFilePath_" data-uid="HelixToolkit.SharpDX.Model.PBRMaterialCore.AlbedoMapFilePath*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_PBRMaterialCore_AlbedoMapFilePath" data-uid="HelixToolkit.SharpDX.Model.PBRMaterialCore.AlbedoMapFilePath">
+  AlbedoMapFilePath
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Material/PBRMaterialCore.cs/#L229"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the albedo map file path. Used for export only</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string AlbedoMapFilePath { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The albedo map file path.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_PBRMaterialCore_AmbientOcclusionFactor_" data-uid="HelixToolkit.SharpDX.Model.PBRMaterialCore.AmbientOcclusionFactor*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_PBRMaterialCore_AmbientOcclusionFactor" data-uid="HelixToolkit.SharpDX.Model.PBRMaterialCore.AmbientOcclusionFactor">
+  AmbientOcclusionFactor
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Material/PBRMaterialCore.cs/#L69"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the ambient occlusion factor. If RMA map is used, for each pixel, ambient occlusion factor = <a class="xref" href="HelixToolkit.SharpDX.Model.PBRMaterialCore.html#HelixToolkit_SharpDX_Model_PBRMaterialCore_AmbientOcclusionFactor">AmbientOcclusionFactor</a> * RMA map R Channel</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float AmbientOcclusionFactor { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>The ambient occlusion factor.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_PBRMaterialCore_AmbientOcculsionMap_" data-uid="HelixToolkit.SharpDX.Model.PBRMaterialCore.AmbientOcculsionMap*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_PBRMaterialCore_AmbientOcculsionMap" data-uid="HelixToolkit.SharpDX.Model.PBRMaterialCore.AmbientOcculsionMap">
+  AmbientOcculsionMap
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Material/PBRMaterialCore.cs/#L361"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the separate Ambient Occlusion map.
+glTF2 defines occlusion as R channel, roughness as G channel, metalness as B channel.
+If provides RMA map in one texture, set both <a class="xref" href="HelixToolkit.SharpDX.Model.PBRMaterialCore.html#HelixToolkit_SharpDX_Model_PBRMaterialCore_RoughnessMetallicMap">RoughnessMetallicMap</a> and <a class="xref" href="HelixToolkit.SharpDX.Model.PBRMaterialCore.html#HelixToolkit_SharpDX_Model_PBRMaterialCore_AmbientOcculsionMap">AmbientOcculsionMap</a> to the same texture.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public TextureModel? AmbientOcculsionMap { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.TextureModel.html">TextureModel</a></dt>
+    <dd><p>The ao map.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_PBRMaterialCore_AmbientOcculsionMapFilePath_" data-uid="HelixToolkit.SharpDX.Model.PBRMaterialCore.AmbientOcculsionMapFilePath*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_PBRMaterialCore_AmbientOcculsionMapFilePath" data-uid="HelixToolkit.SharpDX.Model.PBRMaterialCore.AmbientOcculsionMapFilePath">
+  AmbientOcculsionMapFilePath
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Material/PBRMaterialCore.cs/#L372"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the ao map file path.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string AmbientOcculsionMapFilePath { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The ao map file path.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_PBRMaterialCore_ClearCoatRoughness_" data-uid="HelixToolkit.SharpDX.Model.PBRMaterialCore.ClearCoatRoughness*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_PBRMaterialCore_ClearCoatRoughness" data-uid="HelixToolkit.SharpDX.Model.PBRMaterialCore.ClearCoatRoughness">
+  ClearCoatRoughness
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Material/PBRMaterialCore.cs/#L108"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the clear coat roughness.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float ClearCoatRoughness { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>The clear coat roughness.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_PBRMaterialCore_ClearCoatStrength_" data-uid="HelixToolkit.SharpDX.Model.PBRMaterialCore.ClearCoatStrength*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_PBRMaterialCore_ClearCoatStrength" data-uid="HelixToolkit.SharpDX.Model.PBRMaterialCore.ClearCoatStrength">
+  ClearCoatStrength
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Material/PBRMaterialCore.cs/#L95"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the clear coat strength.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float ClearCoatStrength { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>The clear coat strength.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_PBRMaterialCore_DisplacementMap_" data-uid="HelixToolkit.SharpDX.Model.PBRMaterialCore.DisplacementMap*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_PBRMaterialCore_DisplacementMap" data-uid="HelixToolkit.SharpDX.Model.PBRMaterialCore.DisplacementMap">
+  DisplacementMap
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Material/PBRMaterialCore.cs/#L288"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the DisplacementMap.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public TextureModel? DisplacementMap { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.TextureModel.html">TextureModel</a></dt>
+    <dd><p>DisplacementMap</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_PBRMaterialCore_DisplacementMapFilePath_" data-uid="HelixToolkit.SharpDX.Model.PBRMaterialCore.DisplacementMapFilePath*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_PBRMaterialCore_DisplacementMapFilePath" data-uid="HelixToolkit.SharpDX.Model.PBRMaterialCore.DisplacementMapFilePath">
+  DisplacementMapFilePath
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Material/PBRMaterialCore.cs/#L299"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the displacement map file path. Only for export</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string DisplacementMapFilePath { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The displacement map file path.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_PBRMaterialCore_DisplacementMapSampler_" data-uid="HelixToolkit.SharpDX.Model.PBRMaterialCore.DisplacementMapSampler*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_PBRMaterialCore_DisplacementMapSampler" data-uid="HelixToolkit.SharpDX.Model.PBRMaterialCore.DisplacementMapSampler">
+  DisplacementMapSampler
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Material/PBRMaterialCore.cs/#L423"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the DisplacementMapSampler.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public SamplerStateDescription DisplacementMapSampler { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">SamplerStateDescription</span></dt>
+    <dd><p>DisplacementMapSampler</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_PBRMaterialCore_DisplacementMapScaleMask_" data-uid="HelixToolkit.SharpDX.Model.PBRMaterialCore.DisplacementMapScaleMask*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_PBRMaterialCore_DisplacementMapScaleMask" data-uid="HelixToolkit.SharpDX.Model.PBRMaterialCore.DisplacementMapScaleMask">
+  DisplacementMapScaleMask
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Material/PBRMaterialCore.cs/#L384"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the DisplacementMapScaleMask.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Vector4 DisplacementMapScaleMask { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector4">Vector4</a></dt>
+    <dd><p>DisplacementMapScaleMask</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_PBRMaterialCore_EmissiveColor_" data-uid="HelixToolkit.SharpDX.Model.PBRMaterialCore.EmissiveColor*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_PBRMaterialCore_EmissiveColor" data-uid="HelixToolkit.SharpDX.Model.PBRMaterialCore.EmissiveColor">
+  EmissiveColor
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Material/PBRMaterialCore.cs/#L30"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the color of the emissive.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Color4 EmissiveColor { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Maths.Color4.html">Color4</a></dt>
+    <dd><p>The color of the emissive.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_PBRMaterialCore_EmissiveMap_" data-uid="HelixToolkit.SharpDX.Model.PBRMaterialCore.EmissiveMap*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_PBRMaterialCore_EmissiveMap" data-uid="HelixToolkit.SharpDX.Model.PBRMaterialCore.EmissiveMap">
+  EmissiveMap
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Material/PBRMaterialCore.cs/#L241"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the emissive map.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public TextureModel? EmissiveMap { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.TextureModel.html">TextureModel</a></dt>
+    <dd><p>The emissive map.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_PBRMaterialCore_EmissiveMapFilePath_" data-uid="HelixToolkit.SharpDX.Model.PBRMaterialCore.EmissiveMapFilePath*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_PBRMaterialCore_EmissiveMapFilePath" data-uid="HelixToolkit.SharpDX.Model.PBRMaterialCore.EmissiveMapFilePath">
+  EmissiveMapFilePath
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Material/PBRMaterialCore.cs/#L252"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the emissive map file path. Only for export</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string EmissiveMapFilePath { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The emissive map.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_PBRMaterialCore_EnableAutoTangent_" data-uid="HelixToolkit.SharpDX.Model.PBRMaterialCore.EnableAutoTangent*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_PBRMaterialCore_EnableAutoTangent" data-uid="HelixToolkit.SharpDX.Model.PBRMaterialCore.EnableAutoTangent">
+  EnableAutoTangent
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Material/PBRMaterialCore.cs/#L205"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets a value indicating whether [enable automatic tangent].</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool EnableAutoTangent { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><code>true</code> if [enable automatic tangent]; otherwise, <code>false</code>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_PBRMaterialCore_EnableFlatShading_" data-uid="HelixToolkit.SharpDX.Model.PBRMaterialCore.EnableFlatShading*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_PBRMaterialCore_EnableFlatShading" data-uid="HelixToolkit.SharpDX.Model.PBRMaterialCore.EnableFlatShading">
+  EnableFlatShading
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Material/PBRMaterialCore.cs/#L503"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets a value indicating whether [enable flat shading].</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool EnableFlatShading { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><code>true</code> if [enable flat shading]; otherwise, <code>false</code>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_PBRMaterialCore_EnableTessellation_" data-uid="HelixToolkit.SharpDX.Model.PBRMaterialCore.EnableTessellation*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_PBRMaterialCore_EnableTessellation" data-uid="HelixToolkit.SharpDX.Model.PBRMaterialCore.EnableTessellation">
+  EnableTessellation
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Material/PBRMaterialCore.cs/#L490"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool EnableTessellation { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_PBRMaterialCore_IBLSampler_" data-uid="HelixToolkit.SharpDX.Model.PBRMaterialCore.IBLSampler*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_PBRMaterialCore_IBLSampler" data-uid="HelixToolkit.SharpDX.Model.PBRMaterialCore.IBLSampler">
+  IBLSampler
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Material/PBRMaterialCore.cs/#L436"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the IBL sampler.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public SamplerStateDescription IBLSampler { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">SamplerStateDescription</span></dt>
+    <dd><p>The IBL sampler.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_PBRMaterialCore_IrradianceMap_" data-uid="HelixToolkit.SharpDX.Model.PBRMaterialCore.IrradianceMap*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_PBRMaterialCore_IrradianceMap" data-uid="HelixToolkit.SharpDX.Model.PBRMaterialCore.IrradianceMap">
+  IrradianceMap
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Material/PBRMaterialCore.cs/#L311"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the irradiance map.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public TextureModel? IrradianceMap { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.TextureModel.html">TextureModel</a></dt>
+    <dd><p>The irradiance map.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_PBRMaterialCore_IrradianceMapFilePath_" data-uid="HelixToolkit.SharpDX.Model.PBRMaterialCore.IrradianceMapFilePath*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_PBRMaterialCore_IrradianceMapFilePath" data-uid="HelixToolkit.SharpDX.Model.PBRMaterialCore.IrradianceMapFilePath">
+  IrradianceMapFilePath
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Material/PBRMaterialCore.cs/#L322"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the irradiance map file path. Only for export</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string IrradianceMapFilePath { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The irradiance map file path.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_PBRMaterialCore_MaxDistanceTessellationFactor_" data-uid="HelixToolkit.SharpDX.Model.PBRMaterialCore.MaxDistanceTessellationFactor*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_PBRMaterialCore_MaxDistanceTessellationFactor" data-uid="HelixToolkit.SharpDX.Model.PBRMaterialCore.MaxDistanceTessellationFactor">
+  MaxDistanceTessellationFactor
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Material/PBRMaterialCore.cs/#L476"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the tessellation factor at <a class="xref" href="HelixToolkit.SharpDX.Model.PBRMaterialCore.html#HelixToolkit_SharpDX_Model_PBRMaterialCore_MaxDistanceTessellationFactor">MaxDistanceTessellationFactor</a></p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float MaxDistanceTessellationFactor { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>The maximum distance tessellation factor.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_PBRMaterialCore_MaxTessellationDistance_" data-uid="HelixToolkit.SharpDX.Model.PBRMaterialCore.MaxTessellationDistance*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_PBRMaterialCore_MaxTessellationDistance" data-uid="HelixToolkit.SharpDX.Model.PBRMaterialCore.MaxTessellationDistance">
+  MaxTessellationDistance
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Material/PBRMaterialCore.cs/#L450"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float MaxTessellationDistance { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_PBRMaterialCore_MeshType_" data-uid="HelixToolkit.SharpDX.Model.PBRMaterialCore.MeshType*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_PBRMaterialCore_MeshType" data-uid="HelixToolkit.SharpDX.Model.PBRMaterialCore.MeshType">
+  MeshType
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Material/PBRMaterialCore.cs/#L483"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public MeshTopologyEnum MeshType { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.MeshTopologyEnum.html">MeshTopologyEnum</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_PBRMaterialCore_MetallicFactor_" data-uid="HelixToolkit.SharpDX.Model.PBRMaterialCore.MetallicFactor*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_PBRMaterialCore_MetallicFactor" data-uid="HelixToolkit.SharpDX.Model.PBRMaterialCore.MetallicFactor">
+  MetallicFactor
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Material/PBRMaterialCore.cs/#L43"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the metallic factor. If RMA map is used, for each pixel, metallic factor = <a class="xref" href="HelixToolkit.SharpDX.Model.PBRMaterialCore.html#HelixToolkit_SharpDX_Model_PBRMaterialCore_MetallicFactor">MetallicFactor</a> * RMA map B Channel</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float MetallicFactor { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>The metallic factor.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_PBRMaterialCore_MinDistanceTessellationFactor_" data-uid="HelixToolkit.SharpDX.Model.PBRMaterialCore.MinDistanceTessellationFactor*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_PBRMaterialCore_MinDistanceTessellationFactor" data-uid="HelixToolkit.SharpDX.Model.PBRMaterialCore.MinDistanceTessellationFactor">
+  MinDistanceTessellationFactor
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Material/PBRMaterialCore.cs/#L463"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the tessellation factor at <a class="xref" href="HelixToolkit.SharpDX.Model.PBRMaterialCore.html#HelixToolkit_SharpDX_Model_PBRMaterialCore_MinTessellationDistance">MinTessellationDistance</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float MinDistanceTessellationFactor { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>The minimum distance tessellation factor.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_PBRMaterialCore_MinTessellationDistance_" data-uid="HelixToolkit.SharpDX.Model.PBRMaterialCore.MinTessellationDistance*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_PBRMaterialCore_MinTessellationDistance" data-uid="HelixToolkit.SharpDX.Model.PBRMaterialCore.MinTessellationDistance">
+  MinTessellationDistance
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Material/PBRMaterialCore.cs/#L443"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float MinTessellationDistance { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_PBRMaterialCore_NormalMap_" data-uid="HelixToolkit.SharpDX.Model.PBRMaterialCore.NormalMap*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_PBRMaterialCore_NormalMap" data-uid="HelixToolkit.SharpDX.Model.PBRMaterialCore.NormalMap">
+  NormalMap
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Material/PBRMaterialCore.cs/#L264"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the NormalMap.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public TextureModel? NormalMap { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.TextureModel.html">TextureModel</a></dt>
+    <dd><p>NormalMap</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_PBRMaterialCore_NormalMapFilePath_" data-uid="HelixToolkit.SharpDX.Model.PBRMaterialCore.NormalMapFilePath*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_PBRMaterialCore_NormalMapFilePath" data-uid="HelixToolkit.SharpDX.Model.PBRMaterialCore.NormalMapFilePath">
+  NormalMapFilePath
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Material/PBRMaterialCore.cs/#L275"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the normal map file path. Only for export</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string NormalMapFilePath { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The normal map file path.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_PBRMaterialCore_ReflectanceFactor_" data-uid="HelixToolkit.SharpDX.Model.PBRMaterialCore.ReflectanceFactor*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_PBRMaterialCore_ReflectanceFactor" data-uid="HelixToolkit.SharpDX.Model.PBRMaterialCore.ReflectanceFactor">
+  ReflectanceFactor
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Material/PBRMaterialCore.cs/#L82"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the reflectance factor.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float ReflectanceFactor { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>The reflectance factor.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_PBRMaterialCore_RenderAlbedoMap_" data-uid="HelixToolkit.SharpDX.Model.PBRMaterialCore.RenderAlbedoMap*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_PBRMaterialCore_RenderAlbedoMap" data-uid="HelixToolkit.SharpDX.Model.PBRMaterialCore.RenderAlbedoMap">
+  RenderAlbedoMap
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Material/PBRMaterialCore.cs/#L115"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool RenderAlbedoMap { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_PBRMaterialCore_RenderAmbientOcclusionMap_" data-uid="HelixToolkit.SharpDX.Model.PBRMaterialCore.RenderAmbientOcclusionMap*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_PBRMaterialCore_RenderAmbientOcclusionMap" data-uid="HelixToolkit.SharpDX.Model.PBRMaterialCore.RenderAmbientOcclusionMap">
+  RenderAmbientOcclusionMap
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Material/PBRMaterialCore.cs/#L136"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool RenderAmbientOcclusionMap { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_PBRMaterialCore_RenderDisplacementMap_" data-uid="HelixToolkit.SharpDX.Model.PBRMaterialCore.RenderDisplacementMap*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_PBRMaterialCore_RenderDisplacementMap" data-uid="HelixToolkit.SharpDX.Model.PBRMaterialCore.RenderDisplacementMap">
+  RenderDisplacementMap
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Material/PBRMaterialCore.cs/#L146"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool RenderDisplacementMap { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_PBRMaterialCore_RenderEmissiveMap_" data-uid="HelixToolkit.SharpDX.Model.PBRMaterialCore.RenderEmissiveMap*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_PBRMaterialCore_RenderEmissiveMap" data-uid="HelixToolkit.SharpDX.Model.PBRMaterialCore.RenderEmissiveMap">
+  RenderEmissiveMap
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Material/PBRMaterialCore.cs/#L192"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets a value indicating whether [render emissive map].</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool RenderEmissiveMap { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><code>true</code> if [render emissive map]; otherwise, <code>false</code>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_PBRMaterialCore_RenderEnvironmentMap_" data-uid="HelixToolkit.SharpDX.Model.PBRMaterialCore.RenderEnvironmentMap*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_PBRMaterialCore_RenderEnvironmentMap" data-uid="HelixToolkit.SharpDX.Model.PBRMaterialCore.RenderEnvironmentMap">
+  RenderEnvironmentMap
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Material/PBRMaterialCore.cs/#L166"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool RenderEnvironmentMap { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_PBRMaterialCore_RenderIrradianceMap_" data-uid="HelixToolkit.SharpDX.Model.PBRMaterialCore.RenderIrradianceMap*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_PBRMaterialCore_RenderIrradianceMap" data-uid="HelixToolkit.SharpDX.Model.PBRMaterialCore.RenderIrradianceMap">
+  RenderIrradianceMap
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Material/PBRMaterialCore.cs/#L179"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets a value indicating whether [render irrandiance map].</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool RenderIrradianceMap { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><code>true</code> if [render irrandiance map]; otherwise, <code>false</code>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_PBRMaterialCore_RenderNormalMap_" data-uid="HelixToolkit.SharpDX.Model.PBRMaterialCore.RenderNormalMap*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_PBRMaterialCore_RenderNormalMap" data-uid="HelixToolkit.SharpDX.Model.PBRMaterialCore.RenderNormalMap">
+  RenderNormalMap
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Material/PBRMaterialCore.cs/#L122"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool RenderNormalMap { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_PBRMaterialCore_RenderRoughnessMetallicMap_" data-uid="HelixToolkit.SharpDX.Model.PBRMaterialCore.RenderRoughnessMetallicMap*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_PBRMaterialCore_RenderRoughnessMetallicMap" data-uid="HelixToolkit.SharpDX.Model.PBRMaterialCore.RenderRoughnessMetallicMap">
+  RenderRoughnessMetallicMap
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Material/PBRMaterialCore.cs/#L129"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool RenderRoughnessMetallicMap { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_PBRMaterialCore_RenderShadowMap_" data-uid="HelixToolkit.SharpDX.Model.PBRMaterialCore.RenderShadowMap*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_PBRMaterialCore_RenderShadowMap" data-uid="HelixToolkit.SharpDX.Model.PBRMaterialCore.RenderShadowMap">
+  RenderShadowMap
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Material/PBRMaterialCore.cs/#L156"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool RenderShadowMap { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_PBRMaterialCore_RoughnessFactor_" data-uid="HelixToolkit.SharpDX.Model.PBRMaterialCore.RoughnessFactor*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_PBRMaterialCore_RoughnessFactor" data-uid="HelixToolkit.SharpDX.Model.PBRMaterialCore.RoughnessFactor">
+  RoughnessFactor
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Material/PBRMaterialCore.cs/#L56"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the roughness factor. If RMA map is used, for each pixel, roughness factor = <a class="xref" href="HelixToolkit.SharpDX.Model.PBRMaterialCore.html#HelixToolkit_SharpDX_Model_PBRMaterialCore_RoughnessFactor">RoughnessFactor</a> * RMA map G Channel</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float RoughnessFactor { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>The roughness factor.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_PBRMaterialCore_RoughnessMetallicMap_" data-uid="HelixToolkit.SharpDX.Model.PBRMaterialCore.RoughnessMetallicMap*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_PBRMaterialCore_RoughnessMetallicMap" data-uid="HelixToolkit.SharpDX.Model.PBRMaterialCore.RoughnessMetallicMap">
+  RoughnessMetallicMap
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Material/PBRMaterialCore.cs/#L336"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the Roughness, Metallic map.
+glTF2 defines occlusion as R channel, roughness as G channel, metalness as B channel.
+If provides RMA map in one texture, set both <a class="xref" href="HelixToolkit.SharpDX.Model.PBRMaterialCore.html#HelixToolkit_SharpDX_Model_PBRMaterialCore_RoughnessMetallicMap">RoughnessMetallicMap</a> and <a class="xref" href="HelixToolkit.SharpDX.Model.PBRMaterialCore.html#HelixToolkit_SharpDX_Model_PBRMaterialCore_AmbientOcculsionMap">AmbientOcculsionMap</a> to the same texture.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public TextureModel? RoughnessMetallicMap { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.TextureModel.html">TextureModel</a></dt>
+    <dd><p>The rma map.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_PBRMaterialCore_RoughnessMetallicMapFilePath_" data-uid="HelixToolkit.SharpDX.Model.PBRMaterialCore.RoughnessMetallicMapFilePath*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_PBRMaterialCore_RoughnessMetallicMapFilePath" data-uid="HelixToolkit.SharpDX.Model.PBRMaterialCore.RoughnessMetallicMapFilePath">
+  RoughnessMetallicMapFilePath
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Material/PBRMaterialCore.cs/#L347"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the rma map file path. Only for export</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string RoughnessMetallicMapFilePath { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The rma map file path.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_PBRMaterialCore_SurfaceMapSampler_" data-uid="HelixToolkit.SharpDX.Model.PBRMaterialCore.SurfaceMapSampler*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_PBRMaterialCore_SurfaceMapSampler" data-uid="HelixToolkit.SharpDX.Model.PBRMaterialCore.SurfaceMapSampler">
+  SurfaceMapSampler
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Material/PBRMaterialCore.cs/#L410"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the surface map sampler.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public SamplerStateDescription SurfaceMapSampler { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">SamplerStateDescription</span></dt>
+    <dd><p>The surface map sampler.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_PBRMaterialCore_UVTransform_" data-uid="HelixToolkit.SharpDX.Model.PBRMaterialCore.UVTransform*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_PBRMaterialCore_UVTransform" data-uid="HelixToolkit.SharpDX.Model.PBRMaterialCore.UVTransform">
+  UVTransform
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Material/PBRMaterialCore.cs/#L397"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the uv transform.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public UVTransform UVTransform { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.UVTransform.html">UVTransform</a></dt>
+    <dd><p>The uv transform.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_PBRMaterialCore_VertexColorBlendingFactor_" data-uid="HelixToolkit.SharpDX.Model.PBRMaterialCore.VertexColorBlendingFactor*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_PBRMaterialCore_VertexColorBlendingFactor" data-uid="HelixToolkit.SharpDX.Model.PBRMaterialCore.VertexColorBlendingFactor">
+  VertexColorBlendingFactor
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Material/PBRMaterialCore.cs/#L523"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the vert color blending factor.
+Diffuse = (1- <a class="xref" href="HelixToolkit.SharpDX.Model.PBRMaterialCore.html#HelixToolkit_SharpDX_Model_PBRMaterialCore_VertexColorBlendingFactor">VertexColorBlendingFactor</a>) * Diffuse + <a class="xref" href="HelixToolkit.SharpDX.Model.PBRMaterialCore.html#HelixToolkit_SharpDX_Model_PBRMaterialCore_VertexColorBlendingFactor">VertexColorBlendingFactor</a> * Vertex Color</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float VertexColorBlendingFactor { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>The vert color blending factor.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h2 class="section" id="methods">Methods
+</h2>
+
+
+  <a id="HelixToolkit_SharpDX_Model_PBRMaterialCore_CreateMaterialVariables_" data-uid="HelixToolkit.SharpDX.Model.PBRMaterialCore.CreateMaterialVariables*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_PBRMaterialCore_CreateMaterialVariables_HelixToolkit_SharpDX_IEffectsManager_HelixToolkit_SharpDX_IRenderTechnique_" data-uid="HelixToolkit.SharpDX.Model.PBRMaterialCore.CreateMaterialVariables(HelixToolkit.SharpDX.IEffectsManager,HelixToolkit.SharpDX.IRenderTechnique)">
+  CreateMaterialVariables(IEffectsManager, IRenderTechnique)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Material/PBRMaterialCore.cs/#L535"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Creates the material variables.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override MaterialVariable CreateMaterialVariables(IEffectsManager manager, IRenderTechnique technique)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>manager</code> <a class="xref" href="HelixToolkit.SharpDX.IEffectsManager.html">IEffectsManager</a></dt>
+    <dd><p>The manager.</p>
+</dd>
+    <dt><code>technique</code> <a class="xref" href="HelixToolkit.SharpDX.IRenderTechnique.html">IRenderTechnique</a></dt>
+    <dd><p>The technique.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.Model.MaterialVariable.html">MaterialVariable</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/Model/Material/PBRMaterialCore.cs/#L7" class="edit-link">Edit this page</a>
+        </div>
+
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          Copyright (c) 2023 Helix Toolkit contributors
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

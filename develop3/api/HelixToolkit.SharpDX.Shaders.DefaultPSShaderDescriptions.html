@@ -1,0 +1,2035 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Class DefaultPSShaderDescriptions | Helix Toolkit - 3D for .NET </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Class DefaultPSShaderDescriptions | Helix Toolkit - 3D for .NET ">
+      
+      <meta name="description" content="Default Pixel Shaders">
+      <link rel="icon" href="../images/favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/helix-toolkit/helix-toolkit/new/develop3/apiSpec/new?filename=HelixToolkit_SharpDX_Shaders_DefaultPSShaderDescriptions.md&amp;value=---%0Auid%3A%20HelixToolkit.SharpDX.Shaders.DefaultPSShaderDescriptions%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="ManagedReference">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../images/favicon.ico" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="HelixToolkit.SharpDX.Shaders.DefaultPSShaderDescriptions">
+
+
+
+  <h1 id="HelixToolkit_SharpDX_Shaders_DefaultPSShaderDescriptions" data-uid="HelixToolkit.SharpDX.Shaders.DefaultPSShaderDescriptions" class="text-break">
+Class DefaultPSShaderDescriptions  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/DefaultShaders/Shaders/DefaultPSShaderDescriptions.cs/#L6"><i class="bi bi-code-slash"></i></a>
+  </h1>
+
+  <div class="facts text-secondary">
+    <dl><dt>Namespace</dt><dd><a class="xref" href="HelixToolkit.html">HelixToolkit</a>.<a class="xref" href="HelixToolkit.SharpDX.html">SharpDX</a>.<a class="xref" href="HelixToolkit.SharpDX.Shaders.html">Shaders</a></dd></dl>
+  <dl><dt>Assembly</dt><dd>HelixToolkit.SharpDX.dll</dd></dl>
+  </div>
+
+  <div class="markdown summary"><p>Default Pixel Shaders</p>
+</div>
+  <div class="markdown conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static class DefaultPSShaderDescriptions</code></pre>
+  </div>
+
+
+
+
+  <dl class="typelist inheritance">
+    <dt>Inheritance</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
+      <div><span class="xref">DefaultPSShaderDescriptions</span></div>
+    </dd>
+  </dl>
+
+
+
+  <dl class="typelist inheritedMembers">
+    <dt>Inherited Members</dt>
+    <dd>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">object.Equals(object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">object.Equals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode">object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype">object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone">object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals">object.ReferenceEquals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring">object.ToString()</a>
+    </div>
+  </dd></dl>
+
+
+
+
+
+
+  <h2 class="section" id="fields">Fields
+</h2>
+
+
+
+  <h3 id="HelixToolkit_SharpDX_Shaders_DefaultPSShaderDescriptions_PSBillboardText" data-uid="HelixToolkit.SharpDX.Shaders.DefaultPSShaderDescriptions.PSBillboardText">
+  PSBillboardText
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/DefaultShaders/Shaders/DefaultPSShaderDescriptions.cs/#L91"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly ShaderDescription PSBillboardText</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.Shaders.ShaderDescription.html">ShaderDescription</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_SharpDX_Shaders_DefaultPSShaderDescriptions_PSBillboardTextOIT" data-uid="HelixToolkit.SharpDX.Shaders.DefaultPSShaderDescriptions.PSBillboardTextOIT">
+  PSBillboardTextOIT
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/DefaultShaders/Shaders/DefaultPSShaderDescriptions.cs/#L96"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>The ps billboard text oit</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly ShaderDescription PSBillboardTextOIT</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.Shaders.ShaderDescription.html">ShaderDescription</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_SharpDX_Shaders_DefaultPSShaderDescriptions_PSBillboardTextOITDP" data-uid="HelixToolkit.SharpDX.Shaders.DefaultPSShaderDescriptions.PSBillboardTextOITDP">
+  PSBillboardTextOITDP
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/DefaultShaders/Shaders/DefaultPSShaderDescriptions.cs/#L99"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly ShaderDescription PSBillboardTextOITDP</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.Shaders.ShaderDescription.html">ShaderDescription</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_SharpDX_Shaders_DefaultPSShaderDescriptions_PSDepthStencilOnly" data-uid="HelixToolkit.SharpDX.Shaders.DefaultPSShaderDescriptions.PSDepthStencilOnly">
+  PSDepthStencilOnly
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/DefaultShaders/Shaders/DefaultPSShaderDescriptions.cs/#L159"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>The ps depth stencil only</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly ShaderDescription PSDepthStencilOnly</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.Shaders.ShaderDescription.html">ShaderDescription</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_SharpDX_Shaders_DefaultPSShaderDescriptions_PSEffectBloomCombine" data-uid="HelixToolkit.SharpDX.Shaders.DefaultPSShaderDescriptions.PSEffectBloomCombine">
+  PSEffectBloomCombine
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/DefaultShaders/Shaders/DefaultPSShaderDescriptions.cs/#L225"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>The ps effect bloom combine</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly ShaderDescription PSEffectBloomCombine</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.Shaders.ShaderDescription.html">ShaderDescription</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_SharpDX_Shaders_DefaultPSShaderDescriptions_PSEffectBloomExtract" data-uid="HelixToolkit.SharpDX.Shaders.DefaultPSShaderDescriptions.PSEffectBloomExtract">
+  PSEffectBloomExtract
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/DefaultShaders/Shaders/DefaultPSShaderDescriptions.cs/#L209"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly ShaderDescription PSEffectBloomExtract</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.Shaders.ShaderDescription.html">ShaderDescription</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_SharpDX_Shaders_DefaultPSShaderDescriptions_PSEffectBloomHorizontalBlur" data-uid="HelixToolkit.SharpDX.Shaders.DefaultPSShaderDescriptions.PSEffectBloomHorizontalBlur">
+  PSEffectBloomHorizontalBlur
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/DefaultShaders/Shaders/DefaultPSShaderDescriptions.cs/#L219"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>The ps effect bloom horizontal blur</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly ShaderDescription PSEffectBloomHorizontalBlur</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.Shaders.ShaderDescription.html">ShaderDescription</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_SharpDX_Shaders_DefaultPSShaderDescriptions_PSEffectBloomVerticalBlur" data-uid="HelixToolkit.SharpDX.Shaders.DefaultPSShaderDescriptions.PSEffectBloomVerticalBlur">
+  PSEffectBloomVerticalBlur
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/DefaultShaders/Shaders/DefaultPSShaderDescriptions.cs/#L214"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>The ps effect bloom vertical blur</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly ShaderDescription PSEffectBloomVerticalBlur</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.Shaders.ShaderDescription.html">ShaderDescription</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_SharpDX_Shaders_DefaultPSShaderDescriptions_PSEffectDiffuseXRayGrid" data-uid="HelixToolkit.SharpDX.Shaders.DefaultPSShaderDescriptions.PSEffectDiffuseXRayGrid">
+  PSEffectDiffuseXRayGrid
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/DefaultShaders/Shaders/DefaultPSShaderDescriptions.cs/#L246"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>The ps effect x ray grid, this is based on diffuse shading</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly ShaderDescription PSEffectDiffuseXRayGrid</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.Shaders.ShaderDescription.html">ShaderDescription</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_SharpDX_Shaders_DefaultPSShaderDescriptions_PSEffectFXAA" data-uid="HelixToolkit.SharpDX.Shaders.DefaultPSShaderDescriptions.PSEffectFXAA">
+  PSEffectFXAA
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/DefaultShaders/Shaders/DefaultPSShaderDescriptions.cs/#L231"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>The ps effect FXAA</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly ShaderDescription PSEffectFXAA</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.Shaders.ShaderDescription.html">ShaderDescription</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_SharpDX_Shaders_DefaultPSShaderDescriptions_PSEffectFullScreenBlurHorizontal" data-uid="HelixToolkit.SharpDX.Shaders.DefaultPSShaderDescriptions.PSEffectFullScreenBlurHorizontal">
+  PSEffectFullScreenBlurHorizontal
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/DefaultShaders/Shaders/DefaultPSShaderDescriptions.cs/#L176"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly ShaderDescription PSEffectFullScreenBlurHorizontal</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.Shaders.ShaderDescription.html">ShaderDescription</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_SharpDX_Shaders_DefaultPSShaderDescriptions_PSEffectFullScreenBlurVertical" data-uid="HelixToolkit.SharpDX.Shaders.DefaultPSShaderDescriptions.PSEffectFullScreenBlurVertical">
+  PSEffectFullScreenBlurVertical
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/DefaultShaders/Shaders/DefaultPSShaderDescriptions.cs/#L171"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly ShaderDescription PSEffectFullScreenBlurVertical</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.Shaders.ShaderDescription.html">ShaderDescription</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_SharpDX_Shaders_DefaultPSShaderDescriptions_PSEffectLUMA" data-uid="HelixToolkit.SharpDX.Shaders.DefaultPSShaderDescriptions.PSEffectLUMA">
+  PSEffectLUMA
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/DefaultShaders/Shaders/DefaultPSShaderDescriptions.cs/#L236"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>The ps effect luma</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly ShaderDescription PSEffectLUMA</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.Shaders.ShaderDescription.html">ShaderDescription</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_SharpDX_Shaders_DefaultPSShaderDescriptions_PSEffectMeshBorderHighlight" data-uid="HelixToolkit.SharpDX.Shaders.DefaultPSShaderDescriptions.PSEffectMeshBorderHighlight">
+  PSEffectMeshBorderHighlight
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/DefaultShaders/Shaders/DefaultPSShaderDescriptions.cs/#L181"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly ShaderDescription PSEffectMeshBorderHighlight</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.Shaders.ShaderDescription.html">ShaderDescription</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_SharpDX_Shaders_DefaultPSShaderDescriptions_PSEffectMeshXRay" data-uid="HelixToolkit.SharpDX.Shaders.DefaultPSShaderDescriptions.PSEffectMeshXRay">
+  PSEffectMeshXRay
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/DefaultShaders/Shaders/DefaultPSShaderDescriptions.cs/#L203"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly ShaderDescription PSEffectMeshXRay</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.Shaders.ShaderDescription.html">ShaderDescription</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_SharpDX_Shaders_DefaultPSShaderDescriptions_PSEffectOutlineSmooth" data-uid="HelixToolkit.SharpDX.Shaders.DefaultPSShaderDescriptions.PSEffectOutlineSmooth">
+  PSEffectOutlineSmooth
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/DefaultShaders/Shaders/DefaultPSShaderDescriptions.cs/#L186"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>The ps effect mesh border highlight</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly ShaderDescription PSEffectOutlineSmooth</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.Shaders.ShaderDescription.html">ShaderDescription</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_SharpDX_Shaders_DefaultPSShaderDescriptions_PSEffectXRayGrid" data-uid="HelixToolkit.SharpDX.Shaders.DefaultPSShaderDescriptions.PSEffectXRayGrid">
+  PSEffectXRayGrid
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/DefaultShaders/Shaders/DefaultPSShaderDescriptions.cs/#L241"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>The ps effect x ray grid, this is based on BlinnPhong</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly ShaderDescription PSEffectXRayGrid</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.Shaders.ShaderDescription.html">ShaderDescription</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_SharpDX_Shaders_DefaultPSShaderDescriptions_PSLine" data-uid="HelixToolkit.SharpDX.Shaders.DefaultPSShaderDescriptions.PSLine">
+  PSLine
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/DefaultShaders/Shaders/DefaultPSShaderDescriptions.cs/#L81"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly ShaderDescription PSLine</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.Shaders.ShaderDescription.html">ShaderDescription</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_SharpDX_Shaders_DefaultPSShaderDescriptions_PSLineColor" data-uid="HelixToolkit.SharpDX.Shaders.DefaultPSShaderDescriptions.PSLineColor">
+  PSLineColor
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/DefaultShaders/Shaders/DefaultPSShaderDescriptions.cs/#L86"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly ShaderDescription PSLineColor</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.Shaders.ShaderDescription.html">ShaderDescription</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_SharpDX_Shaders_DefaultPSShaderDescriptions_PSMeshBlinnPhong" data-uid="HelixToolkit.SharpDX.Shaders.DefaultPSShaderDescriptions.PSMeshBlinnPhong">
+  PSMeshBlinnPhong
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/DefaultShaders/Shaders/DefaultPSShaderDescriptions.cs/#L11"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly ShaderDescription PSMeshBlinnPhong</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.Shaders.ShaderDescription.html">ShaderDescription</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_SharpDX_Shaders_DefaultPSShaderDescriptions_PSMeshBlinnPhongOIT" data-uid="HelixToolkit.SharpDX.Shaders.DefaultPSShaderDescriptions.PSMeshBlinnPhongOIT">
+  PSMeshBlinnPhongOIT
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/DefaultShaders/Shaders/DefaultPSShaderDescriptions.cs/#L16"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly ShaderDescription PSMeshBlinnPhongOIT</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.Shaders.ShaderDescription.html">ShaderDescription</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_SharpDX_Shaders_DefaultPSShaderDescriptions_PSMeshBlinnPhongOITDP" data-uid="HelixToolkit.SharpDX.Shaders.DefaultPSShaderDescriptions.PSMeshBlinnPhongOITDP">
+  PSMeshBlinnPhongOITDP
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/DefaultShaders/Shaders/DefaultPSShaderDescriptions.cs/#L27"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly ShaderDescription PSMeshBlinnPhongOITDP</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.Shaders.ShaderDescription.html">ShaderDescription</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_SharpDX_Shaders_DefaultPSShaderDescriptions_PSMeshBlinnPhongOITQuad" data-uid="HelixToolkit.SharpDX.Shaders.DefaultPSShaderDescriptions.PSMeshBlinnPhongOITQuad">
+  PSMeshBlinnPhongOITQuad
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/DefaultShaders/Shaders/DefaultPSShaderDescriptions.cs/#L21"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly ShaderDescription PSMeshBlinnPhongOITQuad</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.Shaders.ShaderDescription.html">ShaderDescription</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_SharpDX_Shaders_DefaultPSShaderDescriptions_PSMeshClipBackface" data-uid="HelixToolkit.SharpDX.Shaders.DefaultPSShaderDescriptions.PSMeshClipBackface">
+  PSMeshClipBackface
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/DefaultShaders/Shaders/DefaultPSShaderDescriptions.cs/#L115"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>/</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly ShaderDescription PSMeshClipBackface</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.Shaders.ShaderDescription.html">ShaderDescription</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_SharpDX_Shaders_DefaultPSShaderDescriptions_PSMeshClipScreenQuad" data-uid="HelixToolkit.SharpDX.Shaders.DefaultPSShaderDescriptions.PSMeshClipScreenQuad">
+  PSMeshClipScreenQuad
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/DefaultShaders/Shaders/DefaultPSShaderDescriptions.cs/#L120"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly ShaderDescription PSMeshClipScreenQuad</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.Shaders.ShaderDescription.html">ShaderDescription</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_SharpDX_Shaders_DefaultPSShaderDescriptions_PSMeshColorStripe" data-uid="HelixToolkit.SharpDX.Shaders.DefaultPSShaderDescriptions.PSMeshColorStripe">
+  PSMeshColorStripe
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/DefaultShaders/Shaders/DefaultPSShaderDescriptions.cs/#L66"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly ShaderDescription PSMeshColorStripe</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.Shaders.ShaderDescription.html">ShaderDescription</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_SharpDX_Shaders_DefaultPSShaderDescriptions_PSMeshDiffuseMap" data-uid="HelixToolkit.SharpDX.Shaders.DefaultPSShaderDescriptions.PSMeshDiffuseMap">
+  PSMeshDiffuseMap
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/DefaultShaders/Shaders/DefaultPSShaderDescriptions.cs/#L53"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly ShaderDescription PSMeshDiffuseMap</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.Shaders.ShaderDescription.html">ShaderDescription</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_SharpDX_Shaders_DefaultPSShaderDescriptions_PSMeshDiffuseMapOIT" data-uid="HelixToolkit.SharpDX.Shaders.DefaultPSShaderDescriptions.PSMeshDiffuseMapOIT">
+  PSMeshDiffuseMapOIT
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/DefaultShaders/Shaders/DefaultPSShaderDescriptions.cs/#L58"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>The ps mesh diffuse map oit</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly ShaderDescription PSMeshDiffuseMapOIT</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.Shaders.ShaderDescription.html">ShaderDescription</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_SharpDX_Shaders_DefaultPSShaderDescriptions_PSMeshDiffuseMapOITDP" data-uid="HelixToolkit.SharpDX.Shaders.DefaultPSShaderDescriptions.PSMeshDiffuseMapOITDP">
+  PSMeshDiffuseMapOITDP
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/DefaultShaders/Shaders/DefaultPSShaderDescriptions.cs/#L61"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly ShaderDescription PSMeshDiffuseMapOITDP</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.Shaders.ShaderDescription.html">ShaderDescription</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_SharpDX_Shaders_DefaultPSShaderDescriptions_PSMeshOITDPBlending" data-uid="HelixToolkit.SharpDX.Shaders.DefaultPSShaderDescriptions.PSMeshOITDPBlending">
+  PSMeshOITDPBlending
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/DefaultShaders/Shaders/DefaultPSShaderDescriptions.cs/#L30"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly ShaderDescription PSMeshOITDPBlending</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.Shaders.ShaderDescription.html">ShaderDescription</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_SharpDX_Shaders_DefaultPSShaderDescriptions_PSMeshOITDPFinal" data-uid="HelixToolkit.SharpDX.Shaders.DefaultPSShaderDescriptions.PSMeshOITDPFinal">
+  PSMeshOITDPFinal
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/DefaultShaders/Shaders/DefaultPSShaderDescriptions.cs/#L33"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly ShaderDescription PSMeshOITDPFinal</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.Shaders.ShaderDescription.html">ShaderDescription</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_SharpDX_Shaders_DefaultPSShaderDescriptions_PSMeshOITDPInit" data-uid="HelixToolkit.SharpDX.Shaders.DefaultPSShaderDescriptions.PSMeshOITDPInit">
+  PSMeshOITDPInit
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/DefaultShaders/Shaders/DefaultPSShaderDescriptions.cs/#L24"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly ShaderDescription PSMeshOITDPInit</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.Shaders.ShaderDescription.html">ShaderDescription</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_SharpDX_Shaders_DefaultPSShaderDescriptions_PSMeshOutlineQuadFinal" data-uid="HelixToolkit.SharpDX.Shaders.DefaultPSShaderDescriptions.PSMeshOutlineQuadFinal">
+  PSMeshOutlineQuadFinal
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/DefaultShaders/Shaders/DefaultPSShaderDescriptions.cs/#L197"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly ShaderDescription PSMeshOutlineQuadFinal</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.Shaders.ShaderDescription.html">ShaderDescription</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_SharpDX_Shaders_DefaultPSShaderDescriptions_PSMeshOutlineQuadStencil" data-uid="HelixToolkit.SharpDX.Shaders.DefaultPSShaderDescriptions.PSMeshOutlineQuadStencil">
+  PSMeshOutlineQuadStencil
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/DefaultShaders/Shaders/DefaultPSShaderDescriptions.cs/#L191"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly ShaderDescription PSMeshOutlineQuadStencil</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.Shaders.ShaderDescription.html">ShaderDescription</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_SharpDX_Shaders_DefaultPSShaderDescriptions_PSMeshOutlineScreenQuad" data-uid="HelixToolkit.SharpDX.Shaders.DefaultPSShaderDescriptions.PSMeshOutlineScreenQuad">
+  PSMeshOutlineScreenQuad
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/DefaultShaders/Shaders/DefaultPSShaderDescriptions.cs/#L165"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly ShaderDescription PSMeshOutlineScreenQuad</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.Shaders.ShaderDescription.html">ShaderDescription</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_SharpDX_Shaders_DefaultPSShaderDescriptions_PSMeshPBR" data-uid="HelixToolkit.SharpDX.Shaders.DefaultPSShaderDescriptions.PSMeshPBR">
+  PSMeshPBR
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/DefaultShaders/Shaders/DefaultPSShaderDescriptions.cs/#L257"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>The ps mesh PBR</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly ShaderDescription PSMeshPBR</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.Shaders.ShaderDescription.html">ShaderDescription</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_SharpDX_Shaders_DefaultPSShaderDescriptions_PSMeshPBROIT" data-uid="HelixToolkit.SharpDX.Shaders.DefaultPSShaderDescriptions.PSMeshPBROIT">
+  PSMeshPBROIT
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/DefaultShaders/Shaders/DefaultPSShaderDescriptions.cs/#L263"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>The ps mesh PBR</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly ShaderDescription PSMeshPBROIT</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.Shaders.ShaderDescription.html">ShaderDescription</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_SharpDX_Shaders_DefaultPSShaderDescriptions_PSMeshPBROITDP" data-uid="HelixToolkit.SharpDX.Shaders.DefaultPSShaderDescriptions.PSMeshPBROITDP">
+  PSMeshPBROITDP
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/DefaultShaders/Shaders/DefaultPSShaderDescriptions.cs/#L265"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly ShaderDescription PSMeshPBROITDP</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.Shaders.ShaderDescription.html">ShaderDescription</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_SharpDX_Shaders_DefaultPSShaderDescriptions_PSMeshVertColor" data-uid="HelixToolkit.SharpDX.Shaders.DefaultPSShaderDescriptions.PSMeshVertColor">
+  PSMeshVertColor
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/DefaultShaders/Shaders/DefaultPSShaderDescriptions.cs/#L38"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly ShaderDescription PSMeshVertColor</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.Shaders.ShaderDescription.html">ShaderDescription</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_SharpDX_Shaders_DefaultPSShaderDescriptions_PSMeshVertNormal" data-uid="HelixToolkit.SharpDX.Shaders.DefaultPSShaderDescriptions.PSMeshVertNormal">
+  PSMeshVertNormal
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/DefaultShaders/Shaders/DefaultPSShaderDescriptions.cs/#L43"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly ShaderDescription PSMeshVertNormal</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.Shaders.ShaderDescription.html">ShaderDescription</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_SharpDX_Shaders_DefaultPSShaderDescriptions_PSMeshVertPosition" data-uid="HelixToolkit.SharpDX.Shaders.DefaultPSShaderDescriptions.PSMeshVertPosition">
+  PSMeshVertPosition
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/DefaultShaders/Shaders/DefaultPSShaderDescriptions.cs/#L48"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly ShaderDescription PSMeshVertPosition</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.Shaders.ShaderDescription.html">ShaderDescription</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_SharpDX_Shaders_DefaultPSShaderDescriptions_PSMeshViewCube" data-uid="HelixToolkit.SharpDX.Shaders.DefaultPSShaderDescriptions.PSMeshViewCube">
+  PSMeshViewCube
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/DefaultShaders/Shaders/DefaultPSShaderDescriptions.cs/#L71"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly ShaderDescription PSMeshViewCube</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.Shaders.ShaderDescription.html">ShaderDescription</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_SharpDX_Shaders_DefaultPSShaderDescriptions_PSMeshWireframe" data-uid="HelixToolkit.SharpDX.Shaders.DefaultPSShaderDescriptions.PSMeshWireframe">
+  PSMeshWireframe
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/DefaultShaders/Shaders/DefaultPSShaderDescriptions.cs/#L146"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly ShaderDescription PSMeshWireframe</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.Shaders.ShaderDescription.html">ShaderDescription</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_SharpDX_Shaders_DefaultPSShaderDescriptions_PSMeshWireframeOIT" data-uid="HelixToolkit.SharpDX.Shaders.DefaultPSShaderDescriptions.PSMeshWireframeOIT">
+  PSMeshWireframeOIT
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/DefaultShaders/Shaders/DefaultPSShaderDescriptions.cs/#L151"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly ShaderDescription PSMeshWireframeOIT</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.Shaders.ShaderDescription.html">ShaderDescription</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_SharpDX_Shaders_DefaultPSShaderDescriptions_PSMeshWireframeOITDP" data-uid="HelixToolkit.SharpDX.Shaders.DefaultPSShaderDescriptions.PSMeshWireframeOITDP">
+  PSMeshWireframeOITDP
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/DefaultShaders/Shaders/DefaultPSShaderDescriptions.cs/#L154"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly ShaderDescription PSMeshWireframeOITDP</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.Shaders.ShaderDescription.html">ShaderDescription</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_SharpDX_Shaders_DefaultPSShaderDescriptions_PSMeshXRay" data-uid="HelixToolkit.SharpDX.Shaders.DefaultPSShaderDescriptions.PSMeshXRay">
+  PSMeshXRay
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/DefaultShaders/Shaders/DefaultPSShaderDescriptions.cs/#L104"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly ShaderDescription PSMeshXRay</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.Shaders.ShaderDescription.html">ShaderDescription</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_SharpDX_Shaders_DefaultPSShaderDescriptions_PSParticle" data-uid="HelixToolkit.SharpDX.Shaders.DefaultPSShaderDescriptions.PSParticle">
+  PSParticle
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/DefaultShaders/Shaders/DefaultPSShaderDescriptions.cs/#L126"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly ShaderDescription PSParticle</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.Shaders.ShaderDescription.html">ShaderDescription</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_SharpDX_Shaders_DefaultPSShaderDescriptions_PSParticleOIT" data-uid="HelixToolkit.SharpDX.Shaders.DefaultPSShaderDescriptions.PSParticleOIT">
+  PSParticleOIT
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/DefaultShaders/Shaders/DefaultPSShaderDescriptions.cs/#L132"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>The ps particle oit</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly ShaderDescription PSParticleOIT</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.Shaders.ShaderDescription.html">ShaderDescription</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_SharpDX_Shaders_DefaultPSShaderDescriptions_PSParticleOITDP" data-uid="HelixToolkit.SharpDX.Shaders.DefaultPSShaderDescriptions.PSParticleOITDP">
+  PSParticleOITDP
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/DefaultShaders/Shaders/DefaultPSShaderDescriptions.cs/#L135"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly ShaderDescription PSParticleOITDP</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.Shaders.ShaderDescription.html">ShaderDescription</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_SharpDX_Shaders_DefaultPSShaderDescriptions_PSPlaneGrid" data-uid="HelixToolkit.SharpDX.Shaders.DefaultPSShaderDescriptions.PSPlaneGrid">
+  PSPlaneGrid
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/DefaultShaders/Shaders/DefaultPSShaderDescriptions.cs/#L251"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>The ps plane grid</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly ShaderDescription PSPlaneGrid</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.Shaders.ShaderDescription.html">ShaderDescription</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_SharpDX_Shaders_DefaultPSShaderDescriptions_PSPoint" data-uid="HelixToolkit.SharpDX.Shaders.DefaultPSShaderDescriptions.PSPoint">
+  PSPoint
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/DefaultShaders/Shaders/DefaultPSShaderDescriptions.cs/#L76"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly ShaderDescription PSPoint</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.Shaders.ShaderDescription.html">ShaderDescription</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_SharpDX_Shaders_DefaultPSShaderDescriptions_PSSSAO" data-uid="HelixToolkit.SharpDX.Shaders.DefaultPSShaderDescriptions.PSSSAO">
+  PSSSAO
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/DefaultShaders/Shaders/DefaultPSShaderDescriptions.cs/#L304"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>The psssao</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly ShaderDescription PSSSAO</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.Shaders.ShaderDescription.html">ShaderDescription</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_SharpDX_Shaders_DefaultPSShaderDescriptions_PSSSAOBlur" data-uid="HelixToolkit.SharpDX.Shaders.DefaultPSShaderDescriptions.PSSSAOBlur">
+  PSSSAOBlur
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/DefaultShaders/Shaders/DefaultPSShaderDescriptions.cs/#L310"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>The ps ssao blur</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly ShaderDescription PSSSAOBlur</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.Shaders.ShaderDescription.html">ShaderDescription</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_SharpDX_Shaders_DefaultPSShaderDescriptions_PSSSAOP1" data-uid="HelixToolkit.SharpDX.Shaders.DefaultPSShaderDescriptions.PSSSAOP1">
+  PSSSAOP1
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/DefaultShaders/Shaders/DefaultPSShaderDescriptions.cs/#L299"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>The psssao p1</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly ShaderDescription PSSSAOP1</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.Shaders.ShaderDescription.html">ShaderDescription</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_SharpDX_Shaders_DefaultPSShaderDescriptions_PSScreenDup" data-uid="HelixToolkit.SharpDX.Shaders.DefaultPSShaderDescriptions.PSScreenDup">
+  PSScreenDup
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/DefaultShaders/Shaders/DefaultPSShaderDescriptions.cs/#L276"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>The ps screen dup</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly ShaderDescription PSScreenDup</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.Shaders.ShaderDescription.html">ShaderDescription</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_SharpDX_Shaders_DefaultPSShaderDescriptions_PSShadow" data-uid="HelixToolkit.SharpDX.Shaders.DefaultPSShaderDescriptions.PSShadow">
+  PSShadow
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/DefaultShaders/Shaders/DefaultPSShaderDescriptions.cs/#L109"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly ShaderDescription PSShadow</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.Shaders.ShaderDescription.html">ShaderDescription</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_SharpDX_Shaders_DefaultPSShaderDescriptions_PSSkybox" data-uid="HelixToolkit.SharpDX.Shaders.DefaultPSShaderDescriptions.PSSkybox">
+  PSSkybox
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/DefaultShaders/Shaders/DefaultPSShaderDescriptions.cs/#L140"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly ShaderDescription PSSkybox</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.Shaders.ShaderDescription.html">ShaderDescription</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_SharpDX_Shaders_DefaultPSShaderDescriptions_PSSprite2D" data-uid="HelixToolkit.SharpDX.Shaders.DefaultPSShaderDescriptions.PSSprite2D">
+  PSSprite2D
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/DefaultShaders/Shaders/DefaultPSShaderDescriptions.cs/#L270"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>The ps sprite</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly ShaderDescription PSSprite2D</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.Shaders.ShaderDescription.html">ShaderDescription</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_SharpDX_Shaders_DefaultPSShaderDescriptions_PSVolume3D" data-uid="HelixToolkit.SharpDX.Shaders.DefaultPSShaderDescriptions.PSVolume3D">
+  PSVolume3D
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/DefaultShaders/Shaders/DefaultPSShaderDescriptions.cs/#L282"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>The ps volume3d</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly ShaderDescription PSVolume3D</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.Shaders.ShaderDescription.html">ShaderDescription</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_SharpDX_Shaders_DefaultPSShaderDescriptions_PSVolumeCube" data-uid="HelixToolkit.SharpDX.Shaders.DefaultPSShaderDescriptions.PSVolumeCube">
+  PSVolumeCube
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/DefaultShaders/Shaders/DefaultPSShaderDescriptions.cs/#L288"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>The ps volume cube</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly ShaderDescription PSVolumeCube</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.Shaders.ShaderDescription.html">ShaderDescription</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_SharpDX_Shaders_DefaultPSShaderDescriptions_PSVolumeDiffuse3D" data-uid="HelixToolkit.SharpDX.Shaders.DefaultPSShaderDescriptions.PSVolumeDiffuse3D">
+  PSVolumeDiffuse3D
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/DefaultShaders/Shaders/DefaultPSShaderDescriptions.cs/#L294"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>The ps volume3d</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly ShaderDescription PSVolumeDiffuse3D</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.Shaders.ShaderDescription.html">ShaderDescription</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.SharpDX/DefaultShaders/Shaders/DefaultPSShaderDescriptions.cs/#L6" class="edit-link">Edit this page</a>
+        </div>
+
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          Copyright (c) 2023 Helix Toolkit contributors
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

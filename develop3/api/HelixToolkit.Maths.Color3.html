@@ -1,0 +1,2615 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Struct Color3 | Helix Toolkit - 3D for .NET </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Struct Color3 | Helix Toolkit - 3D for .NET ">
+      
+      <meta name="description" content="Represents a color in the form of rgb.">
+      <link rel="icon" href="../images/favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/helix-toolkit/helix-toolkit/new/develop3/apiSpec/new?filename=HelixToolkit_Maths_Color3.md&amp;value=---%0Auid%3A%20HelixToolkit.Maths.Color3%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="ManagedReference">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../images/favicon.ico" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="HelixToolkit.Maths.Color3">
+
+
+
+  <h1 id="HelixToolkit_Maths_Color3" data-uid="HelixToolkit.Maths.Color3" class="text-break">
+Struct Color3  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Color3.cs/#L37"><i class="bi bi-code-slash"></i></a>
+  </h1>
+
+  <div class="facts text-secondary">
+    <dl><dt>Namespace</dt><dd><a class="xref" href="HelixToolkit.html">HelixToolkit</a>.<a class="xref" href="HelixToolkit.Maths.html">Maths</a></dd></dl>
+  <dl><dt>Assembly</dt><dd>HelixToolkit.Maths.dll</dd></dl>
+  </div>
+
+  <div class="markdown summary"><p>Represents a color in the form of rgb.</p>
+</div>
+  <div class="markdown conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public struct Color3 : IEquatable&lt;Color3&gt;, IFormattable</code></pre>
+  </div>
+
+
+
+
+
+  <dl class="typelist implements">
+    <dt>Implements</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iequatable-1">IEquatable</a>&lt;<a class="xref" href="HelixToolkit.Maths.Color3.html">Color3</a>&gt;</div>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iformattable">IFormattable</a></div>
+    </dd>
+  </dl>
+
+
+  <dl class="typelist inheritedMembers">
+    <dt>Inherited Members</dt>
+    <dd>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">object.Equals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype">object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals">object.ReferenceEquals(object, object)</a>
+    </div>
+  </dd></dl>
+
+  <dl class="typelist extensionMethods">
+    <dt>Extension Methods</dt>
+    <dd>
+  <div>
+      <a class="xref" href="HelixToolkit.Maths.Color4Helper.html#HelixToolkit_Maths_Color4Helper_ToColor4_HelixToolkit_Maths_Color3_System_Single_">Color4Helper.ToColor4(Color3, float)</a>
+  </div>
+  <div>
+      <a class="xref" href="HelixToolkit.Maths.Color4Helper.html#HelixToolkit_Maths_Color4Helper_ToVector3_HelixToolkit_Maths_Color3_">Color4Helper.ToVector3(Color3)</a>
+  </div>
+  <div>
+      <a class="xref" href="HelixToolkit.NativeHelper.html#HelixToolkit_NativeHelper_ToStruct__2___0_">NativeHelper.ToStruct&lt;T1, T2&gt;(T1)</a>
+  </div>
+  </dd></dl>
+
+
+
+
+
+  <h2 class="section" id="constructors">Constructors
+</h2>
+
+
+  <a id="HelixToolkit_Maths_Color3__ctor_" data-uid="HelixToolkit.Maths.Color3.#ctor*"></a>
+
+  <h3 id="HelixToolkit_Maths_Color3__ctor_System_Int32_" data-uid="HelixToolkit.Maths.Color3.#ctor(System.Int32)">
+  Color3(int)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Color3.cs/#L105"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="HelixToolkit.Maths.Color3.html">Color3</a> struct.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Color3(int rgb)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>rgb</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>A packed integer containing all three color components in RGB order.
+The alpha component is ignored.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_Color3__ctor_" data-uid="HelixToolkit.Maths.Color3.#ctor*"></a>
+
+  <h3 id="HelixToolkit_Maths_Color3__ctor_System_Numerics_Vector3_" data-uid="HelixToolkit.Maths.Color3.#ctor(System.Numerics.Vector3)">
+  Color3(Vector3)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Color3.cs/#L93"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="HelixToolkit.Maths.Color3.html">Color3</a> struct.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Color3(Vector3 value)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd><p>The red, green, and blue components of the color.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_Color3__ctor_" data-uid="HelixToolkit.Maths.Color3.#ctor*"></a>
+
+  <h3 id="HelixToolkit_Maths_Color3__ctor_System_Single_" data-uid="HelixToolkit.Maths.Color3.#ctor(System.Single)">
+  Color3(float)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Color3.cs/#L71"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="HelixToolkit.Maths.Color3.html">Color3</a> struct.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Color3(float value)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>The value that will be assigned to all components.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_Color3__ctor_" data-uid="HelixToolkit.Maths.Color3.#ctor*"></a>
+
+  <h3 id="HelixToolkit_Maths_Color3__ctor_System_Single_System_Single_System_Single_" data-uid="HelixToolkit.Maths.Color3.#ctor(System.Single,System.Single,System.Single)">
+  Color3(float, float, float)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Color3.cs/#L82"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="HelixToolkit.Maths.Color3.html">Color3</a> struct.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Color3(float red, float green, float blue)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>red</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>The red component of the color.</p>
+</dd>
+    <dt><code>green</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>The green component of the color.</p>
+</dd>
+    <dt><code>blue</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>The blue component of the color.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_Color3__ctor_" data-uid="HelixToolkit.Maths.Color3.#ctor*"></a>
+
+  <h3 id="HelixToolkit_Maths_Color3__ctor_System_Single___" data-uid="HelixToolkit.Maths.Color3.#ctor(System.Single[])">
+  Color3(float[])
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Color3.cs/#L118"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="HelixToolkit.Maths.Color3.html">Color3</a> struct.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Color3(float[] values)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>values</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a>[]</dt>
+    <dd><p>The values to assign to the red, green, and blue components of the color. This must be an array with three elements.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentnullexception">ArgumentNullException</a></dt>
+    <dd><p>Thrown when <code class="paramref">values</code> is <code>null</code>.</p>
+</dd>
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentoutofrangeexception">ArgumentOutOfRangeException</a></dt>
+    <dd><p>Thrown when <code class="paramref">values</code> contains more or less than four elements.</p>
+</dd>
+  </dl>
+
+
+
+  <h2 class="section" id="fields">Fields
+</h2>
+
+
+
+  <h3 id="HelixToolkit_Maths_Color3_Black" data-uid="HelixToolkit.Maths.Color3.Black">
+  Black
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Color3.cs/#L45"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>The Black color (0, 0, 0).</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly Color3 Black</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Maths.Color3.html">Color3</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_Maths_Color3_Blue" data-uid="HelixToolkit.Maths.Color3.Blue">
+  Blue
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Color3.cs/#L65"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>The blue component of the color.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float Blue</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_Maths_Color3_Green" data-uid="HelixToolkit.Maths.Color3.Green">
+  Green
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Color3.cs/#L60"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>The green component of the color.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float Green</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_Maths_Color3_Red" data-uid="HelixToolkit.Maths.Color3.Red">
+  Red
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Color3.cs/#L55"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>The red component of the color.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float Red</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_Maths_Color3_White" data-uid="HelixToolkit.Maths.Color3.White">
+  White
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Color3.cs/#L50"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>The White color (1, 1, 1, 1).</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly Color3 White</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Maths.Color3.html">Color3</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+  <h2 class="section" id="properties">Properties
+</h2>
+
+
+  <a id="HelixToolkit_Maths_Color3_Item_" data-uid="HelixToolkit.Maths.Color3.Item*"></a>
+
+  <h3 id="HelixToolkit_Maths_Color3_Item_System_Int32_" data-uid="HelixToolkit.Maths.Color3.Item(System.Int32)">
+  this[int]
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Color3.cs/#L142"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the component at the specified index.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float this[int index] { readonly get; set; }</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>index</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The index of the component to access. Use 0 for the red component, 1 for the green component, and 2 for the blue component.</p>
+</dd>
+  </dl>
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>The value of the red, green, or blue component, depending on the index.</p>
+</dd>
+  </dl>
+
+
+
+
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentoutofrangeexception">ArgumentOutOfRangeException</a></dt>
+    <dd><p>Thrown when the <code class="paramref">index</code> is out of the range [0, 2].</p>
+</dd>
+  </dl>
+
+
+
+  <h2 class="section" id="methods">Methods
+</h2>
+
+
+  <a id="HelixToolkit_Maths_Color3_Add_" data-uid="HelixToolkit.Maths.Color3.Add*"></a>
+
+  <h3 id="HelixToolkit_Maths_Color3_Add_HelixToolkit_Maths_Color3_HelixToolkit_Maths_Color3_" data-uid="HelixToolkit.Maths.Color3.Add(HelixToolkit.Maths.Color3,HelixToolkit.Maths.Color3)">
+  Add(Color3, Color3)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Color3.cs/#L244"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Adds two colors.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Color3 Add(Color3 left, Color3 right)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>left</code> <a class="xref" href="HelixToolkit.Maths.Color3.html">Color3</a></dt>
+    <dd><p>The first color to add.</p>
+</dd>
+    <dt><code>right</code> <a class="xref" href="HelixToolkit.Maths.Color3.html">Color3</a></dt>
+    <dd><p>The second color to add.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Maths.Color3.html">Color3</a></dt>
+    <dd><p>The sum of the two colors.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_Color3_Add_" data-uid="HelixToolkit.Maths.Color3.Add*"></a>
+
+  <h3 id="HelixToolkit_Maths_Color3_Add_HelixToolkit_Maths_Color3__HelixToolkit_Maths_Color3__HelixToolkit_Maths_Color3__" data-uid="HelixToolkit.Maths.Color3.Add(HelixToolkit.Maths.Color3@,HelixToolkit.Maths.Color3@,HelixToolkit.Maths.Color3@)">
+  Add(ref Color3, ref Color3, out Color3)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Color3.cs/#L231"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Adds two colors.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void Add(ref Color3 left, ref Color3 right, out Color3 result)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>left</code> <a class="xref" href="HelixToolkit.Maths.Color3.html">Color3</a></dt>
+    <dd><p>The first color to add.</p>
+</dd>
+    <dt><code>right</code> <a class="xref" href="HelixToolkit.Maths.Color3.html">Color3</a></dt>
+    <dd><p>The second color to add.</p>
+</dd>
+    <dt><code>result</code> <a class="xref" href="HelixToolkit.Maths.Color3.html">Color3</a></dt>
+    <dd><p>When the method completes, completes the sum of the two colors.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_Color3_AdjustContrast_" data-uid="HelixToolkit.Maths.Color3.AdjustContrast*"></a>
+
+  <h3 id="HelixToolkit_Maths_Color3_AdjustContrast_HelixToolkit_Maths_Color3_System_Single_" data-uid="HelixToolkit.Maths.Color3.AdjustContrast(HelixToolkit.Maths.Color3,System.Single)">
+  AdjustContrast(Color3, float)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Color3.cs/#L508"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Adjusts the contrast of a color.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Color3 AdjustContrast(Color3 value, float contrast)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="HelixToolkit.Maths.Color3.html">Color3</a></dt>
+    <dd><p>The color whose contrast is to be adjusted.</p>
+</dd>
+    <dt><code>contrast</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>The amount by which to adjust the contrast.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Maths.Color3.html">Color3</a></dt>
+    <dd><p>The adjusted color.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_Color3_AdjustContrast_" data-uid="HelixToolkit.Maths.Color3.AdjustContrast*"></a>
+
+  <h3 id="HelixToolkit_Maths_Color3_AdjustContrast_HelixToolkit_Maths_Color3__System_Single_HelixToolkit_Maths_Color3__" data-uid="HelixToolkit.Maths.Color3.AdjustContrast(HelixToolkit.Maths.Color3@,System.Single,HelixToolkit.Maths.Color3@)">
+  AdjustContrast(ref Color3, float, out Color3)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Color3.cs/#L495"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Adjusts the contrast of a color.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void AdjustContrast(ref Color3 value, float contrast, out Color3 result)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="HelixToolkit.Maths.Color3.html">Color3</a></dt>
+    <dd><p>The color whose contrast is to be adjusted.</p>
+</dd>
+    <dt><code>contrast</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>The amount by which to adjust the contrast.</p>
+</dd>
+    <dt><code>result</code> <a class="xref" href="HelixToolkit.Maths.Color3.html">Color3</a></dt>
+    <dd><p>When the method completes, contains the adjusted color.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_Color3_AdjustSaturation_" data-uid="HelixToolkit.Maths.Color3.AdjustSaturation*"></a>
+
+  <h3 id="HelixToolkit_Maths_Color3_AdjustSaturation_HelixToolkit_Maths_Color3_System_Single_" data-uid="HelixToolkit.Maths.Color3.AdjustSaturation(HelixToolkit.Maths.Color3,System.Single)">
+  AdjustSaturation(Color3, float)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Color3.cs/#L537"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Adjusts the saturation of a color.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Color3 AdjustSaturation(Color3 value, float saturation)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="HelixToolkit.Maths.Color3.html">Color3</a></dt>
+    <dd><p>The color whose saturation is to be adjusted.</p>
+</dd>
+    <dt><code>saturation</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>The amount by which to adjust the saturation.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Maths.Color3.html">Color3</a></dt>
+    <dd><p>The adjusted color.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_Color3_AdjustSaturation_" data-uid="HelixToolkit.Maths.Color3.AdjustSaturation*"></a>
+
+  <h3 id="HelixToolkit_Maths_Color3_AdjustSaturation_HelixToolkit_Maths_Color3__System_Single_HelixToolkit_Maths_Color3__" data-uid="HelixToolkit.Maths.Color3.AdjustSaturation(HelixToolkit.Maths.Color3@,System.Single,HelixToolkit.Maths.Color3@)">
+  AdjustSaturation(ref Color3, float, out Color3)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Color3.cs/#L522"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Adjusts the saturation of a color.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void AdjustSaturation(ref Color3 value, float saturation, out Color3 result)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="HelixToolkit.Maths.Color3.html">Color3</a></dt>
+    <dd><p>The color whose saturation is to be adjusted.</p>
+</dd>
+    <dt><code>saturation</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>The amount by which to adjust the saturation.</p>
+</dd>
+    <dt><code>result</code> <a class="xref" href="HelixToolkit.Maths.Color3.html">Color3</a></dt>
+    <dd><p>When the method completes, contains the adjusted color.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_Color3_Clamp_" data-uid="HelixToolkit.Maths.Color3.Clamp*"></a>
+
+  <h3 id="HelixToolkit_Maths_Color3_Clamp_HelixToolkit_Maths_Color3_HelixToolkit_Maths_Color3_HelixToolkit_Maths_Color3_" data-uid="HelixToolkit.Maths.Color3.Clamp(HelixToolkit.Maths.Color3,HelixToolkit.Maths.Color3,HelixToolkit.Maths.Color3)">
+  Clamp(Color3, Color3, Color3)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Color3.cs/#L374"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Restricts a value to be within a specified range.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Color3 Clamp(Color3 value, Color3 min, Color3 max)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="HelixToolkit.Maths.Color3.html">Color3</a></dt>
+    <dd><p>The value to clamp.</p>
+</dd>
+    <dt><code>min</code> <a class="xref" href="HelixToolkit.Maths.Color3.html">Color3</a></dt>
+    <dd><p>The minimum value.</p>
+</dd>
+    <dt><code>max</code> <a class="xref" href="HelixToolkit.Maths.Color3.html">Color3</a></dt>
+    <dd><p>The maximum value.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Maths.Color3.html">Color3</a></dt>
+    <dd><p>The clamped value.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_Color3_Clamp_" data-uid="HelixToolkit.Maths.Color3.Clamp*"></a>
+
+  <h3 id="HelixToolkit_Maths_Color3_Clamp_HelixToolkit_Maths_Color3__HelixToolkit_Maths_Color3__HelixToolkit_Maths_Color3__HelixToolkit_Maths_Color3__" data-uid="HelixToolkit.Maths.Color3.Clamp(HelixToolkit.Maths.Color3@,HelixToolkit.Maths.Color3@,HelixToolkit.Maths.Color3@,HelixToolkit.Maths.Color3@)">
+  Clamp(ref Color3, ref Color3, ref Color3, out Color3)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Color3.cs/#L350"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Restricts a value to be within a specified range.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void Clamp(ref Color3 value, ref Color3 min, ref Color3 max, out Color3 result)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="HelixToolkit.Maths.Color3.html">Color3</a></dt>
+    <dd><p>The value to clamp.</p>
+</dd>
+    <dt><code>min</code> <a class="xref" href="HelixToolkit.Maths.Color3.html">Color3</a></dt>
+    <dd><p>The minimum value.</p>
+</dd>
+    <dt><code>max</code> <a class="xref" href="HelixToolkit.Maths.Color3.html">Color3</a></dt>
+    <dd><p>The maximum value.</p>
+</dd>
+    <dt><code>result</code> <a class="xref" href="HelixToolkit.Maths.Color3.html">Color3</a></dt>
+    <dd><p>When the method completes, contains the clamped value.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_Color3_Equals_" data-uid="HelixToolkit.Maths.Color3.Equals*"></a>
+
+  <h3 id="HelixToolkit_Maths_Color3_Equals_HelixToolkit_Maths_Color3_" data-uid="HelixToolkit.Maths.Color3.Equals(HelixToolkit.Maths.Color3)">
+  Equals(Color3)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Color3.cs/#L804"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Determines whether the specified <a class="xref" href="HelixToolkit.Maths.Color3.html">Color3</a> is equal to this instance.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public readonly bool Equals(Color3 other)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>other</code> <a class="xref" href="HelixToolkit.Maths.Color3.html">Color3</a></dt>
+    <dd><p>The <a class="xref" href="HelixToolkit.Maths.Color3.html">Color3</a> to compare with this instance.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><code>true</code> if the specified <a class="xref" href="HelixToolkit.Maths.Color3.html">Color3</a> is equal to this instance; otherwise, <code>false</code>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_Color3_Equals_" data-uid="HelixToolkit.Maths.Color3.Equals*"></a>
+
+  <h3 id="HelixToolkit_Maths_Color3_Equals_HelixToolkit_Maths_Color3__" data-uid="HelixToolkit.Maths.Color3.Equals(HelixToolkit.Maths.Color3@)">
+  Equals(ref Color3)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Color3.cs/#L791"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Determines whether the specified <a class="xref" href="HelixToolkit.Maths.Color3.html">Color3</a> is equal to this instance.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public readonly bool Equals(ref Color3 other)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>other</code> <a class="xref" href="HelixToolkit.Maths.Color3.html">Color3</a></dt>
+    <dd><p>The <a class="xref" href="HelixToolkit.Maths.Color3.html">Color3</a> to compare with this instance.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><code>true</code> if the specified <a class="xref" href="HelixToolkit.Maths.Color3.html">Color3</a> is equal to this instance; otherwise, <code>false</code>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_Color3_Equals_" data-uid="HelixToolkit.Maths.Color3.Equals*"></a>
+
+  <h3 id="HelixToolkit_Maths_Color3_Equals_System_Object_" data-uid="HelixToolkit.Maths.Color3.Equals(System.Object)">
+  Equals(object?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Color3.cs/#L817"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Determines whether the specified <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a> is equal to this instance.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override readonly bool Equals(object? obj)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>obj</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></dt>
+    <dd><p>The <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a> to compare with this instance.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><code>true</code> if the specified <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a> is equal to this instance; otherwise, <code>false</code>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_Color3_GetHashCode_" data-uid="HelixToolkit.Maths.Color3.GetHashCode*"></a>
+
+  <h3 id="HelixToolkit_Maths_Color3_GetHashCode" data-uid="HelixToolkit.Maths.Color3.GetHashCode">
+  GetHashCode()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Color3.cs/#L773"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Returns a hash code for this instance.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override readonly int GetHashCode()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_Color3_Lerp_" data-uid="HelixToolkit.Maths.Color3.Lerp*"></a>
+
+  <h3 id="HelixToolkit_Maths_Color3_Lerp_HelixToolkit_Maths_Color3_HelixToolkit_Maths_Color3_System_Single_" data-uid="HelixToolkit.Maths.Color3.Lerp(HelixToolkit.Maths.Color3,HelixToolkit.Maths.Color3,System.Single)">
+  Lerp(Color3, Color3, float)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Color3.cs/#L407"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Performs a linear interpolation between two colors.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Color3 Lerp(Color3 start, Color3 end, float amount)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>start</code> <a class="xref" href="HelixToolkit.Maths.Color3.html">Color3</a></dt>
+    <dd><p>Start color.</p>
+</dd>
+    <dt><code>end</code> <a class="xref" href="HelixToolkit.Maths.Color3.html">Color3</a></dt>
+    <dd><p>End color.</p>
+</dd>
+    <dt><code>amount</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>Value between 0 and 1 indicating the weight of <code class="paramref">end</code>.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Maths.Color3.html">Color3</a></dt>
+    <dd><p>The linear interpolation of the two colors.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+  <h4 class="section" id="HelixToolkit_Maths_Color3_Lerp_HelixToolkit_Maths_Color3_HelixToolkit_Maths_Color3_System_Single__remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>Passing <code class="paramref">amount</code> a value of 0 will cause <code class="paramref">start</code> to be returned; a value of 1 will cause <code class="paramref">end</code> to be returned.</p>
+</div>
+
+
+
+
+  <a id="HelixToolkit_Maths_Color3_Lerp_" data-uid="HelixToolkit.Maths.Color3.Lerp*"></a>
+
+  <h3 id="HelixToolkit_Maths_Color3_Lerp_HelixToolkit_Maths_Color3__HelixToolkit_Maths_Color3__System_Single_HelixToolkit_Maths_Color3__" data-uid="HelixToolkit.Maths.Color3.Lerp(HelixToolkit.Maths.Color3@,HelixToolkit.Maths.Color3@,System.Single,HelixToolkit.Maths.Color3@)">
+  Lerp(ref Color3, ref Color3, float, out Color3)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Color3.cs/#L390"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Performs a linear interpolation between two colors.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void Lerp(ref Color3 start, ref Color3 end, float amount, out Color3 result)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>start</code> <a class="xref" href="HelixToolkit.Maths.Color3.html">Color3</a></dt>
+    <dd><p>Start color.</p>
+</dd>
+    <dt><code>end</code> <a class="xref" href="HelixToolkit.Maths.Color3.html">Color3</a></dt>
+    <dd><p>End color.</p>
+</dd>
+    <dt><code>amount</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>Value between 0 and 1 indicating the weight of <code class="paramref">end</code>.</p>
+</dd>
+    <dt><code>result</code> <a class="xref" href="HelixToolkit.Maths.Color3.html">Color3</a></dt>
+    <dd><p>When the method completes, contains the linear interpolation of the two colors.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h4 class="section" id="HelixToolkit_Maths_Color3_Lerp_HelixToolkit_Maths_Color3__HelixToolkit_Maths_Color3__System_Single_HelixToolkit_Maths_Color3___remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>Passing <code class="paramref">amount</code> a value of 0 will cause <code class="paramref">start</code> to be returned; a value of 1 will cause <code class="paramref">end</code> to be returned.</p>
+</div>
+
+
+
+
+  <a id="HelixToolkit_Maths_Color3_Max_" data-uid="HelixToolkit.Maths.Color3.Max*"></a>
+
+  <h3 id="HelixToolkit_Maths_Color3_Max_HelixToolkit_Maths_Color3_HelixToolkit_Maths_Color3_" data-uid="HelixToolkit.Maths.Color3.Max(HelixToolkit.Maths.Color3,HelixToolkit.Maths.Color3)">
+  Max(Color3, Color3)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Color3.cs/#L458"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Returns a color containing the largest components of the specified colors.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Color3 Max(Color3 left, Color3 right)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>left</code> <a class="xref" href="HelixToolkit.Maths.Color3.html">Color3</a></dt>
+    <dd><p>The first source color.</p>
+</dd>
+    <dt><code>right</code> <a class="xref" href="HelixToolkit.Maths.Color3.html">Color3</a></dt>
+    <dd><p>The second source color.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Maths.Color3.html">Color3</a></dt>
+    <dd><p>A color containing the largest components of the source colors.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_Color3_Max_" data-uid="HelixToolkit.Maths.Color3.Max*"></a>
+
+  <h3 id="HelixToolkit_Maths_Color3_Max_HelixToolkit_Maths_Color3__HelixToolkit_Maths_Color3__HelixToolkit_Maths_Color3__" data-uid="HelixToolkit.Maths.Color3.Max(HelixToolkit.Maths.Color3@,HelixToolkit.Maths.Color3@,HelixToolkit.Maths.Color3@)">
+  Max(ref Color3, ref Color3, out Color3)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Color3.cs/#L445"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Returns a color containing the smallest components of the specified colors.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void Max(ref Color3 left, ref Color3 right, out Color3 result)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>left</code> <a class="xref" href="HelixToolkit.Maths.Color3.html">Color3</a></dt>
+    <dd><p>The first source color.</p>
+</dd>
+    <dt><code>right</code> <a class="xref" href="HelixToolkit.Maths.Color3.html">Color3</a></dt>
+    <dd><p>The second source color.</p>
+</dd>
+    <dt><code>result</code> <a class="xref" href="HelixToolkit.Maths.Color3.html">Color3</a></dt>
+    <dd><p>When the method completes, contains an new color composed of the largest components of the source colors.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_Color3_Min_" data-uid="HelixToolkit.Maths.Color3.Min*"></a>
+
+  <h3 id="HelixToolkit_Maths_Color3_Min_HelixToolkit_Maths_Color3_HelixToolkit_Maths_Color3_" data-uid="HelixToolkit.Maths.Color3.Min(HelixToolkit.Maths.Color3,HelixToolkit.Maths.Color3)">
+  Min(Color3, Color3)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Color3.cs/#L483"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Returns a color containing the smallest components of the specified colors.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Color3 Min(Color3 left, Color3 right)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>left</code> <a class="xref" href="HelixToolkit.Maths.Color3.html">Color3</a></dt>
+    <dd><p>The first source color.</p>
+</dd>
+    <dt><code>right</code> <a class="xref" href="HelixToolkit.Maths.Color3.html">Color3</a></dt>
+    <dd><p>The second source color.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Maths.Color3.html">Color3</a></dt>
+    <dd><p>A color containing the smallest components of the source colors.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_Color3_Min_" data-uid="HelixToolkit.Maths.Color3.Min*"></a>
+
+  <h3 id="HelixToolkit_Maths_Color3_Min_HelixToolkit_Maths_Color3__HelixToolkit_Maths_Color3__HelixToolkit_Maths_Color3__" data-uid="HelixToolkit.Maths.Color3.Min(HelixToolkit.Maths.Color3@,HelixToolkit.Maths.Color3@,HelixToolkit.Maths.Color3@)">
+  Min(ref Color3, ref Color3, out Color3)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Color3.cs/#L470"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Returns a color containing the smallest components of the specified colors.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void Min(ref Color3 left, ref Color3 right, out Color3 result)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>left</code> <a class="xref" href="HelixToolkit.Maths.Color3.html">Color3</a></dt>
+    <dd><p>The first source color.</p>
+</dd>
+    <dt><code>right</code> <a class="xref" href="HelixToolkit.Maths.Color3.html">Color3</a></dt>
+    <dd><p>The second source color.</p>
+</dd>
+    <dt><code>result</code> <a class="xref" href="HelixToolkit.Maths.Color3.html">Color3</a></dt>
+    <dd><p>When the method completes, contains an new color composed of the smallest components of the source colors.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_Color3_Modulate_" data-uid="HelixToolkit.Maths.Color3.Modulate*"></a>
+
+  <h3 id="HelixToolkit_Maths_Color3_Modulate_HelixToolkit_Maths_Color3_HelixToolkit_Maths_Color3_" data-uid="HelixToolkit.Maths.Color3.Modulate(HelixToolkit.Maths.Color3,HelixToolkit.Maths.Color3)">
+  Modulate(Color3, Color3)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Color3.cs/#L292"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Modulates two colors.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Color3 Modulate(Color3 left, Color3 right)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>left</code> <a class="xref" href="HelixToolkit.Maths.Color3.html">Color3</a></dt>
+    <dd><p>The first color to modulate.</p>
+</dd>
+    <dt><code>right</code> <a class="xref" href="HelixToolkit.Maths.Color3.html">Color3</a></dt>
+    <dd><p>The second color to modulate.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Maths.Color3.html">Color3</a></dt>
+    <dd><p>The modulated color.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_Color3_Modulate_" data-uid="HelixToolkit.Maths.Color3.Modulate*"></a>
+
+  <h3 id="HelixToolkit_Maths_Color3_Modulate_HelixToolkit_Maths_Color3__HelixToolkit_Maths_Color3__HelixToolkit_Maths_Color3__" data-uid="HelixToolkit.Maths.Color3.Modulate(HelixToolkit.Maths.Color3@,HelixToolkit.Maths.Color3@,HelixToolkit.Maths.Color3@)">
+  Modulate(ref Color3, ref Color3, out Color3)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Color3.cs/#L279"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Modulates two colors.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void Modulate(ref Color3 left, ref Color3 right, out Color3 result)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>left</code> <a class="xref" href="HelixToolkit.Maths.Color3.html">Color3</a></dt>
+    <dd><p>The first color to modulate.</p>
+</dd>
+    <dt><code>right</code> <a class="xref" href="HelixToolkit.Maths.Color3.html">Color3</a></dt>
+    <dd><p>The second color to modulate.</p>
+</dd>
+    <dt><code>result</code> <a class="xref" href="HelixToolkit.Maths.Color3.html">Color3</a></dt>
+    <dd><p>When the method completes, contains the modulated color.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_Color3_Negate_" data-uid="HelixToolkit.Maths.Color3.Negate*"></a>
+
+  <h3 id="HelixToolkit_Maths_Color3_Negate_HelixToolkit_Maths_Color3_" data-uid="HelixToolkit.Maths.Color3.Negate(HelixToolkit.Maths.Color3)">
+  Negate(Color3)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Color3.cs/#L338"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Negates a color.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Color3 Negate(Color3 value)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="HelixToolkit.Maths.Color3.html">Color3</a></dt>
+    <dd><p>The color to negate.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Maths.Color3.html">Color3</a></dt>
+    <dd><p>The negated color.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_Color3_Negate_" data-uid="HelixToolkit.Maths.Color3.Negate*"></a>
+
+  <h3 id="HelixToolkit_Maths_Color3_Negate_HelixToolkit_Maths_Color3__HelixToolkit_Maths_Color3__" data-uid="HelixToolkit.Maths.Color3.Negate(HelixToolkit.Maths.Color3@,HelixToolkit.Maths.Color3@)">
+  Negate(ref Color3, out Color3)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Color3.cs/#L326"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Negates a color.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void Negate(ref Color3 value, out Color3 result)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="HelixToolkit.Maths.Color3.html">Color3</a></dt>
+    <dd><p>The color to negate.</p>
+</dd>
+    <dt><code>result</code> <a class="xref" href="HelixToolkit.Maths.Color3.html">Color3</a></dt>
+    <dd><p>When the method completes, contains the negated color.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_Color3_Premultiply_" data-uid="HelixToolkit.Maths.Color3.Premultiply*"></a>
+
+  <h3 id="HelixToolkit_Maths_Color3_Premultiply_HelixToolkit_Maths_Color3_System_Single_" data-uid="HelixToolkit.Maths.Color3.Premultiply(HelixToolkit.Maths.Color3,System.Single)">
+  Premultiply(Color3, float)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Color3.cs/#L566"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Computes the premultiplied value of the provided color.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Color3 Premultiply(Color3 value, float alpha)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="HelixToolkit.Maths.Color3.html">Color3</a></dt>
+    <dd><p>The non-premultiplied value.</p>
+</dd>
+    <dt><code>alpha</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>The color alpha.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Maths.Color3.html">Color3</a></dt>
+    <dd><p>The premultiplied color.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_Color3_Premultiply_" data-uid="HelixToolkit.Maths.Color3.Premultiply*"></a>
+
+  <h3 id="HelixToolkit_Maths_Color3_Premultiply_HelixToolkit_Maths_Color3__System_Single_HelixToolkit_Maths_Color3__" data-uid="HelixToolkit.Maths.Color3.Premultiply(HelixToolkit.Maths.Color3@,System.Single,HelixToolkit.Maths.Color3@)">
+  Premultiply(ref Color3, float, out Color3)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Color3.cs/#L553"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Computes the premultiplied value of the provided color.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void Premultiply(ref Color3 value, float alpha, out Color3 result)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="HelixToolkit.Maths.Color3.html">Color3</a></dt>
+    <dd><p>The non-premultiplied value.</p>
+</dd>
+    <dt><code>alpha</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>The color alpha.</p>
+</dd>
+    <dt><code>result</code> <a class="xref" href="HelixToolkit.Maths.Color3.html">Color3</a></dt>
+    <dd><p>The premultiplied result.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_Color3_Scale_" data-uid="HelixToolkit.Maths.Color3.Scale*"></a>
+
+  <h3 id="HelixToolkit_Maths_Color3_Scale_HelixToolkit_Maths_Color3_System_Single_" data-uid="HelixToolkit.Maths.Color3.Scale(HelixToolkit.Maths.Color3,System.Single)">
+  Scale(Color3, float)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Color3.cs/#L316"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Scales a color.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Color3 Scale(Color3 value, float scale)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="HelixToolkit.Maths.Color3.html">Color3</a></dt>
+    <dd><p>The color to scale.</p>
+</dd>
+    <dt><code>scale</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>The amount by which to scale.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Maths.Color3.html">Color3</a></dt>
+    <dd><p>The scaled color.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_Color3_Scale_" data-uid="HelixToolkit.Maths.Color3.Scale*"></a>
+
+  <h3 id="HelixToolkit_Maths_Color3_Scale_HelixToolkit_Maths_Color3__System_Single_HelixToolkit_Maths_Color3__" data-uid="HelixToolkit.Maths.Color3.Scale(HelixToolkit.Maths.Color3@,System.Single,HelixToolkit.Maths.Color3@)">
+  Scale(ref Color3, float, out Color3)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Color3.cs/#L303"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Scales a color.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void Scale(ref Color3 value, float scale, out Color3 result)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="HelixToolkit.Maths.Color3.html">Color3</a></dt>
+    <dd><p>The color to scale.</p>
+</dd>
+    <dt><code>scale</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>The amount by which to scale.</p>
+</dd>
+    <dt><code>result</code> <a class="xref" href="HelixToolkit.Maths.Color3.html">Color3</a></dt>
+    <dd><p>When the method completes, contains the scaled color.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_Color3_SmoothStep_" data-uid="HelixToolkit.Maths.Color3.SmoothStep*"></a>
+
+  <h3 id="HelixToolkit_Maths_Color3_SmoothStep_HelixToolkit_Maths_Color3_HelixToolkit_Maths_Color3_System_Single_" data-uid="HelixToolkit.Maths.Color3.SmoothStep(HelixToolkit.Maths.Color3,HelixToolkit.Maths.Color3,System.Single)">
+  SmoothStep(Color3, Color3, float)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Color3.cs/#L433"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Performs a cubic interpolation between two colors.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Color3 SmoothStep(Color3 start, Color3 end, float amount)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>start</code> <a class="xref" href="HelixToolkit.Maths.Color3.html">Color3</a></dt>
+    <dd><p>Start color.</p>
+</dd>
+    <dt><code>end</code> <a class="xref" href="HelixToolkit.Maths.Color3.html">Color3</a></dt>
+    <dd><p>End color.</p>
+</dd>
+    <dt><code>amount</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>Value between 0 and 1 indicating the weight of <code class="paramref">end</code>.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Maths.Color3.html">Color3</a></dt>
+    <dd><p>The cubic interpolation of the two colors.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_Color3_SmoothStep_" data-uid="HelixToolkit.Maths.Color3.SmoothStep*"></a>
+
+  <h3 id="HelixToolkit_Maths_Color3_SmoothStep_HelixToolkit_Maths_Color3__HelixToolkit_Maths_Color3__System_Single_HelixToolkit_Maths_Color3__" data-uid="HelixToolkit.Maths.Color3.SmoothStep(HelixToolkit.Maths.Color3@,HelixToolkit.Maths.Color3@,System.Single,HelixToolkit.Maths.Color3@)">
+  SmoothStep(ref Color3, ref Color3, float, out Color3)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Color3.cs/#L420"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Performs a cubic interpolation between two colors.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void SmoothStep(ref Color3 start, ref Color3 end, float amount, out Color3 result)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>start</code> <a class="xref" href="HelixToolkit.Maths.Color3.html">Color3</a></dt>
+    <dd><p>Start color.</p>
+</dd>
+    <dt><code>end</code> <a class="xref" href="HelixToolkit.Maths.Color3.html">Color3</a></dt>
+    <dd><p>End color.</p>
+</dd>
+    <dt><code>amount</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>Value between 0 and 1 indicating the weight of <code class="paramref">end</code>.</p>
+</dd>
+    <dt><code>result</code> <a class="xref" href="HelixToolkit.Maths.Color3.html">Color3</a></dt>
+    <dd><p>When the method completes, contains the cubic interpolation of the two colors.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_Color3_Subtract_" data-uid="HelixToolkit.Maths.Color3.Subtract*"></a>
+
+  <h3 id="HelixToolkit_Maths_Color3_Subtract_HelixToolkit_Maths_Color3_HelixToolkit_Maths_Color3_" data-uid="HelixToolkit.Maths.Color3.Subtract(HelixToolkit.Maths.Color3,HelixToolkit.Maths.Color3)">
+  Subtract(Color3, Color3)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Color3.cs/#L268"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Subtracts two colors.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Color3 Subtract(Color3 left, Color3 right)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>left</code> <a class="xref" href="HelixToolkit.Maths.Color3.html">Color3</a></dt>
+    <dd><p>The first color to subtract.</p>
+</dd>
+    <dt><code>right</code> <a class="xref" href="HelixToolkit.Maths.Color3.html">Color3</a></dt>
+    <dd><p>The second color to subtract</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Maths.Color3.html">Color3</a></dt>
+    <dd><p>The difference of the two colors.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_Color3_Subtract_" data-uid="HelixToolkit.Maths.Color3.Subtract*"></a>
+
+  <h3 id="HelixToolkit_Maths_Color3_Subtract_HelixToolkit_Maths_Color3__HelixToolkit_Maths_Color3__HelixToolkit_Maths_Color3__" data-uid="HelixToolkit.Maths.Color3.Subtract(HelixToolkit.Maths.Color3@,HelixToolkit.Maths.Color3@,HelixToolkit.Maths.Color3@)">
+  Subtract(ref Color3, ref Color3, out Color3)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Color3.cs/#L255"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Subtracts two colors.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void Subtract(ref Color3 left, ref Color3 right, out Color3 result)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>left</code> <a class="xref" href="HelixToolkit.Maths.Color3.html">Color3</a></dt>
+    <dd><p>The first color to subtract.</p>
+</dd>
+    <dt><code>right</code> <a class="xref" href="HelixToolkit.Maths.Color3.html">Color3</a></dt>
+    <dd><p>The second color to subtract.</p>
+</dd>
+    <dt><code>result</code> <a class="xref" href="HelixToolkit.Maths.Color3.html">Color3</a></dt>
+    <dd><p>WHen the method completes, contains the difference of the two colors.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_Color3_ToArray_" data-uid="HelixToolkit.Maths.Color3.ToArray*"></a>
+
+  <h3 id="HelixToolkit_Maths_Color3_ToArray" data-uid="HelixToolkit.Maths.Color3.ToArray">
+  ToArray()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Color3.cs/#L220"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Creates an array containing the elements of the color.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public readonly float[] ToArray()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a>[]</dt>
+    <dd><p>A three-element array containing the components of the color.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_Color3_ToBgra_" data-uid="HelixToolkit.Maths.Color3.ToBgra*"></a>
+
+  <h3 id="HelixToolkit_Maths_Color3_ToBgra" data-uid="HelixToolkit.Maths.Color3.ToBgra">
+  ToBgra()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Color3.cs/#L192"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Converts the color into a packed integer.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public readonly int ToBgra()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>A packed integer containing all three color components.
+The alpha channel is set to 255.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_Color3_ToRgba_" data-uid="HelixToolkit.Maths.Color3.ToRgba*"></a>
+
+  <h3 id="HelixToolkit_Maths_Color3_ToRgba" data-uid="HelixToolkit.Maths.Color3.ToRgba">
+  ToRgba()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Color3.cs/#L172"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Converts the color into a packed integer.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public readonly int ToRgba()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>A packed integer containing all three color components.
+The alpha channel is set to 255.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_Color3_ToString_" data-uid="HelixToolkit.Maths.Color3.ToString*"></a>
+
+  <h3 id="HelixToolkit_Maths_Color3_ToString" data-uid="HelixToolkit.Maths.Color3.ToString">
+  ToString()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Color3.cs/#L717"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Returns a <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a> that represents this instance.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override readonly string ToString()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>A <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a> that represents this instance.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_Color3_ToString_" data-uid="HelixToolkit.Maths.Color3.ToString*"></a>
+
+  <h3 id="HelixToolkit_Maths_Color3_ToString_System_IFormatProvider_" data-uid="HelixToolkit.Maths.Color3.ToString(System.IFormatProvider)">
+  ToString(IFormatProvider)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Color3.cs/#L741"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Returns a <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a> that represents this instance.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public readonly string ToString(IFormatProvider formatProvider)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>formatProvider</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iformatprovider">IFormatProvider</a></dt>
+    <dd><p>The format provider.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>A <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a> that represents this instance.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_Color3_ToString_" data-uid="HelixToolkit.Maths.Color3.ToString*"></a>
+
+  <h3 id="HelixToolkit_Maths_Color3_ToString_System_String_" data-uid="HelixToolkit.Maths.Color3.ToString(System.String)">
+  ToString(string)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Color3.cs/#L729"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Returns a <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a> that represents this instance.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public readonly string ToString(string format)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>format</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The format to apply to each channel element (float)</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>A <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a> that represents this instance.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_Color3_ToString_" data-uid="HelixToolkit.Maths.Color3.ToString*"></a>
+
+  <h3 id="HelixToolkit_Maths_Color3_ToString_System_String_System_IFormatProvider_" data-uid="HelixToolkit.Maths.Color3.ToString(System.String,System.IFormatProvider)">
+  ToString(string?, IFormatProvider?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Color3.cs/#L754"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Returns a <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a> that represents this instance.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public readonly string ToString(string? format, IFormatProvider? formatProvider)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>format</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The format to apply to each channel element (float).</p>
+</dd>
+    <dt><code>formatProvider</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iformatprovider">IFormatProvider</a></dt>
+    <dd><p>The format provider.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>A <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a> that represents this instance.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_Color3_ToVector3_" data-uid="HelixToolkit.Maths.Color3.ToVector3*"></a>
+
+  <h3 id="HelixToolkit_Maths_Color3_ToVector3" data-uid="HelixToolkit.Maths.Color3.ToVector3">
+  ToVector3()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Color3.cs/#L211"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Converts the color into a three component vector.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public readonly Vector3 ToVector3()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd><p>A three component vector containing the red, green, and blue components of the color.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <h2 class="section" id="operators">Operators
+</h2>
+
+
+  <a id="HelixToolkit_Maths_Color3_op_Addition_" data-uid="HelixToolkit.Maths.Color3.op_Addition*"></a>
+
+  <h3 id="HelixToolkit_Maths_Color3_op_Addition_HelixToolkit_Maths_Color3_HelixToolkit_Maths_Color3_" data-uid="HelixToolkit.Maths.Color3.op_Addition(HelixToolkit.Maths.Color3,HelixToolkit.Maths.Color3)">
+  operator +(Color3, Color3)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Color3.cs/#L578"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Adds two colors.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Color3 operator +(Color3 left, Color3 right)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>left</code> <a class="xref" href="HelixToolkit.Maths.Color3.html">Color3</a></dt>
+    <dd><p>The first color to add.</p>
+</dd>
+    <dt><code>right</code> <a class="xref" href="HelixToolkit.Maths.Color3.html">Color3</a></dt>
+    <dd><p>The second color to add.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Maths.Color3.html">Color3</a></dt>
+    <dd><p>The sum of the two colors.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_Color3_op_Equality_" data-uid="HelixToolkit.Maths.Color3.op_Equality*"></a>
+
+  <h3 id="HelixToolkit_Maths_Color3_op_Equality_HelixToolkit_Maths_Color3_HelixToolkit_Maths_Color3_" data-uid="HelixToolkit.Maths.Color3.op_Equality(HelixToolkit.Maths.Color3,HelixToolkit.Maths.Color3)">
+  operator ==(Color3, Color3)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Color3.cs/#L653"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Tests for equality between two objects.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool operator ==(Color3 left, Color3 right)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>left</code> <a class="xref" href="HelixToolkit.Maths.Color3.html">Color3</a></dt>
+    <dd><p>The first value to compare.</p>
+</dd>
+    <dt><code>right</code> <a class="xref" href="HelixToolkit.Maths.Color3.html">Color3</a></dt>
+    <dd><p>The second value to compare.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><code>true</code> if <code class="paramref">left</code> has the same value as <code class="paramref">right</code>; otherwise, <code>false</code>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_Color3_op_Explicit_" data-uid="HelixToolkit.Maths.Color3.op_Explicit*"></a>
+
+  <h3 id="HelixToolkit_Maths_Color3_op_Explicit_HelixToolkit_Maths_Color3__HelixToolkit_Maths_Color4" data-uid="HelixToolkit.Maths.Color3.op_Explicit(HelixToolkit.Maths.Color3)~HelixToolkit.Maths.Color4">
+  explicit operator Color4(Color3)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Color3.cs/#L676"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Performs an explicit conversion from <a class="xref" href="HelixToolkit.Maths.Color3.html">Color3</a> to <a class="xref" href="HelixToolkit.Maths.Color4.html">Color4</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static explicit operator Color4(Color3 value)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="HelixToolkit.Maths.Color3.html">Color3</a></dt>
+    <dd><p>The value.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Maths.Color4.html">Color4</a></dt>
+    <dd><p>The result of the conversion.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_Color3_op_Explicit_" data-uid="HelixToolkit.Maths.Color3.op_Explicit*"></a>
+
+  <h3 id="HelixToolkit_Maths_Color3_op_Explicit_System_Int32__HelixToolkit_Maths_Color3" data-uid="HelixToolkit.Maths.Color3.op_Explicit(System.Int32)~HelixToolkit.Maths.Color3">
+  explicit operator Color3(int)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Color3.cs/#L706"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Performs an explicit conversion from <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a> to <a class="xref" href="HelixToolkit.Maths.Color3.html">Color3</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static explicit operator Color3(int value)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The value.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Maths.Color3.html">Color3</a></dt>
+    <dd><p>The result of the conversion.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_Color3_op_Implicit_" data-uid="HelixToolkit.Maths.Color3.op_Implicit*"></a>
+
+  <h3 id="HelixToolkit_Maths_Color3_op_Implicit_HelixToolkit_Maths_Color3__System_Numerics_Vector3" data-uid="HelixToolkit.Maths.Color3.op_Implicit(HelixToolkit.Maths.Color3)~System.Numerics.Vector3">
+  implicit operator Vector3(Color3)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Color3.cs/#L686"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Performs an implicit conversion from <a class="xref" href="HelixToolkit.Maths.Color3.html">Color3</a> to <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static implicit operator Vector3(Color3 value)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="HelixToolkit.Maths.Color3.html">Color3</a></dt>
+    <dd><p>The value.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd><p>The result of the conversion.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_Color3_op_Implicit_" data-uid="HelixToolkit.Maths.Color3.op_Implicit*"></a>
+
+  <h3 id="HelixToolkit_Maths_Color3_op_Implicit_System_Numerics_Vector3__HelixToolkit_Maths_Color3" data-uid="HelixToolkit.Maths.Color3.op_Implicit(System.Numerics.Vector3)~HelixToolkit.Maths.Color3">
+  implicit operator Color3(Vector3)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Color3.cs/#L696"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Performs an implicit conversion from <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a> to <a class="xref" href="HelixToolkit.Maths.Color3.html">Color3</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static implicit operator Color3(Vector3 value)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd><p>The value.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Maths.Color3.html">Color3</a></dt>
+    <dd><p>The result of the conversion.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_Color3_op_Inequality_" data-uid="HelixToolkit.Maths.Color3.op_Inequality*"></a>
+
+  <h3 id="HelixToolkit_Maths_Color3_op_Inequality_HelixToolkit_Maths_Color3_HelixToolkit_Maths_Color3_" data-uid="HelixToolkit.Maths.Color3.op_Inequality(HelixToolkit.Maths.Color3,HelixToolkit.Maths.Color3)">
+  operator !=(Color3, Color3)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Color3.cs/#L665"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Tests for inequality between two objects.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool operator !=(Color3 left, Color3 right)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>left</code> <a class="xref" href="HelixToolkit.Maths.Color3.html">Color3</a></dt>
+    <dd><p>The first value to compare.</p>
+</dd>
+    <dt><code>right</code> <a class="xref" href="HelixToolkit.Maths.Color3.html">Color3</a></dt>
+    <dd><p>The second value to compare.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><code>true</code> if <code class="paramref">left</code> has a different value than <code class="paramref">right</code>; otherwise, <code>false</code>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_Color3_op_Multiply_" data-uid="HelixToolkit.Maths.Color3.op_Multiply*"></a>
+
+  <h3 id="HelixToolkit_Maths_Color3_op_Multiply_HelixToolkit_Maths_Color3_HelixToolkit_Maths_Color3_" data-uid="HelixToolkit.Maths.Color3.op_Multiply(HelixToolkit.Maths.Color3,HelixToolkit.Maths.Color3)">
+  operator *(Color3, Color3)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Color3.cs/#L642"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Modulates two colors.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Color3 operator *(Color3 left, Color3 right)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>left</code> <a class="xref" href="HelixToolkit.Maths.Color3.html">Color3</a></dt>
+    <dd><p>The first color to modulate.</p>
+</dd>
+    <dt><code>right</code> <a class="xref" href="HelixToolkit.Maths.Color3.html">Color3</a></dt>
+    <dd><p>The second color to modulate.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Maths.Color3.html">Color3</a></dt>
+    <dd><p>The modulated color.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_Color3_op_Multiply_" data-uid="HelixToolkit.Maths.Color3.op_Multiply*"></a>
+
+  <h3 id="HelixToolkit_Maths_Color3_op_Multiply_HelixToolkit_Maths_Color3_System_Single_" data-uid="HelixToolkit.Maths.Color3.op_Multiply(HelixToolkit.Maths.Color3,System.Single)">
+  operator *(Color3, float)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Color3.cs/#L631"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Scales a color.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Color3 operator *(Color3 value, float scale)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="HelixToolkit.Maths.Color3.html">Color3</a></dt>
+    <dd><p>The factor by which to scale the color.</p>
+</dd>
+    <dt><code>scale</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>The color to scale.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Maths.Color3.html">Color3</a></dt>
+    <dd><p>The scaled color.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_Color3_op_Multiply_" data-uid="HelixToolkit.Maths.Color3.op_Multiply*"></a>
+
+  <h3 id="HelixToolkit_Maths_Color3_op_Multiply_System_Single_HelixToolkit_Maths_Color3_" data-uid="HelixToolkit.Maths.Color3.op_Multiply(System.Single,HelixToolkit.Maths.Color3)">
+  operator *(float, Color3)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Color3.cs/#L620"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Scales a color.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Color3 operator *(float scale, Color3 value)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>scale</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>The factor by which to scale the color.</p>
+</dd>
+    <dt><code>value</code> <a class="xref" href="HelixToolkit.Maths.Color3.html">Color3</a></dt>
+    <dd><p>The color to scale.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Maths.Color3.html">Color3</a></dt>
+    <dd><p>The scaled color.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_Color3_op_Subtraction_" data-uid="HelixToolkit.Maths.Color3.op_Subtraction*"></a>
+
+  <h3 id="HelixToolkit_Maths_Color3_op_Subtraction_HelixToolkit_Maths_Color3_HelixToolkit_Maths_Color3_" data-uid="HelixToolkit.Maths.Color3.op_Subtraction(HelixToolkit.Maths.Color3,HelixToolkit.Maths.Color3)">
+  operator -(Color3, Color3)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Color3.cs/#L599"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Subtracts two colors.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Color3 operator -(Color3 left, Color3 right)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>left</code> <a class="xref" href="HelixToolkit.Maths.Color3.html">Color3</a></dt>
+    <dd><p>The first color to subtract.</p>
+</dd>
+    <dt><code>right</code> <a class="xref" href="HelixToolkit.Maths.Color3.html">Color3</a></dt>
+    <dd><p>The second color to subtract.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Maths.Color3.html">Color3</a></dt>
+    <dd><p>The difference of the two colors.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_Color3_op_UnaryNegation_" data-uid="HelixToolkit.Maths.Color3.op_UnaryNegation*"></a>
+
+  <h3 id="HelixToolkit_Maths_Color3_op_UnaryNegation_HelixToolkit_Maths_Color3_" data-uid="HelixToolkit.Maths.Color3.op_UnaryNegation(HelixToolkit.Maths.Color3)">
+  operator -(Color3)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Color3.cs/#L609"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Negates a color.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Color3 operator -(Color3 value)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="HelixToolkit.Maths.Color3.html">Color3</a></dt>
+    <dd><p>The color to negate.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Maths.Color3.html">Color3</a></dt>
+    <dd><p>A negated color.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_Color3_op_UnaryPlus_" data-uid="HelixToolkit.Maths.Color3.op_UnaryPlus*"></a>
+
+  <h3 id="HelixToolkit_Maths_Color3_op_UnaryPlus_HelixToolkit_Maths_Color3_" data-uid="HelixToolkit.Maths.Color3.op_UnaryPlus(HelixToolkit.Maths.Color3)">
+  operator +(Color3)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Color3.cs/#L588"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Assert a color (return it unchanged).</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Color3 operator +(Color3 value)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="HelixToolkit.Maths.Color3.html">Color3</a></dt>
+    <dd><p>The color to assert (unchanged).</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Maths.Color3.html">Color3</a></dt>
+    <dd><p>The asserted (unchanged) color.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/helix-toolkit/helix-toolkit/blob/develop3/Source/HelixToolkit.Maths/Color3.cs/#L37" class="edit-link">Edit this page</a>
+        </div>
+
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          Copyright (c) 2023 Helix Toolkit contributors
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>
