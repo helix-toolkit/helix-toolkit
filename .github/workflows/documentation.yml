@@ -20,18 +20,18 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
   pages: write
   id-token: write
 
-# Allow one concurrent deployment
 concurrency:
   group: "pages"
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 jobs:
-  build-docs:
+  build-and-deploy-docs:
     runs-on: windows-latest
+    if: github.event_name == 'push'
     
     steps:
     - name: Checkout repository
@@ -46,10 +46,6 @@ jobs:
           6.0.x
           8.0.x
 
-    - name: Setup Pages
-      if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-      uses: actions/configure-pages@v4
-
     - name: Restore NuGet packages
       run: dotnet restore ./Source/HelixToolkit.sln
 
@@ -61,29 +57,10 @@ jobs:
         CI: true
       run: ./tools/docfx ./Source/Documentation/docfx.json
 
-    - name: Upload documentation artifact
-      uses: actions/upload-artifact@v4
-      with:
-        name: documentation
-        path: ./Source/Documentation/_site
-        retention-days: 30
-
-    - name: Upload artifact for GitHub Pages
-      if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-      uses: actions/upload-pages-artifact@v3
-      with:
-        path: ./Source/Documentation/_site
-
-  deploy-docs:
-    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-    needs: build-docs
-    runs-on: ubuntu-latest
-    
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    
-    steps:
     - name: Deploy to GitHub Pages
-      id: deployment
-      uses: actions/deploy-pages@v4
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./Source/Documentation/_site
+        destination_dir: ${{ github.ref_name == 'main' && '.' || github.ref_name }}
+        keep_files: true
