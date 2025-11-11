@@ -473,6 +473,15 @@ $RECYCLE.BIN/
 *.sln.iml
 
 ##
+## Documentation
+##
+# DocFX generated files
+Source/Documentation/_site/
+Source/Documentation/api/.manifest
+Source/Documentation/obj/
+Source/packages/
+
+##
 ## Visual Studio Code
 ##
 .vscode/*
