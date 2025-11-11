@@ -60,6 +60,34 @@ Twitter             | https://twitter.com/hashtag/Helix3DToolkit
 
 **Visual Studio 2022.**
 
+## Documentation
+
+### Automated Documentation Generation
+
+This project uses [DocFX](https://dotnet.github.io/docfx/) to automatically generate comprehensive API documentation from C# XML comments. 
+
+**View Documentation:**
+- **API Documentation**: Automatically generated and deployed to GitHub Pages
+- **Build Locally**: See [Source/Documentation/README.md](/Source/Documentation/README.md) for instructions
+
+**Build Documentation Locally:**
+
+Windows:
+```cmd
+cd Source
+build-doc.cmd
+```
+
+Linux/macOS:
+```bash
+cd Source
+./build-doc.sh
+```
+
+The documentation is automatically built and published via GitHub Actions on every push to the main branch.
+
+For more details on writing and building documentation, see the [Documentation README](/Source/Documentation/README.md).
+
 ## Notes
 
 #### 1. Right-handed Cartesian coordinate system and row major matrix by default

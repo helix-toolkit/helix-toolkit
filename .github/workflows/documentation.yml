@@ -1,0 +1,89 @@
+name: Documentation
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+    paths:
+      - 'Source/**/*.cs'
+      - 'Source/Documentation/**'
+      - '.github/workflows/documentation.yml'
+  pull_request:
+    branches:
+      - main
+      - develop
+    paths:
+      - 'Source/**/*.cs'
+      - 'Source/Documentation/**'
+      - '.github/workflows/documentation.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Allow one concurrent deployment
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
+
+jobs:
+  build-docs:
+    runs-on: windows-latest
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: |
+          6.0.x
+          8.0.x
+
+    - name: Setup Pages
+      if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+      uses: actions/configure-pages@v4
+
+    - name: Restore NuGet packages
+      run: dotnet restore ./Source/HelixToolkit.sln
+
+    - name: Install DocFX
+      run: dotnet tool update docfx --tool-path ./tools
+
+    - name: Build Documentation
+      env:
+        CI: true
+      run: ./tools/docfx ./Source/Documentation/docfx.json
+
+    - name: Upload documentation artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: documentation
+        path: ./Source/Documentation/_site
+        retention-days: 30
+
+    - name: Upload artifact for GitHub Pages
+      if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+      uses: actions/upload-pages-artifact@v3
+      with:
+        path: ./Source/Documentation/_site
+
+  deploy-docs:
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    needs: build-docs
+    runs-on: ubuntu-latest
+    
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    
+    steps:
+    - name: Deploy to GitHub Pages
+      id: deployment
+      uses: actions/deploy-pages@v4
