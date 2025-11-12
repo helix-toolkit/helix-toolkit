@@ -1,4 +1,6 @@
-﻿using HelixToolkit.SharpDX.Render;
+﻿#define MSAASEPARATE
+
+using HelixToolkit.SharpDX.Render;
 using HelixToolkit.SharpDX.Shaders;
 using HelixToolkit.SharpDX.Utilities;
 using SharpDX;
@@ -157,8 +159,8 @@ public sealed class OrderIndependentTransparentRenderCore : RenderCore
 #if MSAASEPARATE
                 if (hasMSAA)
                 {
-                    deviceContext.ResolveSubresource(colorTarget.Resource, 0, colorTargetNoMSAA.Resource, 0, colorDesc.Format);
-                    deviceContext.ResolveSubresource(alphaTarget.Resource, 0, alphaTargetNoMSAA.Resource, 0, alphaDesc.Format);
+                    deviceContext.ResolveSubresource(colorTarget!.Resource!, 0, colorTargetNoMSAA!.Resource!, 0, colorDesc.Format);
+                    deviceContext.ResolveSubresource(alphaTarget!.Resource!, 0, alphaTargetNoMSAA!.Resource!, 0, alphaDesc.Format);
                 }
 #endif
     }
