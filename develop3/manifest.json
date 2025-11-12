@@ -46,34 +46,6 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "api/HelixToolkit.Avalinia.SharpDX.RenderUtil.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/HelixToolkit.Avalinia.SharpDX.RenderUtil.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "HelixToolkit.Avalinia.SharpDX.RenderUtil",
-      "Summary": null
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/HelixToolkit.Avalinia.SharpDX.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/HelixToolkit.Avalinia.SharpDX.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "HelixToolkit.Avalinia.SharpDX",
-      "Summary": null
-    },
-    {
-      "type": "ManagedReference",
       "source_relative_path": "api/HelixToolkit.Avalonia.SharpDX.AmbientLight3D.yml",
       "output": {
         ".html": {
@@ -2086,6 +2058,20 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "HelixToolkit.Avalonia.SharpDX.RenderTechniqueConverter",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/HelixToolkit.Avalonia.SharpDX.RenderUtil.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/HelixToolkit.Avalonia.SharpDX.RenderUtil.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "HelixToolkit.Avalonia.SharpDX.RenderUtil",
       "Summary": null
     },
     {

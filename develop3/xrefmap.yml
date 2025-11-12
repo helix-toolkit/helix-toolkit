@@ -29,43 +29,6 @@ references:
   fullName.vb: HelixToolkit.ArrayExtensions.Convert(Of TSource, TResult)(TSource(,), System.Func(Of TSource, TResult))
   nameWithType: ArrayExtensions.Convert<TSource, TResult>(TSource[,], Func<TSource, TResult>?)
   nameWithType.vb: ArrayExtensions.Convert(Of TSource, TResult)(TSource(,), Func(Of TSource, TResult))
-- uid: HelixToolkit.Avalinia.SharpDX
-  name: HelixToolkit.Avalinia.SharpDX
-  href: api/HelixToolkit.Avalinia.SharpDX.html
-  commentId: N:HelixToolkit.Avalinia.SharpDX
-  fullName: HelixToolkit.Avalinia.SharpDX
-  nameWithType: HelixToolkit.Avalinia.SharpDX
-- uid: HelixToolkit.Avalinia.SharpDX.RenderUtil
-  name: RenderUtil
-  href: api/HelixToolkit.Avalinia.SharpDX.RenderUtil.html
-  commentId: T:HelixToolkit.Avalinia.SharpDX.RenderUtil
-  fullName: HelixToolkit.Avalinia.SharpDX.RenderUtil
-  nameWithType: RenderUtil
-- uid: HelixToolkit.Avalinia.SharpDX.RenderUtil.CreateBuffer*
-  name: CreateBuffer
-  href: api/HelixToolkit.Avalinia.SharpDX.RenderUtil.html#HelixToolkit_Avalinia_SharpDX_RenderUtil_CreateBuffer_
-  commentId: Overload:HelixToolkit.Avalinia.SharpDX.RenderUtil.CreateBuffer
-  isSpec: "True"
-  fullName: HelixToolkit.Avalinia.SharpDX.RenderUtil.CreateBuffer
-  nameWithType: RenderUtil.CreateBuffer
-- uid: HelixToolkit.Avalinia.SharpDX.RenderUtil.CreateBuffer``1(SharpDX.Direct3D11.Device,SharpDX.Direct3D11.BindFlags,System.Int32,``0[])
-  name: CreateBuffer<T>(Device, BindFlags, int, T[])
-  href: api/HelixToolkit.Avalinia.SharpDX.RenderUtil.html#HelixToolkit_Avalinia_SharpDX_RenderUtil_CreateBuffer__1_SharpDX_Direct3D11_Device_SharpDX_Direct3D11_BindFlags_System_Int32___0___
-  commentId: M:HelixToolkit.Avalinia.SharpDX.RenderUtil.CreateBuffer``1(SharpDX.Direct3D11.Device,SharpDX.Direct3D11.BindFlags,System.Int32,``0[])
-  name.vb: CreateBuffer(Of T)(Device, BindFlags, Integer, T())
-  fullName: HelixToolkit.Avalinia.SharpDX.RenderUtil.CreateBuffer<T>(SharpDX.Direct3D11.Device, SharpDX.Direct3D11.BindFlags, int, T[])
-  fullName.vb: HelixToolkit.Avalinia.SharpDX.RenderUtil.CreateBuffer(Of T)(SharpDX.Direct3D11.Device, SharpDX.Direct3D11.BindFlags, Integer, T())
-  nameWithType: RenderUtil.CreateBuffer<T>(Device, BindFlags, int, T[])
-  nameWithType.vb: RenderUtil.CreateBuffer(Of T)(Device, BindFlags, Integer, T())
-- uid: HelixToolkit.Avalinia.SharpDX.RenderUtil.CreateBuffer``1(SharpDX.Direct3D11.Device,SharpDX.Direct3D11.BindFlags,System.Int32,``0[],System.Int32)
-  name: CreateBuffer<T>(Device, BindFlags, int, T[], int)
-  href: api/HelixToolkit.Avalinia.SharpDX.RenderUtil.html#HelixToolkit_Avalinia_SharpDX_RenderUtil_CreateBuffer__1_SharpDX_Direct3D11_Device_SharpDX_Direct3D11_BindFlags_System_Int32___0___System_Int32_
-  commentId: M:HelixToolkit.Avalinia.SharpDX.RenderUtil.CreateBuffer``1(SharpDX.Direct3D11.Device,SharpDX.Direct3D11.BindFlags,System.Int32,``0[],System.Int32)
-  name.vb: CreateBuffer(Of T)(Device, BindFlags, Integer, T(), Integer)
-  fullName: HelixToolkit.Avalinia.SharpDX.RenderUtil.CreateBuffer<T>(SharpDX.Direct3D11.Device, SharpDX.Direct3D11.BindFlags, int, T[], int)
-  fullName.vb: HelixToolkit.Avalinia.SharpDX.RenderUtil.CreateBuffer(Of T)(SharpDX.Direct3D11.Device, SharpDX.Direct3D11.BindFlags, Integer, T(), Integer)
-  nameWithType: RenderUtil.CreateBuffer<T>(Device, BindFlags, int, T[], int)
-  nameWithType.vb: RenderUtil.CreateBuffer(Of T)(Device, BindFlags, Integer, T(), Integer)
 - uid: HelixToolkit.Avalonia.SharpDX
   name: HelixToolkit.Avalonia.SharpDX
   href: api/HelixToolkit.Avalonia.SharpDX.html
@@ -16703,6 +16666,37 @@ references:
   isSpec: "True"
   fullName: HelixToolkit.Avalonia.SharpDX.RenderTechniqueConverter.ConvertBack
   nameWithType: RenderTechniqueConverter.ConvertBack
+- uid: HelixToolkit.Avalonia.SharpDX.RenderUtil
+  name: RenderUtil
+  href: api/HelixToolkit.Avalonia.SharpDX.RenderUtil.html
+  commentId: T:HelixToolkit.Avalonia.SharpDX.RenderUtil
+  fullName: HelixToolkit.Avalonia.SharpDX.RenderUtil
+  nameWithType: RenderUtil
+- uid: HelixToolkit.Avalonia.SharpDX.RenderUtil.CreateBuffer*
+  name: CreateBuffer
+  href: api/HelixToolkit.Avalonia.SharpDX.RenderUtil.html#HelixToolkit_Avalonia_SharpDX_RenderUtil_CreateBuffer_
+  commentId: Overload:HelixToolkit.Avalonia.SharpDX.RenderUtil.CreateBuffer
+  isSpec: "True"
+  fullName: HelixToolkit.Avalonia.SharpDX.RenderUtil.CreateBuffer
+  nameWithType: RenderUtil.CreateBuffer
+- uid: HelixToolkit.Avalonia.SharpDX.RenderUtil.CreateBuffer``1(SharpDX.Direct3D11.Device,SharpDX.Direct3D11.BindFlags,System.Int32,``0[])
+  name: CreateBuffer<T>(Device, BindFlags, int, T[])
+  href: api/HelixToolkit.Avalonia.SharpDX.RenderUtil.html#HelixToolkit_Avalonia_SharpDX_RenderUtil_CreateBuffer__1_SharpDX_Direct3D11_Device_SharpDX_Direct3D11_BindFlags_System_Int32___0___
+  commentId: M:HelixToolkit.Avalonia.SharpDX.RenderUtil.CreateBuffer``1(SharpDX.Direct3D11.Device,SharpDX.Direct3D11.BindFlags,System.Int32,``0[])
+  name.vb: CreateBuffer(Of T)(Device, BindFlags, Integer, T())
+  fullName: HelixToolkit.Avalonia.SharpDX.RenderUtil.CreateBuffer<T>(SharpDX.Direct3D11.Device, SharpDX.Direct3D11.BindFlags, int, T[])
+  fullName.vb: HelixToolkit.Avalonia.SharpDX.RenderUtil.CreateBuffer(Of T)(SharpDX.Direct3D11.Device, SharpDX.Direct3D11.BindFlags, Integer, T())
+  nameWithType: RenderUtil.CreateBuffer<T>(Device, BindFlags, int, T[])
+  nameWithType.vb: RenderUtil.CreateBuffer(Of T)(Device, BindFlags, Integer, T())
+- uid: HelixToolkit.Avalonia.SharpDX.RenderUtil.CreateBuffer``1(SharpDX.Direct3D11.Device,SharpDX.Direct3D11.BindFlags,System.Int32,``0[],System.Int32)
+  name: CreateBuffer<T>(Device, BindFlags, int, T[], int)
+  href: api/HelixToolkit.Avalonia.SharpDX.RenderUtil.html#HelixToolkit_Avalonia_SharpDX_RenderUtil_CreateBuffer__1_SharpDX_Direct3D11_Device_SharpDX_Direct3D11_BindFlags_System_Int32___0___System_Int32_
+  commentId: M:HelixToolkit.Avalonia.SharpDX.RenderUtil.CreateBuffer``1(SharpDX.Direct3D11.Device,SharpDX.Direct3D11.BindFlags,System.Int32,``0[],System.Int32)
+  name.vb: CreateBuffer(Of T)(Device, BindFlags, Integer, T(), Integer)
+  fullName: HelixToolkit.Avalonia.SharpDX.RenderUtil.CreateBuffer<T>(SharpDX.Direct3D11.Device, SharpDX.Direct3D11.BindFlags, int, T[], int)
+  fullName.vb: HelixToolkit.Avalonia.SharpDX.RenderUtil.CreateBuffer(Of T)(SharpDX.Direct3D11.Device, SharpDX.Direct3D11.BindFlags, Integer, T(), Integer)
+  nameWithType: RenderUtil.CreateBuffer<T>(Device, BindFlags, int, T[], int)
+  nameWithType.vb: RenderUtil.CreateBuffer(Of T)(Device, BindFlags, Integer, T(), Integer)
 - uid: HelixToolkit.Avalonia.SharpDX.SceneNodeGroupModel3D
   name: SceneNodeGroupModel3D
   href: api/HelixToolkit.Avalonia.SharpDX.SceneNodeGroupModel3D.html
