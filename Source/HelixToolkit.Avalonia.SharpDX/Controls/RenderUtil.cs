@@ -1,7 +1,7 @@
 ﻿using SharpDX.Direct3D11;
 using Direct3D11 = global::SharpDX.Direct3D11;
 
-namespace HelixToolkit.Avalinia.SharpDX;
+namespace HelixToolkit.Avalonia.SharpDX;
 
 public static class RenderUtil
 {
