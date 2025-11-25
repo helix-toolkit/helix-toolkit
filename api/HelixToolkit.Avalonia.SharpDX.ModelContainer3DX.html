@@ -1,0 +1,3408 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Class ModelContainer3DX | Helix Toolkit - 3D for .NET </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Class ModelContainer3DX | Helix Toolkit - 3D for .NET ">
+      
+      <meta name="description" content="Use to contain shared models for multiple viewports. Suggest to bind effects manager in viewmodel. Assign effect manager from code behind may cause memory leak">
+      <link rel="icon" href="../images/favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/helix-toolkit/helix-toolkit/new/main-v3/apiSpec/new?filename=HelixToolkit_Avalonia_SharpDX_ModelContainer3DX.md&amp;value=---%0Auid%3A%20HelixToolkit.Avalonia.SharpDX.ModelContainer3DX%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="ManagedReference">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../images/favicon.ico" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="HelixToolkit.Avalonia.SharpDX.ModelContainer3DX">
+
+
+
+  <h1 id="HelixToolkit_Avalonia_SharpDX_ModelContainer3DX" data-uid="HelixToolkit.Avalonia.SharpDX.ModelContainer3DX" class="text-break">
+Class ModelContainer3DX  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Controls/ModelContainer3DX.cs/#L38"><i class="bi bi-code-slash"></i></a>
+  </h1>
+
+  <div class="facts text-secondary">
+    <dl><dt>Namespace</dt><dd><a class="xref" href="HelixToolkit.html">HelixToolkit</a>.<a class="xref" href="HelixToolkit.Avalonia.html">Avalonia</a>.<a class="xref" href="HelixToolkit.Avalonia.SharpDX.html">SharpDX</a></dd></dl>
+  <dl><dt>Assembly</dt><dd>HelixToolkit.Avalonia.SharpDX.dll</dd></dl>
+  </div>
+
+  <div class="markdown summary"><p>Use to contain shared models for multiple viewports.</p>
+<p>Suggest to bind effects manager in viewmodel. Assign effect manager from code behind may cause memory leak</p>
+</div>
+  <div class="markdown conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class ModelContainer3DX : HelixItemsControl, INotifyPropertyChanged, IDataContextProvider, ILogical, IThemeVariantHost, IResourceHost, IResourceNode, IStyleHost, ISetLogicalParent, ISetInheritanceParent, ISupportInitialize, IStyleable, INamed, IInputElement, IDataTemplateHost, ISetterValue, IChildIndexProvider, IModelContainer, IRenderHost, IGUID, IDisposable</code></pre>
+  </div>
+
+
+
+
+  <dl class="typelist inheritance">
+    <dt>Inheritance</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
+      <div><span class="xref">AvaloniaObject</span></div>
+      <div><span class="xref">Animatable</span></div>
+      <div><span class="xref">StyledElement</span></div>
+      <div><span class="xref">Visual</span></div>
+      <div><span class="xref">Layoutable</span></div>
+      <div><span class="xref">Interactive</span></div>
+      <div><span class="xref">InputElement</span></div>
+      <div><span class="xref">Control</span></div>
+      <div><span class="xref">TemplatedControl</span></div>
+      <div><span class="xref">ItemsControl</span></div>
+      <div><a class="xref" href="HelixToolkit.Avalonia.SharpDX.HelixItemsControl.html">HelixItemsControl</a></div>
+      <div><span class="xref">ModelContainer3DX</span></div>
+    </dd>
+  </dl>
+
+  <dl class="typelist implements">
+    <dt>Implements</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.componentmodel.inotifypropertychanged">INotifyPropertyChanged</a></div>
+      <div><span class="xref">IDataContextProvider</span></div>
+      <div><span class="xref">ILogical</span></div>
+      <div><span class="xref">IThemeVariantHost</span></div>
+      <div><span class="xref">IResourceHost</span></div>
+      <div><span class="xref">IResourceNode</span></div>
+      <div><span class="xref">IStyleHost</span></div>
+      <div><span class="xref">ISetLogicalParent</span></div>
+      <div><span class="xref">ISetInheritanceParent</span></div>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.componentmodel.isupportinitialize">ISupportInitialize</a></div>
+      <div><span class="xref">IStyleable</span></div>
+      <div><span class="xref">INamed</span></div>
+      <div><span class="xref">IInputElement</span></div>
+      <div><span class="xref">IDataTemplateHost</span></div>
+      <div><span class="xref">ISetterValue</span></div>
+      <div><span class="xref">IChildIndexProvider</span></div>
+      <div><a class="xref" href="HelixToolkit.SharpDX.IModelContainer.html">IModelContainer</a></div>
+      <div><a class="xref" href="HelixToolkit.SharpDX.IRenderHost.html">IRenderHost</a></div>
+      <div><a class="xref" href="HelixToolkit.SharpDX.IGUID.html">IGUID</a></div>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.idisposable">IDisposable</a></div>
+    </dd>
+  </dl>
+
+
+  <dl class="typelist inheritedMembers">
+    <dt>Inherited Members</dt>
+    <dd>
+    <div>
+      <a class="xref" href="HelixToolkit.Avalonia.SharpDX.HelixItemsControl.html#HelixToolkit_Avalonia_SharpDX_HelixItemsControl_ArrangeOverride_Avalonia_Size_">HelixItemsControl.ArrangeOverride(Size)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.Avalonia.SharpDX.HelixItemsControl.html#HelixToolkit_Avalonia_SharpDX_HelixItemsControl_MeasureOverride_Avalonia_Size_">HelixItemsControl.MeasureOverride(Size)</a>
+    </div>
+    <div>
+      <span class="xref">ItemsControl.ItemContainerThemeProperty</span>
+    </div>
+    <div>
+      <span class="xref">ItemsControl.ItemCountProperty</span>
+    </div>
+    <div>
+      <span class="xref">ItemsControl.ItemsPanelProperty</span>
+    </div>
+    <div>
+      <span class="xref">ItemsControl.ItemsSourceProperty</span>
+    </div>
+    <div>
+      <span class="xref">ItemsControl.ItemTemplateProperty</span>
+    </div>
+    <div>
+      <span class="xref">ItemsControl.DisplayMemberBindingProperty</span>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">ItemsControl.ContainerFromIndex(int)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">ItemsControl.ContainerFromItem(object)</a>
+    </div>
+    <div>
+      <span class="xref">ItemsControl.IndexFromContainer(Control)</span>
+    </div>
+    <div>
+      <span class="xref">ItemsControl.ItemFromContainer(Control)</span>
+    </div>
+    <div>
+      <span class="xref">ItemsControl.GetRealizedContainers()</span>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">ItemsControl.ScrollIntoView(int)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">ItemsControl.ScrollIntoView(object)</a>
+    </div>
+    <div>
+      <span class="xref">ItemsControl.ItemsControlFromItemContainer(Control)</span>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">ItemsControl.CreateContainerForItemOverride(object, int, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">ItemsControl.PrepareContainerForItemOverride(Control, object, int)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">ItemsControl.ContainerForItemPreparedOverride(Control, object, int)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">ItemsControl.ContainerIndexChangedOverride(Control, int, int)</a>
+    </div>
+    <div>
+      <span class="xref">ItemsControl.ClearContainerForItemOverride(Control)</span>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">ItemsControl.NeedsContainerOverride(object, int, out object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">ItemsControl.NeedsContainer&lt;T&gt;(object, out object)</a>
+    </div>
+    <div>
+      <span class="xref">ItemsControl.OnApplyTemplate(TemplateAppliedEventArgs)</span>
+    </div>
+    <div>
+      <span class="xref">ItemsControl.OnGotFocus(GotFocusEventArgs)</span>
+    </div>
+    <div>
+      <span class="xref">ItemsControl.OnKeyDown(KeyEventArgs)</span>
+    </div>
+    <div>
+      <span class="xref">ItemsControl.OnCreateAutomationPeer()</span>
+    </div>
+    <div>
+      <span class="xref">ItemsControl.OnPropertyChanged(AvaloniaPropertyChangedEventArgs)</span>
+    </div>
+    <div>
+      <span class="xref">ItemsControl.RefreshContainers()</span>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">ItemsControl.GetNextControl(INavigableContainer, NavigationDirection, IInputElement, bool)</a>
+    </div>
+    <div>
+      <span class="xref">ItemsControl.DisplayMemberBinding</span>
+    </div>
+    <div>
+      <span class="xref">ItemsControl.ItemContainerGenerator</span>
+    </div>
+    <div>
+      <span class="xref">ItemsControl.Items</span>
+    </div>
+    <div>
+      <span class="xref">ItemsControl.ItemContainerTheme</span>
+    </div>
+    <div>
+      <span class="xref">ItemsControl.ItemCount</span>
+    </div>
+    <div>
+      <span class="xref">ItemsControl.ItemsPanel</span>
+    </div>
+    <div>
+      <span class="xref">ItemsControl.ItemsSource</span>
+    </div>
+    <div>
+      <span class="xref">ItemsControl.ItemTemplate</span>
+    </div>
+    <div>
+      <span class="xref">ItemsControl.Presenter</span>
+    </div>
+    <div>
+      <span class="xref">ItemsControl.ItemsPanelRoot</span>
+    </div>
+    <div>
+      <span class="xref">ItemsControl.ItemsView</span>
+    </div>
+    <div>
+      <span class="xref">ItemsControl.DefaultRecycleKey</span>
+    </div>
+    <div>
+      <span class="xref">ItemsControl.ContainerPrepared</span>
+    </div>
+    <div>
+      <span class="xref">ItemsControl.ContainerIndexChanged</span>
+    </div>
+    <div>
+      <span class="xref">ItemsControl.ContainerClearing</span>
+    </div>
+    <div>
+      <span class="xref">TemplatedControl.BackgroundProperty</span>
+    </div>
+    <div>
+      <span class="xref">TemplatedControl.BackgroundSizingProperty</span>
+    </div>
+    <div>
+      <span class="xref">TemplatedControl.BorderBrushProperty</span>
+    </div>
+    <div>
+      <span class="xref">TemplatedControl.BorderThicknessProperty</span>
+    </div>
+    <div>
+      <span class="xref">TemplatedControl.CornerRadiusProperty</span>
+    </div>
+    <div>
+      <span class="xref">TemplatedControl.FontFamilyProperty</span>
+    </div>
+    <div>
+      <span class="xref">TemplatedControl.FontFeaturesProperty</span>
+    </div>
+    <div>
+      <span class="xref">TemplatedControl.FontSizeProperty</span>
+    </div>
+    <div>
+      <span class="xref">TemplatedControl.FontStyleProperty</span>
+    </div>
+    <div>
+      <span class="xref">TemplatedControl.FontWeightProperty</span>
+    </div>
+    <div>
+      <span class="xref">TemplatedControl.FontStretchProperty</span>
+    </div>
+    <div>
+      <span class="xref">TemplatedControl.ForegroundProperty</span>
+    </div>
+    <div>
+      <span class="xref">TemplatedControl.PaddingProperty</span>
+    </div>
+    <div>
+      <span class="xref">TemplatedControl.TemplateProperty</span>
+    </div>
+    <div>
+      <span class="xref">TemplatedControl.IsTemplateFocusTargetProperty</span>
+    </div>
+    <div>
+      <span class="xref">TemplatedControl.TemplateAppliedEvent</span>
+    </div>
+    <div>
+      <span class="xref">TemplatedControl.GetIsTemplateFocusTarget(Control)</span>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">TemplatedControl.SetIsTemplateFocusTarget(Control, bool)</a>
+    </div>
+    <div>
+      <span class="xref">TemplatedControl.ApplyTemplate()</span>
+    </div>
+    <div>
+      <span class="xref">TemplatedControl.GetTemplateFocusTarget()</span>
+    </div>
+    <div>
+      <span class="xref">TemplatedControl.OnAttachedToLogicalTree(LogicalTreeAttachmentEventArgs)</span>
+    </div>
+    <div>
+      <span class="xref">TemplatedControl.OnDetachedFromLogicalTree(LogicalTreeAttachmentEventArgs)</span>
+    </div>
+    <div>
+      <span class="xref">TemplatedControl.OnTemplateChanged(AvaloniaPropertyChangedEventArgs)</span>
+    </div>
+    <div>
+      <span class="xref">TemplatedControl.Background</span>
+    </div>
+    <div>
+      <span class="xref">TemplatedControl.BackgroundSizing</span>
+    </div>
+    <div>
+      <span class="xref">TemplatedControl.BorderBrush</span>
+    </div>
+    <div>
+      <span class="xref">TemplatedControl.BorderThickness</span>
+    </div>
+    <div>
+      <span class="xref">TemplatedControl.CornerRadius</span>
+    </div>
+    <div>
+      <span class="xref">TemplatedControl.FontFamily</span>
+    </div>
+    <div>
+      <span class="xref">TemplatedControl.FontFeatures</span>
+    </div>
+    <div>
+      <span class="xref">TemplatedControl.FontSize</span>
+    </div>
+    <div>
+      <span class="xref">TemplatedControl.FontStyle</span>
+    </div>
+    <div>
+      <span class="xref">TemplatedControl.FontWeight</span>
+    </div>
+    <div>
+      <span class="xref">TemplatedControl.FontStretch</span>
+    </div>
+    <div>
+      <span class="xref">TemplatedControl.Foreground</span>
+    </div>
+    <div>
+      <span class="xref">TemplatedControl.Padding</span>
+    </div>
+    <div>
+      <span class="xref">TemplatedControl.Template</span>
+    </div>
+    <div>
+      <span class="xref">TemplatedControl.TemplateApplied</span>
+    </div>
+    <div>
+      <span class="xref">Control.FocusAdornerProperty</span>
+    </div>
+    <div>
+      <span class="xref">Control.TagProperty</span>
+    </div>
+    <div>
+      <span class="xref">Control.ContextMenuProperty</span>
+    </div>
+    <div>
+      <span class="xref">Control.ContextFlyoutProperty</span>
+    </div>
+    <div>
+      <span class="xref">Control.RequestBringIntoViewEvent</span>
+    </div>
+    <div>
+      <span class="xref">Control.ContextRequestedEvent</span>
+    </div>
+    <div>
+      <span class="xref">Control.LoadedEvent</span>
+    </div>
+    <div>
+      <span class="xref">Control.UnloadedEvent</span>
+    </div>
+    <div>
+      <span class="xref">Control.SizeChangedEvent</span>
+    </div>
+    <div>
+      <span class="xref">Control.OnLoaded(RoutedEventArgs)</span>
+    </div>
+    <div>
+      <span class="xref">Control.OnUnloaded(RoutedEventArgs)</span>
+    </div>
+    <div>
+      <span class="xref">Control.OnSizeChanged(SizeChangedEventArgs)</span>
+    </div>
+    <div>
+      <span class="xref">Control.OnAttachedToVisualTreeCore(VisualTreeAttachmentEventArgs)</span>
+    </div>
+    <div>
+      <span class="xref">Control.OnDetachedFromVisualTreeCore(VisualTreeAttachmentEventArgs)</span>
+    </div>
+    <div>
+      <span class="xref">Control.OnLostFocus(RoutedEventArgs)</span>
+    </div>
+    <div>
+      <span class="xref">Control.OnPointerReleased(PointerReleasedEventArgs)</span>
+    </div>
+    <div>
+      <span class="xref">Control.OnKeyUp(KeyEventArgs)</span>
+    </div>
+    <div>
+      <span class="xref">Control.FocusAdorner</span>
+    </div>
+    <div>
+      <span class="xref">Control.DataTemplates</span>
+    </div>
+    <div>
+      <span class="xref">Control.ContextMenu</span>
+    </div>
+    <div>
+      <span class="xref">Control.ContextFlyout</span>
+    </div>
+    <div>
+      <span class="xref">Control.IsLoaded</span>
+    </div>
+    <div>
+      <span class="xref">Control.Tag</span>
+    </div>
+    <div>
+      <span class="xref">Control.ContextRequested</span>
+    </div>
+    <div>
+      <span class="xref">Control.Loaded</span>
+    </div>
+    <div>
+      <span class="xref">Control.Unloaded</span>
+    </div>
+    <div>
+      <span class="xref">Control.SizeChanged</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.FocusableProperty</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.IsEnabledProperty</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.IsEffectivelyEnabledProperty</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.CursorProperty</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.IsKeyboardFocusWithinProperty</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.IsFocusedProperty</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.IsHitTestVisibleProperty</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.IsPointerOverProperty</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.IsTabStopProperty</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.GotFocusEvent</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.LostFocusEvent</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.KeyDownEvent</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.KeyUpEvent</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.TabIndexProperty</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.TextInputEvent</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.TextInputMethodClientRequestedEvent</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.PointerEnteredEvent</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.PointerExitedEvent</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.PointerMovedEvent</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.PointerPressedEvent</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.PointerReleasedEvent</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.PointerCaptureLostEvent</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.PointerWheelChangedEvent</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.TappedEvent</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.HoldingEvent</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.DoubleTappedEvent</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.Focus(NavigationMethod, KeyModifiers)</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.OnTextInput(TextInputEventArgs)</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.OnPointerEntered(PointerEventArgs)</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.OnPointerExited(PointerEventArgs)</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.OnPointerMoved(PointerEventArgs)</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.OnPointerPressed(PointerPressedEventArgs)</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.OnPointerCaptureLost(PointerCaptureLostEventArgs)</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.OnPointerWheelChanged(PointerWheelEventArgs)</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.UpdateIsEffectivelyEnabled()</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.Focusable</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.IsEnabled</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.Cursor</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.IsKeyboardFocusWithin</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.IsFocused</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.IsHitTestVisible</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.IsPointerOver</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.IsTabStop</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.IsEffectivelyEnabled</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.TabIndex</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.KeyBindings</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.IsEnabledCore</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.GestureRecognizers</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.GotFocus</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.LostFocus</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.KeyDown</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.KeyUp</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.TextInput</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.TextInputMethodClientRequested</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.PointerEntered</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.PointerExited</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.PointerMoved</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.PointerPressed</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.PointerReleased</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.PointerCaptureLost</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.PointerWheelChanged</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.Tapped</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.Holding</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.DoubleTapped</span>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.delegate">Interactive.AddHandler(RoutedEvent, Delegate, RoutingStrategies, bool)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.eventhandler-1">Interactive.AddHandler&lt;TEventArgs&gt;(RoutedEvent&lt;TEventArgs&gt;, EventHandler&lt;TEventArgs&gt;, RoutingStrategies, bool)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.delegate">Interactive.RemoveHandler(RoutedEvent, Delegate)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.eventhandler-1">Interactive.RemoveHandler&lt;TEventArgs&gt;(RoutedEvent&lt;TEventArgs&gt;, EventHandler&lt;TEventArgs&gt;)</a>
+    </div>
+    <div>
+      <span class="xref">Interactive.RaiseEvent(RoutedEventArgs)</span>
+    </div>
+    <div>
+      <span class="xref">Interactive.BuildEventRoute(RoutedEvent)</span>
+    </div>
+    <div>
+      <span class="xref">Layoutable.DesiredSizeProperty</span>
+    </div>
+    <div>
+      <span class="xref">Layoutable.WidthProperty</span>
+    </div>
+    <div>
+      <span class="xref">Layoutable.HeightProperty</span>
+    </div>
+    <div>
+      <span class="xref">Layoutable.MinWidthProperty</span>
+    </div>
+    <div>
+      <span class="xref">Layoutable.MaxWidthProperty</span>
+    </div>
+    <div>
+      <span class="xref">Layoutable.MinHeightProperty</span>
+    </div>
+    <div>
+      <span class="xref">Layoutable.MaxHeightProperty</span>
+    </div>
+    <div>
+      <span class="xref">Layoutable.MarginProperty</span>
+    </div>
+    <div>
+      <span class="xref">Layoutable.HorizontalAlignmentProperty</span>
+    </div>
+    <div>
+      <span class="xref">Layoutable.VerticalAlignmentProperty</span>
+    </div>
+    <div>
+      <span class="xref">Layoutable.UseLayoutRoundingProperty</span>
+    </div>
+    <div>
+      <span class="xref">Layoutable.UpdateLayout()</span>
+    </div>
+    <div>
+      <span class="xref">Layoutable.Measure(Size)</span>
+    </div>
+    <div>
+      <span class="xref">Layoutable.Arrange(Rect)</span>
+    </div>
+    <div>
+      <span class="xref">Layoutable.InvalidateMeasure()</span>
+    </div>
+    <div>
+      <span class="xref">Layoutable.InvalidateArrange()</span>
+    </div>
+    <div>
+      <span class="xref">Layoutable.AffectsMeasure&lt;T&gt;(params AvaloniaProperty[])</span>
+    </div>
+    <div>
+      <span class="xref">Layoutable.AffectsArrange&lt;T&gt;(params AvaloniaProperty[])</span>
+    </div>
+    <div>
+      <span class="xref">Layoutable.MeasureCore(Size)</span>
+    </div>
+    <div>
+      <span class="xref">Layoutable.ArrangeCore(Rect)</span>
+    </div>
+    <div>
+      <span class="xref">Layoutable.OnMeasureInvalidated()</span>
+    </div>
+    <div>
+      <span class="xref">Layoutable.OnVisualParentChanged(Visual, Visual)</span>
+    </div>
+    <div>
+      <span class="xref">Layoutable.Width</span>
+    </div>
+    <div>
+      <span class="xref">Layoutable.Height</span>
+    </div>
+    <div>
+      <span class="xref">Layoutable.MinWidth</span>
+    </div>
+    <div>
+      <span class="xref">Layoutable.MaxWidth</span>
+    </div>
+    <div>
+      <span class="xref">Layoutable.MinHeight</span>
+    </div>
+    <div>
+      <span class="xref">Layoutable.MaxHeight</span>
+    </div>
+    <div>
+      <span class="xref">Layoutable.Margin</span>
+    </div>
+    <div>
+      <span class="xref">Layoutable.HorizontalAlignment</span>
+    </div>
+    <div>
+      <span class="xref">Layoutable.VerticalAlignment</span>
+    </div>
+    <div>
+      <span class="xref">Layoutable.DesiredSize</span>
+    </div>
+    <div>
+      <span class="xref">Layoutable.IsMeasureValid</span>
+    </div>
+    <div>
+      <span class="xref">Layoutable.IsArrangeValid</span>
+    </div>
+    <div>
+      <span class="xref">Layoutable.UseLayoutRounding</span>
+    </div>
+    <div>
+      <span class="xref">Layoutable.EffectiveViewportChanged</span>
+    </div>
+    <div>
+      <span class="xref">Layoutable.LayoutUpdated</span>
+    </div>
+    <div>
+      <span class="xref">Visual.BoundsProperty</span>
+    </div>
+    <div>
+      <span class="xref">Visual.ClipToBoundsProperty</span>
+    </div>
+    <div>
+      <span class="xref">Visual.ClipProperty</span>
+    </div>
+    <div>
+      <span class="xref">Visual.IsVisibleProperty</span>
+    </div>
+    <div>
+      <span class="xref">Visual.OpacityProperty</span>
+    </div>
+    <div>
+      <span class="xref">Visual.OpacityMaskProperty</span>
+    </div>
+    <div>
+      <span class="xref">Visual.EffectProperty</span>
+    </div>
+    <div>
+      <span class="xref">Visual.HasMirrorTransformProperty</span>
+    </div>
+    <div>
+      <span class="xref">Visual.RenderTransformProperty</span>
+    </div>
+    <div>
+      <span class="xref">Visual.RenderTransformOriginProperty</span>
+    </div>
+    <div>
+      <span class="xref">Visual.FlowDirectionProperty</span>
+    </div>
+    <div>
+      <span class="xref">Visual.VisualParentProperty</span>
+    </div>
+    <div>
+      <span class="xref">Visual.ZIndexProperty</span>
+    </div>
+    <div>
+      <span class="xref">Visual.GetFlowDirection(Visual)</span>
+    </div>
+    <div>
+      <span class="xref">Visual.SetFlowDirection(Visual, FlowDirection)</span>
+    </div>
+    <div>
+      <span class="xref">Visual.InvalidateVisual()</span>
+    </div>
+    <div>
+      <span class="xref">Visual.Render(DrawingContext)</span>
+    </div>
+    <div>
+      <span class="xref">Visual.AffectsRender&lt;T&gt;(params AvaloniaProperty[])</span>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">Visual.LogicalChildrenCollectionChanged(object, NotifyCollectionChangedEventArgs)</a>
+    </div>
+    <div>
+      <span class="xref">Visual.OnAttachedToVisualTree(VisualTreeAttachmentEventArgs)</span>
+    </div>
+    <div>
+      <span class="xref">Visual.OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs)</span>
+    </div>
+    <div>
+      <span class="xref">Visual.InvalidateMirrorTransform()</span>
+    </div>
+    <div>
+      <span class="xref">Visual.Bounds</span>
+    </div>
+    <div>
+      <span class="xref">Visual.ClipToBounds</span>
+    </div>
+    <div>
+      <span class="xref">Visual.Clip</span>
+    </div>
+    <div>
+      <span class="xref">Visual.IsEffectivelyVisible</span>
+    </div>
+    <div>
+      <span class="xref">Visual.IsVisible</span>
+    </div>
+    <div>
+      <span class="xref">Visual.Opacity</span>
+    </div>
+    <div>
+      <span class="xref">Visual.OpacityMask</span>
+    </div>
+    <div>
+      <span class="xref">Visual.Effect</span>
+    </div>
+    <div>
+      <span class="xref">Visual.HasMirrorTransform</span>
+    </div>
+    <div>
+      <span class="xref">Visual.RenderTransform</span>
+    </div>
+    <div>
+      <span class="xref">Visual.RenderTransformOrigin</span>
+    </div>
+    <div>
+      <span class="xref">Visual.FlowDirection</span>
+    </div>
+    <div>
+      <span class="xref">Visual.ZIndex</span>
+    </div>
+    <div>
+      <span class="xref">Visual.VisualChildren</span>
+    </div>
+    <div>
+      <span class="xref">Visual.VisualRoot</span>
+    </div>
+    <div>
+      <span class="xref">Visual.BypassFlowDirectionPolicies</span>
+    </div>
+    <div>
+      <span class="xref">Visual.AttachedToVisualTree</span>
+    </div>
+    <div>
+      <span class="xref">Visual.DetachedFromVisualTree</span>
+    </div>
+    <div>
+      <span class="xref">StyledElement.DataContextProperty</span>
+    </div>
+    <div>
+      <span class="xref">StyledElement.NameProperty</span>
+    </div>
+    <div>
+      <span class="xref">StyledElement.ParentProperty</span>
+    </div>
+    <div>
+      <span class="xref">StyledElement.TemplatedParentProperty</span>
+    </div>
+    <div>
+      <span class="xref">StyledElement.ThemeProperty</span>
+    </div>
+    <div>
+      <span class="xref">StyledElement.BeginInit()</span>
+    </div>
+    <div>
+      <span class="xref">StyledElement.EndInit()</span>
+    </div>
+    <div>
+      <span class="xref">StyledElement.ApplyStyling()</span>
+    </div>
+    <div>
+      <span class="xref">StyledElement.InitializeIfNeeded()</span>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">StyledElement.TryGetResource(object, ThemeVariant, out object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.eventargs">StyledElement.OnDataContextChanged(EventArgs)</a>
+    </div>
+    <div>
+      <span class="xref">StyledElement.OnDataContextBeginUpdate()</span>
+    </div>
+    <div>
+      <span class="xref">StyledElement.OnDataContextEndUpdate()</span>
+    </div>
+    <div>
+      <span class="xref">StyledElement.OnInitialized()</span>
+    </div>
+    <div>
+      <span class="xref">StyledElement.Name</span>
+    </div>
+    <div>
+      <span class="xref">StyledElement.Classes</span>
+    </div>
+    <div>
+      <span class="xref">StyledElement.DataContext</span>
+    </div>
+    <div>
+      <span class="xref">StyledElement.IsInitialized</span>
+    </div>
+    <div>
+      <span class="xref">StyledElement.Styles</span>
+    </div>
+    <div>
+      <span class="xref">StyledElement.StyleKey</span>
+    </div>
+    <div>
+      <span class="xref">StyledElement.Resources</span>
+    </div>
+    <div>
+      <span class="xref">StyledElement.TemplatedParent</span>
+    </div>
+    <div>
+      <span class="xref">StyledElement.Theme</span>
+    </div>
+    <div>
+      <span class="xref">StyledElement.LogicalChildren</span>
+    </div>
+    <div>
+      <span class="xref">StyledElement.PseudoClasses</span>
+    </div>
+    <div>
+      <span class="xref">StyledElement.StyleKeyOverride</span>
+    </div>
+    <div>
+      <span class="xref">StyledElement.Parent</span>
+    </div>
+    <div>
+      <span class="xref">StyledElement.ActualThemeVariant</span>
+    </div>
+    <div>
+      <span class="xref">StyledElement.AttachedToLogicalTree</span>
+    </div>
+    <div>
+      <span class="xref">StyledElement.DetachedFromLogicalTree</span>
+    </div>
+    <div>
+      <span class="xref">StyledElement.DataContextChanged</span>
+    </div>
+    <div>
+      <span class="xref">StyledElement.Initialized</span>
+    </div>
+    <div>
+      <span class="xref">StyledElement.ResourcesChanged</span>
+    </div>
+    <div>
+      <span class="xref">StyledElement.ActualThemeVariantChanged</span>
+    </div>
+    <div>
+      <span class="xref">Animatable.TransitionsProperty</span>
+    </div>
+    <div>
+      <span class="xref">Animatable.OnPropertyChangedCore(AvaloniaPropertyChangedEventArgs)</span>
+    </div>
+    <div>
+      <span class="xref">Animatable.Transitions</span>
+    </div>
+    <div>
+      <span class="xref">AvaloniaObject.CheckAccess()</span>
+    </div>
+    <div>
+      <span class="xref">AvaloniaObject.VerifyAccess()</span>
+    </div>
+    <div>
+      <span class="xref">AvaloniaObject.ClearValue(AvaloniaProperty)</span>
+    </div>
+    <div>
+      <span class="xref">AvaloniaObject.ClearValue&lt;T&gt;(AvaloniaProperty&lt;T&gt;)</span>
+    </div>
+    <div>
+      <span class="xref">AvaloniaObject.ClearValue&lt;T&gt;(StyledProperty&lt;T&gt;)</span>
+    </div>
+    <div>
+      <span class="xref">AvaloniaObject.ClearValue&lt;T&gt;(DirectPropertyBase&lt;T&gt;)</span>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">AvaloniaObject.Equals(object)</a>
+    </div>
+    <div>
+      <span class="xref">AvaloniaObject.GetHashCode()</span>
+    </div>
+    <div>
+      <span class="xref">AvaloniaObject.GetValue(AvaloniaProperty)</span>
+    </div>
+    <div>
+      <span class="xref">AvaloniaObject.GetValue&lt;T&gt;(StyledProperty&lt;T&gt;)</span>
+    </div>
+    <div>
+      <span class="xref">AvaloniaObject.GetValue&lt;T&gt;(DirectPropertyBase&lt;T&gt;)</span>
+    </div>
+    <div>
+      <span class="xref">AvaloniaObject.GetBaseValue&lt;T&gt;(StyledProperty&lt;T&gt;)</span>
+    </div>
+    <div>
+      <span class="xref">AvaloniaObject.IsAnimating(AvaloniaProperty)</span>
+    </div>
+    <div>
+      <span class="xref">AvaloniaObject.IsSet(AvaloniaProperty)</span>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">AvaloniaObject.SetValue(AvaloniaProperty, object, BindingPriority)</a>
+    </div>
+    <div>
+      <span class="xref">AvaloniaObject.SetValue&lt;T&gt;(StyledProperty&lt;T&gt;, T, BindingPriority)</span>
+    </div>
+    <div>
+      <span class="xref">AvaloniaObject.SetValue&lt;T&gt;(DirectPropertyBase&lt;T&gt;, T)</span>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">AvaloniaObject.SetCurrentValue(AvaloniaProperty, object)</a>
+    </div>
+    <div>
+      <span class="xref">AvaloniaObject.SetCurrentValue&lt;T&gt;(StyledProperty&lt;T&gt;, T)</span>
+    </div>
+    <div>
+      <span class="xref">AvaloniaObject.Bind(AvaloniaProperty, IBinding)</span>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iobservable-1">AvaloniaObject.Bind(AvaloniaProperty, IObservable&lt;object&gt;, BindingPriority)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iobservable-1">AvaloniaObject.Bind&lt;T&gt;(StyledProperty&lt;T&gt;, IObservable&lt;object&gt;, BindingPriority)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iobservable-1">AvaloniaObject.Bind&lt;T&gt;(StyledProperty&lt;T&gt;, IObservable&lt;T&gt;, BindingPriority)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iobservable-1">AvaloniaObject.Bind&lt;T&gt;(StyledProperty&lt;T&gt;, IObservable&lt;BindingValue&lt;T&gt;&gt;, BindingPriority)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iobservable-1">AvaloniaObject.Bind&lt;T&gt;(DirectPropertyBase&lt;T&gt;, IObservable&lt;object&gt;)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iobservable-1">AvaloniaObject.Bind&lt;T&gt;(DirectPropertyBase&lt;T&gt;, IObservable&lt;T&gt;)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iobservable-1">AvaloniaObject.Bind&lt;T&gt;(DirectPropertyBase&lt;T&gt;, IObservable&lt;BindingValue&lt;T&gt;&gt;)</a>
+    </div>
+    <div>
+      <span class="xref">AvaloniaObject.CoerceValue(AvaloniaProperty)</span>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.exception">AvaloniaObject.UpdateDataValidation(AvaloniaProperty, BindingValueType, Exception)</a>
+    </div>
+    <div>
+      <span class="xref">AvaloniaObject.RaisePropertyChanged&lt;T&gt;(DirectPropertyBase&lt;T&gt;, T, T)</span>
+    </div>
+    <div>
+      <span class="xref">AvaloniaObject.SetAndRaise&lt;T&gt;(DirectPropertyBase&lt;T&gt;, ref T, T)</span>
+    </div>
+    <div>
+      <span class="xref">AvaloniaObject.InheritanceParent</span>
+    </div>
+    <div>
+      <span class="xref">AvaloniaObject.this[AvaloniaProperty]</span>
+    </div>
+    <div>
+      <span class="xref">AvaloniaObject.this[IndexerDescriptor]</span>
+    </div>
+    <div>
+      <span class="xref">AvaloniaObject.PropertyChanged</span>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">object.Equals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype">object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone">object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals">object.ReferenceEquals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring">object.ToString()</a>
+    </div>
+  </dd></dl>
+
+
+
+
+
+
+  <h2 class="section" id="constructors">Constructors
+</h2>
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_ModelContainer3DX__ctor_" data-uid="HelixToolkit.Avalonia.SharpDX.ModelContainer3DX.#ctor*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_ModelContainer3DX__ctor" data-uid="HelixToolkit.Avalonia.SharpDX.ModelContainer3DX.#ctor">
+  ModelContainer3DX()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Controls/ModelContainer3DX.cs/#L635"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ModelContainer3DX()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <h2 class="section" id="fields">Fields
+</h2>
+
+
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_ModelContainer3DX_EffectsManagerProperty" data-uid="HelixToolkit.Avalonia.SharpDX.ModelContainer3DX.EffectsManagerProperty">
+  EffectsManagerProperty
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Controls/ModelContainer3DX.cs/#L43"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>The EffectsManager property. Suggest to bind effects manager in viewmodel. Assign effect manager from code behind may cause memory leak</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly AvaloniaProperty EffectsManagerProperty</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">AvaloniaProperty</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+  <h2 class="section" id="properties">Properties
+</h2>
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_ModelContainer3DX_ActualHeight_" data-uid="HelixToolkit.Avalonia.SharpDX.ModelContainer3DX.ActualHeight*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_ModelContainer3DX_ActualHeight" data-uid="HelixToolkit.Avalonia.SharpDX.ModelContainer3DX.ActualHeight">
+  ActualHeight
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Controls/ModelContainer3DX.cs/#L155"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the actual height.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float ActualHeight { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>The actual height.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_ModelContainer3DX_ActualWidth_" data-uid="HelixToolkit.Avalonia.SharpDX.ModelContainer3DX.ActualWidth*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_ModelContainer3DX_ActualWidth" data-uid="HelixToolkit.Avalonia.SharpDX.ModelContainer3DX.ActualWidth">
+  ActualWidth
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Controls/ModelContainer3DX.cs/#L147"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the actual width.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float ActualWidth { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>The actual width.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_ModelContainer3DX_ClearColor_" data-uid="HelixToolkit.Avalonia.SharpDX.ModelContainer3DX.ClearColor*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_ModelContainer3DX_ClearColor" data-uid="HelixToolkit.Avalonia.SharpDX.ModelContainer3DX.ClearColor">
+  ClearColor
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Controls/ModelContainer3DX.cs/#L400"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the color of the clear.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[TypeConverter(typeof(Color4Converter))]
+public Color4 ClearColor { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Maths.Color4.html">Color4</a></dt>
+    <dd><p>The color of the clear.</p>
+</dd>
+  </dl>
+
+
+
+
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.notimplementedexception">NotImplementedException</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_ModelContainer3DX_CurrentRenderHost_" data-uid="HelixToolkit.Avalonia.SharpDX.ModelContainer3DX.CurrentRenderHost*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_ModelContainer3DX_CurrentRenderHost" data-uid="HelixToolkit.Avalonia.SharpDX.ModelContainer3DX.CurrentRenderHost">
+  CurrentRenderHost
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Controls/ModelContainer3DX.cs/#L115"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IRenderHost? CurrentRenderHost { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.IRenderHost.html">IRenderHost</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_ModelContainer3DX_D2DTarget_" data-uid="HelixToolkit.Avalonia.SharpDX.ModelContainer3DX.D2DTarget*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_ModelContainer3DX_D2DTarget" data-uid="HelixToolkit.Avalonia.SharpDX.ModelContainer3DX.D2DTarget">
+  D2DTarget
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Controls/ModelContainer3DX.cs/#L582"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the d2d target.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public D2DTargetProxy? D2DTarget { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.Core2D.D2DTargetProxy.html">D2DTargetProxy</a></dt>
+    <dd><p>The d2d target.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_ModelContainer3DX_DepthStencilBufferView_" data-uid="HelixToolkit.Avalonia.SharpDX.ModelContainer3DX.DepthStencilBufferView*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_ModelContainer3DX_DepthStencilBufferView" data-uid="HelixToolkit.Avalonia.SharpDX.ModelContainer3DX.DepthStencilBufferView">
+  DepthStencilBufferView
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Controls/ModelContainer3DX.cs/#L569"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the depth stencil buffer view.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public DepthStencilView? DepthStencilBufferView { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">DepthStencilView</span></dt>
+    <dd><p>The depth stencil buffer view.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_ModelContainer3DX_Device_" data-uid="HelixToolkit.Avalonia.SharpDX.ModelContainer3DX.Device*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_ModelContainer3DX_Device" data-uid="HelixToolkit.Avalonia.SharpDX.ModelContainer3DX.Device">
+  Device
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Controls/ModelContainer3DX.cs/#L366"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the device.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Device1? Device { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">Device1</span></dt>
+    <dd><p>The device.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_ModelContainer3DX_Device2D_" data-uid="HelixToolkit.Avalonia.SharpDX.ModelContainer3DX.Device2D*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_ModelContainer3DX_Device2D" data-uid="HelixToolkit.Avalonia.SharpDX.ModelContainer3DX.Device2D">
+  Device2D
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Controls/ModelContainer3DX.cs/#L380"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the device2d.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Device? Device2D { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">Device</span></dt>
+    <dd><p>The device2d.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_ModelContainer3DX_DpiScale_" data-uid="HelixToolkit.Avalonia.SharpDX.ModelContainer3DX.DpiScale*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_ModelContainer3DX_DpiScale" data-uid="HelixToolkit.Avalonia.SharpDX.ModelContainer3DX.DpiScale">
+  DpiScale
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Controls/ModelContainer3DX.cs/#L160"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the dpi scale.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float DpiScale { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>The dpi scale.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_ModelContainer3DX_EffectsManager_" data-uid="HelixToolkit.Avalonia.SharpDX.ModelContainer3DX.EffectsManager*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_ModelContainer3DX_EffectsManager" data-uid="HelixToolkit.Avalonia.SharpDX.ModelContainer3DX.EffectsManager">
+  EffectsManager
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Controls/ModelContainer3DX.cs/#L52"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the <a class="xref" href="HelixToolkit.Avalonia.SharpDX.ModelContainer3DX.html#HelixToolkit_Avalonia_SharpDX_ModelContainer3DX_EffectsManagerProperty">EffectsManagerProperty</a>.</p>
+<p>The EffectsManager property. Suggest bind effects manager in viewmodel. Assign effect manager from code behind may cause memory leak.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IEffectsManager? EffectsManager { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.IEffectsManager.html">IEffectsManager</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_ModelContainer3DX_EnableParallelProcessing_" data-uid="HelixToolkit.Avalonia.SharpDX.ModelContainer3DX.EnableParallelProcessing*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_ModelContainer3DX_EnableParallelProcessing" data-uid="HelixToolkit.Avalonia.SharpDX.ModelContainer3DX.EnableParallelProcessing">
+  EnableParallelProcessing
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Controls/ModelContainer3DX.cs/#L633"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Use separate thread to do non-rendering related tasks during render call.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool EnableParallelProcessing { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_ModelContainer3DX_EnableRenderFrustum_" data-uid="HelixToolkit.Avalonia.SharpDX.ModelContainer3DX.EnableRenderFrustum*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_ModelContainer3DX_EnableRenderFrustum" data-uid="HelixToolkit.Avalonia.SharpDX.ModelContainer3DX.EnableRenderFrustum">
+  EnableRenderFrustum
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Controls/ModelContainer3DX.cs/#L491"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets a value indicating whether [enable render frustum].</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool EnableRenderFrustum { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><code>true</code> if [enable render frustum]; otherwise, <code>false</code>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_ModelContainer3DX_EnableSharingModelMode_" data-uid="HelixToolkit.Avalonia.SharpDX.ModelContainer3DX.EnableSharingModelMode*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_ModelContainer3DX_EnableSharingModelMode" data-uid="HelixToolkit.Avalonia.SharpDX.ModelContainer3DX.EnableSharingModelMode">
+  EnableSharingModelMode
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Controls/ModelContainer3DX.cs/#L540"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets a value indicating whether [enable sharing model mode].</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool EnableSharingModelMode { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><code>true</code> if [enable sharing model mode]; otherwise, <code>false</code>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_ModelContainer3DX_FeatureLevel_" data-uid="HelixToolkit.Avalonia.SharpDX.ModelContainer3DX.FeatureLevel*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_ModelContainer3DX_FeatureLevel" data-uid="HelixToolkit.Avalonia.SharpDX.ModelContainer3DX.FeatureLevel">
+  FeatureLevel
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Controls/ModelContainer3DX.cs/#L444"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the feature level.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public FeatureLevel FeatureLevel { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">FeatureLevel</span></dt>
+    <dd><p>The feature level.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_ModelContainer3DX_GUID_" data-uid="HelixToolkit.Avalonia.SharpDX.ModelContainer3DX.GUID*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_ModelContainer3DX_GUID" data-uid="HelixToolkit.Avalonia.SharpDX.ModelContainer3DX.GUID">
+  GUID
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Controls/ModelContainer3DX.cs/#L101"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the unique identifier.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Guid GUID { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.guid">Guid</a></dt>
+    <dd><p>The unique identifier.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_ModelContainer3DX_ImmediateDeviceContext_" data-uid="HelixToolkit.Avalonia.SharpDX.ModelContainer3DX.ImmediateDeviceContext*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_ModelContainer3DX_ImmediateDeviceContext" data-uid="HelixToolkit.Avalonia.SharpDX.ModelContainer3DX.ImmediateDeviceContext">
+  ImmediateDeviceContext
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Controls/ModelContainer3DX.cs/#L139"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the immediate device context.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public DeviceContextProxy? ImmediateDeviceContext { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.Render.DeviceContextProxy.html">DeviceContextProxy</a></dt>
+    <dd><p>The immediate device context.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_ModelContainer3DX_IsBusy_" data-uid="HelixToolkit.Avalonia.SharpDX.ModelContainer3DX.IsBusy*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_ModelContainer3DX_IsBusy" data-uid="HelixToolkit.Avalonia.SharpDX.ModelContainer3DX.IsBusy">
+  IsBusy
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Controls/ModelContainer3DX.cs/#L477"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Indicates if DPFCanvas busy on rendering.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsBusy { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_ModelContainer3DX_IsDeferredLighting_" data-uid="HelixToolkit.Avalonia.SharpDX.ModelContainer3DX.IsDeferredLighting*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_ModelContainer3DX_IsDeferredLighting" data-uid="HelixToolkit.Avalonia.SharpDX.ModelContainer3DX.IsDeferredLighting">
+  IsDeferredLighting
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Controls/ModelContainer3DX.cs/#L511"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets a value indicating whether this instance is deferred lighting.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsDeferredLighting { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><code>true</code> if this instance is deferred lighting; otherwise, <code>false</code>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_ModelContainer3DX_IsRendering_" data-uid="HelixToolkit.Avalonia.SharpDX.ModelContainer3DX.IsRendering*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_ModelContainer3DX_IsRendering" data-uid="HelixToolkit.Avalonia.SharpDX.ModelContainer3DX.IsRendering">
+  IsRendering
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Controls/ModelContainer3DX.cs/#L108"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets a value indicating whether this instance is rendering.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsRendering { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><code>true</code> if this instance is rendering; otherwise, <code>false</code>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_ModelContainer3DX_IsShadowMapEnabled_" data-uid="HelixToolkit.Avalonia.SharpDX.ModelContainer3DX.IsShadowMapEnabled*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_ModelContainer3DX_IsShadowMapEnabled" data-uid="HelixToolkit.Avalonia.SharpDX.ModelContainer3DX.IsShadowMapEnabled">
+  IsShadowMapEnabled
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Controls/ModelContainer3DX.cs/#L422"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets a value indicating whether this instance is shadow map enabled.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsShadowMapEnabled { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><code>true</code> if this instance is shadow map enabled; otherwise, <code>false</code>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.notimplementedexception">NotImplementedException</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_ModelContainer3DX_MSAA_" data-uid="HelixToolkit.Avalonia.SharpDX.ModelContainer3DX.MSAA*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_ModelContainer3DX_MSAA" data-uid="HelixToolkit.Avalonia.SharpDX.ModelContainer3DX.MSAA">
+  MSAA
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Controls/ModelContainer3DX.cs/#L439"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the msaa.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public MSAALevel MSAA { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.MSAALevel.html">MSAALevel</a></dt>
+    <dd><p>The msaa.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_ModelContainer3DX_MaxFPS_" data-uid="HelixToolkit.Avalonia.SharpDX.ModelContainer3DX.MaxFPS*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_ModelContainer3DX_MaxFPS" data-uid="HelixToolkit.Avalonia.SharpDX.ModelContainer3DX.MaxFPS">
+  MaxFPS
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Controls/ModelContainer3DX.cs/#L501"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the maximum FPS.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public uint MaxFPS { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.uint32">uint</a></dt>
+    <dd><p>The maximum FPS.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_ModelContainer3DX_PerFrameFlattenedScene_" data-uid="HelixToolkit.Avalonia.SharpDX.ModelContainer3DX.PerFrameFlattenedScene*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_ModelContainer3DX_PerFrameFlattenedScene" data-uid="HelixToolkit.Avalonia.SharpDX.ModelContainer3DX.PerFrameFlattenedScene">
+  PerFrameFlattenedScene
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Controls/ModelContainer3DX.cs/#L171"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the current frame renderables for rendering.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public FastList&lt;KeyValuePair&lt;int, SceneNode&gt;&gt; PerFrameFlattenedScene { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.FastList-1.html">FastList</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.keyvaluepair-2">KeyValuePair</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a>, <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html">SceneNode</a>&gt;&gt;</dt>
+    <dd><p>The per frame renderable.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_ModelContainer3DX_PerFrameLights_" data-uid="HelixToolkit.Avalonia.SharpDX.ModelContainer3DX.PerFrameLights*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_ModelContainer3DX_PerFrameLights" data-uid="HelixToolkit.Avalonia.SharpDX.ModelContainer3DX.PerFrameLights">
+  PerFrameLights
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Controls/ModelContainer3DX.cs/#L184"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the current frame Lights for rendering.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IEnumerable&lt;LightNode?&gt; PerFrameLights { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="HelixToolkit.SharpDX.Model.Scene.LightNode.html">LightNode</a>&gt;</dt>
+    <dd><p>The per frame renderable.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_ModelContainer3DX_PerFrameNodesWithPostEffect_" data-uid="HelixToolkit.Avalonia.SharpDX.ModelContainer3DX.PerFrameNodesWithPostEffect*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_ModelContainer3DX_PerFrameNodesWithPostEffect" data-uid="HelixToolkit.Avalonia.SharpDX.ModelContainer3DX.PerFrameNodesWithPostEffect">
+  PerFrameNodesWithPostEffect
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Controls/ModelContainer3DX.cs/#L197"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the per frame post effect cores.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public FastList&lt;SceneNode&gt; PerFrameNodesWithPostEffect { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.FastList-1.html">FastList</a>&lt;<a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html">SceneNode</a>&gt;</dt>
+    <dd><p>The per frame post effect cores.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_ModelContainer3DX_PerFrameOpaqueNodes_" data-uid="HelixToolkit.Avalonia.SharpDX.ModelContainer3DX.PerFrameOpaqueNodes*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_ModelContainer3DX_PerFrameOpaqueNodes" data-uid="HelixToolkit.Avalonia.SharpDX.ModelContainer3DX.PerFrameOpaqueNodes">
+  PerFrameOpaqueNodes
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Controls/ModelContainer3DX.cs/#L210"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the per frame general render cores.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public FastList&lt;SceneNode&gt; PerFrameOpaqueNodes { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.FastList-1.html">FastList</a>&lt;<a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html">SceneNode</a>&gt;</dt>
+    <dd><p>The per frame general render cores.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_ModelContainer3DX_PerFrameOpaqueNodesInFrustum_" data-uid="HelixToolkit.Avalonia.SharpDX.ModelContainer3DX.PerFrameOpaqueNodesInFrustum*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_ModelContainer3DX_PerFrameOpaqueNodesInFrustum" data-uid="HelixToolkit.Avalonia.SharpDX.ModelContainer3DX.PerFrameOpaqueNodesInFrustum">
+  PerFrameOpaqueNodesInFrustum
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Controls/ModelContainer3DX.cs/#L223"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the per frame opaque nodes in frustum.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public FastList&lt;SceneNode&gt; PerFrameOpaqueNodesInFrustum { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.FastList-1.html">FastList</a>&lt;<a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html">SceneNode</a>&gt;</dt>
+    <dd><p>The per frame opaque nodes in frustum.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_ModelContainer3DX_PerFrameParticleNodes_" data-uid="HelixToolkit.Avalonia.SharpDX.ModelContainer3DX.PerFrameParticleNodes*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_ModelContainer3DX_PerFrameParticleNodes" data-uid="HelixToolkit.Avalonia.SharpDX.ModelContainer3DX.PerFrameParticleNodes">
+  PerFrameParticleNodes
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Controls/ModelContainer3DX.cs/#L262"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the per frame particle nodes. <a class="xref" href="HelixToolkit.SharpDX.RenderType.html#HelixToolkit_SharpDX_RenderType_Particle">Particle</a></p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public FastList&lt;SceneNode&gt; PerFrameParticleNodes { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.FastList-1.html">FastList</a>&lt;<a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html">SceneNode</a>&gt;</dt>
+    <dd><p>The per frame particle nodes.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_ModelContainer3DX_PerFrameTransparentNodes_" data-uid="HelixToolkit.Avalonia.SharpDX.ModelContainer3DX.PerFrameTransparentNodes*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_ModelContainer3DX_PerFrameTransparentNodes" data-uid="HelixToolkit.Avalonia.SharpDX.ModelContainer3DX.PerFrameTransparentNodes">
+  PerFrameTransparentNodes
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Controls/ModelContainer3DX.cs/#L236"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the per frame transparent nodes. , <a class="xref" href="HelixToolkit.SharpDX.RenderType.html#HelixToolkit_SharpDX_RenderType_Transparent">Transparent</a></p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public FastList&lt;SceneNode&gt; PerFrameTransparentNodes { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.FastList-1.html">FastList</a>&lt;<a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html">SceneNode</a>&gt;</dt>
+    <dd><p>The per frame transparent nodes.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_ModelContainer3DX_PerFrameTransparentNodesInFrustum_" data-uid="HelixToolkit.Avalonia.SharpDX.ModelContainer3DX.PerFrameTransparentNodesInFrustum*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_ModelContainer3DX_PerFrameTransparentNodesInFrustum" data-uid="HelixToolkit.Avalonia.SharpDX.ModelContainer3DX.PerFrameTransparentNodesInFrustum">
+  PerFrameTransparentNodesInFrustum
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Controls/ModelContainer3DX.cs/#L249"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the per frame transparent nodes in frustum.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public FastList&lt;SceneNode&gt; PerFrameTransparentNodesInFrustum { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.FastList-1.html">FastList</a>&lt;<a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html">SceneNode</a>&gt;</dt>
+    <dd><p>The per frame transparent nodes in frustum.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_ModelContainer3DX_RenderBuffer_" data-uid="HelixToolkit.Avalonia.SharpDX.ModelContainer3DX.RenderBuffer*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_ModelContainer3DX_RenderBuffer" data-uid="HelixToolkit.Avalonia.SharpDX.ModelContainer3DX.RenderBuffer">
+  RenderBuffer
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Controls/ModelContainer3DX.cs/#L623"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the render buffer.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public DX11RenderBufferProxyBase? RenderBuffer { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.Render.DX11RenderBufferProxyBase.html">DX11RenderBufferProxyBase</a></dt>
+    <dd><p>The render buffer.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_ModelContainer3DX_RenderConfiguration_" data-uid="HelixToolkit.Avalonia.SharpDX.ModelContainer3DX.RenderConfiguration*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_ModelContainer3DX_RenderConfiguration" data-uid="HelixToolkit.Avalonia.SharpDX.ModelContainer3DX.RenderConfiguration">
+  RenderConfiguration
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Controls/ModelContainer3DX.cs/#L618"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the render configuration.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public DX11RenderHostConfiguration RenderConfiguration { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.Render.DX11RenderHostConfiguration.html">DX11RenderHostConfiguration</a></dt>
+    <dd><p>The render configuration.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_ModelContainer3DX_RenderContext_" data-uid="HelixToolkit.Avalonia.SharpDX.ModelContainer3DX.RenderContext*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_ModelContainer3DX_RenderContext" data-uid="HelixToolkit.Avalonia.SharpDX.ModelContainer3DX.RenderContext">
+  RenderContext
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Controls/ModelContainer3DX.cs/#L467"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the render context.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public RenderContext? RenderContext { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.RenderContext.html">RenderContext</a></dt>
+    <dd><p>The render context.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_ModelContainer3DX_RenderStatistics_" data-uid="HelixToolkit.Avalonia.SharpDX.ModelContainer3DX.RenderStatistics*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_ModelContainer3DX_RenderStatistics" data-uid="HelixToolkit.Avalonia.SharpDX.ModelContainer3DX.RenderStatistics">
+  RenderStatistics
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Controls/ModelContainer3DX.cs/#L595"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the render statistics.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IRenderStatistics? RenderStatistics { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.Utilities.IRenderStatistics.html">IRenderStatistics</a></dt>
+    <dd><p>The render statistics.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_ModelContainer3DX_RenderTargetBufferView_" data-uid="HelixToolkit.Avalonia.SharpDX.ModelContainer3DX.RenderTargetBufferView*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_ModelContainer3DX_RenderTargetBufferView" data-uid="HelixToolkit.Avalonia.SharpDX.ModelContainer3DX.RenderTargetBufferView">
+  RenderTargetBufferView
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Controls/ModelContainer3DX.cs/#L556"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the color buffer view.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public RenderTargetView? RenderTargetBufferView { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">RenderTargetView</span></dt>
+    <dd><p>The color buffer view.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_ModelContainer3DX_RenderTechnique_" data-uid="HelixToolkit.Avalonia.SharpDX.ModelContainer3DX.RenderTechnique*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_ModelContainer3DX_RenderTechnique" data-uid="HelixToolkit.Avalonia.SharpDX.ModelContainer3DX.RenderTechnique">
+  RenderTechnique
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Controls/ModelContainer3DX.cs/#L64"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>This technique is used for the entire render pass
+by all Element3D if not specified otherwise in
+the elements itself</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IRenderTechnique? RenderTechnique { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.IRenderTechnique.html">IRenderTechnique</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_ModelContainer3DX_Renderables_" data-uid="HelixToolkit.Avalonia.SharpDX.ModelContainer3DX.Renderables*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_ModelContainer3DX_Renderables" data-uid="HelixToolkit.Avalonia.SharpDX.ModelContainer3DX.Renderables">
+  Renderables
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Controls/ModelContainer3DX.cs/#L350"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IEnumerable&lt;SceneNode?&gt; Renderables { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html">SceneNode</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_ModelContainer3DX_Renderer_" data-uid="HelixToolkit.Avalonia.SharpDX.ModelContainer3DX.Renderer*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_ModelContainer3DX_Renderer" data-uid="HelixToolkit.Avalonia.SharpDX.ModelContainer3DX.Renderer">
+  Renderer
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Controls/ModelContainer3DX.cs/#L131"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Renderer</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IRenderer? Renderer { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.Render.IRenderer.html">IRenderer</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_ModelContainer3DX_SharedModelContainer_" data-uid="HelixToolkit.Avalonia.SharpDX.ModelContainer3DX.SharedModelContainer*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_ModelContainer3DX_SharedModelContainer" data-uid="HelixToolkit.Avalonia.SharpDX.ModelContainer3DX.SharedModelContainer">
+  SharedModelContainer
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Controls/ModelContainer3DX.cs/#L524"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the shared model container.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IModelContainer? SharedModelContainer { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.IModelContainer.html">IModelContainer</a></dt>
+    <dd><p>The shared model container.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_ModelContainer3DX_ShowRenderDetail_" data-uid="HelixToolkit.Avalonia.SharpDX.ModelContainer3DX.ShowRenderDetail*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_ModelContainer3DX_ShowRenderDetail" data-uid="HelixToolkit.Avalonia.SharpDX.ModelContainer3DX.ShowRenderDetail">
+  ShowRenderDetail
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Controls/ModelContainer3DX.cs/#L608"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets a value indicating whether [show statistics].</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public RenderDetail ShowRenderDetail { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.RenderDetail.html">RenderDetail</a></dt>
+    <dd><p><code>true</code> if [show statistics]; otherwise, <code>false</code>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_ModelContainer3DX_Viewport_" data-uid="HelixToolkit.Avalonia.SharpDX.ModelContainer3DX.Viewport*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_ModelContainer3DX_Viewport" data-uid="HelixToolkit.Avalonia.SharpDX.ModelContainer3DX.Viewport">
+  Viewport
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Controls/ModelContainer3DX.cs/#L457"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the viewport.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IViewport3DX? Viewport { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.IViewport3DX.html">IViewport3DX</a></dt>
+    <dd><p>The viewport.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h2 class="section" id="methods">Methods
+</h2>
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_ModelContainer3DX_Attach_" data-uid="HelixToolkit.Avalonia.SharpDX.ModelContainer3DX.Attach*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_ModelContainer3DX_Attach_HelixToolkit_SharpDX_IRenderHost_" data-uid="HelixToolkit.Avalonia.SharpDX.ModelContainer3DX.Attach(HelixToolkit.SharpDX.IRenderHost)">
+  Attach(IRenderHost)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Controls/ModelContainer3DX.cs/#L653"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Attaches the specified host.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Attach(IRenderHost host)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>host</code> <a class="xref" href="HelixToolkit.SharpDX.IRenderHost.html">IRenderHost</a></dt>
+    <dd><p>The host.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_ModelContainer3DX_AttachViewport3DX_" data-uid="HelixToolkit.Avalonia.SharpDX.ModelContainer3DX.AttachViewport3DX*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_ModelContainer3DX_AttachViewport3DX_HelixToolkit_SharpDX_IViewport3DX_" data-uid="HelixToolkit.Avalonia.SharpDX.ModelContainer3DX.AttachViewport3DX(HelixToolkit.SharpDX.IViewport3DX)">
+  AttachViewport3DX(IViewport3DX)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Controls/ModelContainer3DX.cs/#L287"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void AttachViewport3DX(IViewport3DX viewport)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>viewport</code> <a class="xref" href="HelixToolkit.SharpDX.IViewport3DX.html">IViewport3DX</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_ModelContainer3DX_ClearRenderTarget_" data-uid="HelixToolkit.Avalonia.SharpDX.ModelContainer3DX.ClearRenderTarget*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_ModelContainer3DX_ClearRenderTarget_HelixToolkit_SharpDX_Render_DeviceContextProxy_System_Boolean_System_Boolean_" data-uid="HelixToolkit.Avalonia.SharpDX.ModelContainer3DX.ClearRenderTarget(HelixToolkit.SharpDX.Render.DeviceContextProxy,System.Boolean,System.Boolean)">
+  ClearRenderTarget(DeviceContextProxy, bool, bool)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Controls/ModelContainer3DX.cs/#L769"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Clears the render target.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void ClearRenderTarget(DeviceContextProxy context, bool clearBackBuffer, bool clearDepthStencilBuffer)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>context</code> <a class="xref" href="HelixToolkit.SharpDX.Render.DeviceContextProxy.html">DeviceContextProxy</a></dt>
+    <dd><p>The context.</p>
+</dd>
+    <dt><code>clearBackBuffer</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p>if set to <code>true</code> [clear back buffer].</p>
+</dd>
+    <dt><code>clearDepthStencilBuffer</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p>if set to <code>true</code> [clear depth stencil buffer].</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_ModelContainer3DX_Detach_" data-uid="HelixToolkit.Avalonia.SharpDX.ModelContainer3DX.Detach*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_ModelContainer3DX_Detach_HelixToolkit_SharpDX_IRenderHost_" data-uid="HelixToolkit.Avalonia.SharpDX.ModelContainer3DX.Detach(HelixToolkit.SharpDX.IRenderHost)">
+  Detach(IRenderHost)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Controls/ModelContainer3DX.cs/#L683"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Detaches this instance.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Detach(IRenderHost host)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>host</code> <a class="xref" href="HelixToolkit.SharpDX.IRenderHost.html">IRenderHost</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.indexoutofrangeexception">IndexOutOfRangeException</a></dt>
+    <dd><p>D3DCounter is negative.</p>
+</dd>
+  </dl>
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_ModelContainer3DX_DettachViewport3DX_" data-uid="HelixToolkit.Avalonia.SharpDX.ModelContainer3DX.DettachViewport3DX*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_ModelContainer3DX_DettachViewport3DX_HelixToolkit_SharpDX_IViewport3DX_" data-uid="HelixToolkit.Avalonia.SharpDX.ModelContainer3DX.DettachViewport3DX(HelixToolkit.SharpDX.IViewport3DX)">
+  DettachViewport3DX(IViewport3DX)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Controls/ModelContainer3DX.cs/#L297"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void DettachViewport3DX(IViewport3DX viewport)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>viewport</code> <a class="xref" href="HelixToolkit.SharpDX.IViewport3DX.html">IViewport3DX</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_ModelContainer3DX_Dispose_" data-uid="HelixToolkit.Avalonia.SharpDX.ModelContainer3DX.Dispose*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_ModelContainer3DX_Dispose" data-uid="HelixToolkit.Avalonia.SharpDX.ModelContainer3DX.Dispose">
+  Dispose()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Controls/ModelContainer3DX.cs/#L810"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Dispose()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_ModelContainer3DX_Dispose_" data-uid="HelixToolkit.Avalonia.SharpDX.ModelContainer3DX.Dispose*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_ModelContainer3DX_Dispose_System_Boolean_" data-uid="HelixToolkit.Avalonia.SharpDX.ModelContainer3DX.Dispose(System.Boolean)">
+  Dispose(bool)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Controls/ModelContainer3DX.cs/#L776"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual void Dispose(bool disposing)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>disposing</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_ModelContainer3DX_EndD3D_" data-uid="HelixToolkit.Avalonia.SharpDX.ModelContainer3DX.EndD3D*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_ModelContainer3DX_EndD3D" data-uid="HelixToolkit.Avalonia.SharpDX.ModelContainer3DX.EndD3D">
+  EndD3D()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Controls/ModelContainer3DX.cs/#L732"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Ends the d3 d.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void EndD3D()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_ModelContainer3DX_Invalidate_" data-uid="HelixToolkit.Avalonia.SharpDX.ModelContainer3DX.Invalidate*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_ModelContainer3DX_Invalidate_HelixToolkit_SharpDX_Model_Scene_InvalidateTypes_" data-uid="HelixToolkit.Avalonia.SharpDX.ModelContainer3DX.Invalidate(HelixToolkit.SharpDX.Model.Scene.InvalidateTypes)">
+  Invalidate(InvalidateTypes)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Controls/ModelContainer3DX.cs/#L333"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Invalidate by InvalidateTypes</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Invalidate(InvalidateTypes type)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>type</code> <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.InvalidateTypes.html">InvalidateTypes</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_ModelContainer3DX_InvalidatePerFrameRenderables_" data-uid="HelixToolkit.Avalonia.SharpDX.ModelContainer3DX.InvalidatePerFrameRenderables*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_ModelContainer3DX_InvalidatePerFrameRenderables" data-uid="HelixToolkit.Avalonia.SharpDX.ModelContainer3DX.InvalidatePerFrameRenderables">
+  InvalidatePerFrameRenderables()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Controls/ModelContainer3DX.cs/#L325"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Invalidates the per frame renderables.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void InvalidatePerFrameRenderables()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_ModelContainer3DX_InvalidateRender_" data-uid="HelixToolkit.Avalonia.SharpDX.ModelContainer3DX.InvalidateRender*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_ModelContainer3DX_InvalidateRender" data-uid="HelixToolkit.Avalonia.SharpDX.ModelContainer3DX.InvalidateRender">
+  InvalidateRender()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Controls/ModelContainer3DX.cs/#L304"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Invalidates the render.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void InvalidateRender()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_ModelContainer3DX_InvalidateSceneGraph_" data-uid="HelixToolkit.Avalonia.SharpDX.ModelContainer3DX.InvalidateSceneGraph*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_ModelContainer3DX_InvalidateSceneGraph" data-uid="HelixToolkit.Avalonia.SharpDX.ModelContainer3DX.InvalidateSceneGraph">
+  InvalidateSceneGraph()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Controls/ModelContainer3DX.cs/#L315"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Invalidates the scene graph.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void InvalidateSceneGraph()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_ModelContainer3DX_Resize_" data-uid="HelixToolkit.Avalonia.SharpDX.ModelContainer3DX.Resize*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_ModelContainer3DX_Resize_System_Int32_System_Int32_" data-uid="HelixToolkit.Avalonia.SharpDX.ModelContainer3DX.Resize(System.Int32,System.Int32)">
+  Resize(int, int)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Controls/ModelContainer3DX.cs/#L758"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Resizes</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Resize(int width, int height)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>width</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The width.</p>
+</dd>
+    <dt><code>height</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The height.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_ModelContainer3DX_SetDefaultRenderTargets_" data-uid="HelixToolkit.Avalonia.SharpDX.ModelContainer3DX.SetDefaultRenderTargets*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_ModelContainer3DX_SetDefaultRenderTargets_System_Boolean_" data-uid="HelixToolkit.Avalonia.SharpDX.ModelContainer3DX.SetDefaultRenderTargets(System.Boolean)">
+  SetDefaultRenderTargets(bool)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Controls/ModelContainer3DX.cs/#L344"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Sets the default render targets.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void SetDefaultRenderTargets(bool clear = true)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>clear</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p>if set to <code>true</code> [clear].</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_ModelContainer3DX_StartD3D_" data-uid="HelixToolkit.Avalonia.SharpDX.ModelContainer3DX.StartD3D*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_ModelContainer3DX_StartD3D_System_Int32_System_Int32_" data-uid="HelixToolkit.Avalonia.SharpDX.ModelContainer3DX.StartD3D(System.Int32,System.Int32)">
+  StartD3D(int, int)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Controls/ModelContainer3DX.cs/#L725"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Starts the d3 d.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void StartD3D(int width, int height)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>width</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The width.</p>
+</dd>
+    <dt><code>height</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The height.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_ModelContainer3DX_StartRendering_" data-uid="HelixToolkit.Avalonia.SharpDX.ModelContainer3DX.StartRendering*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_ModelContainer3DX_StartRendering" data-uid="HelixToolkit.Avalonia.SharpDX.ModelContainer3DX.StartRendering">
+  StartRendering()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Controls/ModelContainer3DX.cs/#L737"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Starts the rendering. Trigger <a class="xref" href="HelixToolkit.SharpDX.IRenderHost.html#HelixToolkit_SharpDX_IRenderHost_StartRenderLoop">StartRenderLoop</a></p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void StartRendering()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_ModelContainer3DX_StopRendering_" data-uid="HelixToolkit.Avalonia.SharpDX.ModelContainer3DX.StopRendering*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_ModelContainer3DX_StopRendering" data-uid="HelixToolkit.Avalonia.SharpDX.ModelContainer3DX.StopRendering">
+  StopRendering()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Controls/ModelContainer3DX.cs/#L742"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Stops the rendering. Trigger <a class="xref" href="HelixToolkit.SharpDX.IRenderHost.html#HelixToolkit_SharpDX_IRenderHost_StopRenderLoop">StopRenderLoop</a></p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void StopRendering()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_ModelContainer3DX_UpdateAndRender_" data-uid="HelixToolkit.Avalonia.SharpDX.ModelContainer3DX.UpdateAndRender*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_ModelContainer3DX_UpdateAndRender" data-uid="HelixToolkit.Avalonia.SharpDX.ModelContainer3DX.UpdateAndRender">
+  UpdateAndRender()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Controls/ModelContainer3DX.cs/#L749"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Updates the and render.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool UpdateAndRender()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <h2 class="section" id="events">Events
+</h2>
+
+
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_ModelContainer3DX_EffectsManagerChanged" data-uid="HelixToolkit.Avalonia.SharpDX.ModelContainer3DX.EffectsManagerChanged">
+  EffectsManagerChanged
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Controls/ModelContainer3DX.cs/#L631"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Occurs when effects manager is changed.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public event EventHandler&lt;IEffectsManager&gt;? EffectsManagerChanged</code></pre>
+  </div>
+
+
+
+
+
+
+  <h4 class="section">Event Type</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.eventhandler-1">EventHandler</a>&lt;<a class="xref" href="HelixToolkit.SharpDX.IEffectsManager.html">IEffectsManager</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_ModelContainer3DX_ExceptionOccurred" data-uid="HelixToolkit.Avalonia.SharpDX.ModelContainer3DX.ExceptionOccurred">
+  ExceptionOccurred
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Controls/ModelContainer3DX.cs/#L75"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Fired whenever an exception occurred on this object.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public event EventHandler&lt;RelayExceptionEventArgs&gt;? ExceptionOccurred</code></pre>
+  </div>
+
+
+
+
+
+
+  <h4 class="section">Event Type</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.eventhandler-1">EventHandler</a>&lt;<a class="xref" href="HelixToolkit.SharpDX.Utilities.RelayExceptionEventArgs.html">RelayExceptionEventArgs</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_ModelContainer3DX_OnNewRenderTargetTexture" data-uid="HelixToolkit.Avalonia.SharpDX.ModelContainer3DX.OnNewRenderTargetTexture">
+  OnNewRenderTargetTexture
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Controls/ModelContainer3DX.cs/#L79"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Occurs when [on new render target texture].</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public event EventHandler&lt;Texture2DArgs&gt;? OnNewRenderTargetTexture</code></pre>
+  </div>
+
+
+
+
+
+
+  <h4 class="section">Event Type</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.eventhandler-1">EventHandler</a>&lt;<a class="xref" href="HelixToolkit.SharpDX.Texture2DArgs.html">Texture2DArgs</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_ModelContainer3DX_Rendered" data-uid="HelixToolkit.Avalonia.SharpDX.ModelContainer3DX.Rendered">
+  Rendered
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Controls/ModelContainer3DX.cs/#L91"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Occurs when each render frame finished rendering.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public event EventHandler? Rendered</code></pre>
+  </div>
+
+
+
+
+
+
+  <h4 class="section">Event Type</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.eventhandler">EventHandler</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_ModelContainer3DX_SceneGraphUpdated" data-uid="HelixToolkit.Avalonia.SharpDX.ModelContainer3DX.SceneGraphUpdated">
+  SceneGraphUpdated
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Controls/ModelContainer3DX.cs/#L93"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Occurs when [scene graph updated].</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public event EventHandler? SceneGraphUpdated</code></pre>
+  </div>
+
+
+
+
+
+
+  <h4 class="section">Event Type</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.eventhandler">EventHandler</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_ModelContainer3DX_StartRenderLoop" data-uid="HelixToolkit.Avalonia.SharpDX.ModelContainer3DX.StartRenderLoop">
+  StartRenderLoop
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Controls/ModelContainer3DX.cs/#L83"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Occurs when [start render loop].</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public event EventHandler&lt;EventArgs&gt;? StartRenderLoop</code></pre>
+  </div>
+
+
+
+
+
+
+  <h4 class="section">Event Type</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.eventhandler-1">EventHandler</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.eventargs">EventArgs</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_ModelContainer3DX_StopRenderLoop" data-uid="HelixToolkit.Avalonia.SharpDX.ModelContainer3DX.StopRenderLoop">
+  StopRenderLoop
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Controls/ModelContainer3DX.cs/#L87"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Occurs when [stop render loop].</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public event EventHandler&lt;EventArgs&gt;? StopRenderLoop</code></pre>
+  </div>
+
+
+
+
+
+
+  <h4 class="section">Event Type</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.eventhandler-1">EventHandler</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.eventargs">EventArgs</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Controls/ModelContainer3DX.cs/#L38" class="edit-link">Edit this page</a>
+        </div>
+
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          Copyright (c) 2023 Helix Toolkit contributors
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

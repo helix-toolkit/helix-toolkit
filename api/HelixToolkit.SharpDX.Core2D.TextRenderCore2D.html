@@ -1,0 +1,845 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Class TextRenderCore2D | Helix Toolkit - 3D for .NET </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Class TextRenderCore2D | Helix Toolkit - 3D for .NET ">
+      
+      
+      <link rel="icon" href="../images/favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/helix-toolkit/helix-toolkit/new/main-v3/apiSpec/new?filename=HelixToolkit_SharpDX_Core2D_TextRenderCore2D.md&amp;value=---%0Auid%3A%20HelixToolkit.SharpDX.Core2D.TextRenderCore2D%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="ManagedReference">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../images/favicon.ico" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="HelixToolkit.SharpDX.Core2D.TextRenderCore2D">
+
+
+
+  <h1 id="HelixToolkit_SharpDX_Core2D_TextRenderCore2D" data-uid="HelixToolkit.SharpDX.Core2D.TextRenderCore2D" class="text-break">
+Class TextRenderCore2D  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Core2D/TextRenderCore2D.cs/#L8"><i class="bi bi-code-slash"></i></a>
+  </h1>
+
+  <div class="facts text-secondary">
+    <dl><dt>Namespace</dt><dd><a class="xref" href="HelixToolkit.html">HelixToolkit</a>.<a class="xref" href="HelixToolkit.SharpDX.html">SharpDX</a>.<a class="xref" href="HelixToolkit.SharpDX.Core2D.html">Core2D</a></dd></dl>
+  <dl><dt>Assembly</dt><dd>HelixToolkit.SharpDX.dll</dd></dl>
+  </div>
+
+  <div class="markdown summary"></div>
+  <div class="markdown conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class TextRenderCore2D : RenderCore2DBase, IDisposable</code></pre>
+  </div>
+
+
+
+
+  <dl class="typelist inheritance">
+    <dt>Inheritance</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
+      <div><a class="xref" href="HelixToolkit.SharpDX.DisposeObject.html">DisposeObject</a></div>
+      <div><a class="xref" href="HelixToolkit.SharpDX.Core2D.RenderCore2D.html">RenderCore2D</a></div>
+      <div><a class="xref" href="HelixToolkit.SharpDX.Core2D.RenderCore2DBase.html">RenderCore2DBase</a></div>
+      <div><span class="xref">TextRenderCore2D</span></div>
+    </dd>
+  </dl>
+
+  <dl class="typelist implements">
+    <dt>Implements</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.idisposable">IDisposable</a></div>
+    </dd>
+  </dl>
+
+
+  <dl class="typelist inheritedMembers">
+    <dt>Inherited Members</dt>
+    <dd>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Core2D.RenderCore2DBase.html#HelixToolkit_SharpDX_Core2D_RenderCore2DBase_ShowDrawingBorder">RenderCore2DBase.ShowDrawingBorder</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Core2D.RenderCore2DBase.html#HelixToolkit_SharpDX_Core2D_RenderCore2DBase_Render_HelixToolkit_SharpDX_RenderContext2D_">RenderCore2DBase.Render(RenderContext2D)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Core2D.RenderCore2D.html#HelixToolkit_SharpDX_Core2D_RenderCore2D_InvalidateRender">RenderCore2D.InvalidateRender</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Core2D.RenderCore2D.html#HelixToolkit_SharpDX_Core2D_RenderCore2D_IsEmpty">RenderCore2D.IsEmpty</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Core2D.RenderCore2D.html#HelixToolkit_SharpDX_Core2D_RenderCore2D_IsRendering">RenderCore2D.IsRendering</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Core2D.RenderCore2D.html#HelixToolkit_SharpDX_Core2D_RenderCore2D_RenderHost">RenderCore2D.RenderHost</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Core2D.RenderCore2D.html#HelixToolkit_SharpDX_Core2D_RenderCore2D_LayoutBound">RenderCore2D.LayoutBound</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Core2D.RenderCore2D.html#HelixToolkit_SharpDX_Core2D_RenderCore2D_LayoutClippingBound">RenderCore2D.LayoutClippingBound</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Core2D.RenderCore2D.html#HelixToolkit_SharpDX_Core2D_RenderCore2D_Transform">RenderCore2D.Transform</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Core2D.RenderCore2D.html#HelixToolkit_SharpDX_Core2D_RenderCore2D_LocalTransform">RenderCore2D.LocalTransform</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Core2D.RenderCore2D.html#HelixToolkit_SharpDX_Core2D_RenderCore2D_IsMouseOver">RenderCore2D.IsMouseOver</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Core2D.RenderCore2D.html#HelixToolkit_SharpDX_Core2D_RenderCore2D_IsAttached">RenderCore2D.IsAttached</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Core2D.RenderCore2D.html#HelixToolkit_SharpDX_Core2D_RenderCore2D_Attach_HelixToolkit_SharpDX_IRenderHost_">RenderCore2D.Attach(IRenderHost)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Core2D.RenderCore2D.html#HelixToolkit_SharpDX_Core2D_RenderCore2D_Detach">RenderCore2D.Detach()</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Core2D.RenderCore2D.html#HelixToolkit_SharpDX_Core2D_RenderCore2D_OnLayoutBoundChanged_HelixToolkit_Maths_RectangleF_">RenderCore2D.OnLayoutBoundChanged(RectangleF)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Core2D.RenderCore2D.html#HelixToolkit_SharpDX_Core2D_RenderCore2D_InvalidateRenderer">RenderCore2D.InvalidateRenderer()</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Core2D.RenderCore2D.html#HelixToolkit_SharpDX_Core2D_RenderCore2D_SetAffectsRender__1___0____0_">RenderCore2D.SetAffectsRender&lt;T&gt;(ref T, T)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Core2D.RenderCore2D.html#HelixToolkit_SharpDX_Core2D_RenderCore2D_OnDispose_System_Boolean_">RenderCore2D.OnDispose(bool)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.DisposeObject.html#HelixToolkit_SharpDX_DisposeObject_RemoveAndDispose__1___0__">DisposeObject.RemoveAndDispose&lt;T&gt;(ref T)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.DisposeObject.html#HelixToolkit_SharpDX_DisposeObject_RemoveAndDispose__1___0_">DisposeObject.RemoveAndDispose&lt;T&gt;(T)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.DisposeObject.html#HelixToolkit_SharpDX_DisposeObject_RefCount">DisposeObject.RefCount</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.DisposeObject.html#HelixToolkit_SharpDX_DisposeObject_IncRef">DisposeObject.IncRef()</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.DisposeObject.html#HelixToolkit_SharpDX_DisposeObject_ForceDispose">DisposeObject.ForceDispose()</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.DisposeObject.html#HelixToolkit_SharpDX_DisposeObject_IsDisposed">DisposeObject.IsDisposed</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.DisposeObject.html#HelixToolkit_SharpDX_DisposeObject_Dispose">DisposeObject.Dispose()</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.DisposeObject.html#HelixToolkit_SharpDX_DisposeObject_Set__1___0____0_">DisposeObject.Set&lt;T&gt;(ref T, T)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">object.Equals(object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">object.Equals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode">object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype">object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone">object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals">object.ReferenceEquals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring">object.ToString()</a>
+    </div>
+  </dd></dl>
+
+
+
+
+
+
+  <h2 class="section" id="fields">Fields
+</h2>
+
+
+
+  <h3 id="HelixToolkit_SharpDX_Core2D_TextRenderCore2D_textLayoutDirty" data-uid="HelixToolkit.SharpDX.Core2D.TextRenderCore2D.textLayoutDirty">
+  textLayoutDirty
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Core2D/TextRenderCore2D.cs/#L166"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected bool textLayoutDirty</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+  <h2 class="section" id="properties">Properties
+</h2>
+
+
+  <a id="HelixToolkit_SharpDX_Core2D_TextRenderCore2D_Background_" data-uid="HelixToolkit.SharpDX.Core2D.TextRenderCore2D.Background*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Core2D_TextRenderCore2D_Background" data-uid="HelixToolkit.SharpDX.Core2D.TextRenderCore2D.Background">
+  Background
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Core2D/TextRenderCore2D.cs/#L44"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Brush? Background { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">Brush</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Core2D_TextRenderCore2D_DrawingOptions_" data-uid="HelixToolkit.SharpDX.Core2D.TextRenderCore2D.DrawingOptions*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Core2D_TextRenderCore2D_DrawingOptions" data-uid="HelixToolkit.SharpDX.Core2D.TextRenderCore2D.DrawingOptions">
+  DrawingOptions
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Core2D/TextRenderCore2D.cs/#L124"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public DrawTextOptions DrawingOptions { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">DrawTextOptions</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Core2D_TextRenderCore2D_FlowDirection_" data-uid="HelixToolkit.SharpDX.Core2D.TextRenderCore2D.FlowDirection*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Core2D_TextRenderCore2D_FlowDirection" data-uid="HelixToolkit.SharpDX.Core2D.TextRenderCore2D.FlowDirection">
+  FlowDirection
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Core2D/TextRenderCore2D.cs/#L140"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public FlowDirection FlowDirection { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">FlowDirection</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Core2D_TextRenderCore2D_FontFamily_" data-uid="HelixToolkit.SharpDX.Core2D.TextRenderCore2D.FontFamily*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Core2D_TextRenderCore2D_FontFamily" data-uid="HelixToolkit.SharpDX.Core2D.TextRenderCore2D.FontFamily">
+  FontFamily
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Core2D/TextRenderCore2D.cs/#L61"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string FontFamily { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Core2D_TextRenderCore2D_FontSize_" data-uid="HelixToolkit.SharpDX.Core2D.TextRenderCore2D.FontSize*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Core2D_TextRenderCore2D_FontSize" data-uid="HelixToolkit.SharpDX.Core2D.TextRenderCore2D.FontSize">
+  FontSize
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Core2D/TextRenderCore2D.cs/#L77"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int FontSize { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Core2D_TextRenderCore2D_FontStyle_" data-uid="HelixToolkit.SharpDX.Core2D.TextRenderCore2D.FontStyle*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Core2D_TextRenderCore2D_FontStyle" data-uid="HelixToolkit.SharpDX.Core2D.TextRenderCore2D.FontStyle">
+  FontStyle
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Core2D/TextRenderCore2D.cs/#L109"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public FontStyle FontStyle { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">FontStyle</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Core2D_TextRenderCore2D_FontWeight_" data-uid="HelixToolkit.SharpDX.Core2D.TextRenderCore2D.FontWeight*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Core2D_TextRenderCore2D_FontWeight" data-uid="HelixToolkit.SharpDX.Core2D.TextRenderCore2D.FontWeight">
+  FontWeight
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Core2D/TextRenderCore2D.cs/#L93"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public FontWeight FontWeight { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">FontWeight</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Core2D_TextRenderCore2D_Foreground_" data-uid="HelixToolkit.SharpDX.Core2D.TextRenderCore2D.Foreground*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Core2D_TextRenderCore2D_Foreground" data-uid="HelixToolkit.SharpDX.Core2D.TextRenderCore2D.Foreground">
+  Foreground
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Core2D/TextRenderCore2D.cs/#L27"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Brush? Foreground { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">Brush</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Core2D_TextRenderCore2D_MaxHeight_" data-uid="HelixToolkit.SharpDX.Core2D.TextRenderCore2D.MaxHeight*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Core2D_TextRenderCore2D_MaxHeight" data-uid="HelixToolkit.SharpDX.Core2D.TextRenderCore2D.MaxHeight">
+  MaxHeight
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Core2D/TextRenderCore2D.cs/#L185"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float MaxHeight { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Core2D_TextRenderCore2D_MaxWidth_" data-uid="HelixToolkit.SharpDX.Core2D.TextRenderCore2D.MaxWidth*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Core2D_TextRenderCore2D_MaxWidth" data-uid="HelixToolkit.SharpDX.Core2D.TextRenderCore2D.MaxWidth">
+  MaxWidth
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Core2D/TextRenderCore2D.cs/#L169"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float MaxWidth { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Core2D_TextRenderCore2D_Metrices_" data-uid="HelixToolkit.SharpDX.Core2D.TextRenderCore2D.Metrices*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Core2D_TextRenderCore2D_Metrices" data-uid="HelixToolkit.SharpDX.Core2D.TextRenderCore2D.Metrices">
+  Metrices
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Core2D/TextRenderCore2D.cs/#L155"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public TextMetrics Metrices { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">TextMetrics</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Core2D_TextRenderCore2D_Text_" data-uid="HelixToolkit.SharpDX.Core2D.TextRenderCore2D.Text*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Core2D_TextRenderCore2D_Text" data-uid="HelixToolkit.SharpDX.Core2D.TextRenderCore2D.Text">
+  Text
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Core2D/TextRenderCore2D.cs/#L11"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string Text { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Core2D_TextRenderCore2D_TextAlignment_" data-uid="HelixToolkit.SharpDX.Core2D.TextRenderCore2D.TextAlignment*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Core2D_TextRenderCore2D_TextAlignment" data-uid="HelixToolkit.SharpDX.Core2D.TextRenderCore2D.TextAlignment">
+  TextAlignment
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Core2D/TextRenderCore2D.cs/#L127"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public TextAlignment TextAlignment { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">TextAlignment</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h2 class="section" id="methods">Methods
+</h2>
+
+
+  <a id="HelixToolkit_SharpDX_Core2D_TextRenderCore2D_CanRender_" data-uid="HelixToolkit.SharpDX.Core2D.TextRenderCore2D.CanRender*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Core2D_TextRenderCore2D_CanRender_HelixToolkit_SharpDX_RenderContext2D_" data-uid="HelixToolkit.SharpDX.Core2D.TextRenderCore2D.CanRender(HelixToolkit.SharpDX.RenderContext2D)">
+  CanRender(RenderContext2D)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Core2D/TextRenderCore2D.cs/#L247"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Determines whether this instance can render the specified context.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected override bool CanRender(RenderContext2D context)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>context</code> <a class="xref" href="HelixToolkit.SharpDX.RenderContext2D.html">RenderContext2D</a></dt>
+    <dd><p>The context.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><code>true</code> if this instance can render the specified context; otherwise, <code>false</code>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Core2D_TextRenderCore2D_OnAttach_" data-uid="HelixToolkit.SharpDX.Core2D.TextRenderCore2D.OnAttach*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Core2D_TextRenderCore2D_OnAttach_HelixToolkit_SharpDX_IRenderHost_" data-uid="HelixToolkit.SharpDX.Core2D.TextRenderCore2D.OnAttach(HelixToolkit.SharpDX.IRenderHost)">
+  OnAttach(IRenderHost)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Core2D/TextRenderCore2D.cs/#L200"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Called when [attach].</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected override bool OnAttach(IRenderHost host)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>host</code> <a class="xref" href="HelixToolkit.SharpDX.IRenderHost.html">IRenderHost</a></dt>
+    <dd><p>The target.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Core2D_TextRenderCore2D_OnDetach_" data-uid="HelixToolkit.SharpDX.Core2D.TextRenderCore2D.OnDetach*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Core2D_TextRenderCore2D_OnDetach" data-uid="HelixToolkit.SharpDX.Core2D.TextRenderCore2D.OnDetach">
+  OnDetach()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Core2D/TextRenderCore2D.cs/#L215"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Called when [detach].</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected override void OnDetach()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Core2D_TextRenderCore2D_OnRender_" data-uid="HelixToolkit.SharpDX.Core2D.TextRenderCore2D.OnRender*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Core2D_TextRenderCore2D_OnRender_HelixToolkit_SharpDX_RenderContext2D_" data-uid="HelixToolkit.SharpDX.Core2D.TextRenderCore2D.OnRender(HelixToolkit.SharpDX.RenderContext2D)">
+  OnRender(RenderContext2D)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Core2D/TextRenderCore2D.cs/#L252"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Called when [render].</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected override void OnRender(RenderContext2D context)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>context</code> <a class="xref" href="HelixToolkit.SharpDX.RenderContext2D.html">RenderContext2D</a></dt>
+    <dd><p>The context.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Core2D/TextRenderCore2D.cs/#L8" class="edit-link">Edit this page</a>
+        </div>
+
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          Copyright (c) 2023 Helix Toolkit contributors
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Class DiffuseMaterial | Helix Toolkit - 3D for .NET </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Class DiffuseMaterial | Helix Toolkit - 3D for .NET ">
+      
+      
+      <link rel="icon" href="../images/favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/helix-toolkit/helix-toolkit/new/main-v3/apiSpec/new?filename=HelixToolkit_Wpf_SharpDX_DiffuseMaterial.md&amp;value=---%0Auid%3A%20HelixToolkit.Wpf.SharpDX.DiffuseMaterial%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="ManagedReference">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../images/favicon.ico" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="HelixToolkit.Wpf.SharpDX.DiffuseMaterial">
+
+
+
+  <h1 id="HelixToolkit_Wpf_SharpDX_DiffuseMaterial" data-uid="HelixToolkit.Wpf.SharpDX.DiffuseMaterial" class="text-break">
+Class DiffuseMaterial  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Model/Materials/DiffuseMaterial.cs/#L29"><i class="bi bi-code-slash"></i></a>
+  </h1>
+
+  <div class="facts text-secondary">
+    <dl><dt>Namespace</dt><dd><a class="xref" href="HelixToolkit.html">HelixToolkit</a>.<a class="xref" href="HelixToolkit.Wpf.html">Wpf</a>.<a class="xref" href="HelixToolkit.Wpf.SharpDX.html">SharpDX</a></dd></dl>
+  <dl><dt>Assembly</dt><dd>HelixToolkit.Wpf.SharpDX.dll</dd></dl>
+  </div>
+
+  <div class="markdown summary"></div>
+  <div class="markdown conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class DiffuseMaterial : Material</code></pre>
+  </div>
+
+
+
+
+  <dl class="typelist inheritance">
+    <dt>Inheritance</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.threading.dispatcherobject">DispatcherObject</a></div>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.dependencyobject">DependencyObject</a></div>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.freezable">Freezable</a></div>
+      <div><a class="xref" href="HelixToolkit.Wpf.SharpDX.Material.html">Material</a></div>
+      <div><span class="xref">DiffuseMaterial</span></div>
+    </dd>
+  </dl>
+
+
+
+  <dl class="typelist inheritedMembers">
+    <dt>Inherited Members</dt>
+    <dd>
+    <div>
+      <a class="xref" href="HelixToolkit.Wpf.SharpDX.Material.html#HelixToolkit_Wpf_SharpDX_Material_Core">Material.Core</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.Wpf.SharpDX.Material.html#HelixToolkit_Wpf_SharpDX_Material_NameProperty">Material.NameProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.Wpf.SharpDX.Material.html#HelixToolkit_Wpf_SharpDX_Material_Name">Material.Name</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.Wpf.SharpDX.Material.html#HelixToolkit_Wpf_SharpDX_Material_ToString">Material.ToString()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.freezable.clone">Freezable.Clone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.freezable.clonecore">Freezable.CloneCore(Freezable)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.freezable.clonecurrentvalue">Freezable.CloneCurrentValue()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.freezable.clonecurrentvaluecore">Freezable.CloneCurrentValueCore(Freezable)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.freezable.createinstance">Freezable.CreateInstance()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.freezable.freeze#system-windows-freezable-freeze">Freezable.Freeze()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.freezable.freeze#system-windows-freezable-freeze(system-windows-freezable-system-boolean)">Freezable.Freeze(Freezable, bool)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.freezable.freezecore">Freezable.FreezeCore(bool)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.freezable.getasfrozen">Freezable.GetAsFrozen()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.freezable.getasfrozencore">Freezable.GetAsFrozenCore(Freezable)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.freezable.getcurrentvalueasfrozen">Freezable.GetCurrentValueAsFrozen()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.freezable.getcurrentvalueasfrozencore">Freezable.GetCurrentValueAsFrozenCore(Freezable)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.freezable.onchanged">Freezable.OnChanged()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.freezable.onfreezablepropertychanged#system-windows-freezable-onfreezablepropertychanged(system-windows-dependencyobject-system-windows-dependencyobject)">Freezable.OnFreezablePropertyChanged(DependencyObject, DependencyObject)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.freezable.onfreezablepropertychanged#system-windows-freezable-onfreezablepropertychanged(system-windows-dependencyobject-system-windows-dependencyobject-system-windows-dependencyproperty)">Freezable.OnFreezablePropertyChanged(DependencyObject, DependencyObject, DependencyProperty)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.freezable.onpropertychanged">Freezable.OnPropertyChanged(DependencyPropertyChangedEventArgs)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.freezable.readpreamble">Freezable.ReadPreamble()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.freezable.writepostscript">Freezable.WritePostscript()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.freezable.writepreamble">Freezable.WritePreamble()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.freezable.canfreeze">Freezable.CanFreeze</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.freezable.isfrozen">Freezable.IsFrozen</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.freezable.changed">Freezable.Changed</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.dependencyobject.clearvalue#system-windows-dependencyobject-clearvalue(system-windows-dependencyproperty)">DependencyObject.ClearValue(DependencyProperty)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.dependencyobject.clearvalue#system-windows-dependencyobject-clearvalue(system-windows-dependencypropertykey)">DependencyObject.ClearValue(DependencyPropertyKey)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.dependencyobject.coercevalue">DependencyObject.CoerceValue(DependencyProperty)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.dependencyobject.equals">DependencyObject.Equals(object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.dependencyobject.gethashcode">DependencyObject.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.dependencyobject.getlocalvalueenumerator">DependencyObject.GetLocalValueEnumerator()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.dependencyobject.getvalue">DependencyObject.GetValue(DependencyProperty)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.dependencyobject.invalidateproperty">DependencyObject.InvalidateProperty(DependencyProperty)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.dependencyobject.readlocalvalue">DependencyObject.ReadLocalValue(DependencyProperty)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.dependencyobject.setcurrentvalue">DependencyObject.SetCurrentValue(DependencyProperty, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.dependencyobject.setvalue#system-windows-dependencyobject-setvalue(system-windows-dependencyproperty-system-object)">DependencyObject.SetValue(DependencyProperty, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.dependencyobject.setvalue#system-windows-dependencyobject-setvalue(system-windows-dependencypropertykey-system-object)">DependencyObject.SetValue(DependencyPropertyKey, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.dependencyobject.shouldserializeproperty">DependencyObject.ShouldSerializeProperty(DependencyProperty)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.dependencyobject.dependencyobjecttype">DependencyObject.DependencyObjectType</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.dependencyobject.issealed">DependencyObject.IsSealed</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.threading.dispatcherobject.dispatcher">DispatcherObject.Dispatcher</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">object.Equals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype">object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone">object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals">object.ReferenceEquals(object, object)</a>
+    </div>
+  </dd></dl>
+
+  <dl class="typelist extensionMethods">
+    <dt>Extension Methods</dt>
+    <dd>
+  <div>
+      <a class="xref" href="HelixToolkit.Wpf.SharpDX.MaterialExtension.html#HelixToolkit_Wpf_SharpDX_MaterialExtension_AssignTo_HelixToolkit_Wpf_SharpDX_DiffuseMaterial_HelixToolkit_Wpf_SharpDX_DiffuseMaterial_">MaterialExtension.AssignTo(DiffuseMaterial, DiffuseMaterial)</a>
+  </div>
+  </dd></dl>
+
+
+
+
+
+  <h2 class="section" id="constructors">Constructors
+</h2>
+
+
+  <a id="HelixToolkit_Wpf_SharpDX_DiffuseMaterial__ctor_" data-uid="HelixToolkit.Wpf.SharpDX.DiffuseMaterial.#ctor*"></a>
+
+  <h3 id="HelixToolkit_Wpf_SharpDX_DiffuseMaterial__ctor" data-uid="HelixToolkit.Wpf.SharpDX.DiffuseMaterial.#ctor">
+  DiffuseMaterial()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Model/Materials/DiffuseMaterial.cs/#L252"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public DiffuseMaterial()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_SharpDX_DiffuseMaterial__ctor_" data-uid="HelixToolkit.Wpf.SharpDX.DiffuseMaterial.#ctor*"></a>
+
+  <h3 id="HelixToolkit_Wpf_SharpDX_DiffuseMaterial__ctor_HelixToolkit_SharpDX_Model_DiffuseMaterialCore_" data-uid="HelixToolkit.Wpf.SharpDX.DiffuseMaterial.#ctor(HelixToolkit.SharpDX.Model.DiffuseMaterialCore)">
+  DiffuseMaterial(DiffuseMaterialCore)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Model/Materials/DiffuseMaterial.cs/#L256"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public DiffuseMaterial(DiffuseMaterialCore core)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>core</code> <a class="xref" href="HelixToolkit.SharpDX.Model.DiffuseMaterialCore.html">DiffuseMaterialCore</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <h2 class="section" id="fields">Fields
+</h2>
+
+
+
+  <h3 id="HelixToolkit_Wpf_SharpDX_DiffuseMaterial_DiffuseColorProperty" data-uid="HelixToolkit.Wpf.SharpDX.DiffuseMaterial.DiffuseColorProperty">
+  DiffuseColorProperty
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Model/Materials/DiffuseMaterial.cs/#L34"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>The diffuse color property</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly DependencyProperty DiffuseColorProperty</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.dependencyproperty">DependencyProperty</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_Wpf_SharpDX_DiffuseMaterial_DiffuseMapProperty" data-uid="HelixToolkit.Wpf.SharpDX.DiffuseMaterial.DiffuseMapProperty">
+  DiffuseMapProperty
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Model/Materials/DiffuseMaterial.cs/#L73"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly DependencyProperty DiffuseMapProperty</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.dependencyproperty">DependencyProperty</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_Wpf_SharpDX_DiffuseMaterial_DiffuseMapSamplerProperty" data-uid="HelixToolkit.Wpf.SharpDX.DiffuseMaterial.DiffuseMapSamplerProperty">
+  DiffuseMapSamplerProperty
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Model/Materials/DiffuseMaterial.cs/#L105"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly DependencyProperty DiffuseMapSamplerProperty</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.dependencyproperty">DependencyProperty</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_Wpf_SharpDX_DiffuseMaterial_EnableFlatShadingProperty" data-uid="HelixToolkit.Wpf.SharpDX.DiffuseMaterial.EnableFlatShadingProperty">
+  EnableFlatShadingProperty
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Model/Materials/DiffuseMaterial.cs/#L212"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly DependencyProperty EnableFlatShadingProperty</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.dependencyproperty">DependencyProperty</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_Wpf_SharpDX_DiffuseMaterial_EnableUnLitProperty" data-uid="HelixToolkit.Wpf.SharpDX.DiffuseMaterial.EnableUnLitProperty">
+  EnableUnLitProperty
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Model/Materials/DiffuseMaterial.cs/#L183"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>The enable un lit property</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly DependencyProperty EnableUnLitProperty</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.dependencyproperty">DependencyProperty</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_Wpf_SharpDX_DiffuseMaterial_UVTransformProperty" data-uid="HelixToolkit.Wpf.SharpDX.DiffuseMaterial.UVTransformProperty">
+  UVTransformProperty
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Model/Materials/DiffuseMaterial.cs/#L133"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>The uv transform property</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly DependencyProperty UVTransformProperty</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.dependencyproperty">DependencyProperty</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_Wpf_SharpDX_DiffuseMaterial_VertexColorBlendingFactorProperty" data-uid="HelixToolkit.Wpf.SharpDX.DiffuseMaterial.VertexColorBlendingFactorProperty">
+  VertexColorBlendingFactorProperty
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Model/Materials/DiffuseMaterial.cs/#L241"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly DependencyProperty VertexColorBlendingFactorProperty</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.dependencyproperty">DependencyProperty</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+  <h2 class="section" id="properties">Properties
+</h2>
+
+
+  <a id="HelixToolkit_Wpf_SharpDX_DiffuseMaterial_DiffuseColor_" data-uid="HelixToolkit.Wpf.SharpDX.DiffuseMaterial.DiffuseColor*"></a>
+
+  <h3 id="HelixToolkit_Wpf_SharpDX_DiffuseMaterial_DiffuseColor" data-uid="HelixToolkit.Wpf.SharpDX.DiffuseMaterial.DiffuseColor">
+  DiffuseColor
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Model/Materials/DiffuseMaterial.cs/#L52"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the diffuse color for the material.
+For details see: <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/bb147175(v=vs.85).aspx">http://msdn.microsoft.com/en-us/library/windows/desktop/bb147175(v=vs.85).aspx</a></p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[TypeConverter(typeof(Color4Converter))]
+public Color4 DiffuseColor { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Maths.Color4.html">Color4</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_SharpDX_DiffuseMaterial_DiffuseMap_" data-uid="HelixToolkit.Wpf.SharpDX.DiffuseMaterial.DiffuseMap*"></a>
+
+  <h3 id="HelixToolkit_Wpf_SharpDX_DiffuseMaterial_DiffuseMap" data-uid="HelixToolkit.Wpf.SharpDX.DiffuseMaterial.DiffuseMap">
+  DiffuseMap
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Model/Materials/DiffuseMaterial.cs/#L90"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the diffuse map.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public TextureModel? DiffuseMap { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.TextureModel.html">TextureModel</a></dt>
+    <dd><p>The diffuse map.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_SharpDX_DiffuseMaterial_DiffuseMapSampler_" data-uid="HelixToolkit.Wpf.SharpDX.DiffuseMaterial.DiffuseMapSampler*"></a>
+
+  <h3 id="HelixToolkit_Wpf_SharpDX_DiffuseMaterial_DiffuseMapSampler" data-uid="HelixToolkit.Wpf.SharpDX.DiffuseMaterial.DiffuseMapSampler">
+  DiffuseMapSampler
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Model/Materials/DiffuseMaterial.cs/#L119"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public SamplerStateDescription DiffuseMapSampler { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">SamplerStateDescription</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_SharpDX_DiffuseMaterial_EnableFlatShading_" data-uid="HelixToolkit.Wpf.SharpDX.DiffuseMaterial.EnableFlatShading*"></a>
+
+  <h3 id="HelixToolkit_Wpf_SharpDX_DiffuseMaterial_EnableFlatShading" data-uid="HelixToolkit.Wpf.SharpDX.DiffuseMaterial.EnableFlatShading">
+  EnableFlatShading
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Model/Materials/DiffuseMaterial.cs/#L200"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets a value indicating whether [enable flat shading].</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool EnableFlatShading { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><code>true</code> if [enable flat shading]; otherwise, <code>false</code>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_SharpDX_DiffuseMaterial_EnableUnLit_" data-uid="HelixToolkit.Wpf.SharpDX.DiffuseMaterial.EnableUnLit*"></a>
+
+  <h3 id="HelixToolkit_Wpf_SharpDX_DiffuseMaterial_EnableUnLit" data-uid="HelixToolkit.Wpf.SharpDX.DiffuseMaterial.EnableUnLit">
+  EnableUnLit
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Model/Materials/DiffuseMaterial.cs/#L168"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets a value indicating whether whether disable lighting. Directly render diffuse color and diffuse map.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool EnableUnLit { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><code>true</code> if [enable un lit]; otherwise, <code>false</code>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_SharpDX_DiffuseMaterial_UVTransform_" data-uid="HelixToolkit.Wpf.SharpDX.DiffuseMaterial.UVTransform*"></a>
+
+  <h3 id="HelixToolkit_Wpf_SharpDX_DiffuseMaterial_UVTransform" data-uid="HelixToolkit.Wpf.SharpDX.DiffuseMaterial.UVTransform">
+  UVTransform
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Model/Materials/DiffuseMaterial.cs/#L149"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the texture uv transform.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public UVTransform UVTransform { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.UVTransform.html">UVTransform</a></dt>
+    <dd><p>The uv transform.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_SharpDX_DiffuseMaterial_VertexColorBlendingFactor_" data-uid="HelixToolkit.Wpf.SharpDX.DiffuseMaterial.VertexColorBlendingFactor*"></a>
+
+  <h3 id="HelixToolkit_Wpf_SharpDX_DiffuseMaterial_VertexColorBlendingFactor" data-uid="HelixToolkit.Wpf.SharpDX.DiffuseMaterial.VertexColorBlendingFactor">
+  VertexColorBlendingFactor
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Model/Materials/DiffuseMaterial.cs/#L229"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the vertex color blending factor.
+Final Diffuse Color = (1 - VertexColorBlendingFactor) * Diffuse + VertexColorBlendingFactor * Vertex Color</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public double VertexColorBlendingFactor { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd><p>The vertex color blending factor.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h2 class="section" id="methods">Methods
+</h2>
+
+
+  <a id="HelixToolkit_Wpf_SharpDX_DiffuseMaterial_CloneMaterial_" data-uid="HelixToolkit.Wpf.SharpDX.DiffuseMaterial.CloneMaterial*"></a>
+
+  <h3 id="HelixToolkit_Wpf_SharpDX_DiffuseMaterial_CloneMaterial" data-uid="HelixToolkit.Wpf.SharpDX.DiffuseMaterial.CloneMaterial">
+  CloneMaterial()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Model/Materials/DiffuseMaterial.cs/#L281"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual DiffuseMaterial CloneMaterial()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Wpf.SharpDX.DiffuseMaterial.html">DiffuseMaterial</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_SharpDX_DiffuseMaterial_CreateInstanceCore_" data-uid="HelixToolkit.Wpf.SharpDX.DiffuseMaterial.CreateInstanceCore*"></a>
+
+  <h3 id="HelixToolkit_Wpf_SharpDX_DiffuseMaterial_CreateInstanceCore" data-uid="HelixToolkit.Wpf.SharpDX.DiffuseMaterial.CreateInstanceCore">
+  CreateInstanceCore()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Model/Materials/DiffuseMaterial.cs/#L299"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>When implemented in a derived class, creates a new instance of the <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.freezable">Freezable</a> derived class.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected override Freezable CreateInstanceCore()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.freezable">Freezable</a></dt>
+    <dd><p>The new instance.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_SharpDX_DiffuseMaterial_OnCreateCore_" data-uid="HelixToolkit.Wpf.SharpDX.DiffuseMaterial.OnCreateCore*"></a>
+
+  <h3 id="HelixToolkit_Wpf_SharpDX_DiffuseMaterial_OnCreateCore" data-uid="HelixToolkit.Wpf.SharpDX.DiffuseMaterial.OnCreateCore">
+  OnCreateCore()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Model/Materials/DiffuseMaterial.cs/#L267"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected override MaterialCore OnCreateCore()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.Model.MaterialCore.html">MaterialCore</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Model/Materials/DiffuseMaterial.cs/#L29" class="edit-link">Edit this page</a>
+        </div>
+
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          Copyright (c) 2023 Helix Toolkit contributors
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

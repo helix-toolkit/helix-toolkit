@@ -1,0 +1,1495 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Class Vector4Helper | Helix Toolkit - 3D for .NET </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Class Vector4Helper | Helix Toolkit - 3D for .NET ">
+      
+      <meta name="description" content="Represents a four dimensional mathematical vector.">
+      <link rel="icon" href="../images/favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/helix-toolkit/helix-toolkit/new/main-v3/apiSpec/new?filename=HelixToolkit_Maths_Vector4Helper.md&amp;value=---%0Auid%3A%20HelixToolkit.Maths.Vector4Helper%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="ManagedReference">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../images/favicon.ico" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="HelixToolkit.Maths.Vector4Helper">
+
+
+
+  <h1 id="HelixToolkit_Maths_Vector4Helper" data-uid="HelixToolkit.Maths.Vector4Helper" class="text-break">
+Class Vector4Helper  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/Vector4.cs/#L39"><i class="bi bi-code-slash"></i></a>
+  </h1>
+
+  <div class="facts text-secondary">
+    <dl><dt>Namespace</dt><dd><a class="xref" href="HelixToolkit.html">HelixToolkit</a>.<a class="xref" href="HelixToolkit.Maths.html">Maths</a></dd></dl>
+  <dl><dt>Assembly</dt><dd>HelixToolkit.Maths.dll</dd></dl>
+  </div>
+
+  <div class="markdown summary"><p>Represents a four dimensional mathematical vector.</p>
+</div>
+  <div class="markdown conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static class Vector4Helper</code></pre>
+  </div>
+
+
+
+
+  <dl class="typelist inheritance">
+    <dt>Inheritance</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
+      <div><span class="xref">Vector4Helper</span></div>
+    </dd>
+  </dl>
+
+
+
+  <dl class="typelist inheritedMembers">
+    <dt>Inherited Members</dt>
+    <dd>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">object.Equals(object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">object.Equals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode">object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype">object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone">object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals">object.ReferenceEquals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring">object.ToString()</a>
+    </div>
+  </dd></dl>
+
+
+
+
+
+
+  <h2 class="section" id="fields">Fields
+</h2>
+
+
+
+  <h3 id="HelixToolkit_Maths_Vector4Helper_One" data-uid="HelixToolkit.Maths.Vector4Helper.One">
+  One
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/Vector4.cs/#L74"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>A <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector4">Vector4</a> with all of its components set to one.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly Vector4 One</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector4">Vector4</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_Maths_Vector4Helper_SizeInBytes" data-uid="HelixToolkit.Maths.Vector4Helper.SizeInBytes">
+  SizeInBytes
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/Vector4.cs/#L44"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>The size of the <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector4">Vector4</a> type, in bytes.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly int SizeInBytes</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_Maths_Vector4Helper_UnitW" data-uid="HelixToolkit.Maths.Vector4Helper.UnitW">
+  UnitW
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/Vector4.cs/#L69"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>The W unit <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector4">Vector4</a> (0, 0, 0, 1).</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly Vector4 UnitW</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector4">Vector4</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_Maths_Vector4Helper_UnitX" data-uid="HelixToolkit.Maths.Vector4Helper.UnitX">
+  UnitX
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/Vector4.cs/#L54"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>The X unit <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector4">Vector4</a> (1, 0, 0, 0).</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly Vector4 UnitX</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector4">Vector4</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_Maths_Vector4Helper_UnitY" data-uid="HelixToolkit.Maths.Vector4Helper.UnitY">
+  UnitY
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/Vector4.cs/#L59"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>The Y unit <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector4">Vector4</a> (0, 1, 0, 0).</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly Vector4 UnitY</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector4">Vector4</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_Maths_Vector4Helper_UnitZ" data-uid="HelixToolkit.Maths.Vector4Helper.UnitZ">
+  UnitZ
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/Vector4.cs/#L64"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>The Z unit <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector4">Vector4</a> (0, 0, 1, 0).</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly Vector4 UnitZ</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector4">Vector4</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_Maths_Vector4Helper_Zero" data-uid="HelixToolkit.Maths.Vector4Helper.Zero">
+  Zero
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/Vector4.cs/#L49"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>A <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector4">Vector4</a> with all of its components set to zero.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly Vector4 Zero</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector4">Vector4</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+  <h2 class="section" id="methods">Methods
+</h2>
+
+
+  <a id="HelixToolkit_Maths_Vector4Helper_Barycentric_" data-uid="HelixToolkit.Maths.Vector4Helper.Barycentric*"></a>
+
+  <h3 id="HelixToolkit_Maths_Vector4Helper_Barycentric_System_Numerics_Vector4_System_Numerics_Vector4_System_Numerics_Vector4_System_Single_System_Single_" data-uid="HelixToolkit.Maths.Vector4Helper.Barycentric(System.Numerics.Vector4,System.Numerics.Vector4,System.Numerics.Vector4,System.Single,System.Single)">
+  Barycentric(Vector4, Vector4, Vector4, float, float)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/Vector4.cs/#L183"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Returns a <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector4">Vector4</a> containing the 4D Cartesian coordinates of a point specified in Barycentric coordinates relative to a 4D triangle.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Vector4 Barycentric(Vector4 value1, Vector4 value2, Vector4 value3, float amount1, float amount2)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value1</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector4">Vector4</a></dt>
+    <dd><p>A <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector4">Vector4</a> containing the 4D Cartesian coordinates of vertex 1 of the triangle.</p>
+</dd>
+    <dt><code>value2</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector4">Vector4</a></dt>
+    <dd><p>A <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector4">Vector4</a> containing the 4D Cartesian coordinates of vertex 2 of the triangle.</p>
+</dd>
+    <dt><code>value3</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector4">Vector4</a></dt>
+    <dd><p>A <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector4">Vector4</a> containing the 4D Cartesian coordinates of vertex 3 of the triangle.</p>
+</dd>
+    <dt><code>amount1</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>Barycentric coordinate b2, which expresses the weighting factor toward vertex 2 (specified in <code class="paramref">value2</code>).</p>
+</dd>
+    <dt><code>amount2</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>Barycentric coordinate b3, which expresses the weighting factor toward vertex 3 (specified in <code class="paramref">value3</code>).</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector4">Vector4</a></dt>
+    <dd><p>A new <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector4">Vector4</a> containing the 4D Cartesian coordinates of the specified point.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_Vector4Helper_Barycentric_" data-uid="HelixToolkit.Maths.Vector4Helper.Barycentric*"></a>
+
+  <h3 id="HelixToolkit_Maths_Vector4Helper_Barycentric_System_Numerics_Vector4__System_Numerics_Vector4__System_Numerics_Vector4__System_Single_System_Single_System_Numerics_Vector4__" data-uid="HelixToolkit.Maths.Vector4Helper.Barycentric(System.Numerics.Vector4@,System.Numerics.Vector4@,System.Numerics.Vector4@,System.Single,System.Single,System.Numerics.Vector4@)">
+  Barycentric(ref Vector4, ref Vector4, ref Vector4, float, float, out Vector4)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/Vector4.cs/#L165"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Returns a <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector4">Vector4</a> containing the 4D Cartesian coordinates of a point specified in Barycentric coordinates relative to a 4D triangle.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void Barycentric(ref Vector4 value1, ref Vector4 value2, ref Vector4 value3, float amount1, float amount2, out Vector4 result)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value1</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector4">Vector4</a></dt>
+    <dd><p>A <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector4">Vector4</a> containing the 4D Cartesian coordinates of vertex 1 of the triangle.</p>
+</dd>
+    <dt><code>value2</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector4">Vector4</a></dt>
+    <dd><p>A <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector4">Vector4</a> containing the 4D Cartesian coordinates of vertex 2 of the triangle.</p>
+</dd>
+    <dt><code>value3</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector4">Vector4</a></dt>
+    <dd><p>A <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector4">Vector4</a> containing the 4D Cartesian coordinates of vertex 3 of the triangle.</p>
+</dd>
+    <dt><code>amount1</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>Barycentric coordinate b2, which expresses the weighting factor toward vertex 2 (specified in <code class="paramref">value2</code>).</p>
+</dd>
+    <dt><code>amount2</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>Barycentric coordinate b3, which expresses the weighting factor toward vertex 3 (specified in <code class="paramref">value3</code>).</p>
+</dd>
+    <dt><code>result</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector4">Vector4</a></dt>
+    <dd><p>When the method completes, contains the 4D Cartesian coordinates of the specified point.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_Vector4Helper_CatmullRom_" data-uid="HelixToolkit.Maths.Vector4Helper.CatmullRom*"></a>
+
+  <h3 id="HelixToolkit_Maths_Vector4Helper_CatmullRom_System_Numerics_Vector4_System_Numerics_Vector4_System_Numerics_Vector4_System_Numerics_Vector4_System_Single_" data-uid="HelixToolkit.Maths.Vector4Helper.CatmullRom(System.Numerics.Vector4,System.Numerics.Vector4,System.Numerics.Vector4,System.Numerics.Vector4,System.Single)">
+  CatmullRom(Vector4, Vector4, Vector4, Vector4, float)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/Vector4.cs/#L284"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Performs a Catmull-Rom interpolation using the specified positions.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Vector4 CatmullRom(Vector4 value1, Vector4 value2, Vector4 value3, Vector4 value4, float amount)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value1</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector4">Vector4</a></dt>
+    <dd><p>The first position in the interpolation.</p>
+</dd>
+    <dt><code>value2</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector4">Vector4</a></dt>
+    <dd><p>The second position in the interpolation.</p>
+</dd>
+    <dt><code>value3</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector4">Vector4</a></dt>
+    <dd><p>The third position in the interpolation.</p>
+</dd>
+    <dt><code>value4</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector4">Vector4</a></dt>
+    <dd><p>The fourth position in the interpolation.</p>
+</dd>
+    <dt><code>amount</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>Weighting factor.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector4">Vector4</a></dt>
+    <dd><p>A vector that is the result of the Catmull-Rom interpolation.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_Vector4Helper_CatmullRom_" data-uid="HelixToolkit.Maths.Vector4Helper.CatmullRom*"></a>
+
+  <h3 id="HelixToolkit_Maths_Vector4Helper_CatmullRom_System_Numerics_Vector4__System_Numerics_Vector4__System_Numerics_Vector4__System_Numerics_Vector4__System_Single_System_Numerics_Vector4__" data-uid="HelixToolkit.Maths.Vector4Helper.CatmullRom(System.Numerics.Vector4@,System.Numerics.Vector4@,System.Numerics.Vector4@,System.Numerics.Vector4@,System.Single,System.Numerics.Vector4@)">
+  CatmullRom(ref Vector4, ref Vector4, ref Vector4, ref Vector4, float, out Vector4)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/Vector4.cs/#L264"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Performs a Catmull-Rom interpolation using the specified positions.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void CatmullRom(ref Vector4 value1, ref Vector4 value2, ref Vector4 value3, ref Vector4 value4, float amount, out Vector4 result)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value1</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector4">Vector4</a></dt>
+    <dd><p>The first position in the interpolation.</p>
+</dd>
+    <dt><code>value2</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector4">Vector4</a></dt>
+    <dd><p>The second position in the interpolation.</p>
+</dd>
+    <dt><code>value3</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector4">Vector4</a></dt>
+    <dd><p>The third position in the interpolation.</p>
+</dd>
+    <dt><code>value4</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector4">Vector4</a></dt>
+    <dd><p>The fourth position in the interpolation.</p>
+</dd>
+    <dt><code>amount</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>Weighting factor.</p>
+</dd>
+    <dt><code>result</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector4">Vector4</a></dt>
+    <dd><p>When the method completes, contains the result of the Catmull-Rom interpolation.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_Vector4Helper_Clamp_" data-uid="HelixToolkit.Maths.Vector4Helper.Clamp*"></a>
+
+  <h3 id="HelixToolkit_Maths_Vector4Helper_Clamp_System_Numerics_Vector4_System_Numerics_Vector4_System_Numerics_Vector4_" data-uid="HelixToolkit.Maths.Vector4Helper.Clamp(System.Numerics.Vector4,System.Numerics.Vector4,System.Numerics.Vector4)">
+  Clamp(Vector4, Vector4, Vector4)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/Vector4.cs/#L544"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Vector4 Clamp(this Vector4 value, Vector4 min, Vector4 max)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector4">Vector4</a></dt>
+    <dd></dd>
+    <dt><code>min</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector4">Vector4</a></dt>
+    <dd></dd>
+    <dt><code>max</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector4">Vector4</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector4">Vector4</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_Vector4Helper_Clamp_" data-uid="HelixToolkit.Maths.Vector4Helper.Clamp*"></a>
+
+  <h3 id="HelixToolkit_Maths_Vector4Helper_Clamp_System_Numerics_Vector4__System_Numerics_Vector4__System_Numerics_Vector4__System_Numerics_Vector4__" data-uid="HelixToolkit.Maths.Vector4Helper.Clamp(System.Numerics.Vector4@,System.Numerics.Vector4@,System.Numerics.Vector4@,System.Numerics.Vector4@)">
+  Clamp(ref Vector4, ref Vector4, ref Vector4, out Vector4)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/Vector4.cs/#L522"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void Clamp(ref Vector4 value, ref Vector4 min, ref Vector4 max, out Vector4 result)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector4">Vector4</a></dt>
+    <dd></dd>
+    <dt><code>min</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector4">Vector4</a></dt>
+    <dd></dd>
+    <dt><code>max</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector4">Vector4</a></dt>
+    <dd></dd>
+    <dt><code>result</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector4">Vector4</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_Vector4Helper_Get_" data-uid="HelixToolkit.Maths.Vector4Helper.Get*"></a>
+
+  <h3 id="HelixToolkit_Maths_Vector4Helper_Get_System_Numerics_Vector4_System_Int32_" data-uid="HelixToolkit.Maths.Vector4Helper.Get(System.Numerics.Vector4,System.Int32)">
+  Get(Vector4, int)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/Vector4.cs/#L123"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the component at the specified index.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static float Get(this Vector4 v, int index)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>v</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector4">Vector4</a></dt>
+    <dd></dd>
+    <dt><code>index</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The index of the component to access. Use 0 for the X component, 1 for the Y component, 2 for the Z component, and 3 for the W component.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>The value of the X, Y, Z, or W component, depending on the index.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentoutofrangeexception">ArgumentOutOfRangeException</a></dt>
+    <dd><p>Thrown when the <code class="paramref">index</code> is out of the range [0, 3].</p>
+</dd>
+  </dl>
+
+
+
+  <a id="HelixToolkit_Maths_Vector4Helper_Hermite_" data-uid="HelixToolkit.Maths.Vector4Helper.Hermite*"></a>
+
+  <h3 id="HelixToolkit_Maths_Vector4Helper_Hermite_System_Numerics_Vector4_System_Numerics_Vector4_System_Numerics_Vector4_System_Numerics_Vector4_System_Single_" data-uid="HelixToolkit.Maths.Vector4Helper.Hermite(System.Numerics.Vector4,System.Numerics.Vector4,System.Numerics.Vector4,System.Numerics.Vector4,System.Single)">
+  Hermite(Vector4, Vector4, Vector4, Vector4, float)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/Vector4.cs/#L249"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Performs a Hermite spline interpolation.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Vector4 Hermite(Vector4 value1, Vector4 tangent1, Vector4 value2, Vector4 tangent2, float amount)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value1</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector4">Vector4</a></dt>
+    <dd><p>First source position vector.</p>
+</dd>
+    <dt><code>tangent1</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector4">Vector4</a></dt>
+    <dd><p>First source tangent vector.</p>
+</dd>
+    <dt><code>value2</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector4">Vector4</a></dt>
+    <dd><p>Second source position vector.</p>
+</dd>
+    <dt><code>tangent2</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector4">Vector4</a></dt>
+    <dd><p>Second source tangent vector.</p>
+</dd>
+    <dt><code>amount</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>Weighting factor.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector4">Vector4</a></dt>
+    <dd><p>The result of the Hermite spline interpolation.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_Vector4Helper_Hermite_" data-uid="HelixToolkit.Maths.Vector4Helper.Hermite*"></a>
+
+  <h3 id="HelixToolkit_Maths_Vector4Helper_Hermite_System_Numerics_Vector4__System_Numerics_Vector4__System_Numerics_Vector4__System_Numerics_Vector4__System_Single_System_Numerics_Vector4__" data-uid="HelixToolkit.Maths.Vector4Helper.Hermite(System.Numerics.Vector4@,System.Numerics.Vector4@,System.Numerics.Vector4@,System.Numerics.Vector4@,System.Single,System.Numerics.Vector4@)">
+  Hermite(ref Vector4, ref Vector4, ref Vector4, ref Vector4, float, out Vector4)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/Vector4.cs/#L224"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Performs a Hermite spline interpolation.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void Hermite(ref Vector4 value1, ref Vector4 tangent1, ref Vector4 value2, ref Vector4 tangent2, float amount, out Vector4 result)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value1</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector4">Vector4</a></dt>
+    <dd><p>First source position vector.</p>
+</dd>
+    <dt><code>tangent1</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector4">Vector4</a></dt>
+    <dd><p>First source tangent vector.</p>
+</dd>
+    <dt><code>value2</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector4">Vector4</a></dt>
+    <dd><p>Second source position vector.</p>
+</dd>
+    <dt><code>tangent2</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector4">Vector4</a></dt>
+    <dd><p>Second source tangent vector.</p>
+</dd>
+    <dt><code>amount</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>Weighting factor.</p>
+</dd>
+    <dt><code>result</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector4">Vector4</a></dt>
+    <dd><p>When the method completes, contains the result of the Hermite spline interpolation.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_Vector4Helper_IsNormalized_" data-uid="HelixToolkit.Maths.Vector4Helper.IsNormalized*"></a>
+
+  <h3 id="HelixToolkit_Maths_Vector4Helper_IsNormalized_System_Numerics_Vector4_" data-uid="HelixToolkit.Maths.Vector4Helper.IsNormalized(System.Numerics.Vector4)">
+  IsNormalized(Vector4)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/Vector4.cs/#L100"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets a value indicting whether this instance is normalized.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool IsNormalized(this Vector4 v)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>v</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector4">Vector4</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_Vector4Helper_IsZero_" data-uid="HelixToolkit.Maths.Vector4Helper.IsZero*"></a>
+
+  <h3 id="HelixToolkit_Maths_Vector4Helper_IsZero_System_Numerics_Vector4_" data-uid="HelixToolkit.Maths.Vector4Helper.IsZero(System.Numerics.Vector4)">
+  IsZero(Vector4)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/Vector4.cs/#L109"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets a value indicting whether this vector is zero</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool IsZero(this Vector4 v)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>v</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector4">Vector4</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_Vector4Helper_Max_" data-uid="HelixToolkit.Maths.Vector4Helper.Max*"></a>
+
+  <h3 id="HelixToolkit_Maths_Vector4Helper_Max_System_Numerics_Vector4_System_Numerics_Vector4_" data-uid="HelixToolkit.Maths.Vector4Helper.Max(System.Numerics.Vector4,System.Numerics.Vector4)">
+  Max(Vector4, Vector4)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/Vector4.cs/#L91"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Vector4 Max(this Vector4 v1, Vector4 v2)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>v1</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector4">Vector4</a></dt>
+    <dd></dd>
+    <dt><code>v2</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector4">Vector4</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector4">Vector4</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_Vector4Helper_Max_" data-uid="HelixToolkit.Maths.Vector4Helper.Max*"></a>
+
+  <h3 id="HelixToolkit_Maths_Vector4Helper_Max_System_Numerics_Vector4_System_Numerics_Vector4__" data-uid="HelixToolkit.Maths.Vector4Helper.Max(System.Numerics.Vector4,System.Numerics.Vector4@)">
+  Max(Vector4, ref Vector4)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/Vector4.cs/#L86"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Vector4 Max(this Vector4 v1, ref Vector4 v2)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>v1</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector4">Vector4</a></dt>
+    <dd></dd>
+    <dt><code>v2</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector4">Vector4</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector4">Vector4</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_Vector4Helper_Min_" data-uid="HelixToolkit.Maths.Vector4Helper.Min*"></a>
+
+  <h3 id="HelixToolkit_Maths_Vector4Helper_Min_System_Numerics_Vector4_System_Numerics_Vector4_" data-uid="HelixToolkit.Maths.Vector4Helper.Min(System.Numerics.Vector4,System.Numerics.Vector4)">
+  Min(Vector4, Vector4)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/Vector4.cs/#L81"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Vector4 Min(this Vector4 v1, Vector4 v2)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>v1</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector4">Vector4</a></dt>
+    <dd></dd>
+    <dt><code>v2</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector4">Vector4</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector4">Vector4</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_Vector4Helper_Min_" data-uid="HelixToolkit.Maths.Vector4Helper.Min*"></a>
+
+  <h3 id="HelixToolkit_Maths_Vector4Helper_Min_System_Numerics_Vector4_System_Numerics_Vector4__" data-uid="HelixToolkit.Maths.Vector4Helper.Min(System.Numerics.Vector4,System.Numerics.Vector4@)">
+  Min(Vector4, ref Vector4)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/Vector4.cs/#L76"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Vector4 Min(this Vector4 v1, ref Vector4 v2)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>v1</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector4">Vector4</a></dt>
+    <dd></dd>
+    <dt><code>v2</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector4">Vector4</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector4">Vector4</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_Vector4Helper_Orthogonalize_" data-uid="HelixToolkit.Maths.Vector4Helper.Orthogonalize*"></a>
+
+  <h3 id="HelixToolkit_Maths_Vector4Helper_Orthogonalize_System_Numerics_Vector4___System_Numerics_Vector4___" data-uid="HelixToolkit.Maths.Vector4Helper.Orthogonalize(System.Numerics.Vector4[],System.Numerics.Vector4[])">
+  Orthogonalize(Vector4[], params Vector4[])
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/Vector4.cs/#L306"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Orthogonalizes a list of vectors.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void Orthogonalize(Vector4[] destination, params Vector4[] source)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>destination</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector4">Vector4</a>[]</dt>
+    <dd><p>The list of orthogonalized vectors.</p>
+</dd>
+    <dt><code>source</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector4">Vector4</a>[]</dt>
+    <dd><p>The list of vectors to orthogonalize.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h4 class="section" id="HelixToolkit_Maths_Vector4Helper_Orthogonalize_System_Numerics_Vector4___System_Numerics_Vector4____remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>Orthogonalization is the process of making all vectors orthogonal to each other. This
+means that any given vector in the list will be orthogonal to any other given vector in the
+list.</p>
+<p>Because this method uses the modified Gram-Schmidt process, the resulting vectors
+tend to be numerically unstable. The numeric stability decreases according to the vectors
+position in the list so that the first vector is the most stable and the last vector is the
+least stable.</p>
+</div>
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentnullexception">ArgumentNullException</a></dt>
+    <dd><p>Thrown when <code class="paramref">source</code> or <code class="paramref">destination</code> is <code>null</code>.</p>
+</dd>
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentoutofrangeexception">ArgumentOutOfRangeException</a></dt>
+    <dd><p>Thrown when <code class="paramref">destination</code> is shorter in length than <code class="paramref">source</code>.</p>
+</dd>
+  </dl>
+
+
+
+  <a id="HelixToolkit_Maths_Vector4Helper_Orthonormalize_" data-uid="HelixToolkit.Maths.Vector4Helper.Orthonormalize*"></a>
+
+  <h3 id="HelixToolkit_Maths_Vector4Helper_Orthonormalize_System_Numerics_Vector4___System_Numerics_Vector4___" data-uid="HelixToolkit.Maths.Vector4Helper.Orthonormalize(System.Numerics.Vector4[],System.Numerics.Vector4[])">
+  Orthonormalize(Vector4[], params Vector4[])
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/Vector4.cs/#L359"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Orthonormalizes a list of vectors.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void Orthonormalize(Vector4[] destination, params Vector4[] source)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>destination</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector4">Vector4</a>[]</dt>
+    <dd><p>The list of orthonormalized vectors.</p>
+</dd>
+    <dt><code>source</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector4">Vector4</a>[]</dt>
+    <dd><p>The list of vectors to orthonormalize.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h4 class="section" id="HelixToolkit_Maths_Vector4Helper_Orthonormalize_System_Numerics_Vector4___System_Numerics_Vector4____remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>Orthonormalization is the process of making all vectors orthogonal to each
+other and making all vectors of unit length. This means that any given vector will
+be orthogonal to any other given vector in the list.</p>
+<p>Because this method uses the modified Gram-Schmidt process, the resulting vectors
+tend to be numerically unstable. The numeric stability decreases according to the vectors
+position in the list so that the first vector is the most stable and the last vector is the
+least stable.</p>
+</div>
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentnullexception">ArgumentNullException</a></dt>
+    <dd><p>Thrown when <code class="paramref">source</code> or <code class="paramref">destination</code> is <code>null</code>.</p>
+</dd>
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentoutofrangeexception">ArgumentOutOfRangeException</a></dt>
+    <dd><p>Thrown when <code class="paramref">destination</code> is shorter in length than <code class="paramref">source</code>.</p>
+</dd>
+  </dl>
+
+
+
+  <a id="HelixToolkit_Maths_Vector4Helper_Set_" data-uid="HelixToolkit.Maths.Vector4Helper.Set*"></a>
+
+  <h3 id="HelixToolkit_Maths_Vector4Helper_Set_System_Numerics_Vector4__System_Int32_System_Single_" data-uid="HelixToolkit.Maths.Vector4Helper.Set(System.Numerics.Vector4@,System.Int32,System.Single)">
+  Set(ref Vector4, int, float)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/Vector4.cs/#L135"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void Set(ref Vector4 v, int index, float value)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>v</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector4">Vector4</a></dt>
+    <dd></dd>
+    <dt><code>index</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+    <dt><code>value</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_Vector4Helper_SmoothStep_" data-uid="HelixToolkit.Maths.Vector4Helper.SmoothStep*"></a>
+
+  <h3 id="HelixToolkit_Maths_Vector4Helper_SmoothStep_System_Numerics_Vector4_System_Numerics_Vector4_System_Single_" data-uid="HelixToolkit.Maths.Vector4Helper.SmoothStep(System.Numerics.Vector4,System.Numerics.Vector4,System.Single)">
+  SmoothStep(Vector4, Vector4, float)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/Vector4.cs/#L209"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Performs a cubic interpolation between two vectors.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Vector4 SmoothStep(Vector4 start, Vector4 end, float amount)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>start</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector4">Vector4</a></dt>
+    <dd><p>Start vector.</p>
+</dd>
+    <dt><code>end</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector4">Vector4</a></dt>
+    <dd><p>End vector.</p>
+</dd>
+    <dt><code>amount</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>Value between 0 and 1 indicating the weight of <code class="paramref">end</code>.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector4">Vector4</a></dt>
+    <dd><p>The cubic interpolation of the two vectors.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_Vector4Helper_SmoothStep_" data-uid="HelixToolkit.Maths.Vector4Helper.SmoothStep*"></a>
+
+  <h3 id="HelixToolkit_Maths_Vector4Helper_SmoothStep_System_Numerics_Vector4__System_Numerics_Vector4__System_Single_System_Numerics_Vector4__" data-uid="HelixToolkit.Maths.Vector4Helper.SmoothStep(System.Numerics.Vector4@,System.Numerics.Vector4@,System.Single,System.Numerics.Vector4@)">
+  SmoothStep(ref Vector4, ref Vector4, float, out Vector4)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/Vector4.cs/#L196"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Performs a cubic interpolation between two vectors.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void SmoothStep(ref Vector4 start, ref Vector4 end, float amount, out Vector4 result)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>start</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector4">Vector4</a></dt>
+    <dd><p>Start vector.</p>
+</dd>
+    <dt><code>end</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector4">Vector4</a></dt>
+    <dd><p>End vector.</p>
+</dd>
+    <dt><code>amount</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>Value between 0 and 1 indicating the weight of <code class="paramref">end</code>.</p>
+</dd>
+    <dt><code>result</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector4">Vector4</a></dt>
+    <dd><p>When the method completes, contains the cubic interpolation of the two vectors.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_Vector4Helper_ToArray_" data-uid="HelixToolkit.Maths.Vector4Helper.ToArray*"></a>
+
+  <h3 id="HelixToolkit_Maths_Vector4Helper_ToArray_System_Numerics_Vector4_" data-uid="HelixToolkit.Maths.Vector4Helper.ToArray(System.Numerics.Vector4)">
+  ToArray(Vector4)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/Vector4.cs/#L151"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Creates an array containing the elements of the vector.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static float[] ToArray(this Vector4 v)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>v</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector4">Vector4</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a>[]</dt>
+    <dd><p>A four-element array containing the components of the vector.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_Vector4Helper_Transform_" data-uid="HelixToolkit.Maths.Vector4Helper.Transform*"></a>
+
+  <h3 id="HelixToolkit_Maths_Vector4Helper_Transform_System_Numerics_Vector4_System_Numerics_Matrix4x4__" data-uid="HelixToolkit.Maths.Vector4Helper.Transform(System.Numerics.Vector4,System.Numerics.Matrix4x4@)">
+  Transform(Vector4, ref Matrix4x4)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/Vector4.cs/#L445"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Transforms a 4D vector by the given <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.matrix4x4">Matrix4x4</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Vector4 Transform(this Vector4 vector, ref Matrix4x4 transform)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>vector</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector4">Vector4</a></dt>
+    <dd><p>The source vector.</p>
+</dd>
+    <dt><code>transform</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.matrix4x4">Matrix4x4</a></dt>
+    <dd><p>The transformation <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.matrix4x4">Matrix4x4</a>.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector4">Vector4</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_Vector4Helper_Transform_" data-uid="HelixToolkit.Maths.Vector4Helper.Transform*"></a>
+
+  <h3 id="HelixToolkit_Maths_Vector4Helper_Transform_System_Numerics_Vector4__System_Numerics_Matrix4x4__System_Numerics_Vector4__" data-uid="HelixToolkit.Maths.Vector4Helper.Transform(System.Numerics.Vector4@,System.Numerics.Matrix4x4@,System.Numerics.Vector4@)">
+  Transform(ref Vector4, ref Matrix4x4, out Vector4)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/Vector4.cs/#L435"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Transforms a 4D vector by the given <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.matrix4x4">Matrix4x4</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void Transform(ref Vector4 vector, ref Matrix4x4 transform, out Vector4 result)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>vector</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector4">Vector4</a></dt>
+    <dd><p>The source vector.</p>
+</dd>
+    <dt><code>transform</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.matrix4x4">Matrix4x4</a></dt>
+    <dd><p>The transformation <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.matrix4x4">Matrix4x4</a>.</p>
+</dd>
+    <dt><code>result</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector4">Vector4</a></dt>
+    <dd><p>When the method completes, contains the transformed <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector4">Vector4</a>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_Vector4Helper_Transform_" data-uid="HelixToolkit.Maths.Vector4Helper.Transform*"></a>
+
+  <h3 id="HelixToolkit_Maths_Vector4Helper_Transform_System_Numerics_Vector4___System_Numerics_Matrix4x4__System_Numerics_Vector4___" data-uid="HelixToolkit.Maths.Vector4Helper.Transform(System.Numerics.Vector4[],System.Numerics.Matrix4x4@,System.Numerics.Vector4[])">
+  Transform(Vector4[], ref Matrix4x4, Vector4[])
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/Vector4.cs/#L459"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Transforms an array of 4D vectors by the given <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.matrix4x4">Matrix4x4</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void Transform(this Vector4[] source, ref Matrix4x4 transform, Vector4[] destination)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>source</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector4">Vector4</a>[]</dt>
+    <dd><p>The array of vectors to transform.</p>
+</dd>
+    <dt><code>transform</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.matrix4x4">Matrix4x4</a></dt>
+    <dd><p>The transformation <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.matrix4x4">Matrix4x4</a>.</p>
+</dd>
+    <dt><code>destination</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector4">Vector4</a>[]</dt>
+    <dd><p>The array for which the transformed vectors are stored.
+This array may be the same array as <code class="paramref">source</code>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentnullexception">ArgumentNullException</a></dt>
+    <dd><p>Thrown when <code class="paramref">source</code> or <code class="paramref">destination</code> is <code>null</code>.</p>
+</dd>
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentoutofrangeexception">ArgumentOutOfRangeException</a></dt>
+    <dd><p>Thrown when <code class="paramref">destination</code> is shorter in length than <code class="paramref">source</code>.</p>
+</dd>
+  </dl>
+
+
+
+  <a id="HelixToolkit_Maths_Vector4Helper_Transform_" data-uid="HelixToolkit.Maths.Vector4Helper.Transform*"></a>
+
+  <h3 id="HelixToolkit_Maths_Vector4Helper_Transform_System_Numerics_Vector4___System_Numerics_Quaternion__System_Numerics_Vector4___" data-uid="HelixToolkit.Maths.Vector4Helper.Transform(System.Numerics.Vector4[],System.Numerics.Quaternion@,System.Numerics.Vector4[])">
+  Transform(Vector4[], ref Quaternion, Vector4[])
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/Vector4.cs/#L406"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Transforms an array of vectors by the given <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.quaternion">Quaternion</a> rotation.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void Transform(Vector4[] source, ref Quaternion rotation, Vector4[] destination)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>source</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector4">Vector4</a>[]</dt>
+    <dd><p>The array of vectors to transform.</p>
+</dd>
+    <dt><code>rotation</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.quaternion">Quaternion</a></dt>
+    <dd><p>The <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.quaternion">Quaternion</a> rotation to apply.</p>
+</dd>
+    <dt><code>destination</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector4">Vector4</a>[]</dt>
+    <dd><p>The array for which the transformed vectors are stored.
+This array may be the same array as <code class="paramref">source</code>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentnullexception">ArgumentNullException</a></dt>
+    <dd><p>Thrown when <code class="paramref">source</code> or <code class="paramref">destination</code> is <code>null</code>.</p>
+</dd>
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentoutofrangeexception">ArgumentOutOfRangeException</a></dt>
+    <dd><p>Thrown when <code class="paramref">destination</code> is shorter in length than <code class="paramref">source</code>.</p>
+</dd>
+  </dl>
+
+
+
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/Vector4.cs/#L39" class="edit-link">Edit this page</a>
+        </div>
+
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          Copyright (c) 2023 Helix Toolkit contributors
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

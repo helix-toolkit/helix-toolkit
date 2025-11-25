@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Class PostEffectFXAA | Helix Toolkit - 3D for .NET </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Class PostEffectFXAA | Helix Toolkit - 3D for .NET ">
+      
+      
+      <link rel="icon" href="../images/favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/helix-toolkit/helix-toolkit/new/main-v3/apiSpec/new?filename=HelixToolkit_SharpDX_Core_PostEffectFXAA.md&amp;value=---%0Auid%3A%20HelixToolkit.SharpDX.Core.PostEffectFXAA%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="ManagedReference">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../images/favicon.ico" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="HelixToolkit.SharpDX.Core.PostEffectFXAA">
+
+
+
+  <h1 id="HelixToolkit_SharpDX_Core_PostEffectFXAA" data-uid="HelixToolkit.SharpDX.Core.PostEffectFXAA" class="text-break">
+Class PostEffectFXAA  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Core/PostEffects/PostEffectFXAA.cs/#L8"><i class="bi bi-code-slash"></i></a>
+  </h1>
+
+  <div class="facts text-secondary">
+    <dl><dt>Namespace</dt><dd><a class="xref" href="HelixToolkit.html">HelixToolkit</a>.<a class="xref" href="HelixToolkit.SharpDX.html">SharpDX</a>.<a class="xref" href="HelixToolkit.SharpDX.Core.html">Core</a></dd></dl>
+  <dl><dt>Assembly</dt><dd>HelixToolkit.SharpDX.dll</dd></dl>
+  </div>
+
+  <div class="markdown summary"></div>
+  <div class="markdown conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public sealed class PostEffectFXAA : RenderCore, IDisposable, IGUID, IThrowingShadow, IPostEffect</code></pre>
+  </div>
+
+
+
+
+  <dl class="typelist inheritance">
+    <dt>Inheritance</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
+      <div><a class="xref" href="HelixToolkit.SharpDX.DisposeObject.html">DisposeObject</a></div>
+      <div><a class="xref" href="HelixToolkit.SharpDX.Core.RenderCore.html">RenderCore</a></div>
+      <div><span class="xref">PostEffectFXAA</span></div>
+    </dd>
+  </dl>
+
+  <dl class="typelist implements">
+    <dt>Implements</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.idisposable">IDisposable</a></div>
+      <div><a class="xref" href="HelixToolkit.SharpDX.IGUID.html">IGUID</a></div>
+      <div><a class="xref" href="HelixToolkit.SharpDX.Core.IThrowingShadow.html">IThrowingShadow</a></div>
+      <div><a class="xref" href="HelixToolkit.SharpDX.IPostEffect.html">IPostEffect</a></div>
+    </dd>
+  </dl>
+
+
+  <dl class="typelist inheritedMembers">
+    <dt>Inherited Members</dt>
+    <dd>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Core.RenderCore.html#HelixToolkit_SharpDX_Core_RenderCore_InvalidateRender">RenderCore.InvalidateRender</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Core.RenderCore.html#HelixToolkit_SharpDX_Core_RenderCore_GUID">RenderCore.GUID</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Core.RenderCore.html#HelixToolkit_SharpDX_Core_RenderCore_RenderType">RenderCore.RenderType</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Core.RenderCore.html#HelixToolkit_SharpDX_Core_RenderCore_NeedUpdate">RenderCore.NeedUpdate</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Core.RenderCore.html#HelixToolkit_SharpDX_Core_RenderCore_IsThrowingShadow">RenderCore.IsThrowingShadow</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Core.RenderCore.html#HelixToolkit_SharpDX_Core_RenderCore_DefaultStateBinding">RenderCore.DefaultStateBinding</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Core.RenderCore.html#HelixToolkit_SharpDX_Core_RenderCore_ShadowStateBinding">RenderCore.ShadowStateBinding</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Core.RenderCore.html#HelixToolkit_SharpDX_Core_RenderCore_ModelMatrix">RenderCore.ModelMatrix</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Core.RenderCore.html#HelixToolkit_SharpDX_Core_RenderCore_EffectTechnique">RenderCore.EffectTechnique</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Core.RenderCore.html#HelixToolkit_SharpDX_Core_RenderCore_Device">RenderCore.Device</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Core.RenderCore.html#HelixToolkit_SharpDX_Core_RenderCore_IsAttached">RenderCore.IsAttached</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Core.RenderCore.html#HelixToolkit_SharpDX_Core_RenderCore_Attach_HelixToolkit_SharpDX_IRenderTechnique_">RenderCore.Attach(IRenderTechnique)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Core.RenderCore.html#HelixToolkit_SharpDX_Core_RenderCore_Detach">RenderCore.Detach()</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Core.RenderCore.html#HelixToolkit_SharpDX_Core_RenderCore_RenderShadow_HelixToolkit_SharpDX_RenderContext_HelixToolkit_SharpDX_Render_DeviceContextProxy_">RenderCore.RenderShadow(RenderContext, DeviceContextProxy)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Core.RenderCore.html#HelixToolkit_SharpDX_Core_RenderCore_RenderCustom_HelixToolkit_SharpDX_RenderContext_HelixToolkit_SharpDX_Render_DeviceContextProxy_">RenderCore.RenderCustom(RenderContext, DeviceContextProxy)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Core.RenderCore.html#HelixToolkit_SharpDX_Core_RenderCore_RenderDepth_HelixToolkit_SharpDX_RenderContext_HelixToolkit_SharpDX_Render_DeviceContextProxy_HelixToolkit_SharpDX_Shaders_ShaderPass_">RenderCore.RenderDepth(RenderContext, DeviceContextProxy, ShaderPass)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Core.RenderCore.html#HelixToolkit_SharpDX_Core_RenderCore_Update_HelixToolkit_SharpDX_RenderContext_HelixToolkit_SharpDX_Render_DeviceContextProxy_">RenderCore.Update(RenderContext, DeviceContextProxy)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Core.RenderCore.html#HelixToolkit_SharpDX_Core_RenderCore_UpdateCanRenderFlag">RenderCore.UpdateCanRenderFlag()</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Core.RenderCore.html#HelixToolkit_SharpDX_Core_RenderCore_ResetInvalidateHandler">RenderCore.ResetInvalidateHandler()</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.DisposeObject.html#HelixToolkit_SharpDX_DisposeObject_RemoveAndDispose__1___0__">DisposeObject.RemoveAndDispose&lt;T&gt;(ref T)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.DisposeObject.html#HelixToolkit_SharpDX_DisposeObject_RemoveAndDispose__1___0_">DisposeObject.RemoveAndDispose&lt;T&gt;(T)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.DisposeObject.html#HelixToolkit_SharpDX_DisposeObject_RefCount">DisposeObject.RefCount</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.DisposeObject.html#HelixToolkit_SharpDX_DisposeObject_IncRef">DisposeObject.IncRef()</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.DisposeObject.html#HelixToolkit_SharpDX_DisposeObject_ForceDispose">DisposeObject.ForceDispose()</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.DisposeObject.html#HelixToolkit_SharpDX_DisposeObject_IsDisposed">DisposeObject.IsDisposed</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.DisposeObject.html#HelixToolkit_SharpDX_DisposeObject_Dispose">DisposeObject.Dispose()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">object.Equals(object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">object.Equals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode">object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype">object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals">object.ReferenceEquals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring">object.ToString()</a>
+    </div>
+  </dd></dl>
+
+
+
+
+
+
+  <h2 class="section" id="constructors">Constructors
+</h2>
+
+
+  <a id="HelixToolkit_SharpDX_Core_PostEffectFXAA__ctor_" data-uid="HelixToolkit.SharpDX.Core.PostEffectFXAA.#ctor*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Core_PostEffectFXAA__ctor" data-uid="HelixToolkit.SharpDX.Core.PostEffectFXAA.#ctor">
+  PostEffectFXAA()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Core/PostEffects/PostEffectFXAA.cs/#L50"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public PostEffectFXAA()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <h2 class="section" id="properties">Properties
+</h2>
+
+
+  <a id="HelixToolkit_SharpDX_Core_PostEffectFXAA_EffectName_" data-uid="HelixToolkit.SharpDX.Core.PostEffectFXAA.EffectName*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Core_PostEffectFXAA_EffectName" data-uid="HelixToolkit.SharpDX.Core.PostEffectFXAA.EffectName">
+  EffectName
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Core/PostEffects/PostEffectFXAA.cs/#L11"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string EffectName { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Core_PostEffectFXAA_FXAALevel_" data-uid="HelixToolkit.SharpDX.Core.PostEffectFXAA.FXAALevel*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Core_PostEffectFXAA_FXAALevel" data-uid="HelixToolkit.SharpDX.Core.PostEffectFXAA.FXAALevel">
+  FXAALevel
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Core/PostEffects/PostEffectFXAA.cs/#L30"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the fxaa level.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public FXAALevel FXAALevel { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.FXAALevel.html">FXAALevel</a></dt>
+    <dd><p>The fxaa level.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h2 class="section" id="methods">Methods
+</h2>
+
+
+  <a id="HelixToolkit_SharpDX_Core_PostEffectFXAA_OnAttach_" data-uid="HelixToolkit.SharpDX.Core.PostEffectFXAA.OnAttach*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Core_PostEffectFXAA_OnAttach_HelixToolkit_SharpDX_IRenderTechnique_" data-uid="HelixToolkit.SharpDX.Core.PostEffectFXAA.OnAttach(HelixToolkit.SharpDX.IRenderTechnique)">
+  OnAttach(IRenderTechnique?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Core/PostEffects/PostEffectFXAA.cs/#L55"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>During attatching render core. Create all local resources. Use Collect(resource) to let object be released automatically during Detach().</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected override bool OnAttach(IRenderTechnique? technique)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>technique</code> <a class="xref" href="HelixToolkit.SharpDX.IRenderTechnique.html">IRenderTechnique</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Core_PostEffectFXAA_OnDetach_" data-uid="HelixToolkit.SharpDX.Core.PostEffectFXAA.OnDetach*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Core_PostEffectFXAA_OnDetach" data-uid="HelixToolkit.SharpDX.Core.PostEffectFXAA.OnDetach">
+  OnDetach()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Core/PostEffects/PostEffectFXAA.cs/#L65"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>On detaching, default is to release all resources</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected override void OnDetach()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Core_PostEffectFXAA_OnUpdateCanRenderFlag_" data-uid="HelixToolkit.SharpDX.Core.PostEffectFXAA.OnUpdateCanRenderFlag*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Core_PostEffectFXAA_OnUpdateCanRenderFlag" data-uid="HelixToolkit.SharpDX.Core.PostEffectFXAA.OnUpdateCanRenderFlag">
+  OnUpdateCanRenderFlag()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Core/PostEffects/PostEffectFXAA.cs/#L70"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Called when [update can render flag].</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected override bool OnUpdateCanRenderFlag()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Core_PostEffectFXAA_Render_" data-uid="HelixToolkit.SharpDX.Core.PostEffectFXAA.Render*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Core_PostEffectFXAA_Render_HelixToolkit_SharpDX_RenderContext_HelixToolkit_SharpDX_Render_DeviceContextProxy_" data-uid="HelixToolkit.SharpDX.Core.PostEffectFXAA.Render(HelixToolkit.SharpDX.RenderContext,HelixToolkit.SharpDX.Render.DeviceContextProxy)">
+  Render(RenderContext, DeviceContextProxy)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Core/PostEffects/PostEffectFXAA.cs/#L75"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Render routine</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override void Render(RenderContext context, DeviceContextProxy deviceContext)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>context</code> <a class="xref" href="HelixToolkit.SharpDX.RenderContext.html">RenderContext</a></dt>
+    <dd></dd>
+    <dt><code>deviceContext</code> <a class="xref" href="HelixToolkit.SharpDX.Render.DeviceContextProxy.html">DeviceContextProxy</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Core/PostEffects/PostEffectFXAA.cs/#L8" class="edit-link">Edit this page</a>
+        </div>
+
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          Copyright (c) 2023 Helix Toolkit contributors
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

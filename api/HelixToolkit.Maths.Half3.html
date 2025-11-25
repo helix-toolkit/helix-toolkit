@@ -1,0 +1,828 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Struct Half3 | Helix Toolkit - 3D for .NET </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Struct Half3 | Helix Toolkit - 3D for .NET ">
+      
+      <meta name="description" content="Defines a three component vector, using half precision floating point coordinates.">
+      <link rel="icon" href="../images/favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/helix-toolkit/helix-toolkit/new/main-v3/apiSpec/new?filename=HelixToolkit_Maths_Half3.md&amp;value=---%0Auid%3A%20HelixToolkit.Maths.Half3%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="ManagedReference">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../images/favicon.ico" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="HelixToolkit.Maths.Half3">
+
+
+
+  <h1 id="HelixToolkit_Maths_Half3" data-uid="HelixToolkit.Maths.Half3" class="text-break">
+Struct Half3  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/Half3.cs/#L37"><i class="bi bi-code-slash"></i></a>
+  </h1>
+
+  <div class="facts text-secondary">
+    <dl><dt>Namespace</dt><dd><a class="xref" href="HelixToolkit.html">HelixToolkit</a>.<a class="xref" href="HelixToolkit.Maths.html">Maths</a></dd></dl>
+  <dl><dt>Assembly</dt><dd>HelixToolkit.Maths.dll</dd></dl>
+  </div>
+
+  <div class="markdown summary"><p>Defines a three component vector, using half precision floating point coordinates.</p>
+</div>
+  <div class="markdown conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public struct Half3 : IEquatable&lt;Half3&gt;</code></pre>
+  </div>
+
+
+
+
+
+  <dl class="typelist implements">
+    <dt>Implements</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iequatable-1">IEquatable</a>&lt;<a class="xref" href="HelixToolkit.Maths.Half3.html">Half3</a>&gt;</div>
+    </dd>
+  </dl>
+
+
+  <dl class="typelist inheritedMembers">
+    <dt>Inherited Members</dt>
+    <dd>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.valuetype.tostring">ValueType.ToString()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">object.Equals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype">object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals">object.ReferenceEquals(object, object)</a>
+    </div>
+  </dd></dl>
+
+  <dl class="typelist extensionMethods">
+    <dt>Extension Methods</dt>
+    <dd>
+  <div>
+      <a class="xref" href="HelixToolkit.NativeHelper.html#HelixToolkit_NativeHelper_ToStruct__2___0_">NativeHelper.ToStruct&lt;T1, T2&gt;(T1)</a>
+  </div>
+  </dd></dl>
+
+
+
+
+
+  <h2 class="section" id="constructors">Constructors
+</h2>
+
+
+  <a id="HelixToolkit_Maths_Half3__ctor_" data-uid="HelixToolkit.Maths.Half3.#ctor*"></a>
+
+  <h3 id="HelixToolkit_Maths_Half3__ctor_HelixToolkit_Maths_Half_" data-uid="HelixToolkit.Maths.Half3.#ctor(HelixToolkit.Maths.Half)">
+  Half3(Half)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/Half3.cs/#L99"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <span class="xref">SharpDX.Half3</span> structure.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Half3(Half value)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="HelixToolkit.Maths.Half.html">Half</a></dt>
+    <dd><p>The value to set for the X, Y, and Z components.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_Half3__ctor_" data-uid="HelixToolkit.Maths.Half3.#ctor*"></a>
+
+  <h3 id="HelixToolkit_Maths_Half3__ctor_HelixToolkit_Maths_Half_HelixToolkit_Maths_Half_HelixToolkit_Maths_Half_" data-uid="HelixToolkit.Maths.Half3.#ctor(HelixToolkit.Maths.Half,HelixToolkit.Maths.Half,HelixToolkit.Maths.Half)">
+  Half3(Half, Half, Half)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/Half3.cs/#L62"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <span class="xref">SharpDX.Half3</span> structure.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Half3(Half x, Half y, Half z)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>x</code> <a class="xref" href="HelixToolkit.Maths.Half.html">Half</a></dt>
+    <dd><p>The X component.</p>
+</dd>
+    <dt><code>y</code> <a class="xref" href="HelixToolkit.Maths.Half.html">Half</a></dt>
+    <dd><p>The Y component.</p>
+</dd>
+    <dt><code>z</code> <a class="xref" href="HelixToolkit.Maths.Half.html">Half</a></dt>
+    <dd><p>The Z component.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_Half3__ctor_" data-uid="HelixToolkit.Maths.Half3.#ctor*"></a>
+
+  <h3 id="HelixToolkit_Maths_Half3__ctor_System_Single_System_Single_System_Single_" data-uid="HelixToolkit.Maths.Half3.#ctor(System.Single,System.Single,System.Single)">
+  Half3(float, float, float)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/Half3.cs/#L75"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <span class="xref">SharpDX.Half3</span> structure.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Half3(float x, float y, float z)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>x</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>The X component.</p>
+</dd>
+    <dt><code>y</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>The Y component.</p>
+</dd>
+    <dt><code>z</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>The Z component.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_Half3__ctor_" data-uid="HelixToolkit.Maths.Half3.#ctor*"></a>
+
+  <h3 id="HelixToolkit_Maths_Half3__ctor_System_UInt16_System_UInt16_System_UInt16_" data-uid="HelixToolkit.Maths.Half3.#ctor(System.UInt16,System.UInt16,System.UInt16)">
+  Half3(ushort, ushort, ushort)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/Half3.cs/#L88"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <span class="xref">SharpDX.Half3</span> structure.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Half3(ushort x, ushort y, ushort z)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>x</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.uint16">ushort</a></dt>
+    <dd><p>The X component.</p>
+</dd>
+    <dt><code>y</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.uint16">ushort</a></dt>
+    <dd><p>The Y component.</p>
+</dd>
+    <dt><code>z</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.uint16">ushort</a></dt>
+    <dd><p>The Z component.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <h2 class="section" id="fields">Fields
+</h2>
+
+
+
+  <h3 id="HelixToolkit_Maths_Half3_X" data-uid="HelixToolkit.Maths.Half3.X">
+  X
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/Half3.cs/#L44"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the X component of the vector.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Half X</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Maths.Half.html">Half</a></dt>
+    <dd><p>The X component of the vector.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_Maths_Half3_Y" data-uid="HelixToolkit.Maths.Half3.Y">
+  Y
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/Half3.cs/#L49"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the Y component of the vector.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Half Y</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Maths.Half.html">Half</a></dt>
+    <dd><p>The Y component of the vector.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_Maths_Half3_Z" data-uid="HelixToolkit.Maths.Half3.Z">
+  Z
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/Half3.cs/#L54"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the Z component of the vector.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Half Z</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Maths.Half.html">Half</a></dt>
+    <dd><p>The Z component of the vector.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+  <h2 class="section" id="methods">Methods
+</h2>
+
+
+  <a id="HelixToolkit_Maths_Half3_Equals_" data-uid="HelixToolkit.Maths.Half3.Equals*"></a>
+
+  <h3 id="HelixToolkit_Maths_Half3_Equals_HelixToolkit_Maths_Half3_" data-uid="HelixToolkit.Maths.Half3.Equals(HelixToolkit.Maths.Half3)">
+  Equals(Half3)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/Half3.cs/#L208"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Returns a value that indicates whether the current instance is equal to the specified object.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public readonly bool Equals(Half3 other)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>other</code> <a class="xref" href="HelixToolkit.Maths.Half3.html">Half3</a></dt>
+    <dd><p>Object to make the comparison with.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><code>true</code> if the current instance is equal to the specified object; <code>false</code> otherwise.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_Half3_Equals_" data-uid="HelixToolkit.Maths.Half3.Equals*"></a>
+
+  <h3 id="HelixToolkit_Maths_Half3_Equals_HelixToolkit_Maths_Half3__HelixToolkit_Maths_Half3__" data-uid="HelixToolkit.Maths.Half3.Equals(HelixToolkit.Maths.Half3@,HelixToolkit.Maths.Half3@)">
+  Equals(ref Half3, ref Half3)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/Half3.cs/#L196"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Determines whether the specified object instances are considered equal.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool Equals(ref Half3 value1, ref Half3 value2)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value1</code> <a class="xref" href="HelixToolkit.Maths.Half3.html">Half3</a></dt>
+    <dd></dd>
+    <dt><code>value2</code> <a class="xref" href="HelixToolkit.Maths.Half3.html">Half3</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><code>true</code> if <code class="paramref">value1</code> is the same instance as <code class="paramref">value2</code> or
+if both are <code>null</code> references or if <code>value1.Equals(value2)</code> returns <code>true</code>; otherwise, <code>false</code>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_Half3_Equals_" data-uid="HelixToolkit.Maths.Half3.Equals*"></a>
+
+  <h3 id="HelixToolkit_Maths_Half3_Equals_System_Object_" data-uid="HelixToolkit.Maths.Half3.Equals(System.Object)">
+  Equals(object?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/Half3.cs/#L219"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Returns a value that indicates whether the current instance is equal to a specified object.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override readonly bool Equals(object? obj)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>obj</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></dt>
+    <dd><p>Object to make the comparison with.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><code>true</code> if the current instance is equal to the specified object; <code>false</code> otherwise.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_Half3_GetHashCode_" data-uid="HelixToolkit.Maths.Half3.GetHashCode*"></a>
+
+  <h3 id="HelixToolkit_Maths_Half3_GetHashCode" data-uid="HelixToolkit.Maths.Half3.GetHashCode">
+  GetHashCode()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/Half3.cs/#L177"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Returns the hash code for this instance.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override readonly int GetHashCode()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>A 32-bit signed integer hash code.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <h2 class="section" id="operators">Operators
+</h2>
+
+
+  <a id="HelixToolkit_Maths_Half3_op_Equality_" data-uid="HelixToolkit.Maths.Half3.op_Equality*"></a>
+
+  <h3 id="HelixToolkit_Maths_Half3_op_Equality_HelixToolkit_Maths_Half3_HelixToolkit_Maths_Half3_" data-uid="HelixToolkit.Maths.Half3.op_Equality(HelixToolkit.Maths.Half3,HelixToolkit.Maths.Half3)">
+  operator ==(Half3, Half3)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/Half3.cs/#L153"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Tests for equality between two objects.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool operator ==(Half3 left, Half3 right)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>left</code> <a class="xref" href="HelixToolkit.Maths.Half3.html">Half3</a></dt>
+    <dd><p>The first value to compare.</p>
+</dd>
+    <dt><code>right</code> <a class="xref" href="HelixToolkit.Maths.Half3.html">Half3</a></dt>
+    <dd><p>The second value to compare.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><code>true</code> if <code class="paramref">left</code> has the same value as <code class="paramref">right</code>; otherwise, <code>false</code>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_Half3_op_Explicit_" data-uid="HelixToolkit.Maths.Half3.op_Explicit*"></a>
+
+  <h3 id="HelixToolkit_Maths_Half3_op_Explicit_HelixToolkit_Maths_Half3__System_Numerics_Vector2" data-uid="HelixToolkit.Maths.Half3.op_Explicit(HelixToolkit.Maths.Half3)~System.Numerics.Vector2">
+  explicit operator Vector2(Half3)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/Half3.cs/#L141"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Performs an explicit conversion from <a class="xref" href="HelixToolkit.Maths.Half3.html">Half3</a> to <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector2">Vector2</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static explicit operator Vector2(Half3 value)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="HelixToolkit.Maths.Half3.html">Half3</a></dt>
+    <dd><p>The value.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector2">Vector2</a></dt>
+    <dd><p>The result of the conversion.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_Half3_op_Explicit_" data-uid="HelixToolkit.Maths.Half3.op_Explicit*"></a>
+
+  <h3 id="HelixToolkit_Maths_Half3_op_Explicit_System_Numerics_Vector2__HelixToolkit_Maths_Half3" data-uid="HelixToolkit.Maths.Half3.op_Explicit(System.Numerics.Vector2)~HelixToolkit.Maths.Half3">
+  explicit operator Half3(Vector2)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/Half3.cs/#L131"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Performs an explicit conversion from <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector2">Vector2</a> to <a class="xref" href="HelixToolkit.Maths.Half3.html">Half3</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static explicit operator Half3(Vector2 value)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector2">Vector2</a></dt>
+    <dd><p>The value.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Maths.Half3.html">Half3</a></dt>
+    <dd><p>The result of the conversion.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_Half3_op_Implicit_" data-uid="HelixToolkit.Maths.Half3.op_Implicit*"></a>
+
+  <h3 id="HelixToolkit_Maths_Half3_op_Implicit_HelixToolkit_Maths_Half3__System_Numerics_Vector3" data-uid="HelixToolkit.Maths.Half3.op_Implicit(HelixToolkit.Maths.Half3)~System.Numerics.Vector3">
+  implicit operator Vector3(Half3)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/Half3.cs/#L121"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Performs an implicit conversion from <a class="xref" href="HelixToolkit.Maths.Half3.html">Half3</a> to <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static implicit operator Vector3(Half3 value)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="HelixToolkit.Maths.Half3.html">Half3</a></dt>
+    <dd><p>The value.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd><p>The result of the conversion.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_Half3_op_Implicit_" data-uid="HelixToolkit.Maths.Half3.op_Implicit*"></a>
+
+  <h3 id="HelixToolkit_Maths_Half3_op_Implicit_System_Numerics_Vector3__HelixToolkit_Maths_Half3" data-uid="HelixToolkit.Maths.Half3.op_Implicit(System.Numerics.Vector3)~HelixToolkit.Maths.Half3">
+  implicit operator Half3(Vector3)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/Half3.cs/#L111"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Performs an implicit conversion from <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a> to <a class="xref" href="HelixToolkit.Maths.Half3.html">Half3</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static implicit operator Half3(Vector3 value)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd><p>The value.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Maths.Half3.html">Half3</a></dt>
+    <dd><p>The result of the conversion.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_Half3_op_Inequality_" data-uid="HelixToolkit.Maths.Half3.op_Inequality*"></a>
+
+  <h3 id="HelixToolkit_Maths_Half3_op_Inequality_HelixToolkit_Maths_Half3_HelixToolkit_Maths_Half3_" data-uid="HelixToolkit.Maths.Half3.op_Inequality(HelixToolkit.Maths.Half3,HelixToolkit.Maths.Half3)">
+  operator !=(Half3, Half3)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/Half3.cs/#L166"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Tests for inequality between two objects.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool operator !=(Half3 left, Half3 right)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>left</code> <a class="xref" href="HelixToolkit.Maths.Half3.html">Half3</a></dt>
+    <dd><p>The first value to compare.</p>
+</dd>
+    <dt><code>right</code> <a class="xref" href="HelixToolkit.Maths.Half3.html">Half3</a></dt>
+    <dd><p>The second value to compare.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><code>true</code> if <code class="paramref">left</code> has a different value than <code class="paramref">right</code>; otherwise, <code>false</code>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/Half3.cs/#L37" class="edit-link">Edit this page</a>
+        </div>
+
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          Copyright (c) 2023 Helix Toolkit contributors
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

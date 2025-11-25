@@ -1,0 +1,2197 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Class TransformManipulator3D | Helix Toolkit - 3D for .NET </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Class TransformManipulator3D | Helix Toolkit - 3D for .NET ">
+      
+      
+      <link rel="icon" href="../images/favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/helix-toolkit/helix-toolkit/new/main-v3/apiSpec/new?filename=HelixToolkit_Avalonia_SharpDX_TransformManipulator3D.md&amp;value=---%0Auid%3A%20HelixToolkit.Avalonia.SharpDX.TransformManipulator3D%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="ManagedReference">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../images/favicon.ico" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="HelixToolkit.Avalonia.SharpDX.TransformManipulator3D">
+
+
+
+  <h1 id="HelixToolkit_Avalonia_SharpDX_TransformManipulator3D" data-uid="HelixToolkit.Avalonia.SharpDX.TransformManipulator3D" class="text-break">
+Class TransformManipulator3D  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Model/Elements3D/TransformManipulator3D.cs/#L32"><i class="bi bi-code-slash"></i></a>
+  </h1>
+
+  <div class="facts text-secondary">
+    <dl><dt>Namespace</dt><dd><a class="xref" href="HelixToolkit.html">HelixToolkit</a>.<a class="xref" href="HelixToolkit.Avalonia.html">Avalonia</a>.<a class="xref" href="HelixToolkit.Avalonia.SharpDX.html">SharpDX</a></dd></dl>
+  <dl><dt>Assembly</dt><dd>HelixToolkit.Avalonia.SharpDX.dll</dd></dl>
+  </div>
+
+  <div class="markdown summary"></div>
+  <div class="markdown conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class TransformManipulator3D : GroupElement3D, INotifyPropertyChanged, IDataContextProvider, ILogical, IThemeVariantHost, IResourceHost, IResourceNode, IStyleHost, ISetLogicalParent, ISetInheritanceParent, ISupportInitialize, IStyleable, INamed, IInputElement, IDataTemplateHost, ISetterValue, IDisposable, IVisible</code></pre>
+  </div>
+
+
+
+
+  <dl class="typelist inheritance">
+    <dt>Inheritance</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
+      <div><span class="xref">AvaloniaObject</span></div>
+      <div><span class="xref">Animatable</span></div>
+      <div><span class="xref">StyledElement</span></div>
+      <div><span class="xref">Visual</span></div>
+      <div><span class="xref">Layoutable</span></div>
+      <div><span class="xref">Interactive</span></div>
+      <div><span class="xref">InputElement</span></div>
+      <div><span class="xref">Control</span></div>
+      <div><a class="xref" href="HelixToolkit.Avalonia.SharpDX.Model.Element3DCore.html">Element3DCore</a></div>
+      <div><a class="xref" href="HelixToolkit.Avalonia.SharpDX.Element3D.html">Element3D</a></div>
+      <div><a class="xref" href="HelixToolkit.Avalonia.SharpDX.GroupElement3D.html">GroupElement3D</a></div>
+      <div><span class="xref">TransformManipulator3D</span></div>
+    </dd>
+  </dl>
+
+  <dl class="typelist implements">
+    <dt>Implements</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.componentmodel.inotifypropertychanged">INotifyPropertyChanged</a></div>
+      <div><span class="xref">IDataContextProvider</span></div>
+      <div><span class="xref">ILogical</span></div>
+      <div><span class="xref">IThemeVariantHost</span></div>
+      <div><span class="xref">IResourceHost</span></div>
+      <div><span class="xref">IResourceNode</span></div>
+      <div><span class="xref">IStyleHost</span></div>
+      <div><span class="xref">ISetLogicalParent</span></div>
+      <div><span class="xref">ISetInheritanceParent</span></div>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.componentmodel.isupportinitialize">ISupportInitialize</a></div>
+      <div><span class="xref">IStyleable</span></div>
+      <div><span class="xref">INamed</span></div>
+      <div><span class="xref">IInputElement</span></div>
+      <div><span class="xref">IDataTemplateHost</span></div>
+      <div><span class="xref">ISetterValue</span></div>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.idisposable">IDisposable</a></div>
+      <div><a class="xref" href="HelixToolkit.Avalonia.SharpDX.IVisible.html">IVisible</a></div>
+    </dd>
+  </dl>
+
+
+  <dl class="typelist inheritedMembers">
+    <dt>Inherited Members</dt>
+    <dd>
+    <div>
+      <a class="xref" href="HelixToolkit.Avalonia.SharpDX.GroupElement3D.html#HelixToolkit_Avalonia_SharpDX_GroupElement3D_ItemsSourceProperty">GroupElement3D.ItemsSourceProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.Avalonia.SharpDX.GroupElement3D.html#HelixToolkit_Avalonia_SharpDX_GroupElement3D_OctreeManagerProperty">GroupElement3D.OctreeManagerProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.Avalonia.SharpDX.GroupElement3D.html#HelixToolkit_Avalonia_SharpDX_GroupElement3D_AlwaysHittableProperty">GroupElement3D.AlwaysHittableProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.Avalonia.SharpDX.GroupElement3D.html#HelixToolkit_Avalonia_SharpDX_GroupElement3D_ItemsSource">GroupElement3D.ItemsSource</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.Avalonia.SharpDX.GroupElement3D.html#HelixToolkit_Avalonia_SharpDX_GroupElement3D_OctreeManager">GroupElement3D.OctreeManager</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.Avalonia.SharpDX.GroupElement3D.html#HelixToolkit_Avalonia_SharpDX_GroupElement3D_AlwaysHittable">GroupElement3D.AlwaysHittable</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.Avalonia.SharpDX.GroupElement3D.html#HelixToolkit_Avalonia_SharpDX_GroupElement3D_Children">GroupElement3D.Children</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.Avalonia.SharpDX.Element3D.html#HelixToolkit_Avalonia_SharpDX_Element3D_IsRenderingProperty">Element3D.IsRenderingProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.Avalonia.SharpDX.Element3D.html#HelixToolkit_Avalonia_SharpDX_Element3D_IsRendering">Element3D.IsRendering</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.Avalonia.SharpDX.Element3D.html#HelixToolkit_Avalonia_SharpDX_Element3D_VisibilityProperty">Element3D.VisibilityProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.Avalonia.SharpDX.Element3D.html#HelixToolkit_Avalonia_SharpDX_Element3D_Visibility">Element3D.Visibility</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.Avalonia.SharpDX.Element3D.html#HelixToolkit_Avalonia_SharpDX_Element3D_TransformProperty">Element3D.TransformProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.Avalonia.SharpDX.Element3D.html#HelixToolkit_Avalonia_SharpDX_Element3D_Transform">Element3D.Transform</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.Avalonia.SharpDX.Element3D.html#HelixToolkit_Avalonia_SharpDX_Element3D_IsHitTestVisibleProperty">Element3D.IsHitTestVisibleProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.Avalonia.SharpDX.Element3D.html#HelixToolkit_Avalonia_SharpDX_Element3D_IsHitTestVisible">Element3D.IsHitTestVisible</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.Avalonia.SharpDX.Element3D.html#HelixToolkit_Avalonia_SharpDX_Element3D_RenderOrder">Element3D.RenderOrder</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.Avalonia.SharpDX.Element3D.html#HelixToolkit_Avalonia_SharpDX_Element3D_RenderOrderProperty">Element3D.RenderOrderProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.Avalonia.SharpDX.Element3D.html#HelixToolkit_Avalonia_SharpDX_Element3D_MouseDown3DEvent">Element3D.MouseDown3DEvent</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.Avalonia.SharpDX.Element3D.html#HelixToolkit_Avalonia_SharpDX_Element3D_MouseUp3DEvent">Element3D.MouseUp3DEvent</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.Avalonia.SharpDX.Element3D.html#HelixToolkit_Avalonia_SharpDX_Element3D_MouseMove3DEvent">Element3D.MouseMove3DEvent</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.Avalonia.SharpDX.Element3D.html#HelixToolkit_Avalonia_SharpDX_Element3D_MouseDown3D">Element3D.MouseDown3D</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.Avalonia.SharpDX.Element3D.html#HelixToolkit_Avalonia_SharpDX_Element3D_MouseUp3D">Element3D.MouseUp3D</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.Avalonia.SharpDX.Element3D.html#HelixToolkit_Avalonia_SharpDX_Element3D_MouseMove3D">Element3D.MouseMove3D</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.Avalonia.SharpDX.Element3D.html#HelixToolkit_Avalonia_SharpDX_Element3D_OnMouse3DDown_System_Object_Avalonia_Interactivity_RoutedEventArgs_">Element3D.OnMouse3DDown(object, RoutedEventArgs)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.Avalonia.SharpDX.Element3D.html#HelixToolkit_Avalonia_SharpDX_Element3D_OnMouse3DUp_System_Object_Avalonia_Interactivity_RoutedEventArgs_">Element3D.OnMouse3DUp(object, RoutedEventArgs)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.Avalonia.SharpDX.Element3D.html#HelixToolkit_Avalonia_SharpDX_Element3D_OnMouse3DMove_System_Object_Avalonia_Interactivity_RoutedEventArgs_">Element3D.OnMouse3DMove(object, RoutedEventArgs)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.Avalonia.SharpDX.Element3D.html#HelixToolkit_Avalonia_SharpDX_Element3D_Mouse3DDown">Element3D.Mouse3DDown</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.Avalonia.SharpDX.Element3D.html#HelixToolkit_Avalonia_SharpDX_Element3D_Mouse3DUp">Element3D.Mouse3DUp</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.Avalonia.SharpDX.Element3D.html#HelixToolkit_Avalonia_SharpDX_Element3D_Mouse3DMove">Element3D.Mouse3DMove</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.Avalonia.SharpDX.Element3D.html#HelixToolkit_Avalonia_SharpDX_Element3D_FindVisualAncestor__1_Avalonia_StyledElement_">Element3D.FindVisualAncestor&lt;T&gt;(StyledElement)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.Avalonia.SharpDX.Model.Element3DCore.html#HelixToolkit_Avalonia_SharpDX_Model_Element3DCore_AddLogicalChild_Avalonia_LogicalTree_ILogical_">Element3DCore.AddLogicalChild(ILogical)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.Avalonia.SharpDX.Model.Element3DCore.html#HelixToolkit_Avalonia_SharpDX_Model_Element3DCore_RemoveLogicalChild_Avalonia_LogicalTree_ILogical_">Element3DCore.RemoveLogicalChild(ILogical)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.Avalonia.SharpDX.Model.Element3DCore.html#HelixToolkit_Avalonia_SharpDX_Model_Element3DCore_GUID">Element3DCore.GUID</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.Avalonia.SharpDX.Model.Element3DCore.html#HelixToolkit_Avalonia_SharpDX_Model_Element3DCore_TotalModelMatrix">Element3DCore.TotalModelMatrix</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.Avalonia.SharpDX.Model.Element3DCore.html#HelixToolkit_Avalonia_SharpDX_Model_Element3DCore_Visible">Element3DCore.Visible</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.Avalonia.SharpDX.Model.Element3DCore.html#HelixToolkit_Avalonia_SharpDX_Model_Element3DCore_IsAttached">Element3DCore.IsAttached</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.Avalonia.SharpDX.Model.Element3DCore.html#HelixToolkit_Avalonia_SharpDX_Model_Element3DCore_SceneNode">Element3DCore.SceneNode</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.Avalonia.SharpDX.Model.Element3DCore.html#HelixToolkit_Avalonia_SharpDX_Model_Element3DCore_AssignDefaultValuesToSceneNode_HelixToolkit_SharpDX_Model_Scene_SceneNode_">Element3DCore.AssignDefaultValuesToSceneNode(SceneNode)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.Avalonia.SharpDX.Model.Element3DCore.html#HelixToolkit_Avalonia_SharpDX_Model_Element3DCore_OnSceneNodeCreated">Element3DCore.OnSceneNodeCreated</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.Avalonia.SharpDX.Model.Element3DCore.html#HelixToolkit_Avalonia_SharpDX_Model_Element3DCore_Bounds">Element3DCore.Bounds</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.Avalonia.SharpDX.Model.Element3DCore.html#HelixToolkit_Avalonia_SharpDX_Model_Element3DCore_BoundsWithTransform">Element3DCore.BoundsWithTransform</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.Avalonia.SharpDX.Model.Element3DCore.html#HelixToolkit_Avalonia_SharpDX_Model_Element3DCore_BoundsSphere">Element3DCore.BoundsSphere</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.Avalonia.SharpDX.Model.Element3DCore.html#HelixToolkit_Avalonia_SharpDX_Model_Element3DCore_BoundsSphereWithTransform">Element3DCore.BoundsSphereWithTransform</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.Avalonia.SharpDX.Model.Element3DCore.html#HelixToolkit_Avalonia_SharpDX_Model_Element3DCore_HitTest_HelixToolkit_SharpDX_HitTestContext_System_Collections_Generic_List_HelixToolkit_SharpDX_HitTestResult___">Element3DCore.HitTest(HitTestContext, ref List&lt;HitTestResult&gt;)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.Avalonia.SharpDX.Model.Element3DCore.html#HelixToolkit_Avalonia_SharpDX_Model_Element3DCore_InvalidateRender">Element3DCore.InvalidateRender()</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.Avalonia.SharpDX.Model.Element3DCore.html#HelixToolkit_Avalonia_SharpDX_Model_Element3DCore_Dispose_System_Boolean_">Element3DCore.Dispose(bool)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.Avalonia.SharpDX.Model.Element3DCore.html#HelixToolkit_Avalonia_SharpDX_Model_Element3DCore_Dispose">Element3DCore.Dispose()</a>
+    </div>
+    <div>
+      <span class="xref">Control.FocusAdornerProperty</span>
+    </div>
+    <div>
+      <span class="xref">Control.TagProperty</span>
+    </div>
+    <div>
+      <span class="xref">Control.ContextMenuProperty</span>
+    </div>
+    <div>
+      <span class="xref">Control.ContextFlyoutProperty</span>
+    </div>
+    <div>
+      <span class="xref">Control.RequestBringIntoViewEvent</span>
+    </div>
+    <div>
+      <span class="xref">Control.ContextRequestedEvent</span>
+    </div>
+    <div>
+      <span class="xref">Control.LoadedEvent</span>
+    </div>
+    <div>
+      <span class="xref">Control.UnloadedEvent</span>
+    </div>
+    <div>
+      <span class="xref">Control.SizeChangedEvent</span>
+    </div>
+    <div>
+      <span class="xref">Control.GetTemplateFocusTarget()</span>
+    </div>
+    <div>
+      <span class="xref">Control.OnLoaded(RoutedEventArgs)</span>
+    </div>
+    <div>
+      <span class="xref">Control.OnUnloaded(RoutedEventArgs)</span>
+    </div>
+    <div>
+      <span class="xref">Control.OnSizeChanged(SizeChangedEventArgs)</span>
+    </div>
+    <div>
+      <span class="xref">Control.OnAttachedToVisualTreeCore(VisualTreeAttachmentEventArgs)</span>
+    </div>
+    <div>
+      <span class="xref">Control.OnDetachedFromVisualTreeCore(VisualTreeAttachmentEventArgs)</span>
+    </div>
+    <div>
+      <span class="xref">Control.OnGotFocus(GotFocusEventArgs)</span>
+    </div>
+    <div>
+      <span class="xref">Control.OnLostFocus(RoutedEventArgs)</span>
+    </div>
+    <div>
+      <span class="xref">Control.OnCreateAutomationPeer()</span>
+    </div>
+    <div>
+      <span class="xref">Control.OnPointerReleased(PointerReleasedEventArgs)</span>
+    </div>
+    <div>
+      <span class="xref">Control.OnKeyUp(KeyEventArgs)</span>
+    </div>
+    <div>
+      <span class="xref">Control.OnPropertyChanged(AvaloniaPropertyChangedEventArgs)</span>
+    </div>
+    <div>
+      <span class="xref">Control.FocusAdorner</span>
+    </div>
+    <div>
+      <span class="xref">Control.DataTemplates</span>
+    </div>
+    <div>
+      <span class="xref">Control.ContextMenu</span>
+    </div>
+    <div>
+      <span class="xref">Control.ContextFlyout</span>
+    </div>
+    <div>
+      <span class="xref">Control.IsLoaded</span>
+    </div>
+    <div>
+      <span class="xref">Control.Tag</span>
+    </div>
+    <div>
+      <span class="xref">Control.ContextRequested</span>
+    </div>
+    <div>
+      <span class="xref">Control.Loaded</span>
+    </div>
+    <div>
+      <span class="xref">Control.Unloaded</span>
+    </div>
+    <div>
+      <span class="xref">Control.SizeChanged</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.FocusableProperty</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.IsEnabledProperty</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.IsEffectivelyEnabledProperty</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.CursorProperty</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.IsKeyboardFocusWithinProperty</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.IsFocusedProperty</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.IsPointerOverProperty</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.IsTabStopProperty</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.GotFocusEvent</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.LostFocusEvent</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.KeyDownEvent</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.KeyUpEvent</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.TabIndexProperty</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.TextInputEvent</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.TextInputMethodClientRequestedEvent</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.PointerEnteredEvent</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.PointerExitedEvent</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.PointerMovedEvent</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.PointerPressedEvent</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.PointerReleasedEvent</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.PointerCaptureLostEvent</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.PointerWheelChangedEvent</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.TappedEvent</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.HoldingEvent</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.DoubleTappedEvent</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.Focus(NavigationMethod, KeyModifiers)</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.OnKeyDown(KeyEventArgs)</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.OnTextInput(TextInputEventArgs)</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.OnPointerEntered(PointerEventArgs)</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.OnPointerExited(PointerEventArgs)</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.OnPointerMoved(PointerEventArgs)</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.OnPointerPressed(PointerPressedEventArgs)</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.OnPointerCaptureLost(PointerCaptureLostEventArgs)</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.OnPointerWheelChanged(PointerWheelEventArgs)</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.UpdateIsEffectivelyEnabled()</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.Focusable</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.IsEnabled</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.Cursor</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.IsKeyboardFocusWithin</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.IsFocused</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.IsPointerOver</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.IsTabStop</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.IsEffectivelyEnabled</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.TabIndex</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.KeyBindings</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.IsEnabledCore</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.GestureRecognizers</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.GotFocus</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.LostFocus</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.KeyDown</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.KeyUp</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.TextInput</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.TextInputMethodClientRequested</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.PointerEntered</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.PointerExited</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.PointerMoved</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.PointerPressed</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.PointerReleased</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.PointerCaptureLost</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.PointerWheelChanged</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.Tapped</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.Holding</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.DoubleTapped</span>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.delegate">Interactive.AddHandler(RoutedEvent, Delegate, RoutingStrategies, bool)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.eventhandler-1">Interactive.AddHandler&lt;TEventArgs&gt;(RoutedEvent&lt;TEventArgs&gt;, EventHandler&lt;TEventArgs&gt;, RoutingStrategies, bool)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.delegate">Interactive.RemoveHandler(RoutedEvent, Delegate)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.eventhandler-1">Interactive.RemoveHandler&lt;TEventArgs&gt;(RoutedEvent&lt;TEventArgs&gt;, EventHandler&lt;TEventArgs&gt;)</a>
+    </div>
+    <div>
+      <span class="xref">Interactive.RaiseEvent(RoutedEventArgs)</span>
+    </div>
+    <div>
+      <span class="xref">Interactive.BuildEventRoute(RoutedEvent)</span>
+    </div>
+    <div>
+      <span class="xref">Layoutable.DesiredSizeProperty</span>
+    </div>
+    <div>
+      <span class="xref">Layoutable.WidthProperty</span>
+    </div>
+    <div>
+      <span class="xref">Layoutable.HeightProperty</span>
+    </div>
+    <div>
+      <span class="xref">Layoutable.MinWidthProperty</span>
+    </div>
+    <div>
+      <span class="xref">Layoutable.MaxWidthProperty</span>
+    </div>
+    <div>
+      <span class="xref">Layoutable.MinHeightProperty</span>
+    </div>
+    <div>
+      <span class="xref">Layoutable.MaxHeightProperty</span>
+    </div>
+    <div>
+      <span class="xref">Layoutable.MarginProperty</span>
+    </div>
+    <div>
+      <span class="xref">Layoutable.HorizontalAlignmentProperty</span>
+    </div>
+    <div>
+      <span class="xref">Layoutable.VerticalAlignmentProperty</span>
+    </div>
+    <div>
+      <span class="xref">Layoutable.UseLayoutRoundingProperty</span>
+    </div>
+    <div>
+      <span class="xref">Layoutable.UpdateLayout()</span>
+    </div>
+    <div>
+      <span class="xref">Layoutable.ApplyTemplate()</span>
+    </div>
+    <div>
+      <span class="xref">Layoutable.Measure(Size)</span>
+    </div>
+    <div>
+      <span class="xref">Layoutable.Arrange(Rect)</span>
+    </div>
+    <div>
+      <span class="xref">Layoutable.InvalidateMeasure()</span>
+    </div>
+    <div>
+      <span class="xref">Layoutable.InvalidateArrange()</span>
+    </div>
+    <div>
+      <span class="xref">Layoutable.AffectsMeasure&lt;T&gt;(params AvaloniaProperty[])</span>
+    </div>
+    <div>
+      <span class="xref">Layoutable.AffectsArrange&lt;T&gt;(params AvaloniaProperty[])</span>
+    </div>
+    <div>
+      <span class="xref">Layoutable.MeasureCore(Size)</span>
+    </div>
+    <div>
+      <span class="xref">Layoutable.MeasureOverride(Size)</span>
+    </div>
+    <div>
+      <span class="xref">Layoutable.ArrangeCore(Rect)</span>
+    </div>
+    <div>
+      <span class="xref">Layoutable.ArrangeOverride(Size)</span>
+    </div>
+    <div>
+      <span class="xref">Layoutable.OnMeasureInvalidated()</span>
+    </div>
+    <div>
+      <span class="xref">Layoutable.OnVisualParentChanged(Visual, Visual)</span>
+    </div>
+    <div>
+      <span class="xref">Layoutable.Width</span>
+    </div>
+    <div>
+      <span class="xref">Layoutable.Height</span>
+    </div>
+    <div>
+      <span class="xref">Layoutable.MinWidth</span>
+    </div>
+    <div>
+      <span class="xref">Layoutable.MaxWidth</span>
+    </div>
+    <div>
+      <span class="xref">Layoutable.MinHeight</span>
+    </div>
+    <div>
+      <span class="xref">Layoutable.MaxHeight</span>
+    </div>
+    <div>
+      <span class="xref">Layoutable.Margin</span>
+    </div>
+    <div>
+      <span class="xref">Layoutable.HorizontalAlignment</span>
+    </div>
+    <div>
+      <span class="xref">Layoutable.VerticalAlignment</span>
+    </div>
+    <div>
+      <span class="xref">Layoutable.DesiredSize</span>
+    </div>
+    <div>
+      <span class="xref">Layoutable.IsMeasureValid</span>
+    </div>
+    <div>
+      <span class="xref">Layoutable.IsArrangeValid</span>
+    </div>
+    <div>
+      <span class="xref">Layoutable.UseLayoutRounding</span>
+    </div>
+    <div>
+      <span class="xref">Layoutable.EffectiveViewportChanged</span>
+    </div>
+    <div>
+      <span class="xref">Layoutable.LayoutUpdated</span>
+    </div>
+    <div>
+      <span class="xref">Visual.BoundsProperty</span>
+    </div>
+    <div>
+      <span class="xref">Visual.ClipToBoundsProperty</span>
+    </div>
+    <div>
+      <span class="xref">Visual.ClipProperty</span>
+    </div>
+    <div>
+      <span class="xref">Visual.IsVisibleProperty</span>
+    </div>
+    <div>
+      <span class="xref">Visual.OpacityProperty</span>
+    </div>
+    <div>
+      <span class="xref">Visual.OpacityMaskProperty</span>
+    </div>
+    <div>
+      <span class="xref">Visual.EffectProperty</span>
+    </div>
+    <div>
+      <span class="xref">Visual.HasMirrorTransformProperty</span>
+    </div>
+    <div>
+      <span class="xref">Visual.RenderTransformProperty</span>
+    </div>
+    <div>
+      <span class="xref">Visual.RenderTransformOriginProperty</span>
+    </div>
+    <div>
+      <span class="xref">Visual.FlowDirectionProperty</span>
+    </div>
+    <div>
+      <span class="xref">Visual.VisualParentProperty</span>
+    </div>
+    <div>
+      <span class="xref">Visual.ZIndexProperty</span>
+    </div>
+    <div>
+      <span class="xref">Visual.GetFlowDirection(Visual)</span>
+    </div>
+    <div>
+      <span class="xref">Visual.SetFlowDirection(Visual, FlowDirection)</span>
+    </div>
+    <div>
+      <span class="xref">Visual.InvalidateVisual()</span>
+    </div>
+    <div>
+      <span class="xref">Visual.Render(DrawingContext)</span>
+    </div>
+    <div>
+      <span class="xref">Visual.AffectsRender&lt;T&gt;(params AvaloniaProperty[])</span>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">Visual.LogicalChildrenCollectionChanged(object, NotifyCollectionChangedEventArgs)</a>
+    </div>
+    <div>
+      <span class="xref">Visual.OnAttachedToVisualTree(VisualTreeAttachmentEventArgs)</span>
+    </div>
+    <div>
+      <span class="xref">Visual.OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs)</span>
+    </div>
+    <div>
+      <span class="xref">Visual.InvalidateMirrorTransform()</span>
+    </div>
+    <div>
+      <span class="xref">Visual.ClipToBounds</span>
+    </div>
+    <div>
+      <span class="xref">Visual.Clip</span>
+    </div>
+    <div>
+      <span class="xref">Visual.IsEffectivelyVisible</span>
+    </div>
+    <div>
+      <span class="xref">Visual.IsVisible</span>
+    </div>
+    <div>
+      <span class="xref">Visual.Opacity</span>
+    </div>
+    <div>
+      <span class="xref">Visual.OpacityMask</span>
+    </div>
+    <div>
+      <span class="xref">Visual.Effect</span>
+    </div>
+    <div>
+      <span class="xref">Visual.HasMirrorTransform</span>
+    </div>
+    <div>
+      <span class="xref">Visual.RenderTransform</span>
+    </div>
+    <div>
+      <span class="xref">Visual.RenderTransformOrigin</span>
+    </div>
+    <div>
+      <span class="xref">Visual.FlowDirection</span>
+    </div>
+    <div>
+      <span class="xref">Visual.ZIndex</span>
+    </div>
+    <div>
+      <span class="xref">Visual.VisualChildren</span>
+    </div>
+    <div>
+      <span class="xref">Visual.VisualRoot</span>
+    </div>
+    <div>
+      <span class="xref">Visual.BypassFlowDirectionPolicies</span>
+    </div>
+    <div>
+      <span class="xref">Visual.AttachedToVisualTree</span>
+    </div>
+    <div>
+      <span class="xref">Visual.DetachedFromVisualTree</span>
+    </div>
+    <div>
+      <span class="xref">StyledElement.DataContextProperty</span>
+    </div>
+    <div>
+      <span class="xref">StyledElement.NameProperty</span>
+    </div>
+    <div>
+      <span class="xref">StyledElement.ParentProperty</span>
+    </div>
+    <div>
+      <span class="xref">StyledElement.TemplatedParentProperty</span>
+    </div>
+    <div>
+      <span class="xref">StyledElement.ThemeProperty</span>
+    </div>
+    <div>
+      <span class="xref">StyledElement.BeginInit()</span>
+    </div>
+    <div>
+      <span class="xref">StyledElement.EndInit()</span>
+    </div>
+    <div>
+      <span class="xref">StyledElement.ApplyStyling()</span>
+    </div>
+    <div>
+      <span class="xref">StyledElement.InitializeIfNeeded()</span>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">StyledElement.TryGetResource(object, ThemeVariant, out object)</a>
+    </div>
+    <div>
+      <span class="xref">StyledElement.OnAttachedToLogicalTree(LogicalTreeAttachmentEventArgs)</span>
+    </div>
+    <div>
+      <span class="xref">StyledElement.OnDetachedFromLogicalTree(LogicalTreeAttachmentEventArgs)</span>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.eventargs">StyledElement.OnDataContextChanged(EventArgs)</a>
+    </div>
+    <div>
+      <span class="xref">StyledElement.OnDataContextBeginUpdate()</span>
+    </div>
+    <div>
+      <span class="xref">StyledElement.OnDataContextEndUpdate()</span>
+    </div>
+    <div>
+      <span class="xref">StyledElement.OnInitialized()</span>
+    </div>
+    <div>
+      <span class="xref">StyledElement.Name</span>
+    </div>
+    <div>
+      <span class="xref">StyledElement.Classes</span>
+    </div>
+    <div>
+      <span class="xref">StyledElement.DataContext</span>
+    </div>
+    <div>
+      <span class="xref">StyledElement.IsInitialized</span>
+    </div>
+    <div>
+      <span class="xref">StyledElement.Styles</span>
+    </div>
+    <div>
+      <span class="xref">StyledElement.StyleKey</span>
+    </div>
+    <div>
+      <span class="xref">StyledElement.Resources</span>
+    </div>
+    <div>
+      <span class="xref">StyledElement.TemplatedParent</span>
+    </div>
+    <div>
+      <span class="xref">StyledElement.Theme</span>
+    </div>
+    <div>
+      <span class="xref">StyledElement.LogicalChildren</span>
+    </div>
+    <div>
+      <span class="xref">StyledElement.PseudoClasses</span>
+    </div>
+    <div>
+      <span class="xref">StyledElement.StyleKeyOverride</span>
+    </div>
+    <div>
+      <span class="xref">StyledElement.Parent</span>
+    </div>
+    <div>
+      <span class="xref">StyledElement.ActualThemeVariant</span>
+    </div>
+    <div>
+      <span class="xref">StyledElement.AttachedToLogicalTree</span>
+    </div>
+    <div>
+      <span class="xref">StyledElement.DetachedFromLogicalTree</span>
+    </div>
+    <div>
+      <span class="xref">StyledElement.DataContextChanged</span>
+    </div>
+    <div>
+      <span class="xref">StyledElement.Initialized</span>
+    </div>
+    <div>
+      <span class="xref">StyledElement.ResourcesChanged</span>
+    </div>
+    <div>
+      <span class="xref">StyledElement.ActualThemeVariantChanged</span>
+    </div>
+    <div>
+      <span class="xref">Animatable.TransitionsProperty</span>
+    </div>
+    <div>
+      <span class="xref">Animatable.OnPropertyChangedCore(AvaloniaPropertyChangedEventArgs)</span>
+    </div>
+    <div>
+      <span class="xref">Animatable.Transitions</span>
+    </div>
+    <div>
+      <span class="xref">AvaloniaObject.CheckAccess()</span>
+    </div>
+    <div>
+      <span class="xref">AvaloniaObject.VerifyAccess()</span>
+    </div>
+    <div>
+      <span class="xref">AvaloniaObject.ClearValue(AvaloniaProperty)</span>
+    </div>
+    <div>
+      <span class="xref">AvaloniaObject.ClearValue&lt;T&gt;(AvaloniaProperty&lt;T&gt;)</span>
+    </div>
+    <div>
+      <span class="xref">AvaloniaObject.ClearValue&lt;T&gt;(StyledProperty&lt;T&gt;)</span>
+    </div>
+    <div>
+      <span class="xref">AvaloniaObject.ClearValue&lt;T&gt;(DirectPropertyBase&lt;T&gt;)</span>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">AvaloniaObject.Equals(object)</a>
+    </div>
+    <div>
+      <span class="xref">AvaloniaObject.GetHashCode()</span>
+    </div>
+    <div>
+      <span class="xref">AvaloniaObject.GetValue(AvaloniaProperty)</span>
+    </div>
+    <div>
+      <span class="xref">AvaloniaObject.GetValue&lt;T&gt;(StyledProperty&lt;T&gt;)</span>
+    </div>
+    <div>
+      <span class="xref">AvaloniaObject.GetValue&lt;T&gt;(DirectPropertyBase&lt;T&gt;)</span>
+    </div>
+    <div>
+      <span class="xref">AvaloniaObject.GetBaseValue&lt;T&gt;(StyledProperty&lt;T&gt;)</span>
+    </div>
+    <div>
+      <span class="xref">AvaloniaObject.IsAnimating(AvaloniaProperty)</span>
+    </div>
+    <div>
+      <span class="xref">AvaloniaObject.IsSet(AvaloniaProperty)</span>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">AvaloniaObject.SetValue(AvaloniaProperty, object, BindingPriority)</a>
+    </div>
+    <div>
+      <span class="xref">AvaloniaObject.SetValue&lt;T&gt;(StyledProperty&lt;T&gt;, T, BindingPriority)</span>
+    </div>
+    <div>
+      <span class="xref">AvaloniaObject.SetValue&lt;T&gt;(DirectPropertyBase&lt;T&gt;, T)</span>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">AvaloniaObject.SetCurrentValue(AvaloniaProperty, object)</a>
+    </div>
+    <div>
+      <span class="xref">AvaloniaObject.SetCurrentValue&lt;T&gt;(StyledProperty&lt;T&gt;, T)</span>
+    </div>
+    <div>
+      <span class="xref">AvaloniaObject.Bind(AvaloniaProperty, IBinding)</span>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iobservable-1">AvaloniaObject.Bind(AvaloniaProperty, IObservable&lt;object&gt;, BindingPriority)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iobservable-1">AvaloniaObject.Bind&lt;T&gt;(StyledProperty&lt;T&gt;, IObservable&lt;object&gt;, BindingPriority)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iobservable-1">AvaloniaObject.Bind&lt;T&gt;(StyledProperty&lt;T&gt;, IObservable&lt;T&gt;, BindingPriority)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iobservable-1">AvaloniaObject.Bind&lt;T&gt;(StyledProperty&lt;T&gt;, IObservable&lt;BindingValue&lt;T&gt;&gt;, BindingPriority)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iobservable-1">AvaloniaObject.Bind&lt;T&gt;(DirectPropertyBase&lt;T&gt;, IObservable&lt;object&gt;)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iobservable-1">AvaloniaObject.Bind&lt;T&gt;(DirectPropertyBase&lt;T&gt;, IObservable&lt;T&gt;)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iobservable-1">AvaloniaObject.Bind&lt;T&gt;(DirectPropertyBase&lt;T&gt;, IObservable&lt;BindingValue&lt;T&gt;&gt;)</a>
+    </div>
+    <div>
+      <span class="xref">AvaloniaObject.CoerceValue(AvaloniaProperty)</span>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.exception">AvaloniaObject.UpdateDataValidation(AvaloniaProperty, BindingValueType, Exception)</a>
+    </div>
+    <div>
+      <span class="xref">AvaloniaObject.RaisePropertyChanged&lt;T&gt;(DirectPropertyBase&lt;T&gt;, T, T)</span>
+    </div>
+    <div>
+      <span class="xref">AvaloniaObject.SetAndRaise&lt;T&gt;(DirectPropertyBase&lt;T&gt;, ref T, T)</span>
+    </div>
+    <div>
+      <span class="xref">AvaloniaObject.InheritanceParent</span>
+    </div>
+    <div>
+      <span class="xref">AvaloniaObject.this[AvaloniaProperty]</span>
+    </div>
+    <div>
+      <span class="xref">AvaloniaObject.this[IndexerDescriptor]</span>
+    </div>
+    <div>
+      <span class="xref">AvaloniaObject.PropertyChanged</span>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">object.Equals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype">object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone">object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals">object.ReferenceEquals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring">object.ToString()</a>
+    </div>
+  </dd></dl>
+
+  <dl class="typelist extensionMethods">
+    <dt>Extension Methods</dt>
+    <dd>
+  <div>
+      <a class="xref" href="HelixToolkit.Avalonia.SharpDX.ViewportExtensions.html#HelixToolkit_Avalonia_SharpDX_ViewportExtensions_Traverse__1_HelixToolkit_Avalonia_SharpDX_Element3D_System_Action___0_System_Numerics_Matrix4x4__">ViewportExtensions.Traverse&lt;T&gt;(Element3D, Action&lt;T, Matrix4x4&gt;)</a>
+  </div>
+  </dd></dl>
+
+
+
+
+
+  <h2 class="section" id="constructors">Constructors
+</h2>
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_TransformManipulator3D__ctor_" data-uid="HelixToolkit.Avalonia.SharpDX.TransformManipulator3D.#ctor*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_TransformManipulator3D__ctor" data-uid="HelixToolkit.Avalonia.SharpDX.TransformManipulator3D.#ctor">
+  TransformManipulator3D()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Model/Elements3D/TransformManipulator3D.cs/#L467"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public TransformManipulator3D()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <h2 class="section" id="fields">Fields
+</h2>
+
+
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_TransformManipulator3D_CenterOffsetProperty" data-uid="HelixToolkit.Avalonia.SharpDX.TransformManipulator3D.CenterOffsetProperty">
+  CenterOffsetProperty
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Model/Elements3D/TransformManipulator3D.cs/#L403"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly AvaloniaProperty CenterOffsetProperty</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">AvaloniaProperty</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_TransformManipulator3D_EnableRotationProperty" data-uid="HelixToolkit.Avalonia.SharpDX.TransformManipulator3D.EnableRotationProperty">
+  EnableRotationProperty
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Model/Elements3D/TransformManipulator3D.cs/#L282"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly AvaloniaProperty EnableRotationProperty</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">AvaloniaProperty</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_TransformManipulator3D_EnableRotationXProperty" data-uid="HelixToolkit.Avalonia.SharpDX.TransformManipulator3D.EnableRotationXProperty">
+  EnableRotationXProperty
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Model/Elements3D/TransformManipulator3D.cs/#L306"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly AvaloniaProperty EnableRotationXProperty</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">AvaloniaProperty</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_TransformManipulator3D_EnableRotationYProperty" data-uid="HelixToolkit.Avalonia.SharpDX.TransformManipulator3D.EnableRotationYProperty">
+  EnableRotationYProperty
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Model/Elements3D/TransformManipulator3D.cs/#L328"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly AvaloniaProperty EnableRotationYProperty</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">AvaloniaProperty</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_TransformManipulator3D_EnableRotationZProperty" data-uid="HelixToolkit.Avalonia.SharpDX.TransformManipulator3D.EnableRotationZProperty">
+  EnableRotationZProperty
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Model/Elements3D/TransformManipulator3D.cs/#L350"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly AvaloniaProperty EnableRotationZProperty</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">AvaloniaProperty</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_TransformManipulator3D_EnableScalingProperty" data-uid="HelixToolkit.Avalonia.SharpDX.TransformManipulator3D.EnableScalingProperty">
+  EnableScalingProperty
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Model/Elements3D/TransformManipulator3D.cs/#L102"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly AvaloniaProperty EnableScalingProperty</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">AvaloniaProperty</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_TransformManipulator3D_EnableScalingXProperty" data-uid="HelixToolkit.Avalonia.SharpDX.TransformManipulator3D.EnableScalingXProperty">
+  EnableScalingXProperty
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Model/Elements3D/TransformManipulator3D.cs/#L126"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly AvaloniaProperty EnableScalingXProperty</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">AvaloniaProperty</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_TransformManipulator3D_EnableScalingYProperty" data-uid="HelixToolkit.Avalonia.SharpDX.TransformManipulator3D.EnableScalingYProperty">
+  EnableScalingYProperty
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Model/Elements3D/TransformManipulator3D.cs/#L148"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly AvaloniaProperty EnableScalingYProperty</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">AvaloniaProperty</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_TransformManipulator3D_EnableScalingZProperty" data-uid="HelixToolkit.Avalonia.SharpDX.TransformManipulator3D.EnableScalingZProperty">
+  EnableScalingZProperty
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Model/Elements3D/TransformManipulator3D.cs/#L170"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly AvaloniaProperty EnableScalingZProperty</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">AvaloniaProperty</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_TransformManipulator3D_EnableTranslationProperty" data-uid="HelixToolkit.Avalonia.SharpDX.TransformManipulator3D.EnableTranslationProperty">
+  EnableTranslationProperty
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Model/Elements3D/TransformManipulator3D.cs/#L192"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly AvaloniaProperty EnableTranslationProperty</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">AvaloniaProperty</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_TransformManipulator3D_EnableTranslationXProperty" data-uid="HelixToolkit.Avalonia.SharpDX.TransformManipulator3D.EnableTranslationXProperty">
+  EnableTranslationXProperty
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Model/Elements3D/TransformManipulator3D.cs/#L216"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly AvaloniaProperty EnableTranslationXProperty</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">AvaloniaProperty</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_TransformManipulator3D_EnableTranslationYProperty" data-uid="HelixToolkit.Avalonia.SharpDX.TransformManipulator3D.EnableTranslationYProperty">
+  EnableTranslationYProperty
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Model/Elements3D/TransformManipulator3D.cs/#L238"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly AvaloniaProperty EnableTranslationYProperty</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">AvaloniaProperty</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_TransformManipulator3D_EnableTranslationZProperty" data-uid="HelixToolkit.Avalonia.SharpDX.TransformManipulator3D.EnableTranslationZProperty">
+  EnableTranslationZProperty
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Model/Elements3D/TransformManipulator3D.cs/#L260"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly AvaloniaProperty EnableTranslationZProperty</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">AvaloniaProperty</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_TransformManipulator3D_EnableXRayGridProperty" data-uid="HelixToolkit.Avalonia.SharpDX.TransformManipulator3D.EnableXRayGridProperty">
+  EnableXRayGridProperty
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Model/Elements3D/TransformManipulator3D.cs/#L372"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly AvaloniaProperty EnableXRayGridProperty</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">AvaloniaProperty</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_TransformManipulator3D_SizeScaleProperty" data-uid="HelixToolkit.Avalonia.SharpDX.TransformManipulator3D.SizeScaleProperty">
+  SizeScaleProperty
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Model/Elements3D/TransformManipulator3D.cs/#L426"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly AvaloniaProperty SizeScaleProperty</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">AvaloniaProperty</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_TransformManipulator3D_TargetProperty" data-uid="HelixToolkit.Avalonia.SharpDX.TransformManipulator3D.TargetProperty">
+  TargetProperty
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Model/Elements3D/TransformManipulator3D.cs/#L80"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly AvaloniaProperty TargetProperty</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">AvaloniaProperty</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+  <h2 class="section" id="properties">Properties
+</h2>
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_TransformManipulator3D_CenterOffset_" data-uid="HelixToolkit.Avalonia.SharpDX.TransformManipulator3D.CenterOffset*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_TransformManipulator3D_CenterOffset" data-uid="HelixToolkit.Avalonia.SharpDX.TransformManipulator3D.CenterOffset">
+  CenterOffset
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Model/Elements3D/TransformManipulator3D.cs/#L387"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[TypeConverter(typeof(Vector3Converter))]
+public Vector3 CenterOffset { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_TransformManipulator3D_EnableRotation_" data-uid="HelixToolkit.Avalonia.SharpDX.TransformManipulator3D.EnableRotation*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_TransformManipulator3D_EnableRotation" data-uid="HelixToolkit.Avalonia.SharpDX.TransformManipulator3D.EnableRotation">
+  EnableRotation
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Model/Elements3D/TransformManipulator3D.cs/#L270"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool EnableRotation { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_TransformManipulator3D_EnableRotationX_" data-uid="HelixToolkit.Avalonia.SharpDX.TransformManipulator3D.EnableRotationX*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_TransformManipulator3D_EnableRotationX" data-uid="HelixToolkit.Avalonia.SharpDX.TransformManipulator3D.EnableRotationX">
+  EnableRotationX
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Model/Elements3D/TransformManipulator3D.cs/#L294"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool EnableRotationX { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_TransformManipulator3D_EnableRotationY_" data-uid="HelixToolkit.Avalonia.SharpDX.TransformManipulator3D.EnableRotationY*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_TransformManipulator3D_EnableRotationY" data-uid="HelixToolkit.Avalonia.SharpDX.TransformManipulator3D.EnableRotationY">
+  EnableRotationY
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Model/Elements3D/TransformManipulator3D.cs/#L316"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool EnableRotationY { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_TransformManipulator3D_EnableRotationZ_" data-uid="HelixToolkit.Avalonia.SharpDX.TransformManipulator3D.EnableRotationZ*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_TransformManipulator3D_EnableRotationZ" data-uid="HelixToolkit.Avalonia.SharpDX.TransformManipulator3D.EnableRotationZ">
+  EnableRotationZ
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Model/Elements3D/TransformManipulator3D.cs/#L338"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool EnableRotationZ { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_TransformManipulator3D_EnableScaling_" data-uid="HelixToolkit.Avalonia.SharpDX.TransformManipulator3D.EnableScaling*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_TransformManipulator3D_EnableScaling" data-uid="HelixToolkit.Avalonia.SharpDX.TransformManipulator3D.EnableScaling">
+  EnableScaling
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Model/Elements3D/TransformManipulator3D.cs/#L90"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool EnableScaling { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_TransformManipulator3D_EnableScalingX_" data-uid="HelixToolkit.Avalonia.SharpDX.TransformManipulator3D.EnableScalingX*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_TransformManipulator3D_EnableScalingX" data-uid="HelixToolkit.Avalonia.SharpDX.TransformManipulator3D.EnableScalingX">
+  EnableScalingX
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Model/Elements3D/TransformManipulator3D.cs/#L114"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool EnableScalingX { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_TransformManipulator3D_EnableScalingY_" data-uid="HelixToolkit.Avalonia.SharpDX.TransformManipulator3D.EnableScalingY*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_TransformManipulator3D_EnableScalingY" data-uid="HelixToolkit.Avalonia.SharpDX.TransformManipulator3D.EnableScalingY">
+  EnableScalingY
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Model/Elements3D/TransformManipulator3D.cs/#L136"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool EnableScalingY { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_TransformManipulator3D_EnableScalingZ_" data-uid="HelixToolkit.Avalonia.SharpDX.TransformManipulator3D.EnableScalingZ*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_TransformManipulator3D_EnableScalingZ" data-uid="HelixToolkit.Avalonia.SharpDX.TransformManipulator3D.EnableScalingZ">
+  EnableScalingZ
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Model/Elements3D/TransformManipulator3D.cs/#L158"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool EnableScalingZ { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_TransformManipulator3D_EnableTranslation_" data-uid="HelixToolkit.Avalonia.SharpDX.TransformManipulator3D.EnableTranslation*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_TransformManipulator3D_EnableTranslation" data-uid="HelixToolkit.Avalonia.SharpDX.TransformManipulator3D.EnableTranslation">
+  EnableTranslation
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Model/Elements3D/TransformManipulator3D.cs/#L180"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool EnableTranslation { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_TransformManipulator3D_EnableTranslationX_" data-uid="HelixToolkit.Avalonia.SharpDX.TransformManipulator3D.EnableTranslationX*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_TransformManipulator3D_EnableTranslationX" data-uid="HelixToolkit.Avalonia.SharpDX.TransformManipulator3D.EnableTranslationX">
+  EnableTranslationX
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Model/Elements3D/TransformManipulator3D.cs/#L204"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool EnableTranslationX { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_TransformManipulator3D_EnableTranslationY_" data-uid="HelixToolkit.Avalonia.SharpDX.TransformManipulator3D.EnableTranslationY*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_TransformManipulator3D_EnableTranslationY" data-uid="HelixToolkit.Avalonia.SharpDX.TransformManipulator3D.EnableTranslationY">
+  EnableTranslationY
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Model/Elements3D/TransformManipulator3D.cs/#L226"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool EnableTranslationY { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_TransformManipulator3D_EnableTranslationZ_" data-uid="HelixToolkit.Avalonia.SharpDX.TransformManipulator3D.EnableTranslationZ*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_TransformManipulator3D_EnableTranslationZ" data-uid="HelixToolkit.Avalonia.SharpDX.TransformManipulator3D.EnableTranslationZ">
+  EnableTranslationZ
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Model/Elements3D/TransformManipulator3D.cs/#L248"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool EnableTranslationZ { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_TransformManipulator3D_EnableXRayGrid_" data-uid="HelixToolkit.Avalonia.SharpDX.TransformManipulator3D.EnableXRayGrid*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_TransformManipulator3D_EnableXRayGrid" data-uid="HelixToolkit.Avalonia.SharpDX.TransformManipulator3D.EnableXRayGrid">
+  EnableXRayGrid
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Model/Elements3D/TransformManipulator3D.cs/#L360"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool EnableXRayGrid { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_TransformManipulator3D_SizeScale_" data-uid="HelixToolkit.Avalonia.SharpDX.TransformManipulator3D.SizeScale*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_TransformManipulator3D_SizeScale" data-uid="HelixToolkit.Avalonia.SharpDX.TransformManipulator3D.SizeScale">
+  SizeScale
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Model/Elements3D/TransformManipulator3D.cs/#L414"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public double SizeScale { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_TransformManipulator3D_Target_" data-uid="HelixToolkit.Avalonia.SharpDX.TransformManipulator3D.Target*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_TransformManipulator3D_Target" data-uid="HelixToolkit.Avalonia.SharpDX.TransformManipulator3D.Target">
+  Target
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Model/Elements3D/TransformManipulator3D.cs/#L68"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Element3D? Target { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Avalonia.SharpDX.Element3D.html">Element3D</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h2 class="section" id="methods">Methods
+</h2>
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_TransformManipulator3D_CanBeginTransform_" data-uid="HelixToolkit.Avalonia.SharpDX.TransformManipulator3D.CanBeginTransform*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_TransformManipulator3D_CanBeginTransform_HelixToolkit_Avalonia_SharpDX_MouseDown3DEventArgs_" data-uid="HelixToolkit.Avalonia.SharpDX.TransformManipulator3D.CanBeginTransform(HelixToolkit.Avalonia.SharpDX.MouseDown3DEventArgs)">
+  CanBeginTransform(MouseDown3DEventArgs?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Model/Elements3D/TransformManipulator3D.cs/#L610"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual bool CanBeginTransform(MouseDown3DEventArgs? e)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>e</code> <a class="xref" href="HelixToolkit.Avalonia.SharpDX.MouseDown3DEventArgs.html">MouseDown3DEventArgs</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_TransformManipulator3D_OnCreateSceneNode_" data-uid="HelixToolkit.Avalonia.SharpDX.TransformManipulator3D.OnCreateSceneNode*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_TransformManipulator3D_OnCreateSceneNode" data-uid="HelixToolkit.Avalonia.SharpDX.TransformManipulator3D.OnCreateSceneNode">
+  OnCreateSceneNode()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Model/Elements3D/TransformManipulator3D.cs/#L999"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Called when [create scene node].</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected override SceneNode OnCreateSceneNode()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html">SceneNode</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Model/Elements3D/TransformManipulator3D.cs/#L32" class="edit-link">Edit this page</a>
+        </div>
+
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          Copyright (c) 2023 Helix Toolkit contributors
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,843 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Class RenderCore2D | Helix Toolkit - 3D for .NET </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Class RenderCore2D | Helix Toolkit - 3D for .NET ">
+      
+      
+      <link rel="icon" href="../images/favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/helix-toolkit/helix-toolkit/new/main-v3/apiSpec/new?filename=HelixToolkit_SharpDX_Core2D_RenderCore2D.md&amp;value=---%0Auid%3A%20HelixToolkit.SharpDX.Core2D.RenderCore2D%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="ManagedReference">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../images/favicon.ico" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="HelixToolkit.SharpDX.Core2D.RenderCore2D">
+
+
+
+  <h1 id="HelixToolkit_SharpDX_Core2D_RenderCore2D" data-uid="HelixToolkit.SharpDX.Core2D.RenderCore2D" class="text-break">
+Class RenderCore2D  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Core2D/Abstract/RenderCore2D.cs/#L8"><i class="bi bi-code-slash"></i></a>
+  </h1>
+
+  <div class="facts text-secondary">
+    <dl><dt>Namespace</dt><dd><a class="xref" href="HelixToolkit.html">HelixToolkit</a>.<a class="xref" href="HelixToolkit.SharpDX.html">SharpDX</a>.<a class="xref" href="HelixToolkit.SharpDX.Core2D.html">Core2D</a></dd></dl>
+  <dl><dt>Assembly</dt><dd>HelixToolkit.SharpDX.dll</dd></dl>
+  </div>
+
+  <div class="markdown summary"></div>
+  <div class="markdown conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public abstract class RenderCore2D : DisposeObject, IDisposable</code></pre>
+  </div>
+
+
+
+
+  <dl class="typelist inheritance">
+    <dt>Inheritance</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
+      <div><a class="xref" href="HelixToolkit.SharpDX.DisposeObject.html">DisposeObject</a></div>
+      <div><span class="xref">RenderCore2D</span></div>
+    </dd>
+  </dl>
+
+  <dl class="typelist implements">
+    <dt>Implements</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.idisposable">IDisposable</a></div>
+    </dd>
+  </dl>
+
+  <dl class="typelist derived">
+    <dt>Derived</dt>
+    <dd>
+      <div><a class="xref" href="HelixToolkit.SharpDX.Core2D.RenderCore2DBase.html">RenderCore2DBase</a></div>
+    </dd>
+  </dl>
+
+  <dl class="typelist inheritedMembers">
+    <dt>Inherited Members</dt>
+    <dd>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.DisposeObject.html#HelixToolkit_SharpDX_DisposeObject_RemoveAndDispose__1___0__">DisposeObject.RemoveAndDispose&lt;T&gt;(ref T)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.DisposeObject.html#HelixToolkit_SharpDX_DisposeObject_RemoveAndDispose__1___0_">DisposeObject.RemoveAndDispose&lt;T&gt;(T)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.DisposeObject.html#HelixToolkit_SharpDX_DisposeObject_RefCount">DisposeObject.RefCount</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.DisposeObject.html#HelixToolkit_SharpDX_DisposeObject_IncRef">DisposeObject.IncRef()</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.DisposeObject.html#HelixToolkit_SharpDX_DisposeObject_ForceDispose">DisposeObject.ForceDispose()</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.DisposeObject.html#HelixToolkit_SharpDX_DisposeObject_IsDisposed">DisposeObject.IsDisposed</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.DisposeObject.html#HelixToolkit_SharpDX_DisposeObject_Dispose">DisposeObject.Dispose()</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.DisposeObject.html#HelixToolkit_SharpDX_DisposeObject_Set__1___0____0_">DisposeObject.Set&lt;T&gt;(ref T, T)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">object.Equals(object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">object.Equals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode">object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype">object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone">object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals">object.ReferenceEquals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring">object.ToString()</a>
+    </div>
+  </dd></dl>
+
+
+
+
+
+
+  <h2 class="section" id="properties">Properties
+</h2>
+
+
+  <a id="HelixToolkit_SharpDX_Core2D_RenderCore2D_IsAttached_" data-uid="HelixToolkit.SharpDX.Core2D.RenderCore2D.IsAttached*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Core2D_RenderCore2D_IsAttached" data-uid="HelixToolkit.SharpDX.Core2D.RenderCore2D.IsAttached">
+  IsAttached
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Core2D/Abstract/RenderCore2D.cs/#L144"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets a value indicating whether this instance is attached.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsAttached { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><code>true</code> if this instance is attached; otherwise, <code>false</code>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Core2D_RenderCore2D_IsEmpty_" data-uid="HelixToolkit.SharpDX.Core2D.RenderCore2D.IsEmpty*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Core2D_RenderCore2D_IsEmpty" data-uid="HelixToolkit.SharpDX.Core2D.RenderCore2D.IsEmpty">
+  IsEmpty
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Core2D/Abstract/RenderCore2D.cs/#L21"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets a value indicating whether this instance is empty.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsEmpty { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><code>true</code> if this instance is empty; otherwise, <code>false</code>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Core2D_RenderCore2D_IsMouseOver_" data-uid="HelixToolkit.SharpDX.Core2D.RenderCore2D.IsMouseOver*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Core2D_RenderCore2D_IsMouseOver" data-uid="HelixToolkit.SharpDX.Core2D.RenderCore2D.IsMouseOver">
+  IsMouseOver
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Core2D/Abstract/RenderCore2D.cs/#L126"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets a value indicating whether this instance is mouse over.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsMouseOver { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><code>true</code> if this instance is mouse over; otherwise, <code>false</code>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Core2D_RenderCore2D_IsRendering_" data-uid="HelixToolkit.SharpDX.Core2D.RenderCore2D.IsRendering*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Core2D_RenderCore2D_IsRendering" data-uid="HelixToolkit.SharpDX.Core2D.RenderCore2D.IsRendering">
+  IsRendering
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Core2D/Abstract/RenderCore2D.cs/#L29"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets a value indicating whether this instance is rendering.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsRendering { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><code>true</code> if this instance is rendering; otherwise, <code>false</code>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Core2D_RenderCore2D_LayoutBound_" data-uid="HelixToolkit.SharpDX.Core2D.RenderCore2D.LayoutBound*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Core2D_RenderCore2D_LayoutBound" data-uid="HelixToolkit.SharpDX.Core2D.RenderCore2D.LayoutBound">
+  LayoutBound
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Core2D/Abstract/RenderCore2D.cs/#L44"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Absolute layout rectangle cooridnate for renderable</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public RectangleF LayoutBound { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Maths.RectangleF.html">RectangleF</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Core2D_RenderCore2D_LayoutClippingBound_" data-uid="HelixToolkit.SharpDX.Core2D.RenderCore2D.LayoutClippingBound*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Core2D_RenderCore2D_LayoutClippingBound" data-uid="HelixToolkit.SharpDX.Core2D.RenderCore2D.LayoutClippingBound">
+  LayoutClippingBound
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Core2D/Abstract/RenderCore2D.cs/#L66"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the layout clipping bound, includes border.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public RectangleF LayoutClippingBound { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Maths.RectangleF.html">RectangleF</a></dt>
+    <dd><p>The layout clipping bound.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Core2D_RenderCore2D_LocalTransform_" data-uid="HelixToolkit.SharpDX.Core2D.RenderCore2D.LocalTransform*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Core2D_RenderCore2D_LocalTransform" data-uid="HelixToolkit.SharpDX.Core2D.RenderCore2D.LocalTransform">
+  LocalTransform
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Core2D/Abstract/RenderCore2D.cs/#L106"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the local transform. This only transform local position. Same as RenderTransform</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Matrix3x2 LocalTransform { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.matrix3x2">Matrix3x2</a></dt>
+    <dd><p>The local transform.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Core2D_RenderCore2D_RenderHost_" data-uid="HelixToolkit.SharpDX.Core2D.RenderCore2D.RenderHost*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Core2D_RenderCore2D_RenderHost" data-uid="HelixToolkit.SharpDX.Core2D.RenderCore2D.RenderHost">
+  RenderHost
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Core2D/Abstract/RenderCore2D.cs/#L34"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IRenderHost? RenderHost { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.IRenderHost.html">IRenderHost</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Core2D_RenderCore2D_Transform_" data-uid="HelixToolkit.SharpDX.Core2D.RenderCore2D.Transform*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Core2D_RenderCore2D_Transform" data-uid="HelixToolkit.SharpDX.Core2D.RenderCore2D.Transform">
+  Transform
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Core2D/Abstract/RenderCore2D.cs/#L86"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the transform. <a class="xref" href="HelixToolkit.SharpDX.Core2D.RenderCore2D.html#HelixToolkit_SharpDX_Core2D_RenderCore2D_Transform">Transform</a></p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Matrix3x2 Transform { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.matrix3x2">Matrix3x2</a></dt>
+    <dd><p>The transform.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h2 class="section" id="methods">Methods
+</h2>
+
+
+  <a id="HelixToolkit_SharpDX_Core2D_RenderCore2D_Attach_" data-uid="HelixToolkit.SharpDX.Core2D.RenderCore2D.Attach*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Core2D_RenderCore2D_Attach_HelixToolkit_SharpDX_IRenderHost_" data-uid="HelixToolkit.SharpDX.Core2D.RenderCore2D.Attach(HelixToolkit.SharpDX.IRenderHost)">
+  Attach(IRenderHost)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Core2D/Abstract/RenderCore2D.cs/#L149"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Attaches the specified host.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Attach(IRenderHost host)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>host</code> <a class="xref" href="HelixToolkit.SharpDX.IRenderHost.html">IRenderHost</a></dt>
+    <dd><p>The host.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Core2D_RenderCore2D_Detach_" data-uid="HelixToolkit.SharpDX.Core2D.RenderCore2D.Detach*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Core2D_RenderCore2D_Detach" data-uid="HelixToolkit.SharpDX.Core2D.RenderCore2D.Detach">
+  Detach()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Core2D/Abstract/RenderCore2D.cs/#L174"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Detaches this instance.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Detach()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Core2D_RenderCore2D_InvalidateRenderer_" data-uid="HelixToolkit.SharpDX.Core2D.RenderCore2D.InvalidateRenderer*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Core2D_RenderCore2D_InvalidateRenderer" data-uid="HelixToolkit.SharpDX.Core2D.RenderCore2D.InvalidateRenderer">
+  InvalidateRenderer()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Core2D/Abstract/RenderCore2D.cs/#L207"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Invalidates the renderer.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected void InvalidateRenderer()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Core2D_RenderCore2D_OnAttach_" data-uid="HelixToolkit.SharpDX.Core2D.RenderCore2D.OnAttach*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Core2D_RenderCore2D_OnAttach_HelixToolkit_SharpDX_IRenderHost_" data-uid="HelixToolkit.SharpDX.Core2D.RenderCore2D.OnAttach(HelixToolkit.SharpDX.IRenderHost)">
+  OnAttach(IRenderHost)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Core2D/Abstract/RenderCore2D.cs/#L167"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Called when [attach].</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual bool OnAttach(IRenderHost host)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>host</code> <a class="xref" href="HelixToolkit.SharpDX.IRenderHost.html">IRenderHost</a></dt>
+    <dd><p>The target.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Core2D_RenderCore2D_OnDetach_" data-uid="HelixToolkit.SharpDX.Core2D.RenderCore2D.OnDetach*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Core2D_RenderCore2D_OnDetach" data-uid="HelixToolkit.SharpDX.Core2D.RenderCore2D.OnDetach">
+  OnDetach()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Core2D/Abstract/RenderCore2D.cs/#L186"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Called when [detach].</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual void OnDetach()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Core2D_RenderCore2D_OnDispose_" data-uid="HelixToolkit.SharpDX.Core2D.RenderCore2D.OnDispose*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Core2D_RenderCore2D_OnDispose_System_Boolean_" data-uid="HelixToolkit.SharpDX.Core2D.RenderCore2D.OnDispose(System.Boolean)">
+  OnDispose(bool)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Core2D/Abstract/RenderCore2D.cs/#L231"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Disposes of object resources.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected override void OnDispose(bool disposeManagedResources)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>disposeManagedResources</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p>If true, managed resources should be
+disposed of in addition to unmanaged resources.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Core2D_RenderCore2D_OnLayoutBoundChanged_" data-uid="HelixToolkit.SharpDX.Core2D.RenderCore2D.OnLayoutBoundChanged*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Core2D_RenderCore2D_OnLayoutBoundChanged_HelixToolkit_Maths_RectangleF_" data-uid="HelixToolkit.SharpDX.Core2D.RenderCore2D.OnLayoutBoundChanged(HelixToolkit.Maths.RectangleF)">
+  OnLayoutBoundChanged(RectangleF)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Core2D/Abstract/RenderCore2D.cs/#L194"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual void OnLayoutBoundChanged(RectangleF layoutBound)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>layoutBound</code> <a class="xref" href="HelixToolkit.Maths.RectangleF.html">RectangleF</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Core2D_RenderCore2D_Render_" data-uid="HelixToolkit.SharpDX.Core2D.RenderCore2D.Render*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Core2D_RenderCore2D_Render_HelixToolkit_SharpDX_RenderContext2D_" data-uid="HelixToolkit.SharpDX.Core2D.RenderCore2D.Render(HelixToolkit.SharpDX.RenderContext2D)">
+  Render(RenderContext2D)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Core2D/Abstract/RenderCore2D.cs/#L202"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Renders the specified context.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public abstract void Render(RenderContext2D context)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>context</code> <a class="xref" href="HelixToolkit.SharpDX.RenderContext2D.html">RenderContext2D</a></dt>
+    <dd><p>The context.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Core2D_RenderCore2D_SetAffectsRender_" data-uid="HelixToolkit.SharpDX.Core2D.RenderCore2D.SetAffectsRender*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Core2D_RenderCore2D_SetAffectsRender__1___0____0_" data-uid="HelixToolkit.SharpDX.Core2D.RenderCore2D.SetAffectsRender``1(``0@,``0)">
+  SetAffectsRender&lt;T&gt;(ref T, T)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Core2D/Abstract/RenderCore2D.cs/#L219"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected bool SetAffectsRender&lt;T&gt;(ref T backingField, T value)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>backingField</code> <span class="xref">T</span></dt>
+    <dd></dd>
+    <dt><code>value</code> <span class="xref">T</span></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Type Parameters</h4>
+  <dl class="parameters">
+    <dt><code>T</code></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h2 class="section" id="events">Events
+</h2>
+
+
+
+  <h3 id="HelixToolkit_SharpDX_Core2D_RenderCore2D_InvalidateRender" data-uid="HelixToolkit.SharpDX.Core2D.RenderCore2D.InvalidateRender">
+  InvalidateRender
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Core2D/Abstract/RenderCore2D.cs/#L13"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Occurs when [on invalidate renderer].</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public event EventHandler&lt;EventArgs&gt;? InvalidateRender</code></pre>
+  </div>
+
+
+
+
+
+
+  <h4 class="section">Event Type</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.eventhandler-1">EventHandler</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.eventargs">EventArgs</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Core2D/Abstract/RenderCore2D.cs/#L8" class="edit-link">Edit this page</a>
+        </div>
+
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          Copyright (c) 2023 Helix Toolkit contributors
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

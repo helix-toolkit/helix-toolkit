@@ -1,0 +1,1679 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Struct Ray | Helix Toolkit - 3D for .NET </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Struct Ray | Helix Toolkit - 3D for .NET ">
+      
+      <meta name="description" content="Represents a three dimensional line based on a point in space and a direction.">
+      <link rel="icon" href="../images/favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/helix-toolkit/helix-toolkit/new/main-v3/apiSpec/new?filename=HelixToolkit_Maths_Ray.md&amp;value=---%0Auid%3A%20HelixToolkit.Maths.Ray%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="ManagedReference">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../images/favicon.ico" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="HelixToolkit.Maths.Ray">
+
+
+
+  <h1 id="HelixToolkit_Maths_Ray" data-uid="HelixToolkit.Maths.Ray" class="text-break">
+Struct Ray  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/Ray.cs/#L37"><i class="bi bi-code-slash"></i></a>
+  </h1>
+
+  <div class="facts text-secondary">
+    <dl><dt>Namespace</dt><dd><a class="xref" href="HelixToolkit.html">HelixToolkit</a>.<a class="xref" href="HelixToolkit.Maths.html">Maths</a></dd></dl>
+  <dl><dt>Assembly</dt><dd>HelixToolkit.Maths.dll</dd></dl>
+  </div>
+
+  <div class="markdown summary"><p>Represents a three dimensional line based on a point in space and a direction.</p>
+</div>
+  <div class="markdown conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public struct Ray : IEquatable&lt;Ray&gt;, IFormattable</code></pre>
+  </div>
+
+
+
+
+
+  <dl class="typelist implements">
+    <dt>Implements</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iequatable-1">IEquatable</a>&lt;<a class="xref" href="HelixToolkit.Maths.Ray.html">Ray</a>&gt;</div>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iformattable">IFormattable</a></div>
+    </dd>
+  </dl>
+
+
+  <dl class="typelist inheritedMembers">
+    <dt>Inherited Members</dt>
+    <dd>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">object.Equals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype">object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals">object.ReferenceEquals(object, object)</a>
+    </div>
+  </dd></dl>
+
+  <dl class="typelist extensionMethods">
+    <dt>Extension Methods</dt>
+    <dd>
+  <div>
+      <a class="xref" href="HelixToolkit.NativeHelper.html#HelixToolkit_NativeHelper_ToStruct__2___0_">NativeHelper.ToStruct&lt;T1, T2&gt;(T1)</a>
+  </div>
+  </dd></dl>
+
+
+
+
+
+  <h2 class="section" id="constructors">Constructors
+</h2>
+
+
+  <a id="HelixToolkit_Maths_Ray__ctor_" data-uid="HelixToolkit.Maths.Ray.#ctor*"></a>
+
+  <h3 id="HelixToolkit_Maths_Ray__ctor_System_Numerics_Vector3_System_Numerics_Vector3_" data-uid="HelixToolkit.Maths.Ray.#ctor(System.Numerics.Vector3,System.Numerics.Vector3)">
+  Ray(Vector3, Vector3)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/Ray.cs/#L55"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="HelixToolkit.Maths.Ray.html">Ray</a> struct.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Ray(Vector3 position, Vector3 direction)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>position</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd><p>The position in three dimensional space of the origin of the ray.</p>
+</dd>
+    <dt><code>direction</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd><p>The normalized direction of the ray.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <h2 class="section" id="fields">Fields
+</h2>
+
+
+
+  <h3 id="HelixToolkit_Maths_Ray_Direction" data-uid="HelixToolkit.Maths.Ray.Direction">
+  Direction
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/Ray.cs/#L48"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>The normalized direction in which the ray points.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Vector3 Direction</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_Maths_Ray_Position" data-uid="HelixToolkit.Maths.Ray.Position">
+  Position
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/Ray.cs/#L43"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>The position in three dimensional space where the ray starts.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Vector3 Position</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+  <h2 class="section" id="methods">Methods
+</h2>
+
+
+  <a id="HelixToolkit_Maths_Ray_Create_" data-uid="HelixToolkit.Maths.Ray.Create*"></a>
+
+  <h3 id="HelixToolkit_Maths_Ray_Create_System_Numerics_Vector3_System_Numerics_Vector3_" data-uid="HelixToolkit.Maths.Ray.Create(System.Numerics.Vector3,System.Numerics.Vector3)">
+  Create(Vector3, Vector3)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/Ray.cs/#L299"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Create a new instance of the <a class="xref" href="HelixToolkit.Maths.Ray.html">Ray</a> struct.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Ray Create(Vector3 position, Vector3 direction)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>position</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd><p>The position in three dimensional space of the origin of the ray.</p>
+</dd>
+    <dt><code>direction</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd><p>The normalized direction of the ray.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Maths.Ray.html">Ray</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_Ray_Equals_" data-uid="HelixToolkit.Maths.Ray.Equals*"></a>
+
+  <h3 id="HelixToolkit_Maths_Ray_Equals_HelixToolkit_Maths_Ray_" data-uid="HelixToolkit.Maths.Ray.Equals(HelixToolkit.Maths.Ray)">
+  Equals(Ray)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/Ray.cs/#L457"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Determines whether the specified <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector4">Vector4</a> is equal to this instance.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public readonly bool Equals(Ray value)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="HelixToolkit.Maths.Ray.html">Ray</a></dt>
+    <dd><p>The <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector4">Vector4</a> to compare with this instance.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><code>true</code> if the specified <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector4">Vector4</a> is equal to this instance; otherwise, <code>false</code>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_Ray_Equals_" data-uid="HelixToolkit.Maths.Ray.Equals*"></a>
+
+  <h3 id="HelixToolkit_Maths_Ray_Equals_HelixToolkit_Maths_Ray__" data-uid="HelixToolkit.Maths.Ray.Equals(HelixToolkit.Maths.Ray@)">
+  Equals(ref Ray)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/Ray.cs/#L444"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Determines whether the specified <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector4">Vector4</a> is equal to this instance.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public readonly bool Equals(ref Ray value)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="HelixToolkit.Maths.Ray.html">Ray</a></dt>
+    <dd><p>The <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector4">Vector4</a> to compare with this instance.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><code>true</code> if the specified <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector4">Vector4</a> is equal to this instance; otherwise, <code>false</code>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_Ray_Equals_" data-uid="HelixToolkit.Maths.Ray.Equals*"></a>
+
+  <h3 id="HelixToolkit_Maths_Ray_Equals_System_Object_" data-uid="HelixToolkit.Maths.Ray.Equals(System.Object)">
+  Equals(object?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/Ray.cs/#L470"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Determines whether the specified <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a> is equal to this instance.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override readonly bool Equals(object? obj)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>obj</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></dt>
+    <dd><p>The <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a> to compare with this instance.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><code>true</code> if the specified <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a> is equal to this instance; otherwise, <code>false</code>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_Ray_GetHashCode_" data-uid="HelixToolkit.Maths.Ray.GetHashCode*"></a>
+
+  <h3 id="HelixToolkit_Maths_Ray_GetHashCode" data-uid="HelixToolkit.Maths.Ray.GetHashCode">
+  GetHashCode()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/Ray.cs/#L429"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Returns a hash code for this instance.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override readonly int GetHashCode()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_Ray_GetNearest_" data-uid="HelixToolkit.Maths.Ray.GetNearest*"></a>
+
+  <h3 id="HelixToolkit_Maths_Ray_GetNearest_System_Numerics_Vector3_" data-uid="HelixToolkit.Maths.Ray.GetNearest(System.Numerics.Vector3)">
+  GetNearest(Vector3)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/Ray.cs/#L287"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the point on the ray that is nearest the specified point.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Vector3 GetNearest(Vector3 point)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>point</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd><p>The point.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd><p>The nearest point on the ray.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_Ray_GetPickRay_" data-uid="HelixToolkit.Maths.Ray.GetPickRay*"></a>
+
+  <h3 id="HelixToolkit_Maths_Ray_GetPickRay_System_Int32_System_Int32_HelixToolkit_Maths_ViewportF_System_Numerics_Matrix4x4_" data-uid="HelixToolkit.Maths.Ray.GetPickRay(System.Int32,System.Int32,HelixToolkit.Maths.ViewportF,System.Numerics.Matrix4x4)">
+  GetPickRay(int, int, ViewportF, Matrix4x4)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/Ray.cs/#L322"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Calculates a world space <a class="xref" href="HelixToolkit.Maths.Ray.html">Ray</a> from 2d screen coordinates.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Ray GetPickRay(int x, int y, ViewportF viewport, Matrix4x4 worldViewProjection)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>x</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>X coordinate on 2d screen.</p>
+</dd>
+    <dt><code>y</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>Y coordinate on 2d screen.</p>
+</dd>
+    <dt><code>viewport</code> <a class="xref" href="HelixToolkit.Maths.ViewportF.html">ViewportF</a></dt>
+    <dd><p><a class="xref" href="HelixToolkit.Maths.ViewportF.html">ViewportF</a>.</p>
+</dd>
+    <dt><code>worldViewProjection</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.matrix4x4">Matrix4x4</a></dt>
+    <dd><p>Transformation <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.matrix4x4">Matrix4x4</a>.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Maths.Ray.html">Ray</a></dt>
+    <dd><p>Resulting <a class="xref" href="HelixToolkit.Maths.Ray.html">Ray</a>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_Ray_Intersects_" data-uid="HelixToolkit.Maths.Ray.Intersects*"></a>
+
+  <h3 id="HelixToolkit_Maths_Ray_Intersects_HelixToolkit_Maths_BoundingBox_" data-uid="HelixToolkit.Maths.Ray.Intersects(HelixToolkit.Maths.BoundingBox)">
+  Intersects(BoundingBox)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/Ray.cs/#L182"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Determines if there is an intersection between the current object and a <a class="xref" href="HelixToolkit.Maths.BoundingBox.html">BoundingBox</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool Intersects(BoundingBox box)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>box</code> <a class="xref" href="HelixToolkit.Maths.BoundingBox.html">BoundingBox</a></dt>
+    <dd><p>The box to test.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p>Whether the two objects intersected.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_Ray_Intersects_" data-uid="HelixToolkit.Maths.Ray.Intersects*"></a>
+
+  <h3 id="HelixToolkit_Maths_Ray_Intersects_HelixToolkit_Maths_BoundingBox__" data-uid="HelixToolkit.Maths.Ray.Intersects(HelixToolkit.Maths.BoundingBox@)">
+  Intersects(ref BoundingBox)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/Ray.cs/#L172"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Determines if there is an intersection between the current object and a <a class="xref" href="HelixToolkit.Maths.BoundingBox.html">BoundingBox</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool Intersects(ref BoundingBox box)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>box</code> <a class="xref" href="HelixToolkit.Maths.BoundingBox.html">BoundingBox</a></dt>
+    <dd><p>The box to test.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p>Whether the two objects intersected.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_Ray_Intersects_" data-uid="HelixToolkit.Maths.Ray.Intersects*"></a>
+
+  <h3 id="HelixToolkit_Maths_Ray_Intersects_HelixToolkit_Maths_BoundingBox__System_Numerics_Vector3__" data-uid="HelixToolkit.Maths.Ray.Intersects(HelixToolkit.Maths.BoundingBox@,System.Numerics.Vector3@)">
+  Intersects(ref BoundingBox, out Vector3)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/Ray.cs/#L206"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Determines if there is an intersection between the current object and a <a class="xref" href="HelixToolkit.Maths.BoundingBox.html">BoundingBox</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool Intersects(ref BoundingBox box, out Vector3 point)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>box</code> <a class="xref" href="HelixToolkit.Maths.BoundingBox.html">BoundingBox</a></dt>
+    <dd><p>The box to test.</p>
+</dd>
+    <dt><code>point</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd><p>When the method completes, contains the point of intersection,
+or <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3.zero">Zero</a> if there was no intersection.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p>Whether the two objects intersected.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_Ray_Intersects_" data-uid="HelixToolkit.Maths.Ray.Intersects*"></a>
+
+  <h3 id="HelixToolkit_Maths_Ray_Intersects_HelixToolkit_Maths_BoundingBox__System_Single__" data-uid="HelixToolkit.Maths.Ray.Intersects(HelixToolkit.Maths.BoundingBox@,System.Single@)">
+  Intersects(ref BoundingBox, out float)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/Ray.cs/#L194"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Determines if there is an intersection between the current object and a <a class="xref" href="HelixToolkit.Maths.BoundingBox.html">BoundingBox</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool Intersects(ref BoundingBox box, out float distance)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>box</code> <a class="xref" href="HelixToolkit.Maths.BoundingBox.html">BoundingBox</a></dt>
+    <dd><p>The box to test.</p>
+</dd>
+    <dt><code>distance</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>When the method completes, contains the distance of the intersection,
+or 0 if there was no intersection.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p>Whether the two objects intersected.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_Ray_Intersects_" data-uid="HelixToolkit.Maths.Ray.Intersects*"></a>
+
+  <h3 id="HelixToolkit_Maths_Ray_Intersects_HelixToolkit_Maths_BoundingSphere_" data-uid="HelixToolkit.Maths.Ray.Intersects(HelixToolkit.Maths.BoundingSphere)">
+  Intersects(BoundingSphere)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/Ray.cs/#L226"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Determines if there is an intersection between the current object and a <a class="xref" href="HelixToolkit.Maths.BoundingSphere.html">BoundingSphere</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool Intersects(BoundingSphere sphere)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>sphere</code> <a class="xref" href="HelixToolkit.Maths.BoundingSphere.html">BoundingSphere</a></dt>
+    <dd><p>The sphere to test.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p>Whether the two objects intersected.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_Ray_Intersects_" data-uid="HelixToolkit.Maths.Ray.Intersects*"></a>
+
+  <h3 id="HelixToolkit_Maths_Ray_Intersects_HelixToolkit_Maths_BoundingSphere__" data-uid="HelixToolkit.Maths.Ray.Intersects(HelixToolkit.Maths.BoundingSphere@)">
+  Intersects(ref BoundingSphere)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/Ray.cs/#L216"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Determines if there is an intersection between the current object and a <a class="xref" href="HelixToolkit.Maths.BoundingSphere.html">BoundingSphere</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool Intersects(ref BoundingSphere sphere)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>sphere</code> <a class="xref" href="HelixToolkit.Maths.BoundingSphere.html">BoundingSphere</a></dt>
+    <dd><p>The sphere to test.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p>Whether the two objects intersected.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_Ray_Intersects_" data-uid="HelixToolkit.Maths.Ray.Intersects*"></a>
+
+  <h3 id="HelixToolkit_Maths_Ray_Intersects_HelixToolkit_Maths_BoundingSphere__System_Numerics_Vector3__" data-uid="HelixToolkit.Maths.Ray.Intersects(HelixToolkit.Maths.BoundingSphere@,System.Numerics.Vector3@)">
+  Intersects(ref BoundingSphere, out Vector3)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/Ray.cs/#L250"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Determines if there is an intersection between the current object and a <a class="xref" href="HelixToolkit.Maths.BoundingSphere.html">BoundingSphere</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool Intersects(ref BoundingSphere sphere, out Vector3 point)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>sphere</code> <a class="xref" href="HelixToolkit.Maths.BoundingSphere.html">BoundingSphere</a></dt>
+    <dd><p>The sphere to test.</p>
+</dd>
+    <dt><code>point</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd><p>When the method completes, contains the point of intersection,
+or <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3.zero">Zero</a> if there was no intersection.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p>Whether the two objects intersected.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_Ray_Intersects_" data-uid="HelixToolkit.Maths.Ray.Intersects*"></a>
+
+  <h3 id="HelixToolkit_Maths_Ray_Intersects_HelixToolkit_Maths_BoundingSphere__System_Single__" data-uid="HelixToolkit.Maths.Ray.Intersects(HelixToolkit.Maths.BoundingSphere@,System.Single@)">
+  Intersects(ref BoundingSphere, out float)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/Ray.cs/#L238"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Determines if there is an intersection between the current object and a <a class="xref" href="HelixToolkit.Maths.BoundingSphere.html">BoundingSphere</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool Intersects(ref BoundingSphere sphere, out float distance)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>sphere</code> <a class="xref" href="HelixToolkit.Maths.BoundingSphere.html">BoundingSphere</a></dt>
+    <dd><p>The sphere to test.</p>
+</dd>
+    <dt><code>distance</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>When the method completes, contains the distance of the intersection,
+or 0 if there was no intersection.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p>Whether the two objects intersected.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_Ray_Intersects_" data-uid="HelixToolkit.Maths.Ray.Intersects*"></a>
+
+  <h3 id="HelixToolkit_Maths_Ray_Intersects_HelixToolkit_Maths_Ray__" data-uid="HelixToolkit.Maths.Ray.Intersects(HelixToolkit.Maths.Ray@)">
+  Intersects(ref Ray)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/Ray.cs/#L76"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Determines if there is an intersection between the current object and a <a class="xref" href="HelixToolkit.Maths.Ray.html">Ray</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool Intersects(ref Ray ray)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>ray</code> <a class="xref" href="HelixToolkit.Maths.Ray.html">Ray</a></dt>
+    <dd><p>The ray to test.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p>Whether the two objects intersected.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_Ray_Intersects_" data-uid="HelixToolkit.Maths.Ray.Intersects*"></a>
+
+  <h3 id="HelixToolkit_Maths_Ray_Intersects_HelixToolkit_Maths_Ray__System_Numerics_Vector3__" data-uid="HelixToolkit.Maths.Ray.Intersects(HelixToolkit.Maths.Ray@,System.Numerics.Vector3@)">
+  Intersects(ref Ray, out Vector3)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/Ray.cs/#L88"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Determines if there is an intersection between the current object and a <a class="xref" href="HelixToolkit.Maths.Ray.html">Ray</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool Intersects(ref Ray ray, out Vector3 point)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>ray</code> <a class="xref" href="HelixToolkit.Maths.Ray.html">Ray</a></dt>
+    <dd><p>The ray to test.</p>
+</dd>
+    <dt><code>point</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd><p>When the method completes, contains the point of intersection,
+or <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3.zero">Zero</a> if there was no intersection.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p>Whether the two objects intersected.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_Ray_Intersects_" data-uid="HelixToolkit.Maths.Ray.Intersects*"></a>
+
+  <h3 id="HelixToolkit_Maths_Ray_Intersects_System_Numerics_Plane__" data-uid="HelixToolkit.Maths.Ray.Intersects(System.Numerics.Plane@)">
+  Intersects(ref Plane)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/Ray.cs/#L98"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Determines if there is an intersection between the current object and a <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.plane">Plane</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool Intersects(ref Plane plane)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>plane</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.plane">Plane</a></dt>
+    <dd><p>The plane to test</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p>Whether the two objects intersected.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_Ray_Intersects_" data-uid="HelixToolkit.Maths.Ray.Intersects*"></a>
+
+  <h3 id="HelixToolkit_Maths_Ray_Intersects_System_Numerics_Plane__System_Numerics_Vector3__" data-uid="HelixToolkit.Maths.Ray.Intersects(System.Numerics.Plane@,System.Numerics.Vector3@)">
+  Intersects(ref Plane, out Vector3)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/Ray.cs/#L122"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Determines if there is an intersection between the current object and a <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.plane">Plane</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool Intersects(ref Plane plane, out Vector3 point)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>plane</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.plane">Plane</a></dt>
+    <dd><p>The plane to test.</p>
+</dd>
+    <dt><code>point</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd><p>When the method completes, contains the point of intersection,
+or <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3.zero">Zero</a> if there was no intersection.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p>Whether the two objects intersected.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_Ray_Intersects_" data-uid="HelixToolkit.Maths.Ray.Intersects*"></a>
+
+  <h3 id="HelixToolkit_Maths_Ray_Intersects_System_Numerics_Plane__System_Single__" data-uid="HelixToolkit.Maths.Ray.Intersects(System.Numerics.Plane@,System.Single@)">
+  Intersects(ref Plane, out float)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/Ray.cs/#L110"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Determines if there is an intersection between the current object and a <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.plane">Plane</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool Intersects(ref Plane plane, out float distance)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>plane</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.plane">Plane</a></dt>
+    <dd><p>The plane to test.</p>
+</dd>
+    <dt><code>distance</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>When the method completes, contains the distance of the intersection,
+or 0 if there was no intersection.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p>Whether the two objects intersected.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_Ray_Intersects_" data-uid="HelixToolkit.Maths.Ray.Intersects*"></a>
+
+  <h3 id="HelixToolkit_Maths_Ray_Intersects_System_Numerics_Vector3__" data-uid="HelixToolkit.Maths.Ray.Intersects(System.Numerics.Vector3@)">
+  Intersects(ref Vector3)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/Ray.cs/#L66"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Determines if there is an intersection between the current object and a point.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool Intersects(ref Vector3 point)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>point</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd><p>The point to test.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p>Whether the two objects intersected.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_Ray_Intersects_" data-uid="HelixToolkit.Maths.Ray.Intersects*"></a>
+
+  <h3 id="HelixToolkit_Maths_Ray_Intersects_System_Numerics_Vector3__System_Numerics_Vector3__System_Numerics_Vector3__" data-uid="HelixToolkit.Maths.Ray.Intersects(System.Numerics.Vector3@,System.Numerics.Vector3@,System.Numerics.Vector3@)">
+  Intersects(ref Vector3, ref Vector3, ref Vector3)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/Ray.cs/#L134"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Determines if there is an intersection between the current object and a triangle.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool Intersects(ref Vector3 vertex1, ref Vector3 vertex2, ref Vector3 vertex3)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>vertex1</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd><p>The first vertex of the triangle to test.</p>
+</dd>
+    <dt><code>vertex2</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd><p>The second vertex of the triangle to test.</p>
+</dd>
+    <dt><code>vertex3</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd><p>The third vertex of the triangle to test.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p>Whether the two objects intersected.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_Ray_Intersects_" data-uid="HelixToolkit.Maths.Ray.Intersects*"></a>
+
+  <h3 id="HelixToolkit_Maths_Ray_Intersects_System_Numerics_Vector3__System_Numerics_Vector3__System_Numerics_Vector3__System_Numerics_Vector3__" data-uid="HelixToolkit.Maths.Ray.Intersects(System.Numerics.Vector3@,System.Numerics.Vector3@,System.Numerics.Vector3@,System.Numerics.Vector3@)">
+  Intersects(ref Vector3, ref Vector3, ref Vector3, out Vector3)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/Ray.cs/#L162"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Determines if there is an intersection between the current object and a triangle.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool Intersects(ref Vector3 vertex1, ref Vector3 vertex2, ref Vector3 vertex3, out Vector3 point)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>vertex1</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd><p>The first vertex of the triangle to test.</p>
+</dd>
+    <dt><code>vertex2</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd><p>The second vertex of the triangle to test.</p>
+</dd>
+    <dt><code>vertex3</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd><p>The third vertex of the triangle to test.</p>
+</dd>
+    <dt><code>point</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd><p>When the method completes, contains the point of intersection,
+or <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3.zero">Zero</a> if there was no intersection.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p>Whether the two objects intersected.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_Ray_Intersects_" data-uid="HelixToolkit.Maths.Ray.Intersects*"></a>
+
+  <h3 id="HelixToolkit_Maths_Ray_Intersects_System_Numerics_Vector3__System_Numerics_Vector3__System_Numerics_Vector3__System_Single__" data-uid="HelixToolkit.Maths.Ray.Intersects(System.Numerics.Vector3@,System.Numerics.Vector3@,System.Numerics.Vector3@,System.Single@)">
+  Intersects(ref Vector3, ref Vector3, ref Vector3, out float)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/Ray.cs/#L148"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Determines if there is an intersection between the current object and a triangle.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool Intersects(ref Vector3 vertex1, ref Vector3 vertex2, ref Vector3 vertex3, out float distance)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>vertex1</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd><p>The first vertex of the triangle to test.</p>
+</dd>
+    <dt><code>vertex2</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd><p>The second vertex of the triangle to test.</p>
+</dd>
+    <dt><code>vertex3</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd><p>The third vertex of the triangle to test.</p>
+</dd>
+    <dt><code>distance</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>When the method completes, contains the distance of the intersection,
+or 0 if there was no intersection.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p>Whether the two objects intersected.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_Ray_PlaneIntersection_" data-uid="HelixToolkit.Maths.Ray.PlaneIntersection*"></a>
+
+  <h3 id="HelixToolkit_Maths_Ray_PlaneIntersection_System_Numerics_Plane_System_Numerics_Vector3__" data-uid="HelixToolkit.Maths.Ray.PlaneIntersection(System.Numerics.Plane,System.Numerics.Vector3@)">
+  PlaneIntersection(Plane, out Vector3)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/Ray.cs/#L273"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Planes the intersection.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool PlaneIntersection(Plane plane, out Vector3 intersect)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>plane</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.plane">Plane</a></dt>
+    <dd><p>The plane</p>
+</dd>
+    <dt><code>intersect</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd><p>The point intersection</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_Ray_PlaneIntersection_" data-uid="HelixToolkit.Maths.Ray.PlaneIntersection*"></a>
+
+  <h3 id="HelixToolkit_Maths_Ray_PlaneIntersection_System_Numerics_Vector3_System_Numerics_Vector3_System_Numerics_Vector3__" data-uid="HelixToolkit.Maths.Ray.PlaneIntersection(System.Numerics.Vector3,System.Numerics.Vector3,System.Numerics.Vector3@)">
+  PlaneIntersection(Vector3, Vector3, out Vector3)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/Ray.cs/#L261"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Planes the intersection.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool PlaneIntersection(Vector3 planePosition, Vector3 planeNormal, out Vector3 intersect)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>planePosition</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd><p>The plane position.</p>
+</dd>
+    <dt><code>planeNormal</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd><p>The plane normal.</p>
+</dd>
+    <dt><code>intersect</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd><p>The point intersection</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_Ray_Reverse_" data-uid="HelixToolkit.Maths.Ray.Reverse*"></a>
+
+  <h3 id="HelixToolkit_Maths_Ray_Reverse_HelixToolkit_Maths_Ray_" data-uid="HelixToolkit.Maths.Ray.Reverse(HelixToolkit.Maths.Ray)">
+  Reverse(Ray)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/Ray.cs/#L309"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Reverse a ray in the opposite direction</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Ray Reverse(Ray ray)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>ray</code> <a class="xref" href="HelixToolkit.Maths.Ray.html">Ray</a></dt>
+    <dd><p>The ray</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Maths.Ray.html">Ray</a></dt>
+    <dd><p>A new ray in the reversed direction</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_Ray_ToString_" data-uid="HelixToolkit.Maths.Ray.ToString*"></a>
+
+  <h3 id="HelixToolkit_Maths_Ray_ToString" data-uid="HelixToolkit.Maths.Ray.ToString">
+  ToString()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/Ray.cs/#L379"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Returns a <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a> that represents this instance.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override readonly string ToString()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>A <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a> that represents this instance.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_Ray_ToString_" data-uid="HelixToolkit.Maths.Ray.ToString*"></a>
+
+  <h3 id="HelixToolkit_Maths_Ray_ToString_System_IFormatProvider_" data-uid="HelixToolkit.Maths.Ray.ToString(System.IFormatProvider)">
+  ToString(IFormatProvider)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/Ray.cs/#L404"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Returns a <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a> that represents this instance.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public readonly string ToString(IFormatProvider formatProvider)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>formatProvider</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iformatprovider">IFormatProvider</a></dt>
+    <dd><p>The format provider.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>A <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a> that represents this instance.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_Ray_ToString_" data-uid="HelixToolkit.Maths.Ray.ToString*"></a>
+
+  <h3 id="HelixToolkit_Maths_Ray_ToString_System_String_" data-uid="HelixToolkit.Maths.Ray.ToString(System.String)">
+  ToString(string)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/Ray.cs/#L391"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Returns a <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a> that represents this instance.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public readonly string ToString(string format)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>format</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The format.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>A <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a> that represents this instance.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_Ray_ToString_" data-uid="HelixToolkit.Maths.Ray.ToString*"></a>
+
+  <h3 id="HelixToolkit_Maths_Ray_ToString_System_String_System_IFormatProvider_" data-uid="HelixToolkit.Maths.Ray.ToString(System.String,System.IFormatProvider)">
+  ToString(string?, IFormatProvider?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/Ray.cs/#L417"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Returns a <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a> that represents this instance.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public readonly string ToString(string? format, IFormatProvider? formatProvider)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>format</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The format.</p>
+</dd>
+    <dt><code>formatProvider</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iformatprovider">IFormatProvider</a></dt>
+    <dd><p>The format provider.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>A <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a> that represents this instance.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_Ray_Transform_" data-uid="HelixToolkit.Maths.Ray.Transform*"></a>
+
+  <h3 id="HelixToolkit_Maths_Ray_Transform_System_Numerics_Matrix4x4__" data-uid="HelixToolkit.Maths.Ray.Transform(System.Numerics.Matrix4x4@)">
+  Transform(in Matrix4x4)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/Ray.cs/#L342"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Transform the ray using the specified transformation matrix.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Ray Transform(in Matrix4x4 matrix)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>matrix</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.matrix4x4">Matrix4x4</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Maths.Ray.html">Ray</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <h2 class="section" id="operators">Operators
+</h2>
+
+
+  <a id="HelixToolkit_Maths_Ray_op_Equality_" data-uid="HelixToolkit.Maths.Ray.op_Equality*"></a>
+
+  <h3 id="HelixToolkit_Maths_Ray_op_Equality_HelixToolkit_Maths_Ray_HelixToolkit_Maths_Ray_" data-uid="HelixToolkit.Maths.Ray.op_Equality(HelixToolkit.Maths.Ray,HelixToolkit.Maths.Ray)">
+  operator ==(Ray, Ray)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/Ray.cs/#L355"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Tests for equality between two objects.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool operator ==(Ray left, Ray right)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>left</code> <a class="xref" href="HelixToolkit.Maths.Ray.html">Ray</a></dt>
+    <dd><p>The first value to compare.</p>
+</dd>
+    <dt><code>right</code> <a class="xref" href="HelixToolkit.Maths.Ray.html">Ray</a></dt>
+    <dd><p>The second value to compare.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><code>true</code> if <code class="paramref">left</code> has the same value as <code class="paramref">right</code>; otherwise, <code>false</code>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_Ray_op_Inequality_" data-uid="HelixToolkit.Maths.Ray.op_Inequality*"></a>
+
+  <h3 id="HelixToolkit_Maths_Ray_op_Inequality_HelixToolkit_Maths_Ray_HelixToolkit_Maths_Ray_" data-uid="HelixToolkit.Maths.Ray.op_Inequality(HelixToolkit.Maths.Ray,HelixToolkit.Maths.Ray)">
+  operator !=(Ray, Ray)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/Ray.cs/#L367"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Tests for inequality between two objects.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool operator !=(Ray left, Ray right)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>left</code> <a class="xref" href="HelixToolkit.Maths.Ray.html">Ray</a></dt>
+    <dd><p>The first value to compare.</p>
+</dd>
+    <dt><code>right</code> <a class="xref" href="HelixToolkit.Maths.Ray.html">Ray</a></dt>
+    <dd><p>The second value to compare.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><code>true</code> if <code class="paramref">left</code> has a different value than <code class="paramref">right</code>; otherwise, <code>false</code>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/Ray.cs/#L37" class="edit-link">Edit this page</a>
+        </div>
+
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          Copyright (c) 2023 Helix Toolkit contributors
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

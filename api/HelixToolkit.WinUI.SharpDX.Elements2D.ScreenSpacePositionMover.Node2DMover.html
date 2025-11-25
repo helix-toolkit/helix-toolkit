@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Class ScreenSpacePositionMover.Node2DMover | Helix Toolkit - 3D for .NET </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Class ScreenSpacePositionMover.Node2DMover | Helix Toolkit - 3D for .NET ">
+      
+      
+      <link rel="icon" href="../images/favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/helix-toolkit/helix-toolkit/new/main-v3/apiSpec/new?filename=HelixToolkit_WinUI_SharpDX_Elements2D_ScreenSpacePositionMover_Node2DMover.md&amp;value=---%0Auid%3A%20HelixToolkit.WinUI.SharpDX.Elements2D.ScreenSpacePositionMover.Node2DMover%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="ManagedReference">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../images/favicon.ico" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="HelixToolkit.WinUI.SharpDX.Elements2D.ScreenSpacePositionMover.Node2DMover">
+
+
+
+  <h1 id="HelixToolkit_WinUI_SharpDX_Elements2D_ScreenSpacePositionMover_Node2DMover" data-uid="HelixToolkit.WinUI.SharpDX.Elements2D.ScreenSpacePositionMover.Node2DMover" class="text-break">
+Class ScreenSpacePositionMover.Node2DMover  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Model/Elements2D/Abstract/ScreenSpacePositionMover.cs/#L94"><i class="bi bi-code-slash"></i></a>
+  </h1>
+
+  <div class="facts text-secondary">
+    <dl><dt>Namespace</dt><dd><a class="xref" href="HelixToolkit.html">HelixToolkit</a>.<a class="xref" href="HelixToolkit.WinUI.html">WinUI</a>.<a class="xref" href="HelixToolkit.WinUI.SharpDX.html">SharpDX</a>.<a class="xref" href="HelixToolkit.WinUI.SharpDX.Elements2D.html">Elements2D</a></dd></dl>
+  <dl><dt>Assembly</dt><dd>HelixToolkit.WinUI.SharpDX.dll</dd></dl>
+  </div>
+
+  <div class="markdown summary"></div>
+  <div class="markdown conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public sealed class ScreenSpacePositionMover.Node2DMover : ScreenSpacePositionMoverBase.Node2DMoverBase, IDisposable, IHitable2D</code></pre>
+  </div>
+
+
+
+
+  <dl class="typelist inheritance">
+    <dt>Inheritance</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
+      <div><a class="xref" href="HelixToolkit.SharpDX.DisposeObject.html">DisposeObject</a></div>
+      <div><a class="xref" href="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.html">SceneNode2D</a></div>
+      <div><a class="xref" href="HelixToolkit.SharpDX.Model.Scene2D.PanelNode2D.html">PanelNode2D</a></div>
+      <div><a class="xref" href="HelixToolkit.WinUI.SharpDX.Elements2D.ScreenSpacePositionMoverBase.html">ScreenSpacePositionMoverBase</a>.<a class="xref" href="HelixToolkit.WinUI.SharpDX.Elements2D.ScreenSpacePositionMoverBase.Node2DMoverBase.html">Node2DMoverBase</a></div>
+      <div><span class="xref">ScreenSpacePositionMover.Node2DMover</span></div>
+    </dd>
+  </dl>
+
+  <dl class="typelist implements">
+    <dt>Implements</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.idisposable">IDisposable</a></div>
+      <div><a class="xref" href="HelixToolkit.SharpDX.IHitable2D.html">IHitable2D</a></div>
+    </dd>
+  </dl>
+
+
+  <dl class="typelist inheritedMembers">
+    <dt>Inherited Members</dt>
+    <dd>
+    <div>
+      <a class="xref" href="HelixToolkit.WinUI.SharpDX.Elements2D.ScreenSpacePositionMoverBase.Node2DMoverBase.html#HelixToolkit_WinUI_SharpDX_Elements2D_ScreenSpacePositionMoverBase_Node2DMoverBase_EnableMover">ScreenSpacePositionMoverBase.Node2DMoverBase.EnableMover</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene2D.PanelNode2D.html#HelixToolkit_SharpDX_Model_Scene2D_PanelNode2D_AddChildNode_HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_">PanelNode2D.AddChildNode(SceneNode2D)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene2D.PanelNode2D.html#HelixToolkit_SharpDX_Model_Scene2D_PanelNode2D_Clear">PanelNode2D.Clear()</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene2D.PanelNode2D.html#HelixToolkit_SharpDX_Model_Scene2D_PanelNode2D_RemoveChildNode_HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_">PanelNode2D.RemoveChildNode(SceneNode2D)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene2D.PanelNode2D.html#HelixToolkit_SharpDX_Model_Scene2D_PanelNode2D_TryGetNode_System_Guid_HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D__">PanelNode2D.TryGetNode(Guid, out SceneNode2D)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.html#HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_GUID">SceneNode2D.GUID</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.html#HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_Parent">SceneNode2D.Parent</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.html#HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_Visibility">SceneNode2D.Visibility</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.html#HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_IsHitTestVisible">SceneNode2D.IsHitTestVisible</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.html#HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_WrapperSource">SceneNode2D.WrapperSource</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.html#HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_IsAttached">SceneNode2D.IsAttached</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.html#HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_IsRenderable">SceneNode2D.IsRenderable</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.html#HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_RenderCore">SceneNode2D.RenderCore</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.html#HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_Items">SceneNode2D.Items</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.html#HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_ModelMatrix">SceneNode2D.ModelMatrix</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.html#HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_LayoutTranslate">SceneNode2D.LayoutTranslate</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.html#HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_ParentMatrix">SceneNode2D.ParentMatrix</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.html#HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_TotalModelMatrix">SceneNode2D.TotalModelMatrix</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.html#HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_LayoutBoundWithTransform">SceneNode2D.LayoutBoundWithTransform</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.html#HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_IsMouseOver">SceneNode2D.IsMouseOver</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.html#HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_DpiScale">SceneNode2D.DpiScale</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.html#HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_Attach_HelixToolkit_SharpDX_IRenderHost_">SceneNode2D.Attach(IRenderHost)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.html#HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_Detach">SceneNode2D.Detach()</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.html#HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_Update_HelixToolkit_SharpDX_RenderContext2D_">SceneNode2D.Update(RenderContext2D)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.html#HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_OnTransformChanged">SceneNode2D.OnTransformChanged</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.html#HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_Attached">SceneNode2D.Attached</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.html#HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_Detached">SceneNode2D.Detached</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.html#HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_UpdateRequested">SceneNode2D.UpdateRequested</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.html#HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_Render_HelixToolkit_SharpDX_RenderContext2D_">SceneNode2D.Render(RenderContext2D)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.html#HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_RenderBitmapCache_HelixToolkit_SharpDX_RenderContext2D_">SceneNode2D.RenderBitmapCache(RenderContext2D)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.html#HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_HitTest_System_Numerics_Vector2_HelixToolkit_SharpDX_HitTest2DResult__">SceneNode2D.HitTest(Vector2, out HitTest2DResult)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.html#HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_InvalidateRender">SceneNode2D.InvalidateRender()</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.html#HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_EnableBitmapCache">SceneNode2D.EnableBitmapCache</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.html#HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_IsBitmapCacheValid">SceneNode2D.IsBitmapCacheValid</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.html#HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_IsMeasureDirty">SceneNode2D.IsMeasureDirty</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.html#HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_IsArrangeDirty">SceneNode2D.IsArrangeDirty</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.html#HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_IsTransformDirty">SceneNode2D.IsTransformDirty</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.html#HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_IsVisualDirty">SceneNode2D.IsVisualDirty</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.html#HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_Margin">SceneNode2D.Margin</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.html#HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_Width">SceneNode2D.Width</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.html#HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_Height">SceneNode2D.Height</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.html#HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_MinimumWidth">SceneNode2D.MinimumWidth</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.html#HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_MinimumHeight">SceneNode2D.MinimumHeight</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.html#HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_MaximumWidth">SceneNode2D.MaximumWidth</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.html#HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_MaximumHeight">SceneNode2D.MaximumHeight</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.html#HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_HorizontalAlignment">SceneNode2D.HorizontalAlignment</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.html#HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_VerticalAlignment">SceneNode2D.VerticalAlignment</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.html#HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_LayoutOffsets">SceneNode2D.LayoutOffsets</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.html#HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_RenderSize">SceneNode2D.RenderSize</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.html#HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_RenderTransformOrigin">SceneNode2D.RenderTransformOrigin</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.html#HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_DesiredSize">SceneNode2D.DesiredSize</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.html#HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_UnclippedDesiredSize">SceneNode2D.UnclippedDesiredSize</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.html#HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_ClipEnabled">SceneNode2D.ClipEnabled</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.html#HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_ClipToBound">SceneNode2D.ClipToBound</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.html#HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_LayoutClipBound">SceneNode2D.LayoutClipBound</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.html#HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_LayoutBound">SceneNode2D.LayoutBound</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.html#HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_InvalidateMeasure">SceneNode2D.InvalidateMeasure()</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.html#HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_InvalidateArrange">SceneNode2D.InvalidateArrange()</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.html#HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_InvalidateVisual">SceneNode2D.InvalidateVisual()</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.html#HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_InvalidateTransform">SceneNode2D.InvalidateTransform()</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.html#HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_InvalidateAll">SceneNode2D.InvalidateAll()</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.html#HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_Measure_System_Numerics_Vector2_">SceneNode2D.Measure(Vector2)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.html#HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_Arrange_HelixToolkit_Maths_RectangleF_">SceneNode2D.Arrange(RectangleF)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.DisposeObject.html#HelixToolkit_SharpDX_DisposeObject_RemoveAndDispose__1___0__">DisposeObject.RemoveAndDispose&lt;T&gt;(ref T)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.DisposeObject.html#HelixToolkit_SharpDX_DisposeObject_RemoveAndDispose__1___0_">DisposeObject.RemoveAndDispose&lt;T&gt;(T)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.DisposeObject.html#HelixToolkit_SharpDX_DisposeObject_RefCount">DisposeObject.RefCount</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.DisposeObject.html#HelixToolkit_SharpDX_DisposeObject_IncRef">DisposeObject.IncRef()</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.DisposeObject.html#HelixToolkit_SharpDX_DisposeObject_ForceDispose">DisposeObject.ForceDispose()</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.DisposeObject.html#HelixToolkit_SharpDX_DisposeObject_IsDisposed">DisposeObject.IsDisposed</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.DisposeObject.html#HelixToolkit_SharpDX_DisposeObject_Dispose">DisposeObject.Dispose()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">object.Equals(object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">object.Equals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode">object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype">object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals">object.ReferenceEquals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring">object.ToString()</a>
+    </div>
+  </dd></dl>
+
+
+
+
+
+
+  <h2 class="section" id="properties">Properties
+</h2>
+
+
+  <a id="HelixToolkit_WinUI_SharpDX_Elements2D_ScreenSpacePositionMover_Node2DMover_Buttons_" data-uid="HelixToolkit.WinUI.SharpDX.Elements2D.ScreenSpacePositionMover.Node2DMover.Buttons*"></a>
+
+  <h3 id="HelixToolkit_WinUI_SharpDX_Elements2D_ScreenSpacePositionMover_Node2DMover_Buttons" data-uid="HelixToolkit.WinUI.SharpDX.Elements2D.ScreenSpacePositionMover.Node2DMover.Buttons">
+  Buttons
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Model/Elements2D/Abstract/ScreenSpacePositionMover.cs/#L96"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Button2D[]? Buttons { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.WinUI.SharpDX.Elements2D.Button2D.html">Button2D</a>[]</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h2 class="section" id="methods">Methods
+</h2>
+
+
+  <a id="HelixToolkit_WinUI_SharpDX_Elements2D_ScreenSpacePositionMover_Node2DMover_OnHitTest_" data-uid="HelixToolkit.WinUI.SharpDX.Elements2D.ScreenSpacePositionMover.Node2DMover.OnHitTest*"></a>
+
+  <h3 id="HelixToolkit_WinUI_SharpDX_Elements2D_ScreenSpacePositionMover_Node2DMover_OnHitTest_System_Numerics_Vector2__HelixToolkit_SharpDX_HitTest2DResult__" data-uid="HelixToolkit.WinUI.SharpDX.Elements2D.ScreenSpacePositionMover.Node2DMover.OnHitTest(System.Numerics.Vector2@,HelixToolkit.SharpDX.HitTest2DResult@)">
+  OnHitTest(ref Vector2, out HitTest2DResult?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Model/Elements2D/Abstract/ScreenSpacePositionMover.cs/#L108"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Called when [hit test].</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected override bool OnHitTest(ref Vector2 mousePoint, out HitTest2DResult? hitResult)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>mousePoint</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector2">Vector2</a></dt>
+    <dd><p>The mouse point.</p>
+</dd>
+    <dt><code>hitResult</code> <a class="xref" href="HelixToolkit.SharpDX.HitTest2DResult.html">HitTest2DResult</a></dt>
+    <dd><p>The hit result.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Model/Elements2D/Abstract/ScreenSpacePositionMover.cs/#L94" class="edit-link">Edit this page</a>
+        </div>
+
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          Copyright (c) 2023 Helix Toolkit contributors
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

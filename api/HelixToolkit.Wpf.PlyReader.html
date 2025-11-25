@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Class PlyReader | Helix Toolkit - 3D for .NET </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Class PlyReader | Helix Toolkit - 3D for .NET ">
+      
+      <meta name="description" content="Polygon File Format Reader.">
+      <link rel="icon" href="../images/favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/helix-toolkit/helix-toolkit/new/main-v3/apiSpec/new?filename=HelixToolkit_Wpf_PlyReader.md&amp;value=---%0Auid%3A%20HelixToolkit.Wpf.PlyReader%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="ManagedReference">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../images/favicon.ico" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="HelixToolkit.Wpf.PlyReader">
+
+
+
+  <h1 id="HelixToolkit_Wpf_PlyReader" data-uid="HelixToolkit.Wpf.PlyReader" class="text-break">
+Class PlyReader  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Wpf/Importers/PlyReader.cs/#L15"><i class="bi bi-code-slash"></i></a>
+  </h1>
+
+  <div class="facts text-secondary">
+    <dl><dt>Namespace</dt><dd><a class="xref" href="HelixToolkit.html">HelixToolkit</a>.<a class="xref" href="HelixToolkit.Wpf.html">Wpf</a></dd></dl>
+  <dl><dt>Assembly</dt><dd>HelixToolkit.Wpf.dll</dd></dl>
+  </div>
+
+  <div class="markdown summary"><p>Polygon File Format Reader.</p>
+</div>
+  <div class="markdown conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public sealed class PlyReader : ModelReader, IModelReader</code></pre>
+  </div>
+
+
+
+
+  <dl class="typelist inheritance">
+    <dt>Inheritance</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
+      <div><a class="xref" href="HelixToolkit.Wpf.ModelReader.html">ModelReader</a></div>
+      <div><span class="xref">PlyReader</span></div>
+    </dd>
+  </dl>
+
+  <dl class="typelist implements">
+    <dt>Implements</dt>
+    <dd>
+      <div><a class="xref" href="HelixToolkit.Wpf.IModelReader.html">IModelReader</a></div>
+    </dd>
+  </dl>
+
+
+  <dl class="typelist inheritedMembers">
+    <dt>Inherited Members</dt>
+    <dd>
+    <div>
+      <a class="xref" href="HelixToolkit.Wpf.ModelReader.html#HelixToolkit_Wpf_ModelReader_Freeze">ModelReader.Freeze</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.Wpf.ModelReader.html#HelixToolkit_Wpf_ModelReader_DefaultMaterial">ModelReader.DefaultMaterial</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.Wpf.ModelReader.html#HelixToolkit_Wpf_ModelReader_Dispatcher">ModelReader.Dispatcher</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.Wpf.ModelReader.html#HelixToolkit_Wpf_ModelReader_Directory">ModelReader.Directory</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.Wpf.ModelReader.html#HelixToolkit_Wpf_ModelReader_TexturePath">ModelReader.TexturePath</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">object.Equals(object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">object.Equals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode">object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype">object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals">object.ReferenceEquals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring">object.ToString()</a>
+    </div>
+  </dd></dl>
+
+
+
+
+  <h2 id="HelixToolkit_Wpf_PlyReader_remarks">Remarks</h2>
+  <div class="markdown level0 remarks"><p><a href="https://www.cc.gatech.edu/projects/large_models/ply.html">https://www.cc.gatech.edu/projects/large_models/ply.html</a>
+<a href="http://graphics.stanford.edu/data/3Dscanrep/">http://graphics.stanford.edu/data/3Dscanrep/</a></p>
+</div>
+
+
+  <h2 class="section" id="constructors">Constructors
+</h2>
+
+
+  <a id="HelixToolkit_Wpf_PlyReader__ctor_" data-uid="HelixToolkit.Wpf.PlyReader.#ctor*"></a>
+
+  <h3 id="HelixToolkit_Wpf_PlyReader__ctor_System_Windows_Threading_Dispatcher_" data-uid="HelixToolkit.Wpf.PlyReader.#ctor(System.Windows.Threading.Dispatcher)">
+  PlyReader(Dispatcher?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Wpf/Importers/PlyReader.cs/#L21"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Initializes a new <a class="xref" href="HelixToolkit.Wpf.PlyReader.html">PlyReader</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public PlyReader(Dispatcher? dispatcher = null)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>dispatcher</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.threading.dispatcher">Dispatcher</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <h2 class="section" id="fields">Fields
+</h2>
+
+
+
+  <h3 id="HelixToolkit_Wpf_PlyReader_SUPPORTEDVERSION" data-uid="HelixToolkit.Wpf.PlyReader.SUPPORTEDVERSION">
+  SUPPORTEDVERSION
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Wpf/Importers/PlyReader.cs/#L294"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>The supported version of the ply format.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly Version SUPPORTEDVERSION</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.version">Version</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+  <h2 class="section" id="properties">Properties
+</h2>
+
+
+  <a id="HelixToolkit_Wpf_PlyReader_Body_" data-uid="HelixToolkit.Wpf.PlyReader.Body*"></a>
+
+  <h3 id="HelixToolkit_Wpf_PlyReader_Body" data-uid="HelixToolkit.Wpf.PlyReader.Body">
+  Body
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Wpf/Importers/PlyReader.cs/#L287"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the body of the loaded ply file.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public List&lt;PlyReader.PlyElement&gt; Body { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1">List</a>&lt;<a class="xref" href="HelixToolkit.Wpf.PlyReader.html">PlyReader</a>.<a class="xref" href="HelixToolkit.Wpf.PlyReader.PlyElement.html">PlyElement</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_PlyReader_Header_" data-uid="HelixToolkit.Wpf.PlyReader.Header*"></a>
+
+  <h3 id="HelixToolkit_Wpf_PlyReader_Header" data-uid="HelixToolkit.Wpf.PlyReader.Header">
+  Header
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Wpf/Importers/PlyReader.cs/#L282"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the header of the loaded ply file.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public PlyReader.PlyHeader Header { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Wpf.PlyReader.html">PlyReader</a>.<a class="xref" href="HelixToolkit.Wpf.PlyReader.PlyHeader.html">PlyHeader</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h2 class="section" id="methods">Methods
+</h2>
+
+
+  <a id="HelixToolkit_Wpf_PlyReader_CreateMesh_" data-uid="HelixToolkit.Wpf.PlyReader.CreateMesh*"></a>
+
+  <h3 id="HelixToolkit_Wpf_PlyReader_CreateMesh" data-uid="HelixToolkit.Wpf.PlyReader.CreateMesh">
+  CreateMesh()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Wpf/Importers/PlyReader.cs/#L57"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Creates a mesh from the loaded file.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Mesh3D CreateMesh()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Wpf.Mesh3D.html">Mesh3D</a></dt>
+    <dd><p>A <a class="xref" href="HelixToolkit.Wpf.Mesh3D.html">Mesh3D</a>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_PlyReader_CreateMeshGeometry3D_" data-uid="HelixToolkit.Wpf.PlyReader.CreateMeshGeometry3D*"></a>
+
+  <h3 id="HelixToolkit_Wpf_PlyReader_CreateMeshGeometry3D" data-uid="HelixToolkit.Wpf.PlyReader.CreateMeshGeometry3D">
+  CreateMeshGeometry3D()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Wpf/Importers/PlyReader.cs/#L125"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Creates a <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.media3d.meshgeometry3d">MeshGeometry3D</a> object from the loaded file. Polygons are triangulated using triangle fans.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public MeshGeometry3D CreateMeshGeometry3D()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.media3d.meshgeometry3d">MeshGeometry3D</a></dt>
+    <dd><p>A <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.media3d.meshgeometry3d">MeshGeometry3D</a>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_PlyReader_CreateModel3D_" data-uid="HelixToolkit.Wpf.PlyReader.CreateModel3D*"></a>
+
+  <h3 id="HelixToolkit_Wpf_PlyReader_CreateModel3D" data-uid="HelixToolkit.Wpf.PlyReader.CreateModel3D">
+  CreateModel3D()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Wpf/Importers/PlyReader.cs/#L135"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Creates a <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.media3d.model3dgroup">Model3DGroup</a> from the loaded file.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Model3DGroup CreateModel3D()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.media3d.model3dgroup">Model3DGroup</a></dt>
+    <dd><p>A <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.media3d.model3dgroup">Model3DGroup</a>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_PlyReader_Load_" data-uid="HelixToolkit.Wpf.PlyReader.Load*"></a>
+
+  <h3 id="HelixToolkit_Wpf_PlyReader_Load_System_IO_Stream_" data-uid="HelixToolkit.Wpf.PlyReader.Load(System.IO.Stream)">
+  Load(Stream)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Wpf/Importers/PlyReader.cs/#L166"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Loads a ply file from the <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.io.stream">Stream</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Load(Stream s)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>s</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.io.stream">Stream</a></dt>
+    <dd><p>The stream containing the ply file.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_PlyReader_Load_" data-uid="HelixToolkit.Wpf.PlyReader.Load*"></a>
+
+  <h3 id="HelixToolkit_Wpf_PlyReader_Load_System_String_" data-uid="HelixToolkit.Wpf.PlyReader.Load(System.String)">
+  Load(string)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Wpf/Importers/PlyReader.cs/#L182"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Loads a plyfile from the specified filepath.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Load(string path)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>path</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The filepath.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_PlyReader_LoadPlyFile_" data-uid="HelixToolkit.Wpf.PlyReader.LoadPlyFile*"></a>
+
+  <h3 id="HelixToolkit_Wpf_PlyReader_LoadPlyFile_System_IO_Stream_" data-uid="HelixToolkit.Wpf.PlyReader.LoadPlyFile(System.IO.Stream)">
+  LoadPlyFile(Stream)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Wpf/Importers/PlyReader.cs/#L204"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Loads a ply file from the stream but doesn't consume it.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Tuple&lt;PlyReader.PlyHeader, List&lt;PlyReader.PlyElement&gt;&gt; LoadPlyFile(Stream plyFileStream)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>plyFileStream</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.io.stream">Stream</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.tuple-2">Tuple</a>&lt;<a class="xref" href="HelixToolkit.Wpf.PlyReader.html">PlyReader</a>.<a class="xref" href="HelixToolkit.Wpf.PlyReader.PlyHeader.html">PlyHeader</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1">List</a>&lt;<a class="xref" href="HelixToolkit.Wpf.PlyReader.html">PlyReader</a>.<a class="xref" href="HelixToolkit.Wpf.PlyReader.PlyElement.html">PlyElement</a>&gt;&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+  <h4 class="section" id="HelixToolkit_Wpf_PlyReader_LoadPlyFile_System_IO_Stream__remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>This could be useful when we have several streams of plyfiles to reconstruct
+into a single mesh, without updating the Header and Body properties of this reader.</p>
+</div>
+
+
+
+
+  <a id="HelixToolkit_Wpf_PlyReader_Read_" data-uid="HelixToolkit.Wpf.PlyReader.Read*"></a>
+
+  <h3 id="HelixToolkit_Wpf_PlyReader_Read_System_IO_Stream_" data-uid="HelixToolkit.Wpf.PlyReader.Read(System.IO.Stream)">
+  Read(Stream)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Wpf/Importers/PlyReader.cs/#L34"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Reads the model from the specified stream.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override Model3DGroup Read(Stream s)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>s</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.io.stream">Stream</a></dt>
+    <dd><p>The stream.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.media3d.model3dgroup">Model3DGroup</a></dt>
+    <dd><p>A <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.media3d.model3dgroup">Model3DGroup</a>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_PlyReader_Read_" data-uid="HelixToolkit.Wpf.PlyReader.Read*"></a>
+
+  <h3 id="HelixToolkit_Wpf_PlyReader_Read_System_String_" data-uid="HelixToolkit.Wpf.PlyReader.Read(System.String)">
+  Read(string)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Wpf/Importers/PlyReader.cs/#L45"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Reads the model from the specified path.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override Model3DGroup Read(string path)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>path</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The path.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.media3d.model3dgroup">Model3DGroup</a></dt>
+    <dd><p>The model.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Wpf/Importers/PlyReader.cs/#L15" class="edit-link">Edit this page</a>
+        </div>
+
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          Copyright (c) 2023 Helix Toolkit contributors
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

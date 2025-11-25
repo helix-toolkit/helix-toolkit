@@ -1,0 +1,924 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Class ShaderDescription | Helix Toolkit - 3D for .NET </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Class ShaderDescription | Helix Toolkit - 3D for .NET ">
+      
+      
+      <link rel="icon" href="../images/favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/helix-toolkit/helix-toolkit/new/main-v3/apiSpec/new?filename=HelixToolkit_SharpDX_Shaders_ShaderDescription.md&amp;value=---%0Auid%3A%20HelixToolkit.SharpDX.Shaders.ShaderDescription%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="ManagedReference">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../images/favicon.ico" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="HelixToolkit.SharpDX.Shaders.ShaderDescription">
+
+
+
+  <h1 id="HelixToolkit_SharpDX_Shaders_ShaderDescription" data-uid="HelixToolkit.SharpDX.Shaders.ShaderDescription" class="text-break">
+Class ShaderDescription  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Shaders/ShaderDescription.cs/#L14"><i class="bi bi-code-slash"></i></a>
+  </h1>
+
+  <div class="facts text-secondary">
+    <dl><dt>Namespace</dt><dd><a class="xref" href="HelixToolkit.html">HelixToolkit</a>.<a class="xref" href="HelixToolkit.SharpDX.html">SharpDX</a>.<a class="xref" href="HelixToolkit.SharpDX.Shaders.html">Shaders</a></dd></dl>
+  <dl><dt>Assembly</dt><dd>HelixToolkit.SharpDX.dll</dd></dl>
+  </div>
+
+  <div class="markdown summary"></div>
+  <div class="markdown conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[DataContract]
+public sealed class ShaderDescription</code></pre>
+  </div>
+
+
+
+
+  <dl class="typelist inheritance">
+    <dt>Inheritance</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
+      <div><span class="xref">ShaderDescription</span></div>
+    </dd>
+  </dl>
+
+
+
+  <dl class="typelist inheritedMembers">
+    <dt>Inherited Members</dt>
+    <dd>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">object.Equals(object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">object.Equals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode">object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype">object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals">object.ReferenceEquals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring">object.ToString()</a>
+    </div>
+  </dd></dl>
+
+
+
+
+
+
+  <h2 class="section" id="constructors">Constructors
+</h2>
+
+
+  <a id="HelixToolkit_SharpDX_Shaders_ShaderDescription__ctor_" data-uid="HelixToolkit.SharpDX.Shaders.ShaderDescription.#ctor*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Shaders_ShaderDescription__ctor" data-uid="HelixToolkit.SharpDX.Shaders.ShaderDescription.#ctor">
+  ShaderDescription()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Shaders/ShaderDescription.cs/#L183"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Create a empty description</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ShaderDescription()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Shaders_ShaderDescription__ctor_" data-uid="HelixToolkit.SharpDX.Shaders.ShaderDescription.#ctor*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Shaders_ShaderDescription__ctor_System_String_HelixToolkit_SharpDX_ShaderStage_HelixToolkit_SharpDX_Shaders_IShaderReflector_System_Byte___" data-uid="HelixToolkit.SharpDX.Shaders.ShaderDescription.#ctor(System.String,HelixToolkit.SharpDX.ShaderStage,HelixToolkit.SharpDX.Shaders.IShaderReflector,System.Byte[])">
+  ShaderDescription(string, ShaderStage, IShaderReflector, byte[]?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Shaders/ShaderDescription.cs/#L228"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Create shader using reflector to get buffer mapping directly from shader codes.</p>
+<p>Actual creation happened when calling <a class="xref" href="HelixToolkit.SharpDX.Shaders.ShaderDescription.html#HelixToolkit_SharpDX_Shaders_ShaderDescription_CreateShader_SharpDX_Direct3D11_Device_HelixToolkit_SharpDX_ShaderManager_IConstantBufferPool_">CreateShader(Device, IConstantBufferPool)</a></p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ShaderDescription(string name, ShaderStage type, IShaderReflector reflector, byte[]? byteCode)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>name</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+    <dt><code>type</code> <a class="xref" href="HelixToolkit.SharpDX.ShaderStage.html">ShaderStage</a></dt>
+    <dd></dd>
+    <dt><code>reflector</code> <a class="xref" href="HelixToolkit.SharpDX.Shaders.IShaderReflector.html">IShaderReflector</a></dt>
+    <dd></dd>
+    <dt><code>byteCode</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">byte</a>[]</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Shaders_ShaderDescription__ctor_" data-uid="HelixToolkit.SharpDX.Shaders.ShaderDescription.#ctor*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Shaders_ShaderDescription__ctor_System_String_HelixToolkit_SharpDX_ShaderStage_HelixToolkit_SharpDX_Shaders_IShaderReflector_System_String_HelixToolkit_SharpDX_Helper_IShaderByteCodeReader_" data-uid="HelixToolkit.SharpDX.Shaders.ShaderDescription.#ctor(System.String,HelixToolkit.SharpDX.ShaderStage,HelixToolkit.SharpDX.Shaders.IShaderReflector,System.String,HelixToolkit.SharpDX.Helper.IShaderByteCodeReader)">
+  ShaderDescription(string, ShaderStage, IShaderReflector, string?, IShaderByteCodeReader?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Shaders/ShaderDescription.cs/#L243"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="HelixToolkit.SharpDX.Shaders.ShaderDescription.html">ShaderDescription</a> class. Pass <a class="xref" href="HelixToolkit.SharpDX.Helper.IShaderByteCodeReader.html">IShaderByteCodeReader</a> to read external custom shader bytecodes.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ShaderDescription(string name, ShaderStage type, IShaderReflector reflector, string? byteCodeName, IShaderByteCodeReader? byteCodeReader = null)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>name</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The name.</p>
+</dd>
+    <dt><code>type</code> <a class="xref" href="HelixToolkit.SharpDX.ShaderStage.html">ShaderStage</a></dt>
+    <dd><p>The type.</p>
+</dd>
+    <dt><code>reflector</code> <a class="xref" href="HelixToolkit.SharpDX.Shaders.IShaderReflector.html">IShaderReflector</a></dt>
+    <dd><p>The reflector.</p>
+</dd>
+    <dt><code>byteCodeName</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>Name of the byte code.</p>
+</dd>
+    <dt><code>byteCodeReader</code> <a class="xref" href="HelixToolkit.SharpDX.Helper.IShaderByteCodeReader.html">IShaderByteCodeReader</a></dt>
+    <dd><p>Used to read external custom shader byte codes</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Shaders_ShaderDescription__ctor_" data-uid="HelixToolkit.SharpDX.Shaders.ShaderDescription.#ctor*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Shaders_ShaderDescription__ctor_System_String_HelixToolkit_SharpDX_ShaderStage_SharpDX_Direct3D_FeatureLevel_System_Byte___HelixToolkit_SharpDX_Shaders_ConstantBufferMapping___HelixToolkit_SharpDX_Shaders_TextureMapping___HelixToolkit_SharpDX_Shaders_SamplerMapping___" data-uid="HelixToolkit.SharpDX.Shaders.ShaderDescription.#ctor(System.String,HelixToolkit.SharpDX.ShaderStage,SharpDX.Direct3D.FeatureLevel,System.Byte[],HelixToolkit.SharpDX.Shaders.ConstantBufferMapping[],HelixToolkit.SharpDX.Shaders.TextureMapping[],HelixToolkit.SharpDX.Shaders.SamplerMapping[])">
+  ShaderDescription(string, ShaderStage, FeatureLevel, byte[]?, ConstantBufferMapping[]?, TextureMapping[]?, SamplerMapping[]?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Shaders/ShaderDescription.cs/#L210"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Manually specifiy buffer mappings.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ShaderDescription(string name, ShaderStage type, FeatureLevel featureLevel, byte[]? byteCode, ConstantBufferMapping[]? constantBuffers = null, TextureMapping[]? textures = null, SamplerMapping[]? samplers = null)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>name</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+    <dt><code>type</code> <a class="xref" href="HelixToolkit.SharpDX.ShaderStage.html">ShaderStage</a></dt>
+    <dd></dd>
+    <dt><code>featureLevel</code> <span class="xref">FeatureLevel</span></dt>
+    <dd></dd>
+    <dt><code>byteCode</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">byte</a>[]</dt>
+    <dd></dd>
+    <dt><code>constantBuffers</code> <a class="xref" href="HelixToolkit.SharpDX.Shaders.ConstantBufferMapping.html">ConstantBufferMapping</a>[]</dt>
+    <dd></dd>
+    <dt><code>textures</code> <a class="xref" href="HelixToolkit.SharpDX.Shaders.TextureMapping.html">TextureMapping</a>[]</dt>
+    <dd></dd>
+    <dt><code>samplers</code> <a class="xref" href="HelixToolkit.SharpDX.Shaders.SamplerMapping.html">SamplerMapping</a>[]</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Shaders_ShaderDescription__ctor_" data-uid="HelixToolkit.SharpDX.Shaders.ShaderDescription.#ctor*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Shaders_ShaderDescription__ctor_System_String_HelixToolkit_SharpDX_ShaderStage_System_Byte___" data-uid="HelixToolkit.SharpDX.Shaders.ShaderDescription.#ctor(System.String,HelixToolkit.SharpDX.ShaderStage,System.Byte[])">
+  ShaderDescription(string, ShaderStage, byte[]?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Shaders/ShaderDescription.cs/#L193"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ShaderDescription(string name, ShaderStage type, byte[]? byteCode)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>name</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+    <dt><code>type</code> <a class="xref" href="HelixToolkit.SharpDX.ShaderStage.html">ShaderStage</a></dt>
+    <dd></dd>
+    <dt><code>byteCode</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">byte</a>[]</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <h2 class="section" id="properties">Properties
+</h2>
+
+
+  <a id="HelixToolkit_SharpDX_Shaders_ShaderDescription_ByteCode_" data-uid="HelixToolkit.SharpDX.Shaders.ShaderDescription.ByteCode*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Shaders_ShaderDescription_ByteCode" data-uid="HelixToolkit.SharpDX.Shaders.ShaderDescription.ByteCode">
+  ByteCode
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Shaders/ShaderDescription.cs/#L61"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the byte code.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[DataMember]
+public byte[]? ByteCode { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">byte</a>[]</dt>
+    <dd><p>The byte code.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Shaders_ShaderDescription_ByteCodeName_" data-uid="HelixToolkit.SharpDX.Shaders.ShaderDescription.ByteCodeName*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Shaders_ShaderDescription_ByteCodeName" data-uid="HelixToolkit.SharpDX.Shaders.ShaderDescription.ByteCodeName">
+  ByteCodeName
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Shaders/ShaderDescription.cs/#L83"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the name of the byte code.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[IgnoreDataMember]
+public string? ByteCodeName { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The name of the byte code.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Shaders_ShaderDescription_ConstantBufferMappings_" data-uid="HelixToolkit.SharpDX.Shaders.ShaderDescription.ConstantBufferMappings*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Shaders_ShaderDescription_ConstantBufferMappings" data-uid="HelixToolkit.SharpDX.Shaders.ShaderDescription.ConstantBufferMappings">
+  ConstantBufferMappings
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Shaders/ShaderDescription.cs/#L94"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the constant buffer mappings.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[IgnoreDataMember]
+public ConstantBufferMapping[]? ConstantBufferMappings { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.Shaders.ConstantBufferMapping.html">ConstantBufferMapping</a>[]</dt>
+    <dd><p>The constant buffer mappings.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Shaders_ShaderDescription_GSSOElement_" data-uid="HelixToolkit.SharpDX.Shaders.ShaderDescription.GSSOElement*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Shaders_ShaderDescription_GSSOElement" data-uid="HelixToolkit.SharpDX.Shaders.ShaderDescription.GSSOElement">
+  GSSOElement
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Shaders/ShaderDescription.cs/#L161"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the gs stream output element.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[DataMember]
+public StreamOutputElement[]? GSSOElement { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">StreamOutputElement</span>[]</dt>
+    <dd><p>The gsso element.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Shaders_ShaderDescription_GSSORasterized_" data-uid="HelixToolkit.SharpDX.Shaders.ShaderDescription.GSSORasterized*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Shaders_ShaderDescription_GSSORasterized" data-uid="HelixToolkit.SharpDX.Shaders.ShaderDescription.GSSORasterized">
+  GSSORasterized
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Shaders/ShaderDescription.cs/#L177"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the gs stream output rasterized stream index.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[DataMember]
+public int GSSORasterized { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The gsso rasterized stream index.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Shaders_ShaderDescription_GSSOStrides_" data-uid="HelixToolkit.SharpDX.Shaders.ShaderDescription.GSSOStrides*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Shaders_ShaderDescription_GSSOStrides" data-uid="HelixToolkit.SharpDX.Shaders.ShaderDescription.GSSOStrides">
+  GSSOStrides
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Shaders/ShaderDescription.cs/#L169"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the gs stream output strides.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[DataMember]
+public int[]? GSSOStrides { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a>[]</dt>
+    <dd><p>The gsso strides.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Shaders_ShaderDescription_IsGSStreamOut_" data-uid="HelixToolkit.SharpDX.Shaders.ShaderDescription.IsGSStreamOut*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Shaders_ShaderDescription_IsGSStreamOut" data-uid="HelixToolkit.SharpDX.Shaders.ShaderDescription.IsGSStreamOut">
+  IsGSStreamOut
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Shaders/ShaderDescription.cs/#L153"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets a value indicating whether this instance is gs stream out.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[DataMember]
+public bool IsGSStreamOut { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><code>true</code> if this instance is gs stream out; otherwise, <code>false</code>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Shaders_ShaderDescription_Level_" data-uid="HelixToolkit.SharpDX.Shaders.ShaderDescription.Level*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Shaders_ShaderDescription_Level" data-uid="HelixToolkit.SharpDX.Shaders.ShaderDescription.Level">
+  Level
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Shaders/ShaderDescription.cs/#L47"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the level.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[IgnoreDataMember]
+public FeatureLevel Level { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">FeatureLevel</span></dt>
+    <dd><p>The level.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Shaders_ShaderDescription_Name_" data-uid="HelixToolkit.SharpDX.Shaders.ShaderDescription.Name*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Shaders_ShaderDescription_Name" data-uid="HelixToolkit.SharpDX.Shaders.ShaderDescription.Name">
+  Name
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Shaders/ShaderDescription.cs/#L24"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the name.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[DataMember]
+public string Name { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The name.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Shaders_ShaderDescription_SamplerMappings_" data-uid="HelixToolkit.SharpDX.Shaders.ShaderDescription.SamplerMappings*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Shaders_ShaderDescription_SamplerMappings" data-uid="HelixToolkit.SharpDX.Shaders.ShaderDescription.SamplerMappings">
+  SamplerMappings
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Shaders/ShaderDescription.cs/#L127"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the sampler mappings.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[IgnoreDataMember]
+public SamplerMapping[]? SamplerMappings { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.Shaders.SamplerMapping.html">SamplerMapping</a>[]</dt>
+    <dd><p>The sampler mappings.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Shaders_ShaderDescription_ShaderReflector_" data-uid="HelixToolkit.SharpDX.Shaders.ShaderDescription.ShaderReflector*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Shaders_ShaderDescription_ShaderReflector" data-uid="HelixToolkit.SharpDX.Shaders.ShaderDescription.ShaderReflector">
+  ShaderReflector
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Shaders/ShaderDescription.cs/#L139"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the shader reflector.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[IgnoreDataMember]
+public IShaderReflector ShaderReflector { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.Shaders.IShaderReflector.html">IShaderReflector</a></dt>
+    <dd><p>The shader reflector.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Shaders_ShaderDescription_ShaderType_" data-uid="HelixToolkit.SharpDX.Shaders.ShaderDescription.ShaderType*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Shaders_ShaderDescription_ShaderType" data-uid="HelixToolkit.SharpDX.Shaders.ShaderDescription.ShaderType">
+  ShaderType
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Shaders/ShaderDescription.cs/#L35"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the type of the shader.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[DataMember]
+public ShaderStage ShaderType { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.ShaderStage.html">ShaderStage</a></dt>
+    <dd><p>The type of the shader.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Shaders_ShaderDescription_TextureMappings_" data-uid="HelixToolkit.SharpDX.Shaders.ShaderDescription.TextureMappings*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Shaders_ShaderDescription_TextureMappings" data-uid="HelixToolkit.SharpDX.Shaders.ShaderDescription.TextureMappings">
+  TextureMappings
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Shaders/ShaderDescription.cs/#L105"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the texture mappings.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[IgnoreDataMember]
+public TextureMapping[]? TextureMappings { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.Shaders.TextureMapping.html">TextureMapping</a>[]</dt>
+    <dd><p>The texture mappings.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Shaders_ShaderDescription_UAVMappings_" data-uid="HelixToolkit.SharpDX.Shaders.ShaderDescription.UAVMappings*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Shaders_ShaderDescription_UAVMappings" data-uid="HelixToolkit.SharpDX.Shaders.ShaderDescription.UAVMappings">
+  UAVMappings
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Shaders/ShaderDescription.cs/#L116"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the uav mappings.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[IgnoreDataMember]
+public UAVMapping[]? UAVMappings { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.Shaders.UAVMapping.html">UAVMapping</a>[]</dt>
+    <dd><p>The uav mappings.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h2 class="section" id="methods">Methods
+</h2>
+
+
+  <a id="HelixToolkit_SharpDX_Shaders_ShaderDescription_Clone_" data-uid="HelixToolkit.SharpDX.Shaders.ShaderDescription.Clone*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Shaders_ShaderDescription_Clone" data-uid="HelixToolkit.SharpDX.Shaders.ShaderDescription.Clone">
+  Clone()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Shaders/ShaderDescription.cs/#L351"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Clones this instance.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ShaderDescription Clone()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.Shaders.ShaderDescription.html">ShaderDescription</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Shaders_ShaderDescription_CreateShader_" data-uid="HelixToolkit.SharpDX.Shaders.ShaderDescription.CreateShader*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Shaders_ShaderDescription_CreateShader_SharpDX_Direct3D11_Device_HelixToolkit_SharpDX_ShaderManager_IConstantBufferPool_" data-uid="HelixToolkit.SharpDX.Shaders.ShaderDescription.CreateShader(SharpDX.Direct3D11.Device,HelixToolkit.SharpDX.ShaderManager.IConstantBufferPool)">
+  CreateShader(Device, IConstantBufferPool)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Shaders/ShaderDescription.cs/#L258"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Create Shader.</p>
+<p>All constant buffers for all shaders are created here./&gt;</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ShaderBase? CreateShader(Device device, IConstantBufferPool pool)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>device</code> <span class="xref">Device</span></dt>
+    <dd></dd>
+    <dt><code>pool</code> <a class="xref" href="HelixToolkit.SharpDX.ShaderManager.IConstantBufferPool.html">IConstantBufferPool</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.Shaders.ShaderBase.html">ShaderBase</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Shaders/ShaderDescription.cs/#L14" class="edit-link">Edit this page</a>
+        </div>
+
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          Copyright (c) 2023 Helix Toolkit contributors
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

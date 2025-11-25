@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Class Exporter&lt;T&gt; | Helix Toolkit - 3D for .NET </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Class Exporter&lt;T&gt; | Helix Toolkit - 3D for .NET ">
+      
+      <meta name="description" content="Provides a base class providing common functionality for exporters.">
+      <link rel="icon" href="../images/favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/helix-toolkit/helix-toolkit/new/main-v3/apiSpec/new?filename=HelixToolkit_Wpf_Exporter_1.md&amp;value=---%0Auid%3A%20HelixToolkit.Wpf.Exporter%601%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="ManagedReference">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../images/favicon.ico" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="HelixToolkit.Wpf.Exporter`1">
+
+
+
+  <h1 id="HelixToolkit_Wpf_Exporter_1" data-uid="HelixToolkit.Wpf.Exporter`1" class="text-break">
+Class Exporter&lt;T&gt;  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Wpf/Exporters/Exporter.cs/#L15"><i class="bi bi-code-slash"></i></a>
+  </h1>
+
+  <div class="facts text-secondary">
+    <dl><dt>Namespace</dt><dd><a class="xref" href="HelixToolkit.html">HelixToolkit</a>.<a class="xref" href="HelixToolkit.Wpf.html">Wpf</a></dd></dl>
+  <dl><dt>Assembly</dt><dd>HelixToolkit.Wpf.dll</dd></dl>
+  </div>
+
+  <div class="markdown summary"><p>Provides a base class providing common functionality for exporters.</p>
+</div>
+  <div class="markdown conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public abstract class Exporter&lt;T&gt; : IExporter</code></pre>
+  </div>
+
+
+
+  <h4 class="section">Type Parameters</h4>
+  <dl class="parameters">
+    <dt><code>T</code></dt>
+    <dd><p>The type of the output writer.</p>
+</dd>
+  </dl>
+
+  <dl class="typelist inheritance">
+    <dt>Inheritance</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
+      <div><span class="xref">Exporter&lt;T&gt;</span></div>
+    </dd>
+  </dl>
+
+  <dl class="typelist implements">
+    <dt>Implements</dt>
+    <dd>
+      <div><a class="xref" href="HelixToolkit.Wpf.IExporter.html">IExporter</a></div>
+    </dd>
+  </dl>
+
+  <dl class="typelist derived">
+    <dt>Derived</dt>
+    <dd>
+      <div><a class="xref" href="HelixToolkit.Wpf.ColladaExporter.html">ColladaExporter</a></div>
+      <div><a class="xref" href="HelixToolkit.Wpf.KerkytheaExporter.html">KerkytheaExporter</a></div>
+      <div><a class="xref" href="HelixToolkit.Wpf.ObjExporter.html">ObjExporter</a></div>
+      <div><a class="xref" href="HelixToolkit.Wpf.PovRayExporter.html">PovRayExporter</a></div>
+      <div><a class="xref" href="HelixToolkit.Wpf.RenderManExporter.html">RenderManExporter</a></div>
+      <div><a class="xref" href="HelixToolkit.Wpf.StlExporter.html">StlExporter</a></div>
+      <div><a class="xref" href="HelixToolkit.Wpf.VrmlExporter.html">VrmlExporter</a></div>
+      <div><a class="xref" href="HelixToolkit.Wpf.X3DExporter.html">X3DExporter</a></div>
+      <div><a class="xref" href="HelixToolkit.Wpf.XamlExporter.html">XamlExporter</a></div>
+    </dd>
+  </dl>
+
+  <dl class="typelist inheritedMembers">
+    <dt>Inherited Members</dt>
+    <dd>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">object.Equals(object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">object.Equals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode">object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype">object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone">object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals">object.ReferenceEquals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring">object.ToString()</a>
+    </div>
+  </dd></dl>
+
+
+
+
+
+
+  <h2 class="section" id="methods">Methods
+</h2>
+
+
+  <a id="HelixToolkit_Wpf_Exporter_1_Close_" data-uid="HelixToolkit.Wpf.Exporter`1.Close*"></a>
+
+  <h3 id="HelixToolkit_Wpf_Exporter_1_Close__0_" data-uid="HelixToolkit.Wpf.Exporter`1.Close(`0)">
+  Close(T)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Wpf/Exporters/Exporter.cs/#L77"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Closes the export writer.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual void Close(T writer)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>writer</code> <span class="xref">T</span></dt>
+    <dd><p>The writer.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_Exporter_1_Create_" data-uid="HelixToolkit.Wpf.Exporter`1.Create*"></a>
+
+  <h3 id="HelixToolkit_Wpf_Exporter_1_Create_System_IO_Stream_" data-uid="HelixToolkit.Wpf.Exporter`1.Create(System.IO.Stream)">
+  Create(Stream)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Wpf/Exporters/Exporter.cs/#L71"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Creates the writer for the specified stream.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected abstract T Create(Stream stream)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>stream</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.io.stream">Stream</a></dt>
+    <dd><p>The stream.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><span class="xref">T</span></dt>
+    <dd><p>The writer.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_Exporter_1_Encode_" data-uid="HelixToolkit.Wpf.Exporter`1.Encode*"></a>
+
+  <h3 id="HelixToolkit_Wpf_Exporter_1_Encode_System_Windows_Media_Imaging_RenderTargetBitmap_System_IO_Stream_" data-uid="HelixToolkit.Wpf.Exporter`1.Encode(System.Windows.Media.Imaging.RenderTargetBitmap,System.IO.Stream)">
+  Encode(RenderTargetBitmap, Stream)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Wpf/Exporters/Exporter.cs/#L193"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Encodes the specified bitmap as a PNG image.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected void Encode(RenderTargetBitmap bmp, Stream stm)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>bmp</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.imaging.rendertargetbitmap">RenderTargetBitmap</a></dt>
+    <dd><p>The bitmap.</p>
+</dd>
+    <dt><code>stm</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.io.stream">Stream</a></dt>
+    <dd><p>The output stream.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_Exporter_1_Encode_" data-uid="HelixToolkit.Wpf.Exporter`1.Encode*"></a>
+
+  <h3 id="HelixToolkit_Wpf_Exporter_1_Encode_System_Windows_Media_Imaging_RenderTargetBitmap_System_IO_Stream_System_Int32_" data-uid="HelixToolkit.Wpf.Exporter`1.Encode(System.Windows.Media.Imaging.RenderTargetBitmap,System.IO.Stream,System.Int32)">
+  Encode(RenderTargetBitmap, Stream, int)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Wpf/Exporters/Exporter.cs/#L206"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Encodes the specified bitmap as a Jpeg image.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected void Encode(RenderTargetBitmap bmp, Stream stm, int qualityLevel)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>bmp</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.imaging.rendertargetbitmap">RenderTargetBitmap</a></dt>
+    <dd><p>The bitmap.</p>
+</dd>
+    <dt><code>stm</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.io.stream">Stream</a></dt>
+    <dd><p>The output stream.</p>
+</dd>
+    <dt><code>qualityLevel</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The jpeg quality level.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_Exporter_1_Export_" data-uid="HelixToolkit.Wpf.Exporter`1.Export*"></a>
+
+  <h3 id="HelixToolkit_Wpf_Exporter_1_Export_System_Windows_Controls_Viewport3D_System_IO_Stream_" data-uid="HelixToolkit.Wpf.Exporter`1.Export(System.Windows.Controls.Viewport3D,System.IO.Stream)">
+  Export(Viewport3D, Stream)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Wpf/Exporters/Exporter.cs/#L22"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Exports the specified viewport.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual void Export(Viewport3D viewport, Stream stream)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>viewport</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.controls.viewport3d">Viewport3D</a></dt>
+    <dd><p>The viewport.</p>
+</dd>
+    <dt><code>stream</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.io.stream">Stream</a></dt>
+    <dd><p>The output stream.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_Exporter_1_Export_" data-uid="HelixToolkit.Wpf.Exporter`1.Export*"></a>
+
+  <h3 id="HelixToolkit_Wpf_Exporter_1_Export_System_Windows_Media_Media3D_Model3D_System_IO_Stream_" data-uid="HelixToolkit.Wpf.Exporter`1.Export(System.Windows.Media.Media3D.Model3D,System.IO.Stream)">
+  Export(Model3D, Stream)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Wpf/Exporters/Exporter.cs/#L58"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Exports the specified model.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual void Export(Model3D model, Stream stream)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>model</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.media3d.model3d">Model3D</a></dt>
+    <dd><p>The model.</p>
+</dd>
+    <dt><code>stream</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.io.stream">Stream</a></dt>
+    <dd><p>The output stream.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_Exporter_1_Export_" data-uid="HelixToolkit.Wpf.Exporter`1.Export*"></a>
+
+  <h3 id="HelixToolkit_Wpf_Exporter_1_Export_System_Windows_Media_Media3D_Visual3D_System_IO_Stream_" data-uid="HelixToolkit.Wpf.Exporter`1.Export(System.Windows.Media.Media3D.Visual3D,System.IO.Stream)">
+  Export(Visual3D, Stream)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Wpf/Exporters/Exporter.cs/#L45"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Exports the specified visual.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual void Export(Visual3D visual, Stream stream)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>visual</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.media3d.visual3d">Visual3D</a></dt>
+    <dd><p>The visual.</p>
+</dd>
+    <dt><code>stream</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.io.stream">Stream</a></dt>
+    <dd><p>The output stream.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_Exporter_1_ExportCamera_" data-uid="HelixToolkit.Wpf.Exporter`1.ExportCamera*"></a>
+
+  <h3 id="HelixToolkit_Wpf_Exporter_1_ExportCamera__0_System_Windows_Media_Media3D_Camera_" data-uid="HelixToolkit.Wpf.Exporter`1.ExportCamera(`0,System.Windows.Media.Media3D.Camera)">
+  ExportCamera(T, Camera)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Wpf/Exporters/Exporter.cs/#L86"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Exports the camera.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual void ExportCamera(T writer, Camera camera)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>writer</code> <span class="xref">T</span></dt>
+    <dd><p>The writer.</p>
+</dd>
+    <dt><code>camera</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.media3d.camera">Camera</a></dt>
+    <dd><p>The camera.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_Exporter_1_ExportHeader_" data-uid="HelixToolkit.Wpf.Exporter`1.ExportHeader*"></a>
+
+  <h3 id="HelixToolkit_Wpf_Exporter_1_ExportHeader__0_" data-uid="HelixToolkit.Wpf.Exporter`1.ExportHeader(`0)">
+  ExportHeader(T)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Wpf/Exporters/Exporter.cs/#L94"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Exports the header.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual void ExportHeader(T writer)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>writer</code> <span class="xref">T</span></dt>
+    <dd><p>The writer.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_Exporter_1_ExportLight_" data-uid="HelixToolkit.Wpf.Exporter`1.ExportLight*"></a>
+
+  <h3 id="HelixToolkit_Wpf_Exporter_1_ExportLight__0_System_Windows_Media_Media3D_Light_System_Windows_Media_Media3D_Transform3D_" data-uid="HelixToolkit.Wpf.Exporter`1.ExportLight(`0,System.Windows.Media.Media3D.Light,System.Windows.Media.Media3D.Transform3D)">
+  ExportLight(T, Light, Transform3D)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Wpf/Exporters/Exporter.cs/#L104"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Exports the light.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual void ExportLight(T writer, Light light, Transform3D inheritedTransform)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>writer</code> <span class="xref">T</span></dt>
+    <dd><p>The writer.</p>
+</dd>
+    <dt><code>light</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.media3d.light">Light</a></dt>
+    <dd><p>The light.</p>
+</dd>
+    <dt><code>inheritedTransform</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.media3d.transform3d">Transform3D</a></dt>
+    <dd><p>The inherited transform.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_Exporter_1_ExportModel_" data-uid="HelixToolkit.Wpf.Exporter`1.ExportModel*"></a>
+
+  <h3 id="HelixToolkit_Wpf_Exporter_1_ExportModel__0_System_Windows_Media_Media3D_GeometryModel3D_System_Windows_Media_Media3D_Transform3D_" data-uid="HelixToolkit.Wpf.Exporter`1.ExportModel(`0,System.Windows.Media.Media3D.GeometryModel3D,System.Windows.Media.Media3D.Transform3D)">
+  ExportModel(T, GeometryModel3D, Transform3D)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Wpf/Exporters/Exporter.cs/#L114"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Exports the model.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual void ExportModel(T writer, GeometryModel3D model, Transform3D inheritedTransform)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>writer</code> <span class="xref">T</span></dt>
+    <dd><p>The writer.</p>
+</dd>
+    <dt><code>model</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.media3d.geometrymodel3d">GeometryModel3D</a></dt>
+    <dd><p>The model.</p>
+</dd>
+    <dt><code>inheritedTransform</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.media3d.transform3d">Transform3D</a></dt>
+    <dd><p>The inherited transform.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_Exporter_1_ExportViewport_" data-uid="HelixToolkit.Wpf.Exporter`1.ExportViewport*"></a>
+
+  <h3 id="HelixToolkit_Wpf_Exporter_1_ExportViewport__0_System_Windows_Controls_Viewport3D_" data-uid="HelixToolkit.Wpf.Exporter`1.ExportViewport(`0,System.Windows.Controls.Viewport3D)">
+  ExportViewport(T, Viewport3D)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Wpf/Exporters/Exporter.cs/#L123"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Exports the viewport.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual void ExportViewport(T writer, Viewport3D viewport)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>writer</code> <span class="xref">T</span></dt>
+    <dd><p>The writer.</p>
+</dd>
+    <dt><code>viewport</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.controls.viewport3d">Viewport3D</a></dt>
+    <dd><p>The viewport.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_Exporter_1_RenderBrush_" data-uid="HelixToolkit.Wpf.Exporter`1.RenderBrush*"></a>
+
+  <h3 id="HelixToolkit_Wpf_Exporter_1_RenderBrush_System_IO_Stream_System_Windows_Media_Brush_System_Int32_System_Int32_" data-uid="HelixToolkit.Wpf.Exporter`1.RenderBrush(System.IO.Stream,System.Windows.Media.Brush,System.Int32,System.Int32)">
+  RenderBrush(Stream, Brush, int, int)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Wpf/Exporters/Exporter.cs/#L148"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Renders the brush to a PNG image.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected void RenderBrush(Stream stm, Brush brush, int w, int h)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>stm</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.io.stream">Stream</a></dt>
+    <dd><p>The output stream.</p>
+</dd>
+    <dt><code>brush</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.brush">Brush</a></dt>
+    <dd><p>The brush to render.</p>
+</dd>
+    <dt><code>w</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The width of the output image.</p>
+</dd>
+    <dt><code>h</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The height of the output image.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_Exporter_1_RenderBrush_" data-uid="HelixToolkit.Wpf.Exporter`1.RenderBrush*"></a>
+
+  <h3 id="HelixToolkit_Wpf_Exporter_1_RenderBrush_System_IO_Stream_System_Windows_Media_Brush_System_Int32_System_Int32_System_Int32_" data-uid="HelixToolkit.Wpf.Exporter`1.RenderBrush(System.IO.Stream,System.Windows.Media.Brush,System.Int32,System.Int32,System.Int32)">
+  RenderBrush(Stream, Brush, int, int, int)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Wpf/Exporters/Exporter.cs/#L136"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Renders the brush to a JPG image.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected void RenderBrush(Stream stm, Brush brush, int w, int h, int qualityLevel)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>stm</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.io.stream">Stream</a></dt>
+    <dd><p>The output stream.</p>
+</dd>
+    <dt><code>brush</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.brush">Brush</a></dt>
+    <dd><p>The brush to render.</p>
+</dd>
+    <dt><code>w</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The width of the output image.</p>
+</dd>
+    <dt><code>h</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The height of the output image.</p>
+</dd>
+    <dt><code>qualityLevel</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The quality level of the JPG image. E.g. 90.
+The value range is 1 (lowest quality) to 100 (highest quality).</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_Exporter_1_RenderBrush_" data-uid="HelixToolkit.Wpf.Exporter`1.RenderBrush*"></a>
+
+  <h3 id="HelixToolkit_Wpf_Exporter_1_RenderBrush_System_Windows_Media_Brush_System_Int32_System_Int32_" data-uid="HelixToolkit.Wpf.Exporter`1.RenderBrush(System.Windows.Media.Brush,System.Int32,System.Int32)">
+  RenderBrush(Brush, int, int)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Wpf/Exporters/Exporter.cs/#L160"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Renders the specified brush.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected RenderTargetBitmap RenderBrush(Brush brush, int w, int h)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>brush</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.brush">Brush</a></dt>
+    <dd><p>The brush.</p>
+</dd>
+    <dt><code>w</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The width.</p>
+</dd>
+    <dt><code>h</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The height.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.imaging.rendertargetbitmap">RenderTargetBitmap</a></dt>
+    <dd><p>RenderTargetBitmap.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Wpf/Exporters/Exporter.cs/#L15" class="edit-link">Edit this page</a>
+        </div>
+
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          Copyright (c) 2023 Helix Toolkit contributors
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

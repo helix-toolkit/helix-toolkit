@@ -1,0 +1,861 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Class VerletIntegrator | Helix Toolkit - 3D for .NET </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Class VerletIntegrator | Helix Toolkit - 3D for .NET ">
+      
+      <meta name="description" content="Provides a verlet integrator.">
+      <link rel="icon" href="../images/favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/helix-toolkit/helix-toolkit/new/main-v3/apiSpec/new?filename=HelixToolkit_Wpf_VerletIntegrator.md&amp;value=---%0Auid%3A%20HelixToolkit.Wpf.VerletIntegrator%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="ManagedReference">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../images/favicon.ico" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="HelixToolkit.Wpf.VerletIntegrator">
+
+
+
+  <h1 id="HelixToolkit_Wpf_VerletIntegrator" data-uid="HelixToolkit.Wpf.VerletIntegrator" class="text-break">
+Class VerletIntegrator  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Wpf/Physics/VerletIntegrator.cs/#L14"><i class="bi bi-code-slash"></i></a>
+  </h1>
+
+  <div class="facts text-secondary">
+    <dl><dt>Namespace</dt><dd><a class="xref" href="HelixToolkit.html">HelixToolkit</a>.<a class="xref" href="HelixToolkit.Wpf.html">Wpf</a></dd></dl>
+  <dl><dt>Assembly</dt><dd>HelixToolkit.Wpf.dll</dd></dl>
+  </div>
+
+  <div class="markdown summary"><p>Provides a verlet integrator.</p>
+</div>
+  <div class="markdown conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public sealed class VerletIntegrator</code></pre>
+  </div>
+
+
+
+
+  <dl class="typelist inheritance">
+    <dt>Inheritance</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
+      <div><span class="xref">VerletIntegrator</span></div>
+    </dd>
+  </dl>
+
+
+
+  <dl class="typelist inheritedMembers">
+    <dt>Inherited Members</dt>
+    <dd>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">object.Equals(object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">object.Equals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode">object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype">object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals">object.ReferenceEquals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring">object.ToString()</a>
+    </div>
+  </dd></dl>
+
+
+
+
+  <h2 id="HelixToolkit_Wpf_VerletIntegrator_remarks">Remarks</h2>
+  <div class="markdown level0 remarks"><p><a href="http://en.wikipedia.org/wiki/Verlet_integration">http://en.wikipedia.org/wiki/Verlet_integration</a>
+<a href="http://www.gamasutra.com/resource_guide/20030121/jacobson_01.shtml">http://www.gamasutra.com/resource_guide/20030121/jacobson_01.shtml</a>
+<a href="http://code.google.com/p/verlet/">http://code.google.com/p/verlet/</a>
+<a href="http://www.gamedev.net/reference/articles/article2200.asp">http://www.gamedev.net/reference/articles/article2200.asp</a></p>
+</div>
+
+
+  <h2 class="section" id="constructors">Constructors
+</h2>
+
+
+  <a id="HelixToolkit_Wpf_VerletIntegrator__ctor_" data-uid="HelixToolkit.Wpf.VerletIntegrator.#ctor*"></a>
+
+  <h3 id="HelixToolkit_Wpf_VerletIntegrator__ctor" data-uid="HelixToolkit.Wpf.VerletIntegrator.#ctor">
+  VerletIntegrator()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Wpf/Physics/VerletIntegrator.cs/#L24"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="HelixToolkit.Wpf.VerletIntegrator.html">VerletIntegrator</a> class.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public VerletIntegrator()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <h2 class="section" id="properties">Properties
+</h2>
+
+
+  <a id="HelixToolkit_Wpf_VerletIntegrator_Accelerations_" data-uid="HelixToolkit.Wpf.VerletIntegrator.Accelerations*"></a>
+
+  <h3 id="HelixToolkit_Wpf_VerletIntegrator_Accelerations" data-uid="HelixToolkit.Wpf.VerletIntegrator.Accelerations">
+  Accelerations
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Wpf/Physics/VerletIntegrator.cs/#L34"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the accelerations.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Vector3D[] Accelerations { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.media3d.vector3d">Vector3D</a>[]</dt>
+    <dd><p>The accelerations.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_VerletIntegrator_Constraints_" data-uid="HelixToolkit.Wpf.VerletIntegrator.Constraints*"></a>
+
+  <h3 id="HelixToolkit_Wpf_VerletIntegrator_Constraints" data-uid="HelixToolkit.Wpf.VerletIntegrator.Constraints">
+  Constraints
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Wpf/Physics/VerletIntegrator.cs/#L40"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the constraints.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public List&lt;Constraint&gt; Constraints { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1">List</a>&lt;<a class="xref" href="HelixToolkit.Wpf.Constraint.html">Constraint</a>&gt;</dt>
+    <dd><p>The constraints.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_VerletIntegrator_Damping_" data-uid="HelixToolkit.Wpf.VerletIntegrator.Damping*"></a>
+
+  <h3 id="HelixToolkit_Wpf_VerletIntegrator_Damping" data-uid="HelixToolkit.Wpf.VerletIntegrator.Damping">
+  Damping
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Wpf/Physics/VerletIntegrator.cs/#L46"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the damping.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public double Damping { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd><p>The damping.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_VerletIntegrator_InverseMass_" data-uid="HelixToolkit.Wpf.VerletIntegrator.InverseMass*"></a>
+
+  <h3 id="HelixToolkit_Wpf_VerletIntegrator_InverseMass" data-uid="HelixToolkit.Wpf.VerletIntegrator.InverseMass">
+  InverseMass
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Wpf/Physics/VerletIntegrator.cs/#L52"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the inverse mass.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public double[] InverseMass { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a>[]</dt>
+    <dd><p>The inverse mass.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_VerletIntegrator_Iterations_" data-uid="HelixToolkit.Wpf.VerletIntegrator.Iterations*"></a>
+
+  <h3 id="HelixToolkit_Wpf_VerletIntegrator_Iterations" data-uid="HelixToolkit.Wpf.VerletIntegrator.Iterations">
+  Iterations
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Wpf/Physics/VerletIntegrator.cs/#L58"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the iterations.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int Iterations { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The iterations.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_VerletIntegrator_Positions_" data-uid="HelixToolkit.Wpf.VerletIntegrator.Positions*"></a>
+
+  <h3 id="HelixToolkit_Wpf_VerletIntegrator_Positions" data-uid="HelixToolkit.Wpf.VerletIntegrator.Positions">
+  Positions
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Wpf/Physics/VerletIntegrator.cs/#L64"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the positions.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Point3D[] Positions { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.media3d.point3d">Point3D</a>[]</dt>
+    <dd><p>The positions.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_VerletIntegrator_Positions0_" data-uid="HelixToolkit.Wpf.VerletIntegrator.Positions0*"></a>
+
+  <h3 id="HelixToolkit_Wpf_VerletIntegrator_Positions0" data-uid="HelixToolkit.Wpf.VerletIntegrator.Positions0">
+  Positions0
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Wpf/Physics/VerletIntegrator.cs/#L70"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the positions0.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Point3D[] Positions0 { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.media3d.point3d">Point3D</a>[]</dt>
+    <dd><p>The positions0.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h2 class="section" id="methods">Methods
+</h2>
+
+
+  <a id="HelixToolkit_Wpf_VerletIntegrator_AddConstraint_" data-uid="HelixToolkit.Wpf.VerletIntegrator.AddConstraint*"></a>
+
+  <h3 id="HelixToolkit_Wpf_VerletIntegrator_AddConstraint_System_Int32_System_Int32_System_Double_" data-uid="HelixToolkit.Wpf.VerletIntegrator.AddConstraint(System.Int32,System.Int32,System.Double)">
+  AddConstraint(int, int, double)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Wpf/Physics/VerletIntegrator.cs/#L84"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Adds the constraint.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void AddConstraint(int A, int B, double relax)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>A</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The A.</p>
+</dd>
+    <dt><code>B</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The B.</p>
+</dd>
+    <dt><code>relax</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd><p>The relax.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_VerletIntegrator_AddFloor_" data-uid="HelixToolkit.Wpf.VerletIntegrator.AddFloor*"></a>
+
+  <h3 id="HelixToolkit_Wpf_VerletIntegrator_AddFloor_System_Double_" data-uid="HelixToolkit.Wpf.VerletIntegrator.AddFloor(System.Double)">
+  AddFloor(double)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Wpf/Physics/VerletIntegrator.cs/#L102"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Adds the floor.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void AddFloor(double friction)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>friction</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd><p>The friction.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_VerletIntegrator_AddSphere_" data-uid="HelixToolkit.Wpf.VerletIntegrator.AddSphere*"></a>
+
+  <h3 id="HelixToolkit_Wpf_VerletIntegrator_AddSphere_System_Windows_Media_Media3D_Point3D_System_Double_" data-uid="HelixToolkit.Wpf.VerletIntegrator.AddSphere(System.Windows.Media.Media3D.Point3D,System.Double)">
+  AddSphere(Point3D, double)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Wpf/Physics/VerletIntegrator.cs/#L120"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Adds the sphere.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void AddSphere(Point3D center, double radius)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>center</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.media3d.point3d">Point3D</a></dt>
+    <dd><p>The center.</p>
+</dd>
+    <dt><code>radius</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd><p>The radius.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_VerletIntegrator_ApplyGravity_" data-uid="HelixToolkit.Wpf.VerletIntegrator.ApplyGravity*"></a>
+
+  <h3 id="HelixToolkit_Wpf_VerletIntegrator_ApplyGravity_System_Windows_Media_Media3D_Vector3D_" data-uid="HelixToolkit.Wpf.VerletIntegrator.ApplyGravity(System.Windows.Media.Media3D.Vector3D)">
+  ApplyGravity(Vector3D)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Wpf/Physics/VerletIntegrator.cs/#L135"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Applies the gravity.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void ApplyGravity(Vector3D gravity)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>gravity</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.media3d.vector3d">Vector3D</a></dt>
+    <dd><p>The gravity.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_VerletIntegrator_CreateConstraintsByMesh_" data-uid="HelixToolkit.Wpf.VerletIntegrator.CreateConstraintsByMesh*"></a>
+
+  <h3 id="HelixToolkit_Wpf_VerletIntegrator_CreateConstraintsByMesh_System_Windows_Media_Media3D_MeshGeometry3D_System_Double_" data-uid="HelixToolkit.Wpf.VerletIntegrator.CreateConstraintsByMesh(System.Windows.Media.Media3D.MeshGeometry3D,System.Double)">
+  CreateConstraintsByMesh(MeshGeometry3D, double)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Wpf/Physics/VerletIntegrator.cs/#L152"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Creates the constraints by mesh.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void CreateConstraintsByMesh(MeshGeometry3D mesh, double relax)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>mesh</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.media3d.meshgeometry3d">MeshGeometry3D</a></dt>
+    <dd><p>The mesh.</p>
+</dd>
+    <dt><code>relax</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd><p>The relax.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_VerletIntegrator_FixPosition_" data-uid="HelixToolkit.Wpf.VerletIntegrator.FixPosition*"></a>
+
+  <h3 id="HelixToolkit_Wpf_VerletIntegrator_FixPosition_System_Int32_" data-uid="HelixToolkit.Wpf.VerletIntegrator.FixPosition(System.Int32)">
+  FixPosition(int)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Wpf/Physics/VerletIntegrator.cs/#L171"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Fixes the specified position.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void FixPosition(int i)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>i</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The i.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_VerletIntegrator_Init_" data-uid="HelixToolkit.Wpf.VerletIntegrator.Init*"></a>
+
+  <h3 id="HelixToolkit_Wpf_VerletIntegrator_Init_System_Windows_Media_Media3D_MeshGeometry3D_" data-uid="HelixToolkit.Wpf.VerletIntegrator.Init(System.Windows.Media.Media3D.MeshGeometry3D)">
+  Init(MeshGeometry3D)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Wpf/Physics/VerletIntegrator.cs/#L182"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Inits the specified mesh.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Init(MeshGeometry3D mesh)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>mesh</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.media3d.meshgeometry3d">MeshGeometry3D</a></dt>
+    <dd><p>The mesh.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_VerletIntegrator_Resize_" data-uid="HelixToolkit.Wpf.VerletIntegrator.Resize*"></a>
+
+  <h3 id="HelixToolkit_Wpf_VerletIntegrator_Resize_System_Int32_" data-uid="HelixToolkit.Wpf.VerletIntegrator.Resize(System.Int32)">
+  Resize(int)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Wpf/Physics/VerletIntegrator.cs/#L199"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Resizes the arrays.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Resize(int n)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>n</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The n.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_VerletIntegrator_SetForce_" data-uid="HelixToolkit.Wpf.VerletIntegrator.SetForce*"></a>
+
+  <h3 id="HelixToolkit_Wpf_VerletIntegrator_SetForce_System_Int32_System_Windows_Media_Media3D_Vector3D_" data-uid="HelixToolkit.Wpf.VerletIntegrator.SetForce(System.Int32,System.Windows.Media.Media3D.Vector3D)">
+  SetForce(int, Vector3D)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Wpf/Physics/VerletIntegrator.cs/#L216"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Sets the force.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void SetForce(int index, Vector3D force)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>index</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The index.</p>
+</dd>
+    <dt><code>force</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.media3d.vector3d">Vector3D</a></dt>
+    <dd><p>The force.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_VerletIntegrator_SetInverseMass_" data-uid="HelixToolkit.Wpf.VerletIntegrator.SetInverseMass*"></a>
+
+  <h3 id="HelixToolkit_Wpf_VerletIntegrator_SetInverseMass_System_Double_" data-uid="HelixToolkit.Wpf.VerletIntegrator.SetInverseMass(System.Double)">
+  SetInverseMass(double)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Wpf/Physics/VerletIntegrator.cs/#L237"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Sets the inverse mass.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void SetInverseMass(double invmass)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>invmass</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd><p>The invmass.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_VerletIntegrator_TimeStep_" data-uid="HelixToolkit.Wpf.VerletIntegrator.TimeStep*"></a>
+
+  <h3 id="HelixToolkit_Wpf_VerletIntegrator_TimeStep_System_Double_" data-uid="HelixToolkit.Wpf.VerletIntegrator.TimeStep(System.Double)">
+  TimeStep(double)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Wpf/Physics/VerletIntegrator.cs/#L251"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Times the step.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void TimeStep(double dt)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>dt</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd><p>The dt.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_VerletIntegrator_TransferPositions_" data-uid="HelixToolkit.Wpf.VerletIntegrator.TransferPositions*"></a>
+
+  <h3 id="HelixToolkit_Wpf_VerletIntegrator_TransferPositions_System_Windows_Media_Media3D_MeshGeometry3D_" data-uid="HelixToolkit.Wpf.VerletIntegrator.TransferPositions(System.Windows.Media.Media3D.MeshGeometry3D)">
+  TransferPositions(MeshGeometry3D)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Wpf/Physics/VerletIntegrator.cs/#L267"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Transfers the positions.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void TransferPositions(MeshGeometry3D mesh)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>mesh</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.media3d.meshgeometry3d">MeshGeometry3D</a></dt>
+    <dd><p>The mesh.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Wpf/Physics/VerletIntegrator.cs/#L14" class="edit-link">Edit this page</a>
+        </div>
+
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          Copyright (c) 2023 Helix Toolkit contributors
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

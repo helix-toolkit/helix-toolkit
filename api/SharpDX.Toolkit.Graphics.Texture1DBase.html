@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Class Texture1DBase | Helix Toolkit - 3D for .NET </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Class Texture1DBase | Helix Toolkit - 3D for .NET ">
+      
+      <meta name="description" content="Abstract class front end to .">
+      <link rel="icon" href="../images/favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/helix-toolkit/helix-toolkit/new/main-v3/apiSpec/new?filename=SharpDX_Toolkit_Graphics_Texture1DBase.md&amp;value=---%0Auid%3A%20SharpDX.Toolkit.Graphics.Texture1DBase%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="ManagedReference">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../images/favicon.ico" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="SharpDX.Toolkit.Graphics.Texture1DBase">
+
+
+
+  <h1 id="SharpDX_Toolkit_Graphics_Texture1DBase" data-uid="SharpDX.Toolkit.Graphics.Texture1DBase" class="text-break">
+Class Texture1DBase  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/SharpDX.Toolkit/Graphics/Texture1DBase.cs/#L8"><i class="bi bi-code-slash"></i></a>
+  </h1>
+
+  <div class="facts text-secondary">
+    <dl><dt>Namespace</dt><dd><a class="xref" href="SharpDX.html">SharpDX</a>.<a class="xref" href="SharpDX.Toolkit.html">Toolkit</a>.<a class="xref" href="SharpDX.Toolkit.Graphics.html">Graphics</a></dd></dl>
+  <dl><dt>Assembly</dt><dd>HelixToolkit.SharpDX.dll</dd></dl>
+  </div>
+
+  <div class="markdown summary"><p>Abstract class front end to <span class="xref">SharpDX.Direct3D11.Texture1D</span>.</p>
+</div>
+  <div class="markdown conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public abstract class Texture1DBase : Texture, IComponent, INotifyPropertyChanged, IDisposable, IComparable&lt;Texture&gt;</code></pre>
+  </div>
+
+
+
+
+  <dl class="typelist inheritance">
+    <dt>Inheritance</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
+      <div><a class="xref" href="SharpDX.Toolkit.ComponentBase.html">ComponentBase</a></div>
+      <div><a class="xref" href="SharpDX.Toolkit.Component.html">Component</a></div>
+      <div><a class="xref" href="SharpDX.Toolkit.Graphics.GraphicsResource.html">GraphicsResource</a></div>
+      <div><a class="xref" href="SharpDX.Toolkit.Graphics.Texture.html">Texture</a></div>
+      <div><span class="xref">Texture1DBase</span></div>
+    </dd>
+  </dl>
+
+  <dl class="typelist implements">
+    <dt>Implements</dt>
+    <dd>
+      <div><a class="xref" href="SharpDX.IComponent.html">IComponent</a></div>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.componentmodel.inotifypropertychanged">INotifyPropertyChanged</a></div>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.idisposable">IDisposable</a></div>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.icomparable-1">IComparable</a>&lt;<a class="xref" href="SharpDX.Toolkit.Graphics.Texture.html">Texture</a>&gt;</div>
+    </dd>
+  </dl>
+
+  <dl class="typelist derived">
+    <dt>Derived</dt>
+    <dd>
+      <div><a class="xref" href="SharpDX.Toolkit.Graphics.Texture1D.html">Texture1D</a></div>
+    </dd>
+  </dl>
+
+  <dl class="typelist inheritedMembers">
+    <dt>Inherited Members</dt>
+    <dd>
+    <div>
+      <a class="xref" href="SharpDX.Toolkit.Graphics.Texture.html#SharpDX_Toolkit_Graphics_Texture_Description">Texture.Description</a>
+    </div>
+    <div>
+      <a class="xref" href="SharpDX.Toolkit.Graphics.Texture.html#SharpDX_Toolkit_Graphics_Texture_IsBlockCompressed">Texture.IsBlockCompressed</a>
+    </div>
+    <div>
+      <a class="xref" href="SharpDX.Toolkit.Graphics.Texture.html#SharpDX_Toolkit_Graphics_Texture_Width">Texture.Width</a>
+    </div>
+    <div>
+      <a class="xref" href="SharpDX.Toolkit.Graphics.Texture.html#SharpDX_Toolkit_Graphics_Texture_Height">Texture.Height</a>
+    </div>
+    <div>
+      <a class="xref" href="SharpDX.Toolkit.Graphics.Texture.html#SharpDX_Toolkit_Graphics_Texture_Depth">Texture.Depth</a>
+    </div>
+    <div>
+      <a class="xref" href="SharpDX.Toolkit.Graphics.Texture.html#SharpDX_Toolkit_Graphics_Texture_Format">Texture.Format</a>
+    </div>
+    <div>
+      <a class="xref" href="SharpDX.Toolkit.Graphics.Texture.html#SharpDX_Toolkit_Graphics_Texture_Initialize_SharpDX_Direct3D11_DeviceChild_">Texture.Initialize(DeviceChild)</a>
+    </div>
+    <div>
+      <a class="xref" href="SharpDX.Toolkit.Graphics.Texture.html#SharpDX_Toolkit_Graphics_Texture_CalculateMipLevels_System_Int32_SharpDX_Toolkit_Graphics_MipMapCount_">Texture.CalculateMipLevels(int, MipMapCount)</a>
+    </div>
+    <div>
+      <a class="xref" href="SharpDX.Toolkit.Graphics.Texture.html#SharpDX_Toolkit_Graphics_Texture_CalculateMipLevels_System_Int32_System_Int32_SharpDX_Toolkit_Graphics_MipMapCount_">Texture.CalculateMipLevels(int, int, MipMapCount)</a>
+    </div>
+    <div>
+      <a class="xref" href="SharpDX.Toolkit.Graphics.Texture.html#SharpDX_Toolkit_Graphics_Texture_CalculateMipLevels_System_Int32_System_Int32_System_Int32_SharpDX_Toolkit_Graphics_MipMapCount_">Texture.CalculateMipLevels(int, int, int, MipMapCount)</a>
+    </div>
+    <div>
+      <a class="xref" href="SharpDX.Toolkit.Graphics.Texture.html#SharpDX_Toolkit_Graphics_Texture_CalculateMipSize_System_Int32_System_Int32_">Texture.CalculateMipSize(int, int)</a>
+    </div>
+    <div>
+      <a class="xref" href="SharpDX.Toolkit.Graphics.Texture.html#SharpDX_Toolkit_Graphics_Texture_GetSubResourceIndex_System_Int32_System_Int32_">Texture.GetSubResourceIndex(int, int)</a>
+    </div>
+    <div>
+      <a class="xref" href="SharpDX.Toolkit.Graphics.Texture.html#SharpDX_Toolkit_Graphics_Texture_CalculateWidth__1_System_Int32_">Texture.CalculateWidth&lt;TData&gt;(int)</a>
+    </div>
+    <div>
+      <a class="xref" href="SharpDX.Toolkit.Graphics.Texture.html#SharpDX_Toolkit_Graphics_Texture_CalculatePixelDataCount__1_System_Int32_">Texture.CalculatePixelDataCount&lt;TData&gt;(int)</a>
+    </div>
+    <div>
+      <a class="xref" href="SharpDX.Toolkit.Graphics.Texture.html#SharpDX_Toolkit_Graphics_Texture_Clone">Texture.Clone()</a>
+    </div>
+    <div>
+      <a class="xref" href="SharpDX.Toolkit.Graphics.Texture.html#SharpDX_Toolkit_Graphics_Texture_Clone__1">Texture.Clone&lt;T&gt;()</a>
+    </div>
+    <div>
+      <a class="xref" href="SharpDX.Toolkit.Graphics.Texture.html#SharpDX_Toolkit_Graphics_Texture_New_SharpDX_Direct3D11_Device_SharpDX_Toolkit_Graphics_TextureDescription_">Texture.New(Device, TextureDescription)</a>
+    </div>
+    <div>
+      <a class="xref" href="SharpDX.Toolkit.Graphics.Texture.html#SharpDX_Toolkit_Graphics_Texture_Load_SharpDX_Direct3D11_Device_System_IO_Stream_SharpDX_Toolkit_Graphics_TextureFlags_SharpDX_Direct3D11_ResourceUsage_">Texture.Load(Device, Stream, TextureFlags, ResourceUsage)</a>
+    </div>
+    <div>
+      <a class="xref" href="SharpDX.Toolkit.Graphics.Texture.html#SharpDX_Toolkit_Graphics_Texture_Load_SharpDX_Direct3D11_Device_System_String_SharpDX_Toolkit_Graphics_TextureFlags_SharpDX_Direct3D11_ResourceUsage_">Texture.Load(Device, string, TextureFlags, ResourceUsage)</a>
+    </div>
+    <div>
+      <a class="xref" href="SharpDX.Toolkit.Graphics.Texture.html#SharpDX_Toolkit_Graphics_Texture_CompareTo_SharpDX_Toolkit_Graphics_Texture_">Texture.CompareTo(Texture)</a>
+    </div>
+    <div>
+      <a class="xref" href="SharpDX.Toolkit.Graphics.GraphicsResource.html#SharpDX_Toolkit_Graphics_GraphicsResource_GraphicsDevice">GraphicsResource.GraphicsDevice</a>
+    </div>
+    <div>
+      <a class="xref" href="SharpDX.Toolkit.Graphics.GraphicsResource.html#SharpDX_Toolkit_Graphics_GraphicsResource_GetCpuAccessFlagsFromUsage_SharpDX_Direct3D11_ResourceUsage_">GraphicsResource.GetCpuAccessFlagsFromUsage(ResourceUsage)</a>
+    </div>
+    <div>
+      <a class="xref" href="SharpDX.Toolkit.Graphics.GraphicsResource.html#SharpDX_Toolkit_Graphics_GraphicsResource_OnPropertyChanged_System_String_">GraphicsResource.OnPropertyChanged(string)</a>
+    </div>
+    <div>
+      <a class="xref" href="SharpDX.Toolkit.Component.html#SharpDX_Toolkit_Component_DisposeCollector">Component.DisposeCollector</a>
+    </div>
+    <div>
+      <a class="xref" href="SharpDX.Toolkit.Component.html#SharpDX_Toolkit_Component_IsDisposed">Component.IsDisposed</a>
+    </div>
+    <div>
+      <a class="xref" href="SharpDX.Toolkit.Component.html#SharpDX_Toolkit_Component_IsDisposing">Component.IsDisposing</a>
+    </div>
+    <div>
+      <a class="xref" href="SharpDX.Toolkit.Component.html#SharpDX_Toolkit_Component_Disposing">Component.Disposing</a>
+    </div>
+    <div>
+      <a class="xref" href="SharpDX.Toolkit.Component.html#SharpDX_Toolkit_Component_Dispose">Component.Dispose()</a>
+    </div>
+    <div>
+      <a class="xref" href="SharpDX.Toolkit.Component.html#SharpDX_Toolkit_Component_ToDispose__1___0_">Component.ToDispose&lt;T&gt;(T)</a>
+    </div>
+    <div>
+      <a class="xref" href="SharpDX.Toolkit.Component.html#SharpDX_Toolkit_Component_RemoveAndDispose__1___0__">Component.RemoveAndDispose&lt;T&gt;(ref T)</a>
+    </div>
+    <div>
+      <a class="xref" href="SharpDX.Toolkit.Component.html#SharpDX_Toolkit_Component_RemoveToDispose__1___0_">Component.RemoveToDispose&lt;T&gt;(T)</a>
+    </div>
+    <div>
+      <a class="xref" href="SharpDX.Toolkit.ComponentBase.html#SharpDX_Toolkit_ComponentBase_Name">ComponentBase.Name</a>
+    </div>
+    <div>
+      <a class="xref" href="SharpDX.Toolkit.ComponentBase.html#SharpDX_Toolkit_ComponentBase_Tag">ComponentBase.Tag</a>
+    </div>
+    <div>
+      <a class="xref" href="SharpDX.Toolkit.ComponentBase.html#SharpDX_Toolkit_ComponentBase_PropertyChanged">ComponentBase.PropertyChanged</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">object.Equals(object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">object.Equals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode">object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype">object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone">object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals">object.ReferenceEquals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring">object.ToString()</a>
+    </div>
+  </dd></dl>
+
+
+
+
+
+
+  <h2 class="section" id="constructors">Constructors
+</h2>
+
+
+  <a id="SharpDX_Toolkit_Graphics_Texture1DBase__ctor_" data-uid="SharpDX.Toolkit.Graphics.Texture1DBase.#ctor*"></a>
+
+  <h3 id="SharpDX_Toolkit_Graphics_Texture1DBase__ctor_SharpDX_Direct3D11_Device_SharpDX_Direct3D11_Texture1D_" data-uid="SharpDX.Toolkit.Graphics.Texture1DBase.#ctor(SharpDX.Direct3D11.Device,SharpDX.Direct3D11.Texture1D)">
+  Texture1DBase(Device, Texture1D)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/SharpDX.Toolkit/Graphics/Texture1DBase.cs/#L54"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Specialised constructor for use only by derived classes.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected Texture1DBase(Device device, Texture1D texture)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>device</code> <span class="xref">Device</span></dt>
+    <dd><p>The <span class="xref">SharpDX.Direct3D11.Device</span>.</p>
+</dd>
+    <dt><code>texture</code> <span class="xref">Texture1D</span></dt>
+    <dd><p>The texture.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="SharpDX_Toolkit_Graphics_Texture1DBase__ctor_" data-uid="SharpDX.Toolkit.Graphics.Texture1DBase.#ctor*"></a>
+
+  <h3 id="SharpDX_Toolkit_Graphics_Texture1DBase__ctor_SharpDX_Direct3D11_Device_SharpDX_Direct3D11_Texture1DDescription_" data-uid="SharpDX.Toolkit.Graphics.Texture1DBase.#ctor(SharpDX.Direct3D11.Device,SharpDX.Direct3D11.Texture1DDescription)">
+  Texture1DBase(Device, Texture1DDescription)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/SharpDX.Toolkit/Graphics/Texture1DBase.cs/#L23"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="SharpDX.Toolkit.Graphics.Texture1DBase.html">Texture1DBase</a> class.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected Texture1DBase(Device device, Texture1DDescription description1D)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>device</code> <span class="xref">Device</span></dt>
+    <dd><p>The <span class="xref">SharpDX.Direct3D11.Device</span>.</p>
+</dd>
+    <dt><code>description1D</code> <span class="xref">Texture1DDescription</span></dt>
+    <dd><p>The description.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="SharpDX_Toolkit_Graphics_Texture1DBase__ctor_" data-uid="SharpDX.Toolkit.Graphics.Texture1DBase.#ctor*"></a>
+
+  <h3 id="SharpDX_Toolkit_Graphics_Texture1DBase__ctor_SharpDX_Direct3D11_Device_SharpDX_Direct3D11_Texture1DDescription_SharpDX_DataBox___" data-uid="SharpDX.Toolkit.Graphics.Texture1DBase.#ctor(SharpDX.Direct3D11.Device,SharpDX.Direct3D11.Texture1DDescription,SharpDX.DataBox[])">
+  Texture1DBase(Device, Texture1DDescription, DataBox[])
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/SharpDX.Toolkit/Graphics/Texture1DBase.cs/#L39"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="SharpDX.Toolkit.Graphics.Texture1DBase.html">Texture1DBase</a> class.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected Texture1DBase(Device device, Texture1DDescription description1D, DataBox[] dataBox)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>device</code> <span class="xref">Device</span></dt>
+    <dd><p>The <span class="xref">SharpDX.Direct3D11.Device</span>.</p>
+</dd>
+    <dt><code>description1D</code> <span class="xref">Texture1DDescription</span></dt>
+    <dd><p>The description.</p>
+</dd>
+    <dt><code>dataBox</code> <span class="xref">DataBox</span>[]</dt>
+    <dd><p>A variable-length parameters list containing data rectangles.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <h2 class="section" id="fields">Fields
+</h2>
+
+
+
+  <h3 id="SharpDX_Toolkit_Graphics_Texture1DBase_Resource" data-uid="SharpDX.Toolkit.Graphics.Texture1DBase.Resource">
+  Resource
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/SharpDX.Toolkit/Graphics/Texture1DBase.cs/#L13"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected readonly Texture1D Resource</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">Texture1D</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+  <h2 class="section" id="methods">Methods
+</h2>
+
+
+  <a id="SharpDX_Toolkit_Graphics_Texture1DBase_Dispose_" data-uid="SharpDX.Toolkit.Graphics.Texture1DBase.Dispose*"></a>
+
+  <h3 id="SharpDX_Toolkit_Graphics_Texture1DBase_Dispose_System_Boolean_" data-uid="SharpDX.Toolkit.Graphics.Texture1DBase.Dispose(System.Boolean)">
+  Dispose(bool)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/SharpDX.Toolkit/Graphics/Texture1DBase.cs/#L97"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected override void Dispose(bool disposeManagedResources)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>disposeManagedResources</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="SharpDX_Toolkit_Graphics_Texture1DBase_NewDescription_" data-uid="SharpDX.Toolkit.Graphics.Texture1DBase.NewDescription*"></a>
+
+  <h3 id="SharpDX_Toolkit_Graphics_Texture1DBase_NewDescription_System_Int32_SharpDX_Toolkit_Graphics_PixelFormat_SharpDX_Toolkit_Graphics_TextureFlags_System_Int32_System_Int32_SharpDX_Direct3D11_ResourceUsage_" data-uid="SharpDX.Toolkit.Graphics.Texture1DBase.NewDescription(System.Int32,SharpDX.Toolkit.Graphics.PixelFormat,SharpDX.Toolkit.Graphics.TextureFlags,System.Int32,System.Int32,SharpDX.Direct3D11.ResourceUsage)">
+  NewDescription(int, PixelFormat, TextureFlags, int, int, ResourceUsage)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/SharpDX.Toolkit/Graphics/Texture1DBase.cs/#L71"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected static Texture1DDescription NewDescription(int width, PixelFormat format, TextureFlags textureFlags, int mipCount, int arraySize, ResourceUsage usage)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>width</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+    <dt><code>format</code> <a class="xref" href="SharpDX.Toolkit.Graphics.PixelFormat.html">PixelFormat</a></dt>
+    <dd></dd>
+    <dt><code>textureFlags</code> <a class="xref" href="SharpDX.Toolkit.Graphics.TextureFlags.html">TextureFlags</a></dt>
+    <dd></dd>
+    <dt><code>mipCount</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+    <dt><code>arraySize</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+    <dt><code>usage</code> <span class="xref">ResourceUsage</span></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><span class="xref">Texture1DDescription</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/SharpDX.Toolkit/Graphics/Texture1DBase.cs/#L8" class="edit-link">Edit this page</a>
+        </div>
+
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          Copyright (c) 2023 Helix Toolkit contributors
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Class Visual3DHelper | Helix Toolkit - 3D for .NET </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Class Visual3DHelper | Helix Toolkit - 3D for .NET ">
+      
+      <meta name="description" content="Provides extension methods for  objects.">
+      <link rel="icon" href="../images/favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/helix-toolkit/helix-toolkit/new/main-v3/apiSpec/new?filename=HelixToolkit_Wpf_Visual3DHelper.md&amp;value=---%0Auid%3A%20HelixToolkit.Wpf.Visual3DHelper%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="ManagedReference">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../images/favicon.ico" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="HelixToolkit.Wpf.Visual3DHelper">
+
+
+
+  <h1 id="HelixToolkit_Wpf_Visual3DHelper" data-uid="HelixToolkit.Wpf.Visual3DHelper" class="text-break">
+Class Visual3DHelper  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Wpf/Helpers/Visual3DHelper.cs/#L12"><i class="bi bi-code-slash"></i></a>
+  </h1>
+
+  <div class="facts text-secondary">
+    <dl><dt>Namespace</dt><dd><a class="xref" href="HelixToolkit.html">HelixToolkit</a>.<a class="xref" href="HelixToolkit.Wpf.html">Wpf</a></dd></dl>
+  <dl><dt>Assembly</dt><dd>HelixToolkit.Wpf.dll</dd></dl>
+  </div>
+
+  <div class="markdown summary"><p>Provides extension methods for <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.media3d.visual3d">Visual3D</a> objects.</p>
+</div>
+  <div class="markdown conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static class Visual3DHelper</code></pre>
+  </div>
+
+
+
+
+  <dl class="typelist inheritance">
+    <dt>Inheritance</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
+      <div><span class="xref">Visual3DHelper</span></div>
+    </dd>
+  </dl>
+
+
+
+  <dl class="typelist inheritedMembers">
+    <dt>Inherited Members</dt>
+    <dd>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">object.Equals(object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">object.Equals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode">object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype">object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone">object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals">object.ReferenceEquals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring">object.ToString()</a>
+    </div>
+  </dd></dl>
+
+
+
+
+
+
+  <h2 class="section" id="methods">Methods
+</h2>
+
+
+  <a id="HelixToolkit_Wpf_Visual3DHelper_FindBounds_" data-uid="HelixToolkit.Wpf.Visual3DHelper.FindBounds*"></a>
+
+  <h3 id="HelixToolkit_Wpf_Visual3DHelper_FindBounds_System_Windows_Media_Media3D_Visual3D_System_Windows_Media_Media3D_Transform3D_" data-uid="HelixToolkit.Wpf.Visual3DHelper.FindBounds(System.Windows.Media.Media3D.Visual3D,System.Windows.Media.Media3D.Transform3D)">
+  FindBounds(Visual3D, Transform3D)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Wpf/Helpers/Visual3DHelper.cs/#L92"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Finds the bounding box for the specified visual.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Rect3D FindBounds(this Visual3D visual, Transform3D transform)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>visual</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.media3d.visual3d">Visual3D</a></dt>
+    <dd><p>The visual.</p>
+</dd>
+    <dt><code>transform</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.media3d.transform3d">Transform3D</a></dt>
+    <dd><p>The transform of the visual.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.media3d.rect3d">Rect3D</a></dt>
+    <dd><p>A <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.media3d.rect3d">Rect3D</a>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_Visual3DHelper_FindBounds_" data-uid="HelixToolkit.Wpf.Visual3DHelper.FindBounds*"></a>
+
+  <h3 id="HelixToolkit_Wpf_Visual3DHelper_FindBounds_System_Windows_Media_Media3D_Visual3DCollection_" data-uid="HelixToolkit.Wpf.Visual3DHelper.FindBounds(System.Windows.Media.Media3D.Visual3DCollection)">
+  FindBounds(Visual3DCollection)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Wpf/Helpers/Visual3DHelper.cs/#L63"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Finds the bounding box for a collection of Visual3Ds.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Rect3D FindBounds(this Visual3DCollection children)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>children</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.media3d.visual3dcollection">Visual3DCollection</a></dt>
+    <dd><p>The children.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.media3d.rect3d">Rect3D</a></dt>
+    <dd><p>A <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.media3d.rect3d">Rect3D</a>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_Visual3DHelper_Find_" data-uid="HelixToolkit.Wpf.Visual3DHelper.Find*"></a>
+
+  <h3 id="HelixToolkit_Wpf_Visual3DHelper_Find__1_System_Windows_DependencyObject_" data-uid="HelixToolkit.Wpf.Visual3DHelper.Find``1(System.Windows.DependencyObject)">
+  Find&lt;T&gt;(DependencyObject)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Wpf/Helpers/Visual3DHelper.cs/#L31"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Finds the first child of the specified type.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static T? Find&lt;T&gt;(DependencyObject parent) where T : DependencyObject</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>parent</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.dependencyobject">DependencyObject</a></dt>
+    <dd><p>The parent.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><span class="xref">T</span></dt>
+    <dd><p>The first child of the specified type.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Type Parameters</h4>
+  <dl class="parameters">
+    <dt><code>T</code></dt>
+    <dd><p>The type.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_Visual3DHelper_GetTransform_" data-uid="HelixToolkit.Wpf.Visual3DHelper.GetTransform*"></a>
+
+  <h3 id="HelixToolkit_Wpf_Visual3DHelper_GetTransform_System_Windows_Media_Media3D_Visual3D_" data-uid="HelixToolkit.Wpf.Visual3DHelper.GetTransform(System.Windows.Media.Media3D.Visual3D)">
+  GetTransform(Visual3D)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Wpf/Helpers/Visual3DHelper.cs/#L130"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the total transform for the specified visual.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Matrix3D GetTransform(this Visual3D visual)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>visual</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.media3d.visual3d">Visual3D</a></dt>
+    <dd><p>The visual.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.media3d.matrix3d">Matrix3D</a></dt>
+    <dd><p>A <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.media3d.matrix3d">Matrix3D</a>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_Visual3DHelper_GetTransformTo_" data-uid="HelixToolkit.Wpf.Visual3DHelper.GetTransformTo*"></a>
+
+  <h3 id="HelixToolkit_Wpf_Visual3DHelper_GetTransformTo_System_Windows_Media_Media3D_Visual3D_System_Windows_Media_Media3D_Model3D_" data-uid="HelixToolkit.Wpf.Visual3DHelper.GetTransformTo(System.Windows.Media.Media3D.Visual3D,System.Windows.Media.Media3D.Model3D)">
+  GetTransformTo(Visual3D, Model3D)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Wpf/Helpers/Visual3DHelper.cs/#L320"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the transform from the specified Visual3D to the specified Model3D.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static GeneralTransform3D? GetTransformTo(this Visual3D visual, Model3D model)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>visual</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.media3d.visual3d">Visual3D</a></dt>
+    <dd><p>The source visual.</p>
+</dd>
+    <dt><code>model</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.media3d.model3d">Model3D</a></dt>
+    <dd><p>The target model.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.media3d.generaltransform3d">GeneralTransform3D</a></dt>
+    <dd><p>The transform.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_Visual3DHelper_GetViewport_" data-uid="HelixToolkit.Wpf.Visual3DHelper.GetViewport*"></a>
+
+  <h3 id="HelixToolkit_Wpf_Visual3DHelper_GetViewport_System_Windows_Media_Media3D_Visual3D_" data-uid="HelixToolkit.Wpf.Visual3DHelper.GetViewport(System.Windows.Media.Media3D.Visual3D)">
+  GetViewport(Visual3D)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Wpf/Helpers/Visual3DHelper.cs/#L336"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the viewport for the specified visual.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Viewport3D? GetViewport(this Visual3D visual)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>visual</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.media3d.visual3d">Visual3D</a></dt>
+    <dd><p>The visual.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.controls.viewport3d">Viewport3D</a></dt>
+    <dd><p>The parent <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.controls.viewport3d">Viewport3D</a>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_Visual3DHelper_GetViewport3D_" data-uid="HelixToolkit.Wpf.Visual3DHelper.GetViewport3D*"></a>
+
+  <h3 id="HelixToolkit_Wpf_Visual3DHelper_GetViewport3D_System_Windows_Media_Media3D_Visual3D_" data-uid="HelixToolkit.Wpf.Visual3DHelper.GetViewport3D(System.Windows.Media.Media3D.Visual3D)">
+  GetViewport3D(Visual3D)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Wpf/Helpers/Visual3DHelper.cs/#L160"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the parent <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.controls.viewport3d">Viewport3D</a> from the specified visual.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Viewport3D? GetViewport3D(this Visual3D visual)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>visual</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.media3d.visual3d">Visual3D</a></dt>
+    <dd><p>The visual.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.controls.viewport3d">Viewport3D</a></dt>
+    <dd><p>The Viewport3D</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_Visual3DHelper_GetViewportTransform_" data-uid="HelixToolkit.Wpf.Visual3DHelper.GetViewportTransform*"></a>
+
+  <h3 id="HelixToolkit_Wpf_Visual3DHelper_GetViewportTransform_System_Windows_Media_Media3D_Visual3D_" data-uid="HelixToolkit.Wpf.Visual3DHelper.GetViewportTransform(System.Windows.Media.Media3D.Visual3D)">
+  GetViewportTransform(Visual3D)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Wpf/Helpers/Visual3DHelper.cs/#L185"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the transform to viewport space.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Matrix3D GetViewportTransform(this Visual3D visual)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>visual</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.media3d.visual3d">Visual3D</a></dt>
+    <dd><p>The visual.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.media3d.matrix3d">Matrix3D</a></dt>
+    <dd><p>A transformation matrix.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_Visual3DHelper_IsAttachedToViewport3D_" data-uid="HelixToolkit.Wpf.Visual3DHelper.IsAttachedToViewport3D*"></a>
+
+  <h3 id="HelixToolkit_Wpf_Visual3DHelper_IsAttachedToViewport3D_System_Windows_Media_Media3D_Visual3D_" data-uid="HelixToolkit.Wpf.Visual3DHelper.IsAttachedToViewport3D(System.Windows.Media.Media3D.Visual3D)">
+  IsAttachedToViewport3D(Visual3D)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Wpf/Helpers/Visual3DHelper.cs/#L224"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Determines whether the visual is attached to a Viewport3D.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool IsAttachedToViewport3D(this Visual3D visual)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>visual</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.media3d.visual3d">Visual3D</a></dt>
+    <dd><p>The visual.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p>The is attached to viewport 3 d.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_Visual3DHelper_Traverse_" data-uid="HelixToolkit.Wpf.Visual3DHelper.Traverse*"></a>
+
+  <h3 id="HelixToolkit_Wpf_Visual3DHelper_Traverse__1_System_Windows_Media_Media3D_Visual3D_System_Action___0_System_Windows_Media_Media3D_Transform3D__" data-uid="HelixToolkit.Wpf.Visual3DHelper.Traverse``1(System.Windows.Media.Media3D.Visual3D,System.Action{``0,System.Windows.Media.Media3D.Transform3D})">
+  Traverse&lt;T&gt;(Visual3D, Action&lt;T, Transform3D&gt;)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Wpf/Helpers/Visual3DHelper.cs/#L292"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Traverses the Visual3D/Model3D tree and invokes the specified action on each Model3D of the specified type.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void Traverse&lt;T&gt;(this Visual3D visual, Action&lt;T, Transform3D&gt; action) where T : Model3D</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>visual</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.media3d.visual3d">Visual3D</a></dt>
+    <dd><p>The visual.</p>
+</dd>
+    <dt><code>action</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.action-2">Action</a>&lt;T, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.media3d.transform3d">Transform3D</a>&gt;</dt>
+    <dd><p>The action.</p>
+</dd>
+  </dl>
+
+
+  <h4 class="section">Type Parameters</h4>
+  <dl class="parameters">
+    <dt><code>T</code></dt>
+    <dd><p>The type filter.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_Visual3DHelper_Traverse_" data-uid="HelixToolkit.Wpf.Visual3DHelper.Traverse*"></a>
+
+  <h3 id="HelixToolkit_Wpf_Visual3DHelper_Traverse__1_System_Windows_Media_Media3D_Visual3D_System_Action___0_System_Windows_Media_Media3D_Visual3D_System_Windows_Media_Media3D_Transform3D__" data-uid="HelixToolkit.Wpf.Visual3DHelper.Traverse``1(System.Windows.Media.Media3D.Visual3D,System.Action{``0,System.Windows.Media.Media3D.Visual3D,System.Windows.Media.Media3D.Transform3D})">
+  Traverse&lt;T&gt;(Visual3D, Action&lt;T, Visual3D, Transform3D&gt;)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Wpf/Helpers/Visual3DHelper.cs/#L309"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Traverses the Visual3D/Model3D tree and invokes the specified action on each Model3D of the specified type.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void Traverse&lt;T&gt;(this Visual3D visual, Action&lt;T, Visual3D, Transform3D&gt; action) where T : Model3D</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>visual</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.media3d.visual3d">Visual3D</a></dt>
+    <dd><p>The visual.</p>
+</dd>
+    <dt><code>action</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.action-3">Action</a>&lt;T, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.media3d.visual3d">Visual3D</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.media3d.transform3d">Transform3D</a>&gt;</dt>
+    <dd><p>The action.</p>
+</dd>
+  </dl>
+
+
+  <h4 class="section">Type Parameters</h4>
+  <dl class="parameters">
+    <dt><code>T</code></dt>
+    <dd><p>The type filter.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_Visual3DHelper_Traverse_" data-uid="HelixToolkit.Wpf.Visual3DHelper.Traverse*"></a>
+
+  <h3 id="HelixToolkit_Wpf_Visual3DHelper_Traverse__1_System_Windows_Media_Media3D_Visual3DCollection_System_Action___0_System_Windows_Media_Media3D_Transform3D__" data-uid="HelixToolkit.Wpf.Visual3DHelper.Traverse``1(System.Windows.Media.Media3D.Visual3DCollection,System.Action{``0,System.Windows.Media.Media3D.Transform3D})">
+  Traverse&lt;T&gt;(Visual3DCollection, Action&lt;T, Transform3D&gt;)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Wpf/Helpers/Visual3DHelper.cs/#L252"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Traverses the Visual3D/Model3D tree and invokes the specified action on each Model3D of the specified type.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void Traverse&lt;T&gt;(this Visual3DCollection visuals, Action&lt;T, Transform3D&gt; action) where T : Model3D</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>visuals</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.media3d.visual3dcollection">Visual3DCollection</a></dt>
+    <dd><p>The visuals.</p>
+</dd>
+    <dt><code>action</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.action-2">Action</a>&lt;T, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.media3d.transform3d">Transform3D</a>&gt;</dt>
+    <dd><p>The action.</p>
+</dd>
+  </dl>
+
+
+  <h4 class="section">Type Parameters</h4>
+  <dl class="parameters">
+    <dt><code>T</code></dt>
+    <dd><p>The type filter.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_Visual3DHelper_Traverse_" data-uid="HelixToolkit.Wpf.Visual3DHelper.Traverse*"></a>
+
+  <h3 id="HelixToolkit_Wpf_Visual3DHelper_Traverse__1_System_Windows_Media_Media3D_Visual3DCollection_System_Action___0_System_Windows_Media_Media3D_Visual3D_System_Windows_Media_Media3D_Transform3D__" data-uid="HelixToolkit.Wpf.Visual3DHelper.Traverse``1(System.Windows.Media.Media3D.Visual3DCollection,System.Action{``0,System.Windows.Media.Media3D.Visual3D,System.Windows.Media.Media3D.Transform3D})">
+  Traverse&lt;T&gt;(Visual3DCollection, Action&lt;T, Visual3D, Transform3D&gt;)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Wpf/Helpers/Visual3DHelper.cs/#L272"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Traverses the Visual3D/Model3D tree and invokes the specified action on each Model3D of the specified type.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void Traverse&lt;T&gt;(this Visual3DCollection visuals, Action&lt;T, Visual3D, Transform3D&gt; action) where T : Model3D</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>visuals</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.media3d.visual3dcollection">Visual3DCollection</a></dt>
+    <dd><p>The visuals.</p>
+</dd>
+    <dt><code>action</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.action-3">Action</a>&lt;T, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.media3d.visual3d">Visual3D</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.media3d.transform3d">Transform3D</a>&gt;</dt>
+    <dd><p>The action.</p>
+</dd>
+  </dl>
+
+
+  <h4 class="section">Type Parameters</h4>
+  <dl class="parameters">
+    <dt><code>T</code></dt>
+    <dd><p>The type filter.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Wpf/Helpers/Visual3DHelper.cs/#L12" class="edit-link">Edit this page</a>
+        </div>
+
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          Copyright (c) 2023 Helix Toolkit contributors
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

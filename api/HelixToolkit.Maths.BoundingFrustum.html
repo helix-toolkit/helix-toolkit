@@ -1,0 +1,1818 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Struct BoundingFrustum | Helix Toolkit - 3D for .NET </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Struct BoundingFrustum | Helix Toolkit - 3D for .NET ">
+      
+      <meta name="description" content="Defines a frustum which can be used in frustum culling, zoom to Extents (zoom to fit) operations, (matrix, frustum, camera) interchange, and many kind of intersection testing.">
+      <link rel="icon" href="../images/favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/helix-toolkit/helix-toolkit/new/main-v3/apiSpec/new?filename=HelixToolkit_Maths_BoundingFrustum.md&amp;value=---%0Auid%3A%20HelixToolkit.Maths.BoundingFrustum%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="ManagedReference">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../images/favicon.ico" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="HelixToolkit.Maths.BoundingFrustum">
+
+
+
+  <h1 id="HelixToolkit_Maths_BoundingFrustum" data-uid="HelixToolkit.Maths.BoundingFrustum" class="text-break">
+Struct BoundingFrustum  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/BoundingFrustum.cs/#L38"><i class="bi bi-code-slash"></i></a>
+  </h1>
+
+  <div class="facts text-secondary">
+    <dl><dt>Namespace</dt><dd><a class="xref" href="HelixToolkit.html">HelixToolkit</a>.<a class="xref" href="HelixToolkit.Maths.html">Maths</a></dd></dl>
+  <dl><dt>Assembly</dt><dd>HelixToolkit.Maths.dll</dd></dl>
+  </div>
+
+  <div class="markdown summary"><p>Defines a frustum which can be used in frustum culling, zoom to Extents (zoom to fit) operations,
+(matrix, frustum, camera) interchange, and many kind of intersection testing.</p>
+</div>
+  <div class="markdown conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public struct BoundingFrustum : IEquatable&lt;BoundingFrustum&gt;</code></pre>
+  </div>
+
+
+
+
+
+  <dl class="typelist implements">
+    <dt>Implements</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iequatable-1">IEquatable</a>&lt;<a class="xref" href="HelixToolkit.Maths.BoundingFrustum.html">BoundingFrustum</a>&gt;</div>
+    </dd>
+  </dl>
+
+
+  <dl class="typelist inheritedMembers">
+    <dt>Inherited Members</dt>
+    <dd>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.valuetype.tostring">ValueType.ToString()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">object.Equals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype">object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals">object.ReferenceEquals(object, object)</a>
+    </div>
+  </dd></dl>
+
+  <dl class="typelist extensionMethods">
+    <dt>Extension Methods</dt>
+    <dd>
+  <div>
+      <a class="xref" href="HelixToolkit.NativeHelper.html#HelixToolkit_NativeHelper_ToStruct__2___0_">NativeHelper.ToStruct&lt;T1, T2&gt;(T1)</a>
+  </div>
+  </dd></dl>
+
+
+
+
+
+  <h2 class="section" id="constructors">Constructors
+</h2>
+
+
+  <a id="HelixToolkit_Maths_BoundingFrustum__ctor_" data-uid="HelixToolkit.Maths.BoundingFrustum.#ctor*"></a>
+
+  <h3 id="HelixToolkit_Maths_BoundingFrustum__ctor_System_Numerics_Matrix4x4_" data-uid="HelixToolkit.Maths.BoundingFrustum.#ctor(System.Numerics.Matrix4x4)">
+  BoundingFrustum(Matrix4x4)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/BoundingFrustum.cs/#L129"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Creates a new instance of BoundingFrustum.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public BoundingFrustum(Matrix4x4 matrix)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>matrix</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.matrix4x4">Matrix4x4</a></dt>
+    <dd><p>Combined matrix that usually takes view × projection matrix.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <h2 class="section" id="properties">Properties
+</h2>
+
+
+  <a id="HelixToolkit_Maths_BoundingFrustum_Bottom_" data-uid="HelixToolkit.Maths.BoundingFrustum.Bottom*"></a>
+
+  <h3 id="HelixToolkit_Maths_BoundingFrustum_Bottom" data-uid="HelixToolkit.Maths.BoundingFrustum.Bottom">
+  Bottom
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/BoundingFrustum.cs/#L117"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the bottom plane of the BoundingFrustum.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public readonly Plane Bottom { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.plane">Plane</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_BoundingFrustum_Far_" data-uid="HelixToolkit.Maths.BoundingFrustum.Far*"></a>
+
+  <h3 id="HelixToolkit_Maths_BoundingFrustum_Far" data-uid="HelixToolkit.Maths.BoundingFrustum.Far">
+  Far
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/BoundingFrustum.cs/#L77"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the far plane of the BoundingFrustum.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public readonly Plane Far { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.plane">Plane</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_BoundingFrustum_IsOrthographic_" data-uid="HelixToolkit.Maths.BoundingFrustum.IsOrthographic*"></a>
+
+  <h3 id="HelixToolkit_Maths_BoundingFrustum_IsOrthographic" data-uid="HelixToolkit.Maths.BoundingFrustum.IsOrthographic">
+  IsOrthographic
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/BoundingFrustum.cs/#L834"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Indicate whether the current BoundingFrustrum is Orthographic.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public readonly bool IsOrthographic { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><code>true</code> if the current BoundingFrustrum is Orthographic; otherwise, <code>false</code>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_BoundingFrustum_Left_" data-uid="HelixToolkit.Maths.BoundingFrustum.Left*"></a>
+
+  <h3 id="HelixToolkit_Maths_BoundingFrustum_Left" data-uid="HelixToolkit.Maths.BoundingFrustum.Left">
+  Left
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/BoundingFrustum.cs/#L87"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the left plane of the BoundingFrustum.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public readonly Plane Left { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.plane">Plane</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_BoundingFrustum_Matrix_" data-uid="HelixToolkit.Maths.BoundingFrustum.Matrix*"></a>
+
+  <h3 id="HelixToolkit_Maths_BoundingFrustum_Matrix" data-uid="HelixToolkit.Maths.BoundingFrustum.Matrix">
+  Matrix
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/BoundingFrustum.cs/#L52"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the Matrix that describes this bounding frustum.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Matrix4x4 Matrix { readonly get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.matrix4x4">Matrix4x4</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_BoundingFrustum_Near_" data-uid="HelixToolkit.Maths.BoundingFrustum.Near*"></a>
+
+  <h3 id="HelixToolkit_Maths_BoundingFrustum_Near" data-uid="HelixToolkit.Maths.BoundingFrustum.Near">
+  Near
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/BoundingFrustum.cs/#L67"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the near plane of the BoundingFrustum.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public readonly Plane Near { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.plane">Plane</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_BoundingFrustum_Right_" data-uid="HelixToolkit.Maths.BoundingFrustum.Right*"></a>
+
+  <h3 id="HelixToolkit_Maths_BoundingFrustum_Right" data-uid="HelixToolkit.Maths.BoundingFrustum.Right">
+  Right
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/BoundingFrustum.cs/#L97"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the right plane of the BoundingFrustum.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public readonly Plane Right { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.plane">Plane</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_BoundingFrustum_Top_" data-uid="HelixToolkit.Maths.BoundingFrustum.Top*"></a>
+
+  <h3 id="HelixToolkit_Maths_BoundingFrustum_Top" data-uid="HelixToolkit.Maths.BoundingFrustum.Top">
+  Top
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/BoundingFrustum.cs/#L107"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the top plane of the BoundingFrustum.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public readonly Plane Top { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.plane">Plane</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h2 class="section" id="methods">Methods
+</h2>
+
+
+  <a id="HelixToolkit_Maths_BoundingFrustum_Contains_" data-uid="HelixToolkit.Maths.BoundingFrustum.Contains*"></a>
+
+  <h3 id="HelixToolkit_Maths_BoundingFrustum_Contains_HelixToolkit_Maths_BoundingBox_" data-uid="HelixToolkit.Maths.BoundingFrustum.Contains(HelixToolkit.Maths.BoundingBox)">
+  Contains(BoundingBox)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/BoundingFrustum.cs/#L520"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Determines the intersection relationship between the frustum and a bounding box.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public readonly ContainmentType Contains(BoundingBox box)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>box</code> <a class="xref" href="HelixToolkit.Maths.BoundingBox.html">BoundingBox</a></dt>
+    <dd><p>The box.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Maths.ContainmentType.html">ContainmentType</a></dt>
+    <dd><p>Type of the containment</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_BoundingFrustum_Contains_" data-uid="HelixToolkit.Maths.BoundingFrustum.Contains*"></a>
+
+  <h3 id="HelixToolkit_Maths_BoundingFrustum_Contains_HelixToolkit_Maths_BoundingBox__" data-uid="HelixToolkit.Maths.BoundingFrustum.Contains(HelixToolkit.Maths.BoundingBox@)">
+  Contains(ref BoundingBox)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/BoundingFrustum.cs/#L494"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Determines the intersection relationship between the frustum and a bounding box.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public readonly ContainmentType Contains(ref BoundingBox box)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>box</code> <a class="xref" href="HelixToolkit.Maths.BoundingBox.html">BoundingBox</a></dt>
+    <dd><p>The box.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Maths.ContainmentType.html">ContainmentType</a></dt>
+    <dd><p>Type of the containment</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_BoundingFrustum_Contains_" data-uid="HelixToolkit.Maths.BoundingFrustum.Contains*"></a>
+
+  <h3 id="HelixToolkit_Maths_BoundingFrustum_Contains_HelixToolkit_Maths_BoundingBox__HelixToolkit_Maths_ContainmentType__" data-uid="HelixToolkit.Maths.BoundingFrustum.Contains(HelixToolkit.Maths.BoundingBox@,HelixToolkit.Maths.ContainmentType@)">
+  Contains(ref BoundingBox, out ContainmentType)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/BoundingFrustum.cs/#L530"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Determines the intersection relationship between the frustum and a bounding box.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public readonly void Contains(ref BoundingBox box, out ContainmentType result)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>box</code> <a class="xref" href="HelixToolkit.Maths.BoundingBox.html">BoundingBox</a></dt>
+    <dd><p>The box.</p>
+</dd>
+    <dt><code>result</code> <a class="xref" href="HelixToolkit.Maths.ContainmentType.html">ContainmentType</a></dt>
+    <dd><p>Type of the containment.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_BoundingFrustum_Contains_" data-uid="HelixToolkit.Maths.BoundingFrustum.Contains*"></a>
+
+  <h3 id="HelixToolkit_Maths_BoundingFrustum_Contains_HelixToolkit_Maths_BoundingSphere_" data-uid="HelixToolkit.Maths.BoundingFrustum.Contains(HelixToolkit.Maths.BoundingSphere)">
+  Contains(BoundingSphere)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/BoundingFrustum.cs/#L575"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Determines the intersection relationship between the frustum and a bounding sphere.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public readonly ContainmentType Contains(BoundingSphere sphere)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>sphere</code> <a class="xref" href="HelixToolkit.Maths.BoundingSphere.html">BoundingSphere</a></dt>
+    <dd><p>The sphere.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Maths.ContainmentType.html">ContainmentType</a></dt>
+    <dd><p>Type of the containment</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_BoundingFrustum_Contains_" data-uid="HelixToolkit.Maths.BoundingFrustum.Contains*"></a>
+
+  <h3 id="HelixToolkit_Maths_BoundingFrustum_Contains_HelixToolkit_Maths_BoundingSphere__" data-uid="HelixToolkit.Maths.BoundingFrustum.Contains(HelixToolkit.Maths.BoundingSphere@)">
+  Contains(ref BoundingSphere)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/BoundingFrustum.cs/#L539"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Determines the intersection relationship between the frustum and a bounding sphere.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public readonly ContainmentType Contains(ref BoundingSphere sphere)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>sphere</code> <a class="xref" href="HelixToolkit.Maths.BoundingSphere.html">BoundingSphere</a></dt>
+    <dd><p>The sphere.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Maths.ContainmentType.html">ContainmentType</a></dt>
+    <dd><p>Type of the containment</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_BoundingFrustum_Contains_" data-uid="HelixToolkit.Maths.BoundingFrustum.Contains*"></a>
+
+  <h3 id="HelixToolkit_Maths_BoundingFrustum_Contains_HelixToolkit_Maths_BoundingSphere__HelixToolkit_Maths_ContainmentType__" data-uid="HelixToolkit.Maths.BoundingFrustum.Contains(HelixToolkit.Maths.BoundingSphere@,HelixToolkit.Maths.ContainmentType@)">
+  Contains(ref BoundingSphere, out ContainmentType)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/BoundingFrustum.cs/#L585"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Determines the intersection relationship between the frustum and a bounding sphere.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public readonly void Contains(ref BoundingSphere sphere, out ContainmentType result)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>sphere</code> <a class="xref" href="HelixToolkit.Maths.BoundingSphere.html">BoundingSphere</a></dt>
+    <dd><p>The sphere.</p>
+</dd>
+    <dt><code>result</code> <a class="xref" href="HelixToolkit.Maths.ContainmentType.html">ContainmentType</a></dt>
+    <dd><p>Type of the containment.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_BoundingFrustum_Contains_" data-uid="HelixToolkit.Maths.BoundingFrustum.Contains*"></a>
+
+  <h3 id="HelixToolkit_Maths_BoundingFrustum_Contains_System_Numerics_Vector3_" data-uid="HelixToolkit.Maths.BoundingFrustum.Contains(System.Numerics.Vector3)">
+  Contains(Vector3)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/BoundingFrustum.cs/#L449"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Checks whether a point lay inside, intersects or lay outside the frustum.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public readonly ContainmentType Contains(Vector3 point)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>point</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd><p>The point.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Maths.ContainmentType.html">ContainmentType</a></dt>
+    <dd><p>Type of the containment</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_BoundingFrustum_Contains_" data-uid="HelixToolkit.Maths.BoundingFrustum.Contains*"></a>
+
+  <h3 id="HelixToolkit_Maths_BoundingFrustum_Contains_System_Numerics_Vector3__" data-uid="HelixToolkit.Maths.BoundingFrustum.Contains(System.Numerics.Vector3@)">
+  Contains(ref Vector3)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/BoundingFrustum.cs/#L413"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Checks whether a point lay inside, intersects or lay outside the frustum.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public readonly ContainmentType Contains(ref Vector3 point)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>point</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd><p>The point.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Maths.ContainmentType.html">ContainmentType</a></dt>
+    <dd><p>Type of the containment</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_BoundingFrustum_Equals_" data-uid="HelixToolkit.Maths.BoundingFrustum.Equals*"></a>
+
+  <h3 id="HelixToolkit_Maths_BoundingFrustum_Equals_HelixToolkit_Maths_BoundingFrustum_" data-uid="HelixToolkit.Maths.BoundingFrustum.Equals(HelixToolkit.Maths.BoundingFrustum)">
+  Equals(BoundingFrustum)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/BoundingFrustum.cs/#L160"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Determines whether the specified <a class="xref" href="HelixToolkit.Maths.BoundingFrustum.html">BoundingFrustum</a> is equal to this instance.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public readonly bool Equals(BoundingFrustum other)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>other</code> <a class="xref" href="HelixToolkit.Maths.BoundingFrustum.html">BoundingFrustum</a></dt>
+    <dd><p>The <a class="xref" href="HelixToolkit.Maths.BoundingFrustum.html">BoundingFrustum</a> to compare with this instance.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><code>true</code> if the specified <a class="xref" href="HelixToolkit.Maths.BoundingFrustum.html">BoundingFrustum</a> is equal to this instance; otherwise, <code>false</code>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_BoundingFrustum_Equals_" data-uid="HelixToolkit.Maths.BoundingFrustum.Equals*"></a>
+
+  <h3 id="HelixToolkit_Maths_BoundingFrustum_Equals_HelixToolkit_Maths_BoundingFrustum__" data-uid="HelixToolkit.Maths.BoundingFrustum.Equals(HelixToolkit.Maths.BoundingFrustum@)">
+  Equals(ref BoundingFrustum)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/BoundingFrustum.cs/#L147"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Determines whether the specified <a class="xref" href="HelixToolkit.Maths.BoundingFrustum.html">BoundingFrustum</a> is equal to this instance.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public readonly bool Equals(ref BoundingFrustum other)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>other</code> <a class="xref" href="HelixToolkit.Maths.BoundingFrustum.html">BoundingFrustum</a></dt>
+    <dd><p>The <a class="xref" href="HelixToolkit.Maths.BoundingFrustum.html">BoundingFrustum</a> to compare with this instance.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><code>true</code> if the specified <a class="xref" href="HelixToolkit.Maths.BoundingFrustum.html">BoundingFrustum</a> is equal to this instance; otherwise, <code>false</code>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_BoundingFrustum_Equals_" data-uid="HelixToolkit.Maths.BoundingFrustum.Equals*"></a>
+
+  <h3 id="HelixToolkit_Maths_BoundingFrustum_Equals_System_Object_" data-uid="HelixToolkit.Maths.BoundingFrustum.Equals(System.Object)">
+  Equals(object?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/BoundingFrustum.cs/#L173"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Determines whether the specified <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a> is equal to this instance.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override readonly bool Equals(object? obj)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>obj</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></dt>
+    <dd><p>The <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a> to compare with this instance.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><code>true</code> if the specified <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a> is equal to this instance; otherwise, <code>false</code>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_BoundingFrustum_FromCamera_" data-uid="HelixToolkit.Maths.BoundingFrustum.FromCamera*"></a>
+
+  <h3 id="HelixToolkit_Maths_BoundingFrustum_FromCamera_HelixToolkit_Maths_FrustumCameraParams_" data-uid="HelixToolkit.Maths.BoundingFrustum.FromCamera(HelixToolkit.Maths.FrustumCameraParams)">
+  FromCamera(FrustumCameraParams)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/BoundingFrustum.cs/#L342"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Creates a new frustum relaying on perspective camera parameters</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static BoundingFrustum FromCamera(FrustumCameraParams cameraParams)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>cameraParams</code> <a class="xref" href="HelixToolkit.Maths.FrustumCameraParams.html">FrustumCameraParams</a></dt>
+    <dd><p>The camera params.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Maths.BoundingFrustum.html">BoundingFrustum</a></dt>
+    <dd><p>The bounding frustum from camera params</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_BoundingFrustum_FromCamera_" data-uid="HelixToolkit.Maths.BoundingFrustum.FromCamera*"></a>
+
+  <h3 id="HelixToolkit_Maths_BoundingFrustum_FromCamera_System_Numerics_Vector3_System_Numerics_Vector3_System_Numerics_Vector3_System_Single_System_Single_System_Single_System_Single_" data-uid="HelixToolkit.Maths.BoundingFrustum.FromCamera(System.Numerics.Vector3,System.Numerics.Vector3,System.Numerics.Vector3,System.Single,System.Single,System.Single,System.Single)">
+  FromCamera(Vector3, Vector3, Vector3, float, float, float, float)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/BoundingFrustum.cs/#L294"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Creates a new frustum relaying on perspective camera parameters</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static BoundingFrustum FromCamera(Vector3 cameraPos, Vector3 lookDir, Vector3 upDir, float fov, float znear, float zfar, float aspect)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>cameraPos</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd><p>The camera pos.</p>
+</dd>
+    <dt><code>lookDir</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd><p>The look dir.</p>
+</dd>
+    <dt><code>upDir</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd><p>Up dir.</p>
+</dd>
+    <dt><code>fov</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>The fov.</p>
+</dd>
+    <dt><code>znear</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>The znear.</p>
+</dd>
+    <dt><code>zfar</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>The zfar.</p>
+</dd>
+    <dt><code>aspect</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>The aspect.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Maths.BoundingFrustum.html">BoundingFrustum</a></dt>
+    <dd><p>The bounding frustum calculated from perspective camera</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_BoundingFrustum_GetCameraParams_" data-uid="HelixToolkit.Maths.BoundingFrustum.GetCameraParams*"></a>
+
+  <h3 id="HelixToolkit_Maths_BoundingFrustum_GetCameraParams" data-uid="HelixToolkit.Maths.BoundingFrustum.GetCameraParams">
+  GetCameraParams()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/BoundingFrustum.cs/#L392"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Extracts perspective camera parameters from the frustum, doesn't work with orthographic frustums.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public FrustumCameraParams GetCameraParams()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Maths.FrustumCameraParams.html">FrustumCameraParams</a></dt>
+    <dd><p>Perspective camera parameters from the frustum</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_BoundingFrustum_GetCorners_" data-uid="HelixToolkit.Maths.BoundingFrustum.GetCorners*"></a>
+
+  <h3 id="HelixToolkit_Maths_BoundingFrustum_GetCorners" data-uid="HelixToolkit.Maths.BoundingFrustum.GetCorners">
+  GetCorners()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/BoundingFrustum.cs/#L358"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Returns the 8 corners of the frustum, element0 is Near1 (near right down corner)
+, element1 is Near2 (near right top corner)
+, element2 is Near3 (near Left top corner)
+, element3 is Near4 (near Left down corner)
+, element4 is Far1 (far right down corner)
+, element5 is Far2 (far right top corner)
+, element6 is Far3 (far left top corner)
+, element7 is Far4 (far left down corner)</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Vector3[] GetCorners()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a>[]</dt>
+    <dd><p>The 8 corners of the frustum</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_BoundingFrustum_GetCorners_" data-uid="HelixToolkit.Maths.BoundingFrustum.GetCorners*"></a>
+
+  <h3 id="HelixToolkit_Maths_BoundingFrustum_GetCorners_System_Numerics_Vector3___" data-uid="HelixToolkit.Maths.BoundingFrustum.GetCorners(System.Numerics.Vector3[])">
+  GetCorners(Vector3[])
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/BoundingFrustum.cs/#L376"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Returns the 8 corners of the frustum, element0 is Near1 (near right down corner)
+, element1 is Near2 (near right top corner)
+, element2 is Near3 (near Left top corner)
+, element3 is Near4 (near Left down corner)
+, element4 is Far1 (far right down corner)
+, element5 is Far2 (far right top corner)
+, element6 is Far3 (far left top corner)
+, element7 is Far4 (far left down corner)</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void GetCorners(Vector3[] corners)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>corners</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a>[]</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_BoundingFrustum_GetHashCode_" data-uid="HelixToolkit.Maths.BoundingFrustum.GetHashCode*"></a>
+
+  <h3 id="HelixToolkit_Maths_BoundingFrustum_GetHashCode" data-uid="HelixToolkit.Maths.BoundingFrustum.GetHashCode">
+  GetHashCode()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/BoundingFrustum.cs/#L135"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Returns the hash code for this instance.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override readonly int GetHashCode()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>A 32-bit signed integer that is the hash code for this instance.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_BoundingFrustum_GetHeightAtDepth_" data-uid="HelixToolkit.Maths.BoundingFrustum.GetHeightAtDepth*"></a>
+
+  <h3 id="HelixToolkit_Maths_BoundingFrustum_GetHeightAtDepth_System_Single_" data-uid="HelixToolkit.Maths.BoundingFrustum.GetHeightAtDepth(System.Single)">
+  GetHeightAtDepth(float)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/BoundingFrustum.cs/#L676"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Get the height of the frustum at specified depth.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public readonly float GetHeightAtDepth(float depth)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>depth</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>the depth at which to calculate frustum height.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>Height of the frustum at the specified depth</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_BoundingFrustum_GetPlane_" data-uid="HelixToolkit.Maths.BoundingFrustum.GetPlane*"></a>
+
+  <h3 id="HelixToolkit_Maths_BoundingFrustum_GetPlane_System_Int32_" data-uid="HelixToolkit.Maths.BoundingFrustum.GetPlane(System.Int32)">
+  GetPlane(int)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/BoundingFrustum.cs/#L211"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Returns one of the 6 planes related to this frustum.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public readonly Plane GetPlane(int index)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>index</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>Plane index where 0 fro Left, 1 for Right, 2 for Top, 3 for Bottom, 4 for Near, 5 for Far</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.plane">Plane</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_BoundingFrustum_GetWidthAtDepth_" data-uid="HelixToolkit.Maths.BoundingFrustum.GetWidthAtDepth*"></a>
+
+  <h3 id="HelixToolkit_Maths_BoundingFrustum_GetWidthAtDepth_System_Single_" data-uid="HelixToolkit.Maths.BoundingFrustum.GetWidthAtDepth(System.Single)">
+  GetWidthAtDepth(float)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/BoundingFrustum.cs/#L665"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Get the width of the frustum at specified depth.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public readonly float GetWidthAtDepth(float depth)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>depth</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>the depth at which to calculate frustum width.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>With of the frustum at the specified depth</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_BoundingFrustum_GetZoomToExtentsShiftDistance_" data-uid="HelixToolkit.Maths.BoundingFrustum.GetZoomToExtentsShiftDistance*"></a>
+
+  <h3 id="HelixToolkit_Maths_BoundingFrustum_GetZoomToExtentsShiftDistance_HelixToolkit_Maths_BoundingBox__" data-uid="HelixToolkit.Maths.BoundingFrustum.GetZoomToExtentsShiftDistance(HelixToolkit.Maths.BoundingBox@)">
+  GetZoomToExtentsShiftDistance(ref BoundingBox)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/BoundingFrustum.cs/#L802"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Get the distance which when added to camera position along the lookat direction will do the effect of zoom to extents (zoom to fit) operation,
+so all the passed points will fit in the current view.
+if the returned value is positive, the camera will move toward the lookat direction (ZoomIn).
+if the returned value is negative, the camera will move in the reverse direction of the lookat direction (ZoomOut).</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public readonly float GetZoomToExtentsShiftDistance(ref BoundingBox boundingBox)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>boundingBox</code> <a class="xref" href="HelixToolkit.Maths.BoundingBox.html">BoundingBox</a></dt>
+    <dd><p>The bounding box.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>The zoom to fit distance</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_BoundingFrustum_GetZoomToExtentsShiftDistance_" data-uid="HelixToolkit.Maths.BoundingFrustum.GetZoomToExtentsShiftDistance*"></a>
+
+  <h3 id="HelixToolkit_Maths_BoundingFrustum_GetZoomToExtentsShiftDistance_System_Numerics_Vector3___" data-uid="HelixToolkit.Maths.BoundingFrustum.GetZoomToExtentsShiftDistance(System.Numerics.Vector3[])">
+  GetZoomToExtentsShiftDistance(Vector3[])
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/BoundingFrustum.cs/#L771"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Get the distance which when added to camera position along the lookat direction will do the effect of zoom to extents (zoom to fit) operation,
+so all the passed points will fit in the current view.
+if the returned value is positive, the camera will move toward the lookat direction (ZoomIn).
+if the returned value is negative, the camera will move in the reverse direction of the lookat direction (ZoomOut).</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public readonly float GetZoomToExtentsShiftDistance(Vector3[] points)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>points</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a>[]</dt>
+    <dd><p>The points.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>The zoom to fit distance</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_BoundingFrustum_GetZoomToExtentsShiftVector_" data-uid="HelixToolkit.Maths.BoundingFrustum.GetZoomToExtentsShiftVector*"></a>
+
+  <h3 id="HelixToolkit_Maths_BoundingFrustum_GetZoomToExtentsShiftVector_HelixToolkit_Maths_BoundingBox__" data-uid="HelixToolkit.Maths.BoundingFrustum.GetZoomToExtentsShiftVector(HelixToolkit.Maths.BoundingBox@)">
+  GetZoomToExtentsShiftVector(ref BoundingBox)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/BoundingFrustum.cs/#L823"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Get the vector shift which when added to camera position will do the effect of zoom to extents (zoom to fit) operation,
+so all the passed points will fit in the current view.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public readonly Vector3 GetZoomToExtentsShiftVector(ref BoundingBox boundingBox)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>boundingBox</code> <a class="xref" href="HelixToolkit.Maths.BoundingBox.html">BoundingBox</a></dt>
+    <dd><p>The bounding box.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd><p>The zoom to fit vector</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_BoundingFrustum_GetZoomToExtentsShiftVector_" data-uid="HelixToolkit.Maths.BoundingFrustum.GetZoomToExtentsShiftVector*"></a>
+
+  <h3 id="HelixToolkit_Maths_BoundingFrustum_GetZoomToExtentsShiftVector_System_Numerics_Vector3___" data-uid="HelixToolkit.Maths.BoundingFrustum.GetZoomToExtentsShiftVector(System.Numerics.Vector3[])">
+  GetZoomToExtentsShiftVector(Vector3[])
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/BoundingFrustum.cs/#L813"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Get the vector shift which when added to camera position will do the effect of zoom to extents (zoom to fit) operation,
+so all the passed points will fit in the current view.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public readonly Vector3 GetZoomToExtentsShiftVector(Vector3[] points)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>points</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a>[]</dt>
+    <dd><p>The points.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd><p>The zoom to fit vector</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_BoundingFrustum_Intersects_" data-uid="HelixToolkit.Maths.BoundingFrustum.Intersects*"></a>
+
+  <h3 id="HelixToolkit_Maths_BoundingFrustum_Intersects_HelixToolkit_Maths_BoundingBox__" data-uid="HelixToolkit.Maths.BoundingFrustum.Intersects(HelixToolkit.Maths.BoundingBox@)">
+  Intersects(ref BoundingBox)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/BoundingFrustum.cs/#L613"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Checks whether the current BoundingFrustum intersects a BoundingBox.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public readonly bool Intersects(ref BoundingBox box)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>box</code> <a class="xref" href="HelixToolkit.Maths.BoundingBox.html">BoundingBox</a></dt>
+    <dd><p>The box.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><code>true</code> if the current BoundingFrustum intersects a BoundingSphere.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_BoundingFrustum_Intersects_" data-uid="HelixToolkit.Maths.BoundingFrustum.Intersects*"></a>
+
+  <h3 id="HelixToolkit_Maths_BoundingFrustum_Intersects_HelixToolkit_Maths_BoundingBox__System_Boolean__" data-uid="HelixToolkit.Maths.BoundingFrustum.Intersects(HelixToolkit.Maths.BoundingBox@,System.Boolean@)">
+  Intersects(ref BoundingBox, out bool)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/BoundingFrustum.cs/#L622"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Checks whether the current BoundingFrustum intersects a BoundingBox.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public readonly void Intersects(ref BoundingBox box, out bool result)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>box</code> <a class="xref" href="HelixToolkit.Maths.BoundingBox.html">BoundingBox</a></dt>
+    <dd><p>The box.</p>
+</dd>
+    <dt><code>result</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><code>true</code> if the current BoundingFrustum intersects a BoundingSphere.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_BoundingFrustum_Intersects_" data-uid="HelixToolkit.Maths.BoundingFrustum.Intersects*"></a>
+
+  <h3 id="HelixToolkit_Maths_BoundingFrustum_Intersects_HelixToolkit_Maths_BoundingSphere__" data-uid="HelixToolkit.Maths.BoundingFrustum.Intersects(HelixToolkit.Maths.BoundingSphere@)">
+  Intersects(ref BoundingSphere)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/BoundingFrustum.cs/#L595"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Checks whether the current BoundingFrustum intersects a BoundingSphere.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public readonly bool Intersects(ref BoundingSphere sphere)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>sphere</code> <a class="xref" href="HelixToolkit.Maths.BoundingSphere.html">BoundingSphere</a></dt>
+    <dd><p>The sphere.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p>Type of the containment</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_BoundingFrustum_Intersects_" data-uid="HelixToolkit.Maths.BoundingFrustum.Intersects*"></a>
+
+  <h3 id="HelixToolkit_Maths_BoundingFrustum_Intersects_HelixToolkit_Maths_BoundingSphere__System_Boolean__" data-uid="HelixToolkit.Maths.BoundingFrustum.Intersects(HelixToolkit.Maths.BoundingSphere@,System.Boolean@)">
+  Intersects(ref BoundingSphere, out bool)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/BoundingFrustum.cs/#L604"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Checks whether the current BoundingFrustum intersects a BoundingSphere.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public readonly void Intersects(ref BoundingSphere sphere, out bool result)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>sphere</code> <a class="xref" href="HelixToolkit.Maths.BoundingSphere.html">BoundingSphere</a></dt>
+    <dd><p>The sphere.</p>
+</dd>
+    <dt><code>result</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p>Set to <code>true</code> if the current BoundingFrustum intersects a BoundingSphere.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_BoundingFrustum_Intersects_" data-uid="HelixToolkit.Maths.BoundingFrustum.Intersects*"></a>
+
+  <h3 id="HelixToolkit_Maths_BoundingFrustum_Intersects_HelixToolkit_Maths_Ray__" data-uid="HelixToolkit.Maths.BoundingFrustum.Intersects(HelixToolkit.Maths.Ray@)">
+  Intersects(ref Ray)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/BoundingFrustum.cs/#L699"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Checks whether the current BoundingFrustum intersects the specified Ray.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public readonly bool Intersects(ref Ray ray)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>ray</code> <a class="xref" href="HelixToolkit.Maths.Ray.html">Ray</a></dt>
+    <dd><p>The ray.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><code>true</code> if the current BoundingFrustum intersects the specified Ray.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_BoundingFrustum_Intersects_" data-uid="HelixToolkit.Maths.BoundingFrustum.Intersects*"></a>
+
+  <h3 id="HelixToolkit_Maths_BoundingFrustum_Intersects_HelixToolkit_Maths_Ray__System_Nullable_System_Single___System_Nullable_System_Single___" data-uid="HelixToolkit.Maths.BoundingFrustum.Intersects(HelixToolkit.Maths.Ray@,System.Nullable{System.Single}@,System.Nullable{System.Single}@)">
+  Intersects(ref Ray, out float?, out float?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/BoundingFrustum.cs/#L710"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Checks whether the current BoundingFrustum intersects the specified Ray.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public readonly bool Intersects(ref Ray ray, out float? inDistance, out float? outDistance)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>ray</code> <a class="xref" href="HelixToolkit.Maths.Ray.html">Ray</a></dt>
+    <dd><p>The Ray to check for intersection with.</p>
+</dd>
+    <dt><code>inDistance</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a>?</dt>
+    <dd><p>The distance at which the ray enters the frustum if there is an intersection and the ray starts outside the frustum.</p>
+</dd>
+    <dt><code>outDistance</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a>?</dt>
+    <dd><p>The distance at which the ray exits the frustum if there is an intersection.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><code>true</code> if the current BoundingFrustum intersects the specified Ray.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_BoundingFrustum_Intersects_" data-uid="HelixToolkit.Maths.BoundingFrustum.Intersects*"></a>
+
+  <h3 id="HelixToolkit_Maths_BoundingFrustum_Intersects_System_Numerics_Plane__" data-uid="HelixToolkit.Maths.BoundingFrustum.Intersects(System.Numerics.Plane@)">
+  Intersects(ref Plane)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/BoundingFrustum.cs/#L646"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Checks whether the current BoundingFrustum intersects the specified Plane.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public PlaneIntersectionType Intersects(ref Plane plane)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>plane</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.plane">Plane</a></dt>
+    <dd><p>The plane.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Maths.PlaneIntersectionType.html">PlaneIntersectionType</a></dt>
+    <dd><p>Plane intersection type.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_BoundingFrustum_Intersects_" data-uid="HelixToolkit.Maths.BoundingFrustum.Intersects*"></a>
+
+  <h3 id="HelixToolkit_Maths_BoundingFrustum_Intersects_System_Numerics_Plane__HelixToolkit_Maths_PlaneIntersectionType__" data-uid="HelixToolkit.Maths.BoundingFrustum.Intersects(System.Numerics.Plane@,HelixToolkit.Maths.PlaneIntersectionType@)">
+  Intersects(ref Plane, out PlaneIntersectionType)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/BoundingFrustum.cs/#L655"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Checks whether the current BoundingFrustum intersects the specified Plane.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Intersects(ref Plane plane, out PlaneIntersectionType result)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>plane</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.plane">Plane</a></dt>
+    <dd><p>The plane.</p>
+</dd>
+    <dt><code>result</code> <a class="xref" href="HelixToolkit.Maths.PlaneIntersectionType.html">PlaneIntersectionType</a></dt>
+    <dd><p>Plane intersection type.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <h2 class="section" id="operators">Operators
+</h2>
+
+
+  <a id="HelixToolkit_Maths_BoundingFrustum_op_Equality_" data-uid="HelixToolkit.Maths.BoundingFrustum.op_Equality*"></a>
+
+  <h3 id="HelixToolkit_Maths_BoundingFrustum_op_Equality_HelixToolkit_Maths_BoundingFrustum_HelixToolkit_Maths_BoundingFrustum_" data-uid="HelixToolkit.Maths.BoundingFrustum.op_Equality(HelixToolkit.Maths.BoundingFrustum,HelixToolkit.Maths.BoundingFrustum)">
+  operator ==(BoundingFrustum, BoundingFrustum)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/BoundingFrustum.cs/#L186"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Implements the operator ==.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool operator ==(BoundingFrustum left, BoundingFrustum right)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>left</code> <a class="xref" href="HelixToolkit.Maths.BoundingFrustum.html">BoundingFrustum</a></dt>
+    <dd><p>The left.</p>
+</dd>
+    <dt><code>right</code> <a class="xref" href="HelixToolkit.Maths.BoundingFrustum.html">BoundingFrustum</a></dt>
+    <dd><p>The right.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p>The result of the operator.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_BoundingFrustum_op_Inequality_" data-uid="HelixToolkit.Maths.BoundingFrustum.op_Inequality*"></a>
+
+  <h3 id="HelixToolkit_Maths_BoundingFrustum_op_Inequality_HelixToolkit_Maths_BoundingFrustum_HelixToolkit_Maths_BoundingFrustum_" data-uid="HelixToolkit.Maths.BoundingFrustum.op_Inequality(HelixToolkit.Maths.BoundingFrustum,HelixToolkit.Maths.BoundingFrustum)">
+  operator !=(BoundingFrustum, BoundingFrustum)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/BoundingFrustum.cs/#L200"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Implements the operator !=.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool operator !=(BoundingFrustum left, BoundingFrustum right)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>left</code> <a class="xref" href="HelixToolkit.Maths.BoundingFrustum.html">BoundingFrustum</a></dt>
+    <dd><p>The left.</p>
+</dd>
+    <dt><code>right</code> <a class="xref" href="HelixToolkit.Maths.BoundingFrustum.html">BoundingFrustum</a></dt>
+    <dd><p>The right.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p>The result of the operator.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/BoundingFrustum.cs/#L38" class="edit-link">Edit this page</a>
+        </div>
+
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          Copyright (c) 2023 Helix Toolkit contributors
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

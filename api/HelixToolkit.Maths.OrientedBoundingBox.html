@@ -1,0 +1,1731 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Struct OrientedBoundingBox | Helix Toolkit - 3D for .NET </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Struct OrientedBoundingBox | Helix Toolkit - 3D for .NET ">
+      
+      <meta name="description" content="OrientedBoundingBox (OBB) is a rectangular block, much like an AABB (BoundingBox) but with an arbitrary orientation.">
+      <link rel="icon" href="../images/favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/helix-toolkit/helix-toolkit/new/main-v3/apiSpec/new?filename=HelixToolkit_Maths_OrientedBoundingBox.md&amp;value=---%0Auid%3A%20HelixToolkit.Maths.OrientedBoundingBox%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="ManagedReference">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../images/favicon.ico" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="HelixToolkit.Maths.OrientedBoundingBox">
+
+
+
+  <h1 id="HelixToolkit_Maths_OrientedBoundingBox" data-uid="HelixToolkit.Maths.OrientedBoundingBox" class="text-break">
+Struct OrientedBoundingBox  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/OrientedBoundingBox.cs/#L37"><i class="bi bi-code-slash"></i></a>
+  </h1>
+
+  <div class="facts text-secondary">
+    <dl><dt>Namespace</dt><dd><a class="xref" href="HelixToolkit.html">HelixToolkit</a>.<a class="xref" href="HelixToolkit.Maths.html">Maths</a></dd></dl>
+  <dl><dt>Assembly</dt><dd>HelixToolkit.Maths.dll</dd></dl>
+  </div>
+
+  <div class="markdown summary"><p>OrientedBoundingBox (OBB) is a rectangular block, much like an AABB (BoundingBox) but with an arbitrary orientation.</p>
+</div>
+  <div class="markdown conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public struct OrientedBoundingBox : IEquatable&lt;OrientedBoundingBox&gt;, IFormattable</code></pre>
+  </div>
+
+
+
+
+
+  <dl class="typelist implements">
+    <dt>Implements</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iequatable-1">IEquatable</a>&lt;<a class="xref" href="HelixToolkit.Maths.OrientedBoundingBox.html">OrientedBoundingBox</a>&gt;</div>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iformattable">IFormattable</a></div>
+    </dd>
+  </dl>
+
+
+  <dl class="typelist inheritedMembers">
+    <dt>Inherited Members</dt>
+    <dd>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">object.Equals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype">object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals">object.ReferenceEquals(object, object)</a>
+    </div>
+  </dd></dl>
+
+  <dl class="typelist extensionMethods">
+    <dt>Extension Methods</dt>
+    <dd>
+  <div>
+      <a class="xref" href="HelixToolkit.NativeHelper.html#HelixToolkit_NativeHelper_ToStruct__2___0_">NativeHelper.ToStruct&lt;T1, T2&gt;(T1)</a>
+  </div>
+  </dd></dl>
+
+
+
+
+
+  <h2 class="section" id="constructors">Constructors
+</h2>
+
+
+  <a id="HelixToolkit_Maths_OrientedBoundingBox__ctor_" data-uid="HelixToolkit.Maths.OrientedBoundingBox.#ctor*"></a>
+
+  <h3 id="HelixToolkit_Maths_OrientedBoundingBox__ctor_HelixToolkit_Maths_BoundingBox_" data-uid="HelixToolkit.Maths.OrientedBoundingBox.#ctor(HelixToolkit.Maths.BoundingBox)">
+  OrientedBoundingBox(BoundingBox)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/OrientedBoundingBox.cs/#L57"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Creates an <a class="xref" href="HelixToolkit.Maths.OrientedBoundingBox.html">OrientedBoundingBox</a> from a BoundingBox.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public OrientedBoundingBox(BoundingBox bb)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>bb</code> <a class="xref" href="HelixToolkit.Maths.BoundingBox.html">BoundingBox</a></dt>
+    <dd><p>The BoundingBox to create from.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h4 class="section" id="HelixToolkit_Maths_OrientedBoundingBox__ctor_HelixToolkit_Maths_BoundingBox__remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>Initially, the OBB is axis-aligned box, but it can be rotated and transformed later.</p>
+</div>
+
+
+
+
+  <a id="HelixToolkit_Maths_OrientedBoundingBox__ctor_" data-uid="HelixToolkit.Maths.OrientedBoundingBox.#ctor*"></a>
+
+  <h3 id="HelixToolkit_Maths_OrientedBoundingBox__ctor_System_Numerics_Vector3_System_Numerics_Vector3_" data-uid="HelixToolkit.Maths.OrientedBoundingBox.#ctor(System.Numerics.Vector3,System.Numerics.Vector3)">
+  OrientedBoundingBox(Vector3, Vector3)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/OrientedBoundingBox.cs/#L72"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Creates an <a class="xref" href="HelixToolkit.Maths.OrientedBoundingBox.html">OrientedBoundingBox</a> which contained between two minimum and maximum points.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public OrientedBoundingBox(Vector3 minimum, Vector3 maximum)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>minimum</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd><p>The minimum vertex of the bounding box.</p>
+</dd>
+    <dt><code>maximum</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd><p>The maximum vertex of the bounding box.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h4 class="section" id="HelixToolkit_Maths_OrientedBoundingBox__ctor_System_Numerics_Vector3_System_Numerics_Vector3__remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>Initially, the OrientedBoundingBox is axis-aligned box, but it can be rotated and transformed later.</p>
+</div>
+
+
+
+
+  <a id="HelixToolkit_Maths_OrientedBoundingBox__ctor_" data-uid="HelixToolkit.Maths.OrientedBoundingBox.#ctor*"></a>
+
+  <h3 id="HelixToolkit_Maths_OrientedBoundingBox__ctor_System_Numerics_Vector3___" data-uid="HelixToolkit.Maths.OrientedBoundingBox.#ctor(System.Numerics.Vector3[])">
+  OrientedBoundingBox(Vector3[])
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/OrientedBoundingBox.cs/#L87"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Creates an <a class="xref" href="HelixToolkit.Maths.OrientedBoundingBox.html">OrientedBoundingBox</a> that fully contains the given points.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public OrientedBoundingBox(Vector3[] points)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>points</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a>[]</dt>
+    <dd><p>The points that will be contained by the box.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h4 class="section" id="HelixToolkit_Maths_OrientedBoundingBox__ctor_System_Numerics_Vector3____remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>This method is not for computing the best tight-fitting OrientedBoundingBox.
+And initially, the OrientedBoundingBox is axis-aligned box, but it can be rotated and transformed later.</p>
+</div>
+
+
+
+
+  <h2 class="section" id="fields">Fields
+</h2>
+
+
+
+  <h3 id="HelixToolkit_Maths_OrientedBoundingBox_Extents" data-uid="HelixToolkit.Maths.OrientedBoundingBox.Extents">
+  Extents
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/OrientedBoundingBox.cs/#L43"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Half lengths of the box along each axis.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Vector3 Extents</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_Maths_OrientedBoundingBox_Transformation" data-uid="HelixToolkit.Maths.OrientedBoundingBox.Transformation">
+  Transformation
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/OrientedBoundingBox.cs/#L48"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>The matrix which aligns and scales the box, and its translation vector represents the center of the box.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Matrix4x4 Transformation</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.matrix4x4">Matrix4x4</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+  <h2 class="section" id="properties">Properties
+</h2>
+
+
+  <a id="HelixToolkit_Maths_OrientedBoundingBox_Center_" data-uid="HelixToolkit.Maths.OrientedBoundingBox.Center*"></a>
+
+  <h3 id="HelixToolkit_Maths_OrientedBoundingBox_Center" data-uid="HelixToolkit.Maths.OrientedBoundingBox.Center">
+  Center
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/OrientedBoundingBox.cs/#L264"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Returns the center of the <a class="xref" href="HelixToolkit.Maths.OrientedBoundingBox.html">OrientedBoundingBox</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public readonly Vector3 Center { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_OrientedBoundingBox_Size_" data-uid="HelixToolkit.Maths.OrientedBoundingBox.Size*"></a>
+
+  <h3 id="HelixToolkit_Maths_OrientedBoundingBox_Size" data-uid="HelixToolkit.Maths.OrientedBoundingBox.Size">
+  Size
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/OrientedBoundingBox.cs/#L217"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>The size of the <a class="xref" href="HelixToolkit.Maths.OrientedBoundingBox.html">OrientedBoundingBox</a> if no scaling is applied to the transformation matrix.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public readonly Vector3 Size { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+  <h4 class="section" id="HelixToolkit_Maths_OrientedBoundingBox_Size_remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>The property will return the actual size even if the scaling is applied using Scale method,
+but if the scaling is applied to transformation matrix, use GetSize Function instead.</p>
+</div>
+
+
+
+
+  <h2 class="section" id="methods">Methods
+</h2>
+
+
+  <a id="HelixToolkit_Maths_OrientedBoundingBox_Add_" data-uid="HelixToolkit.Maths.OrientedBoundingBox.Add*"></a>
+
+  <h3 id="HelixToolkit_Maths_OrientedBoundingBox_Add_HelixToolkit_Maths_OrientedBoundingBox__System_Boolean_" data-uid="HelixToolkit.Maths.OrientedBoundingBox.Add(HelixToolkit.Maths.OrientedBoundingBox@,System.Boolean)">
+  Add(ref OrientedBoundingBox, bool)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/OrientedBoundingBox.cs/#L813"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Merge another OrientedBoundingBox into this OrientedBoundingBox.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Add(ref OrientedBoundingBox OBB, bool NoMatrixScaleApplied = false)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>OBB</code> <a class="xref" href="HelixToolkit.Maths.OrientedBoundingBox.html">OrientedBoundingBox</a></dt>
+    <dd><p>The other <a class="xref" href="HelixToolkit.Maths.OrientedBoundingBox.html">OrientedBoundingBox</a> to merge into this OrientedBoundingBox.</p>
+</dd>
+    <dt><code>NoMatrixScaleApplied</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p>If true, the method will use a fast algorithm which is inapplicable if a scale is applied to the transformation matrix of the OrientedBoundingBox.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_OrientedBoundingBox_Contains_" data-uid="HelixToolkit.Maths.OrientedBoundingBox.Contains*"></a>
+
+  <h3 id="HelixToolkit_Maths_OrientedBoundingBox_Contains_HelixToolkit_Maths_BoundingBox__" data-uid="HelixToolkit.Maths.OrientedBoundingBox.Contains(HelixToolkit.Maths.BoundingBox@)">
+  Contains(ref BoundingBox)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/OrientedBoundingBox.cs/#L566"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Check the intersection between an <a class="xref" href="HelixToolkit.Maths.OrientedBoundingBox.html">OrientedBoundingBox</a> and <a class="xref" href="HelixToolkit.Maths.BoundingBox.html">BoundingBox</a></p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ContainmentType Contains(ref BoundingBox box)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>box</code> <a class="xref" href="HelixToolkit.Maths.BoundingBox.html">BoundingBox</a></dt>
+    <dd><p>The BoundingBox to test.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Maths.ContainmentType.html">ContainmentType</a></dt>
+    <dd><p>The type of containment the two objects have.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+  <h4 class="section" id="HelixToolkit_Maths_OrientedBoundingBox_Contains_HelixToolkit_Maths_BoundingBox___remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>For accuracy, The transformation matrix for the <a class="xref" href="HelixToolkit.Maths.OrientedBoundingBox.html">OrientedBoundingBox</a> must not have any scaling applied to it.
+Anyway, scaling using Scale method will keep this method accurate.</p>
+</div>
+
+
+
+
+  <a id="HelixToolkit_Maths_OrientedBoundingBox_Contains_" data-uid="HelixToolkit.Maths.OrientedBoundingBox.Contains*"></a>
+
+  <h3 id="HelixToolkit_Maths_OrientedBoundingBox_Contains_HelixToolkit_Maths_BoundingSphere_System_Boolean_" data-uid="HelixToolkit.Maths.OrientedBoundingBox.Contains(HelixToolkit.Maths.BoundingSphere,System.Boolean)">
+  Contains(BoundingSphere, bool)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/OrientedBoundingBox.cs/#L357"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Determines whether a <a class="xref" href="HelixToolkit.Maths.OrientedBoundingBox.html">OrientedBoundingBox</a> contains a <a class="xref" href="HelixToolkit.Maths.BoundingSphere.html">BoundingSphere</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public readonly ContainmentType Contains(BoundingSphere sphere, bool IgnoreScale = false)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>sphere</code> <a class="xref" href="HelixToolkit.Maths.BoundingSphere.html">BoundingSphere</a></dt>
+    <dd><p>The sphere to test.</p>
+</dd>
+    <dt><code>IgnoreScale</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p>Optimize the check operation by assuming that <a class="xref" href="HelixToolkit.Maths.OrientedBoundingBox.html">OrientedBoundingBox</a> has no scaling applied</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Maths.ContainmentType.html">ContainmentType</a></dt>
+    <dd><p>The type of containment the two objects have.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+  <h4 class="section" id="HelixToolkit_Maths_OrientedBoundingBox_Contains_HelixToolkit_Maths_BoundingSphere_System_Boolean__remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>This method is not designed for <a class="xref" href="HelixToolkit.Maths.OrientedBoundingBox.html">OrientedBoundingBox</a> which has a non-uniform scaling applied to its transformation matrix.
+But any type of scaling applied using Scale method will keep this method accurate.</p>
+</div>
+
+
+
+
+  <a id="HelixToolkit_Maths_OrientedBoundingBox_Contains_" data-uid="HelixToolkit.Maths.OrientedBoundingBox.Contains*"></a>
+
+  <h3 id="HelixToolkit_Maths_OrientedBoundingBox_Contains_HelixToolkit_Maths_OrientedBoundingBox__" data-uid="HelixToolkit.Maths.OrientedBoundingBox.Contains(HelixToolkit.Maths.OrientedBoundingBox@)">
+  Contains(ref OrientedBoundingBox)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/OrientedBoundingBox.cs/#L409"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Check the intersection between two <a class="xref" href="HelixToolkit.Maths.OrientedBoundingBox.html">OrientedBoundingBox</a></p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ContainmentType Contains(ref OrientedBoundingBox obb)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>obb</code> <a class="xref" href="HelixToolkit.Maths.OrientedBoundingBox.html">OrientedBoundingBox</a></dt>
+    <dd><p>The OrientedBoundingBoxs to test.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Maths.ContainmentType.html">ContainmentType</a></dt>
+    <dd><p>The type of containment the two objects have.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+  <h4 class="section" id="HelixToolkit_Maths_OrientedBoundingBox_Contains_HelixToolkit_Maths_OrientedBoundingBox___remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>For accuracy, The transformation matrix for both <a class="xref" href="HelixToolkit.Maths.OrientedBoundingBox.html">OrientedBoundingBox</a> must not have any scaling applied to it.
+Anyway, scaling using Scale method will keep this method accurate.</p>
+</div>
+
+
+
+
+  <a id="HelixToolkit_Maths_OrientedBoundingBox_Contains_" data-uid="HelixToolkit.Maths.OrientedBoundingBox.Contains*"></a>
+
+  <h3 id="HelixToolkit_Maths_OrientedBoundingBox_Contains_System_Numerics_Vector3_" data-uid="HelixToolkit.Maths.OrientedBoundingBox.Contains(System.Numerics.Vector3)">
+  Contains(Vector3)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/OrientedBoundingBox.cs/#L301"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Determines whether a <a class="xref" href="HelixToolkit.Maths.OrientedBoundingBox.html">OrientedBoundingBox</a> contains a point.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public readonly ContainmentType Contains(Vector3 point)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>point</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd><p>The point to test.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Maths.ContainmentType.html">ContainmentType</a></dt>
+    <dd><p>The type of containment the two objects have.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_OrientedBoundingBox_Contains_" data-uid="HelixToolkit.Maths.OrientedBoundingBox.Contains*"></a>
+
+  <h3 id="HelixToolkit_Maths_OrientedBoundingBox_Contains_System_Numerics_Vector3__" data-uid="HelixToolkit.Maths.OrientedBoundingBox.Contains(System.Numerics.Vector3@)">
+  Contains(ref Vector3)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/OrientedBoundingBox.cs/#L277"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Determines whether a <a class="xref" href="HelixToolkit.Maths.OrientedBoundingBox.html">OrientedBoundingBox</a> contains a point.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public readonly ContainmentType Contains(ref Vector3 point)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>point</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd><p>The point to test.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Maths.ContainmentType.html">ContainmentType</a></dt>
+    <dd><p>The type of containment the two objects have.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_OrientedBoundingBox_Contains_" data-uid="HelixToolkit.Maths.OrientedBoundingBox.Contains*"></a>
+
+  <h3 id="HelixToolkit_Maths_OrientedBoundingBox_Contains_System_Numerics_Vector3___" data-uid="HelixToolkit.Maths.OrientedBoundingBox.Contains(System.Numerics.Vector3[])">
+  Contains(Vector3[])
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/OrientedBoundingBox.cs/#L311"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Determines whether a <a class="xref" href="HelixToolkit.Maths.OrientedBoundingBox.html">OrientedBoundingBox</a> contains an array of points&gt;.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public readonly ContainmentType Contains(Vector3[] points)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>points</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a>[]</dt>
+    <dd><p>The points array to test.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Maths.ContainmentType.html">ContainmentType</a></dt>
+    <dd><p>The type of containment.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_OrientedBoundingBox_ContainsLine_" data-uid="HelixToolkit.Maths.OrientedBoundingBox.ContainsLine*"></a>
+
+  <h3 id="HelixToolkit_Maths_OrientedBoundingBox_ContainsLine_System_Numerics_Vector3__System_Numerics_Vector3__" data-uid="HelixToolkit.Maths.OrientedBoundingBox.ContainsLine(System.Numerics.Vector3@,System.Numerics.Vector3@)">
+  ContainsLine(ref Vector3, ref Vector3)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/OrientedBoundingBox.cs/#L502"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Check the intersection between an <a class="xref" href="HelixToolkit.Maths.OrientedBoundingBox.html">OrientedBoundingBox</a> and a line defined by two points</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public readonly ContainmentType ContainsLine(ref Vector3 L1, ref Vector3 L2)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>L1</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd><p>The first point in the line.</p>
+</dd>
+    <dt><code>L2</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd><p>The second point in the line.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Maths.ContainmentType.html">ContainmentType</a></dt>
+    <dd><p>The type of containment the two objects have.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+  <h4 class="section" id="HelixToolkit_Maths_OrientedBoundingBox_ContainsLine_System_Numerics_Vector3__System_Numerics_Vector3___remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>For accuracy, The transformation matrix for the <a class="xref" href="HelixToolkit.Maths.OrientedBoundingBox.html">OrientedBoundingBox</a> must not have any scaling applied to it.
+Anyway, scaling using Scale method will keep this method accurate.</p>
+</div>
+
+
+
+
+  <a id="HelixToolkit_Maths_OrientedBoundingBox_Equals_" data-uid="HelixToolkit.Maths.OrientedBoundingBox.Equals*"></a>
+
+  <h3 id="HelixToolkit_Maths_OrientedBoundingBox_Equals_HelixToolkit_Maths_OrientedBoundingBox_" data-uid="HelixToolkit.Maths.OrientedBoundingBox.Equals(HelixToolkit.Maths.OrientedBoundingBox)">
+  Equals(OrientedBoundingBox)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/OrientedBoundingBox.cs/#L838"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Determines whether the specified <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector4">Vector4</a> is equal to this instance.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public readonly bool Equals(OrientedBoundingBox value)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="HelixToolkit.Maths.OrientedBoundingBox.html">OrientedBoundingBox</a></dt>
+    <dd><p>The <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector4">Vector4</a> to compare with this instance.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><code>true</code> if the specified <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector4">Vector4</a> is equal to this instance; otherwise, <code>false</code>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_OrientedBoundingBox_Equals_" data-uid="HelixToolkit.Maths.OrientedBoundingBox.Equals*"></a>
+
+  <h3 id="HelixToolkit_Maths_OrientedBoundingBox_Equals_HelixToolkit_Maths_OrientedBoundingBox__" data-uid="HelixToolkit.Maths.OrientedBoundingBox.Equals(HelixToolkit.Maths.OrientedBoundingBox@)">
+  Equals(ref OrientedBoundingBox)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/OrientedBoundingBox.cs/#L825"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Determines whether the specified <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector4">Vector4</a> is equal to this instance.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public readonly bool Equals(ref OrientedBoundingBox value)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="HelixToolkit.Maths.OrientedBoundingBox.html">OrientedBoundingBox</a></dt>
+    <dd><p>The <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector4">Vector4</a> to compare with this instance.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><code>true</code> if the specified <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector4">Vector4</a> is equal to this instance; otherwise, <code>false</code>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_OrientedBoundingBox_Equals_" data-uid="HelixToolkit.Maths.OrientedBoundingBox.Equals*"></a>
+
+  <h3 id="HelixToolkit_Maths_OrientedBoundingBox_Equals_System_Object_" data-uid="HelixToolkit.Maths.OrientedBoundingBox.Equals(System.Object)">
+  Equals(object?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/OrientedBoundingBox.cs/#L851"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Determines whether the specified <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a> is equal to this instance.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override readonly bool Equals(object? value)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></dt>
+    <dd><p>The <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a> to compare with this instance.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><code>true</code> if the specified <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a> is equal to this instance; otherwise, <code>false</code>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_OrientedBoundingBox_GetBoundingBox_" data-uid="HelixToolkit.Maths.OrientedBoundingBox.GetBoundingBox*"></a>
+
+  <h3 id="HelixToolkit_Maths_OrientedBoundingBox_GetBoundingBox" data-uid="HelixToolkit.Maths.OrientedBoundingBox.GetBoundingBox">
+  GetBoundingBox()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/OrientedBoundingBox.cs/#L711"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Get the axis-aligned <a class="xref" href="HelixToolkit.Maths.BoundingBox.html">BoundingBox</a> which contains all <a class="xref" href="HelixToolkit.Maths.OrientedBoundingBox.html">OrientedBoundingBox</a> corners.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public readonly BoundingBox GetBoundingBox()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Maths.BoundingBox.html">BoundingBox</a></dt>
+    <dd><p>The axis-aligned BoundingBox of this OrientedBoundingBox.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_OrientedBoundingBox_GetBoxToBoxMatrix_" data-uid="HelixToolkit.Maths.OrientedBoundingBox.GetBoxToBoxMatrix*"></a>
+
+  <h3 id="HelixToolkit_Maths_OrientedBoundingBox_GetBoxToBoxMatrix_HelixToolkit_Maths_OrientedBoundingBox__HelixToolkit_Maths_OrientedBoundingBox__System_Boolean_" data-uid="HelixToolkit.Maths.OrientedBoundingBox.GetBoxToBoxMatrix(HelixToolkit.Maths.OrientedBoundingBox@,HelixToolkit.Maths.OrientedBoundingBox@,System.Boolean)">
+  GetBoxToBoxMatrix(ref OrientedBoundingBox, ref OrientedBoundingBox, bool)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/OrientedBoundingBox.cs/#L725"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Calculates the matrix required to transfer any point from one <a class="xref" href="HelixToolkit.Maths.OrientedBoundingBox.html">OrientedBoundingBox</a> local coordinates to another.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Matrix4x4 GetBoxToBoxMatrix(ref OrientedBoundingBox A, ref OrientedBoundingBox B, bool NoMatrixScaleApplied = false)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>A</code> <a class="xref" href="HelixToolkit.Maths.OrientedBoundingBox.html">OrientedBoundingBox</a></dt>
+    <dd><p>The source OrientedBoundingBox.</p>
+</dd>
+    <dt><code>B</code> <a class="xref" href="HelixToolkit.Maths.OrientedBoundingBox.html">OrientedBoundingBox</a></dt>
+    <dd><p>The target OrientedBoundingBox.</p>
+</dd>
+    <dt><code>NoMatrixScaleApplied</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p>If true, the method will use a fast algorithm which is inapplicable if a scale is applied to the transformation matrix of the OrientedBoundingBox.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.matrix4x4">Matrix4x4</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_OrientedBoundingBox_GetCorners_" data-uid="HelixToolkit.Maths.OrientedBoundingBox.GetCorners*"></a>
+
+  <h3 id="HelixToolkit_Maths_OrientedBoundingBox_GetCorners" data-uid="HelixToolkit.Maths.OrientedBoundingBox.GetCorners">
+  GetCorners()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/OrientedBoundingBox.cs/#L112"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Retrieves the eight corners of the bounding box.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public readonly Vector3[] GetCorners()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a>[]</dt>
+    <dd><p>An array of points representing the eight corners of the bounding box.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_OrientedBoundingBox_GetHashCode_" data-uid="HelixToolkit.Maths.OrientedBoundingBox.GetHashCode*"></a>
+
+  <h3 id="HelixToolkit_Maths_OrientedBoundingBox_GetHashCode" data-uid="HelixToolkit.Maths.OrientedBoundingBox.GetHashCode">
+  GetHashCode()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/OrientedBoundingBox.cs/#L886"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Returns a hash code for this instance.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override readonly int GetHashCode()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_OrientedBoundingBox_GetSize_" data-uid="HelixToolkit.Maths.OrientedBoundingBox.GetSize*"></a>
+
+  <h3 id="HelixToolkit_Maths_OrientedBoundingBox_GetSize" data-uid="HelixToolkit.Maths.OrientedBoundingBox.GetSize">
+  GetSize()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/OrientedBoundingBox.cs/#L233"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Returns the size of the <a class="xref" href="HelixToolkit.Maths.OrientedBoundingBox.html">OrientedBoundingBox</a> taking into consideration the scaling applied to the transformation matrix.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public readonly Vector3 GetSize()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd><p>The size of the consideration</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+  <h4 class="section" id="HelixToolkit_Maths_OrientedBoundingBox_GetSize_remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>This method is computationally expensive, so if no scale is applied to the transformation matrix
+use <a class="xref" href="HelixToolkit.Maths.OrientedBoundingBox.html#HelixToolkit_Maths_OrientedBoundingBox_Size">Size</a> property instead.</p>
+</div>
+
+
+
+
+  <a id="HelixToolkit_Maths_OrientedBoundingBox_GetSizeSquared_" data-uid="HelixToolkit.Maths.OrientedBoundingBox.GetSizeSquared*"></a>
+
+  <h3 id="HelixToolkit_Maths_OrientedBoundingBox_GetSizeSquared" data-uid="HelixToolkit.Maths.OrientedBoundingBox.GetSizeSquared">
+  GetSizeSquared()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/OrientedBoundingBox.cs/#L249"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Returns the square size of the <a class="xref" href="HelixToolkit.Maths.OrientedBoundingBox.html">OrientedBoundingBox</a> taking into consideration the scaling applied to the transformation matrix.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public readonly Vector3 GetSizeSquared()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd><p>The size of the consideration</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_OrientedBoundingBox_Intersects_" data-uid="HelixToolkit.Maths.OrientedBoundingBox.Intersects*"></a>
+
+  <h3 id="HelixToolkit_Maths_OrientedBoundingBox_Intersects_HelixToolkit_Maths_Ray__" data-uid="HelixToolkit.Maths.OrientedBoundingBox.Intersects(HelixToolkit.Maths.Ray@)">
+  Intersects(ref Ray)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/OrientedBoundingBox.cs/#L683"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Determines whether there is an intersection between a <a class="xref" href="HelixToolkit.Maths.Ray.html">Ray</a> and a <a class="xref" href="HelixToolkit.Maths.OrientedBoundingBox.html">OrientedBoundingBox</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool Intersects(ref Ray ray)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>ray</code> <a class="xref" href="HelixToolkit.Maths.Ray.html">Ray</a></dt>
+    <dd><p>The ray to test.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p>Whether the two objects intersected.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_OrientedBoundingBox_Intersects_" data-uid="HelixToolkit.Maths.OrientedBoundingBox.Intersects*"></a>
+
+  <h3 id="HelixToolkit_Maths_OrientedBoundingBox_Intersects_HelixToolkit_Maths_Ray__System_Numerics_Vector3__" data-uid="HelixToolkit.Maths.OrientedBoundingBox.Intersects(HelixToolkit.Maths.Ray@,System.Numerics.Vector3@)">
+  Intersects(ref Ray, out Vector3)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/OrientedBoundingBox.cs/#L656"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Determines whether there is an intersection between a <a class="xref" href="HelixToolkit.Maths.Ray.html">Ray</a> and a <a class="xref" href="HelixToolkit.Maths.OrientedBoundingBox.html">OrientedBoundingBox</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool Intersects(ref Ray ray, out Vector3 point)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>ray</code> <a class="xref" href="HelixToolkit.Maths.Ray.html">Ray</a></dt>
+    <dd><p>The ray to test.</p>
+</dd>
+    <dt><code>point</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd><p>When the method completes, contains the point of intersection,
+or <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3.zero">Zero</a> if there was no intersection.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p>Whether the two objects intersected.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_OrientedBoundingBox_Merge_" data-uid="HelixToolkit.Maths.OrientedBoundingBox.Merge*"></a>
+
+  <h3 id="HelixToolkit_Maths_OrientedBoundingBox_Merge_HelixToolkit_Maths_OrientedBoundingBox__HelixToolkit_Maths_OrientedBoundingBox__System_Boolean_" data-uid="HelixToolkit.Maths.OrientedBoundingBox.Merge(HelixToolkit.Maths.OrientedBoundingBox@,HelixToolkit.Maths.OrientedBoundingBox@,System.Boolean)">
+  Merge(ref OrientedBoundingBox, ref OrientedBoundingBox, bool)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/OrientedBoundingBox.cs/#L770"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Merge an OrientedBoundingBox B into another OrientedBoundingBox A, by expanding A to contain B and keeping A orientation.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void Merge(ref OrientedBoundingBox A, ref OrientedBoundingBox B, bool NoMatrixScaleApplied = false)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>A</code> <a class="xref" href="HelixToolkit.Maths.OrientedBoundingBox.html">OrientedBoundingBox</a></dt>
+    <dd><p>The <a class="xref" href="HelixToolkit.Maths.OrientedBoundingBox.html">OrientedBoundingBox</a> to merge into it.</p>
+</dd>
+    <dt><code>B</code> <a class="xref" href="HelixToolkit.Maths.OrientedBoundingBox.html">OrientedBoundingBox</a></dt>
+    <dd><p>The <a class="xref" href="HelixToolkit.Maths.OrientedBoundingBox.html">OrientedBoundingBox</a> to be merged</p>
+</dd>
+    <dt><code>NoMatrixScaleApplied</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p>If true, the method will use a fast algorithm which is inapplicable if a scale is applied to the transformation matrix of the OrientedBoundingBox.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h4 class="section" id="HelixToolkit_Maths_OrientedBoundingBox_Merge_HelixToolkit_Maths_OrientedBoundingBox__HelixToolkit_Maths_OrientedBoundingBox__System_Boolean__remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>Unlike merging axis aligned boxes, The operation is not interchangeable, because it keeps A orientation and merge B into it.</p>
+</div>
+
+
+
+
+  <a id="HelixToolkit_Maths_OrientedBoundingBox_MergeInto_" data-uid="HelixToolkit.Maths.OrientedBoundingBox.MergeInto*"></a>
+
+  <h3 id="HelixToolkit_Maths_OrientedBoundingBox_MergeInto_HelixToolkit_Maths_OrientedBoundingBox__System_Boolean_" data-uid="HelixToolkit.Maths.OrientedBoundingBox.MergeInto(HelixToolkit.Maths.OrientedBoundingBox@,System.Boolean)">
+  MergeInto(ref OrientedBoundingBox, bool)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/OrientedBoundingBox.cs/#L801"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Merge this OrientedBoundingBox into another OrientedBoundingBox, keeping the other OrientedBoundingBox orientation.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void MergeInto(ref OrientedBoundingBox OBB, bool NoMatrixScaleApplied = false)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>OBB</code> <a class="xref" href="HelixToolkit.Maths.OrientedBoundingBox.html">OrientedBoundingBox</a></dt>
+    <dd><p>The other <a class="xref" href="HelixToolkit.Maths.OrientedBoundingBox.html">OrientedBoundingBox</a> to merge into.</p>
+</dd>
+    <dt><code>NoMatrixScaleApplied</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p>If true, the method will use a fast algorithm which is inapplicable if a scale is applied to the transformation matrix of the OrientedBoundingBox.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_OrientedBoundingBox_Scale_" data-uid="HelixToolkit.Maths.OrientedBoundingBox.Scale*"></a>
+
+  <h3 id="HelixToolkit_Maths_OrientedBoundingBox_Scale_System_Numerics_Vector3_" data-uid="HelixToolkit.Maths.OrientedBoundingBox.Scale(System.Numerics.Vector3)">
+  Scale(Vector3)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/OrientedBoundingBox.cs/#L177"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Scales the <a class="xref" href="HelixToolkit.Maths.OrientedBoundingBox.html">OrientedBoundingBox</a> by scaling its Extents without affecting the Transformation matrix,
+By keeping Transformation matrix scaling-free, the collision detection methods will be more accurate.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Scale(Vector3 scaling)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>scaling</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_OrientedBoundingBox_Scale_" data-uid="HelixToolkit.Maths.OrientedBoundingBox.Scale*"></a>
+
+  <h3 id="HelixToolkit_Maths_OrientedBoundingBox_Scale_System_Numerics_Vector3__" data-uid="HelixToolkit.Maths.OrientedBoundingBox.Scale(System.Numerics.Vector3@)">
+  Scale(ref Vector3)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/OrientedBoundingBox.cs/#L167"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Scales the <a class="xref" href="HelixToolkit.Maths.OrientedBoundingBox.html">OrientedBoundingBox</a> by scaling its Extents without affecting the Transformation matrix,
+By keeping Transformation matrix scaling-free, the collision detection methods will be more accurate.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Scale(ref Vector3 scaling)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>scaling</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_OrientedBoundingBox_Scale_" data-uid="HelixToolkit.Maths.OrientedBoundingBox.Scale*"></a>
+
+  <h3 id="HelixToolkit_Maths_OrientedBoundingBox_Scale_System_Single_" data-uid="HelixToolkit.Maths.OrientedBoundingBox.Scale(System.Single)">
+  Scale(float)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/OrientedBoundingBox.cs/#L187"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Scales the <a class="xref" href="HelixToolkit.Maths.OrientedBoundingBox.html">OrientedBoundingBox</a> by scaling its Extents without affecting the Transformation matrix,
+By keeping Transformation matrix scaling-free, the collision detection methods will be more accurate.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Scale(float scaling)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>scaling</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_OrientedBoundingBox_ToString_" data-uid="HelixToolkit.Maths.OrientedBoundingBox.ToString*"></a>
+
+  <h3 id="HelixToolkit_Maths_OrientedBoundingBox_ToString" data-uid="HelixToolkit.Maths.OrientedBoundingBox.ToString">
+  ToString()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/OrientedBoundingBox.cs/#L897"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Returns a <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a> that represents this instance.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override readonly string ToString()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>A <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a> that represents this instance.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_OrientedBoundingBox_ToString_" data-uid="HelixToolkit.Maths.OrientedBoundingBox.ToString*"></a>
+
+  <h3 id="HelixToolkit_Maths_OrientedBoundingBox_ToString_System_IFormatProvider_" data-uid="HelixToolkit.Maths.OrientedBoundingBox.ToString(System.IFormatProvider)">
+  ToString(IFormatProvider)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/OrientedBoundingBox.cs/#L924"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Returns a <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a> that represents this instance.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public readonly string ToString(IFormatProvider formatProvider)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>formatProvider</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iformatprovider">IFormatProvider</a></dt>
+    <dd><p>The format provider.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>A <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a> that represents this instance.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_OrientedBoundingBox_ToString_" data-uid="HelixToolkit.Maths.OrientedBoundingBox.ToString*"></a>
+
+  <h3 id="HelixToolkit_Maths_OrientedBoundingBox_ToString_System_String_" data-uid="HelixToolkit.Maths.OrientedBoundingBox.ToString(System.String)">
+  ToString(string)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/OrientedBoundingBox.cs/#L909"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Returns a <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a> that represents this instance.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public readonly string ToString(string format)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>format</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The format.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>A <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a> that represents this instance.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_OrientedBoundingBox_ToString_" data-uid="HelixToolkit.Maths.OrientedBoundingBox.ToString*"></a>
+
+  <h3 id="HelixToolkit_Maths_OrientedBoundingBox_ToString_System_String_System_IFormatProvider_" data-uid="HelixToolkit.Maths.OrientedBoundingBox.ToString(System.String,System.IFormatProvider)">
+  ToString(string?, IFormatProvider?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/OrientedBoundingBox.cs/#L937"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Returns a <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a> that represents this instance.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public readonly string ToString(string? format, IFormatProvider? formatProvider)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>format</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The format.</p>
+</dd>
+    <dt><code>formatProvider</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iformatprovider">IFormatProvider</a></dt>
+    <dd><p>The format provider.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>A <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a> that represents this instance.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_OrientedBoundingBox_Transform_" data-uid="HelixToolkit.Maths.OrientedBoundingBox.Transform*"></a>
+
+  <h3 id="HelixToolkit_Maths_OrientedBoundingBox_Transform_System_Numerics_Matrix4x4_" data-uid="HelixToolkit.Maths.OrientedBoundingBox.Transform(System.Numerics.Matrix4x4)">
+  Transform(Matrix4x4)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/OrientedBoundingBox.cs/#L157"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Transforms this box using a transformation matrix.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Transform(Matrix4x4 mat)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>mat</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.matrix4x4">Matrix4x4</a></dt>
+    <dd><p>The transformation matrix.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h4 class="section" id="HelixToolkit_Maths_OrientedBoundingBox_Transform_System_Numerics_Matrix4x4__remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>While any kind of transformation can be applied, it is recommended to apply scaling using scale method instead, which
+scales the Extents and keeps the Transformation matrix for rotation only, and that preserves collision detection accuracy.</p>
+</div>
+
+
+
+
+  <a id="HelixToolkit_Maths_OrientedBoundingBox_Transform_" data-uid="HelixToolkit.Maths.OrientedBoundingBox.Transform*"></a>
+
+  <h3 id="HelixToolkit_Maths_OrientedBoundingBox_Transform_System_Numerics_Matrix4x4__" data-uid="HelixToolkit.Maths.OrientedBoundingBox.Transform(System.Numerics.Matrix4x4@)">
+  Transform(ref Matrix4x4)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/OrientedBoundingBox.cs/#L144"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Transforms this box using a transformation matrix.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Transform(ref Matrix4x4 mat)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>mat</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.matrix4x4">Matrix4x4</a></dt>
+    <dd><p>The transformation matrix.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h4 class="section" id="HelixToolkit_Maths_OrientedBoundingBox_Transform_System_Numerics_Matrix4x4___remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>While any kind of transformation can be applied, it is recommended to apply scaling using scale method instead, which
+scales the Extents and keeps the Transformation matrix for rotation only, and that preserves collision detection accuracy.</p>
+</div>
+
+
+
+
+  <a id="HelixToolkit_Maths_OrientedBoundingBox_Translate_" data-uid="HelixToolkit.Maths.OrientedBoundingBox.Translate*"></a>
+
+  <h3 id="HelixToolkit_Maths_OrientedBoundingBox_Translate_System_Numerics_Vector3_" data-uid="HelixToolkit.Maths.OrientedBoundingBox.Translate(System.Numerics.Vector3)">
+  Translate(Vector3)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/OrientedBoundingBox.cs/#L205"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Translates the <a class="xref" href="HelixToolkit.Maths.OrientedBoundingBox.html">OrientedBoundingBox</a> to a new position using a translation vector;</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Translate(Vector3 translation)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>translation</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd><p>the translation vector.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_OrientedBoundingBox_Translate_" data-uid="HelixToolkit.Maths.OrientedBoundingBox.Translate*"></a>
+
+  <h3 id="HelixToolkit_Maths_OrientedBoundingBox_Translate_System_Numerics_Vector3__" data-uid="HelixToolkit.Maths.OrientedBoundingBox.Translate(System.Numerics.Vector3@)">
+  Translate(ref Vector3)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/OrientedBoundingBox.cs/#L196"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Translates the <a class="xref" href="HelixToolkit.Maths.OrientedBoundingBox.html">OrientedBoundingBox</a> to a new position using a translation vector;</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Translate(ref Vector3 translation)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>translation</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd><p>the translation vector.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <h2 class="section" id="operators">Operators
+</h2>
+
+
+  <a id="HelixToolkit_Maths_OrientedBoundingBox_op_Equality_" data-uid="HelixToolkit.Maths.OrientedBoundingBox.op_Equality*"></a>
+
+  <h3 id="HelixToolkit_Maths_OrientedBoundingBox_op_Equality_HelixToolkit_Maths_OrientedBoundingBox_HelixToolkit_Maths_OrientedBoundingBox_" data-uid="HelixToolkit.Maths.OrientedBoundingBox.op_Equality(HelixToolkit.Maths.OrientedBoundingBox,HelixToolkit.Maths.OrientedBoundingBox)">
+  operator ==(OrientedBoundingBox, OrientedBoundingBox)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/OrientedBoundingBox.cs/#L862"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Tests for equality between two objects.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool operator ==(OrientedBoundingBox left, OrientedBoundingBox right)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>left</code> <a class="xref" href="HelixToolkit.Maths.OrientedBoundingBox.html">OrientedBoundingBox</a></dt>
+    <dd><p>The first value to compare.</p>
+</dd>
+    <dt><code>right</code> <a class="xref" href="HelixToolkit.Maths.OrientedBoundingBox.html">OrientedBoundingBox</a></dt>
+    <dd><p>The second value to compare.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><code>true</code> if <code class="paramref">left</code> has the same value as <code class="paramref">right</code>; otherwise, <code>false</code>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_OrientedBoundingBox_op_Inequality_" data-uid="HelixToolkit.Maths.OrientedBoundingBox.op_Inequality*"></a>
+
+  <h3 id="HelixToolkit_Maths_OrientedBoundingBox_op_Inequality_HelixToolkit_Maths_OrientedBoundingBox_HelixToolkit_Maths_OrientedBoundingBox_" data-uid="HelixToolkit.Maths.OrientedBoundingBox.op_Inequality(HelixToolkit.Maths.OrientedBoundingBox,HelixToolkit.Maths.OrientedBoundingBox)">
+  operator !=(OrientedBoundingBox, OrientedBoundingBox)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/OrientedBoundingBox.cs/#L874"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Tests for inequality between two objects.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool operator !=(OrientedBoundingBox left, OrientedBoundingBox right)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>left</code> <a class="xref" href="HelixToolkit.Maths.OrientedBoundingBox.html">OrientedBoundingBox</a></dt>
+    <dd><p>The first value to compare.</p>
+</dd>
+    <dt><code>right</code> <a class="xref" href="HelixToolkit.Maths.OrientedBoundingBox.html">OrientedBoundingBox</a></dt>
+    <dd><p>The second value to compare.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><code>true</code> if <code class="paramref">left</code> has a different value than <code class="paramref">right</code>; otherwise, <code>false</code>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/OrientedBoundingBox.cs/#L37" class="edit-link">Edit this page</a>
+        </div>
+
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          Copyright (c) 2023 Helix Toolkit contributors
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

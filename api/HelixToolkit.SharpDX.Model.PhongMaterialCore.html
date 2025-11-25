@@ -1,0 +1,1541 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Class PhongMaterialCore | Helix Toolkit - 3D for .NET </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Class PhongMaterialCore | Helix Toolkit - 3D for .NET ">
+      
+      
+      <link rel="icon" href="../images/favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/helix-toolkit/helix-toolkit/new/main-v3/apiSpec/new?filename=HelixToolkit_SharpDX_Model_PhongMaterialCore.md&amp;value=---%0Auid%3A%20HelixToolkit.SharpDX.Model.PhongMaterialCore%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="ManagedReference">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../images/favicon.ico" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="HelixToolkit.SharpDX.Model.PhongMaterialCore">
+
+
+
+  <h1 id="HelixToolkit_SharpDX_Model_PhongMaterialCore" data-uid="HelixToolkit.SharpDX.Model.PhongMaterialCore" class="text-break">
+Class PhongMaterialCore  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Model/Material/PhongMaterialCore.cs/#L10"><i class="bi bi-code-slash"></i></a>
+  </h1>
+
+  <div class="facts text-secondary">
+    <dl><dt>Namespace</dt><dd><a class="xref" href="HelixToolkit.html">HelixToolkit</a>.<a class="xref" href="HelixToolkit.SharpDX.html">SharpDX</a>.<a class="xref" href="HelixToolkit.SharpDX.Model.html">Model</a></dd></dl>
+  <dl><dt>Assembly</dt><dd>HelixToolkit.SharpDX.dll</dd></dl>
+  </div>
+
+  <div class="markdown summary"></div>
+  <div class="markdown conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class PhongMaterialCore : MaterialCore, IMaterial, INotifyPropertyChanged</code></pre>
+  </div>
+
+
+
+
+  <dl class="typelist inheritance">
+    <dt>Inheritance</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
+      <div><a class="xref" href="HelixToolkit.SharpDX.Model.ObservableObject.html">ObservableObject</a></div>
+      <div><a class="xref" href="HelixToolkit.SharpDX.Model.MaterialCore.html">MaterialCore</a></div>
+      <div><span class="xref">PhongMaterialCore</span></div>
+    </dd>
+  </dl>
+
+  <dl class="typelist implements">
+    <dt>Implements</dt>
+    <dd>
+      <div><a class="xref" href="HelixToolkit.SharpDX.IMaterial.html">IMaterial</a></div>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.componentmodel.inotifypropertychanged">INotifyPropertyChanged</a></div>
+    </dd>
+  </dl>
+
+
+  <dl class="typelist inheritedMembers">
+    <dt>Inherited Members</dt>
+    <dd>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.MaterialCore.html#HelixToolkit_SharpDX_Model_MaterialCore_Name">MaterialCore.Name</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.MaterialCore.html#HelixToolkit_SharpDX_Model_MaterialCore_Guid">MaterialCore.Guid</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.ObservableObject.html#HelixToolkit_SharpDX_Model_ObservableObject_DisablePropertyChangedEvent">ObservableObject.DisablePropertyChangedEvent</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.ObservableObject.html#HelixToolkit_SharpDX_Model_ObservableObject_PropertyChanged">ObservableObject.PropertyChanged</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.ObservableObject.html#HelixToolkit_SharpDX_Model_ObservableObject_RaisePropertyChanged_System_String_">ObservableObject.RaisePropertyChanged(string)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.ObservableObject.html#HelixToolkit_SharpDX_Model_ObservableObject_RaisePropertyChanged_System_ComponentModel_PropertyChangedEventArgs_">ObservableObject.RaisePropertyChanged(PropertyChangedEventArgs)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.ObservableObject.html#HelixToolkit_SharpDX_Model_ObservableObject_Set__1___0____0_System_String_">ObservableObject.Set&lt;T&gt;(ref T, T, string)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.ObservableObject.html#HelixToolkit_SharpDX_Model_ObservableObject_Set__1___0____0_System_Boolean_System_String_">ObservableObject.Set&lt;T&gt;(ref T, T, bool, string)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">object.Equals(object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">object.Equals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode">object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype">object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone">object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals">object.ReferenceEquals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring">object.ToString()</a>
+    </div>
+  </dd></dl>
+
+  <dl class="typelist extensionMethods">
+    <dt>Extension Methods</dt>
+    <dd>
+  <div>
+      <a class="xref" href="HelixToolkit.Avalonia.SharpDX.MaterialExtension.html#HelixToolkit_Avalonia_SharpDX_MaterialExtension_ConvertToMaterial_HelixToolkit_SharpDX_Model_MaterialCore_">MaterialExtension.ConvertToMaterial(MaterialCore?)</a>
+  </div>
+  <div>
+      <a class="xref" href="HelixToolkit.Avalonia.SharpDX.MaterialExtension.html#HelixToolkit_Avalonia_SharpDX_MaterialExtension_ConvertToPhongMaterial_HelixToolkit_SharpDX_Model_PhongMaterialCore_">MaterialExtension.ConvertToPhongMaterial(PhongMaterialCore?)</a>
+  </div>
+  </dd></dl>
+
+
+
+
+
+  <h2 class="section" id="properties">Properties
+</h2>
+
+
+  <a id="HelixToolkit_SharpDX_Model_PhongMaterialCore_AmbientColor_" data-uid="HelixToolkit.SharpDX.Model.PhongMaterialCore.AmbientColor*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_PhongMaterialCore_AmbientColor" data-uid="HelixToolkit.SharpDX.Model.PhongMaterialCore.AmbientColor">
+  AmbientColor
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Model/Material/PhongMaterialCore.cs/#L19"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the color of the ambient.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Color4 AmbientColor { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Maths.Color4.html">Color4</a></dt>
+    <dd><p>The color of the ambient.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_PhongMaterialCore_DiffuseAlphaMap_" data-uid="HelixToolkit.SharpDX.Model.PhongMaterialCore.DiffuseAlphaMap*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_PhongMaterialCore_DiffuseAlphaMap" data-uid="HelixToolkit.SharpDX.Model.PhongMaterialCore.DiffuseAlphaMap">
+  DiffuseAlphaMap
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Model/Material/PhongMaterialCore.cs/#L165"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the DiffuseAlphaMap.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public TextureModel? DiffuseAlphaMap { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.TextureModel.html">TextureModel</a></dt>
+    <dd><p>DiffuseAlphaMap</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_PhongMaterialCore_DiffuseAlphaMapFilePath_" data-uid="HelixToolkit.SharpDX.Model.PhongMaterialCore.DiffuseAlphaMapFilePath*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_PhongMaterialCore_DiffuseAlphaMapFilePath" data-uid="HelixToolkit.SharpDX.Model.PhongMaterialCore.DiffuseAlphaMapFilePath">
+  DiffuseAlphaMapFilePath
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Model/Material/PhongMaterialCore.cs/#L182"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the diffuse alpha map file path. For export only</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string DiffuseAlphaMapFilePath { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The diffuse alpha map file path.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_PhongMaterialCore_DiffuseColor_" data-uid="HelixToolkit.SharpDX.Model.PhongMaterialCore.DiffuseColor*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_PhongMaterialCore_DiffuseColor" data-uid="HelixToolkit.SharpDX.Model.PhongMaterialCore.DiffuseColor">
+  DiffuseColor
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Model/Material/PhongMaterialCore.cs/#L38"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the color of the diffuse.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Color4 DiffuseColor { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Maths.Color4.html">Color4</a></dt>
+    <dd><p>The color of the diffuse.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_PhongMaterialCore_DiffuseMap_" data-uid="HelixToolkit.SharpDX.Model.PhongMaterialCore.DiffuseMap*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_PhongMaterialCore_DiffuseMap" data-uid="HelixToolkit.SharpDX.Model.PhongMaterialCore.DiffuseMap">
+  DiffuseMap
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Model/Material/PhongMaterialCore.cs/#L135"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the diffuse map.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public TextureModel? DiffuseMap { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.TextureModel.html">TextureModel</a></dt>
+    <dd><p>The diffuse map.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_PhongMaterialCore_DiffuseMapFilePath_" data-uid="HelixToolkit.SharpDX.Model.PhongMaterialCore.DiffuseMapFilePath*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_PhongMaterialCore_DiffuseMapFilePath" data-uid="HelixToolkit.SharpDX.Model.PhongMaterialCore.DiffuseMapFilePath">
+  DiffuseMapFilePath
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Model/Material/PhongMaterialCore.cs/#L153"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the diffuse map file path. For export only</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string DiffuseMapFilePath { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The diffuse map file path.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_PhongMaterialCore_DiffuseMapSampler_" data-uid="HelixToolkit.SharpDX.Model.PhongMaterialCore.DiffuseMapSampler*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_PhongMaterialCore_DiffuseMapSampler" data-uid="HelixToolkit.SharpDX.Model.PhongMaterialCore.DiffuseMapSampler">
+  DiffuseMapSampler
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Model/Material/PhongMaterialCore.cs/#L348"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the DiffuseMapSampler.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public SamplerStateDescription DiffuseMapSampler { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">SamplerStateDescription</span></dt>
+    <dd><p>DiffuseMapSampler</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_PhongMaterialCore_DisplacementMap_" data-uid="HelixToolkit.SharpDX.Model.PhongMaterialCore.DisplacementMap*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_PhongMaterialCore_DisplacementMap" data-uid="HelixToolkit.SharpDX.Model.PhongMaterialCore.DisplacementMap">
+  DisplacementMap
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Model/Material/PhongMaterialCore.cs/#L252"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the DisplacementMap.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public TextureModel? DisplacementMap { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.TextureModel.html">TextureModel</a></dt>
+    <dd><p>DisplacementMap</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_PhongMaterialCore_DisplacementMapFilePath_" data-uid="HelixToolkit.SharpDX.Model.PhongMaterialCore.DisplacementMapFilePath*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_PhongMaterialCore_DisplacementMapFilePath" data-uid="HelixToolkit.SharpDX.Model.PhongMaterialCore.DisplacementMapFilePath">
+  DisplacementMapFilePath
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Model/Material/PhongMaterialCore.cs/#L269"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the displacement file path. For export only</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string DisplacementMapFilePath { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The displacement file path.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_PhongMaterialCore_DisplacementMapSampler_" data-uid="HelixToolkit.SharpDX.Model.PhongMaterialCore.DisplacementMapSampler*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_PhongMaterialCore_DisplacementMapSampler" data-uid="HelixToolkit.SharpDX.Model.PhongMaterialCore.DisplacementMapSampler">
+  DisplacementMapSampler
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Model/Material/PhongMaterialCore.cs/#L368"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the DisplacementMapSampler.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public SamplerStateDescription DisplacementMapSampler { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">SamplerStateDescription</span></dt>
+    <dd><p>DisplacementMapSampler</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_PhongMaterialCore_DisplacementMapScaleMask_" data-uid="HelixToolkit.SharpDX.Model.PhongMaterialCore.DisplacementMapScaleMask*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_PhongMaterialCore_DisplacementMapScaleMask" data-uid="HelixToolkit.SharpDX.Model.PhongMaterialCore.DisplacementMapScaleMask">
+  DisplacementMapScaleMask
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Model/Material/PhongMaterialCore.cs/#L310"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the DisplacementMapScaleMask.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Vector4 DisplacementMapScaleMask { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector4">Vector4</a></dt>
+    <dd><p>DisplacementMapScaleMask</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_PhongMaterialCore_EmissiveColor_" data-uid="HelixToolkit.SharpDX.Model.PhongMaterialCore.EmissiveColor*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_PhongMaterialCore_EmissiveColor" data-uid="HelixToolkit.SharpDX.Model.PhongMaterialCore.EmissiveColor">
+  EmissiveColor
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Model/Material/PhongMaterialCore.cs/#L57"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the color of the emissive.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Color4 EmissiveColor { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Maths.Color4.html">Color4</a></dt>
+    <dd><p>The color of the emissive.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_PhongMaterialCore_EmissiveMap_" data-uid="HelixToolkit.SharpDX.Model.PhongMaterialCore.EmissiveMap*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_PhongMaterialCore_EmissiveMap" data-uid="HelixToolkit.SharpDX.Model.PhongMaterialCore.EmissiveMap">
+  EmissiveMap
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Model/Material/PhongMaterialCore.cs/#L281"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the emissive map.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public TextureModel? EmissiveMap { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.TextureModel.html">TextureModel</a></dt>
+    <dd><p>The emissive map.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_PhongMaterialCore_EmissiveMapFilePath_" data-uid="HelixToolkit.SharpDX.Model.PhongMaterialCore.EmissiveMapFilePath*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_PhongMaterialCore_EmissiveMapFilePath" data-uid="HelixToolkit.SharpDX.Model.PhongMaterialCore.EmissiveMapFilePath">
+  EmissiveMapFilePath
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Model/Material/PhongMaterialCore.cs/#L298"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the emissive map file path. For export only</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string EmissiveMapFilePath { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The emissive map file path.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_PhongMaterialCore_EnableAutoTangent_" data-uid="HelixToolkit.SharpDX.Model.PhongMaterialCore.EnableAutoTangent*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_PhongMaterialCore_EnableAutoTangent" data-uid="HelixToolkit.SharpDX.Model.PhongMaterialCore.EnableAutoTangent">
+  EnableAutoTangent
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Model/Material/PhongMaterialCore.cs/#L488"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets a value indicating whether [enable automatic tangent].</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool EnableAutoTangent { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><code>true</code> if [enable automatic tangent]; otherwise, <code>false</code>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_PhongMaterialCore_EnableFlatShading_" data-uid="HelixToolkit.SharpDX.Model.PhongMaterialCore.EnableFlatShading*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_PhongMaterialCore_EnableFlatShading" data-uid="HelixToolkit.SharpDX.Model.PhongMaterialCore.EnableFlatShading">
+  EnableFlatShading
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Model/Material/PhongMaterialCore.cs/#L623"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets a value indicating whether [enable flat shading].</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool EnableFlatShading { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><code>true</code> if [enable flat shading]; otherwise, <code>false</code>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_PhongMaterialCore_EnableTessellation_" data-uid="HelixToolkit.SharpDX.Model.PhongMaterialCore.EnableTessellation*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_PhongMaterialCore_EnableTessellation" data-uid="HelixToolkit.SharpDX.Model.PhongMaterialCore.EnableTessellation">
+  EnableTessellation
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Model/Material/PhongMaterialCore.cs/#L572"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool EnableTessellation { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_PhongMaterialCore_MaxDistanceTessellationFactor_" data-uid="HelixToolkit.SharpDX.Model.PhongMaterialCore.MaxDistanceTessellationFactor*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_PhongMaterialCore_MaxDistanceTessellationFactor" data-uid="HelixToolkit.SharpDX.Model.PhongMaterialCore.MaxDistanceTessellationFactor">
+  MaxDistanceTessellationFactor
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Model/Material/PhongMaterialCore.cs/#L546"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the tessellation factor at <a class="xref" href="HelixToolkit.SharpDX.Model.PhongMaterialCore.html#HelixToolkit_SharpDX_Model_PhongMaterialCore_MaxDistanceTessellationFactor">MaxDistanceTessellationFactor</a></p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float MaxDistanceTessellationFactor { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>The maximum distance tessellation factor.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_PhongMaterialCore_MaxTessellationDistance_" data-uid="HelixToolkit.SharpDX.Model.PhongMaterialCore.MaxTessellationDistance*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_PhongMaterialCore_MaxTessellationDistance" data-uid="HelixToolkit.SharpDX.Model.PhongMaterialCore.MaxTessellationDistance">
+  MaxTessellationDistance
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Model/Material/PhongMaterialCore.cs/#L508"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float MaxTessellationDistance { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_PhongMaterialCore_MeshType_" data-uid="HelixToolkit.SharpDX.Model.PhongMaterialCore.MeshType*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_PhongMaterialCore_MeshType" data-uid="HelixToolkit.SharpDX.Model.PhongMaterialCore.MeshType">
+  MeshType
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Model/Material/PhongMaterialCore.cs/#L559"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public MeshTopologyEnum MeshType { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.MeshTopologyEnum.html">MeshTopologyEnum</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_PhongMaterialCore_MinDistanceTessellationFactor_" data-uid="HelixToolkit.SharpDX.Model.PhongMaterialCore.MinDistanceTessellationFactor*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_PhongMaterialCore_MinDistanceTessellationFactor" data-uid="HelixToolkit.SharpDX.Model.PhongMaterialCore.MinDistanceTessellationFactor">
+  MinDistanceTessellationFactor
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Model/Material/PhongMaterialCore.cs/#L527"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the tessellation factor at <a class="xref" href="HelixToolkit.SharpDX.Model.PhongMaterialCore.html#HelixToolkit_SharpDX_Model_PhongMaterialCore_MinTessellationDistance">MinTessellationDistance</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float MinDistanceTessellationFactor { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>The minimum distance tessellation factor.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_PhongMaterialCore_MinTessellationDistance_" data-uid="HelixToolkit.SharpDX.Model.PhongMaterialCore.MinTessellationDistance*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_PhongMaterialCore_MinTessellationDistance" data-uid="HelixToolkit.SharpDX.Model.PhongMaterialCore.MinTessellationDistance">
+  MinTessellationDistance
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Model/Material/PhongMaterialCore.cs/#L495"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float MinTessellationDistance { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_PhongMaterialCore_NormalMap_" data-uid="HelixToolkit.SharpDX.Model.PhongMaterialCore.NormalMap*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_PhongMaterialCore_NormalMap" data-uid="HelixToolkit.SharpDX.Model.PhongMaterialCore.NormalMap">
+  NormalMap
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Model/Material/PhongMaterialCore.cs/#L194"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the NormalMap.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public TextureModel? NormalMap { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.TextureModel.html">TextureModel</a></dt>
+    <dd><p>NormalMap</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_PhongMaterialCore_NormalMapFilePath_" data-uid="HelixToolkit.SharpDX.Model.PhongMaterialCore.NormalMapFilePath*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_PhongMaterialCore_NormalMapFilePath" data-uid="HelixToolkit.SharpDX.Model.PhongMaterialCore.NormalMapFilePath">
+  NormalMapFilePath
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Model/Material/PhongMaterialCore.cs/#L211"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the normal map file path. For export only</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string NormalMapFilePath { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The normal map file path.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_PhongMaterialCore_ReflectiveColor_" data-uid="HelixToolkit.SharpDX.Model.PhongMaterialCore.ReflectiveColor*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_PhongMaterialCore_ReflectiveColor" data-uid="HelixToolkit.SharpDX.Model.PhongMaterialCore.ReflectiveColor">
+  ReflectiveColor
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Model/Material/PhongMaterialCore.cs/#L76"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the color of the reflective.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Color4 ReflectiveColor { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Maths.Color4.html">Color4</a></dt>
+    <dd><p>The color of the reflective.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_PhongMaterialCore_RenderDiffuseAlphaMap_" data-uid="HelixToolkit.SharpDX.Model.PhongMaterialCore.RenderDiffuseAlphaMap*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_PhongMaterialCore_RenderDiffuseAlphaMap" data-uid="HelixToolkit.SharpDX.Model.PhongMaterialCore.RenderDiffuseAlphaMap">
+  RenderDiffuseAlphaMap
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Model/Material/PhongMaterialCore.cs/#L400"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool RenderDiffuseAlphaMap { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_PhongMaterialCore_RenderDiffuseMap_" data-uid="HelixToolkit.SharpDX.Model.PhongMaterialCore.RenderDiffuseMap*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_PhongMaterialCore_RenderDiffuseMap" data-uid="HelixToolkit.SharpDX.Model.PhongMaterialCore.RenderDiffuseMap">
+  RenderDiffuseMap
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Model/Material/PhongMaterialCore.cs/#L384"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool RenderDiffuseMap { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_PhongMaterialCore_RenderDisplacementMap_" data-uid="HelixToolkit.SharpDX.Model.PhongMaterialCore.RenderDisplacementMap*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_PhongMaterialCore_RenderDisplacementMap" data-uid="HelixToolkit.SharpDX.Model.PhongMaterialCore.RenderDisplacementMap">
+  RenderDisplacementMap
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Model/Material/PhongMaterialCore.cs/#L450"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool RenderDisplacementMap { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_PhongMaterialCore_RenderEmissiveMap_" data-uid="HelixToolkit.SharpDX.Model.PhongMaterialCore.RenderEmissiveMap*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_PhongMaterialCore_RenderEmissiveMap" data-uid="HelixToolkit.SharpDX.Model.PhongMaterialCore.RenderEmissiveMap">
+  RenderEmissiveMap
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Model/Material/PhongMaterialCore.cs/#L469"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets a value indicating whether [render emissive map].</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool RenderEmissiveMap { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><code>true</code> if [render emissive map]; otherwise, <code>false</code>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_PhongMaterialCore_RenderEnvironmentMap_" data-uid="HelixToolkit.SharpDX.Model.PhongMaterialCore.RenderEnvironmentMap*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_PhongMaterialCore_RenderEnvironmentMap" data-uid="HelixToolkit.SharpDX.Model.PhongMaterialCore.RenderEnvironmentMap">
+  RenderEnvironmentMap
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Model/Material/PhongMaterialCore.cs/#L604"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool RenderEnvironmentMap { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_PhongMaterialCore_RenderNormalMap_" data-uid="HelixToolkit.SharpDX.Model.PhongMaterialCore.RenderNormalMap*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_PhongMaterialCore_RenderNormalMap" data-uid="HelixToolkit.SharpDX.Model.PhongMaterialCore.RenderNormalMap">
+  RenderNormalMap
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Model/Material/PhongMaterialCore.cs/#L415"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool RenderNormalMap { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_PhongMaterialCore_RenderShadowMap_" data-uid="HelixToolkit.SharpDX.Model.PhongMaterialCore.RenderShadowMap*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_PhongMaterialCore_RenderShadowMap" data-uid="HelixToolkit.SharpDX.Model.PhongMaterialCore.RenderShadowMap">
+  RenderShadowMap
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Model/Material/PhongMaterialCore.cs/#L588"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool RenderShadowMap { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_PhongMaterialCore_RenderSpecularColorMap_" data-uid="HelixToolkit.SharpDX.Model.PhongMaterialCore.RenderSpecularColorMap*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_PhongMaterialCore_RenderSpecularColorMap" data-uid="HelixToolkit.SharpDX.Model.PhongMaterialCore.RenderSpecularColorMap">
+  RenderSpecularColorMap
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Model/Material/PhongMaterialCore.cs/#L434"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets a value indicating whether [render specular color map].</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool RenderSpecularColorMap { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><code>true</code> if [render specular color map]; otherwise, <code>false</code>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_PhongMaterialCore_SpecularColor_" data-uid="HelixToolkit.SharpDX.Model.PhongMaterialCore.SpecularColor*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_PhongMaterialCore_SpecularColor" data-uid="HelixToolkit.SharpDX.Model.PhongMaterialCore.SpecularColor">
+  SpecularColor
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Model/Material/PhongMaterialCore.cs/#L95"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the color of the specular.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Color4 SpecularColor { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Maths.Color4.html">Color4</a></dt>
+    <dd><p>The color of the specular.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_PhongMaterialCore_SpecularColorMap_" data-uid="HelixToolkit.SharpDX.Model.PhongMaterialCore.SpecularColorMap*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_PhongMaterialCore_SpecularColorMap" data-uid="HelixToolkit.SharpDX.Model.PhongMaterialCore.SpecularColorMap">
+  SpecularColorMap
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Model/Material/PhongMaterialCore.cs/#L223"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the specular color map.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public TextureModel? SpecularColorMap { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.TextureModel.html">TextureModel</a></dt>
+    <dd><p>The specular color map.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_PhongMaterialCore_SpecularColorMapFilePath_" data-uid="HelixToolkit.SharpDX.Model.PhongMaterialCore.SpecularColorMapFilePath*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_PhongMaterialCore_SpecularColorMapFilePath" data-uid="HelixToolkit.SharpDX.Model.PhongMaterialCore.SpecularColorMapFilePath">
+  SpecularColorMapFilePath
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Model/Material/PhongMaterialCore.cs/#L240"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the specular color map file path. For export only</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string SpecularColorMapFilePath { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The specular color map file path.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_PhongMaterialCore_SpecularShininess_" data-uid="HelixToolkit.SharpDX.Model.PhongMaterialCore.SpecularShininess*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_PhongMaterialCore_SpecularShininess" data-uid="HelixToolkit.SharpDX.Model.PhongMaterialCore.SpecularShininess">
+  SpecularShininess
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Model/Material/PhongMaterialCore.cs/#L116"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the specular shininess.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float SpecularShininess { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>The specular shininess.</p>
+</dd>
+  </dl>
+
+
+
+
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.notimplementedexception">NotImplementedException</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_PhongMaterialCore_UVTransform_" data-uid="HelixToolkit.SharpDX.Model.PhongMaterialCore.UVTransform*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_PhongMaterialCore_UVTransform" data-uid="HelixToolkit.SharpDX.Model.PhongMaterialCore.UVTransform">
+  UVTransform
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Model/Material/PhongMaterialCore.cs/#L329"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the uv transform.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public UVTransform UVTransform { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.UVTransform.html">UVTransform</a></dt>
+    <dd><p>The uv transform.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_PhongMaterialCore_VertexColorBlendingFactor_" data-uid="HelixToolkit.SharpDX.Model.PhongMaterialCore.VertexColorBlendingFactor*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_PhongMaterialCore_VertexColorBlendingFactor" data-uid="HelixToolkit.SharpDX.Model.PhongMaterialCore.VertexColorBlendingFactor">
+  VertexColorBlendingFactor
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Model/Material/PhongMaterialCore.cs/#L643"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the vert color blending factor.
+Diffuse = (1- <a class="xref" href="HelixToolkit.SharpDX.Model.PhongMaterialCore.html#HelixToolkit_SharpDX_Model_PhongMaterialCore_VertexColorBlendingFactor">VertexColorBlendingFactor</a>) * Diffuse + <a class="xref" href="HelixToolkit.SharpDX.Model.PhongMaterialCore.html#HelixToolkit_SharpDX_Model_PhongMaterialCore_VertexColorBlendingFactor">VertexColorBlendingFactor</a> * Vertex Color</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float VertexColorBlendingFactor { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>The vert color blending factor.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h2 class="section" id="methods">Methods
+</h2>
+
+
+  <a id="HelixToolkit_SharpDX_Model_PhongMaterialCore_CreateMaterialVariables_" data-uid="HelixToolkit.SharpDX.Model.PhongMaterialCore.CreateMaterialVariables*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_PhongMaterialCore_CreateMaterialVariables_HelixToolkit_SharpDX_IEffectsManager_HelixToolkit_SharpDX_IRenderTechnique_" data-uid="HelixToolkit.SharpDX.Model.PhongMaterialCore.CreateMaterialVariables(HelixToolkit.SharpDX.IEffectsManager,HelixToolkit.SharpDX.IRenderTechnique)">
+  CreateMaterialVariables(IEffectsManager, IRenderTechnique)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Model/Material/PhongMaterialCore.cs/#L655"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Creates the material variables.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override MaterialVariable CreateMaterialVariables(IEffectsManager manager, IRenderTechnique technique)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>manager</code> <a class="xref" href="HelixToolkit.SharpDX.IEffectsManager.html">IEffectsManager</a></dt>
+    <dd><p>The manager.</p>
+</dd>
+    <dt><code>technique</code> <a class="xref" href="HelixToolkit.SharpDX.IRenderTechnique.html">IRenderTechnique</a></dt>
+    <dd><p>The technique.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.Model.MaterialVariable.html">MaterialVariable</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Model/Material/PhongMaterialCore.cs/#L10" class="edit-link">Edit this page</a>
+        </div>
+
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          Copyright (c) 2023 Helix Toolkit contributors
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

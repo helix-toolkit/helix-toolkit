@@ -1,0 +1,2131 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Class ParticleStormNode | Helix Toolkit - 3D for .NET </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Class ParticleStormNode | Helix Toolkit - 3D for .NET ">
+      
+      
+      <link rel="icon" href="../images/favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/helix-toolkit/helix-toolkit/new/main-v3/apiSpec/new?filename=HelixToolkit_SharpDX_Model_Scene_ParticleStormNode.md&amp;value=---%0Auid%3A%20HelixToolkit.SharpDX.Model.Scene.ParticleStormNode%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="ManagedReference">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../images/favicon.ico" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="HelixToolkit.SharpDX.Model.Scene.ParticleStormNode">
+
+
+
+  <h1 id="HelixToolkit_SharpDX_Model_Scene_ParticleStormNode" data-uid="HelixToolkit.SharpDX.Model.Scene.ParticleStormNode" class="text-break">
+Class ParticleStormNode  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Model/Scene/ParticleStormNode.cs/#L11"><i class="bi bi-code-slash"></i></a>
+  </h1>
+
+  <div class="facts text-secondary">
+    <dl><dt>Namespace</dt><dd><a class="xref" href="HelixToolkit.html">HelixToolkit</a>.<a class="xref" href="HelixToolkit.SharpDX.html">SharpDX</a>.<a class="xref" href="HelixToolkit.SharpDX.Model.html">Model</a>.<a class="xref" href="HelixToolkit.SharpDX.Model.Scene.html">Scene</a></dd></dl>
+  <dl><dt>Assembly</dt><dd>HelixToolkit.SharpDX.dll</dd></dl>
+  </div>
+
+  <div class="markdown summary"></div>
+  <div class="markdown conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class ParticleStormNode : SceneNode, IDisposable, IComparable&lt;SceneNode&gt;, IAnimationNode, IInstancing, IBoundable</code></pre>
+  </div>
+
+
+
+
+  <dl class="typelist inheritance">
+    <dt>Inheritance</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
+      <div><a class="xref" href="HelixToolkit.SharpDX.DisposeObject.html">DisposeObject</a></div>
+      <div><a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html">SceneNode</a></div>
+      <div><span class="xref">ParticleStormNode</span></div>
+    </dd>
+  </dl>
+
+  <dl class="typelist implements">
+    <dt>Implements</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.idisposable">IDisposable</a></div>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.icomparable-1">IComparable</a>&lt;<a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html">SceneNode</a>&gt;</div>
+      <div><a class="xref" href="HelixToolkit.SharpDX.Animations.IAnimationNode.html">IAnimationNode</a></div>
+      <div><a class="xref" href="HelixToolkit.SharpDX.IInstancing.html">IInstancing</a></div>
+      <div><a class="xref" href="HelixToolkit.SharpDX.IBoundable.html">IBoundable</a></div>
+    </dd>
+  </dl>
+
+
+  <dl class="typelist inheritedMembers">
+    <dt>Inherited Members</dt>
+    <dd>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html#HelixToolkit_SharpDX_Model_Scene_SceneNode_GUID">SceneNode.GUID</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html#HelixToolkit_SharpDX_Model_Scene_SceneNode_Name">SceneNode.Name</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html#HelixToolkit_SharpDX_Model_Scene_SceneNode_TotalModelMatrix">SceneNode.TotalModelMatrix</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html#HelixToolkit_SharpDX_Model_Scene_SceneNode_RenderOrderKey">SceneNode.RenderOrderKey</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html#HelixToolkit_SharpDX_Model_Scene_SceneNode_RenderOrder">SceneNode.RenderOrder</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html#HelixToolkit_SharpDX_Model_Scene_SceneNode_NeedMatrixUpdate">SceneNode.NeedMatrixUpdate</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html#HelixToolkit_SharpDX_Model_Scene_SceneNode_ModelMatrix">SceneNode.ModelMatrix</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html#HelixToolkit_SharpDX_Model_Scene_SceneNode_Parent">SceneNode.Parent</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html#HelixToolkit_SharpDX_Model_Scene_SceneNode_Visible">SceneNode.Visible</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html#HelixToolkit_SharpDX_Model_Scene_SceneNode_IsRenderable">SceneNode.IsRenderable</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html#HelixToolkit_SharpDX_Model_Scene_SceneNode_IsAttached">SceneNode.IsAttached</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html#HelixToolkit_SharpDX_Model_Scene_SceneNode_EffectsManager">SceneNode.EffectsManager</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html#HelixToolkit_SharpDX_Model_Scene_SceneNode_Items">SceneNode.Items</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html#HelixToolkit_SharpDX_Model_Scene_SceneNode_ItemsCount">SceneNode.ItemsCount</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html#HelixToolkit_SharpDX_Model_Scene_SceneNode_IsHitTestVisible">SceneNode.IsHitTestVisible</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html#HelixToolkit_SharpDX_Model_Scene_SceneNode_AlwaysHittable">SceneNode.AlwaysHittable</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html#HelixToolkit_SharpDX_Model_Scene_SceneNode_RenderType">SceneNode.RenderType</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html#HelixToolkit_SharpDX_Model_Scene_SceneNode_EffectTechnique">SceneNode.EffectTechnique</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html#HelixToolkit_SharpDX_Model_Scene_SceneNode_IsAnimationNode">SceneNode.IsAnimationNode</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html#HelixToolkit_SharpDX_Model_Scene_SceneNode_IsAnimationNodeRoot">SceneNode.IsAnimationNodeRoot</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html#HelixToolkit_SharpDX_Model_Scene_SceneNode_AffectsGlobalVariable">SceneNode.AffectsGlobalVariable</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html#HelixToolkit_SharpDX_Model_Scene_SceneNode_OnTransformChanged_System_Numerics_Matrix4x4__">SceneNode.OnTransformChanged(ref Matrix4x4)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html#HelixToolkit_SharpDX_Model_Scene_SceneNode_TransformChanged">SceneNode.TransformChanged</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html#HelixToolkit_SharpDX_Model_Scene_SceneNode_RenderCore">SceneNode.RenderCore</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html#HelixToolkit_SharpDX_Model_Scene_SceneNode_OnSetRenderTechnique">SceneNode.OnSetRenderTechnique</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html#HelixToolkit_SharpDX_Model_Scene_SceneNode_AssignDefaultValuesToCore_HelixToolkit_SharpDX_Core_RenderCore_">SceneNode.AssignDefaultValuesToCore(RenderCore)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html#HelixToolkit_SharpDX_Model_Scene_SceneNode_WrapperSource">SceneNode.WrapperSource</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html#HelixToolkit_SharpDX_Model_Scene_SceneNode_Tag">SceneNode.Tag</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html#HelixToolkit_SharpDX_Model_Scene_SceneNode_IsInFrustum">SceneNode.IsInFrustum</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html#HelixToolkit_SharpDX_Model_Scene_SceneNode_NameChanged">SceneNode.NameChanged</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html#HelixToolkit_SharpDX_Model_Scene_SceneNode_VisibleChanged">SceneNode.VisibleChanged</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html#HelixToolkit_SharpDX_Model_Scene_SceneNode_Attached">SceneNode.Attached</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html#HelixToolkit_SharpDX_Model_Scene_SceneNode_Detached">SceneNode.Detached</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html#HelixToolkit_SharpDX_Model_Scene_SceneNode_MouseDown">SceneNode.MouseDown</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html#HelixToolkit_SharpDX_Model_Scene_SceneNode_MouseMove">SceneNode.MouseMove</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html#HelixToolkit_SharpDX_Model_Scene_SceneNode_MouseUp">SceneNode.MouseUp</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html#HelixToolkit_SharpDX_Model_Scene_SceneNode_Invalidated">SceneNode.Invalidated</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html#HelixToolkit_SharpDX_Model_Scene_SceneNode_Attach_HelixToolkit_SharpDX_IEffectsManager_">SceneNode.Attach(IEffectsManager)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html#HelixToolkit_SharpDX_Model_Scene_SceneNode_OnAttached">SceneNode.OnAttached()</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html#HelixToolkit_SharpDX_Model_Scene_SceneNode_Detach">SceneNode.Detach()</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html#HelixToolkit_SharpDX_Model_Scene_SceneNode_InvalidateRenderEvent_System_Object_System_EventArgs_">SceneNode.InvalidateRenderEvent(object, EventArgs)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html#HelixToolkit_SharpDX_Model_Scene_SceneNode_InvalidateRender">SceneNode.InvalidateRender()</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html#HelixToolkit_SharpDX_Model_Scene_SceneNode_InvalidateSceneGraph">SceneNode.InvalidateSceneGraph()</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html#HelixToolkit_SharpDX_Model_Scene_SceneNode_InvalidatePerFrameRenderables">SceneNode.InvalidatePerFrameRenderables()</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html#HelixToolkit_SharpDX_Model_Scene_SceneNode_Invalidate_HelixToolkit_SharpDX_Model_Scene_InvalidateTypes_">SceneNode.Invalidate(InvalidateTypes)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html#HelixToolkit_SharpDX_Model_Scene_SceneNode_ComputeTransformMatrix">SceneNode.ComputeTransformMatrix()</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html#HelixToolkit_SharpDX_Model_Scene_SceneNode_UpdateRenderOrderKey">SceneNode.UpdateRenderOrderKey()</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html#HelixToolkit_SharpDX_Model_Scene_SceneNode_OnUpdateRenderOrderKey">SceneNode.OnUpdateRenderOrderKey()</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html#HelixToolkit_SharpDX_Model_Scene_SceneNode_UpdateNotRender_HelixToolkit_SharpDX_RenderContext_">SceneNode.UpdateNotRender(RenderContext)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html#HelixToolkit_SharpDX_Model_Scene_SceneNode_CanRender_HelixToolkit_SharpDX_RenderContext_">SceneNode.CanRender(RenderContext)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html#HelixToolkit_SharpDX_Model_Scene_SceneNode_Render_HelixToolkit_SharpDX_RenderContext_HelixToolkit_SharpDX_Render_DeviceContextProxy_">SceneNode.Render(RenderContext, DeviceContextProxy)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html#HelixToolkit_SharpDX_Model_Scene_SceneNode_RenderShadow_HelixToolkit_SharpDX_RenderContext_HelixToolkit_SharpDX_Render_DeviceContextProxy_">SceneNode.RenderShadow(RenderContext, DeviceContextProxy)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html#HelixToolkit_SharpDX_Model_Scene_SceneNode_RenderCustom_HelixToolkit_SharpDX_RenderContext_HelixToolkit_SharpDX_Render_DeviceContextProxy_">SceneNode.RenderCustom(RenderContext, DeviceContextProxy)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html#HelixToolkit_SharpDX_Model_Scene_SceneNode_RenderDepth_HelixToolkit_SharpDX_RenderContext_HelixToolkit_SharpDX_Render_DeviceContextProxy_HelixToolkit_SharpDX_Shaders_ShaderPass_">SceneNode.RenderDepth(RenderContext, DeviceContextProxy, ShaderPass)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html#HelixToolkit_SharpDX_Model_Scene_SceneNode_CanHitTest_HelixToolkit_SharpDX_HitTestContext_">SceneNode.CanHitTest(HitTestContext)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html#HelixToolkit_SharpDX_Model_Scene_SceneNode_MaxBound">SceneNode.MaxBound</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html#HelixToolkit_SharpDX_Model_Scene_SceneNode_MaxBoundSphere">SceneNode.MaxBoundSphere</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html#HelixToolkit_SharpDX_Model_Scene_SceneNode_HasBound">SceneNode.HasBound</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html#HelixToolkit_SharpDX_Model_Scene_SceneNode_BoundChanged">SceneNode.BoundChanged</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html#HelixToolkit_SharpDX_Model_Scene_SceneNode_TransformBoundChanged">SceneNode.TransformBoundChanged</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html#HelixToolkit_SharpDX_Model_Scene_SceneNode_BoundSphereChanged">SceneNode.BoundSphereChanged</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html#HelixToolkit_SharpDX_Model_Scene_SceneNode_TransformBoundSphereChanged">SceneNode.TransformBoundSphereChanged</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html#HelixToolkit_SharpDX_Model_Scene_SceneNode_RaiseOnTransformBoundChanged_HelixToolkit_SharpDX_BoundChangeArgs_HelixToolkit_Maths_BoundingBox__">SceneNode.RaiseOnTransformBoundChanged(BoundChangeArgs&lt;BoundingBox&gt;)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html#HelixToolkit_SharpDX_Model_Scene_SceneNode_RaiseOnBoundChanged_HelixToolkit_SharpDX_BoundChangeArgs_HelixToolkit_Maths_BoundingBox__">SceneNode.RaiseOnBoundChanged(BoundChangeArgs&lt;BoundingBox&gt;)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html#HelixToolkit_SharpDX_Model_Scene_SceneNode_RaiseOnTransformBoundSphereChanged_HelixToolkit_SharpDX_BoundChangeArgs_HelixToolkit_Maths_BoundingSphere__">SceneNode.RaiseOnTransformBoundSphereChanged(BoundChangeArgs&lt;BoundingSphere&gt;)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html#HelixToolkit_SharpDX_Model_Scene_SceneNode_RaiseOnBoundSphereChanged_HelixToolkit_SharpDX_BoundChangeArgs_HelixToolkit_Maths_BoundingSphere__">SceneNode.RaiseOnBoundSphereChanged(BoundChangeArgs&lt;BoundingSphere&gt;)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html#HelixToolkit_SharpDX_Model_Scene_SceneNode_PostEffectNames">SceneNode.PostEffectNames</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html#HelixToolkit_SharpDX_Model_Scene_SceneNode_HasAnyPostEffect">SceneNode.HasAnyPostEffect</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html#HelixToolkit_SharpDX_Model_Scene_SceneNode_AddPostEffect_HelixToolkit_SharpDX_Model_IEffectAttributes_">SceneNode.AddPostEffect(IEffectAttributes)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html#HelixToolkit_SharpDX_Model_Scene_SceneNode_RemovePostEffect_System_String_">SceneNode.RemovePostEffect(string)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html#HelixToolkit_SharpDX_Model_Scene_SceneNode_HasPostEffect_System_String_">SceneNode.HasPostEffect(string)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html#HelixToolkit_SharpDX_Model_Scene_SceneNode_TryGetPostEffect_System_String_HelixToolkit_SharpDX_Model_IEffectAttributes__">SceneNode.TryGetPostEffect(string, out IEffectAttributes)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html#HelixToolkit_SharpDX_Model_Scene_SceneNode_ClearPostEffect">SceneNode.ClearPostEffect()</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html#HelixToolkit_SharpDX_Model_Scene_SceneNode_OnDispose_System_Boolean_">SceneNode.OnDispose(bool)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html#HelixToolkit_SharpDX_Model_Scene_SceneNode_RemoveSelf">SceneNode.RemoveSelf()</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html#HelixToolkit_SharpDX_Model_Scene_SceneNode_CompareTo_HelixToolkit_SharpDX_Model_Scene_SceneNode_">SceneNode.CompareTo(SceneNode)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html#HelixToolkit_SharpDX_Model_Scene_SceneNode_RaiseMouseDownEvent_HelixToolkit_SharpDX_IViewport3DX_System_Numerics_Vector2_HelixToolkit_SharpDX_HitTestResult_System_Object_">SceneNode.RaiseMouseDownEvent(IViewport3DX, Vector2, HitTestResult, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html#HelixToolkit_SharpDX_Model_Scene_SceneNode_RaiseMouseMoveEvent_HelixToolkit_SharpDX_IViewport3DX_System_Numerics_Vector2_HelixToolkit_SharpDX_HitTestResult_System_Object_">SceneNode.RaiseMouseMoveEvent(IViewport3DX, Vector2, HitTestResult, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html#HelixToolkit_SharpDX_Model_Scene_SceneNode_RaiseMouseUpEvent_HelixToolkit_SharpDX_IViewport3DX_System_Numerics_Vector2_HelixToolkit_SharpDX_HitTestResult_System_Object_">SceneNode.RaiseMouseUpEvent(IViewport3DX, Vector2, HitTestResult, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html#HelixToolkit_SharpDX_Model_Scene_SceneNode_SetAffectsRender__1___0____0_">SceneNode.SetAffectsRender&lt;T&gt;(ref T, T)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html#HelixToolkit_SharpDX_Model_Scene_SceneNode_SetAffectsSceneGraph__1___0____0_">SceneNode.SetAffectsSceneGraph&lt;T&gt;(ref T, T)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.DisposeObject.html#HelixToolkit_SharpDX_DisposeObject_RemoveAndDispose__1___0__">DisposeObject.RemoveAndDispose&lt;T&gt;(ref T)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.DisposeObject.html#HelixToolkit_SharpDX_DisposeObject_RemoveAndDispose__1___0_">DisposeObject.RemoveAndDispose&lt;T&gt;(T)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.DisposeObject.html#HelixToolkit_SharpDX_DisposeObject_RefCount">DisposeObject.RefCount</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.DisposeObject.html#HelixToolkit_SharpDX_DisposeObject_IncRef">DisposeObject.IncRef()</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.DisposeObject.html#HelixToolkit_SharpDX_DisposeObject_ForceDispose">DisposeObject.ForceDispose()</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.DisposeObject.html#HelixToolkit_SharpDX_DisposeObject_IsDisposed">DisposeObject.IsDisposed</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.DisposeObject.html#HelixToolkit_SharpDX_DisposeObject_Dispose">DisposeObject.Dispose()</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.DisposeObject.html#HelixToolkit_SharpDX_DisposeObject_Set__1___0____0_">DisposeObject.Set&lt;T&gt;(ref T, T)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">object.Equals(object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">object.Equals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode">object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype">object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone">object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals">object.ReferenceEquals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring">object.ToString()</a>
+    </div>
+  </dd></dl>
+
+  <dl class="typelist extensionMethods">
+    <dt>Extension Methods</dt>
+    <dd>
+  <div>
+      <a class="xref" href="HelixToolkit.SharpDX.SceneNodeExtensions.html#HelixToolkit_SharpDX_SceneNodeExtensions_GetSceneNodeByType__1_HelixToolkit_SharpDX_Model_Scene_SceneNode_">SceneNodeExtensions.GetSceneNodeByType&lt;T&gt;(SceneNode)</a>
+  </div>
+  <div>
+      <a class="xref" href="HelixToolkit.SharpDX.SceneNodeExtensions.html#HelixToolkit_SharpDX_SceneNodeExtensions_TryGetBound_HelixToolkit_SharpDX_Model_Scene_SceneNode_HelixToolkit_Maths_BoundingBox__">SceneNodeExtensions.TryGetBound(SceneNode, out BoundingBox)</a>
+  </div>
+  <div>
+      <a class="xref" href="HelixToolkit.SharpDX.SceneNodeExtensions.html#HelixToolkit_SharpDX_SceneNodeExtensions_TryGetCentroid_HelixToolkit_SharpDX_Model_Scene_SceneNode_System_Numerics_Vector3__">SceneNodeExtensions.TryGetCentroid(SceneNode, out Vector3)</a>
+  </div>
+  <div>
+      <a class="xref" href="HelixToolkit.SharpDX.SceneNodeExtensions.html#HelixToolkit_SharpDX_SceneNodeExtensions_UpdateAllTransformMatrix_HelixToolkit_SharpDX_Model_Scene_SceneNode_">SceneNodeExtensions.UpdateAllTransformMatrix(SceneNode)</a>
+  </div>
+  <div>
+      <a class="xref" href="HelixToolkit.SharpDX.TreeTraverser.html#HelixToolkit_SharpDX_TreeTraverser_ForceUpdateTransformsAndBounds_HelixToolkit_SharpDX_Model_Scene_SceneNode_">TreeTraverser.ForceUpdateTransformsAndBounds(SceneNode)</a>
+  </div>
+  <div>
+      <a class="xref" href="HelixToolkit.SharpDX.TreeTraverser.html#HelixToolkit_SharpDX_TreeTraverser_Traverse_HelixToolkit_SharpDX_Model_Scene_SceneNode_System_Boolean_System_Collections_Generic_Stack_System_Collections_Generic_IEnumerator_HelixToolkit_SharpDX_Model_Scene_SceneNode___">TreeTraverser.Traverse(SceneNode, bool, Stack&lt;IEnumerator&lt;SceneNode&gt;&gt;?)</a>
+  </div>
+  <div>
+      <a class="xref" href="HelixToolkit.SharpDX.TreeTraverser.html#HelixToolkit_SharpDX_TreeTraverser_TraverseUp_HelixToolkit_SharpDX_Model_Scene_SceneNode_">TreeTraverser.TraverseUp(SceneNode?)</a>
+  </div>
+  </dd></dl>
+
+
+
+
+
+  <h2 class="section" id="constructors">Constructors
+</h2>
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene_ParticleStormNode__ctor_" data-uid="HelixToolkit.SharpDX.Model.Scene.ParticleStormNode.#ctor*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene_ParticleStormNode__ctor" data-uid="HelixToolkit.SharpDX.Model.Scene.ParticleStormNode.#ctor">
+  ParticleStormNode()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Model/Scene/ParticleStormNode.cs/#L790"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ParticleStormNode()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <h2 class="section" id="fields">Fields
+</h2>
+
+
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene_ParticleStormNode_boundChanged" data-uid="HelixToolkit.SharpDX.Model.Scene.ParticleStormNode.boundChanged">
+  boundChanged
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Model/Scene/ParticleStormNode.cs/#L750"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected volatile bool boundChanged</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+  <h2 class="section" id="properties">Properties
+</h2>
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene_ParticleStormNode_AlphaBlend_" data-uid="HelixToolkit.SharpDX.Model.Scene.ParticleStormNode.AlphaBlend*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene_ParticleStormNode_AlphaBlend" data-uid="HelixToolkit.SharpDX.Model.Scene.ParticleStormNode.AlphaBlend">
+  AlphaBlend
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Model/Scene/ParticleStormNode.cs/#L515"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the alpha blend.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public BlendOperation AlphaBlend { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">BlendOperation</span></dt>
+    <dd><p>The alpha blend.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene_ParticleStormNode_AnimateSpriteByEnergy_" data-uid="HelixToolkit.SharpDX.Model.Scene.ParticleStormNode.AnimateSpriteByEnergy*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene_ParticleStormNode_AnimateSpriteByEnergy" data-uid="HelixToolkit.SharpDX.Model.Scene.ParticleStormNode.AnimateSpriteByEnergy">
+  AnimateSpriteByEnergy
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Model/Scene/ParticleStormNode.cs/#L447"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets a value indicating whether [animate sprite by energy].</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool AnimateSpriteByEnergy { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><code>true</code> if [animate sprite by energy]; otherwise, <code>false</code>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene_ParticleStormNode_Blend_" data-uid="HelixToolkit.SharpDX.Model.Scene.ParticleStormNode.Blend*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene_ParticleStormNode_Blend" data-uid="HelixToolkit.SharpDX.Model.Scene.ParticleStormNode.Blend">
+  Blend
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Model/Scene/ParticleStormNode.cs/#L493"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the blend.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public BlendOperation Blend { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">BlendOperation</span></dt>
+    <dd><p>The blend.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene_ParticleStormNode_BlendColor_" data-uid="HelixToolkit.SharpDX.Model.Scene.ParticleStormNode.BlendColor*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene_ParticleStormNode_BlendColor" data-uid="HelixToolkit.SharpDX.Model.Scene.ParticleStormNode.BlendColor">
+  BlendColor
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Model/Scene/ParticleStormNode.cs/#L425"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the color of the blend.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Color4 BlendColor { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Maths.Color4.html">Color4</a></dt>
+    <dd><p>The color of the blend.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene_ParticleStormNode_BlendFactor_" data-uid="HelixToolkit.SharpDX.Model.Scene.ParticleStormNode.BlendFactor*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene_ParticleStormNode_BlendFactor" data-uid="HelixToolkit.SharpDX.Model.Scene.ParticleStormNode.BlendFactor">
+  BlendFactor
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Model/Scene/ParticleStormNode.cs/#L623"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the blend factor for blending</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Color4 BlendFactor { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Maths.Color4.html">Color4</a></dt>
+    <dd><p>The blend factor.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene_ParticleStormNode_Bounds_" data-uid="HelixToolkit.SharpDX.Model.Scene.ParticleStormNode.Bounds*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene_ParticleStormNode_Bounds" data-uid="HelixToolkit.SharpDX.Model.Scene.ParticleStormNode.Bounds">
+  Bounds
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Model/Scene/ParticleStormNode.cs/#L715"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p><a class="xref" href="HelixToolkit.SharpDX.IBoundable.html#HelixToolkit_SharpDX_IBoundable_Bounds">Bounds</a></p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override BoundingBox Bounds { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Maths.BoundingBox.html">BoundingBox</a></dt>
+    <dd><p>The bounds.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene_ParticleStormNode_BoundsSphere_" data-uid="HelixToolkit.SharpDX.Model.Scene.ParticleStormNode.BoundsSphere*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene_ParticleStormNode_BoundsSphere" data-uid="HelixToolkit.SharpDX.Model.Scene.ParticleStormNode.BoundsSphere">
+  BoundsSphere
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Model/Scene/ParticleStormNode.cs/#L733"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p><a class="xref" href="HelixToolkit.SharpDX.IBoundable.html#HelixToolkit_SharpDX_IBoundable_BoundsSphere">BoundsSphere</a></p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override BoundingSphere BoundsSphere { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Maths.BoundingSphere.html">BoundingSphere</a></dt>
+    <dd><p>The bounds sphere.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene_ParticleStormNode_BoundsSphereWithTransform_" data-uid="HelixToolkit.SharpDX.Model.Scene.ParticleStormNode.BoundsSphereWithTransform*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene_ParticleStormNode_BoundsSphereWithTransform" data-uid="HelixToolkit.SharpDX.Model.Scene.ParticleStormNode.BoundsSphereWithTransform">
+  BoundsSphereWithTransform
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Model/Scene/ParticleStormNode.cs/#L742"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p><a class="xref" href="HelixToolkit.SharpDX.IBoundable.html#HelixToolkit_SharpDX_IBoundable_BoundsSphereWithTransform">BoundsSphereWithTransform</a></p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override BoundingSphere BoundsSphereWithTransform { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Maths.BoundingSphere.html">BoundingSphere</a></dt>
+    <dd><p>The bounds sphere with transform.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene_ParticleStormNode_BoundsWithTransform_" data-uid="HelixToolkit.SharpDX.Model.Scene.ParticleStormNode.BoundsWithTransform*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene_ParticleStormNode_BoundsWithTransform" data-uid="HelixToolkit.SharpDX.Model.Scene.ParticleStormNode.BoundsWithTransform">
+  BoundsWithTransform
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Model/Scene/ParticleStormNode.cs/#L724"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p><a class="xref" href="HelixToolkit.SharpDX.IBoundable.html#HelixToolkit_SharpDX_IBoundable_BoundsWithTransform">BoundsWithTransform</a></p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override BoundingBox BoundsWithTransform { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Maths.BoundingBox.html">BoundingBox</a></dt>
+    <dd><p>The bounds with transform.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene_ParticleStormNode_ConsumerGravity_" data-uid="HelixToolkit.SharpDX.Model.Scene.ParticleStormNode.ConsumerGravity*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene_ParticleStormNode_ConsumerGravity" data-uid="HelixToolkit.SharpDX.Model.Scene.ParticleStormNode.ConsumerGravity">
+  ConsumerGravity
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Model/Scene/ParticleStormNode.cs/#L130"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the consumer gravity.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float ConsumerGravity { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>The consumer gravity.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene_ParticleStormNode_ConsumerLocation_" data-uid="HelixToolkit.SharpDX.Model.Scene.ParticleStormNode.ConsumerLocation*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene_ParticleStormNode_ConsumerLocation" data-uid="HelixToolkit.SharpDX.Model.Scene.ParticleStormNode.ConsumerLocation">
+  ConsumerLocation
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Model/Scene/ParticleStormNode.cs/#L86"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the consumer location.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Vector3 ConsumerLocation { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd><p>The consumer location.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene_ParticleStormNode_ConsumerRadius_" data-uid="HelixToolkit.SharpDX.Model.Scene.ParticleStormNode.ConsumerRadius*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene_ParticleStormNode_ConsumerRadius" data-uid="HelixToolkit.SharpDX.Model.Scene.ParticleStormNode.ConsumerRadius">
+  ConsumerRadius
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Model/Scene/ParticleStormNode.cs/#L108"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the consumer radius.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float ConsumerRadius { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>The consumer radius.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene_ParticleStormNode_CumulateAtBound_" data-uid="HelixToolkit.SharpDX.Model.Scene.ParticleStormNode.CumulateAtBound*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene_ParticleStormNode_CumulateAtBound" data-uid="HelixToolkit.SharpDX.Model.Scene.ParticleStormNode.CumulateAtBound">
+  CumulateAtBound
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Model/Scene/ParticleStormNode.cs/#L403"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets a value indicating whether [cumulate at bound].</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool CumulateAtBound { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><code>true</code> if [cumulate at bound]; otherwise, <code>false</code>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene_ParticleStormNode_DestAlphaBlend_" data-uid="HelixToolkit.SharpDX.Model.Scene.ParticleStormNode.DestAlphaBlend*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene_ParticleStormNode_DestAlphaBlend" data-uid="HelixToolkit.SharpDX.Model.Scene.ParticleStormNode.DestAlphaBlend">
+  DestAlphaBlend
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Model/Scene/ParticleStormNode.cs/#L603"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the dest alpha blend.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public BlendOption DestAlphaBlend { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">BlendOption</span></dt>
+    <dd><p>The dest alpha blend.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene_ParticleStormNode_DestBlend_" data-uid="HelixToolkit.SharpDX.Model.Scene.ParticleStormNode.DestBlend*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene_ParticleStormNode_DestBlend" data-uid="HelixToolkit.SharpDX.Model.Scene.ParticleStormNode.DestBlend">
+  DestBlend
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Model/Scene/ParticleStormNode.cs/#L559"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the dest blend.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public BlendOption DestBlend { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">BlendOption</span></dt>
+    <dd><p>The dest blend.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene_ParticleStormNode_DomainBoundMax_" data-uid="HelixToolkit.SharpDX.Model.Scene.ParticleStormNode.DomainBoundMax*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene_ParticleStormNode_DomainBoundMax" data-uid="HelixToolkit.SharpDX.Model.Scene.ParticleStormNode.DomainBoundMax">
+  DomainBoundMax
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Model/Scene/ParticleStormNode.cs/#L353"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the domain bound maximum.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Vector3 DomainBoundMax { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd><p>The domain bound maximum.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene_ParticleStormNode_DomainBoundMin_" data-uid="HelixToolkit.SharpDX.Model.Scene.ParticleStormNode.DomainBoundMin*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene_ParticleStormNode_DomainBoundMin" data-uid="HelixToolkit.SharpDX.Model.Scene.ParticleStormNode.DomainBoundMin">
+  DomainBoundMin
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Model/Scene/ParticleStormNode.cs/#L379"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the domain bound minimum.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Vector3 DomainBoundMin { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd><p>The domain bound minimum.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene_ParticleStormNode_EmitterLocation_" data-uid="HelixToolkit.SharpDX.Model.Scene.ParticleStormNode.EmitterLocation*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene_ParticleStormNode_EmitterLocation" data-uid="HelixToolkit.SharpDX.Model.Scene.ParticleStormNode.EmitterLocation">
+  EmitterLocation
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Model/Scene/ParticleStormNode.cs/#L42"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the emitter location.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Vector3 EmitterLocation { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd><p>The emitter location.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene_ParticleStormNode_EmitterRadius_" data-uid="HelixToolkit.SharpDX.Model.Scene.ParticleStormNode.EmitterRadius*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene_ParticleStormNode_EmitterRadius" data-uid="HelixToolkit.SharpDX.Model.Scene.ParticleStormNode.EmitterRadius">
+  EmitterRadius
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Model/Scene/ParticleStormNode.cs/#L64"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the emitter radius.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float EmitterRadius { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>The emitter radius.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene_ParticleStormNode_EnableViewFrustumCheck_" data-uid="HelixToolkit.SharpDX.Model.Scene.ParticleStormNode.EnableViewFrustumCheck*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene_ParticleStormNode_EnableViewFrustumCheck" data-uid="HelixToolkit.SharpDX.Model.Scene.ParticleStormNode.EnableViewFrustumCheck">
+  EnableViewFrustumCheck
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Model/Scene/ParticleStormNode.cs/#L760"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets a value indicating whether [enable view frustum check].</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool EnableViewFrustumCheck { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><code>true</code> if [enable view frustum check]; otherwise, <code>false</code>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene_ParticleStormNode_EnergyDissipationRate_" data-uid="HelixToolkit.SharpDX.Model.Scene.ParticleStormNode.EnergyDissipationRate*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene_ParticleStormNode_EnergyDissipationRate" data-uid="HelixToolkit.SharpDX.Model.Scene.ParticleStormNode.EnergyDissipationRate">
+  EnergyDissipationRate
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Model/Scene/ParticleStormNode.cs/#L175"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the energy dissipation rate.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float EnergyDissipationRate { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>The energy dissipation rate.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene_ParticleStormNode_HasInstances_" data-uid="HelixToolkit.SharpDX.Model.Scene.ParticleStormNode.HasInstances*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene_ParticleStormNode_HasInstances" data-uid="HelixToolkit.SharpDX.Model.Scene.ParticleStormNode.HasInstances">
+  HasInstances
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Model/Scene/ParticleStormNode.cs/#L686"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets a value indicating whether this instance has instances.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool HasInstances { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><code>true</code> if this instance has instances; otherwise, <code>false</code>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene_ParticleStormNode_InitAcceleration_" data-uid="HelixToolkit.SharpDX.Model.Scene.ParticleStormNode.InitAcceleration*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene_ParticleStormNode_InitAcceleration" data-uid="HelixToolkit.SharpDX.Model.Scene.ParticleStormNode.InitAcceleration">
+  InitAcceleration
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Model/Scene/ParticleStormNode.cs/#L329"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the initialize acceleration.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Vector3 InitAcceleration { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd><p>The initialize acceleration.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene_ParticleStormNode_InitialEnergy_" data-uid="HelixToolkit.SharpDX.Model.Scene.ParticleStormNode.InitialEnergy*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene_ParticleStormNode_InitialEnergy" data-uid="HelixToolkit.SharpDX.Model.Scene.ParticleStormNode.InitialEnergy">
+  InitialEnergy
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Model/Scene/ParticleStormNode.cs/#L152"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the initial energy.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float InitialEnergy { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>The initial energy.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene_ParticleStormNode_InitialVelocity_" data-uid="HelixToolkit.SharpDX.Model.Scene.ParticleStormNode.InitialVelocity*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene_ParticleStormNode_InitialVelocity" data-uid="HelixToolkit.SharpDX.Model.Scene.ParticleStormNode.InitialVelocity">
+  InitialVelocity
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Model/Scene/ParticleStormNode.cs/#L307"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the initial velocity.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float InitialVelocity { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>The initial velocity.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene_ParticleStormNode_InstanceBuffer_" data-uid="HelixToolkit.SharpDX.Model.Scene.ParticleStormNode.InstanceBuffer*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene_ParticleStormNode_InstanceBuffer" data-uid="HelixToolkit.SharpDX.Model.Scene.ParticleStormNode.InstanceBuffer">
+  InstanceBuffer
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Model/Scene/ParticleStormNode.cs/#L778"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the instance buffer.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IElementsBufferModel&lt;Matrix4x4&gt; InstanceBuffer { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.IElementsBufferModel-1.html">IElementsBufferModel</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.matrix4x4">Matrix4x4</a>&gt;</dt>
+    <dd><p>The instance buffer.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene_ParticleStormNode_Instances_" data-uid="HelixToolkit.SharpDX.Model.Scene.ParticleStormNode.Instances*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene_ParticleStormNode_Instances" data-uid="HelixToolkit.SharpDX.Model.Scene.ParticleStormNode.Instances">
+  Instances
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Model/Scene/ParticleStormNode.cs/#L665"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the instances.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IList&lt;Matrix4x4&gt;? Instances { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ilist-1">IList</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.matrix4x4">Matrix4x4</a>&gt;</dt>
+    <dd><p>The instances.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene_ParticleStormNode_NumTextureColumn_" data-uid="HelixToolkit.SharpDX.Model.Scene.ParticleStormNode.NumTextureColumn*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene_ParticleStormNode_NumTextureColumn" data-uid="HelixToolkit.SharpDX.Model.Scene.ParticleStormNode.NumTextureColumn">
+  NumTextureColumn
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Model/Scene/ParticleStormNode.cs/#L241"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the number texture column.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public uint NumTextureColumn { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.uint32">uint</a></dt>
+    <dd><p>The number texture column.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene_ParticleStormNode_NumTextureRow_" data-uid="HelixToolkit.SharpDX.Model.Scene.ParticleStormNode.NumTextureRow*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene_ParticleStormNode_NumTextureRow" data-uid="HelixToolkit.SharpDX.Model.Scene.ParticleStormNode.NumTextureRow">
+  NumTextureRow
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Model/Scene/ParticleStormNode.cs/#L263"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the number texture row.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public uint NumTextureRow { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.uint32">uint</a></dt>
+    <dd><p>The number texture row.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene_ParticleStormNode_OriginalBounds_" data-uid="HelixToolkit.SharpDX.Model.Scene.ParticleStormNode.OriginalBounds*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene_ParticleStormNode_OriginalBounds" data-uid="HelixToolkit.SharpDX.Model.Scene.ParticleStormNode.OriginalBounds">
+  OriginalBounds
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Model/Scene/ParticleStormNode.cs/#L697"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p><a class="xref" href="HelixToolkit.SharpDX.IBoundable.html#HelixToolkit_SharpDX_IBoundable_OriginalBounds">OriginalBounds</a></p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override BoundingBox OriginalBounds { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Maths.BoundingBox.html">BoundingBox</a></dt>
+    <dd><p>The original bounds.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene_ParticleStormNode_OriginalBoundsSphere_" data-uid="HelixToolkit.SharpDX.Model.Scene.ParticleStormNode.OriginalBoundsSphere*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene_ParticleStormNode_OriginalBoundsSphere" data-uid="HelixToolkit.SharpDX.Model.Scene.ParticleStormNode.OriginalBoundsSphere">
+  OriginalBoundsSphere
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Model/Scene/ParticleStormNode.cs/#L706"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p><a class="xref" href="HelixToolkit.SharpDX.IBoundable.html#HelixToolkit_SharpDX_IBoundable_OriginalBoundsSphere">OriginalBoundsSphere</a></p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override BoundingSphere OriginalBoundsSphere { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Maths.BoundingSphere.html">BoundingSphere</a></dt>
+    <dd><p>The original bounds sphere.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene_ParticleStormNode_ParticleCount_" data-uid="HelixToolkit.SharpDX.Model.Scene.ParticleStormNode.ParticleCount*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene_ParticleStormNode_ParticleCount" data-uid="HelixToolkit.SharpDX.Model.Scene.ParticleStormNode.ParticleCount">
+  ParticleCount
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Model/Scene/ParticleStormNode.cs/#L20"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the particle count.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int ParticleCount { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The particle count.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene_ParticleStormNode_ParticleSize_" data-uid="HelixToolkit.SharpDX.Model.Scene.ParticleStormNode.ParticleSize*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene_ParticleStormNode_ParticleSize" data-uid="HelixToolkit.SharpDX.Model.Scene.ParticleStormNode.ParticleSize">
+  ParticleSize
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Model/Scene/ParticleStormNode.cs/#L285"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the size of the particle.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Vector2 ParticleSize { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector2">Vector2</a></dt>
+    <dd><p>The size of the particle.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene_ParticleStormNode_ParticleTexture_" data-uid="HelixToolkit.SharpDX.Model.Scene.ParticleStormNode.ParticleTexture*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene_ParticleStormNode_ParticleTexture" data-uid="HelixToolkit.SharpDX.Model.Scene.ParticleStormNode.ParticleTexture">
+  ParticleTexture
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Model/Scene/ParticleStormNode.cs/#L219"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the particle texture.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public TextureModel? ParticleTexture { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.TextureModel.html">TextureModel</a></dt>
+    <dd><p>The particle texture.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene_ParticleStormNode_RandomVectorGenerator_" data-uid="HelixToolkit.SharpDX.Model.Scene.ParticleStormNode.RandomVectorGenerator*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene_ParticleStormNode_RandomVectorGenerator" data-uid="HelixToolkit.SharpDX.Model.Scene.ParticleStormNode.RandomVectorGenerator">
+  RandomVectorGenerator
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Model/Scene/ParticleStormNode.cs/#L197"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the random vector generator.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IRandomVector? RandomVectorGenerator { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.Utilities.IRandomVector.html">IRandomVector</a></dt>
+    <dd><p>The random vector generator.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene_ParticleStormNode_SampleMask_" data-uid="HelixToolkit.SharpDX.Model.Scene.ParticleStormNode.SampleMask*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene_ParticleStormNode_SampleMask" data-uid="HelixToolkit.SharpDX.Model.Scene.ParticleStormNode.SampleMask">
+  SampleMask
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Model/Scene/ParticleStormNode.cs/#L643"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the sample mask for blending</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int SampleMask { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The sample mask.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene_ParticleStormNode_SourceAlphaBlend_" data-uid="HelixToolkit.SharpDX.Model.Scene.ParticleStormNode.SourceAlphaBlend*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene_ParticleStormNode_SourceAlphaBlend" data-uid="HelixToolkit.SharpDX.Model.Scene.ParticleStormNode.SourceAlphaBlend">
+  SourceAlphaBlend
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Model/Scene/ParticleStormNode.cs/#L581"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the source alpha blend.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public BlendOption SourceAlphaBlend { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">BlendOption</span></dt>
+    <dd><p>The source alpha blend.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene_ParticleStormNode_SourceBlend_" data-uid="HelixToolkit.SharpDX.Model.Scene.ParticleStormNode.SourceBlend*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene_ParticleStormNode_SourceBlend" data-uid="HelixToolkit.SharpDX.Model.Scene.ParticleStormNode.SourceBlend">
+  SourceBlend
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Model/Scene/ParticleStormNode.cs/#L537"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the source blend.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public BlendOption SourceBlend { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">BlendOption</span></dt>
+    <dd><p>The source blend.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene_ParticleStormNode_Turbulance_" data-uid="HelixToolkit.SharpDX.Model.Scene.ParticleStormNode.Turbulance*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene_ParticleStormNode_Turbulance" data-uid="HelixToolkit.SharpDX.Model.Scene.ParticleStormNode.Turbulance">
+  Turbulance
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Model/Scene/ParticleStormNode.cs/#L469"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the turbulance.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float Turbulance { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>The turbulance.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h2 class="section" id="methods">Methods
+</h2>
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene_ParticleStormNode_HitTest_" data-uid="HelixToolkit.SharpDX.Model.Scene.ParticleStormNode.HitTest*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene_ParticleStormNode_HitTest_HelixToolkit_SharpDX_HitTestContext_System_Collections_Generic_List_HelixToolkit_SharpDX_HitTestResult___" data-uid="HelixToolkit.SharpDX.Model.Scene.ParticleStormNode.HitTest(HelixToolkit.SharpDX.HitTestContext,System.Collections.Generic.List{HelixToolkit.SharpDX.HitTestResult}@)">
+  HitTest(HitTestContext?, ref List&lt;HitTestResult&gt;)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Model/Scene/ParticleStormNode.cs/#L931"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Hits the test.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override sealed bool HitTest(HitTestContext? context, ref List&lt;HitTestResult&gt; hits)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>context</code> <a class="xref" href="HelixToolkit.SharpDX.HitTestContext.html">HitTestContext</a></dt>
+    <dd><p>The context.</p>
+</dd>
+    <dt><code>hits</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1">List</a>&lt;<a class="xref" href="HelixToolkit.SharpDX.HitTestResult.html">HitTestResult</a>&gt;</dt>
+    <dd><p>The hits.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene_ParticleStormNode_OnAttach_" data-uid="HelixToolkit.SharpDX.Model.Scene.ParticleStormNode.OnAttach*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene_ParticleStormNode_OnAttach_HelixToolkit_SharpDX_IEffectsManager_" data-uid="HelixToolkit.SharpDX.Model.Scene.ParticleStormNode.OnAttach(HelixToolkit.SharpDX.IEffectsManager)">
+  OnAttach(IEffectsManager)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Model/Scene/ParticleStormNode.cs/#L813"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>To override Attach routine, please override this.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected override bool OnAttach(IEffectsManager effectsManager)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>effectsManager</code> <a class="xref" href="HelixToolkit.SharpDX.IEffectsManager.html">IEffectsManager</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p>Return true if attached</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene_ParticleStormNode_OnCreateRenderCore_" data-uid="HelixToolkit.SharpDX.Model.Scene.ParticleStormNode.OnCreateRenderCore*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene_ParticleStormNode_OnCreateRenderCore" data-uid="HelixToolkit.SharpDX.Model.Scene.ParticleStormNode.OnCreateRenderCore">
+  OnCreateRenderCore()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Model/Scene/ParticleStormNode.cs/#L803"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Called when [create render core].</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected override RenderCore OnCreateRenderCore()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.Core.RenderCore.html">RenderCore</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene_ParticleStormNode_OnCreateRenderTechnique_" data-uid="HelixToolkit.SharpDX.Model.Scene.ParticleStormNode.OnCreateRenderTechnique*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene_ParticleStormNode_OnCreateRenderTechnique_HelixToolkit_SharpDX_IEffectsManager_" data-uid="HelixToolkit.SharpDX.Model.Scene.ParticleStormNode.OnCreateRenderTechnique(HelixToolkit.SharpDX.IEffectsManager)">
+  OnCreateRenderTechnique(IEffectsManager)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Model/Scene/ParticleStormNode.cs/#L808"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Override this function to set render technique during Attach Host.</p>
+<p>If <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html#HelixToolkit_SharpDX_Model_Scene_SceneNode_OnSetRenderTechnique">OnSetRenderTechnique</a> is set, then <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html#HelixToolkit_SharpDX_Model_Scene_SceneNode_OnSetRenderTechnique">OnSetRenderTechnique</a> instead of <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html#HelixToolkit_SharpDX_Model_Scene_SceneNode_OnCreateRenderTechnique_HelixToolkit_SharpDX_IEffectsManager_">OnCreateRenderTechnique(IEffectsManager)</a> function will be called.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected override IRenderTechnique? OnCreateRenderTechnique(IEffectsManager effectsManager)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>effectsManager</code> <a class="xref" href="HelixToolkit.SharpDX.IEffectsManager.html">IEffectsManager</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.IRenderTechnique.html">IRenderTechnique</a></dt>
+    <dd><p>Return RenderTechnique</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene_ParticleStormNode_OnDetach_" data-uid="HelixToolkit.SharpDX.Model.Scene.ParticleStormNode.OnDetach*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene_ParticleStormNode_OnDetach" data-uid="HelixToolkit.SharpDX.Model.Scene.ParticleStormNode.OnDetach">
+  OnDetach()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Model/Scene/ParticleStormNode.cs/#L911"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Called when [detach].</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected override void OnDetach()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene_ParticleStormNode_OnHitTest_" data-uid="HelixToolkit.SharpDX.Model.Scene.ParticleStormNode.OnHitTest*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene_ParticleStormNode_OnHitTest_HelixToolkit_SharpDX_HitTestContext_System_Numerics_Matrix4x4_System_Collections_Generic_List_HelixToolkit_SharpDX_HitTestResult___" data-uid="HelixToolkit.SharpDX.Model.Scene.ParticleStormNode.OnHitTest(HelixToolkit.SharpDX.HitTestContext,System.Numerics.Matrix4x4,System.Collections.Generic.List{HelixToolkit.SharpDX.HitTestResult}@)">
+  OnHitTest(HitTestContext?, Matrix4x4, ref List&lt;HitTestResult&gt;)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Model/Scene/ParticleStormNode.cs/#L936"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Called when [hit test].</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected override sealed bool OnHitTest(HitTestContext? context, Matrix4x4 totalModelMatrix, ref List&lt;HitTestResult&gt; hits)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>context</code> <a class="xref" href="HelixToolkit.SharpDX.HitTestContext.html">HitTestContext</a></dt>
+    <dd><p>The context.</p>
+</dd>
+    <dt><code>totalModelMatrix</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.matrix4x4">Matrix4x4</a></dt>
+    <dd><p>The total model matrix.</p>
+</dd>
+    <dt><code>hits</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1">List</a>&lt;<a class="xref" href="HelixToolkit.SharpDX.HitTestResult.html">HitTestResult</a>&gt;</dt>
+    <dd><p>The hits.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene_ParticleStormNode_TestViewFrustum_" data-uid="HelixToolkit.SharpDX.Model.Scene.ParticleStormNode.TestViewFrustum*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene_ParticleStormNode_TestViewFrustum_HelixToolkit_Maths_BoundingFrustum__" data-uid="HelixToolkit.SharpDX.Model.Scene.ParticleStormNode.TestViewFrustum(HelixToolkit.Maths.BoundingFrustum@)">
+  TestViewFrustum(ref BoundingFrustum)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Model/Scene/ParticleStormNode.cs/#L922"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Tests the view frustum.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override bool TestViewFrustum(ref BoundingFrustum viewFrustum)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>viewFrustum</code> <a class="xref" href="HelixToolkit.Maths.BoundingFrustum.html">BoundingFrustum</a></dt>
+    <dd><p>The view frustum.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Model_Scene_ParticleStormNode_Update_" data-uid="HelixToolkit.SharpDX.Model.Scene.ParticleStormNode.Update*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Model_Scene_ParticleStormNode_Update_HelixToolkit_SharpDX_RenderContext_" data-uid="HelixToolkit.SharpDX.Model.Scene.ParticleStormNode.Update(HelixToolkit.SharpDX.RenderContext)">
+  Update(RenderContext)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Model/Scene/ParticleStormNode.cs/#L829"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Updates the specified context.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override void Update(RenderContext context)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>context</code> <a class="xref" href="HelixToolkit.SharpDX.RenderContext.html">RenderContext</a></dt>
+    <dd><p>The context.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Model/Scene/ParticleStormNode.cs/#L11" class="edit-link">Edit this page</a>
+        </div>
+
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          Copyright (c) 2023 Helix Toolkit contributors
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,1780 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Class InputController | Helix Toolkit - 3D for .NET </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Class InputController | Helix Toolkit - 3D for .NET ">
+      
+      <meta name="description" content="Use to determine shortcut keys/Mouse key for Rotation, Pan, etc. User must override certain functions to change default shortcut keys/buttons.">
+      <link rel="icon" href="../images/favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/helix-toolkit/helix-toolkit/new/main-v3/apiSpec/new?filename=HelixToolkit_WinUI_SharpDX_InputController.md&amp;value=---%0Auid%3A%20HelixToolkit.WinUI.SharpDX.InputController%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="ManagedReference">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../images/favicon.ico" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="HelixToolkit.WinUI.SharpDX.InputController">
+
+
+
+  <h1 id="HelixToolkit_WinUI_SharpDX_InputController" data-uid="HelixToolkit.WinUI.SharpDX.InputController" class="text-break">
+Class InputController  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.WinUI.SharpDX/Controls/MouseHandlers/InputController.cs/#L14"><i class="bi bi-code-slash"></i></a>
+  </h1>
+
+  <div class="facts text-secondary">
+    <dl><dt>Namespace</dt><dd><a class="xref" href="HelixToolkit.html">HelixToolkit</a>.<a class="xref" href="HelixToolkit.WinUI.html">WinUI</a>.<a class="xref" href="HelixToolkit.WinUI.SharpDX.html">SharpDX</a></dd></dl>
+  <dl><dt>Assembly</dt><dd>HelixToolkit.WinUI.SharpDX.dll</dd></dl>
+  </div>
+
+  <div class="markdown summary"><p>Use to determine shortcut keys/Mouse key for Rotation, Pan, etc.
+User must override certain functions to change default shortcut keys/buttons.</p>
+</div>
+  <div class="markdown conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class InputController</code></pre>
+  </div>
+
+
+
+
+  <dl class="typelist inheritance">
+    <dt>Inheritance</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
+      <div><span class="xref">InputController</span></div>
+    </dd>
+  </dl>
+
+
+
+  <dl class="typelist inheritedMembers">
+    <dt>Inherited Members</dt>
+    <dd>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">object.Equals(object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">object.Equals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode">object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype">object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone">object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals">object.ReferenceEquals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring">object.ToString()</a>
+    </div>
+  </dd></dl>
+
+
+
+
+
+
+  <h2 class="section" id="properties">Properties
+</h2>
+
+
+  <a id="HelixToolkit_WinUI_SharpDX_InputController_Viewport_" data-uid="HelixToolkit.WinUI.SharpDX.InputController.Viewport*"></a>
+
+  <h3 id="HelixToolkit_WinUI_SharpDX_InputController_Viewport" data-uid="HelixToolkit.WinUI.SharpDX.InputController.Viewport">
+  Viewport
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.WinUI.SharpDX/Controls/MouseHandlers/InputController.cs/#L172"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the viewport.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Viewport3DX? Viewport { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.WinUI.SharpDX.Viewport3DX.html">Viewport3DX</a></dt>
+    <dd><p>The viewport.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h2 class="section" id="methods">Methods
+</h2>
+
+
+  <a id="HelixToolkit_WinUI_SharpDX_InputController_IsChangeFieldOfView_" data-uid="HelixToolkit.WinUI.SharpDX.InputController.IsChangeFieldOfView*"></a>
+
+  <h3 id="HelixToolkit_WinUI_SharpDX_InputController_IsChangeFieldOfView_Microsoft_UI_Input_PointerPointProperties_" data-uid="HelixToolkit.WinUI.SharpDX.InputController.IsChangeFieldOfView(Microsoft.UI.Input.PointerPointProperties)">
+  IsChangeFieldOfView(PointerPointProperties)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.WinUI.SharpDX/Controls/MouseHandlers/InputController.cs/#L259"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual bool IsChangeFieldOfView(PointerPointProperties properties)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>properties</code> <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.input.pointerpointproperties">PointerPointProperties</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_WinUI_SharpDX_InputController_IsChangeLookAt_" data-uid="HelixToolkit.WinUI.SharpDX.InputController.IsChangeLookAt*"></a>
+
+  <h3 id="HelixToolkit_WinUI_SharpDX_InputController_IsChangeLookAt_Microsoft_UI_Input_PointerPointProperties_" data-uid="HelixToolkit.WinUI.SharpDX.InputController.IsChangeLookAt(Microsoft.UI.Input.PointerPointProperties)">
+  IsChangeLookAt(PointerPointProperties)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.WinUI.SharpDX/Controls/MouseHandlers/InputController.cs/#L254"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual bool IsChangeLookAt(PointerPointProperties properties)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>properties</code> <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.input.pointerpointproperties">PointerPointProperties</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_WinUI_SharpDX_InputController_IsCtrlKeyPressed_" data-uid="HelixToolkit.WinUI.SharpDX.InputController.IsCtrlKeyPressed*"></a>
+
+  <h3 id="HelixToolkit_WinUI_SharpDX_InputController_IsCtrlKeyPressed" data-uid="HelixToolkit.WinUI.SharpDX.InputController.IsCtrlKeyPressed">
+  IsCtrlKeyPressed()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.WinUI.SharpDX/Controls/MouseHandlers/InputController.cs/#L489"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool IsCtrlKeyPressed()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_WinUI_SharpDX_InputController_IsResetCamera_" data-uid="HelixToolkit.WinUI.SharpDX.InputController.IsResetCamera*"></a>
+
+  <h3 id="HelixToolkit_WinUI_SharpDX_InputController_IsResetCamera_Microsoft_UI_Input_PointerPointProperties_" data-uid="HelixToolkit.WinUI.SharpDX.InputController.IsResetCamera(Microsoft.UI.Input.PointerPointProperties)">
+  IsResetCamera(PointerPointProperties)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.WinUI.SharpDX/Controls/MouseHandlers/InputController.cs/#L249"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual bool IsResetCamera(PointerPointProperties properties)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>properties</code> <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.input.pointerpointproperties">PointerPointProperties</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_WinUI_SharpDX_InputController_IsShiftKeyPressed_" data-uid="HelixToolkit.WinUI.SharpDX.InputController.IsShiftKeyPressed*"></a>
+
+  <h3 id="HelixToolkit_WinUI_SharpDX_InputController_IsShiftKeyPressed" data-uid="HelixToolkit.WinUI.SharpDX.InputController.IsShiftKeyPressed">
+  IsShiftKeyPressed()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.WinUI.SharpDX/Controls/MouseHandlers/InputController.cs/#L501"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool IsShiftKeyPressed()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_WinUI_SharpDX_InputController_IsStartPan_" data-uid="HelixToolkit.WinUI.SharpDX.InputController.IsStartPan*"></a>
+
+  <h3 id="HelixToolkit_WinUI_SharpDX_InputController_IsStartPan_Microsoft_UI_Input_PointerPointProperties_" data-uid="HelixToolkit.WinUI.SharpDX.InputController.IsStartPan(Microsoft.UI.Input.PointerPointProperties)">
+  IsStartPan(PointerPointProperties)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.WinUI.SharpDX/Controls/MouseHandlers/InputController.cs/#L229"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual bool IsStartPan(PointerPointProperties properties)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>properties</code> <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.input.pointerpointproperties">PointerPointProperties</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_WinUI_SharpDX_InputController_IsStartRotate_" data-uid="HelixToolkit.WinUI.SharpDX.InputController.IsStartRotate*"></a>
+
+  <h3 id="HelixToolkit_WinUI_SharpDX_InputController_IsStartRotate_Microsoft_UI_Input_PointerPointProperties_" data-uid="HelixToolkit.WinUI.SharpDX.InputController.IsStartRotate(Microsoft.UI.Input.PointerPointProperties)">
+  IsStartRotate(PointerPointProperties)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.WinUI.SharpDX/Controls/MouseHandlers/InputController.cs/#L224"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual bool IsStartRotate(PointerPointProperties properties)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>properties</code> <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.input.pointerpointproperties">PointerPointProperties</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_WinUI_SharpDX_InputController_IsStartZoom_" data-uid="HelixToolkit.WinUI.SharpDX.InputController.IsStartZoom*"></a>
+
+  <h3 id="HelixToolkit_WinUI_SharpDX_InputController_IsStartZoom_Microsoft_UI_Input_PointerPointProperties_" data-uid="HelixToolkit.WinUI.SharpDX.InputController.IsStartZoom(Microsoft.UI.Input.PointerPointProperties)">
+  IsStartZoom(PointerPointProperties)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.WinUI.SharpDX/Controls/MouseHandlers/InputController.cs/#L239"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual bool IsStartZoom(PointerPointProperties properties)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>properties</code> <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.input.pointerpointproperties">PointerPointProperties</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_WinUI_SharpDX_InputController_IsStartZoomExtends_" data-uid="HelixToolkit.WinUI.SharpDX.InputController.IsStartZoomExtends*"></a>
+
+  <h3 id="HelixToolkit_WinUI_SharpDX_InputController_IsStartZoomExtends_Microsoft_UI_Input_PointerPointProperties_" data-uid="HelixToolkit.WinUI.SharpDX.InputController.IsStartZoomExtends(Microsoft.UI.Input.PointerPointProperties)">
+  IsStartZoomExtends(PointerPointProperties)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.WinUI.SharpDX/Controls/MouseHandlers/InputController.cs/#L234"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual bool IsStartZoomExtends(PointerPointProperties properties)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>properties</code> <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.input.pointerpointproperties">PointerPointProperties</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_WinUI_SharpDX_InputController_IsStartZoomRectangle_" data-uid="HelixToolkit.WinUI.SharpDX.InputController.IsStartZoomRectangle*"></a>
+
+  <h3 id="HelixToolkit_WinUI_SharpDX_InputController_IsStartZoomRectangle_Microsoft_UI_Input_PointerPointProperties_" data-uid="HelixToolkit.WinUI.SharpDX.InputController.IsStartZoomRectangle(Microsoft.UI.Input.PointerPointProperties)">
+  IsStartZoomRectangle(PointerPointProperties)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.WinUI.SharpDX/Controls/MouseHandlers/InputController.cs/#L244"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual bool IsStartZoomRectangle(PointerPointProperties properties)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>properties</code> <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.input.pointerpointproperties">PointerPointProperties</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_WinUI_SharpDX_InputController_OnKeyPressed_" data-uid="HelixToolkit.WinUI.SharpDX.InputController.OnKeyPressed*"></a>
+
+  <h3 id="HelixToolkit_WinUI_SharpDX_InputController_OnKeyPressed_Microsoft_UI_Xaml_Input_KeyRoutedEventArgs_" data-uid="HelixToolkit.WinUI.SharpDX.InputController.OnKeyPressed(Microsoft.UI.Xaml.Input.KeyRoutedEventArgs)">
+  OnKeyPressed(KeyRoutedEventArgs)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.WinUI.SharpDX/Controls/MouseHandlers/InputController.cs/#L266"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual void OnKeyPressed(KeyRoutedEventArgs e)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>e</code> <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.input.keyroutedeventargs">KeyRoutedEventArgs</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_WinUI_SharpDX_InputController_OnKeyboardChangeView_" data-uid="HelixToolkit.WinUI.SharpDX.InputController.OnKeyboardChangeView*"></a>
+
+  <h3 id="HelixToolkit_WinUI_SharpDX_InputController_OnKeyboardChangeView_Microsoft_UI_Xaml_Input_KeyRoutedEventArgs_" data-uid="HelixToolkit.WinUI.SharpDX.InputController.OnKeyboardChangeView(Microsoft.UI.Xaml.Input.KeyRoutedEventArgs)">
+  OnKeyboardChangeView(KeyRoutedEventArgs)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.WinUI.SharpDX/Controls/MouseHandlers/InputController.cs/#L444"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual void OnKeyboardChangeView(KeyRoutedEventArgs e)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>e</code> <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.input.keyroutedeventargs">KeyRoutedEventArgs</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_WinUI_SharpDX_InputController_OnKeyboardMoveCamera_" data-uid="HelixToolkit.WinUI.SharpDX.InputController.OnKeyboardMoveCamera*"></a>
+
+  <h3 id="HelixToolkit_WinUI_SharpDX_InputController_OnKeyboardMoveCamera_Microsoft_UI_Xaml_Input_KeyRoutedEventArgs_" data-uid="HelixToolkit.WinUI.SharpDX.InputController.OnKeyboardMoveCamera(Microsoft.UI.Xaml.Input.KeyRoutedEventArgs)">
+  OnKeyboardMoveCamera(KeyRoutedEventArgs)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.WinUI.SharpDX/Controls/MouseHandlers/InputController.cs/#L399"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual void OnKeyboardMoveCamera(KeyRoutedEventArgs e)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>e</code> <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.input.keyroutedeventargs">KeyRoutedEventArgs</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_WinUI_SharpDX_InputController_OnKeyboardResetCamera_" data-uid="HelixToolkit.WinUI.SharpDX.InputController.OnKeyboardResetCamera*"></a>
+
+  <h3 id="HelixToolkit_WinUI_SharpDX_InputController_OnKeyboardResetCamera_Microsoft_UI_Xaml_Input_KeyRoutedEventArgs_" data-uid="HelixToolkit.WinUI.SharpDX.InputController.OnKeyboardResetCamera(Microsoft.UI.Xaml.Input.KeyRoutedEventArgs)">
+  OnKeyboardResetCamera(KeyRoutedEventArgs)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.WinUI.SharpDX/Controls/MouseHandlers/InputController.cs/#L440"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual void OnKeyboardResetCamera(KeyRoutedEventArgs e)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>e</code> <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.input.keyroutedeventargs">KeyRoutedEventArgs</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_WinUI_SharpDX_InputController_OnKeyboardStartPan_" data-uid="HelixToolkit.WinUI.SharpDX.InputController.OnKeyboardStartPan*"></a>
+
+  <h3 id="HelixToolkit_WinUI_SharpDX_InputController_OnKeyboardStartPan_Microsoft_UI_Xaml_Input_KeyRoutedEventArgs_" data-uid="HelixToolkit.WinUI.SharpDX.InputController.OnKeyboardStartPan(Microsoft.UI.Xaml.Input.KeyRoutedEventArgs)">
+  OnKeyboardStartPan(KeyRoutedEventArgs)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.WinUI.SharpDX/Controls/MouseHandlers/InputController.cs/#L342"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual void OnKeyboardStartPan(KeyRoutedEventArgs e)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>e</code> <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.input.keyroutedeventargs">KeyRoutedEventArgs</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_WinUI_SharpDX_InputController_OnKeyboardStartRotate_" data-uid="HelixToolkit.WinUI.SharpDX.InputController.OnKeyboardStartRotate*"></a>
+
+  <h3 id="HelixToolkit_WinUI_SharpDX_InputController_OnKeyboardStartRotate_Microsoft_UI_Xaml_Input_KeyRoutedEventArgs_" data-uid="HelixToolkit.WinUI.SharpDX.InputController.OnKeyboardStartRotate(Microsoft.UI.Xaml.Input.KeyRoutedEventArgs)">
+  OnKeyboardStartRotate(KeyRoutedEventArgs)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.WinUI.SharpDX/Controls/MouseHandlers/InputController.cs/#L310"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual void OnKeyboardStartRotate(KeyRoutedEventArgs e)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>e</code> <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.input.keyroutedeventargs">KeyRoutedEventArgs</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_WinUI_SharpDX_InputController_OnKeyboardStartZoom_" data-uid="HelixToolkit.WinUI.SharpDX.InputController.OnKeyboardStartZoom*"></a>
+
+  <h3 id="HelixToolkit_WinUI_SharpDX_InputController_OnKeyboardStartZoom_Microsoft_UI_Xaml_Input_KeyRoutedEventArgs_" data-uid="HelixToolkit.WinUI.SharpDX.InputController.OnKeyboardStartZoom(Microsoft.UI.Xaml.Input.KeyRoutedEventArgs)">
+  OnKeyboardStartZoom(KeyRoutedEventArgs)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.WinUI.SharpDX/Controls/MouseHandlers/InputController.cs/#L374"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual void OnKeyboardStartZoom(KeyRoutedEventArgs e)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>e</code> <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.input.keyroutedeventargs">KeyRoutedEventArgs</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_WinUI_SharpDX_InputController_OnKeyboardStartZoomExtends_" data-uid="HelixToolkit.WinUI.SharpDX.InputController.OnKeyboardStartZoomExtends*"></a>
+
+  <h3 id="HelixToolkit_WinUI_SharpDX_InputController_OnKeyboardStartZoomExtends_Microsoft_UI_Xaml_Input_KeyRoutedEventArgs_" data-uid="HelixToolkit.WinUI.SharpDX.InputController.OnKeyboardStartZoomExtends(Microsoft.UI.Xaml.Input.KeyRoutedEventArgs)">
+  OnKeyboardStartZoomExtends(KeyRoutedEventArgs)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.WinUI.SharpDX/Controls/MouseHandlers/InputController.cs/#L430"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual void OnKeyboardStartZoomExtends(KeyRoutedEventArgs e)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>e</code> <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.input.keyroutedeventargs">KeyRoutedEventArgs</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_WinUI_SharpDX_InputController_OnKeyboardStartZoomRectangle_" data-uid="HelixToolkit.WinUI.SharpDX.InputController.OnKeyboardStartZoomRectangle*"></a>
+
+  <h3 id="HelixToolkit_WinUI_SharpDX_InputController_OnKeyboardStartZoomRectangle_Microsoft_UI_Xaml_Input_KeyRoutedEventArgs_" data-uid="HelixToolkit.WinUI.SharpDX.InputController.OnKeyboardStartZoomRectangle(Microsoft.UI.Xaml.Input.KeyRoutedEventArgs)">
+  OnKeyboardStartZoomRectangle(KeyRoutedEventArgs)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.WinUI.SharpDX/Controls/MouseHandlers/InputController.cs/#L435"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual void OnKeyboardStartZoomRectangle(KeyRoutedEventArgs e)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>e</code> <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.input.keyroutedeventargs">KeyRoutedEventArgs</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_WinUI_SharpDX_InputController_OnPointerPressed_" data-uid="HelixToolkit.WinUI.SharpDX.InputController.OnPointerPressed*"></a>
+
+  <h3 id="HelixToolkit_WinUI_SharpDX_InputController_OnPointerPressed_Microsoft_UI_Xaml_Input_PointerRoutedEventArgs_" data-uid="HelixToolkit.WinUI.SharpDX.InputController.OnPointerPressed(Microsoft.UI.Xaml.Input.PointerRoutedEventArgs)">
+  OnPointerPressed(PointerRoutedEventArgs)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.WinUI.SharpDX/Controls/MouseHandlers/InputController.cs/#L179"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Raises the <span class="xref">PointerPressed</span> event.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual void OnPointerPressed(PointerRoutedEventArgs e)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>e</code> <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.input.pointerroutedeventargs">PointerRoutedEventArgs</a></dt>
+    <dd><p>The <a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.input.pointerroutedeventargs">PointerRoutedEventArgs</a> instance containing the event data.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_WinUI_SharpDX_InputController_RaiseOnAddMoveForce_" data-uid="HelixToolkit.WinUI.SharpDX.InputController.RaiseOnAddMoveForce*"></a>
+
+  <h3 id="HelixToolkit_WinUI_SharpDX_InputController_RaiseOnAddMoveForce_HelixToolkit_WinUI_SharpDX_InputController_AddForceEventArgs_" data-uid="HelixToolkit.WinUI.SharpDX.InputController.RaiseOnAddMoveForce(HelixToolkit.WinUI.SharpDX.InputController.AddForceEventArgs)">
+  RaiseOnAddMoveForce(AddForceEventArgs)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.WinUI.SharpDX/Controls/MouseHandlers/InputController.cs/#L150"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected void RaiseOnAddMoveForce(InputController.AddForceEventArgs args)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>args</code> <a class="xref" href="HelixToolkit.WinUI.SharpDX.InputController.html">InputController</a>.<a class="xref" href="HelixToolkit.WinUI.SharpDX.InputController.AddForceEventArgs.html">AddForceEventArgs</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_WinUI_SharpDX_InputController_RaiseOnAddPanForce_" data-uid="HelixToolkit.WinUI.SharpDX.InputController.RaiseOnAddPanForce*"></a>
+
+  <h3 id="HelixToolkit_WinUI_SharpDX_InputController_RaiseOnAddPanForce_HelixToolkit_WinUI_SharpDX_InputController_AddForceEventArgs_" data-uid="HelixToolkit.WinUI.SharpDX.InputController.RaiseOnAddPanForce(HelixToolkit.WinUI.SharpDX.InputController.AddForceEventArgs)">
+  RaiseOnAddPanForce(AddForceEventArgs)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.WinUI.SharpDX/Controls/MouseHandlers/InputController.cs/#L130"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected void RaiseOnAddPanForce(InputController.AddForceEventArgs args)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>args</code> <a class="xref" href="HelixToolkit.WinUI.SharpDX.InputController.html">InputController</a>.<a class="xref" href="HelixToolkit.WinUI.SharpDX.InputController.AddForceEventArgs.html">AddForceEventArgs</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_WinUI_SharpDX_InputController_RaiseOnAddRotationForce_" data-uid="HelixToolkit.WinUI.SharpDX.InputController.RaiseOnAddRotationForce*"></a>
+
+  <h3 id="HelixToolkit_WinUI_SharpDX_InputController_RaiseOnAddRotationForce_HelixToolkit_WinUI_SharpDX_InputController_AddForceEventArgs_" data-uid="HelixToolkit.WinUI.SharpDX.InputController.RaiseOnAddRotationForce(HelixToolkit.WinUI.SharpDX.InputController.AddForceEventArgs)">
+  RaiseOnAddRotationForce(AddForceEventArgs)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.WinUI.SharpDX/Controls/MouseHandlers/InputController.cs/#L120"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected void RaiseOnAddRotationForce(InputController.AddForceEventArgs args)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>args</code> <a class="xref" href="HelixToolkit.WinUI.SharpDX.InputController.html">InputController</a>.<a class="xref" href="HelixToolkit.WinUI.SharpDX.InputController.AddForceEventArgs.html">AddForceEventArgs</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_WinUI_SharpDX_InputController_RaiseOnAddZoomForce_" data-uid="HelixToolkit.WinUI.SharpDX.InputController.RaiseOnAddZoomForce*"></a>
+
+  <h3 id="HelixToolkit_WinUI_SharpDX_InputController_RaiseOnAddZoomForce_HelixToolkit_WinUI_SharpDX_InputController_AddForceEventArgs_" data-uid="HelixToolkit.WinUI.SharpDX.InputController.RaiseOnAddZoomForce(HelixToolkit.WinUI.SharpDX.InputController.AddForceEventArgs)">
+  RaiseOnAddZoomForce(AddForceEventArgs)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.WinUI.SharpDX/Controls/MouseHandlers/InputController.cs/#L140"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected void RaiseOnAddZoomForce(InputController.AddForceEventArgs args)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>args</code> <a class="xref" href="HelixToolkit.WinUI.SharpDX.InputController.html">InputController</a>.<a class="xref" href="HelixToolkit.WinUI.SharpDX.InputController.AddForceEventArgs.html">AddForceEventArgs</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_WinUI_SharpDX_InputController_RaiseOnBackView_" data-uid="HelixToolkit.WinUI.SharpDX.InputController.RaiseOnBackView*"></a>
+
+  <h3 id="HelixToolkit_WinUI_SharpDX_InputController_RaiseOnBackView" data-uid="HelixToolkit.WinUI.SharpDX.InputController.RaiseOnBackView">
+  RaiseOnBackView()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.WinUI.SharpDX/Controls/MouseHandlers/InputController.cs/#L113"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected void RaiseOnBackView()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_WinUI_SharpDX_InputController_RaiseOnBottomView_" data-uid="HelixToolkit.WinUI.SharpDX.InputController.RaiseOnBottomView*"></a>
+
+  <h3 id="HelixToolkit_WinUI_SharpDX_InputController_RaiseOnBottomView" data-uid="HelixToolkit.WinUI.SharpDX.InputController.RaiseOnBottomView">
+  RaiseOnBottomView()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.WinUI.SharpDX/Controls/MouseHandlers/InputController.cs/#L85"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected void RaiseOnBottomView()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_WinUI_SharpDX_InputController_RaiseOnFrontView_" data-uid="HelixToolkit.WinUI.SharpDX.InputController.RaiseOnFrontView*"></a>
+
+  <h3 id="HelixToolkit_WinUI_SharpDX_InputController_RaiseOnFrontView" data-uid="HelixToolkit.WinUI.SharpDX.InputController.RaiseOnFrontView">
+  RaiseOnFrontView()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.WinUI.SharpDX/Controls/MouseHandlers/InputController.cs/#L106"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected void RaiseOnFrontView()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_WinUI_SharpDX_InputController_RaiseOnLeftView_" data-uid="HelixToolkit.WinUI.SharpDX.InputController.RaiseOnLeftView*"></a>
+
+  <h3 id="HelixToolkit_WinUI_SharpDX_InputController_RaiseOnLeftView" data-uid="HelixToolkit.WinUI.SharpDX.InputController.RaiseOnLeftView">
+  RaiseOnLeftView()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.WinUI.SharpDX/Controls/MouseHandlers/InputController.cs/#L92"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected void RaiseOnLeftView()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_WinUI_SharpDX_InputController_RaiseOnRestoreCameraSettings_" data-uid="HelixToolkit.WinUI.SharpDX.InputController.RaiseOnRestoreCameraSettings*"></a>
+
+  <h3 id="HelixToolkit_WinUI_SharpDX_InputController_RaiseOnRestoreCameraSettings" data-uid="HelixToolkit.WinUI.SharpDX.InputController.RaiseOnRestoreCameraSettings">
+  RaiseOnRestoreCameraSettings()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.WinUI.SharpDX/Controls/MouseHandlers/InputController.cs/#L160"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected void RaiseOnRestoreCameraSettings()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_WinUI_SharpDX_InputController_RaiseOnRightView_" data-uid="HelixToolkit.WinUI.SharpDX.InputController.RaiseOnRightView*"></a>
+
+  <h3 id="HelixToolkit_WinUI_SharpDX_InputController_RaiseOnRightView" data-uid="HelixToolkit.WinUI.SharpDX.InputController.RaiseOnRightView">
+  RaiseOnRightView()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.WinUI.SharpDX/Controls/MouseHandlers/InputController.cs/#L99"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected void RaiseOnRightView()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_WinUI_SharpDX_InputController_RaiseOnTopView_" data-uid="HelixToolkit.WinUI.SharpDX.InputController.RaiseOnTopView*"></a>
+
+  <h3 id="HelixToolkit_WinUI_SharpDX_InputController_RaiseOnTopView" data-uid="HelixToolkit.WinUI.SharpDX.InputController.RaiseOnTopView">
+  RaiseOnTopView()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.WinUI.SharpDX/Controls/MouseHandlers/InputController.cs/#L78"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected void RaiseOnTopView()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <h2 class="section" id="events">Events
+</h2>
+
+
+
+  <h3 id="HelixToolkit_WinUI_SharpDX_InputController_OnAddMoveForce" data-uid="HelixToolkit.WinUI.SharpDX.InputController.OnAddMoveForce">
+  OnAddMoveForce
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.WinUI.SharpDX/Controls/MouseHandlers/InputController.cs/#L148"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Occurs when [on add move force].</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public event EventHandler&lt;InputController.AddForceEventArgs&gt;? OnAddMoveForce</code></pre>
+  </div>
+
+
+
+
+
+
+  <h4 class="section">Event Type</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.eventhandler-1">EventHandler</a>&lt;<a class="xref" href="HelixToolkit.WinUI.SharpDX.InputController.html">InputController</a>.<a class="xref" href="HelixToolkit.WinUI.SharpDX.InputController.AddForceEventArgs.html">AddForceEventArgs</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_WinUI_SharpDX_InputController_OnAddPanForce" data-uid="HelixToolkit.WinUI.SharpDX.InputController.OnAddPanForce">
+  OnAddPanForce
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.WinUI.SharpDX/Controls/MouseHandlers/InputController.cs/#L128"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Occurs when [on add pan force].</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public event EventHandler&lt;InputController.AddForceEventArgs&gt;? OnAddPanForce</code></pre>
+  </div>
+
+
+
+
+
+
+  <h4 class="section">Event Type</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.eventhandler-1">EventHandler</a>&lt;<a class="xref" href="HelixToolkit.WinUI.SharpDX.InputController.html">InputController</a>.<a class="xref" href="HelixToolkit.WinUI.SharpDX.InputController.AddForceEventArgs.html">AddForceEventArgs</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_WinUI_SharpDX_InputController_OnAddRotationForce" data-uid="HelixToolkit.WinUI.SharpDX.InputController.OnAddRotationForce">
+  OnAddRotationForce
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.WinUI.SharpDX/Controls/MouseHandlers/InputController.cs/#L118"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Occurs when [on add rotation force].</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public event EventHandler&lt;InputController.AddForceEventArgs&gt;? OnAddRotationForce</code></pre>
+  </div>
+
+
+
+
+
+
+  <h4 class="section">Event Type</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.eventhandler-1">EventHandler</a>&lt;<a class="xref" href="HelixToolkit.WinUI.SharpDX.InputController.html">InputController</a>.<a class="xref" href="HelixToolkit.WinUI.SharpDX.InputController.AddForceEventArgs.html">AddForceEventArgs</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_WinUI_SharpDX_InputController_OnAddZoomForce" data-uid="HelixToolkit.WinUI.SharpDX.InputController.OnAddZoomForce">
+  OnAddZoomForce
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.WinUI.SharpDX/Controls/MouseHandlers/InputController.cs/#L138"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Occurs when [on add zoom force].</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public event EventHandler&lt;InputController.AddForceEventArgs&gt;? OnAddZoomForce</code></pre>
+  </div>
+
+
+
+
+
+
+  <h4 class="section">Event Type</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.eventhandler-1">EventHandler</a>&lt;<a class="xref" href="HelixToolkit.WinUI.SharpDX.InputController.html">InputController</a>.<a class="xref" href="HelixToolkit.WinUI.SharpDX.InputController.AddForceEventArgs.html">AddForceEventArgs</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_WinUI_SharpDX_InputController_OnBackView" data-uid="HelixToolkit.WinUI.SharpDX.InputController.OnBackView">
+  OnBackView
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.WinUI.SharpDX/Controls/MouseHandlers/InputController.cs/#L111"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Occurs when [on back view].</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public event EventHandler? OnBackView</code></pre>
+  </div>
+
+
+
+
+
+
+  <h4 class="section">Event Type</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.eventhandler">EventHandler</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_WinUI_SharpDX_InputController_OnBottomView" data-uid="HelixToolkit.WinUI.SharpDX.InputController.OnBottomView">
+  OnBottomView
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.WinUI.SharpDX/Controls/MouseHandlers/InputController.cs/#L83"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Occurs when [on bottom view].</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public event EventHandler? OnBottomView</code></pre>
+  </div>
+
+
+
+
+
+
+  <h4 class="section">Event Type</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.eventhandler">EventHandler</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_WinUI_SharpDX_InputController_OnChangeFieldOfView" data-uid="HelixToolkit.WinUI.SharpDX.InputController.OnChangeFieldOfView">
+  OnChangeFieldOfView
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.WinUI.SharpDX/Controls/MouseHandlers/InputController.cs/#L71"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Occurs when [on change field of view].</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public event EventHandler&lt;PointerRoutedEventArgs&gt;? OnChangeFieldOfView</code></pre>
+  </div>
+
+
+
+
+
+
+  <h4 class="section">Event Type</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.eventhandler-1">EventHandler</a>&lt;<a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.input.pointerroutedeventargs">PointerRoutedEventArgs</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_WinUI_SharpDX_InputController_OnChangeLookAt" data-uid="HelixToolkit.WinUI.SharpDX.InputController.OnChangeLookAt">
+  OnChangeLookAt
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.WinUI.SharpDX/Controls/MouseHandlers/InputController.cs/#L66"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Occurs when [on change look at].</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public event EventHandler&lt;PointerRoutedEventArgs&gt;? OnChangeLookAt</code></pre>
+  </div>
+
+
+
+
+
+
+  <h4 class="section">Event Type</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.eventhandler-1">EventHandler</a>&lt;<a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.input.pointerroutedeventargs">PointerRoutedEventArgs</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_WinUI_SharpDX_InputController_OnFrontView" data-uid="HelixToolkit.WinUI.SharpDX.InputController.OnFrontView">
+  OnFrontView
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.WinUI.SharpDX/Controls/MouseHandlers/InputController.cs/#L104"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Occurs when [on front view].</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public event EventHandler? OnFrontView</code></pre>
+  </div>
+
+
+
+
+
+
+  <h4 class="section">Event Type</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.eventhandler">EventHandler</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_WinUI_SharpDX_InputController_OnLeftView" data-uid="HelixToolkit.WinUI.SharpDX.InputController.OnLeftView">
+  OnLeftView
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.WinUI.SharpDX/Controls/MouseHandlers/InputController.cs/#L90"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Occurs when [on left view].</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public event EventHandler? OnLeftView</code></pre>
+  </div>
+
+
+
+
+
+
+  <h4 class="section">Event Type</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.eventhandler">EventHandler</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_WinUI_SharpDX_InputController_OnResetCamera" data-uid="HelixToolkit.WinUI.SharpDX.InputController.OnResetCamera">
+  OnResetCamera
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.WinUI.SharpDX/Controls/MouseHandlers/InputController.cs/#L61"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Occurs when [on reset camera].</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public event EventHandler? OnResetCamera</code></pre>
+  </div>
+
+
+
+
+
+
+  <h4 class="section">Event Type</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.eventhandler">EventHandler</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_WinUI_SharpDX_InputController_OnRestoreCameraSettings" data-uid="HelixToolkit.WinUI.SharpDX.InputController.OnRestoreCameraSettings">
+  OnRestoreCameraSettings
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.WinUI.SharpDX/Controls/MouseHandlers/InputController.cs/#L158"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Occurs when [on restore camera settings].</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public event EventHandler? OnRestoreCameraSettings</code></pre>
+  </div>
+
+
+
+
+
+
+  <h4 class="section">Event Type</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.eventhandler">EventHandler</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_WinUI_SharpDX_InputController_OnRightView" data-uid="HelixToolkit.WinUI.SharpDX.InputController.OnRightView">
+  OnRightView
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.WinUI.SharpDX/Controls/MouseHandlers/InputController.cs/#L97"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Occurs when [on right view].</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public event EventHandler? OnRightView</code></pre>
+  </div>
+
+
+
+
+
+
+  <h4 class="section">Event Type</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.eventhandler">EventHandler</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_WinUI_SharpDX_InputController_OnStartPan" data-uid="HelixToolkit.WinUI.SharpDX.InputController.OnStartPan">
+  OnStartPan
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.WinUI.SharpDX/Controls/MouseHandlers/InputController.cs/#L56"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Occurs when [on start pan].</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public event EventHandler&lt;PointerRoutedEventArgs&gt;? OnStartPan</code></pre>
+  </div>
+
+
+
+
+
+
+  <h4 class="section">Event Type</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.eventhandler-1">EventHandler</a>&lt;<a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.input.pointerroutedeventargs">PointerRoutedEventArgs</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_WinUI_SharpDX_InputController_OnStartRotate" data-uid="HelixToolkit.WinUI.SharpDX.InputController.OnStartRotate">
+  OnStartRotate
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.WinUI.SharpDX/Controls/MouseHandlers/InputController.cs/#L41"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Occurs when [on start rotate].</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public event EventHandler&lt;PointerRoutedEventArgs&gt;? OnStartRotate</code></pre>
+  </div>
+
+
+
+
+
+
+  <h4 class="section">Event Type</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.eventhandler-1">EventHandler</a>&lt;<a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.input.pointerroutedeventargs">PointerRoutedEventArgs</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_WinUI_SharpDX_InputController_OnStartZoom" data-uid="HelixToolkit.WinUI.SharpDX.InputController.OnStartZoom">
+  OnStartZoom
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.WinUI.SharpDX/Controls/MouseHandlers/InputController.cs/#L36"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Occurs when [on start zoom].</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public event EventHandler&lt;PointerRoutedEventArgs&gt;? OnStartZoom</code></pre>
+  </div>
+
+
+
+
+
+
+  <h4 class="section">Event Type</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.eventhandler-1">EventHandler</a>&lt;<a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.input.pointerroutedeventargs">PointerRoutedEventArgs</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_WinUI_SharpDX_InputController_OnStartZoomExtends" data-uid="HelixToolkit.WinUI.SharpDX.InputController.OnStartZoomExtends">
+  OnStartZoomExtends
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.WinUI.SharpDX/Controls/MouseHandlers/InputController.cs/#L46"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Occurs when [on start zoom extends].</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public event EventHandler&lt;PointerRoutedEventArgs&gt;? OnStartZoomExtends</code></pre>
+  </div>
+
+
+
+
+
+
+  <h4 class="section">Event Type</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.eventhandler-1">EventHandler</a>&lt;<a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.input.pointerroutedeventargs">PointerRoutedEventArgs</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_WinUI_SharpDX_InputController_OnStartZoomRectangle" data-uid="HelixToolkit.WinUI.SharpDX.InputController.OnStartZoomRectangle">
+  OnStartZoomRectangle
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.WinUI.SharpDX/Controls/MouseHandlers/InputController.cs/#L51"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Occurs when [on start zoom rectangle].</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public event EventHandler&lt;PointerRoutedEventArgs&gt;? OnStartZoomRectangle</code></pre>
+  </div>
+
+
+
+
+
+
+  <h4 class="section">Event Type</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.eventhandler-1">EventHandler</a>&lt;<a class="xref" href="https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.input.pointerroutedeventargs">PointerRoutedEventArgs</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_WinUI_SharpDX_InputController_OnTopView" data-uid="HelixToolkit.WinUI.SharpDX.InputController.OnTopView">
+  OnTopView
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.WinUI.SharpDX/Controls/MouseHandlers/InputController.cs/#L76"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Occurs when [on top view].</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public event EventHandler? OnTopView</code></pre>
+  </div>
+
+
+
+
+
+
+  <h4 class="section">Event Type</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.eventhandler">EventHandler</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.WinUI.SharpDX/Controls/MouseHandlers/InputController.cs/#L14" class="edit-link">Edit this page</a>
+        </div>
+
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          Copyright (c) 2023 Helix Toolkit contributors
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

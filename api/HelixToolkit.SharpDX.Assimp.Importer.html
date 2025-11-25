@@ -1,0 +1,1364 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Class Importer | Helix Toolkit - 3D for .NET </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Class Importer | Helix Toolkit - 3D for .NET ">
+      
+      
+      <link rel="icon" href="../images/favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/helix-toolkit/helix-toolkit/new/main-v3/apiSpec/new?filename=HelixToolkit_SharpDX_Assimp_Importer.md&amp;value=---%0Auid%3A%20HelixToolkit.SharpDX.Assimp.Importer%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="ManagedReference">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../images/favicon.ico" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="HelixToolkit.SharpDX.Assimp.Importer">
+
+
+
+  <h1 id="HelixToolkit_SharpDX_Assimp_Importer" data-uid="HelixToolkit.SharpDX.Assimp.Importer" class="text-break">
+Class Importer  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.Assimp/Importer_Mesh.cs/#L12"><i class="bi bi-code-slash"></i></a>
+  </h1>
+
+  <div class="facts text-secondary">
+    <dl><dt>Namespace</dt><dd><a class="xref" href="HelixToolkit.html">HelixToolkit</a>.<a class="xref" href="HelixToolkit.SharpDX.html">SharpDX</a>.<a class="xref" href="HelixToolkit.SharpDX.Assimp.html">Assimp</a></dd></dl>
+  <dl><dt>Assembly</dt><dd>HelixToolkit.SharpDX.Assimp.dll</dd></dl>
+  </div>
+
+  <div class="markdown summary"></div>
+  <div class="markdown conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class Importer : IDisposable</code></pre>
+  </div>
+
+
+
+
+  <dl class="typelist inheritance">
+    <dt>Inheritance</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
+      <div><span class="xref">Importer</span></div>
+    </dd>
+  </dl>
+
+  <dl class="typelist implements">
+    <dt>Implements</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.idisposable">IDisposable</a></div>
+    </dd>
+  </dl>
+
+  <dl class="typelist derived">
+    <dt>Derived</dt>
+    <dd>
+      <div><a class="xref" href="HelixToolkit.SharpDX.Assimp.ImporterWithPathToStreamTransform.html">ImporterWithPathToStreamTransform</a></div>
+    </dd>
+  </dl>
+
+  <dl class="typelist inheritedMembers">
+    <dt>Inherited Members</dt>
+    <dd>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">object.Equals(object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">object.Equals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode">object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype">object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone">object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals">object.ReferenceEquals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring">object.ToString()</a>
+    </div>
+  </dd></dl>
+
+
+
+
+
+
+  <h2 class="section" id="fields">Fields
+</h2>
+
+
+
+  <h3 id="HelixToolkit_SharpDX_Assimp_Importer_SupportedTextureFormatDict" data-uid="HelixToolkit.SharpDX.Assimp.Importer.SupportedTextureFormatDict">
+  SupportedTextureFormatDict
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.Assimp/Importer.cs/#L23"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected static readonly HashSet&lt;string&gt; SupportedTextureFormatDict</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.hashset-1">HashSet</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_SharpDX_Assimp_Importer_SupportedTextureFormats" data-uid="HelixToolkit.SharpDX.Assimp.Importer.SupportedTextureFormats">
+  SupportedTextureFormats
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.Assimp/Importer.cs/#L18"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly string[] SupportedTextureFormats</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>[]</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+  <h2 class="section" id="properties">Properties
+</h2>
+
+
+  <a id="HelixToolkit_SharpDX_Assimp_Importer_Animations_" data-uid="HelixToolkit.SharpDX.Assimp.Importer.Animations*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Assimp_Importer_Animations" data-uid="HelixToolkit.SharpDX.Assimp.Importer.Animations">
+  Animations
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.Assimp/Importer.cs/#L100"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the animations.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public List&lt;Animation&gt; Animations { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1">List</a>&lt;<a class="xref" href="HelixToolkit.SharpDX.Animations.Animation.html">Animation</a>&gt;</dt>
+    <dd><p>The animations.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Assimp_Importer_Configuration_" data-uid="HelixToolkit.SharpDX.Assimp.Importer.Configuration*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Assimp_Importer_Configuration" data-uid="HelixToolkit.SharpDX.Assimp.Importer.Configuration">
+  Configuration
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.Assimp/Importer.cs/#L71"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the configuration.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ImporterConfiguration Configuration { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.Assimp.ImporterConfiguration.html">ImporterConfiguration</a></dt>
+    <dd><p>The configuration.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Assimp_Importer_ErrorCode_" data-uid="HelixToolkit.SharpDX.Assimp.Importer.ErrorCode*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Assimp_Importer_ErrorCode" data-uid="HelixToolkit.SharpDX.Assimp.Importer.ErrorCode">
+  ErrorCode
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.Assimp/Importer.cs/#L107"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the error code.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ErrorCode ErrorCode { get; protected set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.Assimp.ErrorCode.html">ErrorCode</a></dt>
+    <dd><p>The error code.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Assimp_Importer_SceneNodes_" data-uid="HelixToolkit.SharpDX.Assimp.Importer.SceneNodes*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Assimp_Importer_SceneNodes" data-uid="HelixToolkit.SharpDX.Assimp.Importer.SceneNodes">
+  SceneNodes
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.Assimp/Importer.cs/#L93"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets all the loaded scene nodes order by preorder traverse.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public List&lt;SceneNode&gt; SceneNodes { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1">List</a>&lt;<a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html">SceneNode</a>&gt;</dt>
+    <dd><p>The scene nodes.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Assimp_Importer_SupportedFormats_" data-uid="HelixToolkit.SharpDX.Assimp.Importer.SupportedFormats*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Assimp_Importer_SupportedFormats" data-uid="HelixToolkit.SharpDX.Assimp.Importer.SupportedFormats">
+  SupportedFormats
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.Assimp/Importer.cs/#L54"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the supported formats.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static string[] SupportedFormats { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>[]</dt>
+    <dd><p>The supported formats.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Assimp_Importer_SupportedFormatsString_" data-uid="HelixToolkit.SharpDX.Assimp.Importer.SupportedFormatsString*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Assimp_Importer_SupportedFormatsString" data-uid="HelixToolkit.SharpDX.Assimp.Importer.SupportedFormatsString">
+  SupportedFormatsString
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.Assimp/Importer.cs/#L62"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the supported formats string.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static string SupportedFormatsString { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The supported formats string.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h2 class="section" id="methods">Methods
+</h2>
+
+
+  <a id="HelixToolkit_SharpDX_Assimp_Importer_Clear_" data-uid="HelixToolkit.SharpDX.Assimp.Importer.Clear*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Assimp_Importer_Clear" data-uid="HelixToolkit.SharpDX.Assimp.Importer.Clear">
+  Clear()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.Assimp/Importer.cs/#L311"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Clears this instance.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual void Clear()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Assimp_Importer_Dispose_" data-uid="HelixToolkit.SharpDX.Assimp.Importer.Dispose*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Assimp_Importer_Dispose" data-uid="HelixToolkit.SharpDX.Assimp.Importer.Dispose">
+  Dispose()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.Assimp/Importer.cs/#L520"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Dispose()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Assimp_Importer_Dispose_" data-uid="HelixToolkit.SharpDX.Assimp.Importer.Dispose*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Assimp_Importer_Dispose_System_Boolean_" data-uid="HelixToolkit.SharpDX.Assimp.Importer.Dispose(System.Boolean)">
+  Dispose(bool)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.Assimp/Importer.cs/#L496"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual void Dispose(bool disposing)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>disposing</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Assimp_Importer_Load_" data-uid="HelixToolkit.SharpDX.Assimp.Importer.Load*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Assimp_Importer_Load_SharpAssimp_Scene_System_String_HelixToolkit_SharpDX_Assimp_HelixToolkitScene__HelixToolkit_SharpDX_ITexturePathResolver_" data-uid="HelixToolkit.SharpDX.Assimp.Importer.Load(SharpAssimp.Scene,System.String,HelixToolkit.SharpDX.Assimp.HelixToolkitScene@,HelixToolkit.SharpDX.ITexturePathResolver)">
+  Load(Scene, string, out HelixToolkitScene?, ITexturePathResolver?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.Assimp/Importer.cs/#L299"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Convert the assimp scene to Helix Scene.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ErrorCode Load(Scene assimpScene, string filePath, out HelixToolkitScene? scene, ITexturePathResolver? texturePathResolver = null)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>assimpScene</code> <span class="xref">Scene</span></dt>
+    <dd><p>The assimp scene.</p>
+</dd>
+    <dt><code>filePath</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The filePath of the model. It is used for texture loading</p>
+</dd>
+    <dt><code>scene</code> <a class="xref" href="HelixToolkit.SharpDX.Assimp.HelixToolkitScene.html">HelixToolkitScene</a></dt>
+    <dd><p>The scene.</p>
+</dd>
+    <dt><code>texturePathResolver</code> <a class="xref" href="HelixToolkit.SharpDX.ITexturePathResolver.html">ITexturePathResolver</a></dt>
+    <dd><p>Custom texture path resolver</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.Assimp.ErrorCode.html">ErrorCode</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Assimp_Importer_Load_" data-uid="HelixToolkit.SharpDX.Assimp.Importer.Load*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Assimp_Importer_Load_System_IO_Stream_System_String_System_String_HelixToolkit_SharpDX_Assimp_HelixToolkitScene__HelixToolkit_SharpDX_ITexturePathResolver_" data-uid="HelixToolkit.SharpDX.Assimp.Importer.Load(System.IO.Stream,System.String,System.String,HelixToolkit.SharpDX.Assimp.HelixToolkitScene@,HelixToolkit.SharpDX.ITexturePathResolver)">
+  Load(Stream, string, string, out HelixToolkitScene?, ITexturePathResolver?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.Assimp/Importer.cs/#L241"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Loads the specified file stream. User must provider custom texture loader to load texture files.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ErrorCode Load(Stream fileStream, string filePath, string formatHint, out HelixToolkitScene? scene, ITexturePathResolver? texturePathResolver = null)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>fileStream</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.io.stream">Stream</a></dt>
+    <dd><p>The file stream.</p>
+</dd>
+    <dt><code>filePath</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The filePath. Used to load texture.</p>
+</dd>
+    <dt><code>formatHint</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The format hint.</p>
+</dd>
+    <dt><code>scene</code> <a class="xref" href="HelixToolkit.SharpDX.Assimp.HelixToolkitScene.html">HelixToolkitScene</a></dt>
+    <dd><p>The scene.</p>
+</dd>
+    <dt><code>texturePathResolver</code> <a class="xref" href="HelixToolkit.SharpDX.ITexturePathResolver.html">ITexturePathResolver</a></dt>
+    <dd><p>The custom texture path resolver</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.Assimp.ErrorCode.html">ErrorCode</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Assimp_Importer_Load_" data-uid="HelixToolkit.SharpDX.Assimp.Importer.Load*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Assimp_Importer_Load_System_String_" data-uid="HelixToolkit.SharpDX.Assimp.Importer.Load(System.String)">
+  Load(string)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.Assimp/Importer.cs/#L150"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Loads the model specified file path.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public HelixToolkitScene? Load(string filePath)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>filePath</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The file path.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.Assimp.HelixToolkitScene.html">HelixToolkitScene</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Assimp_Importer_Load_" data-uid="HelixToolkit.SharpDX.Assimp.Importer.Load*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Assimp_Importer_Load_System_String_HelixToolkit_SharpDX_Assimp_HelixToolkitScene__" data-uid="HelixToolkit.SharpDX.Assimp.Importer.Load(System.String,HelixToolkit.SharpDX.Assimp.HelixToolkitScene@)">
+  Load(string, out HelixToolkitScene?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.Assimp/Importer.cs/#L164"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Loads the model by specified file path.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ErrorCode Load(string filePath, out HelixToolkitScene? scene)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>filePath</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The file path.</p>
+</dd>
+    <dt><code>scene</code> <a class="xref" href="HelixToolkit.SharpDX.Assimp.HelixToolkitScene.html">HelixToolkitScene</a></dt>
+    <dd><p>The loaded scene.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.Assimp.ErrorCode.html">ErrorCode</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.exception">Exception</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+  <a id="HelixToolkit_SharpDX_Assimp_Importer_Load_" data-uid="HelixToolkit.SharpDX.Assimp.Importer.Load*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Assimp_Importer_Load_System_String_HelixToolkit_SharpDX_Assimp_ImporterConfiguration_" data-uid="HelixToolkit.SharpDX.Assimp.Importer.Load(System.String,HelixToolkit.SharpDX.Assimp.ImporterConfiguration)">
+  Load(string, ImporterConfiguration)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.Assimp/Importer.cs/#L123"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Loads the model specified file path.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public HelixToolkitScene? Load(string filePath, ImporterConfiguration config)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>filePath</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The file path.</p>
+</dd>
+    <dt><code>config</code> <a class="xref" href="HelixToolkit.SharpDX.Assimp.ImporterConfiguration.html">ImporterConfiguration</a></dt>
+    <dd><p>The configuration.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.Assimp.HelixToolkitScene.html">HelixToolkitScene</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Assimp_Importer_Load_" data-uid="HelixToolkit.SharpDX.Assimp.Importer.Load*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Assimp_Importer_Load_System_String_System_Boolean_SharpAssimp_PostProcessSteps_SharpAssimp_Configs_PropertyConfig___" data-uid="HelixToolkit.SharpDX.Assimp.Importer.Load(System.String,System.Boolean,SharpAssimp.PostProcessSteps,SharpAssimp.Configs.PropertyConfig[])">
+  Load(string, bool, PostProcessSteps, params PropertyConfig[])
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.Assimp/Importer.cs/#L137"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Loads the model specified file path.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public HelixToolkitScene? Load(string filePath, bool parallelLoad, PostProcessSteps postprocessSteps, params PropertyConfig[] configs)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>filePath</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The file path.</p>
+</dd>
+    <dt><code>parallelLoad</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p>if set to <code>true</code> [parallel load].</p>
+</dd>
+    <dt><code>postprocessSteps</code> <span class="xref">PostProcessSteps</span></dt>
+    <dd><p>The postprocess steps.</p>
+</dd>
+    <dt><code>configs</code> <span class="xref">PropertyConfig</span>[]</dt>
+    <dd><p>The configs.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.Assimp.HelixToolkitScene.html">HelixToolkitScene</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Assimp_Importer_OnCreateHelixLine_" data-uid="HelixToolkit.SharpDX.Assimp.Importer.OnCreateHelixLine*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Assimp_Importer_OnCreateHelixLine_SharpAssimp_Mesh_" data-uid="HelixToolkit.SharpDX.Assimp.Importer.OnCreateHelixLine(SharpAssimp.Mesh)">
+  OnCreateHelixLine(Mesh)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.Assimp/Importer_Mesh.cs/#L277"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>To the helix line.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual LineGeometry3D OnCreateHelixLine(Mesh mesh)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>mesh</code> <span class="xref">Mesh</span></dt>
+    <dd><p>The mesh.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.LineGeometry3D.html">LineGeometry3D</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Assimp_Importer_OnCreateHelixMaterial_" data-uid="HelixToolkit.SharpDX.Assimp.Importer.OnCreateHelixMaterial*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Assimp_Importer_OnCreateHelixMaterial_SharpAssimp_Material_" data-uid="HelixToolkit.SharpDX.Assimp.Importer.OnCreateHelixMaterial(SharpAssimp.Material)">
+  OnCreateHelixMaterial(Material)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.Assimp/Importer_Material.cs/#L227"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>To the helix material.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual KeyValuePair&lt;Material, MaterialCore?&gt; OnCreateHelixMaterial(Material material)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>material</code> <span class="xref">Material</span></dt>
+    <dd><p>The material.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.keyvaluepair-2">KeyValuePair</a>&lt;<span class="xref">Material</span>, <a class="xref" href="HelixToolkit.SharpDX.Model.MaterialCore.html">MaterialCore</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.notsupportedexception">NotSupportedException</a></dt>
+    <dd><p>Shading Mode {material.ShadingMode}</p>
+</dd>
+  </dl>
+
+
+
+  <a id="HelixToolkit_SharpDX_Assimp_Importer_OnCreateHelixMesh_" data-uid="HelixToolkit.SharpDX.Assimp.Importer.OnCreateHelixMesh*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Assimp_Importer_OnCreateHelixMesh_SharpAssimp_Mesh_" data-uid="HelixToolkit.SharpDX.Assimp.Importer.OnCreateHelixMesh(SharpAssimp.Mesh)">
+  OnCreateHelixMesh(Mesh)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.Assimp/Importer_Mesh.cs/#L130"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>To the helix mesh.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual MeshGeometry3D? OnCreateHelixMesh(Mesh mesh)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>mesh</code> <span class="xref">Mesh</span></dt>
+    <dd><p>The mesh.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.MeshGeometry3D.html">MeshGeometry3D</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Assimp_Importer_OnCreateHelixMeshWithBones_" data-uid="HelixToolkit.SharpDX.Assimp.Importer.OnCreateHelixMeshWithBones*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Assimp_Importer_OnCreateHelixMeshWithBones_SharpAssimp_Mesh_" data-uid="HelixToolkit.SharpDX.Assimp.Importer.OnCreateHelixMeshWithBones(SharpAssimp.Mesh)">
+  OnCreateHelixMeshWithBones(Mesh)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.Assimp/Importer_Mesh.cs/#L198"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>To the helix mesh with bones.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual BoneSkinnedMeshGeometry3D? OnCreateHelixMeshWithBones(Mesh mesh)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>mesh</code> <span class="xref">Mesh</span></dt>
+    <dd><p>The mesh.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.BoneSkinnedMeshGeometry3D.html">BoneSkinnedMeshGeometry3D</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Assimp_Importer_OnCreateHelixPoint_" data-uid="HelixToolkit.SharpDX.Assimp.Importer.OnCreateHelixPoint*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Assimp_Importer_OnCreateHelixPoint_SharpAssimp_Mesh_" data-uid="HelixToolkit.SharpDX.Assimp.Importer.OnCreateHelixPoint(SharpAssimp.Mesh)">
+  OnCreateHelixPoint(Mesh)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.Assimp/Importer_Mesh.cs/#L261"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>To the helix point.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual PointGeometry3D OnCreateHelixPoint(Mesh mesh)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>mesh</code> <span class="xref">Mesh</span></dt>
+    <dd><p>The mesh.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.PointGeometry3D.html">PointGeometry3D</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Assimp_Importer_OnCreateHxMeshNode_" data-uid="HelixToolkit.SharpDX.Assimp.Importer.OnCreateHxMeshNode*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Assimp_Importer_OnCreateHxMeshNode_HelixToolkit_SharpDX_Assimp_Importer_MeshInfo_HelixToolkit_SharpDX_Assimp_Importer_HelixInternalScene_System_Numerics_Matrix4x4_" data-uid="HelixToolkit.SharpDX.Assimp.Importer.OnCreateHxMeshNode(HelixToolkit.SharpDX.Assimp.Importer.MeshInfo,HelixToolkit.SharpDX.Assimp.Importer.HelixInternalScene,System.Numerics.Matrix4x4)">
+  OnCreateHxMeshNode(MeshInfo, HelixInternalScene, Matrix4x4)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.Assimp/Importer_Mesh.cs/#L22"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>To the hx mesh nodes.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual SceneNode OnCreateHxMeshNode(Importer.MeshInfo mesh, Importer.HelixInternalScene scene, Matrix4x4 transform)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>mesh</code> <a class="xref" href="HelixToolkit.SharpDX.Assimp.Importer.html">Importer</a>.<a class="xref" href="HelixToolkit.SharpDX.Assimp.Importer.MeshInfo.html">MeshInfo</a></dt>
+    <dd><p>The mesh.</p>
+</dd>
+    <dt><code>scene</code> <a class="xref" href="HelixToolkit.SharpDX.Assimp.Importer.html">Importer</a>.<a class="xref" href="HelixToolkit.SharpDX.Assimp.Importer.HelixInternalScene.html">HelixInternalScene</a></dt>
+    <dd><p>The scene.</p>
+</dd>
+    <dt><code>transform</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.matrix4x4">Matrix4x4</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html">SceneNode</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.notsupportedexception">NotSupportedException</a></dt>
+    <dd><p>Mesh Type {mesh.Type}</p>
+</dd>
+  </dl>
+
+
+
+  <a id="HelixToolkit_SharpDX_Assimp_Importer_OnCreatePBRMaterial_" data-uid="HelixToolkit.SharpDX.Assimp.Importer.OnCreatePBRMaterial*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Assimp_Importer_OnCreatePBRMaterial_SharpAssimp_Material_" data-uid="HelixToolkit.SharpDX.Assimp.Importer.OnCreatePBRMaterial(SharpAssimp.Material)">
+  OnCreatePBRMaterial(Material)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.Assimp/Importer_Material.cs/#L99"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>To the PBR material.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual PBRMaterialCore OnCreatePBRMaterial(Material material)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>material</code> <span class="xref">Material</span></dt>
+    <dd><p>The material.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.Model.PBRMaterialCore.html">PBRMaterialCore</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Assimp_Importer_OnCreatePhongMaterial_" data-uid="HelixToolkit.SharpDX.Assimp.Importer.OnCreatePhongMaterial*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Assimp_Importer_OnCreatePhongMaterial_SharpAssimp_Material_" data-uid="HelixToolkit.SharpDX.Assimp.Importer.OnCreatePhongMaterial(SharpAssimp.Material)">
+  OnCreatePhongMaterial(Material)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.Assimp/Importer_Material.cs/#L21"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>To the phong material.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual PhongMaterialCore OnCreatePhongMaterial(Material material)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>material</code> <span class="xref">Material</span></dt>
+    <dd><p>The material.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.Model.PhongMaterialCore.html">PhongMaterialCore</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Assimp_Importer_OnLoadEmbeddedTexture_" data-uid="HelixToolkit.SharpDX.Assimp.Importer.OnLoadEmbeddedTexture*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Assimp_Importer_OnLoadEmbeddedTexture_SharpAssimp_EmbeddedTexture_" data-uid="HelixToolkit.SharpDX.Assimp.Importer.OnLoadEmbeddedTexture(SharpAssimp.EmbeddedTexture)">
+  OnLoadEmbeddedTexture(EmbeddedTexture)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.Assimp/Importer_Material.cs/#L341"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual TextureModel? OnLoadEmbeddedTexture(EmbeddedTexture texture)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>texture</code> <span class="xref">EmbeddedTexture</span></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.TextureModel.html">TextureModel</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Assimp_Importer_OnLoadTexture_" data-uid="HelixToolkit.SharpDX.Assimp.Importer.OnLoadTexture*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Assimp_Importer_OnLoadTexture_System_String_System_String__" data-uid="HelixToolkit.SharpDX.Assimp.Importer.OnLoadTexture(System.String,System.String@)">
+  OnLoadTexture(string, out string?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.Assimp/Importer_Material.cs/#L394"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual TextureModel? OnLoadTexture(string texturePath, out string? actualPath)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>texturePath</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+    <dt><code>actualPath</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.TextureModel.html">TextureModel</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Assimp_Importer_ProcessNodeAnimation_" data-uid="HelixToolkit.SharpDX.Assimp.Importer.ProcessNodeAnimation*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Assimp_Importer_ProcessNodeAnimation_SharpAssimp_NodeAnimationChannel_System_Double_HelixToolkit_FastList_HelixToolkit_SharpDX_Animations_Keyframe___" data-uid="HelixToolkit.SharpDX.Assimp.Importer.ProcessNodeAnimation(SharpAssimp.NodeAnimationChannel,System.Double,HelixToolkit.FastList{HelixToolkit.SharpDX.Animations.Keyframe}@)">
+  ProcessNodeAnimation(NodeAnimationChannel, double, out FastList&lt;Keyframe&gt;)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.Assimp/Importer_Animation.cs/#L20"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Processes the node animation.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual ErrorCode ProcessNodeAnimation(NodeAnimationChannel channel, double ticksPerSecond, out FastList&lt;Keyframe&gt; list)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>channel</code> <span class="xref">NodeAnimationChannel</span></dt>
+    <dd><p>The channel.</p>
+</dd>
+    <dt><code>ticksPerSecond</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd><p>The ticks per second.</p>
+</dd>
+    <dt><code>list</code> <a class="xref" href="HelixToolkit.FastList-1.html">FastList</a>&lt;<a class="xref" href="HelixToolkit.SharpDX.Animations.Keyframe.html">Keyframe</a>&gt;</dt>
+    <dd><p>The list.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.Assimp.ErrorCode.html">ErrorCode</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Assimp_Importer_ProcessSceneNodes_" data-uid="HelixToolkit.SharpDX.Assimp.Importer.ProcessSceneNodes*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Assimp_Importer_ProcessSceneNodes_HelixToolkit_SharpDX_Model_Scene_SceneNode_" data-uid="HelixToolkit.SharpDX.Assimp.Importer.ProcessSceneNodes(HelixToolkit.SharpDX.Model.Scene.SceneNode)">
+  ProcessSceneNodes(SceneNode)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.Assimp/Importer.cs/#L324"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Processes the scene nodes.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual ErrorCode ProcessSceneNodes(SceneNode root)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>root</code> <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html">SceneNode</a></dt>
+    <dd><p>The root.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.Assimp.ErrorCode.html">ErrorCode</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Assimp_Importer_ToHelixToolkitScene_" data-uid="HelixToolkit.SharpDX.Assimp.Importer.ToHelixToolkitScene*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Assimp_Importer_ToHelixToolkitScene_SharpAssimp_Scene_HelixToolkit_SharpDX_Assimp_HelixToolkitScene__" data-uid="HelixToolkit.SharpDX.Assimp.Importer.ToHelixToolkitScene(SharpAssimp.Scene,HelixToolkit.SharpDX.Assimp.HelixToolkitScene@)">
+  ToHelixToolkitScene(Scene, out HelixToolkitScene?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.Assimp/Importer.cs/#L227"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Converts HelixToolkit Scene directly from assimp scene. User is responsible for providing the assimp scene.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ErrorCode ToHelixToolkitScene(Scene assimpScene, out HelixToolkitScene? helixScene)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>assimpScene</code> <span class="xref">Scene</span></dt>
+    <dd><p>The assimp scene.</p>
+</dd>
+    <dt><code>helixScene</code> <a class="xref" href="HelixToolkit.SharpDX.Assimp.HelixToolkitScene.html">HelixToolkitScene</a></dt>
+    <dd><p>The helix scene.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.Assimp.ErrorCode.html">ErrorCode</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <h2 class="section" id="events">Events
+</h2>
+
+
+
+  <h3 id="HelixToolkit_SharpDX_Assimp_Importer_AssimpExceptionOccurred" data-uid="HelixToolkit.SharpDX.Assimp.Importer.AssimpExceptionOccurred">
+  AssimpExceptionOccurred
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.Assimp/Importer.cs/#L115"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public event EventHandler&lt;Exception&gt;? AssimpExceptionOccurred</code></pre>
+  </div>
+
+
+
+
+
+
+  <h4 class="section">Event Type</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.eventhandler-1">EventHandler</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.exception">Exception</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.Assimp/Importer_Mesh.cs/#L12" class="edit-link">Edit this page</a>
+        </div>
+
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          Copyright (c) 2023 Helix Toolkit contributors
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

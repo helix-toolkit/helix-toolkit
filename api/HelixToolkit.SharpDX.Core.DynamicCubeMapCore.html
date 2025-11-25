@@ -1,0 +1,947 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Class DynamicCubeMapCore | Helix Toolkit - 3D for .NET </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Class DynamicCubeMapCore | Helix Toolkit - 3D for .NET ">
+      
+      
+      <link rel="icon" href="../images/favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/helix-toolkit/helix-toolkit/new/main-v3/apiSpec/new?filename=HelixToolkit_SharpDX_Core_DynamicCubeMapCore.md&amp;value=---%0Auid%3A%20HelixToolkit.SharpDX.Core.DynamicCubeMapCore%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="ManagedReference">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../images/favicon.ico" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="HelixToolkit.SharpDX.Core.DynamicCubeMapCore">
+
+
+
+  <h1 id="HelixToolkit_SharpDX_Core_DynamicCubeMapCore" data-uid="HelixToolkit.SharpDX.Core.DynamicCubeMapCore" class="text-break">
+Class DynamicCubeMapCore  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Core/DynamicCubeMapCore.cs/#L15"><i class="bi bi-code-slash"></i></a>
+  </h1>
+
+  <div class="facts text-secondary">
+    <dl><dt>Namespace</dt><dd><a class="xref" href="HelixToolkit.html">HelixToolkit</a>.<a class="xref" href="HelixToolkit.SharpDX.html">SharpDX</a>.<a class="xref" href="HelixToolkit.SharpDX.Core.html">Core</a></dd></dl>
+  <dl><dt>Assembly</dt><dd>HelixToolkit.SharpDX.dll</dd></dl>
+  </div>
+
+  <div class="markdown summary"></div>
+  <div class="markdown conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class DynamicCubeMapCore : RenderCore, IDisposable, IGUID, IThrowingShadow, IDynamicReflector</code></pre>
+  </div>
+
+
+
+
+  <dl class="typelist inheritance">
+    <dt>Inheritance</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
+      <div><a class="xref" href="HelixToolkit.SharpDX.DisposeObject.html">DisposeObject</a></div>
+      <div><a class="xref" href="HelixToolkit.SharpDX.Core.RenderCore.html">RenderCore</a></div>
+      <div><span class="xref">DynamicCubeMapCore</span></div>
+    </dd>
+  </dl>
+
+  <dl class="typelist implements">
+    <dt>Implements</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.idisposable">IDisposable</a></div>
+      <div><a class="xref" href="HelixToolkit.SharpDX.IGUID.html">IGUID</a></div>
+      <div><a class="xref" href="HelixToolkit.SharpDX.Core.IThrowingShadow.html">IThrowingShadow</a></div>
+      <div><a class="xref" href="HelixToolkit.SharpDX.Core.IDynamicReflector.html">IDynamicReflector</a></div>
+    </dd>
+  </dl>
+
+
+  <dl class="typelist inheritedMembers">
+    <dt>Inherited Members</dt>
+    <dd>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Core.RenderCore.html#HelixToolkit_SharpDX_Core_RenderCore_InvalidateRender">RenderCore.InvalidateRender</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Core.RenderCore.html#HelixToolkit_SharpDX_Core_RenderCore_GUID">RenderCore.GUID</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Core.RenderCore.html#HelixToolkit_SharpDX_Core_RenderCore_RenderType">RenderCore.RenderType</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Core.RenderCore.html#HelixToolkit_SharpDX_Core_RenderCore_NeedUpdate">RenderCore.NeedUpdate</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Core.RenderCore.html#HelixToolkit_SharpDX_Core_RenderCore_IsThrowingShadow">RenderCore.IsThrowingShadow</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Core.RenderCore.html#HelixToolkit_SharpDX_Core_RenderCore_DefaultStateBinding">RenderCore.DefaultStateBinding</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Core.RenderCore.html#HelixToolkit_SharpDX_Core_RenderCore_ShadowStateBinding">RenderCore.ShadowStateBinding</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Core.RenderCore.html#HelixToolkit_SharpDX_Core_RenderCore_ModelMatrix">RenderCore.ModelMatrix</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Core.RenderCore.html#HelixToolkit_SharpDX_Core_RenderCore_EffectTechnique">RenderCore.EffectTechnique</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Core.RenderCore.html#HelixToolkit_SharpDX_Core_RenderCore_Device">RenderCore.Device</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Core.RenderCore.html#HelixToolkit_SharpDX_Core_RenderCore_IsAttached">RenderCore.IsAttached</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Core.RenderCore.html#HelixToolkit_SharpDX_Core_RenderCore_AddComponent__1___0_">RenderCore.AddComponent&lt;T&gt;(T)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Core.RenderCore.html#HelixToolkit_SharpDX_Core_RenderCore_Attach_HelixToolkit_SharpDX_IRenderTechnique_">RenderCore.Attach(IRenderTechnique)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Core.RenderCore.html#HelixToolkit_SharpDX_Core_RenderCore_Detach">RenderCore.Detach()</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Core.RenderCore.html#HelixToolkit_SharpDX_Core_RenderCore_RenderShadow_HelixToolkit_SharpDX_RenderContext_HelixToolkit_SharpDX_Render_DeviceContextProxy_">RenderCore.RenderShadow(RenderContext, DeviceContextProxy)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Core.RenderCore.html#HelixToolkit_SharpDX_Core_RenderCore_RenderCustom_HelixToolkit_SharpDX_RenderContext_HelixToolkit_SharpDX_Render_DeviceContextProxy_">RenderCore.RenderCustom(RenderContext, DeviceContextProxy)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Core.RenderCore.html#HelixToolkit_SharpDX_Core_RenderCore_RenderDepth_HelixToolkit_SharpDX_RenderContext_HelixToolkit_SharpDX_Render_DeviceContextProxy_HelixToolkit_SharpDX_Shaders_ShaderPass_">RenderCore.RenderDepth(RenderContext, DeviceContextProxy, ShaderPass)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Core.RenderCore.html#HelixToolkit_SharpDX_Core_RenderCore_Update_HelixToolkit_SharpDX_RenderContext_HelixToolkit_SharpDX_Render_DeviceContextProxy_">RenderCore.Update(RenderContext, DeviceContextProxy)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Core.RenderCore.html#HelixToolkit_SharpDX_Core_RenderCore_OnUpdate_HelixToolkit_SharpDX_RenderContext_HelixToolkit_SharpDX_Render_DeviceContextProxy_">RenderCore.OnUpdate(RenderContext, DeviceContextProxy)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Core.RenderCore.html#HelixToolkit_SharpDX_Core_RenderCore_UpdateCanRenderFlag">RenderCore.UpdateCanRenderFlag()</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Core.RenderCore.html#HelixToolkit_SharpDX_Core_RenderCore_OnUpdateCanRenderFlag">RenderCore.OnUpdateCanRenderFlag()</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Core.RenderCore.html#HelixToolkit_SharpDX_Core_RenderCore_ResetInvalidateHandler">RenderCore.ResetInvalidateHandler()</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Core.RenderCore.html#HelixToolkit_SharpDX_Core_RenderCore_RaiseInvalidateRender">RenderCore.RaiseInvalidateRender()</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Core.RenderCore.html#HelixToolkit_SharpDX_Core_RenderCore_SetAffectsRender__1___0____0_">RenderCore.SetAffectsRender&lt;T&gt;(ref T, T)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Core.RenderCore.html#HelixToolkit_SharpDX_Core_RenderCore_SetAffectsCanRenderFlag__1___0____0_">RenderCore.SetAffectsCanRenderFlag&lt;T&gt;(ref T, T)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Core.RenderCore.html#HelixToolkit_SharpDX_Core_RenderCore_OnDispose_System_Boolean_">RenderCore.OnDispose(bool)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.DisposeObject.html#HelixToolkit_SharpDX_DisposeObject_RemoveAndDispose__1___0__">DisposeObject.RemoveAndDispose&lt;T&gt;(ref T)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.DisposeObject.html#HelixToolkit_SharpDX_DisposeObject_RemoveAndDispose__1___0_">DisposeObject.RemoveAndDispose&lt;T&gt;(T)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.DisposeObject.html#HelixToolkit_SharpDX_DisposeObject_RefCount">DisposeObject.RefCount</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.DisposeObject.html#HelixToolkit_SharpDX_DisposeObject_IncRef">DisposeObject.IncRef()</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.DisposeObject.html#HelixToolkit_SharpDX_DisposeObject_ForceDispose">DisposeObject.ForceDispose()</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.DisposeObject.html#HelixToolkit_SharpDX_DisposeObject_IsDisposed">DisposeObject.IsDisposed</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.DisposeObject.html#HelixToolkit_SharpDX_DisposeObject_Dispose">DisposeObject.Dispose()</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.DisposeObject.html#HelixToolkit_SharpDX_DisposeObject_Set__1___0____0_">DisposeObject.Set&lt;T&gt;(ref T, T)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">object.Equals(object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">object.Equals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode">object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype">object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone">object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals">object.ReferenceEquals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring">object.ToString()</a>
+    </div>
+  </dd></dl>
+
+
+
+
+
+
+  <h2 class="section" id="constructors">Constructors
+</h2>
+
+
+  <a id="HelixToolkit_SharpDX_Core_DynamicCubeMapCore__ctor_" data-uid="HelixToolkit.SharpDX.Core.DynamicCubeMapCore.#ctor*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Core_DynamicCubeMapCore__ctor" data-uid="HelixToolkit.SharpDX.Core.DynamicCubeMapCore.#ctor">
+  DynamicCubeMapCore()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Core/DynamicCubeMapCore.cs/#L305"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="HelixToolkit.SharpDX.Core.DynamicCubeMapCore.html">DynamicCubeMapCore</a> class.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public DynamicCubeMapCore()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <h2 class="section" id="properties">Properties
+</h2>
+
+
+  <a id="HelixToolkit_SharpDX_Core_DynamicCubeMapCore_Center_" data-uid="HelixToolkit.SharpDX.Core.DynamicCubeMapCore.Center*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Core_DynamicCubeMapCore_Center" data-uid="HelixToolkit.SharpDX.Core.DynamicCubeMapCore.Center">
+  Center
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Core/DynamicCubeMapCore.cs/#L250"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the center.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Vector3 Center { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd><p>The center.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Core_DynamicCubeMapCore_CubeMap_" data-uid="HelixToolkit.SharpDX.Core.DynamicCubeMapCore.CubeMap*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Core_DynamicCubeMapCore_CubeMap" data-uid="HelixToolkit.SharpDX.Core.DynamicCubeMapCore.CubeMap">
+  CubeMap
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Core/DynamicCubeMapCore.cs/#L65"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ShaderResourceViewProxy? CubeMap { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.Utilities.ShaderResourceViewProxy.html">ShaderResourceViewProxy</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Core_DynamicCubeMapCore_DefaultShaderPass_" data-uid="HelixToolkit.SharpDX.Core.DynamicCubeMapCore.DefaultShaderPass*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Core_DynamicCubeMapCore_DefaultShaderPass" data-uid="HelixToolkit.SharpDX.Core.DynamicCubeMapCore.DefaultShaderPass">
+  DefaultShaderPass
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Core/DynamicCubeMapCore.cs/#L132"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected ShaderPass? DefaultShaderPass { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.Shaders.ShaderPass.html">ShaderPass</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Core_DynamicCubeMapCore_DefaultShaderPassName_" data-uid="HelixToolkit.SharpDX.Core.DynamicCubeMapCore.DefaultShaderPassName*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Core_DynamicCubeMapCore_DefaultShaderPassName" data-uid="HelixToolkit.SharpDX.Core.DynamicCubeMapCore.DefaultShaderPassName">
+  DefaultShaderPassName
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Core/DynamicCubeMapCore.cs/#L112"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Name of the default pass inside a technique.</p>
+<p>Default: <a class="xref" href="HelixToolkit.SharpDX.DefaultPassNames.html#HelixToolkit_SharpDX_DefaultPassNames_Default">Default</a></p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string DefaultShaderPassName { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Core_DynamicCubeMapCore_EnableReflector_" data-uid="HelixToolkit.SharpDX.Core.DynamicCubeMapCore.EnableReflector*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Core_DynamicCubeMapCore_EnableReflector" data-uid="HelixToolkit.SharpDX.Core.DynamicCubeMapCore.EnableReflector">
+  EnableReflector
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Core/DynamicCubeMapCore.cs/#L80"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets a value indicating whether [enable reflector].</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool EnableReflector { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><code>true</code> if [enable reflector]; otherwise, <code>false</code>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Core_DynamicCubeMapCore_FaceSize_" data-uid="HelixToolkit.SharpDX.Core.DynamicCubeMapCore.FaceSize*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Core_DynamicCubeMapCore_FaceSize" data-uid="HelixToolkit.SharpDX.Core.DynamicCubeMapCore.FaceSize">
+  FaceSize
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Core/DynamicCubeMapCore.cs/#L94"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int FaceSize { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Core_DynamicCubeMapCore_FarField_" data-uid="HelixToolkit.SharpDX.Core.DynamicCubeMapCore.FarField*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Core_DynamicCubeMapCore_FarField" data-uid="HelixToolkit.SharpDX.Core.DynamicCubeMapCore.FarField">
+  FarField
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Core/DynamicCubeMapCore.cs/#L228"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the far field of perspective.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float FarField { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>The far field.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Core_DynamicCubeMapCore_IgnoredGuid_" data-uid="HelixToolkit.SharpDX.Core.DynamicCubeMapCore.IgnoredGuid*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Core_DynamicCubeMapCore_IgnoredGuid" data-uid="HelixToolkit.SharpDX.Core.DynamicCubeMapCore.IgnoredGuid">
+  IgnoredGuid
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Core/DynamicCubeMapCore.cs/#L62"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public HashSet&lt;Guid&gt; IgnoredGuid { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.hashset-1">HashSet</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.guid">Guid</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Core_DynamicCubeMapCore_IsDynamicScene_" data-uid="HelixToolkit.SharpDX.Core.DynamicCubeMapCore.IsDynamicScene*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Core_DynamicCubeMapCore_IsDynamicScene" data-uid="HelixToolkit.SharpDX.Core.DynamicCubeMapCore.IsDynamicScene">
+  IsDynamicScene
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Core/DynamicCubeMapCore.cs/#L289"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets a value indicating whether this scene is dynamic scene.
+If true, reflection map will be updated in each frame. Otherwise it will only be updated if scene graph or visibility changed.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsDynamicScene { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><code>true</code> if this instance is dynamic scene; otherwise, <code>false</code>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Core_DynamicCubeMapCore_IsLeftHanded_" data-uid="HelixToolkit.SharpDX.Core.DynamicCubeMapCore.IsLeftHanded*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Core_DynamicCubeMapCore_IsLeftHanded" data-uid="HelixToolkit.SharpDX.Core.DynamicCubeMapCore.IsLeftHanded">
+  IsLeftHanded
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Core/DynamicCubeMapCore.cs/#L182"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets a value indicating whether this coordinate system is left handed.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsLeftHanded { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><code>true</code> if this coordinate system is left handed; otherwise, <code>false</code>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Core_DynamicCubeMapCore_NearField_" data-uid="HelixToolkit.SharpDX.Core.DynamicCubeMapCore.NearField*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Core_DynamicCubeMapCore_NearField" data-uid="HelixToolkit.SharpDX.Core.DynamicCubeMapCore.NearField">
+  NearField
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Core/DynamicCubeMapCore.cs/#L205"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the near field of perspective.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float NearField { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>The near field.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Core_DynamicCubeMapCore_SamplerDescription_" data-uid="HelixToolkit.SharpDX.Core.DynamicCubeMapCore.SamplerDescription*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Core_DynamicCubeMapCore_SamplerDescription" data-uid="HelixToolkit.SharpDX.Core.DynamicCubeMapCore.SamplerDescription">
+  SamplerDescription
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Core/DynamicCubeMapCore.cs/#L157"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the sampler description.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public SamplerStateDescription SamplerDescription { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">SamplerStateDescription</span></dt>
+    <dd><p>The sampler description.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Core_DynamicCubeMapCore_ShaderCubeTextureName_" data-uid="HelixToolkit.SharpDX.Core.DynamicCubeMapCore.ShaderCubeTextureName*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Core_DynamicCubeMapCore_ShaderCubeTextureName" data-uid="HelixToolkit.SharpDX.Core.DynamicCubeMapCore.ShaderCubeTextureName">
+  ShaderCubeTextureName
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Core/DynamicCubeMapCore.cs/#L271"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the name of the shader cube texture.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string ShaderCubeTextureName { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The name of the shader cube texture.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Core_DynamicCubeMapCore_ShaderCubeTextureSamplerName_" data-uid="HelixToolkit.SharpDX.Core.DynamicCubeMapCore.ShaderCubeTextureSamplerName*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Core_DynamicCubeMapCore_ShaderCubeTextureSamplerName" data-uid="HelixToolkit.SharpDX.Core.DynamicCubeMapCore.ShaderCubeTextureSamplerName">
+  ShaderCubeTextureSamplerName
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Core/DynamicCubeMapCore.cs/#L279"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the name of the shader cube texture sampler.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string ShaderCubeTextureSamplerName { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The name of the shader cube texture sampler.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h2 class="section" id="methods">Methods
+</h2>
+
+
+  <a id="HelixToolkit_SharpDX_Core_DynamicCubeMapCore_BindCubeMap_" data-uid="HelixToolkit.SharpDX.Core.DynamicCubeMapCore.BindCubeMap*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Core_DynamicCubeMapCore_BindCubeMap_HelixToolkit_SharpDX_Render_DeviceContextProxy_" data-uid="HelixToolkit.SharpDX.Core.DynamicCubeMapCore.BindCubeMap(HelixToolkit.SharpDX.Render.DeviceContextProxy)">
+  BindCubeMap(DeviceContextProxy)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Core/DynamicCubeMapCore.cs/#L515"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Binds the cube map.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void BindCubeMap(DeviceContextProxy deviceContext)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>deviceContext</code> <a class="xref" href="HelixToolkit.SharpDX.Render.DeviceContextProxy.html">DeviceContextProxy</a></dt>
+    <dd><p>The device context.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Core_DynamicCubeMapCore_OnAttach_" data-uid="HelixToolkit.SharpDX.Core.DynamicCubeMapCore.OnAttach*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Core_DynamicCubeMapCore_OnAttach_HelixToolkit_SharpDX_IRenderTechnique_" data-uid="HelixToolkit.SharpDX.Core.DynamicCubeMapCore.OnAttach(HelixToolkit.SharpDX.IRenderTechnique)">
+  OnAttach(IRenderTechnique?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Core/DynamicCubeMapCore.cs/#L371"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>During attatching render core. Create all local resources. Use Collect(resource) to let object be released automatically during Detach().</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected override bool OnAttach(IRenderTechnique? technique)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>technique</code> <a class="xref" href="HelixToolkit.SharpDX.IRenderTechnique.html">IRenderTechnique</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Core_DynamicCubeMapCore_OnDetach_" data-uid="HelixToolkit.SharpDX.Core.DynamicCubeMapCore.OnDetach*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Core_DynamicCubeMapCore_OnDetach" data-uid="HelixToolkit.SharpDX.Core.DynamicCubeMapCore.OnDetach">
+  OnDetach()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Core/DynamicCubeMapCore.cs/#L380"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>On detaching, default is to release all resources</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected override void OnDetach()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Core_DynamicCubeMapCore_Render_" data-uid="HelixToolkit.SharpDX.Core.DynamicCubeMapCore.Render*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Core_DynamicCubeMapCore_Render_HelixToolkit_SharpDX_RenderContext_HelixToolkit_SharpDX_Render_DeviceContextProxy_" data-uid="HelixToolkit.SharpDX.Core.DynamicCubeMapCore.Render(HelixToolkit.SharpDX.RenderContext,HelixToolkit.SharpDX.Render.DeviceContextProxy)">
+  Render(RenderContext, DeviceContextProxy)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Core/DynamicCubeMapCore.cs/#L394"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Render routine</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override void Render(RenderContext context, DeviceContextProxy deviceContext)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>context</code> <a class="xref" href="HelixToolkit.SharpDX.RenderContext.html">RenderContext</a></dt>
+    <dd></dd>
+    <dt><code>deviceContext</code> <a class="xref" href="HelixToolkit.SharpDX.Render.DeviceContextProxy.html">DeviceContextProxy</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Core_DynamicCubeMapCore_UnBindCubeMap_" data-uid="HelixToolkit.SharpDX.Core.DynamicCubeMapCore.UnBindCubeMap*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Core_DynamicCubeMapCore_UnBindCubeMap_HelixToolkit_SharpDX_Render_DeviceContextProxy_" data-uid="HelixToolkit.SharpDX.Core.DynamicCubeMapCore.UnBindCubeMap(HelixToolkit.SharpDX.Render.DeviceContextProxy)">
+  UnBindCubeMap(DeviceContextProxy)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Core/DynamicCubeMapCore.cs/#L530"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Uns the bind cube map.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void UnBindCubeMap(DeviceContextProxy deviceContext)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>deviceContext</code> <a class="xref" href="HelixToolkit.SharpDX.Render.DeviceContextProxy.html">DeviceContextProxy</a></dt>
+    <dd><p>The device context.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Core/DynamicCubeMapCore.cs/#L15" class="edit-link">Edit this page</a>
+        </div>
+
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          Copyright (c) 2023 Helix Toolkit contributors
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

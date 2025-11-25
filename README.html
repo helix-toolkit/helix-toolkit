@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Documentation System | Helix Toolkit - 3D for .NET </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Documentation System | Helix Toolkit - 3D for .NET ">
+      
+      
+      <link rel="icon" href="images/favicon.ico">
+      <link rel="stylesheet" href="public/docfx.min.css">
+      <link rel="stylesheet" href="public/main.css">
+      <meta name="docfx:navrel" content="toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/Documentation/README.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="index.html">
+            <img id="logo" class="svg" src="images/favicon.ico" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+
+      <div class="content">
+        <div class="actionbar">
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="documentation-system">Documentation System</h1>
+
+<p>This directory contains the automated documentation generation system for Helix Toolkit using <a href="https://dotnet.github.io/docfx/">DocFX</a>.</p>
+<h2 id="overview">Overview</h2>
+<p>The documentation system automatically generates:</p>
+<ul>
+<li><strong>API Documentation</strong>: Extracted from XML documentation comments in C# source code</li>
+<li><strong>Articles</strong>: Conceptual documentation and guides (stored in <code>articles/</code>)</li>
+<li><strong>Static Site</strong>: A browseable website with search functionality</li>
+</ul>
+<h2 id="building-documentation-locally">Building Documentation Locally</h2>
+<h3 id="prerequisites">Prerequisites</h3>
+<ul>
+<li><a href="https://dotnet.microsoft.com/download">.NET SDK 6.0 or later</a></li>
+<li>Git (for cloning the repository)</li>
+</ul>
+<h3 id="quick-start">Quick Start</h3>
+<h4 id="on-windows">On Windows</h4>
+<pre><code class="lang-cmd">cd Source
+build-doc.cmd
+</code></pre>
+<h4 id="on-linuxmacos">On Linux/macOS</h4>
+<pre><code class="lang-bash">cd Source
+./build-doc.sh
+</code></pre>
+<p>The documentation will be built and served locally at <code>http://localhost:8080</code>. Press <code>Ctrl+C</code> to stop the server.</p>
+<h3 id="building-without-serving">Building Without Serving</h3>
+<p>To build the documentation without starting the local server (useful in CI environments):</p>
+<h4 id="windows">Windows</h4>
+<pre><code class="lang-cmd">set CI=True
+build-doc.cmd
+</code></pre>
+<h4 id="linuxmacos">Linux/macOS</h4>
+<pre><code class="lang-bash">CI=true ./build-doc.sh
+</code></pre>
+<p>The generated documentation will be in <code>Documentation/_site/</code>.</p>
+<h2 id="automated-documentation-generation">Automated Documentation Generation</h2>
+<h3 id="github-actions-workflow">GitHub Actions Workflow</h3>
+<p>Documentation is automatically built and deployed via GitHub Actions:</p>
+<ol>
+<li><strong>On Pull Requests</strong>: Documentation is built to verify it compiles correctly</li>
+<li><strong>On Push to main/develop</strong>: Documentation is built and deployed to GitHub Pages</li>
+</ol>
+<h3 id="viewing-published-documentation">Viewing Published Documentation</h3>
+<p>Once deployed, the documentation is available at:</p>
+<ul>
+<li><strong>GitHub Pages</strong>: <code>https://helix-toolkit.github.io/helix-toolkit/</code></li>
+</ul>
+<h2 id="documentation-structure">Documentation Structure</h2>
+<pre><code>Documentation/
+├── api/              # Auto-generated API documentation
+├── articles/         # Hand-written articles and guides
+│   ├── intro.md
+│   └── toc.yml
+├── images/           # Images used in documentation
+├── docfx.json        # DocFX configuration
+├── index.md          # Documentation homepage
+└── toc.yml           # Top-level table of contents
+</code></pre>
+<h2 id="writing-documentation">Writing Documentation</h2>
+<h3 id="api-documentation">API Documentation</h3>
+<p>Add XML documentation comments to your C# code:</p>
+<pre><code class="lang-csharp">/// &lt;summary&gt;
+/// Represents a 3D model in the scene.
+/// &lt;/summary&gt;
+/// &lt;remarks&gt;
+/// This class provides functionality for loading and rendering 3D models.
+/// &lt;/remarks&gt;
+public class Model3D
+{
+    /// &lt;summary&gt;
+    /// Gets or sets the position of the model in 3D space.
+    /// &lt;/summary&gt;
+    /// &lt;value&gt;A Vector3 representing the position.&lt;/value&gt;
+    public Vector3 Position { get; set; }
+    
+    /// &lt;summary&gt;
+    /// Loads a 3D model from the specified file.
+    /// &lt;/summary&gt;
+    /// &lt;param name=&quot;filename&quot;&gt;The path to the model file.&lt;/param&gt;
+    /// &lt;returns&gt;True if the model was loaded successfully; otherwise, false.&lt;/returns&gt;
+    /// &lt;exception cref=&quot;FileNotFoundException&quot;&gt;Thrown when the file does not exist.&lt;/exception&gt;
+    public bool Load(string filename)
+    {
+        // Implementation
+    }
+}
+</code></pre>
+<h3 id="adding-articles">Adding Articles</h3>
+<ol>
+<li>Create a new <code>.md</code> file in the <code>articles/</code> directory</li>
+<li>Add the article to <code>articles/toc.yml</code>:</li>
+</ol>
+<pre><code class="lang-yaml">- name: Getting Started
+  href: getting-started.md
+- name: Your New Article
+  href: your-new-article.md
+</code></pre>
+<h3 id="markdown-features">Markdown Features</h3>
+<p>DocFX supports:</p>
+<ul>
+<li>Standard Markdown syntax</li>
+<li>Code blocks with syntax highlighting</li>
+<li>Cross-references to API documentation using <code>@ApiNamespace.ClassName</code></li>
+<li>Alerts: <code>&gt; [!NOTE]</code>, <code>&gt; [!WARNING]</code>, <code>&gt; [!TIP]</code></li>
+<li>Tables, images, and more</li>
+</ul>
+<p>Example:</p>
+<pre><code class="lang-markdown"># My Article
+
+This article explains how to use @HelixToolkit.Wpf.HelixViewport3D.
+
+&gt; [!TIP]
+&gt; Make sure to initialize the viewport before adding models.
+
+## Code Example
+
+'''csharp
+var viewport = new HelixViewport3D();
+viewport.Camera = new PerspectiveCamera();
+'''
+</code></pre>
+<h2 id="configuration">Configuration</h2>
+<p>The documentation system is configured in <code>docfx.json</code>. Key settings:</p>
+<ul>
+<li><strong>metadata</strong>: Specifies which projects to include in API documentation</li>
+<li><strong>build.content</strong>: Defines which content files to include</li>
+<li><strong>build.template</strong>: Specifies the documentation theme (default + modern)</li>
+<li><strong>build.globalMetadata</strong>: Site-wide settings like title, footer, etc.</li>
+</ul>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<h3 id="build-errors">Build Errors</h3>
+<p>If the documentation build fails:</p>
+<ol>
+<li><strong>Check XML Documentation</strong>: Ensure your project files have <code>&lt;GenerateDocumentationFile&gt;true&lt;/GenerateDocumentationFile&gt;</code></li>
+<li><strong>Restore NuGet Packages</strong>: Run <code>dotnet restore</code> in the <code>Source/</code> directory</li>
+<li><strong>Clear DocFX Cache</strong>: Delete <code>Documentation/_site/</code> and rebuild</li>
+</ol>
+<h3 id="missing-api-documentation">Missing API Documentation</h3>
+<p>If some classes/methods are missing from the documentation:</p>
+<ol>
+<li>Ensure they are <code>public</code> or <code>protected</code> (private members are not documented by default)</li>
+<li>Check that the project is included in <code>docfx.json</code> under <code>metadata.src.files</code></li>
+<li>Verify XML comments exist for the member</li>
+</ol>
+<h3 id="links-not-working">Links Not Working</h3>
+<ul>
+<li>Use relative paths for internal links: <code>[Link](../api/Namespace.Class.yml)</code></li>
+<li>Use <code>@</code> for API cross-references: <code>@Namespace.ClassName</code></li>
+</ul>
+<h2 id="additional-resources">Additional Resources</h2>
+<ul>
+<li><a href="https://dotnet.github.io/docfx/">DocFX Documentation</a></li>
+<li><a href="https://dotnet.github.io/docfx/docs/markdown.html">Markdown Syntax</a></li>
+<li><a href="https://dotnet.github.io/docfx/docs/config.html">DocFX Configuration</a></li>
+</ul>
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/Documentation/README.md/#L1" class="edit-link">Edit this page</a>
+        </div>
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          Copyright (c) 2023 Helix Toolkit contributors
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

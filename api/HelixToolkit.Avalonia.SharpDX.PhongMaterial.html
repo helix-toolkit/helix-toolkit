@@ -1,0 +1,3170 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Class PhongMaterial | Helix Toolkit - 3D for .NET </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Class PhongMaterial | Helix Toolkit - 3D for .NET ">
+      
+      <meta name="description" content="Implements a phong-material with its all properties Includes Diffuse, Normal, Displacement, Specular, etc. maps">
+      <link rel="icon" href="../images/favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/helix-toolkit/helix-toolkit/new/main-v3/apiSpec/new?filename=HelixToolkit_Avalonia_SharpDX_PhongMaterial.md&amp;value=---%0Auid%3A%20HelixToolkit.Avalonia.SharpDX.PhongMaterial%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="ManagedReference">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../images/favicon.ico" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="HelixToolkit.Avalonia.SharpDX.PhongMaterial">
+
+
+
+  <h1 id="HelixToolkit_Avalonia_SharpDX_PhongMaterial" data-uid="HelixToolkit.Avalonia.SharpDX.PhongMaterial" class="text-break">
+Class PhongMaterial  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Model/Materials/PhongMaterial.cs/#L34"><i class="bi bi-code-slash"></i></a>
+  </h1>
+
+  <div class="facts text-secondary">
+    <dl><dt>Namespace</dt><dd><a class="xref" href="HelixToolkit.html">HelixToolkit</a>.<a class="xref" href="HelixToolkit.Avalonia.html">Avalonia</a>.<a class="xref" href="HelixToolkit.Avalonia.SharpDX.html">SharpDX</a></dd></dl>
+  <dl><dt>Assembly</dt><dd>HelixToolkit.Avalonia.SharpDX.dll</dd></dl>
+  </div>
+
+  <div class="markdown summary"><p>Implements a phong-material with its all properties
+Includes Diffuse, Normal, Displacement, Specular, etc. maps</p>
+</div>
+  <div class="markdown conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[DataContract]
+public class PhongMaterial : Material, INotifyPropertyChanged, IDataContextProvider, ILogical, IThemeVariantHost, IResourceHost, IResourceNode, IStyleHost, ISetLogicalParent, ISetInheritanceParent, ISupportInitialize, IStyleable, INamed, IInputElement, IDataTemplateHost, ISetterValue</code></pre>
+  </div>
+
+
+
+
+  <dl class="typelist inheritance">
+    <dt>Inheritance</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
+      <div><span class="xref">AvaloniaObject</span></div>
+      <div><span class="xref">Animatable</span></div>
+      <div><span class="xref">StyledElement</span></div>
+      <div><span class="xref">Visual</span></div>
+      <div><span class="xref">Layoutable</span></div>
+      <div><span class="xref">Interactive</span></div>
+      <div><span class="xref">InputElement</span></div>
+      <div><span class="xref">Control</span></div>
+      <div><a class="xref" href="HelixToolkit.Avalonia.SharpDX.Material.html">Material</a></div>
+      <div><span class="xref">PhongMaterial</span></div>
+    </dd>
+  </dl>
+
+  <dl class="typelist implements">
+    <dt>Implements</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.componentmodel.inotifypropertychanged">INotifyPropertyChanged</a></div>
+      <div><span class="xref">IDataContextProvider</span></div>
+      <div><span class="xref">ILogical</span></div>
+      <div><span class="xref">IThemeVariantHost</span></div>
+      <div><span class="xref">IResourceHost</span></div>
+      <div><span class="xref">IResourceNode</span></div>
+      <div><span class="xref">IStyleHost</span></div>
+      <div><span class="xref">ISetLogicalParent</span></div>
+      <div><span class="xref">ISetInheritanceParent</span></div>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.componentmodel.isupportinitialize">ISupportInitialize</a></div>
+      <div><span class="xref">IStyleable</span></div>
+      <div><span class="xref">INamed</span></div>
+      <div><span class="xref">IInputElement</span></div>
+      <div><span class="xref">IDataTemplateHost</span></div>
+      <div><span class="xref">ISetterValue</span></div>
+    </dd>
+  </dl>
+
+
+  <dl class="typelist inheritedMembers">
+    <dt>Inherited Members</dt>
+    <dd>
+    <div>
+      <a class="xref" href="HelixToolkit.Avalonia.SharpDX.Material.html#HelixToolkit_Avalonia_SharpDX_Material_Core">Material.Core</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.Avalonia.SharpDX.Material.html#HelixToolkit_Avalonia_SharpDX_Material_NameProperty">Material.NameProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.Avalonia.SharpDX.Material.html#HelixToolkit_Avalonia_SharpDX_Material_Name">Material.Name</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.Avalonia.SharpDX.Material.html#HelixToolkit_Avalonia_SharpDX_Material_ToString">Material.ToString()</a>
+    </div>
+    <div>
+      <span class="xref">Control.FocusAdornerProperty</span>
+    </div>
+    <div>
+      <span class="xref">Control.TagProperty</span>
+    </div>
+    <div>
+      <span class="xref">Control.ContextMenuProperty</span>
+    </div>
+    <div>
+      <span class="xref">Control.ContextFlyoutProperty</span>
+    </div>
+    <div>
+      <span class="xref">Control.RequestBringIntoViewEvent</span>
+    </div>
+    <div>
+      <span class="xref">Control.ContextRequestedEvent</span>
+    </div>
+    <div>
+      <span class="xref">Control.LoadedEvent</span>
+    </div>
+    <div>
+      <span class="xref">Control.UnloadedEvent</span>
+    </div>
+    <div>
+      <span class="xref">Control.SizeChangedEvent</span>
+    </div>
+    <div>
+      <span class="xref">Control.GetTemplateFocusTarget()</span>
+    </div>
+    <div>
+      <span class="xref">Control.OnLoaded(RoutedEventArgs)</span>
+    </div>
+    <div>
+      <span class="xref">Control.OnUnloaded(RoutedEventArgs)</span>
+    </div>
+    <div>
+      <span class="xref">Control.OnSizeChanged(SizeChangedEventArgs)</span>
+    </div>
+    <div>
+      <span class="xref">Control.OnAttachedToVisualTreeCore(VisualTreeAttachmentEventArgs)</span>
+    </div>
+    <div>
+      <span class="xref">Control.OnDetachedFromVisualTreeCore(VisualTreeAttachmentEventArgs)</span>
+    </div>
+    <div>
+      <span class="xref">Control.OnGotFocus(GotFocusEventArgs)</span>
+    </div>
+    <div>
+      <span class="xref">Control.OnLostFocus(RoutedEventArgs)</span>
+    </div>
+    <div>
+      <span class="xref">Control.OnCreateAutomationPeer()</span>
+    </div>
+    <div>
+      <span class="xref">Control.OnPointerReleased(PointerReleasedEventArgs)</span>
+    </div>
+    <div>
+      <span class="xref">Control.OnKeyUp(KeyEventArgs)</span>
+    </div>
+    <div>
+      <span class="xref">Control.OnPropertyChanged(AvaloniaPropertyChangedEventArgs)</span>
+    </div>
+    <div>
+      <span class="xref">Control.FocusAdorner</span>
+    </div>
+    <div>
+      <span class="xref">Control.DataTemplates</span>
+    </div>
+    <div>
+      <span class="xref">Control.ContextMenu</span>
+    </div>
+    <div>
+      <span class="xref">Control.ContextFlyout</span>
+    </div>
+    <div>
+      <span class="xref">Control.IsLoaded</span>
+    </div>
+    <div>
+      <span class="xref">Control.Tag</span>
+    </div>
+    <div>
+      <span class="xref">Control.ContextRequested</span>
+    </div>
+    <div>
+      <span class="xref">Control.Loaded</span>
+    </div>
+    <div>
+      <span class="xref">Control.Unloaded</span>
+    </div>
+    <div>
+      <span class="xref">Control.SizeChanged</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.FocusableProperty</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.IsEnabledProperty</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.IsEffectivelyEnabledProperty</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.CursorProperty</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.IsKeyboardFocusWithinProperty</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.IsFocusedProperty</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.IsHitTestVisibleProperty</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.IsPointerOverProperty</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.IsTabStopProperty</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.GotFocusEvent</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.LostFocusEvent</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.KeyDownEvent</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.KeyUpEvent</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.TabIndexProperty</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.TextInputEvent</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.TextInputMethodClientRequestedEvent</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.PointerEnteredEvent</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.PointerExitedEvent</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.PointerMovedEvent</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.PointerPressedEvent</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.PointerReleasedEvent</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.PointerCaptureLostEvent</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.PointerWheelChangedEvent</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.TappedEvent</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.HoldingEvent</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.DoubleTappedEvent</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.Focus(NavigationMethod, KeyModifiers)</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.OnKeyDown(KeyEventArgs)</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.OnTextInput(TextInputEventArgs)</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.OnPointerEntered(PointerEventArgs)</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.OnPointerExited(PointerEventArgs)</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.OnPointerMoved(PointerEventArgs)</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.OnPointerPressed(PointerPressedEventArgs)</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.OnPointerCaptureLost(PointerCaptureLostEventArgs)</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.OnPointerWheelChanged(PointerWheelEventArgs)</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.UpdateIsEffectivelyEnabled()</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.Focusable</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.IsEnabled</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.Cursor</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.IsKeyboardFocusWithin</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.IsFocused</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.IsHitTestVisible</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.IsPointerOver</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.IsTabStop</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.IsEffectivelyEnabled</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.TabIndex</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.KeyBindings</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.IsEnabledCore</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.GestureRecognizers</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.GotFocus</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.LostFocus</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.KeyDown</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.KeyUp</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.TextInput</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.TextInputMethodClientRequested</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.PointerEntered</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.PointerExited</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.PointerMoved</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.PointerPressed</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.PointerReleased</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.PointerCaptureLost</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.PointerWheelChanged</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.Tapped</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.Holding</span>
+    </div>
+    <div>
+      <span class="xref">InputElement.DoubleTapped</span>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.delegate">Interactive.AddHandler(RoutedEvent, Delegate, RoutingStrategies, bool)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.eventhandler-1">Interactive.AddHandler&lt;TEventArgs&gt;(RoutedEvent&lt;TEventArgs&gt;, EventHandler&lt;TEventArgs&gt;, RoutingStrategies, bool)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.delegate">Interactive.RemoveHandler(RoutedEvent, Delegate)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.eventhandler-1">Interactive.RemoveHandler&lt;TEventArgs&gt;(RoutedEvent&lt;TEventArgs&gt;, EventHandler&lt;TEventArgs&gt;)</a>
+    </div>
+    <div>
+      <span class="xref">Interactive.RaiseEvent(RoutedEventArgs)</span>
+    </div>
+    <div>
+      <span class="xref">Interactive.BuildEventRoute(RoutedEvent)</span>
+    </div>
+    <div>
+      <span class="xref">Layoutable.DesiredSizeProperty</span>
+    </div>
+    <div>
+      <span class="xref">Layoutable.WidthProperty</span>
+    </div>
+    <div>
+      <span class="xref">Layoutable.HeightProperty</span>
+    </div>
+    <div>
+      <span class="xref">Layoutable.MinWidthProperty</span>
+    </div>
+    <div>
+      <span class="xref">Layoutable.MaxWidthProperty</span>
+    </div>
+    <div>
+      <span class="xref">Layoutable.MinHeightProperty</span>
+    </div>
+    <div>
+      <span class="xref">Layoutable.MaxHeightProperty</span>
+    </div>
+    <div>
+      <span class="xref">Layoutable.MarginProperty</span>
+    </div>
+    <div>
+      <span class="xref">Layoutable.HorizontalAlignmentProperty</span>
+    </div>
+    <div>
+      <span class="xref">Layoutable.VerticalAlignmentProperty</span>
+    </div>
+    <div>
+      <span class="xref">Layoutable.UseLayoutRoundingProperty</span>
+    </div>
+    <div>
+      <span class="xref">Layoutable.UpdateLayout()</span>
+    </div>
+    <div>
+      <span class="xref">Layoutable.ApplyTemplate()</span>
+    </div>
+    <div>
+      <span class="xref">Layoutable.Measure(Size)</span>
+    </div>
+    <div>
+      <span class="xref">Layoutable.Arrange(Rect)</span>
+    </div>
+    <div>
+      <span class="xref">Layoutable.InvalidateMeasure()</span>
+    </div>
+    <div>
+      <span class="xref">Layoutable.InvalidateArrange()</span>
+    </div>
+    <div>
+      <span class="xref">Layoutable.AffectsMeasure&lt;T&gt;(params AvaloniaProperty[])</span>
+    </div>
+    <div>
+      <span class="xref">Layoutable.AffectsArrange&lt;T&gt;(params AvaloniaProperty[])</span>
+    </div>
+    <div>
+      <span class="xref">Layoutable.MeasureCore(Size)</span>
+    </div>
+    <div>
+      <span class="xref">Layoutable.MeasureOverride(Size)</span>
+    </div>
+    <div>
+      <span class="xref">Layoutable.ArrangeCore(Rect)</span>
+    </div>
+    <div>
+      <span class="xref">Layoutable.ArrangeOverride(Size)</span>
+    </div>
+    <div>
+      <span class="xref">Layoutable.OnMeasureInvalidated()</span>
+    </div>
+    <div>
+      <span class="xref">Layoutable.OnVisualParentChanged(Visual, Visual)</span>
+    </div>
+    <div>
+      <span class="xref">Layoutable.Width</span>
+    </div>
+    <div>
+      <span class="xref">Layoutable.Height</span>
+    </div>
+    <div>
+      <span class="xref">Layoutable.MinWidth</span>
+    </div>
+    <div>
+      <span class="xref">Layoutable.MaxWidth</span>
+    </div>
+    <div>
+      <span class="xref">Layoutable.MinHeight</span>
+    </div>
+    <div>
+      <span class="xref">Layoutable.MaxHeight</span>
+    </div>
+    <div>
+      <span class="xref">Layoutable.Margin</span>
+    </div>
+    <div>
+      <span class="xref">Layoutable.HorizontalAlignment</span>
+    </div>
+    <div>
+      <span class="xref">Layoutable.VerticalAlignment</span>
+    </div>
+    <div>
+      <span class="xref">Layoutable.DesiredSize</span>
+    </div>
+    <div>
+      <span class="xref">Layoutable.IsMeasureValid</span>
+    </div>
+    <div>
+      <span class="xref">Layoutable.IsArrangeValid</span>
+    </div>
+    <div>
+      <span class="xref">Layoutable.UseLayoutRounding</span>
+    </div>
+    <div>
+      <span class="xref">Layoutable.EffectiveViewportChanged</span>
+    </div>
+    <div>
+      <span class="xref">Layoutable.LayoutUpdated</span>
+    </div>
+    <div>
+      <span class="xref">Visual.BoundsProperty</span>
+    </div>
+    <div>
+      <span class="xref">Visual.ClipToBoundsProperty</span>
+    </div>
+    <div>
+      <span class="xref">Visual.ClipProperty</span>
+    </div>
+    <div>
+      <span class="xref">Visual.IsVisibleProperty</span>
+    </div>
+    <div>
+      <span class="xref">Visual.OpacityProperty</span>
+    </div>
+    <div>
+      <span class="xref">Visual.OpacityMaskProperty</span>
+    </div>
+    <div>
+      <span class="xref">Visual.EffectProperty</span>
+    </div>
+    <div>
+      <span class="xref">Visual.HasMirrorTransformProperty</span>
+    </div>
+    <div>
+      <span class="xref">Visual.RenderTransformProperty</span>
+    </div>
+    <div>
+      <span class="xref">Visual.RenderTransformOriginProperty</span>
+    </div>
+    <div>
+      <span class="xref">Visual.FlowDirectionProperty</span>
+    </div>
+    <div>
+      <span class="xref">Visual.VisualParentProperty</span>
+    </div>
+    <div>
+      <span class="xref">Visual.ZIndexProperty</span>
+    </div>
+    <div>
+      <span class="xref">Visual.GetFlowDirection(Visual)</span>
+    </div>
+    <div>
+      <span class="xref">Visual.SetFlowDirection(Visual, FlowDirection)</span>
+    </div>
+    <div>
+      <span class="xref">Visual.InvalidateVisual()</span>
+    </div>
+    <div>
+      <span class="xref">Visual.Render(DrawingContext)</span>
+    </div>
+    <div>
+      <span class="xref">Visual.AffectsRender&lt;T&gt;(params AvaloniaProperty[])</span>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">Visual.LogicalChildrenCollectionChanged(object, NotifyCollectionChangedEventArgs)</a>
+    </div>
+    <div>
+      <span class="xref">Visual.OnAttachedToVisualTree(VisualTreeAttachmentEventArgs)</span>
+    </div>
+    <div>
+      <span class="xref">Visual.OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs)</span>
+    </div>
+    <div>
+      <span class="xref">Visual.InvalidateMirrorTransform()</span>
+    </div>
+    <div>
+      <span class="xref">Visual.Bounds</span>
+    </div>
+    <div>
+      <span class="xref">Visual.ClipToBounds</span>
+    </div>
+    <div>
+      <span class="xref">Visual.Clip</span>
+    </div>
+    <div>
+      <span class="xref">Visual.IsEffectivelyVisible</span>
+    </div>
+    <div>
+      <span class="xref">Visual.IsVisible</span>
+    </div>
+    <div>
+      <span class="xref">Visual.Opacity</span>
+    </div>
+    <div>
+      <span class="xref">Visual.OpacityMask</span>
+    </div>
+    <div>
+      <span class="xref">Visual.Effect</span>
+    </div>
+    <div>
+      <span class="xref">Visual.HasMirrorTransform</span>
+    </div>
+    <div>
+      <span class="xref">Visual.RenderTransform</span>
+    </div>
+    <div>
+      <span class="xref">Visual.RenderTransformOrigin</span>
+    </div>
+    <div>
+      <span class="xref">Visual.FlowDirection</span>
+    </div>
+    <div>
+      <span class="xref">Visual.ZIndex</span>
+    </div>
+    <div>
+      <span class="xref">Visual.VisualChildren</span>
+    </div>
+    <div>
+      <span class="xref">Visual.VisualRoot</span>
+    </div>
+    <div>
+      <span class="xref">Visual.BypassFlowDirectionPolicies</span>
+    </div>
+    <div>
+      <span class="xref">Visual.AttachedToVisualTree</span>
+    </div>
+    <div>
+      <span class="xref">Visual.DetachedFromVisualTree</span>
+    </div>
+    <div>
+      <span class="xref">StyledElement.DataContextProperty</span>
+    </div>
+    <div>
+      <span class="xref">StyledElement.ParentProperty</span>
+    </div>
+    <div>
+      <span class="xref">StyledElement.TemplatedParentProperty</span>
+    </div>
+    <div>
+      <span class="xref">StyledElement.ThemeProperty</span>
+    </div>
+    <div>
+      <span class="xref">StyledElement.BeginInit()</span>
+    </div>
+    <div>
+      <span class="xref">StyledElement.EndInit()</span>
+    </div>
+    <div>
+      <span class="xref">StyledElement.ApplyStyling()</span>
+    </div>
+    <div>
+      <span class="xref">StyledElement.InitializeIfNeeded()</span>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">StyledElement.TryGetResource(object, ThemeVariant, out object)</a>
+    </div>
+    <div>
+      <span class="xref">StyledElement.OnAttachedToLogicalTree(LogicalTreeAttachmentEventArgs)</span>
+    </div>
+    <div>
+      <span class="xref">StyledElement.OnDetachedFromLogicalTree(LogicalTreeAttachmentEventArgs)</span>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.eventargs">StyledElement.OnDataContextChanged(EventArgs)</a>
+    </div>
+    <div>
+      <span class="xref">StyledElement.OnDataContextBeginUpdate()</span>
+    </div>
+    <div>
+      <span class="xref">StyledElement.OnDataContextEndUpdate()</span>
+    </div>
+    <div>
+      <span class="xref">StyledElement.OnInitialized()</span>
+    </div>
+    <div>
+      <span class="xref">StyledElement.Classes</span>
+    </div>
+    <div>
+      <span class="xref">StyledElement.DataContext</span>
+    </div>
+    <div>
+      <span class="xref">StyledElement.IsInitialized</span>
+    </div>
+    <div>
+      <span class="xref">StyledElement.Styles</span>
+    </div>
+    <div>
+      <span class="xref">StyledElement.StyleKey</span>
+    </div>
+    <div>
+      <span class="xref">StyledElement.Resources</span>
+    </div>
+    <div>
+      <span class="xref">StyledElement.TemplatedParent</span>
+    </div>
+    <div>
+      <span class="xref">StyledElement.Theme</span>
+    </div>
+    <div>
+      <span class="xref">StyledElement.LogicalChildren</span>
+    </div>
+    <div>
+      <span class="xref">StyledElement.PseudoClasses</span>
+    </div>
+    <div>
+      <span class="xref">StyledElement.StyleKeyOverride</span>
+    </div>
+    <div>
+      <span class="xref">StyledElement.Parent</span>
+    </div>
+    <div>
+      <span class="xref">StyledElement.ActualThemeVariant</span>
+    </div>
+    <div>
+      <span class="xref">StyledElement.AttachedToLogicalTree</span>
+    </div>
+    <div>
+      <span class="xref">StyledElement.DetachedFromLogicalTree</span>
+    </div>
+    <div>
+      <span class="xref">StyledElement.DataContextChanged</span>
+    </div>
+    <div>
+      <span class="xref">StyledElement.Initialized</span>
+    </div>
+    <div>
+      <span class="xref">StyledElement.ResourcesChanged</span>
+    </div>
+    <div>
+      <span class="xref">StyledElement.ActualThemeVariantChanged</span>
+    </div>
+    <div>
+      <span class="xref">Animatable.TransitionsProperty</span>
+    </div>
+    <div>
+      <span class="xref">Animatable.OnPropertyChangedCore(AvaloniaPropertyChangedEventArgs)</span>
+    </div>
+    <div>
+      <span class="xref">Animatable.Transitions</span>
+    </div>
+    <div>
+      <span class="xref">AvaloniaObject.CheckAccess()</span>
+    </div>
+    <div>
+      <span class="xref">AvaloniaObject.VerifyAccess()</span>
+    </div>
+    <div>
+      <span class="xref">AvaloniaObject.ClearValue(AvaloniaProperty)</span>
+    </div>
+    <div>
+      <span class="xref">AvaloniaObject.ClearValue&lt;T&gt;(AvaloniaProperty&lt;T&gt;)</span>
+    </div>
+    <div>
+      <span class="xref">AvaloniaObject.ClearValue&lt;T&gt;(StyledProperty&lt;T&gt;)</span>
+    </div>
+    <div>
+      <span class="xref">AvaloniaObject.ClearValue&lt;T&gt;(DirectPropertyBase&lt;T&gt;)</span>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">AvaloniaObject.Equals(object)</a>
+    </div>
+    <div>
+      <span class="xref">AvaloniaObject.GetHashCode()</span>
+    </div>
+    <div>
+      <span class="xref">AvaloniaObject.GetValue(AvaloniaProperty)</span>
+    </div>
+    <div>
+      <span class="xref">AvaloniaObject.GetValue&lt;T&gt;(StyledProperty&lt;T&gt;)</span>
+    </div>
+    <div>
+      <span class="xref">AvaloniaObject.GetValue&lt;T&gt;(DirectPropertyBase&lt;T&gt;)</span>
+    </div>
+    <div>
+      <span class="xref">AvaloniaObject.GetBaseValue&lt;T&gt;(StyledProperty&lt;T&gt;)</span>
+    </div>
+    <div>
+      <span class="xref">AvaloniaObject.IsAnimating(AvaloniaProperty)</span>
+    </div>
+    <div>
+      <span class="xref">AvaloniaObject.IsSet(AvaloniaProperty)</span>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">AvaloniaObject.SetValue(AvaloniaProperty, object, BindingPriority)</a>
+    </div>
+    <div>
+      <span class="xref">AvaloniaObject.SetValue&lt;T&gt;(StyledProperty&lt;T&gt;, T, BindingPriority)</span>
+    </div>
+    <div>
+      <span class="xref">AvaloniaObject.SetValue&lt;T&gt;(DirectPropertyBase&lt;T&gt;, T)</span>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">AvaloniaObject.SetCurrentValue(AvaloniaProperty, object)</a>
+    </div>
+    <div>
+      <span class="xref">AvaloniaObject.SetCurrentValue&lt;T&gt;(StyledProperty&lt;T&gt;, T)</span>
+    </div>
+    <div>
+      <span class="xref">AvaloniaObject.Bind(AvaloniaProperty, IBinding)</span>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iobservable-1">AvaloniaObject.Bind(AvaloniaProperty, IObservable&lt;object&gt;, BindingPriority)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iobservable-1">AvaloniaObject.Bind&lt;T&gt;(StyledProperty&lt;T&gt;, IObservable&lt;object&gt;, BindingPriority)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iobservable-1">AvaloniaObject.Bind&lt;T&gt;(StyledProperty&lt;T&gt;, IObservable&lt;T&gt;, BindingPriority)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iobservable-1">AvaloniaObject.Bind&lt;T&gt;(StyledProperty&lt;T&gt;, IObservable&lt;BindingValue&lt;T&gt;&gt;, BindingPriority)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iobservable-1">AvaloniaObject.Bind&lt;T&gt;(DirectPropertyBase&lt;T&gt;, IObservable&lt;object&gt;)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iobservable-1">AvaloniaObject.Bind&lt;T&gt;(DirectPropertyBase&lt;T&gt;, IObservable&lt;T&gt;)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iobservable-1">AvaloniaObject.Bind&lt;T&gt;(DirectPropertyBase&lt;T&gt;, IObservable&lt;BindingValue&lt;T&gt;&gt;)</a>
+    </div>
+    <div>
+      <span class="xref">AvaloniaObject.CoerceValue(AvaloniaProperty)</span>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.exception">AvaloniaObject.UpdateDataValidation(AvaloniaProperty, BindingValueType, Exception)</a>
+    </div>
+    <div>
+      <span class="xref">AvaloniaObject.RaisePropertyChanged&lt;T&gt;(DirectPropertyBase&lt;T&gt;, T, T)</span>
+    </div>
+    <div>
+      <span class="xref">AvaloniaObject.SetAndRaise&lt;T&gt;(DirectPropertyBase&lt;T&gt;, ref T, T)</span>
+    </div>
+    <div>
+      <span class="xref">AvaloniaObject.InheritanceParent</span>
+    </div>
+    <div>
+      <span class="xref">AvaloniaObject.this[AvaloniaProperty]</span>
+    </div>
+    <div>
+      <span class="xref">AvaloniaObject.this[IndexerDescriptor]</span>
+    </div>
+    <div>
+      <span class="xref">AvaloniaObject.PropertyChanged</span>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">object.Equals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype">object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone">object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals">object.ReferenceEquals(object, object)</a>
+    </div>
+  </dd></dl>
+
+  <dl class="typelist extensionMethods">
+    <dt>Extension Methods</dt>
+    <dd>
+  <div>
+      <a class="xref" href="HelixToolkit.Avalonia.SharpDX.MaterialExtension.html#HelixToolkit_Avalonia_SharpDX_MaterialExtension_AssignTo_HelixToolkit_Avalonia_SharpDX_PhongMaterial_HelixToolkit_Avalonia_SharpDX_PhongMaterial_">MaterialExtension.AssignTo(PhongMaterial, PhongMaterial)</a>
+  </div>
+  </dd></dl>
+
+
+
+
+
+  <h2 class="section" id="constructors">Constructors
+</h2>
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_PhongMaterial__ctor_" data-uid="HelixToolkit.Avalonia.SharpDX.PhongMaterial.#ctor*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_PhongMaterial__ctor" data-uid="HelixToolkit.Avalonia.SharpDX.PhongMaterial.#ctor">
+  PhongMaterial()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Model/Materials/PhongMaterial.cs/#L1004"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Constructs a Shading Material which correspnds with
+the Phong and BlinnPhong lighting models.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public PhongMaterial()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_PhongMaterial__ctor_" data-uid="HelixToolkit.Avalonia.SharpDX.PhongMaterial.#ctor*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_PhongMaterial__ctor_HelixToolkit_SharpDX_Model_PhongMaterialCore_" data-uid="HelixToolkit.Avalonia.SharpDX.PhongMaterial.#ctor(HelixToolkit.SharpDX.Model.PhongMaterialCore)">
+  PhongMaterial(PhongMaterialCore)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Model/Materials/PhongMaterial.cs/#L1012"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="HelixToolkit.Avalonia.SharpDX.PhongMaterial.html">PhongMaterial</a> class.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public PhongMaterial(PhongMaterialCore core)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>core</code> <a class="xref" href="HelixToolkit.SharpDX.Model.PhongMaterialCore.html">PhongMaterialCore</a></dt>
+    <dd><p>The core.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <h2 class="section" id="fields">Fields
+</h2>
+
+
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_PhongMaterial_AmbientColorProperty" data-uid="HelixToolkit.Avalonia.SharpDX.PhongMaterial.AmbientColorProperty">
+  AmbientColorProperty
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Model/Materials/PhongMaterial.cs/#L41"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Identifies the System.Windows.Media.Media3D.DiffuseMaterial.AmbientColor�dependency
+property.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly AvaloniaProperty AmbientColorProperty</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">AvaloniaProperty</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_PhongMaterial_DiffuseAlphaMapProperty" data-uid="HelixToolkit.Avalonia.SharpDX.PhongMaterial.DiffuseAlphaMapProperty">
+  DiffuseAlphaMapProperty
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Model/Materials/PhongMaterial.cs/#L136"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Supports alpha channel image, such as PNG.
+Usage: Load the image file(BMP, PNG, etc) as a TextureModel.
+It can be used to replace DiffuseMap, or used as a mask and apply onto diffuse map.
+The color will be cDiffuse*cAlpha.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly AvaloniaProperty DiffuseAlphaMapProperty</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">AvaloniaProperty</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_PhongMaterial_DiffuseColorProperty" data-uid="HelixToolkit.Avalonia.SharpDX.PhongMaterial.DiffuseColorProperty">
+  DiffuseColorProperty
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Model/Materials/PhongMaterial.cs/#L55"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Identifies the System.Windows.Media.Media3D.DiffuseMaterial.Color�dependency
+property.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly AvaloniaProperty DiffuseColorProperty</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">AvaloniaProperty</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_PhongMaterial_DiffuseMapProperty" data-uid="HelixToolkit.Avalonia.SharpDX.PhongMaterial.DiffuseMapProperty">
+  DiffuseMapProperty
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Model/Materials/PhongMaterial.cs/#L120"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly AvaloniaProperty DiffuseMapProperty</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">AvaloniaProperty</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_PhongMaterial_DiffuseMapSamplerProperty" data-uid="HelixToolkit.Avalonia.SharpDX.PhongMaterial.DiffuseMapSamplerProperty">
+  DiffuseMapSamplerProperty
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Model/Materials/PhongMaterial.cs/#L214"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly AvaloniaProperty DiffuseMapSamplerProperty</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">AvaloniaProperty</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_PhongMaterial_DisplacementMapProperty" data-uid="HelixToolkit.Avalonia.SharpDX.PhongMaterial.DisplacementMapProperty">
+  DisplacementMapProperty
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Model/Materials/PhongMaterial.cs/#L175"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly AvaloniaProperty DisplacementMapProperty</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">AvaloniaProperty</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_PhongMaterial_DisplacementMapSamplerProperty" data-uid="HelixToolkit.Avalonia.SharpDX.PhongMaterial.DisplacementMapSamplerProperty">
+  DisplacementMapSamplerProperty
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Model/Materials/PhongMaterial.cs/#L227"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly AvaloniaProperty DisplacementMapSamplerProperty</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">AvaloniaProperty</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_PhongMaterial_DisplacementMapScaleMaskProperty" data-uid="HelixToolkit.Avalonia.SharpDX.PhongMaterial.DisplacementMapScaleMaskProperty">
+  DisplacementMapScaleMaskProperty
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Model/Materials/PhongMaterial.cs/#L201"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly AvaloniaProperty DisplacementMapScaleMaskProperty</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">AvaloniaProperty</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_PhongMaterial_EmissiveColorProperty" data-uid="HelixToolkit.Avalonia.SharpDX.PhongMaterial.EmissiveColorProperty">
+  EmissiveColorProperty
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Model/Materials/PhongMaterial.cs/#L68"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly AvaloniaProperty EmissiveColorProperty</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">AvaloniaProperty</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_PhongMaterial_EmissiveMapProperty" data-uid="HelixToolkit.Avalonia.SharpDX.PhongMaterial.EmissiveMapProperty">
+  EmissiveMapProperty
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Model/Materials/PhongMaterial.cs/#L188"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly AvaloniaProperty EmissiveMapProperty</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">AvaloniaProperty</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_PhongMaterial_EnableAutoTangentProperty" data-uid="HelixToolkit.Avalonia.SharpDX.PhongMaterial.EnableAutoTangentProperty">
+  EnableAutoTangentProperty
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Model/Materials/PhongMaterial.cs/#L344"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>The enable automatic tangent</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly AvaloniaProperty EnableAutoTangentProperty</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">AvaloniaProperty</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_PhongMaterial_EnableFlatShadingProperty" data-uid="HelixToolkit.Avalonia.SharpDX.PhongMaterial.EnableFlatShadingProperty">
+  EnableFlatShadingProperty
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Model/Materials/PhongMaterial.cs/#L456"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly AvaloniaProperty EnableFlatShadingProperty</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">AvaloniaProperty</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_PhongMaterial_EnableTessellationProperty" data-uid="HelixToolkit.Avalonia.SharpDX.PhongMaterial.EnableTessellationProperty">
+  EnableTessellationProperty
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Model/Materials/PhongMaterial.cs/#L369"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>The enable tessellation property</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly AvaloniaProperty EnableTessellationProperty</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">AvaloniaProperty</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_PhongMaterial_MaxDistanceTessellationFactorProperty" data-uid="HelixToolkit.Avalonia.SharpDX.PhongMaterial.MaxDistanceTessellationFactorProperty">
+  MaxDistanceTessellationFactorProperty
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Model/Materials/PhongMaterial.cs/#L381"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>The tessellation factor at <a class="xref" href="HelixToolkit.Avalonia.SharpDX.PhongMaterial.html#HelixToolkit_Avalonia_SharpDX_PhongMaterial_MaxTessellationDistance">MaxTessellationDistance</a> property</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly AvaloniaProperty MaxDistanceTessellationFactorProperty</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">AvaloniaProperty</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_PhongMaterial_MaxTessellationDistanceProperty" data-uid="HelixToolkit.Avalonia.SharpDX.PhongMaterial.MaxTessellationDistanceProperty">
+  MaxTessellationDistanceProperty
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Model/Materials/PhongMaterial.cs/#L405"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>The maximum tessellation distance property</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly AvaloniaProperty MaxTessellationDistanceProperty</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">AvaloniaProperty</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_PhongMaterial_MinDistanceTessellationFactorProperty" data-uid="HelixToolkit.Avalonia.SharpDX.PhongMaterial.MinDistanceTessellationFactorProperty">
+  MinDistanceTessellationFactorProperty
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Model/Materials/PhongMaterial.cs/#L393"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>The tessellation factor at <a class="xref" href="HelixToolkit.Avalonia.SharpDX.PhongMaterial.html#HelixToolkit_Avalonia_SharpDX_PhongMaterial_MinTessellationDistance">MinTessellationDistance</a> property</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly AvaloniaProperty MinDistanceTessellationFactorProperty</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">AvaloniaProperty</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_PhongMaterial_MinTessellationDistanceProperty" data-uid="HelixToolkit.Avalonia.SharpDX.PhongMaterial.MinTessellationDistanceProperty">
+  MinTessellationDistanceProperty
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Model/Materials/PhongMaterial.cs/#L417"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>The minimum tessellation distance property</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly AvaloniaProperty MinTessellationDistanceProperty</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">AvaloniaProperty</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_PhongMaterial_NormalMapProperty" data-uid="HelixToolkit.Avalonia.SharpDX.PhongMaterial.NormalMapProperty">
+  NormalMapProperty
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Model/Materials/PhongMaterial.cs/#L149"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly AvaloniaProperty NormalMapProperty</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">AvaloniaProperty</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_PhongMaterial_ReflectiveColorProperty" data-uid="HelixToolkit.Avalonia.SharpDX.PhongMaterial.ReflectiveColorProperty">
+  ReflectiveColorProperty
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Model/Materials/PhongMaterial.cs/#L107"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly AvaloniaProperty ReflectiveColorProperty</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">AvaloniaProperty</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_PhongMaterial_RenderDiffuseAlphaMapProperty" data-uid="HelixToolkit.Avalonia.SharpDX.PhongMaterial.RenderDiffuseAlphaMapProperty">
+  RenderDiffuseAlphaMapProperty
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Model/Materials/PhongMaterial.cs/#L253"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly AvaloniaProperty RenderDiffuseAlphaMapProperty</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">AvaloniaProperty</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_PhongMaterial_RenderDiffuseMapProperty" data-uid="HelixToolkit.Avalonia.SharpDX.PhongMaterial.RenderDiffuseMapProperty">
+  RenderDiffuseMapProperty
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Model/Materials/PhongMaterial.cs/#L240"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly AvaloniaProperty RenderDiffuseMapProperty</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">AvaloniaProperty</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_PhongMaterial_RenderDisplacementMapProperty" data-uid="HelixToolkit.Avalonia.SharpDX.PhongMaterial.RenderDisplacementMapProperty">
+  RenderDisplacementMapProperty
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Model/Materials/PhongMaterial.cs/#L292"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly AvaloniaProperty RenderDisplacementMapProperty</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">AvaloniaProperty</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_PhongMaterial_RenderEmissiveMapProperty" data-uid="HelixToolkit.Avalonia.SharpDX.PhongMaterial.RenderEmissiveMapProperty">
+  RenderEmissiveMapProperty
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Model/Materials/PhongMaterial.cs/#L331"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly AvaloniaProperty RenderEmissiveMapProperty</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">AvaloniaProperty</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_PhongMaterial_RenderEnvironmentMapProperty" data-uid="HelixToolkit.Avalonia.SharpDX.PhongMaterial.RenderEnvironmentMapProperty">
+  RenderEnvironmentMapProperty
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Model/Materials/PhongMaterial.cs/#L305"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>The render environment map property</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly AvaloniaProperty RenderEnvironmentMapProperty</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">AvaloniaProperty</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_PhongMaterial_RenderNormalMapProperty" data-uid="HelixToolkit.Avalonia.SharpDX.PhongMaterial.RenderNormalMapProperty">
+  RenderNormalMapProperty
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Model/Materials/PhongMaterial.cs/#L266"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly AvaloniaProperty RenderNormalMapProperty</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">AvaloniaProperty</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_PhongMaterial_RenderShadowMapProperty" data-uid="HelixToolkit.Avalonia.SharpDX.PhongMaterial.RenderShadowMapProperty">
+  RenderShadowMapProperty
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Model/Materials/PhongMaterial.cs/#L318"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>The render shadow map property</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly AvaloniaProperty RenderShadowMapProperty</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">AvaloniaProperty</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_PhongMaterial_RenderSpecularColorMapProperty" data-uid="HelixToolkit.Avalonia.SharpDX.PhongMaterial.RenderSpecularColorMapProperty">
+  RenderSpecularColorMapProperty
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Model/Materials/PhongMaterial.cs/#L279"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly AvaloniaProperty RenderSpecularColorMapProperty</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">AvaloniaProperty</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_PhongMaterial_SpecularColorMapProperty" data-uid="HelixToolkit.Avalonia.SharpDX.PhongMaterial.SpecularColorMapProperty">
+  SpecularColorMapProperty
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Model/Materials/PhongMaterial.cs/#L162"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly AvaloniaProperty SpecularColorMapProperty</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">AvaloniaProperty</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_PhongMaterial_SpecularColorProperty" data-uid="HelixToolkit.Avalonia.SharpDX.PhongMaterial.SpecularColorProperty">
+  SpecularColorProperty
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Model/Materials/PhongMaterial.cs/#L81"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly AvaloniaProperty SpecularColorProperty</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">AvaloniaProperty</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_PhongMaterial_SpecularShininessProperty" data-uid="HelixToolkit.Avalonia.SharpDX.PhongMaterial.SpecularShininessProperty">
+  SpecularShininessProperty
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Model/Materials/PhongMaterial.cs/#L94"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly AvaloniaProperty SpecularShininessProperty</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">AvaloniaProperty</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_PhongMaterial_UVTransformProperty" data-uid="HelixToolkit.Avalonia.SharpDX.PhongMaterial.UVTransformProperty">
+  UVTransformProperty
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Model/Materials/PhongMaterial.cs/#L429"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>The uv transform property</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly AvaloniaProperty UVTransformProperty</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">AvaloniaProperty</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_PhongMaterial_VertexColorBlendingFactorProperty" data-uid="HelixToolkit.Avalonia.SharpDX.PhongMaterial.VertexColorBlendingFactorProperty">
+  VertexColorBlendingFactorProperty
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Model/Materials/PhongMaterial.cs/#L355"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly AvaloniaProperty VertexColorBlendingFactorProperty</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">AvaloniaProperty</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+  <h2 class="section" id="properties">Properties
+</h2>
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_PhongMaterial_AmbientColor_" data-uid="HelixToolkit.Avalonia.SharpDX.PhongMaterial.AmbientColor*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_PhongMaterial_AmbientColor" data-uid="HelixToolkit.Avalonia.SharpDX.PhongMaterial.AmbientColor">
+  AmbientColor
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Model/Materials/PhongMaterial.cs/#L474"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets a color that represents how the material reflects System.Windows.Media.Media3D.AmbientLight.
+For details see: <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/bb147175(v=vs.85).aspx">http://msdn.microsoft.com/en-us/library/windows/desktop/bb147175(v=vs.85).aspx</a></p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[TypeConverter(typeof(Color4Converter))]
+public Color4 AmbientColor { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Maths.Color4.html">Color4</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_PhongMaterial_DiffuseAlphaMap_" data-uid="HelixToolkit.Avalonia.SharpDX.PhongMaterial.DiffuseAlphaMap*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_PhongMaterial_DiffuseAlphaMap" data-uid="HelixToolkit.Avalonia.SharpDX.PhongMaterial.DiffuseAlphaMap">
+  DiffuseAlphaMap
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Model/Materials/PhongMaterial.cs/#L622"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public TextureModel? DiffuseAlphaMap { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.TextureModel.html">TextureModel</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_PhongMaterial_DiffuseColor_" data-uid="HelixToolkit.Avalonia.SharpDX.PhongMaterial.DiffuseColor*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_PhongMaterial_DiffuseColor" data-uid="HelixToolkit.Avalonia.SharpDX.PhongMaterial.DiffuseColor">
+  DiffuseColor
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Model/Materials/PhongMaterial.cs/#L499"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the diffuse color for the material.
+For details see: <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/bb147175(v=vs.85).aspx">http://msdn.microsoft.com/en-us/library/windows/desktop/bb147175(v=vs.85).aspx</a></p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[TypeConverter(typeof(Color4Converter))]
+public Color4 DiffuseColor { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Maths.Color4.html">Color4</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_PhongMaterial_DiffuseMap_" data-uid="HelixToolkit.Avalonia.SharpDX.PhongMaterial.DiffuseMap*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_PhongMaterial_DiffuseMap" data-uid="HelixToolkit.Avalonia.SharpDX.PhongMaterial.DiffuseMap">
+  DiffuseMap
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Model/Materials/PhongMaterial.cs/#L609"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>System.Windows.Media.Brush to be applied as a System.Windows.Media.Media3D.Material
+to a 3-D model.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public TextureModel? DiffuseMap { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.TextureModel.html">TextureModel</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_PhongMaterial_DiffuseMapSampler_" data-uid="HelixToolkit.Avalonia.SharpDX.PhongMaterial.DiffuseMapSampler*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_PhongMaterial_DiffuseMapSampler" data-uid="HelixToolkit.Avalonia.SharpDX.PhongMaterial.DiffuseMapSampler">
+  DiffuseMapSampler
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Model/Materials/PhongMaterial.cs/#L691"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public SamplerStateDescription DiffuseMapSampler { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">SamplerStateDescription</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_PhongMaterial_DisplacementMap_" data-uid="HelixToolkit.Avalonia.SharpDX.PhongMaterial.DisplacementMap*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_PhongMaterial_DisplacementMap" data-uid="HelixToolkit.Avalonia.SharpDX.PhongMaterial.DisplacementMap">
+  DisplacementMap
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Model/Materials/PhongMaterial.cs/#L666"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public TextureModel? DisplacementMap { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.TextureModel.html">TextureModel</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_PhongMaterial_DisplacementMapSampler_" data-uid="HelixToolkit.Avalonia.SharpDX.PhongMaterial.DisplacementMapSampler*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_PhongMaterial_DisplacementMapSampler" data-uid="HelixToolkit.Avalonia.SharpDX.PhongMaterial.DisplacementMapSampler">
+  DisplacementMapSampler
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Model/Materials/PhongMaterial.cs/#L706"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public SamplerStateDescription DisplacementMapSampler { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">SamplerStateDescription</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_PhongMaterial_DisplacementMapScaleMask_" data-uid="HelixToolkit.Avalonia.SharpDX.PhongMaterial.DisplacementMapScaleMask*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_PhongMaterial_DisplacementMapScaleMask" data-uid="HelixToolkit.Avalonia.SharpDX.PhongMaterial.DisplacementMapScaleMask">
+  DisplacementMapScaleMask
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Model/Materials/PhongMaterial.cs/#L723"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[TypeConverter(typeof(Vector4Converter))]
+public Vector4 DisplacementMapScaleMask { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector4">Vector4</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_PhongMaterial_EmissiveColor_" data-uid="HelixToolkit.Avalonia.SharpDX.PhongMaterial.EmissiveColor*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_PhongMaterial_EmissiveColor" data-uid="HelixToolkit.Avalonia.SharpDX.PhongMaterial.EmissiveColor">
+  EmissiveColor
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Model/Materials/PhongMaterial.cs/#L524"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the emissive color for the material.
+For details see: <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/bb147175(v=vs.85).aspx">http://msdn.microsoft.com/en-us/library/windows/desktop/bb147175(v=vs.85).aspx</a></p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[TypeConverter(typeof(Color4Converter))]
+public Color4 EmissiveColor { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Maths.Color4.html">Color4</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_PhongMaterial_EmissiveMap_" data-uid="HelixToolkit.Avalonia.SharpDX.PhongMaterial.EmissiveMap*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_PhongMaterial_EmissiveMap" data-uid="HelixToolkit.Avalonia.SharpDX.PhongMaterial.EmissiveMap">
+  EmissiveMap
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Model/Materials/PhongMaterial.cs/#L677"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public TextureModel? EmissiveMap { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.TextureModel.html">TextureModel</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_PhongMaterial_EnableAutoTangent_" data-uid="HelixToolkit.Avalonia.SharpDX.PhongMaterial.EnableAutoTangent*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_PhongMaterial_EnableAutoTangent" data-uid="HelixToolkit.Avalonia.SharpDX.PhongMaterial.EnableAutoTangent">
+  EnableAutoTangent
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Model/Materials/PhongMaterial.cs/#L868"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets a value indicating whether [enable automatic tangent].</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool EnableAutoTangent { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><code>true</code> if [enable automatic tangent]; otherwise, <code>false</code>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_PhongMaterial_EnableFlatShading_" data-uid="HelixToolkit.Avalonia.SharpDX.PhongMaterial.EnableFlatShading*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_PhongMaterial_EnableFlatShading" data-uid="HelixToolkit.Avalonia.SharpDX.PhongMaterial.EnableFlatShading">
+  EnableFlatShading
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Model/Materials/PhongMaterial.cs/#L444"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets a value indicating whether [enable flat shading].</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool EnableFlatShading { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><code>true</code> if [enable flat shading]; otherwise, <code>false</code>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_PhongMaterial_EnableTessellation_" data-uid="HelixToolkit.Avalonia.SharpDX.PhongMaterial.EnableTessellation*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_PhongMaterial_EnableTessellation" data-uid="HelixToolkit.Avalonia.SharpDX.PhongMaterial.EnableTessellation">
+  EnableTessellation
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Model/Materials/PhongMaterial.cs/#L885"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets a value indicating whether [enable tessellation].</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool EnableTessellation { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><code>true</code> if [enable tessellation]; otherwise, <code>false</code>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_PhongMaterial_MaxDistanceTessellationFactor_" data-uid="HelixToolkit.Avalonia.SharpDX.PhongMaterial.MaxDistanceTessellationFactor*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_PhongMaterial_MaxDistanceTessellationFactor" data-uid="HelixToolkit.Avalonia.SharpDX.PhongMaterial.MaxDistanceTessellationFactor">
+  MaxDistanceTessellationFactor
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Model/Materials/PhongMaterial.cs/#L902"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the tessellation factor at <a class="xref" href="HelixToolkit.Avalonia.SharpDX.PhongMaterial.html#HelixToolkit_Avalonia_SharpDX_PhongMaterial_MaxTessellationDistance">MaxTessellationDistance</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public double MaxDistanceTessellationFactor { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd><p>The maximum tessellation factor.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_PhongMaterial_MaxTessellationDistance_" data-uid="HelixToolkit.Avalonia.SharpDX.PhongMaterial.MaxTessellationDistance*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_PhongMaterial_MaxTessellationDistance" data-uid="HelixToolkit.Avalonia.SharpDX.PhongMaterial.MaxTessellationDistance">
+  MaxTessellationDistance
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Model/Materials/PhongMaterial.cs/#L936"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the maximum tessellation distance.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public double MaxTessellationDistance { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd><p>The maximum tessellation distance.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_PhongMaterial_MinDistanceTessellationFactor_" data-uid="HelixToolkit.Avalonia.SharpDX.PhongMaterial.MinDistanceTessellationFactor*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_PhongMaterial_MinDistanceTessellationFactor" data-uid="HelixToolkit.Avalonia.SharpDX.PhongMaterial.MinDistanceTessellationFactor">
+  MinDistanceTessellationFactor
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Model/Materials/PhongMaterial.cs/#L919"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the tessellation factor at <a class="xref" href="HelixToolkit.Avalonia.SharpDX.PhongMaterial.html#HelixToolkit_Avalonia_SharpDX_PhongMaterial_MinTessellationDistance">MinTessellationDistance</a></p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public double MinDistanceTessellationFactor { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd><p>The minimum tessellation factor.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_PhongMaterial_MinTessellationDistance_" data-uid="HelixToolkit.Avalonia.SharpDX.PhongMaterial.MinTessellationDistance*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_PhongMaterial_MinTessellationDistance" data-uid="HelixToolkit.Avalonia.SharpDX.PhongMaterial.MinTessellationDistance">
+  MinTessellationDistance
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Model/Materials/PhongMaterial.cs/#L953"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the minimum tessellation distance.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public double MinTessellationDistance { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd><p>The minimum tessellation distance.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_PhongMaterial_NormalMap_" data-uid="HelixToolkit.Avalonia.SharpDX.PhongMaterial.NormalMap*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_PhongMaterial_NormalMap" data-uid="HelixToolkit.Avalonia.SharpDX.PhongMaterial.NormalMap">
+  NormalMap
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Model/Materials/PhongMaterial.cs/#L637"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public TextureModel? NormalMap { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.TextureModel.html">TextureModel</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_PhongMaterial_ReflectiveColor_" data-uid="HelixToolkit.Avalonia.SharpDX.PhongMaterial.ReflectiveColor*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_PhongMaterial_ReflectiveColor" data-uid="HelixToolkit.Avalonia.SharpDX.PhongMaterial.ReflectiveColor">
+  ReflectiveColor
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Model/Materials/PhongMaterial.cs/#L548"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>A fake parameter for reflectivity of the environment map</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[TypeConverter(typeof(Color4Converter))]
+public Color4 ReflectiveColor { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Maths.Color4.html">Color4</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_PhongMaterial_RenderDiffuseAlphaMap_" data-uid="HelixToolkit.Avalonia.SharpDX.PhongMaterial.RenderDiffuseAlphaMap*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_PhongMaterial_RenderDiffuseAlphaMap" data-uid="HelixToolkit.Avalonia.SharpDX.PhongMaterial.RenderDiffuseAlphaMap">
+  RenderDiffuseAlphaMap
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Model/Materials/PhongMaterial.cs/#L785"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool RenderDiffuseAlphaMap { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_PhongMaterial_RenderDiffuseMap_" data-uid="HelixToolkit.Avalonia.SharpDX.PhongMaterial.RenderDiffuseMap*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_PhongMaterial_RenderDiffuseMap" data-uid="HelixToolkit.Avalonia.SharpDX.PhongMaterial.RenderDiffuseMap">
+  RenderDiffuseMap
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Model/Materials/PhongMaterial.cs/#L742"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool RenderDiffuseMap { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_PhongMaterial_RenderDisplacementMap_" data-uid="HelixToolkit.Avalonia.SharpDX.PhongMaterial.RenderDisplacementMap*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_PhongMaterial_RenderDisplacementMap" data-uid="HelixToolkit.Avalonia.SharpDX.PhongMaterial.RenderDisplacementMap">
+  RenderDisplacementMap
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Model/Materials/PhongMaterial.cs/#L801"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool RenderDisplacementMap { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_PhongMaterial_RenderEmissiveMap_" data-uid="HelixToolkit.Avalonia.SharpDX.PhongMaterial.RenderEmissiveMap*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_PhongMaterial_RenderEmissiveMap" data-uid="HelixToolkit.Avalonia.SharpDX.PhongMaterial.RenderEmissiveMap">
+  RenderEmissiveMap
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Model/Materials/PhongMaterial.cs/#L851"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool RenderEmissiveMap { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_PhongMaterial_RenderEnvironmentMap_" data-uid="HelixToolkit.Avalonia.SharpDX.PhongMaterial.RenderEnvironmentMap*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_PhongMaterial_RenderEnvironmentMap" data-uid="HelixToolkit.Avalonia.SharpDX.PhongMaterial.RenderEnvironmentMap">
+  RenderEnvironmentMap
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Model/Materials/PhongMaterial.cs/#L819"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets a value indicating whether [render environment map]. Default is false</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool RenderEnvironmentMap { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><code>true</code> if [render environment map]; otherwise, <code>false</code>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_PhongMaterial_RenderNormalMap_" data-uid="HelixToolkit.Avalonia.SharpDX.PhongMaterial.RenderNormalMap*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_PhongMaterial_RenderNormalMap" data-uid="HelixToolkit.Avalonia.SharpDX.PhongMaterial.RenderNormalMap">
+  RenderNormalMap
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Model/Materials/PhongMaterial.cs/#L757"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool RenderNormalMap { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_PhongMaterial_RenderShadowMap_" data-uid="HelixToolkit.Avalonia.SharpDX.PhongMaterial.RenderShadowMap*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_PhongMaterial_RenderShadowMap" data-uid="HelixToolkit.Avalonia.SharpDX.PhongMaterial.RenderShadowMap">
+  RenderShadowMap
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Model/Materials/PhongMaterial.cs/#L837"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets a value indicating whether [render shadow map]. Default is false</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool RenderShadowMap { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><code>true</code> if [render shadow map]; otherwise, <code>false</code>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_PhongMaterial_RenderSpecularColorMap_" data-uid="HelixToolkit.Avalonia.SharpDX.PhongMaterial.RenderSpecularColorMap*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_PhongMaterial_RenderSpecularColorMap" data-uid="HelixToolkit.Avalonia.SharpDX.PhongMaterial.RenderSpecularColorMap">
+  RenderSpecularColorMap
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Model/Materials/PhongMaterial.cs/#L771"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool RenderSpecularColorMap { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_PhongMaterial_SpecularColor_" data-uid="HelixToolkit.Avalonia.SharpDX.PhongMaterial.SpecularColor*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_PhongMaterial_SpecularColor" data-uid="HelixToolkit.Avalonia.SharpDX.PhongMaterial.SpecularColor">
+  SpecularColor
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Model/Materials/PhongMaterial.cs/#L573"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the specular color for the material.
+For details see: <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/bb147175(v=vs.85).aspx">http://msdn.microsoft.com/en-us/library/windows/desktop/bb147175(v=vs.85).aspx</a></p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[TypeConverter(typeof(Color4Converter))]
+public Color4 SpecularColor { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Maths.Color4.html">Color4</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_PhongMaterial_SpecularColorMap_" data-uid="HelixToolkit.Avalonia.SharpDX.PhongMaterial.SpecularColorMap*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_PhongMaterial_SpecularColorMap" data-uid="HelixToolkit.Avalonia.SharpDX.PhongMaterial.SpecularColorMap">
+  SpecularColorMap
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Model/Materials/PhongMaterial.cs/#L652"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public TextureModel? SpecularColorMap { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.TextureModel.html">TextureModel</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_PhongMaterial_SpecularShininess_" data-uid="HelixToolkit.Avalonia.SharpDX.PhongMaterial.SpecularShininess*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_PhongMaterial_SpecularShininess" data-uid="HelixToolkit.Avalonia.SharpDX.PhongMaterial.SpecularShininess">
+  SpecularShininess
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Model/Materials/PhongMaterial.cs/#L593"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>The power of specular reflections.
+For details see: <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/bb147175(v=vs.85).aspx">http://msdn.microsoft.com/en-us/library/windows/desktop/bb147175(v=vs.85).aspx</a></p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float SpecularShininess { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_PhongMaterial_UVTransform_" data-uid="HelixToolkit.Avalonia.SharpDX.PhongMaterial.UVTransform*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_PhongMaterial_UVTransform" data-uid="HelixToolkit.Avalonia.SharpDX.PhongMaterial.UVTransform">
+  UVTransform
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Model/Materials/PhongMaterial.cs/#L970"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the texture uv transform.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public UVTransform UVTransform { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.UVTransform.html">UVTransform</a></dt>
+    <dd><p>The uv transform.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_PhongMaterial_VertexColorBlendingFactor_" data-uid="HelixToolkit.Avalonia.SharpDX.PhongMaterial.VertexColorBlendingFactor*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_PhongMaterial_VertexColorBlendingFactor" data-uid="HelixToolkit.Avalonia.SharpDX.PhongMaterial.VertexColorBlendingFactor">
+  VertexColorBlendingFactor
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Model/Materials/PhongMaterial.cs/#L988"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the vertex color blending factor.
+Final Diffuse Color = (1 - VertexColorBlendingFactor) * Diffuse + VertexColorBlendingFactor * Vertex Color</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public double VertexColorBlendingFactor { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd><p>The vertex color blending factor.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h2 class="section" id="methods">Methods
+</h2>
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_PhongMaterial_CloneMaterial_" data-uid="HelixToolkit.Avalonia.SharpDX.PhongMaterial.CloneMaterial*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_PhongMaterial_CloneMaterial" data-uid="HelixToolkit.Avalonia.SharpDX.PhongMaterial.CloneMaterial">
+  CloneMaterial()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Model/Materials/PhongMaterial.cs/#L1049"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual PhongMaterial CloneMaterial()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Avalonia.SharpDX.PhongMaterial.html">PhongMaterial</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_PhongMaterial_OnCreateCore_" data-uid="HelixToolkit.Avalonia.SharpDX.PhongMaterial.OnCreateCore*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_PhongMaterial_OnCreateCore" data-uid="HelixToolkit.Avalonia.SharpDX.PhongMaterial.OnCreateCore">
+  OnCreateCore()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Model/Materials/PhongMaterial.cs/#L1101"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected override MaterialCore OnCreateCore()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.Model.MaterialCore.html">MaterialCore</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <h2 class="section" id="operators">Operators
+</h2>
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_PhongMaterial_op_Implicit_" data-uid="HelixToolkit.Avalonia.SharpDX.PhongMaterial.op_Implicit*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_PhongMaterial_op_Implicit_HelixToolkit_SharpDX_Model_PhongMaterialCore__HelixToolkit_Avalonia_SharpDX_PhongMaterial" data-uid="HelixToolkit.Avalonia.SharpDX.PhongMaterial.op_Implicit(HelixToolkit.SharpDX.Model.PhongMaterialCore)~HelixToolkit.Avalonia.SharpDX.PhongMaterial">
+  implicit operator PhongMaterial?(PhongMaterialCore?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Model/Materials/PhongMaterial.cs/#L1141"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static implicit operator PhongMaterial?(PhongMaterialCore? core)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>core</code> <a class="xref" href="HelixToolkit.SharpDX.Model.PhongMaterialCore.html">PhongMaterialCore</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Avalonia.SharpDX.PhongMaterial.html">PhongMaterial</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Model/Materials/PhongMaterial.cs/#L34" class="edit-link">Edit this page</a>
+        </div>
+
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          Copyright (c) 2023 Helix Toolkit contributors
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,1185 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Class TextGroupVisual3D | Helix Toolkit - 3D for .NET </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Class TextGroupVisual3D | Helix Toolkit - 3D for .NET ">
+      
+      <meta name="description" content="Provides a visual element that shows a collection of text items.">
+      <link rel="icon" href="../images/favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/helix-toolkit/helix-toolkit/new/main-v3/apiSpec/new?filename=HelixToolkit_Wpf_TextGroupVisual3D.md&amp;value=---%0Auid%3A%20HelixToolkit.Wpf.TextGroupVisual3D%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="ManagedReference">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../images/favicon.ico" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="HelixToolkit.Wpf.TextGroupVisual3D">
+
+
+
+  <h1 id="HelixToolkit_Wpf_TextGroupVisual3D" data-uid="HelixToolkit.Wpf.TextGroupVisual3D" class="text-break">
+Class TextGroupVisual3D  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Wpf/Visual3Ds/Text/TextGroupVisual3D.cs/#L19"><i class="bi bi-code-slash"></i></a>
+  </h1>
+
+  <div class="facts text-secondary">
+    <dl><dt>Namespace</dt><dd><a class="xref" href="HelixToolkit.html">HelixToolkit</a>.<a class="xref" href="HelixToolkit.Wpf.html">Wpf</a></dd></dl>
+  <dl><dt>Assembly</dt><dd>HelixToolkit.Wpf.dll</dd></dl>
+  </div>
+
+  <div class="markdown summary"><p>Provides a visual element that shows a collection of text items.</p>
+</div>
+  <div class="markdown conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class TextGroupVisual3D : ModelVisual3D, IAnimatable, IAddChild</code></pre>
+  </div>
+
+
+
+
+  <dl class="typelist inheritance">
+    <dt>Inheritance</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.threading.dispatcherobject">DispatcherObject</a></div>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.dependencyobject">DependencyObject</a></div>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.media3d.visual3d">Visual3D</a></div>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.media3d.modelvisual3d">ModelVisual3D</a></div>
+      <div><span class="xref">TextGroupVisual3D</span></div>
+    </dd>
+  </dl>
+
+  <dl class="typelist implements">
+    <dt>Implements</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.animation.ianimatable">IAnimatable</a></div>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.markup.iaddchild">IAddChild</a></div>
+    </dd>
+  </dl>
+
+
+  <dl class="typelist inheritedMembers">
+    <dt>Inherited Members</dt>
+    <dd>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.media3d.modelvisual3d.contentproperty">ModelVisual3D.ContentProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.media3d.modelvisual3d.transformproperty">ModelVisual3D.TransformProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.media3d.modelvisual3d.getvisual3dchild">ModelVisual3D.GetVisual3DChild(int)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.media3d.modelvisual3d.children">ModelVisual3D.Children</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.media3d.modelvisual3d.content">ModelVisual3D.Content</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.media3d.modelvisual3d.transform">ModelVisual3D.Transform</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.media3d.modelvisual3d.visual3dchildrencount">ModelVisual3D.Visual3DChildrenCount</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.media3d.visual3d.addvisual3dchild">Visual3D.AddVisual3DChild(Visual3D)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.media3d.visual3d.applyanimationclock#system-windows-media-media3d-visual3d-applyanimationclock(system-windows-dependencyproperty-system-windows-media-animation-animationclock)">Visual3D.ApplyAnimationClock(DependencyProperty, AnimationClock)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.media3d.visual3d.applyanimationclock#system-windows-media-media3d-visual3d-applyanimationclock(system-windows-dependencyproperty-system-windows-media-animation-animationclock-system-windows-media-animation-handoffbehavior)">Visual3D.ApplyAnimationClock(DependencyProperty, AnimationClock, HandoffBehavior)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.media3d.visual3d.beginanimation#system-windows-media-media3d-visual3d-beginanimation(system-windows-dependencyproperty-system-windows-media-animation-animationtimeline)">Visual3D.BeginAnimation(DependencyProperty, AnimationTimeline)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.media3d.visual3d.beginanimation#system-windows-media-media3d-visual3d-beginanimation(system-windows-dependencyproperty-system-windows-media-animation-animationtimeline-system-windows-media-animation-handoffbehavior)">Visual3D.BeginAnimation(DependencyProperty, AnimationTimeline, HandoffBehavior)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.media3d.visual3d.findcommonvisualancestor">Visual3D.FindCommonVisualAncestor(DependencyObject)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.media3d.visual3d.getanimationbasevalue">Visual3D.GetAnimationBaseValue(DependencyProperty)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.media3d.visual3d.isancestorof">Visual3D.IsAncestorOf(DependencyObject)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.media3d.visual3d.isdescendantof">Visual3D.IsDescendantOf(DependencyObject)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.media3d.visual3d.onvisualchildrenchanged">Visual3D.OnVisualChildrenChanged(DependencyObject, DependencyObject)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.media3d.visual3d.onvisualparentchanged">Visual3D.OnVisualParentChanged(DependencyObject)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.media3d.visual3d.removevisual3dchild">Visual3D.RemoveVisual3DChild(Visual3D)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.media3d.visual3d.transformtoancestor#system-windows-media-media3d-visual3d-transformtoancestor(system-windows-media-media3d-visual3d)">Visual3D.TransformToAncestor(Visual3D)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.media3d.visual3d.transformtoancestor#system-windows-media-media3d-visual3d-transformtoancestor(system-windows-media-visual)">Visual3D.TransformToAncestor(Visual)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.media3d.visual3d.transformtodescendant">Visual3D.TransformToDescendant(Visual3D)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.media3d.visual3d.hasanimatedproperties">Visual3D.HasAnimatedProperties</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.media3d.visual3d.visual3dmodel">Visual3D.Visual3DModel</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.dependencyobject.clearvalue#system-windows-dependencyobject-clearvalue(system-windows-dependencyproperty)">DependencyObject.ClearValue(DependencyProperty)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.dependencyobject.clearvalue#system-windows-dependencyobject-clearvalue(system-windows-dependencypropertykey)">DependencyObject.ClearValue(DependencyPropertyKey)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.dependencyobject.coercevalue">DependencyObject.CoerceValue(DependencyProperty)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.dependencyobject.equals">DependencyObject.Equals(object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.dependencyobject.gethashcode">DependencyObject.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.dependencyobject.getlocalvalueenumerator">DependencyObject.GetLocalValueEnumerator()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.dependencyobject.getvalue">DependencyObject.GetValue(DependencyProperty)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.dependencyobject.invalidateproperty">DependencyObject.InvalidateProperty(DependencyProperty)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.dependencyobject.onpropertychanged">DependencyObject.OnPropertyChanged(DependencyPropertyChangedEventArgs)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.dependencyobject.readlocalvalue">DependencyObject.ReadLocalValue(DependencyProperty)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.dependencyobject.setcurrentvalue">DependencyObject.SetCurrentValue(DependencyProperty, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.dependencyobject.setvalue#system-windows-dependencyobject-setvalue(system-windows-dependencyproperty-system-object)">DependencyObject.SetValue(DependencyProperty, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.dependencyobject.setvalue#system-windows-dependencyobject-setvalue(system-windows-dependencypropertykey-system-object)">DependencyObject.SetValue(DependencyPropertyKey, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.dependencyobject.shouldserializeproperty">DependencyObject.ShouldSerializeProperty(DependencyProperty)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.dependencyobject.dependencyobjecttype">DependencyObject.DependencyObjectType</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.dependencyobject.issealed">DependencyObject.IsSealed</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.threading.dispatcherobject.dispatcher">DispatcherObject.Dispatcher</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">object.Equals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype">object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone">object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals">object.ReferenceEquals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring">object.ToString()</a>
+    </div>
+  </dd></dl>
+
+  <dl class="typelist extensionMethods">
+    <dt>Extension Methods</dt>
+    <dd>
+  <div>
+      <a class="xref" href="HelixToolkit.Wpf.AttachedProperties.html#HelixToolkit_Wpf_AttachedProperties_GetName_System_Windows_DependencyObject_">AttachedProperties.GetName(DependencyObject)</a>
+  </div>
+  <div>
+      <a class="xref" href="HelixToolkit.Wpf.AttachedProperties.html#HelixToolkit_Wpf_AttachedProperties_SetName_System_Windows_DependencyObject_System_String_">AttachedProperties.SetName(DependencyObject, string)</a>
+  </div>
+  <div>
+      <a class="xref" href="HelixToolkit.Wpf.AnimationExtensions.html#HelixToolkit_Wpf_AnimationExtensions_AnimateOpacity_System_Windows_Media_Animation_IAnimatable_System_Double_System_Double_">AnimationExtensions.AnimateOpacity(IAnimatable, double, double)</a>
+  </div>
+  <div>
+      <a class="xref" href="HelixToolkit.Wpf.Visual3DHelper.html#HelixToolkit_Wpf_Visual3DHelper_FindBounds_System_Windows_Media_Media3D_Visual3D_System_Windows_Media_Media3D_Transform3D_">Visual3DHelper.FindBounds(Visual3D, Transform3D)</a>
+  </div>
+  <div>
+      <a class="xref" href="HelixToolkit.Wpf.Visual3DHelper.html#HelixToolkit_Wpf_Visual3DHelper_GetTransform_System_Windows_Media_Media3D_Visual3D_">Visual3DHelper.GetTransform(Visual3D)</a>
+  </div>
+  <div>
+      <a class="xref" href="HelixToolkit.Wpf.Visual3DHelper.html#HelixToolkit_Wpf_Visual3DHelper_GetTransformTo_System_Windows_Media_Media3D_Visual3D_System_Windows_Media_Media3D_Model3D_">Visual3DHelper.GetTransformTo(Visual3D, Model3D)</a>
+  </div>
+  <div>
+      <a class="xref" href="HelixToolkit.Wpf.Visual3DHelper.html#HelixToolkit_Wpf_Visual3DHelper_GetViewport_System_Windows_Media_Media3D_Visual3D_">Visual3DHelper.GetViewport(Visual3D)</a>
+  </div>
+  <div>
+      <a class="xref" href="HelixToolkit.Wpf.Visual3DHelper.html#HelixToolkit_Wpf_Visual3DHelper_GetViewport3D_System_Windows_Media_Media3D_Visual3D_">Visual3DHelper.GetViewport3D(Visual3D)</a>
+  </div>
+  <div>
+      <a class="xref" href="HelixToolkit.Wpf.Visual3DHelper.html#HelixToolkit_Wpf_Visual3DHelper_GetViewportTransform_System_Windows_Media_Media3D_Visual3D_">Visual3DHelper.GetViewportTransform(Visual3D)</a>
+  </div>
+  <div>
+      <a class="xref" href="HelixToolkit.Wpf.Visual3DHelper.html#HelixToolkit_Wpf_Visual3DHelper_IsAttachedToViewport3D_System_Windows_Media_Media3D_Visual3D_">Visual3DHelper.IsAttachedToViewport3D(Visual3D)</a>
+  </div>
+  <div>
+      <a class="xref" href="HelixToolkit.Wpf.Visual3DHelper.html#HelixToolkit_Wpf_Visual3DHelper_Traverse__1_System_Windows_Media_Media3D_Visual3D_System_Action___0_System_Windows_Media_Media3D_Transform3D__">Visual3DHelper.Traverse&lt;T&gt;(Visual3D, Action&lt;T, Transform3D&gt;)</a>
+  </div>
+  <div>
+      <a class="xref" href="HelixToolkit.Wpf.Visual3DHelper.html#HelixToolkit_Wpf_Visual3DHelper_Traverse__1_System_Windows_Media_Media3D_Visual3D_System_Action___0_System_Windows_Media_Media3D_Visual3D_System_Windows_Media_Media3D_Transform3D__">Visual3DHelper.Traverse&lt;T&gt;(Visual3D, Action&lt;T, Visual3D, Transform3D&gt;)</a>
+  </div>
+  </dd></dl>
+
+
+
+  <h2 id="HelixToolkit_Wpf_TextGroupVisual3D_remarks">Remarks</h2>
+  <div class="markdown level0 remarks"><p>Set the <a class="xref" href="HelixToolkit.Wpf.TextGroupVisual3D.html#HelixToolkit_Wpf_TextGroupVisual3D_Items">Items</a> property last to avoid multiple updates.</p>
+</div>
+
+
+  <h2 class="section" id="fields">Fields
+</h2>
+
+
+
+  <h3 id="HelixToolkit_Wpf_TextGroupVisual3D_BackgroundProperty" data-uid="HelixToolkit.Wpf.TextGroupVisual3D.BackgroundProperty">
+  BackgroundProperty
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Wpf/Visual3Ds/Text/TextGroupVisual3D.cs/#L24"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Identifies the <a class="xref" href="HelixToolkit.Wpf.TextGroupVisual3D.html#HelixToolkit_Wpf_TextGroupVisual3D_Background">Background</a> dependency property.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly DependencyProperty BackgroundProperty</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.dependencyproperty">DependencyProperty</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_Wpf_TextGroupVisual3D_BorderBrushProperty" data-uid="HelixToolkit.Wpf.TextGroupVisual3D.BorderBrushProperty">
+  BorderBrushProperty
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Wpf/Visual3Ds/Text/TextGroupVisual3D.cs/#L30"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Identifies the <a class="xref" href="HelixToolkit.Wpf.TextGroupVisual3D.html#HelixToolkit_Wpf_TextGroupVisual3D_BorderBrush">BorderBrush</a> dependency property.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly DependencyProperty BorderBrushProperty</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.dependencyproperty">DependencyProperty</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_Wpf_TextGroupVisual3D_BorderThicknessProperty" data-uid="HelixToolkit.Wpf.TextGroupVisual3D.BorderThicknessProperty">
+  BorderThicknessProperty
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Wpf/Visual3Ds/Text/TextGroupVisual3D.cs/#L36"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Identifies the <a class="xref" href="HelixToolkit.Wpf.TextGroupVisual3D.html#HelixToolkit_Wpf_TextGroupVisual3D_BorderThickness">BorderThickness</a> dependency property.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly DependencyProperty BorderThicknessProperty</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.dependencyproperty">DependencyProperty</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_Wpf_TextGroupVisual3D_FontFamilyProperty" data-uid="HelixToolkit.Wpf.TextGroupVisual3D.FontFamilyProperty">
+  FontFamilyProperty
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Wpf/Visual3Ds/Text/TextGroupVisual3D.cs/#L46"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Identifies the <a class="xref" href="HelixToolkit.Wpf.TextGroupVisual3D.html#HelixToolkit_Wpf_TextGroupVisual3D_FontFamily">FontFamily</a> dependency property.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly DependencyProperty FontFamilyProperty</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.dependencyproperty">DependencyProperty</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_Wpf_TextGroupVisual3D_FontSizeProperty" data-uid="HelixToolkit.Wpf.TextGroupVisual3D.FontSizeProperty">
+  FontSizeProperty
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Wpf/Visual3Ds/Text/TextGroupVisual3D.cs/#L52"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Identifies the <a class="xref" href="HelixToolkit.Wpf.TextGroupVisual3D.html#HelixToolkit_Wpf_TextGroupVisual3D_FontSize">FontSize</a> dependency property.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly DependencyProperty FontSizeProperty</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.dependencyproperty">DependencyProperty</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_Wpf_TextGroupVisual3D_FontWeightProperty" data-uid="HelixToolkit.Wpf.TextGroupVisual3D.FontWeightProperty">
+  FontWeightProperty
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Wpf/Visual3Ds/Text/TextGroupVisual3D.cs/#L58"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Identifies the <a class="xref" href="HelixToolkit.Wpf.TextGroupVisual3D.html#HelixToolkit_Wpf_TextGroupVisual3D_FontWeight">FontWeight</a> dependency property.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly DependencyProperty FontWeightProperty</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.dependencyproperty">DependencyProperty</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_Wpf_TextGroupVisual3D_ForegroundProperty" data-uid="HelixToolkit.Wpf.TextGroupVisual3D.ForegroundProperty">
+  ForegroundProperty
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Wpf/Visual3Ds/Text/TextGroupVisual3D.cs/#L67"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Identifies the <a class="xref" href="HelixToolkit.Wpf.TextGroupVisual3D.html#HelixToolkit_Wpf_TextGroupVisual3D_Foreground">Foreground</a> dependency property.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly DependencyProperty ForegroundProperty</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.dependencyproperty">DependencyProperty</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_Wpf_TextGroupVisual3D_HeightProperty" data-uid="HelixToolkit.Wpf.TextGroupVisual3D.HeightProperty">
+  HeightProperty
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Wpf/Visual3Ds/Text/TextGroupVisual3D.cs/#L73"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Identifies the <a class="xref" href="HelixToolkit.Wpf.TextGroupVisual3D.html#HelixToolkit_Wpf_TextGroupVisual3D_Height">Height</a> dependency property.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly DependencyProperty HeightProperty</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.dependencyproperty">DependencyProperty</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_Wpf_TextGroupVisual3D_IsDoubleSidedProperty" data-uid="HelixToolkit.Wpf.TextGroupVisual3D.IsDoubleSidedProperty">
+  IsDoubleSidedProperty
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Wpf/Visual3Ds/Text/TextGroupVisual3D.cs/#L79"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Identifies the <a class="xref" href="HelixToolkit.Wpf.TextGroupVisual3D.html#HelixToolkit_Wpf_TextGroupVisual3D_IsDoubleSided">IsDoubleSided</a> dependency property.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly DependencyProperty IsDoubleSidedProperty</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.dependencyproperty">DependencyProperty</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_Wpf_TextGroupVisual3D_IsFlippedProperty" data-uid="HelixToolkit.Wpf.TextGroupVisual3D.IsFlippedProperty">
+  IsFlippedProperty
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Wpf/Visual3Ds/Text/TextGroupVisual3D.cs/#L85"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Identifies the <a class="xref" href="HelixToolkit.Wpf.TextGroupVisual3D.html#HelixToolkit_Wpf_TextGroupVisual3D_IsFlipped">IsFlipped</a> dependency property.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly DependencyProperty IsFlippedProperty</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.dependencyproperty">DependencyProperty</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_Wpf_TextGroupVisual3D_ItemsProperty" data-uid="HelixToolkit.Wpf.TextGroupVisual3D.ItemsProperty">
+  ItemsProperty
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Wpf/Visual3Ds/Text/TextGroupVisual3D.cs/#L91"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Identifies the <a class="xref" href="HelixToolkit.Wpf.TextGroupVisual3D.html#HelixToolkit_Wpf_TextGroupVisual3D_Items">Items</a> dependency property.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly DependencyProperty ItemsProperty</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.dependencyproperty">DependencyProperty</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_Wpf_TextGroupVisual3D_PaddingProperty" data-uid="HelixToolkit.Wpf.TextGroupVisual3D.PaddingProperty">
+  PaddingProperty
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Wpf/Visual3Ds/Text/TextGroupVisual3D.cs/#L100"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Identifies the <a class="xref" href="HelixToolkit.Wpf.TextGroupVisual3D.html#HelixToolkit_Wpf_TextGroupVisual3D_Padding">Padding</a> dependency property.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly DependencyProperty PaddingProperty</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.dependencyproperty">DependencyProperty</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+  <h2 class="section" id="properties">Properties
+</h2>
+
+
+  <a id="HelixToolkit_Wpf_TextGroupVisual3D_Background_" data-uid="HelixToolkit.Wpf.TextGroupVisual3D.Background*"></a>
+
+  <h3 id="HelixToolkit_Wpf_TextGroupVisual3D_Background" data-uid="HelixToolkit.Wpf.TextGroupVisual3D.Background">
+  Background
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Wpf/Visual3Ds/Text/TextGroupVisual3D.cs/#L110"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the background brush.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Brush Background { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.brush">Brush</a></dt>
+    <dd><p>The background.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_TextGroupVisual3D_BorderBrush_" data-uid="HelixToolkit.Wpf.TextGroupVisual3D.BorderBrush*"></a>
+
+  <h3 id="HelixToolkit_Wpf_TextGroupVisual3D_BorderBrush" data-uid="HelixToolkit.Wpf.TextGroupVisual3D.BorderBrush">
+  BorderBrush
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Wpf/Visual3Ds/Text/TextGroupVisual3D.cs/#L127"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the border brush.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Brush BorderBrush { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.brush">Brush</a></dt>
+    <dd><p>The border brush.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_TextGroupVisual3D_BorderThickness_" data-uid="HelixToolkit.Wpf.TextGroupVisual3D.BorderThickness*"></a>
+
+  <h3 id="HelixToolkit_Wpf_TextGroupVisual3D_BorderThickness" data-uid="HelixToolkit.Wpf.TextGroupVisual3D.BorderThickness">
+  BorderThickness
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Wpf/Visual3Ds/Text/TextGroupVisual3D.cs/#L144"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the border thickness.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Thickness BorderThickness { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.thickness">Thickness</a></dt>
+    <dd><p>The border thickness.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_TextGroupVisual3D_FontFamily_" data-uid="HelixToolkit.Wpf.TextGroupVisual3D.FontFamily*"></a>
+
+  <h3 id="HelixToolkit_Wpf_TextGroupVisual3D_FontFamily" data-uid="HelixToolkit.Wpf.TextGroupVisual3D.FontFamily">
+  FontFamily
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Wpf/Visual3Ds/Text/TextGroupVisual3D.cs/#L161"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the font family.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public FontFamily FontFamily { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.fontfamily">FontFamily</a></dt>
+    <dd><p>The font family.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_TextGroupVisual3D_FontSize_" data-uid="HelixToolkit.Wpf.TextGroupVisual3D.FontSize*"></a>
+
+  <h3 id="HelixToolkit_Wpf_TextGroupVisual3D_FontSize" data-uid="HelixToolkit.Wpf.TextGroupVisual3D.FontSize">
+  FontSize
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Wpf/Visual3Ds/Text/TextGroupVisual3D.cs/#L178"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the size of the font (if not set, the Height property is used.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public double FontSize { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd><p>The size of the font.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_TextGroupVisual3D_FontWeight_" data-uid="HelixToolkit.Wpf.TextGroupVisual3D.FontWeight*"></a>
+
+  <h3 id="HelixToolkit_Wpf_TextGroupVisual3D_FontWeight" data-uid="HelixToolkit.Wpf.TextGroupVisual3D.FontWeight">
+  FontWeight
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Wpf/Visual3Ds/Text/TextGroupVisual3D.cs/#L195"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the font weight.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public FontWeight FontWeight { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.fontweight">FontWeight</a></dt>
+    <dd><p>The font weight.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_TextGroupVisual3D_Foreground_" data-uid="HelixToolkit.Wpf.TextGroupVisual3D.Foreground*"></a>
+
+  <h3 id="HelixToolkit_Wpf_TextGroupVisual3D_Foreground" data-uid="HelixToolkit.Wpf.TextGroupVisual3D.Foreground">
+  Foreground
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Wpf/Visual3Ds/Text/TextGroupVisual3D.cs/#L212"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the foreground (text) brush.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Brush Foreground { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.brush">Brush</a></dt>
+    <dd><p>The foreground brush.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_TextGroupVisual3D_Height_" data-uid="HelixToolkit.Wpf.TextGroupVisual3D.Height*"></a>
+
+  <h3 id="HelixToolkit_Wpf_TextGroupVisual3D_Height" data-uid="HelixToolkit.Wpf.TextGroupVisual3D.Height">
+  Height
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Wpf/Visual3Ds/Text/TextGroupVisual3D.cs/#L229"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the height of the text.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public double Height { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd><p>The text height.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_TextGroupVisual3D_IsDoubleSided_" data-uid="HelixToolkit.Wpf.TextGroupVisual3D.IsDoubleSided*"></a>
+
+  <h3 id="HelixToolkit_Wpf_TextGroupVisual3D_IsDoubleSided" data-uid="HelixToolkit.Wpf.TextGroupVisual3D.IsDoubleSided">
+  IsDoubleSided
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Wpf/Visual3Ds/Text/TextGroupVisual3D.cs/#L246"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets a value indicating whether this text visual is double sided.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsDoubleSided { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><code>true</code> if this instance is double sided; otherwise, <code>false</code>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_TextGroupVisual3D_IsFlipped_" data-uid="HelixToolkit.Wpf.TextGroupVisual3D.IsFlipped*"></a>
+
+  <h3 id="HelixToolkit_Wpf_TextGroupVisual3D_IsFlipped" data-uid="HelixToolkit.Wpf.TextGroupVisual3D.IsFlipped">
+  IsFlipped
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Wpf/Visual3Ds/Text/TextGroupVisual3D.cs/#L268"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets a value indicating whether the text should be flipped (mirrored horizontally).</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsFlipped { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><code>true</code> if text is flipped; otherwise, <code>false</code>.</p>
+</dd>
+  </dl>
+
+
+
+
+  <h4 class="section" id="HelixToolkit_Wpf_TextGroupVisual3D_IsFlipped_remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>This may be useful when using a mirror transform on the text visual.</p>
+</div>
+
+
+
+
+  <a id="HelixToolkit_Wpf_TextGroupVisual3D_Items_" data-uid="HelixToolkit.Wpf.TextGroupVisual3D.Items*"></a>
+
+  <h3 id="HelixToolkit_Wpf_TextGroupVisual3D_Items" data-uid="HelixToolkit.Wpf.TextGroupVisual3D.Items">
+  Items
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Wpf/Visual3Ds/Text/TextGroupVisual3D.cs/#L285"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the items.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IList&lt;SpatialTextItem&gt; Items { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ilist-1">IList</a>&lt;<a class="xref" href="HelixToolkit.Wpf.SpatialTextItem.html">SpatialTextItem</a>&gt;</dt>
+    <dd><p>The items.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_TextGroupVisual3D_Padding_" data-uid="HelixToolkit.Wpf.TextGroupVisual3D.Padding*"></a>
+
+  <h3 id="HelixToolkit_Wpf_TextGroupVisual3D_Padding" data-uid="HelixToolkit.Wpf.TextGroupVisual3D.Padding">
+  Padding
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Wpf/Visual3Ds/Text/TextGroupVisual3D.cs/#L302"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the padding.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Thickness Padding { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.thickness">Thickness</a></dt>
+    <dd><p>The padding.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h2 class="section" id="methods">Methods
+</h2>
+
+
+  <a id="HelixToolkit_Wpf_TextGroupVisual3D_CreateTextMaterial_" data-uid="HelixToolkit.Wpf.TextGroupVisual3D.CreateTextMaterial*"></a>
+
+  <h3 id="HelixToolkit_Wpf_TextGroupVisual3D_CreateTextMaterial_System_Collections_Generic_IEnumerable_HelixToolkit_Wpf_TextItem__System_Func_System_String_System_Windows_FrameworkElement__System_Windows_Media_Brush_System_Boolean_System_Collections_Generic_Dictionary_System_String_System_Windows_FrameworkElement___System_Collections_Generic_Dictionary_System_Windows_FrameworkElement_System_Windows_Rect___" data-uid="HelixToolkit.Wpf.TextGroupVisual3D.CreateTextMaterial(System.Collections.Generic.IEnumerable{HelixToolkit.Wpf.TextItem},System.Func{System.String,System.Windows.FrameworkElement},System.Windows.Media.Brush,System.Boolean,System.Collections.Generic.Dictionary{System.String,System.Windows.FrameworkElement}@,System.Collections.Generic.Dictionary{System.Windows.FrameworkElement,System.Windows.Rect}@)">
+  CreateTextMaterial(IEnumerable&lt;TextItem&gt;, Func&lt;string, FrameworkElement&gt;, Brush, bool, out Dictionary&lt;string, FrameworkElement&gt;, out Dictionary&lt;FrameworkElement, Rect&gt;)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Wpf/Visual3Ds/Text/TextGroupVisual3D.cs/#L325"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Creates the text material.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Material CreateTextMaterial(IEnumerable&lt;TextItem&gt; items, Func&lt;string, FrameworkElement&gt; createElement, Brush background, bool useVisualBrush, out Dictionary&lt;string, FrameworkElement&gt; elementMap, out Dictionary&lt;FrameworkElement, Rect&gt; elementPositions)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>items</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="HelixToolkit.Wpf.TextItem.html">TextItem</a>&gt;</dt>
+    <dd><p>The items.</p>
+</dd>
+    <dt><code>createElement</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.func-2">Func</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.frameworkelement">FrameworkElement</a>&gt;</dt>
+    <dd><p>The create element.</p>
+</dd>
+    <dt><code>background</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.brush">Brush</a></dt>
+    <dd><p>The background.</p>
+</dd>
+    <dt><code>useVisualBrush</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p>Create a text material using <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.visualbrush">VisualBrush</a></p>
+</dd>
+    <dt><code>elementMap</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2">Dictionary</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.frameworkelement">FrameworkElement</a>&gt;</dt>
+    <dd><p>The element map.</p>
+</dd>
+    <dt><code>elementPositions</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2">Dictionary</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.frameworkelement">FrameworkElement</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.rect">Rect</a>&gt;</dt>
+    <dd><p>The element positions.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.media3d.material">Material</a></dt>
+    <dd><p>A text material.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Wpf/Visual3Ds/Text/TextGroupVisual3D.cs/#L19" class="edit-link">Edit this page</a>
+        </div>
+
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          Copyright (c) 2023 Helix Toolkit contributors
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

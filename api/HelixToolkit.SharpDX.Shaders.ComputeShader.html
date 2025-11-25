@@ -1,0 +1,785 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Class ComputeShader | Helix Toolkit - 3D for .NET </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Class ComputeShader | Helix Toolkit - 3D for .NET ">
+      
+      
+      <link rel="icon" href="../images/favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/helix-toolkit/helix-toolkit/new/main-v3/apiSpec/new?filename=HelixToolkit_SharpDX_Shaders_ComputeShader.md&amp;value=---%0Auid%3A%20HelixToolkit.SharpDX.Shaders.ComputeShader%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="ManagedReference">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../images/favicon.ico" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="HelixToolkit.SharpDX.Shaders.ComputeShader">
+
+
+
+  <h1 id="HelixToolkit_SharpDX_Shaders_ComputeShader" data-uid="HelixToolkit.SharpDX.Shaders.ComputeShader" class="text-break">
+Class ComputeShader  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Shaders/ComputeShader.cs/#L11"><i class="bi bi-code-slash"></i></a>
+  </h1>
+
+  <div class="facts text-secondary">
+    <dl><dt>Namespace</dt><dd><a class="xref" href="HelixToolkit.html">HelixToolkit</a>.<a class="xref" href="HelixToolkit.SharpDX.html">SharpDX</a>.<a class="xref" href="HelixToolkit.SharpDX.Shaders.html">Shaders</a></dd></dl>
+  <dl><dt>Assembly</dt><dd>HelixToolkit.SharpDX.dll</dd></dl>
+  </div>
+
+  <div class="markdown summary"></div>
+  <div class="markdown conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public sealed class ComputeShader : ShaderBase, IDisposable</code></pre>
+  </div>
+
+
+
+
+  <dl class="typelist inheritance">
+    <dt>Inheritance</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
+      <div><a class="xref" href="HelixToolkit.SharpDX.DisposeObject.html">DisposeObject</a></div>
+      <div><a class="xref" href="HelixToolkit.SharpDX.Shaders.ShaderBase.html">ShaderBase</a></div>
+      <div><span class="xref">ComputeShader</span></div>
+    </dd>
+  </dl>
+
+  <dl class="typelist implements">
+    <dt>Implements</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.idisposable">IDisposable</a></div>
+    </dd>
+  </dl>
+
+
+  <dl class="typelist inheritedMembers">
+    <dt>Inherited Members</dt>
+    <dd>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Shaders.ShaderBase.html#HelixToolkit_SharpDX_Shaders_ShaderBase_ConstantBufferMapping">ShaderBase.ConstantBufferMapping</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Shaders.ShaderBase.html#HelixToolkit_SharpDX_Shaders_ShaderBase_ShaderResourceViewMapping">ShaderBase.ShaderResourceViewMapping</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Shaders.ShaderBase.html#HelixToolkit_SharpDX_Shaders_ShaderBase_UnorderedAccessViewMapping">ShaderBase.UnorderedAccessViewMapping</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Shaders.ShaderBase.html#HelixToolkit_SharpDX_Shaders_ShaderBase_SamplerMapping">ShaderBase.SamplerMapping</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Shaders.ShaderBase.html#HelixToolkit_SharpDX_Shaders_ShaderBase_ShaderType">ShaderBase.ShaderType</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Shaders.ShaderBase.html#HelixToolkit_SharpDX_Shaders_ShaderBase_ShaderStageIndex">ShaderBase.ShaderStageIndex</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Shaders.ShaderBase.html#HelixToolkit_SharpDX_Shaders_ShaderBase_IsNULL">ShaderBase.IsNULL</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Shaders.ShaderBase.html#HelixToolkit_SharpDX_Shaders_ShaderBase_Name">ShaderBase.Name</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.DisposeObject.html#HelixToolkit_SharpDX_DisposeObject_RemoveAndDispose__1___0__">DisposeObject.RemoveAndDispose&lt;T&gt;(ref T)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.DisposeObject.html#HelixToolkit_SharpDX_DisposeObject_RemoveAndDispose__1___0_">DisposeObject.RemoveAndDispose&lt;T&gt;(T)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.DisposeObject.html#HelixToolkit_SharpDX_DisposeObject_RefCount">DisposeObject.RefCount</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.DisposeObject.html#HelixToolkit_SharpDX_DisposeObject_IncRef">DisposeObject.IncRef()</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.DisposeObject.html#HelixToolkit_SharpDX_DisposeObject_ForceDispose">DisposeObject.ForceDispose()</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.DisposeObject.html#HelixToolkit_SharpDX_DisposeObject_IsDisposed">DisposeObject.IsDisposed</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.DisposeObject.html#HelixToolkit_SharpDX_DisposeObject_Dispose">DisposeObject.Dispose()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">object.Equals(object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">object.Equals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode">object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype">object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals">object.ReferenceEquals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring">object.ToString()</a>
+    </div>
+  </dd></dl>
+
+
+
+
+
+
+  <h2 class="section" id="constructors">Constructors
+</h2>
+
+
+  <a id="HelixToolkit_SharpDX_Shaders_ComputeShader__ctor_" data-uid="HelixToolkit.SharpDX.Shaders.ComputeShader.#ctor*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Shaders_ComputeShader__ctor_SharpDX_Direct3D11_Device_System_String_System_Byte___" data-uid="HelixToolkit.SharpDX.Shaders.ComputeShader.#ctor(SharpDX.Direct3D11.Device,System.String,System.Byte[])">
+  ComputeShader(Device, string, byte[])
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Shaders/ComputeShader.cs/#L23"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Vertex Shader</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ComputeShader(Device device, string name, byte[] byteCode)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>device</code> <span class="xref">Device</span></dt>
+    <dd></dd>
+    <dt><code>name</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+    <dt><code>byteCode</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">byte</a>[]</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <h2 class="section" id="fields">Fields
+</h2>
+
+
+
+  <h3 id="HelixToolkit_SharpDX_Shaders_ComputeShader_NullComputeShader" data-uid="HelixToolkit.SharpDX.Shaders.ComputeShader.NullComputeShader">
+  NullComputeShader
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Shaders/ComputeShader.cs/#L15"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly ComputeShader NullComputeShader</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.Shaders.ComputeShader.html">ComputeShader</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_SharpDX_Shaders_ComputeShader_Type" data-uid="HelixToolkit.SharpDX.Shaders.ComputeShader.Type">
+  Type
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Shaders/ComputeShader.cs/#L16"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly ComputeShaderType Type</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.ComputeShaderType.html">ComputeShaderType</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+  <h2 class="section" id="methods">Methods
+</h2>
+
+
+  <a id="HelixToolkit_SharpDX_Shaders_ComputeShader_Bind_" data-uid="HelixToolkit.SharpDX.Shaders.ComputeShader.Bind*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Shaders_ComputeShader_Bind_HelixToolkit_SharpDX_Render_DeviceContextProxy_System_Boolean_" data-uid="HelixToolkit.SharpDX.Shaders.ComputeShader.Bind(HelixToolkit.SharpDX.Render.DeviceContextProxy,System.Boolean)">
+  Bind(DeviceContextProxy, bool)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Shaders/ComputeShader.cs/#L43"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Binds shader to pipeline</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Bind(DeviceContextProxy context, bool bindConstantBuffer = true)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>context</code> <a class="xref" href="HelixToolkit.SharpDX.Render.DeviceContextProxy.html">DeviceContextProxy</a></dt>
+    <dd><p>The context.</p>
+</dd>
+    <dt><code>bindConstantBuffer</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Shaders_ComputeShader_BindSampler_" data-uid="HelixToolkit.SharpDX.Shaders.ComputeShader.BindSampler*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Shaders_ComputeShader_BindSampler_HelixToolkit_SharpDX_Render_DeviceContextProxy_System_Int32_HelixToolkit_SharpDX_Utilities_SamplerStateProxy_" data-uid="HelixToolkit.SharpDX.Shaders.ComputeShader.BindSampler(HelixToolkit.SharpDX.Render.DeviceContextProxy,System.Int32,HelixToolkit.SharpDX.Utilities.SamplerStateProxy)">
+  BindSampler(DeviceContextProxy, int, SamplerStateProxy)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Shaders/ComputeShader.cs/#L90"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Binds the sampler.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void BindSampler(DeviceContextProxy context, int slot, SamplerStateProxy sampler)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>context</code> <a class="xref" href="HelixToolkit.SharpDX.Render.DeviceContextProxy.html">DeviceContextProxy</a></dt>
+    <dd><p>The context.</p>
+</dd>
+    <dt><code>slot</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The slot.</p>
+</dd>
+    <dt><code>sampler</code> <a class="xref" href="HelixToolkit.SharpDX.Utilities.SamplerStateProxy.html">SamplerStateProxy</a></dt>
+    <dd><p>The sampler.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Shaders_ComputeShader_BindSampler_" data-uid="HelixToolkit.SharpDX.Shaders.ComputeShader.BindSampler*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Shaders_ComputeShader_BindSampler_HelixToolkit_SharpDX_Render_DeviceContextProxy_System_String_HelixToolkit_SharpDX_Utilities_SamplerStateProxy_" data-uid="HelixToolkit.SharpDX.Shaders.ComputeShader.BindSampler(HelixToolkit.SharpDX.Render.DeviceContextProxy,System.String,HelixToolkit.SharpDX.Utilities.SamplerStateProxy)">
+  BindSampler(DeviceContextProxy, string, SamplerStateProxy)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Shaders/ComputeShader.cs/#L101"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Binds the sampler.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void BindSampler(DeviceContextProxy context, string name, SamplerStateProxy sampler)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>context</code> <a class="xref" href="HelixToolkit.SharpDX.Render.DeviceContextProxy.html">DeviceContextProxy</a></dt>
+    <dd><p>The context.</p>
+</dd>
+    <dt><code>name</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The name.</p>
+</dd>
+    <dt><code>sampler</code> <a class="xref" href="HelixToolkit.SharpDX.Utilities.SamplerStateProxy.html">SamplerStateProxy</a></dt>
+    <dd><p>The sampler.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Shaders_ComputeShader_BindSamplers_" data-uid="HelixToolkit.SharpDX.Shaders.ComputeShader.BindSamplers*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Shaders_ComputeShader_BindSamplers_HelixToolkit_SharpDX_Render_DeviceContextProxy_System_Collections_Generic_IList_System_Collections_Generic_KeyValuePair_System_Int32_HelixToolkit_SharpDX_Utilities_SamplerStateProxy___" data-uid="HelixToolkit.SharpDX.Shaders.ComputeShader.BindSamplers(HelixToolkit.SharpDX.Render.DeviceContextProxy,System.Collections.Generic.IList{System.Collections.Generic.KeyValuePair{System.Int32,HelixToolkit.SharpDX.Utilities.SamplerStateProxy}})">
+  BindSamplers(DeviceContextProxy, IList&lt;KeyValuePair&lt;int, SamplerStateProxy&gt;&gt;)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Shaders/ComputeShader.cs/#L113"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Binds the samplers.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void BindSamplers(DeviceContextProxy context, IList&lt;KeyValuePair&lt;int, SamplerStateProxy&gt;&gt; samplers)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>context</code> <a class="xref" href="HelixToolkit.SharpDX.Render.DeviceContextProxy.html">DeviceContextProxy</a></dt>
+    <dd><p>The context.</p>
+</dd>
+    <dt><code>samplers</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ilist-1">IList</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.keyvaluepair-2">KeyValuePair</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a>, <a class="xref" href="HelixToolkit.SharpDX.Utilities.SamplerStateProxy.html">SamplerStateProxy</a>&gt;&gt;</dt>
+    <dd><p>The samplers.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Shaders_ComputeShader_BindTexture_" data-uid="HelixToolkit.SharpDX.Shaders.ComputeShader.BindTexture*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Shaders_ComputeShader_BindTexture_HelixToolkit_SharpDX_Render_DeviceContextProxy_System_Int32_HelixToolkit_SharpDX_Utilities_ShaderResourceViewProxy_" data-uid="HelixToolkit.SharpDX.Shaders.ComputeShader.BindTexture(HelixToolkit.SharpDX.Render.DeviceContextProxy,System.Int32,HelixToolkit.SharpDX.Utilities.ShaderResourceViewProxy)">
+  BindTexture(DeviceContextProxy, int, ShaderResourceViewProxy)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Shaders/ComputeShader.cs/#L66"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Binds the texture.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void BindTexture(DeviceContextProxy context, int slot, ShaderResourceViewProxy texture)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>context</code> <a class="xref" href="HelixToolkit.SharpDX.Render.DeviceContextProxy.html">DeviceContextProxy</a></dt>
+    <dd><p>The context.</p>
+</dd>
+    <dt><code>slot</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The slot.</p>
+</dd>
+    <dt><code>texture</code> <a class="xref" href="HelixToolkit.SharpDX.Utilities.ShaderResourceViewProxy.html">ShaderResourceViewProxy</a></dt>
+    <dd><p>The texture.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Shaders_ComputeShader_BindTexture_" data-uid="HelixToolkit.SharpDX.Shaders.ComputeShader.BindTexture*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Shaders_ComputeShader_BindTexture_HelixToolkit_SharpDX_Render_DeviceContextProxy_System_String_HelixToolkit_SharpDX_Utilities_ShaderResourceViewProxy_" data-uid="HelixToolkit.SharpDX.Shaders.ComputeShader.BindTexture(HelixToolkit.SharpDX.Render.DeviceContextProxy,System.String,HelixToolkit.SharpDX.Utilities.ShaderResourceViewProxy)">
+  BindTexture(DeviceContextProxy, string, ShaderResourceViewProxy)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Shaders/ComputeShader.cs/#L54"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Binds the texture.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void BindTexture(DeviceContextProxy context, string name, ShaderResourceViewProxy texture)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>context</code> <a class="xref" href="HelixToolkit.SharpDX.Render.DeviceContextProxy.html">DeviceContextProxy</a></dt>
+    <dd><p>The context.</p>
+</dd>
+    <dt><code>name</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The name.</p>
+</dd>
+    <dt><code>texture</code> <a class="xref" href="HelixToolkit.SharpDX.Utilities.ShaderResourceViewProxy.html">ShaderResourceViewProxy</a></dt>
+    <dd><p>The texture.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Shaders_ComputeShader_BindTextures_" data-uid="HelixToolkit.SharpDX.Shaders.ComputeShader.BindTextures*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Shaders_ComputeShader_BindTextures_HelixToolkit_SharpDX_Render_DeviceContextProxy_System_Collections_Generic_IList_System_Collections_Generic_KeyValuePair_System_Int32_HelixToolkit_SharpDX_Utilities_ShaderResourceViewProxy___" data-uid="HelixToolkit.SharpDX.Shaders.ComputeShader.BindTextures(HelixToolkit.SharpDX.Render.DeviceContextProxy,System.Collections.Generic.IList{System.Collections.Generic.KeyValuePair{System.Int32,HelixToolkit.SharpDX.Utilities.ShaderResourceViewProxy}})">
+  BindTextures(DeviceContextProxy, IList&lt;KeyValuePair&lt;int, ShaderResourceViewProxy&gt;&gt;)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Shaders/ComputeShader.cs/#L76"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Binds the textures.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void BindTextures(DeviceContextProxy context, IList&lt;KeyValuePair&lt;int, ShaderResourceViewProxy&gt;&gt; textures)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>context</code> <a class="xref" href="HelixToolkit.SharpDX.Render.DeviceContextProxy.html">DeviceContextProxy</a></dt>
+    <dd><p>The context.</p>
+</dd>
+    <dt><code>textures</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ilist-1">IList</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.keyvaluepair-2">KeyValuePair</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a>, <a class="xref" href="HelixToolkit.SharpDX.Utilities.ShaderResourceViewProxy.html">ShaderResourceViewProxy</a>&gt;&gt;</dt>
+    <dd><p>The textures.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Shaders_ComputeShader_BindUAV_" data-uid="HelixToolkit.SharpDX.Shaders.ComputeShader.BindUAV*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Shaders_ComputeShader_BindUAV_HelixToolkit_SharpDX_Render_DeviceContextProxy_System_Int32_HelixToolkit_SharpDX_Utilities_UAVBufferViewProxy_" data-uid="HelixToolkit.SharpDX.Shaders.ComputeShader.BindUAV(HelixToolkit.SharpDX.Render.DeviceContextProxy,System.Int32,HelixToolkit.SharpDX.Utilities.UAVBufferViewProxy)">
+  BindUAV(DeviceContextProxy, int, UAVBufferViewProxy?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Shaders/ComputeShader.cs/#L127"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Binds the UnorderedAccessView.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void BindUAV(DeviceContextProxy context, int slot, UAVBufferViewProxy? uav)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>context</code> <a class="xref" href="HelixToolkit.SharpDX.Render.DeviceContextProxy.html">DeviceContextProxy</a></dt>
+    <dd><p>The context.</p>
+</dd>
+    <dt><code>slot</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The slot.</p>
+</dd>
+    <dt><code>uav</code> <a class="xref" href="HelixToolkit.SharpDX.Utilities.UAVBufferViewProxy.html">UAVBufferViewProxy</a></dt>
+    <dd><p>The uav.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Shaders_ComputeShader_BindUAV_" data-uid="HelixToolkit.SharpDX.Shaders.ComputeShader.BindUAV*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Shaders_ComputeShader_BindUAV_HelixToolkit_SharpDX_Render_DeviceContextProxy_System_String_HelixToolkit_SharpDX_Utilities_UAVBufferViewProxy_" data-uid="HelixToolkit.SharpDX.Shaders.ComputeShader.BindUAV(HelixToolkit.SharpDX.Render.DeviceContextProxy,System.String,HelixToolkit.SharpDX.Utilities.UAVBufferViewProxy)">
+  BindUAV(DeviceContextProxy, string, UAVBufferViewProxy?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Shaders/ComputeShader.cs/#L138"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Binds the UnorderedAccessView.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void BindUAV(DeviceContextProxy context, string name, UAVBufferViewProxy? uav)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>context</code> <a class="xref" href="HelixToolkit.SharpDX.Render.DeviceContextProxy.html">DeviceContextProxy</a></dt>
+    <dd><p>The context.</p>
+</dd>
+    <dt><code>name</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The name.</p>
+</dd>
+    <dt><code>uav</code> <a class="xref" href="HelixToolkit.SharpDX.Utilities.UAVBufferViewProxy.html">UAVBufferViewProxy</a></dt>
+    <dd><p>The uav.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Shaders_ComputeShader_BindUAVs_" data-uid="HelixToolkit.SharpDX.Shaders.ComputeShader.BindUAVs*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Shaders_ComputeShader_BindUAVs_HelixToolkit_SharpDX_Render_DeviceContextProxy_System_Collections_Generic_IList_System_Collections_Generic_KeyValuePair_System_Int32_HelixToolkit_SharpDX_Utilities_UAVBufferViewProxy___" data-uid="HelixToolkit.SharpDX.Shaders.ComputeShader.BindUAVs(HelixToolkit.SharpDX.Render.DeviceContextProxy,System.Collections.Generic.IList{System.Collections.Generic.KeyValuePair{System.Int32,HelixToolkit.SharpDX.Utilities.UAVBufferViewProxy}})">
+  BindUAVs(DeviceContextProxy, IList&lt;KeyValuePair&lt;int, UAVBufferViewProxy&gt;&gt;)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Shaders/ComputeShader.cs/#L149"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Binds the UnorderedAccessViews.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void BindUAVs(DeviceContextProxy context, IList&lt;KeyValuePair&lt;int, UAVBufferViewProxy&gt;&gt; uavs)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>context</code> <a class="xref" href="HelixToolkit.SharpDX.Render.DeviceContextProxy.html">DeviceContextProxy</a></dt>
+    <dd><p>The context.</p>
+</dd>
+    <dt><code>uavs</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ilist-1">IList</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.keyvaluepair-2">KeyValuePair</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a>, <a class="xref" href="HelixToolkit.SharpDX.Utilities.UAVBufferViewProxy.html">UAVBufferViewProxy</a>&gt;&gt;</dt>
+    <dd><p>The uavs.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Shaders_ComputeShader_OnDispose_" data-uid="HelixToolkit.SharpDX.Shaders.ComputeShader.OnDispose*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Shaders_ComputeShader_OnDispose_System_Boolean_" data-uid="HelixToolkit.SharpDX.Shaders.ComputeShader.OnDispose(System.Boolean)">
+  OnDispose(bool)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Shaders/ComputeShader.cs/#L158"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Disposes of object resources.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected override void OnDispose(bool disposeManagedResources)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>disposeManagedResources</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p>If true, managed resources should be
+disposed of in addition to unmanaged resources.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <h2 class="section" id="operators">Operators
+</h2>
+
+
+  <a id="HelixToolkit_SharpDX_Shaders_ComputeShader_op_Implicit_" data-uid="HelixToolkit.SharpDX.Shaders.ComputeShader.op_Implicit*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Shaders_ComputeShader_op_Implicit_HelixToolkit_SharpDX_Shaders_ComputeShader__HelixToolkit_SharpDX_ComputeShaderType" data-uid="HelixToolkit.SharpDX.Shaders.ComputeShader.op_Implicit(HelixToolkit.SharpDX.Shaders.ComputeShader)~HelixToolkit.SharpDX.ComputeShaderType">
+  implicit operator ComputeShaderType(ComputeShader)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Shaders/ComputeShader.cs/#L164"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static implicit operator ComputeShaderType(ComputeShader s)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>s</code> <a class="xref" href="HelixToolkit.SharpDX.Shaders.ComputeShader.html">ComputeShader</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.ComputeShaderType.html">ComputeShaderType</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Shaders/ComputeShader.cs/#L11" class="edit-link">Edit this page</a>
+        </div>
+
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          Copyright (c) 2023 Helix Toolkit contributors
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

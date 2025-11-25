@@ -1,0 +1,1499 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Class Matrix3x2Helper | Helix Toolkit - 3D for .NET </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Class Matrix3x2Helper | Helix Toolkit - 3D for .NET ">
+      
+      <meta name="description" content="Direct2D Matrix3x2. Supports implicit cast from .">
+      <link rel="icon" href="../images/favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/helix-toolkit/helix-toolkit/new/main-v3/apiSpec/new?filename=HelixToolkit_Maths_Matrix3x2Helper.md&amp;value=---%0Auid%3A%20HelixToolkit.Maths.Matrix3x2Helper%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="ManagedReference">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../images/favicon.ico" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="HelixToolkit.Maths.Matrix3x2Helper">
+
+
+
+  <h1 id="HelixToolkit_Maths_Matrix3x2Helper" data-uid="HelixToolkit.Maths.Matrix3x2Helper" class="text-break">
+Class Matrix3x2Helper  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/Matrix3x2.cs/#L37"><i class="bi bi-code-slash"></i></a>
+  </h1>
+
+  <div class="facts text-secondary">
+    <dl><dt>Namespace</dt><dd><a class="xref" href="HelixToolkit.html">HelixToolkit</a>.<a class="xref" href="HelixToolkit.Maths.html">Maths</a></dd></dl>
+  <dl><dt>Assembly</dt><dd>HelixToolkit.Maths.dll</dd></dl>
+  </div>
+
+  <div class="markdown summary"><p>Direct2D Matrix3x2. Supports implicit cast from <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.matrix4x4">Matrix4x4</a>.</p>
+</div>
+  <div class="markdown conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static class Matrix3x2Helper</code></pre>
+  </div>
+
+
+
+
+  <dl class="typelist inheritance">
+    <dt>Inheritance</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
+      <div><span class="xref">Matrix3x2Helper</span></div>
+    </dd>
+  </dl>
+
+
+
+  <dl class="typelist inheritedMembers">
+    <dt>Inherited Members</dt>
+    <dd>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">object.Equals(object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">object.Equals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode">object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype">object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone">object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals">object.ReferenceEquals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring">object.ToString()</a>
+    </div>
+  </dd></dl>
+
+
+
+
+
+
+  <h2 class="section" id="fields">Fields
+</h2>
+
+
+
+  <h3 id="HelixToolkit_Maths_Matrix3x2Helper_Identity" data-uid="HelixToolkit.Maths.Matrix3x2Helper.Identity">
+  Identity
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/Matrix3x2.cs/#L43"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the identity matrix.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly Matrix3x2 Identity</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.matrix3x2">Matrix3x2</a></dt>
+    <dd><p>The identity matrix.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+  <h2 class="section" id="methods">Methods
+</h2>
+
+
+  <a id="HelixToolkit_Maths_Matrix3x2Helper_Column1_" data-uid="HelixToolkit.Maths.Matrix3x2Helper.Column1*"></a>
+
+  <h3 id="HelixToolkit_Maths_Matrix3x2Helper_Column1_System_Numerics_Matrix3x2_" data-uid="HelixToolkit.Maths.Matrix3x2Helper.Column1(System.Numerics.Matrix3x2)">
+  Column1(Matrix3x2)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/Matrix3x2.cs/#L126"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the first column in the matrix; that is M11, M21, and M31.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Vector3 Column1(this Matrix3x2 m)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>m</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.matrix3x2">Matrix3x2</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_Matrix3x2Helper_Column2_" data-uid="HelixToolkit.Maths.Matrix3x2Helper.Column2*"></a>
+
+  <h3 id="HelixToolkit_Maths_Matrix3x2Helper_Column2_System_Numerics_Matrix3x2_" data-uid="HelixToolkit.Maths.Matrix3x2Helper.Column2(System.Numerics.Matrix3x2)">
+  Column2(Matrix3x2)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/Matrix3x2.cs/#L152"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the second column in the matrix; that is M12, M22, and M32.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Vector3 Column2(this Matrix3x2 m)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>m</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.matrix3x2">Matrix3x2</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_Matrix3x2Helper_Get_" data-uid="HelixToolkit.Maths.Matrix3x2Helper.Get*"></a>
+
+  <h3 id="HelixToolkit_Maths_Matrix3x2Helper_Get_System_Numerics_Matrix3x2_System_Int32_" data-uid="HelixToolkit.Maths.Matrix3x2Helper.Get(System.Numerics.Matrix3x2,System.Int32)">
+  Get(Matrix3x2, int)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/Matrix3x2.cs/#L240"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the component at the specified index.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static float Get(this Matrix3x2 m, int index)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>m</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.matrix3x2">Matrix3x2</a></dt>
+    <dd></dd>
+    <dt><code>index</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The zero-based index of the component to access.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>The value of the matrix component, depending on the index.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentoutofrangeexception">ArgumentOutOfRangeException</a></dt>
+    <dd><p>Thrown when the <code class="paramref">index</code> is out of the range [0, 5].</p>
+</dd>
+  </dl>
+
+
+
+  <a id="HelixToolkit_Maths_Matrix3x2Helper_Get_" data-uid="HelixToolkit.Maths.Matrix3x2Helper.Get*"></a>
+
+  <h3 id="HelixToolkit_Maths_Matrix3x2Helper_Get_System_Numerics_Matrix3x2_System_Int32_System_Int32_" data-uid="HelixToolkit.Maths.Matrix3x2Helper.Get(System.Numerics.Matrix3x2,System.Int32,System.Int32)">
+  Get(Matrix3x2, int, int)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/Matrix3x2.cs/#L282"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the component at the specified index.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static float Get(this Matrix3x2 m, int row, int column)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>m</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.matrix3x2">Matrix3x2</a></dt>
+    <dd></dd>
+    <dt><code>row</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The row of the matrix to access.</p>
+</dd>
+    <dt><code>column</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The column of the matrix to access.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>The value of the matrix component, depending on the index.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentoutofrangeexception">ArgumentOutOfRangeException</a></dt>
+    <dd><p>Thrown when the <code class="paramref">row</code> or <code class="paramref">column</code>is out of the range [0, 3].</p>
+</dd>
+  </dl>
+
+
+
+  <a id="HelixToolkit_Maths_Matrix3x2Helper_Row1_" data-uid="HelixToolkit.Maths.Matrix3x2Helper.Row1*"></a>
+
+  <h3 id="HelixToolkit_Maths_Matrix3x2Helper_Row1_System_Numerics_Matrix3x2_" data-uid="HelixToolkit.Maths.Matrix3x2Helper.Row1(System.Numerics.Matrix3x2)">
+  Row1(Matrix3x2)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/Matrix3x2.cs/#L49"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the first row in the matrix; that is M11 and M12.
+<code class="paramref">m</code>&gt;</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Vector2 Row1(this Matrix3x2 m)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>m</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.matrix3x2">Matrix3x2</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector2">Vector2</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_Matrix3x2Helper_Row2_" data-uid="HelixToolkit.Maths.Matrix3x2Helper.Row2*"></a>
+
+  <h3 id="HelixToolkit_Maths_Matrix3x2Helper_Row2_System_Numerics_Matrix3x2_" data-uid="HelixToolkit.Maths.Matrix3x2Helper.Row2(System.Numerics.Matrix3x2)">
+  Row2(Matrix3x2)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/Matrix3x2.cs/#L76"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the second row in the matrix; that is M21 and M22.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Vector2 Row2(this Matrix3x2 m)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>m</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.matrix3x2">Matrix3x2</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector2">Vector2</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_Matrix3x2Helper_Row3_" data-uid="HelixToolkit.Maths.Matrix3x2Helper.Row3*"></a>
+
+  <h3 id="HelixToolkit_Maths_Matrix3x2Helper_Row3_System_Numerics_Matrix3x2_" data-uid="HelixToolkit.Maths.Matrix3x2Helper.Row3(System.Numerics.Matrix3x2)">
+  Row3(Matrix3x2)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/Matrix3x2.cs/#L101"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the third row in the matrix; that is M31 and M32.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Vector2 Row3(this Matrix3x2 m)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>m</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.matrix3x2">Matrix3x2</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector2">Vector2</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_Matrix3x2Helper_ScaleVector_" data-uid="HelixToolkit.Maths.Matrix3x2Helper.ScaleVector*"></a>
+
+  <h3 id="HelixToolkit_Maths_Matrix3x2Helper_ScaleVector_System_Numerics_Matrix3x2_" data-uid="HelixToolkit.Maths.Matrix3x2Helper.ScaleVector(System.Numerics.Matrix3x2)">
+  ScaleVector(Matrix3x2)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/Matrix3x2.cs/#L209"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the scale of the matrix; that is M11 and M22.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Vector2 ScaleVector(this Matrix3x2 m)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>m</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.matrix3x2">Matrix3x2</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector2">Vector2</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_Matrix3x2Helper_Set_" data-uid="HelixToolkit.Maths.Matrix3x2Helper.Set*"></a>
+
+  <h3 id="HelixToolkit_Maths_Matrix3x2Helper_Set_System_Numerics_Matrix3x2__System_Int32_System_Int32_System_Single_" data-uid="HelixToolkit.Maths.Matrix3x2Helper.Set(System.Numerics.Matrix3x2@,System.Int32,System.Int32,System.Single)">
+  Set(ref Matrix3x2, int, int, float)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/Matrix3x2.cs/#L302"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Sets the specified m.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void Set(ref Matrix3x2 m, int row, int column, float value)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>m</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.matrix3x2">Matrix3x2</a></dt>
+    <dd><p>The m.</p>
+</dd>
+    <dt><code>row</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The row.</p>
+</dd>
+    <dt><code>column</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The column.</p>
+</dd>
+    <dt><code>value</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>The value.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentoutofrangeexception">ArgumentOutOfRangeException</a></dt>
+    <dd><p>row - Rows and columns for matrices run from 0 to 2, inclusive.
+or
+column - Rows and columns for matrices run from 0 to 1, inclusive.</p>
+</dd>
+  </dl>
+
+
+
+  <a id="HelixToolkit_Maths_Matrix3x2Helper_Set_" data-uid="HelixToolkit.Maths.Matrix3x2Helper.Set*"></a>
+
+  <h3 id="HelixToolkit_Maths_Matrix3x2Helper_Set_System_Numerics_Matrix3x2__System_Int32_System_Single_" data-uid="HelixToolkit.Maths.Matrix3x2Helper.Set(System.Numerics.Matrix3x2@,System.Int32,System.Single)">
+  Set(ref Matrix3x2, int, float)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/Matrix3x2.cs/#L260"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Sets the specified m.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void Set(ref Matrix3x2 m, int index, float value)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>m</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.matrix3x2">Matrix3x2</a></dt>
+    <dd><p>The m.</p>
+</dd>
+    <dt><code>index</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The index.</p>
+</dd>
+    <dt><code>value</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>The value.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentoutofrangeexception">ArgumentOutOfRangeException</a></dt>
+    <dd><p>index - Indices for Matrix3x2 run from 0 to 5, inclusive.</p>
+</dd>
+  </dl>
+
+
+
+  <a id="HelixToolkit_Maths_Matrix3x2Helper_SetColumn1_" data-uid="HelixToolkit.Maths.Matrix3x2Helper.SetColumn1*"></a>
+
+  <h3 id="HelixToolkit_Maths_Matrix3x2Helper_SetColumn1_System_Numerics_Matrix3x2__System_Numerics_Vector3_" data-uid="HelixToolkit.Maths.Matrix3x2Helper.SetColumn1(System.Numerics.Matrix3x2@,System.Numerics.Vector3)">
+  SetColumn1(ref Matrix3x2, Vector3)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/Matrix3x2.cs/#L144"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Sets the column1.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void SetColumn1(ref Matrix3x2 m, Vector3 value)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>m</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.matrix3x2">Matrix3x2</a></dt>
+    <dd><p>The m.</p>
+</dd>
+    <dt><code>value</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd><p>The value.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_Matrix3x2Helper_SetColumn1_" data-uid="HelixToolkit.Maths.Matrix3x2Helper.SetColumn1*"></a>
+
+  <h3 id="HelixToolkit_Maths_Matrix3x2Helper_SetColumn1_System_Numerics_Matrix3x2__System_Numerics_Vector3__" data-uid="HelixToolkit.Maths.Matrix3x2Helper.SetColumn1(System.Numerics.Matrix3x2@,System.Numerics.Vector3@)">
+  SetColumn1(ref Matrix3x2, ref Vector3)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/Matrix3x2.cs/#L135"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Sets the column1.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void SetColumn1(ref Matrix3x2 m, ref Vector3 value)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>m</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.matrix3x2">Matrix3x2</a></dt>
+    <dd><p>The m.</p>
+</dd>
+    <dt><code>value</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd><p>The value.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_Matrix3x2Helper_SetColumn2_" data-uid="HelixToolkit.Maths.Matrix3x2Helper.SetColumn2*"></a>
+
+  <h3 id="HelixToolkit_Maths_Matrix3x2Helper_SetColumn2_System_Numerics_Matrix3x2__System_Numerics_Vector3_" data-uid="HelixToolkit.Maths.Matrix3x2Helper.SetColumn2(System.Numerics.Matrix3x2@,System.Numerics.Vector3)">
+  SetColumn2(ref Matrix3x2, Vector3)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/Matrix3x2.cs/#L170"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Sets the column2.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void SetColumn2(ref Matrix3x2 m, Vector3 value)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>m</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.matrix3x2">Matrix3x2</a></dt>
+    <dd><p>The m.</p>
+</dd>
+    <dt><code>value</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd><p>The value.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_Matrix3x2Helper_SetColumn2_" data-uid="HelixToolkit.Maths.Matrix3x2Helper.SetColumn2*"></a>
+
+  <h3 id="HelixToolkit_Maths_Matrix3x2Helper_SetColumn2_System_Numerics_Matrix3x2__System_Numerics_Vector3__" data-uid="HelixToolkit.Maths.Matrix3x2Helper.SetColumn2(System.Numerics.Matrix3x2@,System.Numerics.Vector3@)">
+  SetColumn2(ref Matrix3x2, ref Vector3)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/Matrix3x2.cs/#L161"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Sets the column2.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void SetColumn2(ref Matrix3x2 m, ref Vector3 value)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>m</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.matrix3x2">Matrix3x2</a></dt>
+    <dd><p>The m.</p>
+</dd>
+    <dt><code>value</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd><p>The value.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_Matrix3x2Helper_SetRow1_" data-uid="HelixToolkit.Maths.Matrix3x2Helper.SetRow1*"></a>
+
+  <h3 id="HelixToolkit_Maths_Matrix3x2Helper_SetRow1_System_Numerics_Matrix3x2__System_Numerics_Vector2_" data-uid="HelixToolkit.Maths.Matrix3x2Helper.SetRow1(System.Numerics.Matrix3x2@,System.Numerics.Vector2)">
+  SetRow1(ref Matrix3x2, Vector2)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/Matrix3x2.cs/#L68"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Sets the row1.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void SetRow1(ref Matrix3x2 m, Vector2 value)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>m</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.matrix3x2">Matrix3x2</a></dt>
+    <dd><p>The m.</p>
+</dd>
+    <dt><code>value</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector2">Vector2</a></dt>
+    <dd><p>The value.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_Matrix3x2Helper_SetRow1_" data-uid="HelixToolkit.Maths.Matrix3x2Helper.SetRow1*"></a>
+
+  <h3 id="HelixToolkit_Maths_Matrix3x2Helper_SetRow1_System_Numerics_Matrix3x2__System_Numerics_Vector2__" data-uid="HelixToolkit.Maths.Matrix3x2Helper.SetRow1(System.Numerics.Matrix3x2@,System.Numerics.Vector2@)">
+  SetRow1(ref Matrix3x2, ref Vector2)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/Matrix3x2.cs/#L58"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Sets the row1.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void SetRow1(ref Matrix3x2 m, ref Vector2 value)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>m</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.matrix3x2">Matrix3x2</a></dt>
+    <dd><p>The m.</p>
+</dd>
+    <dt><code>value</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector2">Vector2</a></dt>
+    <dd><p>The value.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_Matrix3x2Helper_SetRow2_" data-uid="HelixToolkit.Maths.Matrix3x2Helper.SetRow2*"></a>
+
+  <h3 id="HelixToolkit_Maths_Matrix3x2Helper_SetRow2_System_Numerics_Matrix3x2__System_Numerics_Vector2_" data-uid="HelixToolkit.Maths.Matrix3x2Helper.SetRow2(System.Numerics.Matrix3x2@,System.Numerics.Vector2)">
+  SetRow2(ref Matrix3x2, Vector2)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/Matrix3x2.cs/#L94"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Sets the row2.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void SetRow2(ref Matrix3x2 m, Vector2 value)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>m</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.matrix3x2">Matrix3x2</a></dt>
+    <dd><p>The m.</p>
+</dd>
+    <dt><code>value</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector2">Vector2</a></dt>
+    <dd><p>The value.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_Matrix3x2Helper_SetRow2_" data-uid="HelixToolkit.Maths.Matrix3x2Helper.SetRow2*"></a>
+
+  <h3 id="HelixToolkit_Maths_Matrix3x2Helper_SetRow2_System_Numerics_Matrix3x2__System_Numerics_Vector2__" data-uid="HelixToolkit.Maths.Matrix3x2Helper.SetRow2(System.Numerics.Matrix3x2@,System.Numerics.Vector2@)">
+  SetRow2(ref Matrix3x2, ref Vector2)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/Matrix3x2.cs/#L85"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Sets the row2.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void SetRow2(ref Matrix3x2 m, ref Vector2 value)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>m</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.matrix3x2">Matrix3x2</a></dt>
+    <dd><p>The m.</p>
+</dd>
+    <dt><code>value</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector2">Vector2</a></dt>
+    <dd><p>The value.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_Matrix3x2Helper_SetRow3_" data-uid="HelixToolkit.Maths.Matrix3x2Helper.SetRow3*"></a>
+
+  <h3 id="HelixToolkit_Maths_Matrix3x2Helper_SetRow3_System_Numerics_Matrix3x2__System_Numerics_Vector2_" data-uid="HelixToolkit.Maths.Matrix3x2Helper.SetRow3(System.Numerics.Matrix3x2@,System.Numerics.Vector2)">
+  SetRow3(ref Matrix3x2, Vector2)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/Matrix3x2.cs/#L119"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Sets the row3.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void SetRow3(ref Matrix3x2 m, Vector2 value)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>m</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.matrix3x2">Matrix3x2</a></dt>
+    <dd><p>The m.</p>
+</dd>
+    <dt><code>value</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector2">Vector2</a></dt>
+    <dd><p>The value.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_Matrix3x2Helper_SetRow3_" data-uid="HelixToolkit.Maths.Matrix3x2Helper.SetRow3*"></a>
+
+  <h3 id="HelixToolkit_Maths_Matrix3x2Helper_SetRow3_System_Numerics_Matrix3x2__System_Numerics_Vector2__" data-uid="HelixToolkit.Maths.Matrix3x2Helper.SetRow3(System.Numerics.Matrix3x2@,System.Numerics.Vector2@)">
+  SetRow3(ref Matrix3x2, ref Vector2)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/Matrix3x2.cs/#L110"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Sets the row3.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void SetRow3(ref Matrix3x2 m, ref Vector2 value)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>m</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.matrix3x2">Matrix3x2</a></dt>
+    <dd><p>The m.</p>
+</dd>
+    <dt><code>value</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector2">Vector2</a></dt>
+    <dd><p>The value.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_Matrix3x2Helper_SetScaleVector_" data-uid="HelixToolkit.Maths.Matrix3x2Helper.SetScaleVector*"></a>
+
+  <h3 id="HelixToolkit_Maths_Matrix3x2Helper_SetScaleVector_System_Numerics_Matrix3x2__System_Numerics_Vector2_" data-uid="HelixToolkit.Maths.Matrix3x2Helper.SetScaleVector(System.Numerics.Matrix3x2@,System.Numerics.Vector2)">
+  SetScaleVector(ref Matrix3x2, Vector2)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/Matrix3x2.cs/#L218"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Sets the scale vector.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void SetScaleVector(ref Matrix3x2 m, Vector2 value)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>m</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.matrix3x2">Matrix3x2</a></dt>
+    <dd><p>The m.</p>
+</dd>
+    <dt><code>value</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector2">Vector2</a></dt>
+    <dd><p>The value.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_Matrix3x2Helper_SetScaleVector_" data-uid="HelixToolkit.Maths.Matrix3x2Helper.SetScaleVector*"></a>
+
+  <h3 id="HelixToolkit_Maths_Matrix3x2Helper_SetScaleVector_System_Numerics_Matrix3x2__System_Numerics_Vector2__" data-uid="HelixToolkit.Maths.Matrix3x2Helper.SetScaleVector(System.Numerics.Matrix3x2@,System.Numerics.Vector2@)">
+  SetScaleVector(ref Matrix3x2, ref Vector2)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/Matrix3x2.cs/#L227"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Sets the scale vector.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void SetScaleVector(ref Matrix3x2 m, ref Vector2 value)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>m</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.matrix3x2">Matrix3x2</a></dt>
+    <dd><p>The m.</p>
+</dd>
+    <dt><code>value</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector2">Vector2</a></dt>
+    <dd><p>The value.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_Matrix3x2Helper_SetTranslation_" data-uid="HelixToolkit.Maths.Matrix3x2Helper.SetTranslation*"></a>
+
+  <h3 id="HelixToolkit_Maths_Matrix3x2Helper_SetTranslation_System_Numerics_Matrix3x2__System_Numerics_Vector2_" data-uid="HelixToolkit.Maths.Matrix3x2Helper.SetTranslation(System.Numerics.Matrix3x2@,System.Numerics.Vector2)">
+  SetTranslation(ref Matrix3x2, Vector2)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/Matrix3x2.cs/#L189"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Sets the translation.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void SetTranslation(ref Matrix3x2 m, Vector2 value)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>m</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.matrix3x2">Matrix3x2</a></dt>
+    <dd><p>The m.</p>
+</dd>
+    <dt><code>value</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector2">Vector2</a></dt>
+    <dd><p>The value.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_Matrix3x2Helper_SetTranslation_" data-uid="HelixToolkit.Maths.Matrix3x2Helper.SetTranslation*"></a>
+
+  <h3 id="HelixToolkit_Maths_Matrix3x2Helper_SetTranslation_System_Numerics_Matrix3x2__System_Numerics_Vector2__" data-uid="HelixToolkit.Maths.Matrix3x2Helper.SetTranslation(System.Numerics.Matrix3x2@,System.Numerics.Vector2@)">
+  SetTranslation(ref Matrix3x2, ref Vector2)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/Matrix3x2.cs/#L179"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Sets the translation.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void SetTranslation(ref Matrix3x2 m, ref Vector2 value)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>m</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.matrix3x2">Matrix3x2</a></dt>
+    <dd><p>The m.</p>
+</dd>
+    <dt><code>value</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector2">Vector2</a></dt>
+    <dd><p>The value.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_Matrix3x2Helper_Skew_" data-uid="HelixToolkit.Maths.Matrix3x2Helper.Skew*"></a>
+
+  <h3 id="HelixToolkit_Maths_Matrix3x2Helper_Skew_System_Single_System_Single_" data-uid="HelixToolkit.Maths.Matrix3x2Helper.Skew(System.Single,System.Single)">
+  Skew(float, float)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/Matrix3x2.cs/#L381"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Creates a skew matrix.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Matrix3x2 Skew(float angleX, float angleY)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>angleX</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>Angle of skew along the X-axis in radians.</p>
+</dd>
+    <dt><code>angleY</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>Angle of skew along the Y-axis in radians.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.matrix3x2">Matrix3x2</a></dt>
+    <dd><p>The created skew matrix.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_Matrix3x2Helper_Skew_" data-uid="HelixToolkit.Maths.Matrix3x2Helper.Skew*"></a>
+
+  <h3 id="HelixToolkit_Maths_Matrix3x2Helper_Skew_System_Single_System_Single_System_Numerics_Matrix3x2__" data-uid="HelixToolkit.Maths.Matrix3x2Helper.Skew(System.Single,System.Single,System.Numerics.Matrix3x2@)">
+  Skew(float, float, out Matrix3x2)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/Matrix3x2.cs/#L393"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Creates a skew matrix.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void Skew(float angleX, float angleY, out Matrix3x2 result)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>angleX</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>Angle of skew along the X-axis in radians.</p>
+</dd>
+    <dt><code>angleY</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>Angle of skew along the Y-axis in radians.</p>
+</dd>
+    <dt><code>result</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.matrix3x2">Matrix3x2</a></dt>
+    <dd><p>When the method completes, contains the created skew matrix.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_Matrix3x2Helper_SmoothStep_" data-uid="HelixToolkit.Maths.Matrix3x2Helper.SmoothStep*"></a>
+
+  <h3 id="HelixToolkit_Maths_Matrix3x2Helper_SmoothStep_System_Numerics_Matrix3x2_System_Numerics_Matrix3x2_System_Single_" data-uid="HelixToolkit.Maths.Matrix3x2Helper.SmoothStep(System.Numerics.Matrix3x2,System.Numerics.Matrix3x2,System.Single)">
+  SmoothStep(Matrix3x2, Matrix3x2, float)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/Matrix3x2.cs/#L346"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Performs a cubic interpolation between two matrices.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Matrix3x2 SmoothStep(Matrix3x2 start, Matrix3x2 end, float amount)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>start</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.matrix3x2">Matrix3x2</a></dt>
+    <dd><p>Start matrix.</p>
+</dd>
+    <dt><code>end</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.matrix3x2">Matrix3x2</a></dt>
+    <dd><p>End matrix.</p>
+</dd>
+    <dt><code>amount</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>Value between 0 and 1 indicating the weight of <code class="paramref">end</code>.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.matrix3x2">Matrix3x2</a></dt>
+    <dd><p>The cubic interpolation of the two matrices.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_Matrix3x2Helper_SmoothStep_" data-uid="HelixToolkit.Maths.Matrix3x2Helper.SmoothStep*"></a>
+
+  <h3 id="HelixToolkit_Maths_Matrix3x2Helper_SmoothStep_System_Numerics_Matrix3x2__System_Numerics_Matrix3x2__System_Single_System_Numerics_Matrix3x2__" data-uid="HelixToolkit.Maths.Matrix3x2Helper.SmoothStep(System.Numerics.Matrix3x2@,System.Numerics.Matrix3x2@,System.Single,System.Numerics.Matrix3x2@)">
+  SmoothStep(ref Matrix3x2, ref Matrix3x2, float, out Matrix3x2)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/Matrix3x2.cs/#L333"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Performs a cubic interpolation between two matrices.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void SmoothStep(ref Matrix3x2 start, ref Matrix3x2 end, float amount, out Matrix3x2 result)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>start</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.matrix3x2">Matrix3x2</a></dt>
+    <dd><p>Start matrix.</p>
+</dd>
+    <dt><code>end</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.matrix3x2">Matrix3x2</a></dt>
+    <dd><p>End matrix.</p>
+</dd>
+    <dt><code>amount</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>Value between 0 and 1 indicating the weight of <code class="paramref">end</code>.</p>
+</dd>
+    <dt><code>result</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.matrix3x2">Matrix3x2</a></dt>
+    <dd><p>When the method completes, contains the cubic interpolation of the two matrices.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_Matrix3x2Helper_ToArray_" data-uid="HelixToolkit.Maths.Matrix3x2Helper.ToArray*"></a>
+
+  <h3 id="HelixToolkit_Maths_Matrix3x2Helper_ToArray_System_Numerics_Matrix3x2_" data-uid="HelixToolkit.Maths.Matrix3x2Helper.ToArray(System.Numerics.Matrix3x2)">
+  ToArray(Matrix3x2)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/Matrix3x2.cs/#L321"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Creates an array containing the elements of the matrix.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static float[] ToArray(this Matrix3x2 m)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>m</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.matrix3x2">Matrix3x2</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a>[]</dt>
+    <dd><p>A sixteen-element array containing the components of the matrix.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_Matrix3x2Helper_ToMatrix3x2_" data-uid="HelixToolkit.Maths.Matrix3x2Helper.ToMatrix3x2*"></a>
+
+  <h3 id="HelixToolkit_Maths_Matrix3x2Helper_ToMatrix3x2_System_Numerics_Matrix4x4_" data-uid="HelixToolkit.Maths.Matrix3x2Helper.ToMatrix3x2(System.Numerics.Matrix4x4)">
+  ToMatrix3x2(Matrix4x4)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/Matrix3x2.cs/#L405"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Performs an implicit conversion from <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.matrix4x4">Matrix4x4</a> to <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.matrix3x2">Matrix3x2</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Matrix3x2 ToMatrix3x2(this Matrix4x4 matrix)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>matrix</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.matrix4x4">Matrix4x4</a></dt>
+    <dd><p>The matrix.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.matrix3x2">Matrix3x2</a></dt>
+    <dd><p>The result of the conversion.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_Matrix3x2Helper_TransformPoint_" data-uid="HelixToolkit.Maths.Matrix3x2Helper.TransformPoint*"></a>
+
+  <h3 id="HelixToolkit_Maths_Matrix3x2Helper_TransformPoint_System_Numerics_Matrix3x2_System_Numerics_Vector2_" data-uid="HelixToolkit.Maths.Matrix3x2Helper.TransformPoint(System.Numerics.Matrix3x2,System.Numerics.Vector2)">
+  TransformPoint(Matrix3x2, Vector2)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/Matrix3x2.cs/#L358"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Transforms a vector by this matrix.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Vector2 TransformPoint(Matrix3x2 matrix, Vector2 point)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>matrix</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.matrix3x2">Matrix3x2</a></dt>
+    <dd><p>The matrix to use as a transformation matrix.</p>
+</dd>
+    <dt><code>point</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector2">Vector2</a></dt>
+    <dd><p>The original vector to apply the transformation.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector2">Vector2</a></dt>
+    <dd><p>The result of the transformation for the input vector.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_Matrix3x2Helper_TransformPoint_" data-uid="HelixToolkit.Maths.Matrix3x2Helper.TransformPoint*"></a>
+
+  <h3 id="HelixToolkit_Maths_Matrix3x2Helper_TransformPoint_System_Numerics_Matrix3x2__System_Numerics_Vector2__System_Numerics_Vector2__" data-uid="HelixToolkit.Maths.Matrix3x2Helper.TransformPoint(System.Numerics.Matrix3x2@,System.Numerics.Vector2@,System.Numerics.Vector2@)">
+  TransformPoint(ref Matrix3x2, ref Vector2, out Vector2)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/Matrix3x2.cs/#L370"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Transforms a vector by this matrix.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void TransformPoint(ref Matrix3x2 matrix, ref Vector2 point, out Vector2 result)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>matrix</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.matrix3x2">Matrix3x2</a></dt>
+    <dd><p>The matrix to use as a transformation matrix.</p>
+</dd>
+    <dt><code>point</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector2">Vector2</a></dt>
+    <dd><p>The original vector to apply the transformation.</p>
+</dd>
+    <dt><code>result</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector2">Vector2</a></dt>
+    <dd><p>The result of the transformation for the input vector.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Maths_Matrix3x2Helper_Translation_" data-uid="HelixToolkit.Maths.Matrix3x2Helper.Translation*"></a>
+
+  <h3 id="HelixToolkit_Maths_Matrix3x2Helper_Translation_System_Numerics_Vector2_" data-uid="HelixToolkit.Maths.Matrix3x2Helper.Translation(System.Numerics.Vector2)">
+  Translation(Vector2)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/Matrix3x2.cs/#L199"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Create a matrix from translation vector.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Matrix3x2 Translation(Vector2 value)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector2">Vector2</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.matrix3x2">Matrix3x2</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Maths/Matrix3x2.cs/#L37" class="edit-link">Edit this page</a>
+        </div>
+
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          Copyright (c) 2023 Helix Toolkit contributors
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

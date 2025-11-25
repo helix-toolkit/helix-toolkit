@@ -1,0 +1,1102 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Struct TextureDescription | Helix Toolkit - 3D for .NET </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Struct TextureDescription | Helix Toolkit - 3D for .NET ">
+      
+      <meta name="description" content="A Common description for all textures.">
+      <link rel="icon" href="../images/favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/helix-toolkit/helix-toolkit/new/main-v3/apiSpec/new?filename=SharpDX_Toolkit_Graphics_TextureDescription.md&amp;value=---%0Auid%3A%20SharpDX.Toolkit.Graphics.TextureDescription%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="ManagedReference">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../images/favicon.ico" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="SharpDX.Toolkit.Graphics.TextureDescription">
+
+
+
+  <h1 id="SharpDX_Toolkit_Graphics_TextureDescription" data-uid="SharpDX.Toolkit.Graphics.TextureDescription" class="text-break">
+Struct TextureDescription  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/SharpDX.Toolkit/Graphics/TextureDescription.cs/#L15"><i class="bi bi-code-slash"></i></a>
+  </h1>
+
+  <div class="facts text-secondary">
+    <dl><dt>Namespace</dt><dd><a class="xref" href="SharpDX.html">SharpDX</a>.<a class="xref" href="SharpDX.Toolkit.html">Toolkit</a>.<a class="xref" href="SharpDX.Toolkit.Graphics.html">Graphics</a></dd></dl>
+  <dl><dt>Assembly</dt><dd>HelixToolkit.SharpDX.dll</dd></dl>
+  </div>
+
+  <div class="markdown summary"><p>A Common description for all textures.</p>
+</div>
+  <div class="markdown conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public struct TextureDescription : IEquatable&lt;TextureDescription&gt;</code></pre>
+  </div>
+
+
+
+
+
+  <dl class="typelist implements">
+    <dt>Implements</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iequatable-1">IEquatable</a>&lt;<a class="xref" href="SharpDX.Toolkit.Graphics.TextureDescription.html">TextureDescription</a>&gt;</div>
+    </dd>
+  </dl>
+
+
+  <dl class="typelist inheritedMembers">
+    <dt>Inherited Members</dt>
+    <dd>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.valuetype.tostring">ValueType.ToString()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">object.Equals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype">object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals">object.ReferenceEquals(object, object)</a>
+    </div>
+  </dd></dl>
+
+  <dl class="typelist extensionMethods">
+    <dt>Extension Methods</dt>
+    <dd>
+  <div>
+      <a class="xref" href="HelixToolkit.NativeHelper.html#HelixToolkit_NativeHelper_ToStruct__2___0_">NativeHelper.ToStruct&lt;T1, T2&gt;(T1)</a>
+  </div>
+  </dd></dl>
+
+
+
+  <h2 id="SharpDX_Toolkit_Graphics_TextureDescription_remarks">Remarks</h2>
+  <div class="markdown level0 remarks"><p>This class exposes the union of all fields exposed by fields in <span class="xref">SharpDX.Direct3D11.Texture1DDescription</span>,
+<span class="xref">SharpDX.Direct3D11.Texture2DDescription</span>, <span class="xref">SharpDX.Direct3D11.Texture3DDescription</span>.
+It provides also 2-way implicit conversions for 1D, 2D, 3D textures descriptions.</p>
+</div>
+
+
+  <h2 class="section" id="fields">Fields
+</h2>
+
+
+
+  <h3 id="SharpDX_Toolkit_Graphics_TextureDescription_ArraySize" data-uid="SharpDX.Toolkit.Graphics.TextureDescription.ArraySize">
+  ArraySize
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/SharpDX.Toolkit/Graphics/TextureDescription.cs/#L68"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><dd> <p>Number of textures in the array. The  range is from 1 to <span class="xref">SharpDX.Direct3D11.Resource.MaximumTexture1DArraySize</span> (2048). However, the range is actually constrained by the feature level at which you create the rendering device. For more information about restrictions, see Remarks.</p> </dd>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int ArraySize</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+  <h4 class="section" id="SharpDX_Toolkit_Graphics_TextureDescription_ArraySize_remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>This field is only valid for <a class="xref" href="SharpDX.Toolkit.Graphics.Texture1D.html">Texture1D</a>, <a class="xref" href="SharpDX.Toolkit.Graphics.Texture2D.html">Texture2D</a> and <a class="xref" href="SharpDX.Toolkit.Graphics.TextureCube.html">TextureCube</a></p>
+</div>
+
+
+
+
+
+  <h3 id="SharpDX_Toolkit_Graphics_TextureDescription_BindFlags" data-uid="SharpDX.Toolkit.Graphics.TextureDescription.BindFlags">
+  BindFlags
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/SharpDX.Toolkit/Graphics/TextureDescription.cs/#L111"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><dd> <p>Flags (see <strong><span class="xref">SharpDX.Direct3D11.BindFlags</span></strong>) for binding to pipeline stages. The flags can be combined by a logical OR. For a 1D texture, the allowable values are: <span class="xref">SharpDX.Direct3D11.BindFlags.ShaderResource</span>, <span class="xref">SharpDX.Direct3D11.BindFlags.RenderTarget</span> and <span class="xref">SharpDX.Direct3D11.BindFlags.DepthStencil</span>.</p> </dd>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public BindFlags BindFlags</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">BindFlags</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="SharpDX_Toolkit_Graphics_TextureDescription_CpuAccessFlags" data-uid="SharpDX.Toolkit.Graphics.TextureDescription.CpuAccessFlags">
+  CpuAccessFlags
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/SharpDX.Toolkit/Graphics/TextureDescription.cs/#L119"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><dd> <p>Flags (see <strong><span class="xref">SharpDX.Direct3D11.CpuAccessFlags</span></strong>) to specify the types of CPU access allowed. Use 0 if CPU access is not required. These flags can be combined with a logical OR.</p> </dd>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public CpuAccessFlags CpuAccessFlags</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">CpuAccessFlags</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="SharpDX_Toolkit_Graphics_TextureDescription_Depth" data-uid="SharpDX.Toolkit.Graphics.TextureDescription.Depth">
+  Depth
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/SharpDX.Toolkit/Graphics/TextureDescription.cs/#L54"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><dd> <p>Texture depth (in texels). The  range is from 1 to <span class="xref">SharpDX.Direct3D11.Resource.MaximumTexture3DSize</span> (2048). However, the range is actually constrained by the feature level at which you create the rendering device. For more information about restrictions, see Remarks.</p> </dd>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int Depth</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+  <h4 class="section" id="SharpDX_Toolkit_Graphics_TextureDescription_Depth_remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>This field is only valid for <a class="xref" href="SharpDX.Toolkit.Graphics.Texture3D.html">Texture3D</a>.</p>
+</div>
+
+
+
+
+
+  <h3 id="SharpDX_Toolkit_Graphics_TextureDescription_Dimension" data-uid="SharpDX.Toolkit.Graphics.TextureDescription.Dimension">
+  Dimension
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/SharpDX.Toolkit/Graphics/TextureDescription.cs/#L21"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>The dimension of a texture.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public TextureDimension Dimension</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="SharpDX.Toolkit.Graphics.TextureDimension.html">TextureDimension</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="SharpDX_Toolkit_Graphics_TextureDescription_Format" data-uid="SharpDX.Toolkit.Graphics.TextureDescription.Format">
+  Format
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/SharpDX.Toolkit/Graphics/TextureDescription.cs/#L84"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><dd> <p>Texture format (see <strong><span class="xref">SharpDX.DXGI.Format</span></strong>).</p> </dd>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Format Format</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">Format</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="SharpDX_Toolkit_Graphics_TextureDescription_Height" data-uid="SharpDX.Toolkit.Graphics.TextureDescription.Height">
+  Height
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/SharpDX.Toolkit/Graphics/TextureDescription.cs/#L43"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><dd> <p>Texture height (in texels). The  range is from 1 to <span class="xref">SharpDX.Direct3D11.Resource.MaximumTexture3DSize</span> (2048). However, the range is actually constrained by the feature level at which you create the rendering device. For more information about restrictions, see Remarks.</p> </dd>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int Height</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+  <h4 class="section" id="SharpDX_Toolkit_Graphics_TextureDescription_Height_remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>This field is only valid for <a class="xref" href="SharpDX.Toolkit.Graphics.Texture2D.html">Texture2D</a>, <a class="xref" href="SharpDX.Toolkit.Graphics.Texture3D.html">Texture3D</a> and <a class="xref" href="SharpDX.Toolkit.Graphics.TextureCube.html">TextureCube</a>.</p>
+</div>
+
+
+
+
+
+  <h3 id="SharpDX_Toolkit_Graphics_TextureDescription_MipLevels" data-uid="SharpDX.Toolkit.Graphics.TextureDescription.MipLevels">
+  MipLevels
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/SharpDX.Toolkit/Graphics/TextureDescription.cs/#L76"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><dd> <p>The maximum number of mipmap levels in the texture. See the remarks in <strong><span class="xref">SharpDX.Direct3D11.ShaderResourceViewDescription.Texture1DResource</span></strong>. Use 1 for a multisampled texture; or 0 to generate a full set of subtextures.</p> </dd>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int MipLevels</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="SharpDX_Toolkit_Graphics_TextureDescription_OptionFlags" data-uid="SharpDX.Toolkit.Graphics.TextureDescription.OptionFlags">
+  OptionFlags
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/SharpDX.Toolkit/Graphics/TextureDescription.cs/#L127"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><dd> <p>Flags (see <strong><span class="xref">SharpDX.Direct3D11.ResourceOptionFlags</span></strong>) that identify other, less common resource options. Use 0 if none of these flags apply. These flags can be combined with a logical OR.</p> </dd>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ResourceOptionFlags OptionFlags</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">ResourceOptionFlags</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="SharpDX_Toolkit_Graphics_TextureDescription_SampleDescription" data-uid="SharpDX.Toolkit.Graphics.TextureDescription.SampleDescription">
+  SampleDescription
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/SharpDX.Toolkit/Graphics/TextureDescription.cs/#L95"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><dd> <p>Structure that specifies multisampling parameters for the texture. See <strong><span class="xref">SharpDX.DXGI.SampleDescription</span></strong>.</p> </dd>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public SampleDescription SampleDescription</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">SampleDescription</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+  <h4 class="section" id="SharpDX_Toolkit_Graphics_TextureDescription_SampleDescription_remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>This field is only valid for <a class="xref" href="SharpDX.Toolkit.Graphics.Texture2D.html">Texture2D</a>.</p>
+</div>
+
+
+
+
+
+  <h3 id="SharpDX_Toolkit_Graphics_TextureDescription_Usage" data-uid="SharpDX.Toolkit.Graphics.TextureDescription.Usage">
+  Usage
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/SharpDX.Toolkit/Graphics/TextureDescription.cs/#L103"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><dd> <p>Value that identifies how the texture is to be read from and written to. The most common value is <span class="xref">SharpDX.Direct3D11.ResourceUsage.Default</span>; see <strong><span class="xref">SharpDX.Direct3D11.ResourceUsage</span></strong> for all possible values.</p> </dd>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ResourceUsage Usage</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">ResourceUsage</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="SharpDX_Toolkit_Graphics_TextureDescription_Width" data-uid="SharpDX.Toolkit.Graphics.TextureDescription.Width">
+  Width
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/SharpDX.Toolkit/Graphics/TextureDescription.cs/#L32"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><dd> <p>Texture width (in texels). The  range is from 1 to <span class="xref">SharpDX.Direct3D11.Resource.MaximumTexture1DSize</span> (16384). However, the range is actually constrained by the feature level at which you create the rendering device. For more information about restrictions, see Remarks.</p> </dd>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int Width</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+  <h4 class="section" id="SharpDX_Toolkit_Graphics_TextureDescription_Width_remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>This field is valid for all textures: <a class="xref" href="SharpDX.Toolkit.Graphics.Texture1D.html">Texture1D</a>, <a class="xref" href="SharpDX.Toolkit.Graphics.Texture2D.html">Texture2D</a>, <a class="xref" href="SharpDX.Toolkit.Graphics.Texture3D.html">Texture3D</a> and <a class="xref" href="SharpDX.Toolkit.Graphics.TextureCube.html">TextureCube</a>.</p>
+</div>
+
+
+
+
+  <h2 class="section" id="methods">Methods
+</h2>
+
+
+  <a id="SharpDX_Toolkit_Graphics_TextureDescription_Equals_" data-uid="SharpDX.Toolkit.Graphics.TextureDescription.Equals*"></a>
+
+  <h3 id="SharpDX_Toolkit_Graphics_TextureDescription_Equals_SharpDX_Toolkit_Graphics_TextureDescription_" data-uid="SharpDX.Toolkit.Graphics.TextureDescription.Equals(SharpDX.Toolkit.Graphics.TextureDescription)">
+  Equals(TextureDescription)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/SharpDX.Toolkit/Graphics/TextureDescription.cs/#L148"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool Equals(TextureDescription other)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>other</code> <a class="xref" href="SharpDX.Toolkit.Graphics.TextureDescription.html">TextureDescription</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="SharpDX_Toolkit_Graphics_TextureDescription_Equals_" data-uid="SharpDX.Toolkit.Graphics.TextureDescription.Equals*"></a>
+
+  <h3 id="SharpDX_Toolkit_Graphics_TextureDescription_Equals_System_Object_" data-uid="SharpDX.Toolkit.Graphics.TextureDescription.Equals(System.Object)">
+  Equals(object?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/SharpDX.Toolkit/Graphics/TextureDescription.cs/#L158"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override bool Equals(object? obj)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>obj</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="SharpDX_Toolkit_Graphics_TextureDescription_GetHashCode_" data-uid="SharpDX.Toolkit.Graphics.TextureDescription.GetHashCode*"></a>
+
+  <h3 id="SharpDX_Toolkit_Graphics_TextureDescription_GetHashCode" data-uid="SharpDX.Toolkit.Graphics.TextureDescription.GetHashCode">
+  GetHashCode()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/SharpDX.Toolkit/Graphics/TextureDescription.cs/#L171"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override int GetHashCode()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="SharpDX_Toolkit_Graphics_TextureDescription_ToStagingDescription_" data-uid="SharpDX.Toolkit.Graphics.TextureDescription.ToStagingDescription*"></a>
+
+  <h3 id="SharpDX_Toolkit_Graphics_TextureDescription_ToStagingDescription" data-uid="SharpDX.Toolkit.Graphics.TextureDescription.ToStagingDescription">
+  ToStagingDescription()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/SharpDX.Toolkit/Graphics/TextureDescription.cs/#L133"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the staging description for this instance..</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public TextureDescription ToStagingDescription()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="SharpDX.Toolkit.Graphics.TextureDescription.html">TextureDescription</a></dt>
+    <dd><p>A Staging description</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <h2 class="section" id="operators">Operators
+</h2>
+
+
+  <a id="SharpDX_Toolkit_Graphics_TextureDescription_op_Equality_" data-uid="SharpDX.Toolkit.Graphics.TextureDescription.op_Equality*"></a>
+
+  <h3 id="SharpDX_Toolkit_Graphics_TextureDescription_op_Equality_SharpDX_Toolkit_Graphics_TextureDescription_SharpDX_Toolkit_Graphics_TextureDescription_" data-uid="SharpDX.Toolkit.Graphics.TextureDescription.op_Equality(SharpDX.Toolkit.Graphics.TextureDescription,SharpDX.Toolkit.Graphics.TextureDescription)">
+  operator ==(TextureDescription, TextureDescription)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/SharpDX.Toolkit/Graphics/TextureDescription.cs/#L197"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool operator ==(TextureDescription left, TextureDescription right)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>left</code> <a class="xref" href="SharpDX.Toolkit.Graphics.TextureDescription.html">TextureDescription</a></dt>
+    <dd></dd>
+    <dt><code>right</code> <a class="xref" href="SharpDX.Toolkit.Graphics.TextureDescription.html">TextureDescription</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="SharpDX_Toolkit_Graphics_TextureDescription_op_Implicit_" data-uid="SharpDX.Toolkit.Graphics.TextureDescription.op_Implicit*"></a>
+
+  <h3 id="SharpDX_Toolkit_Graphics_TextureDescription_op_Implicit_SharpDX_Direct3D11_Texture1DDescription__SharpDX_Toolkit_Graphics_TextureDescription" data-uid="SharpDX.Toolkit.Graphics.TextureDescription.op_Implicit(SharpDX.Direct3D11.Texture1DDescription)~SharpDX.Toolkit.Graphics.TextureDescription">
+  implicit operator TextureDescription(Texture1DDescription)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/SharpDX.Toolkit/Graphics/TextureDescription.cs/#L218"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Performs an explicit conversion from <span class="xref">SharpDX.Direct3D11.Texture2DDescription</span> to <a class="xref" href="SharpDX.Toolkit.Graphics.TextureDescription.html">TextureDescription</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static implicit operator TextureDescription(Texture1DDescription description)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>description</code> <span class="xref">Texture1DDescription</span></dt>
+    <dd><p>The texture description.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="SharpDX.Toolkit.Graphics.TextureDescription.html">TextureDescription</a></dt>
+    <dd><p>The result of the conversion.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="SharpDX_Toolkit_Graphics_TextureDescription_op_Implicit_" data-uid="SharpDX.Toolkit.Graphics.TextureDescription.op_Implicit*"></a>
+
+  <h3 id="SharpDX_Toolkit_Graphics_TextureDescription_op_Implicit_SharpDX_Direct3D11_Texture2DDescription__SharpDX_Toolkit_Graphics_TextureDescription" data-uid="SharpDX.Toolkit.Graphics.TextureDescription.op_Implicit(SharpDX.Direct3D11.Texture2DDescription)~SharpDX.Toolkit.Graphics.TextureDescription">
+  implicit operator TextureDescription(Texture2DDescription)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/SharpDX.Toolkit/Graphics/TextureDescription.cs/#L262"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Performs an explicit conversion from <span class="xref">SharpDX.Direct3D11.Texture2DDescription</span> to <a class="xref" href="SharpDX.Toolkit.Graphics.TextureDescription.html">TextureDescription</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static implicit operator TextureDescription(Texture2DDescription description)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>description</code> <span class="xref">Texture2DDescription</span></dt>
+    <dd><p>The texture description.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="SharpDX.Toolkit.Graphics.TextureDescription.html">TextureDescription</a></dt>
+    <dd><p>The result of the conversion.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="SharpDX_Toolkit_Graphics_TextureDescription_op_Implicit_" data-uid="SharpDX.Toolkit.Graphics.TextureDescription.op_Implicit*"></a>
+
+  <h3 id="SharpDX_Toolkit_Graphics_TextureDescription_op_Implicit_SharpDX_Direct3D11_Texture3DDescription__SharpDX_Toolkit_Graphics_TextureDescription" data-uid="SharpDX.Toolkit.Graphics.TextureDescription.op_Implicit(SharpDX.Direct3D11.Texture3DDescription)~SharpDX.Toolkit.Graphics.TextureDescription">
+  implicit operator TextureDescription(Texture3DDescription)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/SharpDX.Toolkit/Graphics/TextureDescription.cs/#L312"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Performs an explicit conversion from <span class="xref">SharpDX.Direct3D11.Texture2DDescription</span> to <a class="xref" href="SharpDX.Toolkit.Graphics.TextureDescription.html">TextureDescription</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static implicit operator TextureDescription(Texture3DDescription description)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>description</code> <span class="xref">Texture3DDescription</span></dt>
+    <dd><p>The texture description.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="SharpDX.Toolkit.Graphics.TextureDescription.html">TextureDescription</a></dt>
+    <dd><p>The result of the conversion.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="SharpDX_Toolkit_Graphics_TextureDescription_op_Implicit_" data-uid="SharpDX.Toolkit.Graphics.TextureDescription.op_Implicit*"></a>
+
+  <h3 id="SharpDX_Toolkit_Graphics_TextureDescription_op_Implicit_SharpDX_Toolkit_Graphics_ImageDescription__SharpDX_Toolkit_Graphics_TextureDescription" data-uid="SharpDX.Toolkit.Graphics.TextureDescription.op_Implicit(SharpDX.Toolkit.Graphics.ImageDescription)~SharpDX.Toolkit.Graphics.TextureDescription">
+  implicit operator TextureDescription(ImageDescription)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/SharpDX.Toolkit/Graphics/TextureDescription.cs/#L358"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Performs an explicit conversion from <a class="xref" href="SharpDX.Toolkit.Graphics.ImageDescription.html">ImageDescription</a> to <a class="xref" href="SharpDX.Toolkit.Graphics.TextureDescription.html">TextureDescription</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static implicit operator TextureDescription(ImageDescription description)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>description</code> <a class="xref" href="SharpDX.Toolkit.Graphics.ImageDescription.html">ImageDescription</a></dt>
+    <dd><p>The image description.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="SharpDX.Toolkit.Graphics.TextureDescription.html">TextureDescription</a></dt>
+    <dd><p>The result of the conversion.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="SharpDX_Toolkit_Graphics_TextureDescription_op_Implicit_" data-uid="SharpDX.Toolkit.Graphics.TextureDescription.op_Implicit*"></a>
+
+  <h3 id="SharpDX_Toolkit_Graphics_TextureDescription_op_Implicit_SharpDX_Toolkit_Graphics_TextureDescription__SharpDX_Direct3D11_Texture1DDescription" data-uid="SharpDX.Toolkit.Graphics.TextureDescription.op_Implicit(SharpDX.Toolkit.Graphics.TextureDescription)~SharpDX.Direct3D11.Texture1DDescription">
+  implicit operator Texture1DDescription(TextureDescription)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/SharpDX.Toolkit/Graphics/TextureDescription.cs/#L242"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Performs an explicit conversion from <a class="xref" href="SharpDX.Toolkit.Graphics.TextureDescription.html">TextureDescription</a> to <span class="xref">SharpDX.Direct3D11.Texture2DDescription</span>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static implicit operator Texture1DDescription(TextureDescription description)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>description</code> <a class="xref" href="SharpDX.Toolkit.Graphics.TextureDescription.html">TextureDescription</a></dt>
+    <dd><p>The texture description.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><span class="xref">Texture1DDescription</span></dt>
+    <dd><p>The result of the conversion.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="SharpDX_Toolkit_Graphics_TextureDescription_op_Implicit_" data-uid="SharpDX.Toolkit.Graphics.TextureDescription.op_Implicit*"></a>
+
+  <h3 id="SharpDX_Toolkit_Graphics_TextureDescription_op_Implicit_SharpDX_Toolkit_Graphics_TextureDescription__SharpDX_Direct3D11_Texture2DDescription" data-uid="SharpDX.Toolkit.Graphics.TextureDescription.op_Implicit(SharpDX.Toolkit.Graphics.TextureDescription)~SharpDX.Direct3D11.Texture2DDescription">
+  implicit operator Texture2DDescription(TextureDescription)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/SharpDX.Toolkit/Graphics/TextureDescription.cs/#L290"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Performs an explicit conversion from <a class="xref" href="SharpDX.Toolkit.Graphics.TextureDescription.html">TextureDescription</a> to <span class="xref">SharpDX.Direct3D11.Texture2DDescription</span>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static implicit operator Texture2DDescription(TextureDescription description)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>description</code> <a class="xref" href="SharpDX.Toolkit.Graphics.TextureDescription.html">TextureDescription</a></dt>
+    <dd><p>The texture description.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><span class="xref">Texture2DDescription</span></dt>
+    <dd><p>The result of the conversion.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="SharpDX_Toolkit_Graphics_TextureDescription_op_Implicit_" data-uid="SharpDX.Toolkit.Graphics.TextureDescription.op_Implicit*"></a>
+
+  <h3 id="SharpDX_Toolkit_Graphics_TextureDescription_op_Implicit_SharpDX_Toolkit_Graphics_TextureDescription__SharpDX_Direct3D11_Texture3DDescription" data-uid="SharpDX.Toolkit.Graphics.TextureDescription.op_Implicit(SharpDX.Toolkit.Graphics.TextureDescription)~SharpDX.Direct3D11.Texture3DDescription">
+  implicit operator Texture3DDescription(TextureDescription)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/SharpDX.Toolkit/Graphics/TextureDescription.cs/#L336"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Performs an explicit conversion from <a class="xref" href="SharpDX.Toolkit.Graphics.TextureDescription.html">TextureDescription</a> to <span class="xref">SharpDX.Direct3D11.Texture3DDescription</span>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static implicit operator Texture3DDescription(TextureDescription description)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>description</code> <a class="xref" href="SharpDX.Toolkit.Graphics.TextureDescription.html">TextureDescription</a></dt>
+    <dd><p>The texture description.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><span class="xref">Texture3DDescription</span></dt>
+    <dd><p>The result of the conversion.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="SharpDX_Toolkit_Graphics_TextureDescription_op_Implicit_" data-uid="SharpDX.Toolkit.Graphics.TextureDescription.op_Implicit*"></a>
+
+  <h3 id="SharpDX_Toolkit_Graphics_TextureDescription_op_Implicit_SharpDX_Toolkit_Graphics_TextureDescription__SharpDX_Toolkit_Graphics_ImageDescription" data-uid="SharpDX.Toolkit.Graphics.TextureDescription.op_Implicit(SharpDX.Toolkit.Graphics.TextureDescription)~SharpDX.Toolkit.Graphics.ImageDescription">
+  implicit operator ImageDescription(TextureDescription)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/SharpDX.Toolkit/Graphics/TextureDescription.cs/#L382"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Performs an explicit conversion from <a class="xref" href="SharpDX.Toolkit.Graphics.ImageDescription.html">ImageDescription</a> to <a class="xref" href="SharpDX.Toolkit.Graphics.TextureDescription.html">TextureDescription</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static implicit operator ImageDescription(TextureDescription description)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>description</code> <a class="xref" href="SharpDX.Toolkit.Graphics.TextureDescription.html">TextureDescription</a></dt>
+    <dd><p>The image description.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="SharpDX.Toolkit.Graphics.ImageDescription.html">ImageDescription</a></dt>
+    <dd><p>The result of the conversion.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="SharpDX_Toolkit_Graphics_TextureDescription_op_Inequality_" data-uid="SharpDX.Toolkit.Graphics.TextureDescription.op_Inequality*"></a>
+
+  <h3 id="SharpDX_Toolkit_Graphics_TextureDescription_op_Inequality_SharpDX_Toolkit_Graphics_TextureDescription_SharpDX_Toolkit_Graphics_TextureDescription_" data-uid="SharpDX.Toolkit.Graphics.TextureDescription.op_Inequality(SharpDX.Toolkit.Graphics.TextureDescription,SharpDX.Toolkit.Graphics.TextureDescription)">
+  operator !=(TextureDescription, TextureDescription)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/SharpDX.Toolkit/Graphics/TextureDescription.cs/#L208"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool operator !=(TextureDescription left, TextureDescription right)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>left</code> <a class="xref" href="SharpDX.Toolkit.Graphics.TextureDescription.html">TextureDescription</a></dt>
+    <dd></dd>
+    <dt><code>right</code> <a class="xref" href="SharpDX.Toolkit.Graphics.TextureDescription.html">TextureDescription</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/SharpDX.Toolkit/Graphics/TextureDescription.cs/#L15" class="edit-link">Edit this page</a>
+        </div>
+
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          Copyright (c) 2023 Helix Toolkit contributors
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

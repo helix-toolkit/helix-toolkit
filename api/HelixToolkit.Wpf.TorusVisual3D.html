@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Class TorusVisual3D | Helix Toolkit - 3D for .NET </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Class TorusVisual3D | Helix Toolkit - 3D for .NET ">
+      
+      <meta name="description" content="A visual element that shows a torus defined by two diameters (torus and it&#39;s tube).">
+      <link rel="icon" href="../images/favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/helix-toolkit/helix-toolkit/new/main-v3/apiSpec/new?filename=HelixToolkit_Wpf_TorusVisual3D.md&amp;value=---%0Auid%3A%20HelixToolkit.Wpf.TorusVisual3D%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="ManagedReference">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../images/favicon.ico" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="HelixToolkit.Wpf.TorusVisual3D">
+
+
+
+  <h1 id="HelixToolkit_Wpf_TorusVisual3D" data-uid="HelixToolkit.Wpf.TorusVisual3D" class="text-break">
+Class TorusVisual3D  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Wpf/Visual3Ds/MeshVisuals/TorusVisual3D.cs/#L10"><i class="bi bi-code-slash"></i></a>
+  </h1>
+
+  <div class="facts text-secondary">
+    <dl><dt>Namespace</dt><dd><a class="xref" href="HelixToolkit.html">HelixToolkit</a>.<a class="xref" href="HelixToolkit.Wpf.html">Wpf</a></dd></dl>
+  <dl><dt>Assembly</dt><dd>HelixToolkit.Wpf.dll</dd></dl>
+  </div>
+
+  <div class="markdown summary"><p>A visual element that shows a torus defined by two diameters (torus and it's tube).</p>
+</div>
+  <div class="markdown conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class TorusVisual3D : MeshElement3D, IAnimatable, IAddChild, IEditableObject</code></pre>
+  </div>
+
+
+
+
+  <dl class="typelist inheritance">
+    <dt>Inheritance</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.threading.dispatcherobject">DispatcherObject</a></div>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.dependencyobject">DependencyObject</a></div>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.media3d.visual3d">Visual3D</a></div>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.media3d.modelvisual3d">ModelVisual3D</a></div>
+      <div><a class="xref" href="HelixToolkit.Wpf.MeshElement3D.html">MeshElement3D</a></div>
+      <div><span class="xref">TorusVisual3D</span></div>
+    </dd>
+  </dl>
+
+  <dl class="typelist implements">
+    <dt>Implements</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.animation.ianimatable">IAnimatable</a></div>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.markup.iaddchild">IAddChild</a></div>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.componentmodel.ieditableobject">IEditableObject</a></div>
+    </dd>
+  </dl>
+
+
+  <dl class="typelist inheritedMembers">
+    <dt>Inherited Members</dt>
+    <dd>
+    <div>
+      <a class="xref" href="HelixToolkit.Wpf.MeshElement3D.html#HelixToolkit_Wpf_MeshElement3D_BackMaterialProperty">MeshElement3D.BackMaterialProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.Wpf.MeshElement3D.html#HelixToolkit_Wpf_MeshElement3D_FillProperty">MeshElement3D.FillProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.Wpf.MeshElement3D.html#HelixToolkit_Wpf_MeshElement3D_MaterialProperty">MeshElement3D.MaterialProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.Wpf.MeshElement3D.html#HelixToolkit_Wpf_MeshElement3D_VisibleProperty">MeshElement3D.VisibleProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.Wpf.MeshElement3D.html#HelixToolkit_Wpf_MeshElement3D_BackMaterial">MeshElement3D.BackMaterial</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.Wpf.MeshElement3D.html#HelixToolkit_Wpf_MeshElement3D_Fill">MeshElement3D.Fill</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.Wpf.MeshElement3D.html#HelixToolkit_Wpf_MeshElement3D_Material">MeshElement3D.Material</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.Wpf.MeshElement3D.html#HelixToolkit_Wpf_MeshElement3D_Visible">MeshElement3D.Visible</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.Wpf.MeshElement3D.html#HelixToolkit_Wpf_MeshElement3D_Model">MeshElement3D.Model</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.Wpf.MeshElement3D.html#HelixToolkit_Wpf_MeshElement3D_BeginEdit">MeshElement3D.BeginEdit()</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.Wpf.MeshElement3D.html#HelixToolkit_Wpf_MeshElement3D_CancelEdit">MeshElement3D.CancelEdit()</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.Wpf.MeshElement3D.html#HelixToolkit_Wpf_MeshElement3D_EndEdit">MeshElement3D.EndEdit()</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.Wpf.MeshElement3D.html#HelixToolkit_Wpf_MeshElement3D_UpdateModel">MeshElement3D.UpdateModel()</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.Wpf.MeshElement3D.html#HelixToolkit_Wpf_MeshElement3D_VisibleChanged_System_Windows_DependencyObject_System_Windows_DependencyPropertyChangedEventArgs_">MeshElement3D.VisibleChanged(DependencyObject, DependencyPropertyChangedEventArgs)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.Wpf.MeshElement3D.html#HelixToolkit_Wpf_MeshElement3D_GeometryChanged_System_Windows_DependencyObject_System_Windows_DependencyPropertyChangedEventArgs_">MeshElement3D.GeometryChanged(DependencyObject, DependencyPropertyChangedEventArgs)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.Wpf.MeshElement3D.html#HelixToolkit_Wpf_MeshElement3D_MaterialChanged_System_Windows_DependencyObject_System_Windows_DependencyPropertyChangedEventArgs_">MeshElement3D.MaterialChanged(DependencyObject, DependencyPropertyChangedEventArgs)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.Wpf.MeshElement3D.html#HelixToolkit_Wpf_MeshElement3D_OnFillChanged">MeshElement3D.OnFillChanged()</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.Wpf.MeshElement3D.html#HelixToolkit_Wpf_MeshElement3D_OnGeometryChanged">MeshElement3D.OnGeometryChanged()</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.Wpf.MeshElement3D.html#HelixToolkit_Wpf_MeshElement3D_OnMaterialChanged">MeshElement3D.OnMaterialChanged()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.media3d.modelvisual3d.contentproperty">ModelVisual3D.ContentProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.media3d.modelvisual3d.transformproperty">ModelVisual3D.TransformProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.media3d.modelvisual3d.getvisual3dchild">ModelVisual3D.GetVisual3DChild(int)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.media3d.modelvisual3d.children">ModelVisual3D.Children</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.media3d.modelvisual3d.content">ModelVisual3D.Content</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.media3d.modelvisual3d.transform">ModelVisual3D.Transform</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.media3d.modelvisual3d.visual3dchildrencount">ModelVisual3D.Visual3DChildrenCount</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.media3d.visual3d.addvisual3dchild">Visual3D.AddVisual3DChild(Visual3D)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.media3d.visual3d.applyanimationclock#system-windows-media-media3d-visual3d-applyanimationclock(system-windows-dependencyproperty-system-windows-media-animation-animationclock)">Visual3D.ApplyAnimationClock(DependencyProperty, AnimationClock)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.media3d.visual3d.applyanimationclock#system-windows-media-media3d-visual3d-applyanimationclock(system-windows-dependencyproperty-system-windows-media-animation-animationclock-system-windows-media-animation-handoffbehavior)">Visual3D.ApplyAnimationClock(DependencyProperty, AnimationClock, HandoffBehavior)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.media3d.visual3d.beginanimation#system-windows-media-media3d-visual3d-beginanimation(system-windows-dependencyproperty-system-windows-media-animation-animationtimeline)">Visual3D.BeginAnimation(DependencyProperty, AnimationTimeline)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.media3d.visual3d.beginanimation#system-windows-media-media3d-visual3d-beginanimation(system-windows-dependencyproperty-system-windows-media-animation-animationtimeline-system-windows-media-animation-handoffbehavior)">Visual3D.BeginAnimation(DependencyProperty, AnimationTimeline, HandoffBehavior)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.media3d.visual3d.findcommonvisualancestor">Visual3D.FindCommonVisualAncestor(DependencyObject)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.media3d.visual3d.getanimationbasevalue">Visual3D.GetAnimationBaseValue(DependencyProperty)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.media3d.visual3d.isancestorof">Visual3D.IsAncestorOf(DependencyObject)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.media3d.visual3d.isdescendantof">Visual3D.IsDescendantOf(DependencyObject)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.media3d.visual3d.onvisualchildrenchanged">Visual3D.OnVisualChildrenChanged(DependencyObject, DependencyObject)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.media3d.visual3d.onvisualparentchanged">Visual3D.OnVisualParentChanged(DependencyObject)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.media3d.visual3d.removevisual3dchild">Visual3D.RemoveVisual3DChild(Visual3D)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.media3d.visual3d.transformtoancestor#system-windows-media-media3d-visual3d-transformtoancestor(system-windows-media-media3d-visual3d)">Visual3D.TransformToAncestor(Visual3D)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.media3d.visual3d.transformtoancestor#system-windows-media-media3d-visual3d-transformtoancestor(system-windows-media-visual)">Visual3D.TransformToAncestor(Visual)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.media3d.visual3d.transformtodescendant">Visual3D.TransformToDescendant(Visual3D)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.media3d.visual3d.hasanimatedproperties">Visual3D.HasAnimatedProperties</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.media3d.visual3d.visual3dmodel">Visual3D.Visual3DModel</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.dependencyobject.clearvalue#system-windows-dependencyobject-clearvalue(system-windows-dependencyproperty)">DependencyObject.ClearValue(DependencyProperty)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.dependencyobject.clearvalue#system-windows-dependencyobject-clearvalue(system-windows-dependencypropertykey)">DependencyObject.ClearValue(DependencyPropertyKey)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.dependencyobject.coercevalue">DependencyObject.CoerceValue(DependencyProperty)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.dependencyobject.equals">DependencyObject.Equals(object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.dependencyobject.gethashcode">DependencyObject.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.dependencyobject.getlocalvalueenumerator">DependencyObject.GetLocalValueEnumerator()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.dependencyobject.getvalue">DependencyObject.GetValue(DependencyProperty)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.dependencyobject.invalidateproperty">DependencyObject.InvalidateProperty(DependencyProperty)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.dependencyobject.onpropertychanged">DependencyObject.OnPropertyChanged(DependencyPropertyChangedEventArgs)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.dependencyobject.readlocalvalue">DependencyObject.ReadLocalValue(DependencyProperty)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.dependencyobject.setcurrentvalue">DependencyObject.SetCurrentValue(DependencyProperty, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.dependencyobject.setvalue#system-windows-dependencyobject-setvalue(system-windows-dependencyproperty-system-object)">DependencyObject.SetValue(DependencyProperty, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.dependencyobject.setvalue#system-windows-dependencyobject-setvalue(system-windows-dependencypropertykey-system-object)">DependencyObject.SetValue(DependencyPropertyKey, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.dependencyobject.shouldserializeproperty">DependencyObject.ShouldSerializeProperty(DependencyProperty)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.dependencyobject.dependencyobjecttype">DependencyObject.DependencyObjectType</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.dependencyobject.issealed">DependencyObject.IsSealed</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.threading.dispatcherobject.dispatcher">DispatcherObject.Dispatcher</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">object.Equals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype">object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone">object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals">object.ReferenceEquals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring">object.ToString()</a>
+    </div>
+  </dd></dl>
+
+  <dl class="typelist extensionMethods">
+    <dt>Extension Methods</dt>
+    <dd>
+  <div>
+      <a class="xref" href="HelixToolkit.Wpf.AttachedProperties.html#HelixToolkit_Wpf_AttachedProperties_GetName_System_Windows_DependencyObject_">AttachedProperties.GetName(DependencyObject)</a>
+  </div>
+  <div>
+      <a class="xref" href="HelixToolkit.Wpf.AttachedProperties.html#HelixToolkit_Wpf_AttachedProperties_SetName_System_Windows_DependencyObject_System_String_">AttachedProperties.SetName(DependencyObject, string)</a>
+  </div>
+  <div>
+      <a class="xref" href="HelixToolkit.Wpf.AnimationExtensions.html#HelixToolkit_Wpf_AnimationExtensions_AnimateOpacity_System_Windows_Media_Animation_IAnimatable_System_Double_System_Double_">AnimationExtensions.AnimateOpacity(IAnimatable, double, double)</a>
+  </div>
+  <div>
+      <a class="xref" href="HelixToolkit.Wpf.Visual3DHelper.html#HelixToolkit_Wpf_Visual3DHelper_FindBounds_System_Windows_Media_Media3D_Visual3D_System_Windows_Media_Media3D_Transform3D_">Visual3DHelper.FindBounds(Visual3D, Transform3D)</a>
+  </div>
+  <div>
+      <a class="xref" href="HelixToolkit.Wpf.Visual3DHelper.html#HelixToolkit_Wpf_Visual3DHelper_GetTransform_System_Windows_Media_Media3D_Visual3D_">Visual3DHelper.GetTransform(Visual3D)</a>
+  </div>
+  <div>
+      <a class="xref" href="HelixToolkit.Wpf.Visual3DHelper.html#HelixToolkit_Wpf_Visual3DHelper_GetTransformTo_System_Windows_Media_Media3D_Visual3D_System_Windows_Media_Media3D_Model3D_">Visual3DHelper.GetTransformTo(Visual3D, Model3D)</a>
+  </div>
+  <div>
+      <a class="xref" href="HelixToolkit.Wpf.Visual3DHelper.html#HelixToolkit_Wpf_Visual3DHelper_GetViewport_System_Windows_Media_Media3D_Visual3D_">Visual3DHelper.GetViewport(Visual3D)</a>
+  </div>
+  <div>
+      <a class="xref" href="HelixToolkit.Wpf.Visual3DHelper.html#HelixToolkit_Wpf_Visual3DHelper_GetViewport3D_System_Windows_Media_Media3D_Visual3D_">Visual3DHelper.GetViewport3D(Visual3D)</a>
+  </div>
+  <div>
+      <a class="xref" href="HelixToolkit.Wpf.Visual3DHelper.html#HelixToolkit_Wpf_Visual3DHelper_GetViewportTransform_System_Windows_Media_Media3D_Visual3D_">Visual3DHelper.GetViewportTransform(Visual3D)</a>
+  </div>
+  <div>
+      <a class="xref" href="HelixToolkit.Wpf.Visual3DHelper.html#HelixToolkit_Wpf_Visual3DHelper_IsAttachedToViewport3D_System_Windows_Media_Media3D_Visual3D_">Visual3DHelper.IsAttachedToViewport3D(Visual3D)</a>
+  </div>
+  <div>
+      <a class="xref" href="HelixToolkit.Wpf.Visual3DHelper.html#HelixToolkit_Wpf_Visual3DHelper_Traverse__1_System_Windows_Media_Media3D_Visual3D_System_Action___0_System_Windows_Media_Media3D_Transform3D__">Visual3DHelper.Traverse&lt;T&gt;(Visual3D, Action&lt;T, Transform3D&gt;)</a>
+  </div>
+  <div>
+      <a class="xref" href="HelixToolkit.Wpf.Visual3DHelper.html#HelixToolkit_Wpf_Visual3DHelper_Traverse__1_System_Windows_Media_Media3D_Visual3D_System_Action___0_System_Windows_Media_Media3D_Visual3D_System_Windows_Media_Media3D_Transform3D__">Visual3DHelper.Traverse&lt;T&gt;(Visual3D, Action&lt;T, Visual3D, Transform3D&gt;)</a>
+  </div>
+  </dd></dl>
+
+
+
+
+
+  <h2 class="section" id="fields">Fields
+</h2>
+
+
+
+  <h3 id="HelixToolkit_Wpf_TorusVisual3D_PhiDivProperty" data-uid="HelixToolkit.Wpf.TorusVisual3D.PhiDivProperty">
+  PhiDivProperty
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Wpf/Visual3Ds/MeshVisuals/TorusVisual3D.cs/#L33"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Identifies the <a class="xref" href="HelixToolkit.Wpf.TorusVisual3D.html#HelixToolkit_Wpf_TorusVisual3D_PhiDiv">PhiDiv</a> dependency property.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly DependencyProperty PhiDivProperty</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.dependencyproperty">DependencyProperty</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_Wpf_TorusVisual3D_ThetaDivProperty" data-uid="HelixToolkit.Wpf.TorusVisual3D.ThetaDivProperty">
+  ThetaDivProperty
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Wpf/Visual3Ds/MeshVisuals/TorusVisual3D.cs/#L27"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Identifies the <a class="xref" href="HelixToolkit.Wpf.TorusVisual3D.html#HelixToolkit_Wpf_TorusVisual3D_ThetaDiv">ThetaDiv</a> dependency property.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly DependencyProperty ThetaDivProperty</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.dependencyproperty">DependencyProperty</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_Wpf_TorusVisual3D_TorusDiameterProperty" data-uid="HelixToolkit.Wpf.TorusVisual3D.TorusDiameterProperty">
+  TorusDiameterProperty
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Wpf/Visual3Ds/MeshVisuals/TorusVisual3D.cs/#L15"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Identifies the <a class="xref" href="HelixToolkit.Wpf.TorusVisual3D.html#HelixToolkit_Wpf_TorusVisual3D_TorusDiameter">TorusDiameter</a> dependency property.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly DependencyProperty TorusDiameterProperty</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.dependencyproperty">DependencyProperty</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_Wpf_TorusVisual3D_TubeDiameterProperty" data-uid="HelixToolkit.Wpf.TorusVisual3D.TubeDiameterProperty">
+  TubeDiameterProperty
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Wpf/Visual3Ds/MeshVisuals/TorusVisual3D.cs/#L21"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Identifies the <a class="xref" href="HelixToolkit.Wpf.TorusVisual3D.html#HelixToolkit_Wpf_TorusVisual3D_TubeDiameter">TubeDiameter</a> dependency property.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly DependencyProperty TubeDiameterProperty</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.dependencyproperty">DependencyProperty</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+  <h2 class="section" id="properties">Properties
+</h2>
+
+
+  <a id="HelixToolkit_Wpf_TorusVisual3D_PhiDiv_" data-uid="HelixToolkit.Wpf.TorusVisual3D.PhiDiv*"></a>
+
+  <h3 id="HelixToolkit_Wpf_TorusVisual3D_PhiDiv" data-uid="HelixToolkit.Wpf.TorusVisual3D.PhiDiv">
+  PhiDiv
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Wpf/Visual3Ds/MeshVisuals/TorusVisual3D.cs/#L94"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the PhiDiv.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int PhiDiv { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The PhiDiv. The default value is <code>24</code>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_TorusVisual3D_ThetaDiv_" data-uid="HelixToolkit.Wpf.TorusVisual3D.ThetaDiv*"></a>
+
+  <h3 id="HelixToolkit_Wpf_TorusVisual3D_ThetaDiv" data-uid="HelixToolkit.Wpf.TorusVisual3D.ThetaDiv">
+  ThetaDiv
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Wpf/Visual3Ds/MeshVisuals/TorusVisual3D.cs/#L76"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the UDiv.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int ThetaDiv { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The UDiv. The default value is <code>36</code>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_TorusVisual3D_TorusDiameter_" data-uid="HelixToolkit.Wpf.TorusVisual3D.TorusDiameter*"></a>
+
+  <h3 id="HelixToolkit_Wpf_TorusVisual3D_TorusDiameter" data-uid="HelixToolkit.Wpf.TorusVisual3D.TorusDiameter">
+  TorusDiameter
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Wpf/Visual3Ds/MeshVisuals/TorusVisual3D.cs/#L40"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the (torus) diameter.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public double TorusDiameter { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd><p>The diameter. The default value is <code>3</code>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_TorusVisual3D_TubeDiameter_" data-uid="HelixToolkit.Wpf.TorusVisual3D.TubeDiameter*"></a>
+
+  <h3 id="HelixToolkit_Wpf_TorusVisual3D_TubeDiameter" data-uid="HelixToolkit.Wpf.TorusVisual3D.TubeDiameter">
+  TubeDiameter
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Wpf/Visual3Ds/MeshVisuals/TorusVisual3D.cs/#L58"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the tube diameter.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public double TubeDiameter { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd><p>The tube diameter. The default value is <code>1</code>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h2 class="section" id="methods">Methods
+</h2>
+
+
+  <a id="HelixToolkit_Wpf_TorusVisual3D_Tessellate_" data-uid="HelixToolkit.Wpf.TorusVisual3D.Tessellate*"></a>
+
+  <h3 id="HelixToolkit_Wpf_TorusVisual3D_Tessellate" data-uid="HelixToolkit.Wpf.TorusVisual3D.Tessellate">
+  Tessellate()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Wpf/Visual3Ds/MeshVisuals/TorusVisual3D.cs/#L114"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Do the tessellation and return the <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.media3d.meshgeometry3d">MeshGeometry3D</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected override MeshGeometry3D? Tessellate()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.media3d.meshgeometry3d">MeshGeometry3D</a></dt>
+    <dd><p>A triangular mesh geometry.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Wpf/Visual3Ds/MeshVisuals/TorusVisual3D.cs/#L10" class="edit-link">Edit this page</a>
+        </div>
+
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          Copyright (c) 2023 Helix Toolkit contributors
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

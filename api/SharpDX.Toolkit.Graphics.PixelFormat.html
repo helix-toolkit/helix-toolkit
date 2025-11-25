@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Struct PixelFormat | Helix Toolkit - 3D for .NET </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Struct PixelFormat | Helix Toolkit - 3D for .NET ">
+      
+      <meta name="description" content="PixelFormat is equivalent to .">
+      <link rel="icon" href="../images/favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/helix-toolkit/helix-toolkit/new/main-v3/apiSpec/new?filename=SharpDX_Toolkit_Graphics_PixelFormat.md&amp;value=---%0Auid%3A%20SharpDX.Toolkit.Graphics.PixelFormat%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="ManagedReference">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../images/favicon.ico" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="SharpDX.Toolkit.Graphics.PixelFormat">
+
+
+
+  <h1 id="SharpDX_Toolkit_Graphics_PixelFormat" data-uid="SharpDX.Toolkit.Graphics.PixelFormat" class="text-break">
+Struct PixelFormat  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/SharpDX.Toolkit/Graphics/PixelFormat.cs/#L19"><i class="bi bi-code-slash"></i></a>
+  </h1>
+
+  <div class="facts text-secondary">
+    <dl><dt>Namespace</dt><dd><a class="xref" href="SharpDX.html">SharpDX</a>.<a class="xref" href="SharpDX.Toolkit.html">Toolkit</a>.<a class="xref" href="SharpDX.Toolkit.Graphics.html">Graphics</a></dd></dl>
+  <dl><dt>Assembly</dt><dd>HelixToolkit.SharpDX.dll</dd></dl>
+  </div>
+
+  <div class="markdown summary"><p>PixelFormat is equivalent to <span class="xref">SharpDX.DXGI.Format</span>.</p>
+</div>
+  <div class="markdown conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public readonly struct PixelFormat : IEquatable&lt;PixelFormat&gt;</code></pre>
+  </div>
+
+
+
+
+
+  <dl class="typelist implements">
+    <dt>Implements</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iequatable-1">IEquatable</a>&lt;<a class="xref" href="SharpDX.Toolkit.Graphics.PixelFormat.html">PixelFormat</a>&gt;</div>
+    </dd>
+  </dl>
+
+
+  <dl class="typelist inheritedMembers">
+    <dt>Inherited Members</dt>
+    <dd>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">object.Equals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype">object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals">object.ReferenceEquals(object, object)</a>
+    </div>
+  </dd></dl>
+
+  <dl class="typelist extensionMethods">
+    <dt>Extension Methods</dt>
+    <dd>
+  <div>
+      <a class="xref" href="HelixToolkit.NativeHelper.html#HelixToolkit_NativeHelper_ToStruct__2___0_">NativeHelper.ToStruct&lt;T1, T2&gt;(T1)</a>
+  </div>
+  </dd></dl>
+
+
+
+  <h2 id="SharpDX_Toolkit_Graphics_PixelFormat_remarks">Remarks</h2>
+  <div class="markdown level0 remarks"><p>This structure is implicitly castable to and from <span class="xref">SharpDX.DXGI.Format</span>, you can use it inplace where <span class="xref">SharpDX.DXGI.Format</span> is required
+and vice-versa.
+Usage is slightly different from <span class="xref">SharpDX.DXGI.Format</span>, as you have to select the type of the pixel format first
+and then access the available pixel formats for this type. Example: PixelFormat.UNorm.R8.</p>
+</div>
+
+
+  <h2 class="section" id="fields">Fields
+</h2>
+
+
+
+  <h3 id="SharpDX_Toolkit_Graphics_PixelFormat_Unknown" data-uid="SharpDX.Toolkit.Graphics.PixelFormat.Unknown">
+  Unknown
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/SharpDX.Toolkit/Graphics/PixelFormat.cs/#L50"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly PixelFormat Unknown</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="SharpDX.Toolkit.Graphics.PixelFormat.html">PixelFormat</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="SharpDX_Toolkit_Graphics_PixelFormat_Value" data-uid="SharpDX.Toolkit.Graphics.PixelFormat.Value">
+  Value
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/SharpDX.Toolkit/Graphics/PixelFormat.cs/#L25"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the value as a <span class="xref">SharpDX.DXGI.Format</span> enum.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public readonly Format Value</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">Format</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+  <h2 class="section" id="properties">Properties
+</h2>
+
+
+  <a id="SharpDX_Toolkit_Graphics_PixelFormat_SizeInBytes_" data-uid="SharpDX.Toolkit.Graphics.PixelFormat.SizeInBytes*"></a>
+
+  <h3 id="SharpDX_Toolkit_Graphics_PixelFormat_SizeInBytes" data-uid="SharpDX.Toolkit.Graphics.PixelFormat.SizeInBytes">
+  SizeInBytes
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/SharpDX.Toolkit/Graphics/PixelFormat.cs/#L39"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int SizeInBytes { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h2 class="section" id="methods">Methods
+</h2>
+
+
+  <a id="SharpDX_Toolkit_Graphics_PixelFormat_Equals_" data-uid="SharpDX.Toolkit.Graphics.PixelFormat.Equals*"></a>
+
+  <h3 id="SharpDX_Toolkit_Graphics_PixelFormat_Equals_SharpDX_Toolkit_Graphics_PixelFormat_" data-uid="SharpDX.Toolkit.Graphics.PixelFormat.Equals(SharpDX.Toolkit.Graphics.PixelFormat)">
+  Equals(PixelFormat)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/SharpDX.Toolkit/Graphics/PixelFormat.cs/#L725"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool Equals(PixelFormat other)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>other</code> <a class="xref" href="SharpDX.Toolkit.Graphics.PixelFormat.html">PixelFormat</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="SharpDX_Toolkit_Graphics_PixelFormat_Equals_" data-uid="SharpDX.Toolkit.Graphics.PixelFormat.Equals*"></a>
+
+  <h3 id="SharpDX_Toolkit_Graphics_PixelFormat_Equals_System_Object_" data-uid="SharpDX.Toolkit.Graphics.PixelFormat.Equals(System.Object)">
+  Equals(object?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/SharpDX.Toolkit/Graphics/PixelFormat.cs/#L735"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override bool Equals(object? obj)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>obj</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="SharpDX_Toolkit_Graphics_PixelFormat_GetHashCode_" data-uid="SharpDX.Toolkit.Graphics.PixelFormat.GetHashCode*"></a>
+
+  <h3 id="SharpDX_Toolkit_Graphics_PixelFormat_GetHashCode" data-uid="SharpDX.Toolkit.Graphics.PixelFormat.GetHashCode">
+  GetHashCode()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/SharpDX.Toolkit/Graphics/PixelFormat.cs/#L746"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override int GetHashCode()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="SharpDX_Toolkit_Graphics_PixelFormat_ToString_" data-uid="SharpDX.Toolkit.Graphics.PixelFormat.ToString*"></a>
+
+  <h3 id="SharpDX_Toolkit_Graphics_PixelFormat_ToString" data-uid="SharpDX.Toolkit.Graphics.PixelFormat.ToString">
+  ToString()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/SharpDX.Toolkit/Graphics/PixelFormat.cs/#L777"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override string ToString()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <h2 class="section" id="operators">Operators
+</h2>
+
+
+  <a id="SharpDX_Toolkit_Graphics_PixelFormat_op_Equality_" data-uid="SharpDX.Toolkit.Graphics.PixelFormat.op_Equality*"></a>
+
+  <h3 id="SharpDX_Toolkit_Graphics_PixelFormat_op_Equality_SharpDX_Toolkit_Graphics_PixelFormat_SharpDX_Toolkit_Graphics_PixelFormat_" data-uid="SharpDX.Toolkit.Graphics.PixelFormat.op_Equality(SharpDX.Toolkit.Graphics.PixelFormat,SharpDX.Toolkit.Graphics.PixelFormat)">
+  operator ==(PixelFormat, PixelFormat)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/SharpDX.Toolkit/Graphics/PixelFormat.cs/#L757"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool operator ==(PixelFormat left, PixelFormat right)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>left</code> <a class="xref" href="SharpDX.Toolkit.Graphics.PixelFormat.html">PixelFormat</a></dt>
+    <dd></dd>
+    <dt><code>right</code> <a class="xref" href="SharpDX.Toolkit.Graphics.PixelFormat.html">PixelFormat</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="SharpDX_Toolkit_Graphics_PixelFormat_op_Implicit_" data-uid="SharpDX.Toolkit.Graphics.PixelFormat.op_Implicit*"></a>
+
+  <h3 id="SharpDX_Toolkit_Graphics_PixelFormat_op_Implicit_SharpDX_DXGI_Format__SharpDX_Toolkit_Graphics_PixelFormat" data-uid="SharpDX.Toolkit.Graphics.PixelFormat.op_Implicit(SharpDX.DXGI.Format)~SharpDX.Toolkit.Graphics.PixelFormat">
+  implicit operator PixelFormat(Format)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/SharpDX.Toolkit/Graphics/PixelFormat.cs/#L715"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static implicit operator PixelFormat(Format from)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>from</code> <span class="xref">Format</span></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="SharpDX.Toolkit.Graphics.PixelFormat.html">PixelFormat</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="SharpDX_Toolkit_Graphics_PixelFormat_op_Implicit_" data-uid="SharpDX.Toolkit.Graphics.PixelFormat.op_Implicit*"></a>
+
+  <h3 id="SharpDX_Toolkit_Graphics_PixelFormat_op_Implicit_SharpDX_Toolkit_Graphics_PixelFormat__SharpDX_DXGI_Format" data-uid="SharpDX.Toolkit.Graphics.PixelFormat.op_Implicit(SharpDX.Toolkit.Graphics.PixelFormat)~SharpDX.DXGI.Format">
+  implicit operator Format(PixelFormat)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/SharpDX.Toolkit/Graphics/PixelFormat.cs/#L706"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static implicit operator Format(PixelFormat from)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>from</code> <a class="xref" href="SharpDX.Toolkit.Graphics.PixelFormat.html">PixelFormat</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><span class="xref">Format</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="SharpDX_Toolkit_Graphics_PixelFormat_op_Inequality_" data-uid="SharpDX.Toolkit.Graphics.PixelFormat.op_Inequality*"></a>
+
+  <h3 id="SharpDX_Toolkit_Graphics_PixelFormat_op_Inequality_SharpDX_Toolkit_Graphics_PixelFormat_SharpDX_Toolkit_Graphics_PixelFormat_" data-uid="SharpDX.Toolkit.Graphics.PixelFormat.op_Inequality(SharpDX.Toolkit.Graphics.PixelFormat,SharpDX.Toolkit.Graphics.PixelFormat)">
+  operator !=(PixelFormat, PixelFormat)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/SharpDX.Toolkit/Graphics/PixelFormat.cs/#L768"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool operator !=(PixelFormat left, PixelFormat right)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>left</code> <a class="xref" href="SharpDX.Toolkit.Graphics.PixelFormat.html">PixelFormat</a></dt>
+    <dd></dd>
+    <dt><code>right</code> <a class="xref" href="SharpDX.Toolkit.Graphics.PixelFormat.html">PixelFormat</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/SharpDX.Toolkit/Graphics/PixelFormat.cs/#L19" class="edit-link">Edit this page</a>
+        </div>
+
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          Copyright (c) 2023 Helix Toolkit contributors
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

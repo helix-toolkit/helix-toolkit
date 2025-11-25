@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Interface IDynamicOctree | Helix Toolkit - 3D for .NET </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Interface IDynamicOctree | Helix Toolkit - 3D for .NET ">
+      
+      <meta name="description" content="Interface for dynamic octree">
+      <link rel="icon" href="../images/favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/helix-toolkit/helix-toolkit/new/main-v3/apiSpec/new?filename=HelixToolkit_SharpDX_IDynamicOctree.md&amp;value=---%0Auid%3A%20HelixToolkit.SharpDX.IDynamicOctree%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="ManagedReference">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../images/favicon.ico" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="HelixToolkit.SharpDX.IDynamicOctree">
+
+
+
+  <h1 id="HelixToolkit_SharpDX_IDynamicOctree" data-uid="HelixToolkit.SharpDX.IDynamicOctree" class="text-break">
+Interface IDynamicOctree  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Utilities/Octrees/IDynamicOctree.cs/#L8"><i class="bi bi-code-slash"></i></a>
+  </h1>
+
+  <div class="facts text-secondary">
+    <dl><dt>Namespace</dt><dd><a class="xref" href="HelixToolkit.html">HelixToolkit</a>.<a class="xref" href="HelixToolkit.SharpDX.html">SharpDX</a></dd></dl>
+  <dl><dt>Assembly</dt><dd>HelixToolkit.SharpDX.dll</dd></dl>
+  </div>
+
+  <div class="markdown summary"><p>Interface for dynamic octree</p>
+</div>
+  <div class="markdown conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public interface IDynamicOctree : IOctreeBasic</code></pre>
+  </div>
+
+
+
+
+
+
+
+  <dl class="typelist inheritedMembers">
+    <dt>Inherited Members</dt>
+    <dd>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.IOctreeBasic.html#HelixToolkit_SharpDX_IOctreeBasic_TreeBuilt">IOctreeBasic.TreeBuilt</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.IOctreeBasic.html#HelixToolkit_SharpDX_IOctreeBasic_Hit">IOctreeBasic.Hit</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.IOctreeBasic.html#HelixToolkit_SharpDX_IOctreeBasic_HitPathBoundingBoxes">IOctreeBasic.HitPathBoundingBoxes</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.IOctreeBasic.html#HelixToolkit_SharpDX_IOctreeBasic_Parameter">IOctreeBasic.Parameter</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.IOctreeBasic.html#HelixToolkit_SharpDX_IOctreeBasic_Bound">IOctreeBasic.Bound</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.IOctreeBasic.html#HelixToolkit_SharpDX_IOctreeBasic_BuildTree">IOctreeBasic.BuildTree()</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.IOctreeBasic.html#HelixToolkit_SharpDX_IOctreeBasic_HitTest_HelixToolkit_SharpDX_HitTestContext_System_Object_HelixToolkit_SharpDX_Geometry3D_System_Numerics_Matrix4x4_System_Collections_Generic_List_HelixToolkit_SharpDX_HitTestResult___">IOctreeBasic.HitTest(HitTestContext, object, Geometry3D, Matrix4x4, ref List&lt;HitTestResult&gt;)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.IOctreeBasic.html#HelixToolkit_SharpDX_IOctreeBasic_HitTest_HelixToolkit_SharpDX_HitTestContext_System_Object_HelixToolkit_SharpDX_Geometry3D_System_Numerics_Matrix4x4_System_Boolean_System_Collections_Generic_List_HelixToolkit_SharpDX_HitTestResult___">IOctreeBasic.HitTest(HitTestContext, object, Geometry3D, Matrix4x4, bool, ref List&lt;HitTestResult&gt;)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.IOctreeBasic.html#HelixToolkit_SharpDX_IOctreeBasic_HitTest_HelixToolkit_SharpDX_HitTestContext_System_Object_HelixToolkit_SharpDX_Geometry3D_System_Numerics_Matrix4x4_System_Collections_Generic_List_HelixToolkit_SharpDX_HitTestResult___System_Single_">IOctreeBasic.HitTest(HitTestContext, object, Geometry3D, Matrix4x4, ref List&lt;HitTestResult&gt;, float)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.IOctreeBasic.html#HelixToolkit_SharpDX_IOctreeBasic_HitTest_HelixToolkit_SharpDX_HitTestContext_System_Object_HelixToolkit_SharpDX_Geometry3D_System_Numerics_Matrix4x4_System_Boolean_System_Collections_Generic_List_HelixToolkit_SharpDX_HitTestResult___System_Single_">IOctreeBasic.HitTest(HitTestContext, object, Geometry3D, Matrix4x4, bool, ref List&lt;HitTestResult&gt;, float)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.IOctreeBasic.html#HelixToolkit_SharpDX_IOctreeBasic_FindNearestPointFromPoint_HelixToolkit_SharpDX_HitTestContext_System_Numerics_Vector3__System_Collections_Generic_List_HelixToolkit_SharpDX_HitTestResult___System_Single_">IOctreeBasic.FindNearestPointFromPoint(HitTestContext, ref Vector3, ref List&lt;HitTestResult&gt;, float)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.IOctreeBasic.html#HelixToolkit_SharpDX_IOctreeBasic_FindNearestPointBySphere_HelixToolkit_SharpDX_HitTestContext_HelixToolkit_Maths_BoundingSphere__System_Collections_Generic_List_HelixToolkit_SharpDX_HitTestResult___">IOctreeBasic.FindNearestPointBySphere(HitTestContext, ref BoundingSphere, ref List&lt;HitTestResult&gt;)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.IOctreeBasic.html#HelixToolkit_SharpDX_IOctreeBasic_FindNearestPointByPointAndSearchRadius_HelixToolkit_SharpDX_HitTestContext_System_Numerics_Vector3__System_Single_System_Collections_Generic_List_HelixToolkit_SharpDX_HitTestResult___">IOctreeBasic.FindNearestPointByPointAndSearchRadius(HitTestContext, ref Vector3, float, ref List&lt;HitTestResult&gt;)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.IOctreeBasic.html#HelixToolkit_SharpDX_IOctreeBasic_CreateOctreeLineModel">IOctreeBasic.CreateOctreeLineModel()</a>
+    </div>
+  </dd></dl>
+
+  <dl class="typelist extensionMethods">
+    <dt>Extension Methods</dt>
+    <dd>
+  <div>
+      <a class="xref" href="HelixToolkit.SharpDX.OctreeHelper.html#HelixToolkit_SharpDX_OctreeHelper_CreateOctreeLineModel_HelixToolkit_SharpDX_IDynamicOctree_">OctreeHelper.CreateOctreeLineModel(IDynamicOctree?)</a>
+  </div>
+  <div>
+      <a class="xref" href="HelixToolkit.SharpDX.OctreeHelper.html#HelixToolkit_SharpDX_OctreeHelper_CreateOctreeLineModel_HelixToolkit_SharpDX_IDynamicOctree_HelixToolkit_SharpDX_LineBuilder_">OctreeHelper.CreateOctreeLineModel(IDynamicOctree?, LineBuilder)</a>
+  </div>
+  </dd></dl>
+
+
+
+
+
+  <h2 class="section" id="properties">Properties
+</h2>
+
+
+  <a id="HelixToolkit_SharpDX_IDynamicOctree_ActiveNodes_" data-uid="HelixToolkit.SharpDX.IDynamicOctree.ActiveNodes*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_IDynamicOctree_ActiveNodes" data-uid="HelixToolkit.SharpDX.IDynamicOctree.ActiveNodes">
+  ActiveNodes
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Utilities/Octrees/IDynamicOctree.cs/#L24"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>This is a bitmask indicating which child nodes are actively being used.
+It adds slightly more complexity, but is faster for performance since there is only one comparison instead of 8.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">byte ActiveNodes { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">byte</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_IDynamicOctree_AutoDeleteIfEmpty_" data-uid="HelixToolkit.SharpDX.IDynamicOctree.AutoDeleteIfEmpty*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_IDynamicOctree_AutoDeleteIfEmpty" data-uid="HelixToolkit.SharpDX.IDynamicOctree.AutoDeleteIfEmpty">
+  AutoDeleteIfEmpty
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Utilities/Octrees/IDynamicOctree.cs/#L67"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Delete self if is empty;</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">bool AutoDeleteIfEmpty { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_IDynamicOctree_ChildNodes_" data-uid="HelixToolkit.SharpDX.IDynamicOctree.ChildNodes*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_IDynamicOctree_ChildNodes" data-uid="HelixToolkit.SharpDX.IDynamicOctree.ChildNodes">
+  ChildNodes
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Utilities/Octrees/IDynamicOctree.cs/#L52"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Child octants</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">IDynamicOctree?[] ChildNodes { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.IDynamicOctree.html">IDynamicOctree</a>[]</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_IDynamicOctree_HasChildren_" data-uid="HelixToolkit.SharpDX.IDynamicOctree.HasChildren*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_IDynamicOctree_HasChildren" data-uid="HelixToolkit.SharpDX.IDynamicOctree.HasChildren">
+  HasChildren
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Utilities/Octrees/IDynamicOctree.cs/#L31"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Has child octants</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">bool HasChildren { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_IDynamicOctree_IsEmpty_" data-uid="HelixToolkit.SharpDX.IDynamicOctree.IsEmpty*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_IDynamicOctree_IsEmpty" data-uid="HelixToolkit.SharpDX.IDynamicOctree.IsEmpty">
+  IsEmpty
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Utilities/Octrees/IDynamicOctree.cs/#L75"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Returns true if this node tree and all children have no content</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">bool IsEmpty { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_IDynamicOctree_IsRoot_" data-uid="HelixToolkit.SharpDX.IDynamicOctree.IsRoot*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_IDynamicOctree_IsRoot" data-uid="HelixToolkit.SharpDX.IDynamicOctree.IsRoot">
+  IsRoot
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Utilities/Octrees/IDynamicOctree.cs/#L38"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>If this node is root node</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">bool IsRoot { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_IDynamicOctree_Octants_" data-uid="HelixToolkit.SharpDX.IDynamicOctree.Octants*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_IDynamicOctree_Octants" data-uid="HelixToolkit.SharpDX.IDynamicOctree.Octants">
+  Octants
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Utilities/Octrees/IDynamicOctree.cs/#L59"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Octant bounds</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">BoundingBox[]? Octants { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Maths.BoundingBox.html">BoundingBox</a>[]</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_IDynamicOctree_Parent_" data-uid="HelixToolkit.SharpDX.IDynamicOctree.Parent*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_IDynamicOctree_Parent" data-uid="HelixToolkit.SharpDX.IDynamicOctree.Parent">
+  Parent
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Utilities/Octrees/IDynamicOctree.cs/#L45"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Parent node</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">IDynamicOctree? Parent { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.IDynamicOctree.html">IDynamicOctree</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_IDynamicOctree_SelfArray_" data-uid="HelixToolkit.SharpDX.IDynamicOctree.SelfArray*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_IDynamicOctree_SelfArray" data-uid="HelixToolkit.SharpDX.IDynamicOctree.SelfArray">
+  SelfArray
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Utilities/Octrees/IDynamicOctree.cs/#L16"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the self as array.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">IDynamicOctree?[] SelfArray { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.IDynamicOctree.html">IDynamicOctree</a>[]</dt>
+    <dd><p>The self array.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h2 class="section" id="methods">Methods
+</h2>
+
+
+  <a id="HelixToolkit_SharpDX_IDynamicOctree_BuildCurretNodeOnly_" data-uid="HelixToolkit.SharpDX.IDynamicOctree.BuildCurretNodeOnly*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_IDynamicOctree_BuildCurretNodeOnly" data-uid="HelixToolkit.SharpDX.IDynamicOctree.BuildCurretNodeOnly">
+  BuildCurretNodeOnly()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Utilities/Octrees/IDynamicOctree.cs/#L109"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Build current node level only, this will only build current node and create children, but not build its children.
+To build from top to bottom, call BuildTree</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">void BuildCurretNodeOnly()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_IDynamicOctree_Clear_" data-uid="HelixToolkit.SharpDX.IDynamicOctree.Clear*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_IDynamicOctree_Clear" data-uid="HelixToolkit.SharpDX.IDynamicOctree.Clear">
+  Clear()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Utilities/Octrees/IDynamicOctree.cs/#L113"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Clear the tree</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">void Clear()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_IDynamicOctree_FindNearestPointBySphereExcludeChild_" data-uid="HelixToolkit.SharpDX.IDynamicOctree.FindNearestPointBySphereExcludeChild*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_IDynamicOctree_FindNearestPointBySphereExcludeChild_HelixToolkit_SharpDX_HitTestContext_HelixToolkit_Maths_BoundingSphere__System_Collections_Generic_List_HelixToolkit_SharpDX_HitTestResult___System_Boolean__" data-uid="HelixToolkit.SharpDX.IDynamicOctree.FindNearestPointBySphereExcludeChild(HelixToolkit.SharpDX.HitTestContext,HelixToolkit.Maths.BoundingSphere@,System.Collections.Generic.List{HelixToolkit.SharpDX.HitTestResult}@,System.Boolean@)">
+  FindNearestPointBySphereExcludeChild(HitTestContext?, ref BoundingSphere, ref List&lt;HitTestResult&gt;, ref bool)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Utilities/Octrees/IDynamicOctree.cs/#L103"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Search nearest point by a search sphere at this node only</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">bool FindNearestPointBySphereExcludeChild(HitTestContext? context, ref BoundingSphere sphere, ref List&lt;HitTestResult&gt; result, ref bool isIntersect)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>context</code> <a class="xref" href="HelixToolkit.SharpDX.HitTestContext.html">HitTestContext</a></dt>
+    <dd></dd>
+    <dt><code>sphere</code> <a class="xref" href="HelixToolkit.Maths.BoundingSphere.html">BoundingSphere</a></dt>
+    <dd></dd>
+    <dt><code>result</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1">List</a>&lt;<a class="xref" href="HelixToolkit.SharpDX.HitTestResult.html">HitTestResult</a>&gt;</dt>
+    <dd></dd>
+    <dt><code>isIntersect</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_IDynamicOctree_HitTestCurrentNodeExcludeChild_" data-uid="HelixToolkit.SharpDX.IDynamicOctree.HitTestCurrentNodeExcludeChild*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_IDynamicOctree_HitTestCurrentNodeExcludeChild_HelixToolkit_SharpDX_HitTestContext_System_Object_HelixToolkit_SharpDX_Geometry3D_System_Numerics_Matrix4x4_HelixToolkit_Maths_Ray__System_Collections_Generic_List_HelixToolkit_SharpDX_HitTestResult___System_Boolean__System_Single_" data-uid="HelixToolkit.SharpDX.IDynamicOctree.HitTestCurrentNodeExcludeChild(HelixToolkit.SharpDX.HitTestContext,System.Object,HelixToolkit.SharpDX.Geometry3D,System.Numerics.Matrix4x4,HelixToolkit.Maths.Ray@,System.Collections.Generic.List{HelixToolkit.SharpDX.HitTestResult}@,System.Boolean@,System.Single)">
+  HitTestCurrentNodeExcludeChild(HitTestContext?, object?, Geometry3D?, Matrix4x4, ref Ray, ref List&lt;HitTestResult&gt;, ref bool, float)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Utilities/Octrees/IDynamicOctree.cs/#L92"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Hit test for only this node, not its child node</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">bool HitTestCurrentNodeExcludeChild(HitTestContext? context, object? model, Geometry3D? geometry, Matrix4x4 modelMatrix, ref Ray rayModel, ref List&lt;HitTestResult&gt; hits, ref bool isIntersect, float hitThickness)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>context</code> <a class="xref" href="HelixToolkit.SharpDX.HitTestContext.html">HitTestContext</a></dt>
+    <dd></dd>
+    <dt><code>model</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></dt>
+    <dd></dd>
+    <dt><code>geometry</code> <a class="xref" href="HelixToolkit.SharpDX.Geometry3D.html">Geometry3D</a></dt>
+    <dd></dd>
+    <dt><code>modelMatrix</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.matrix4x4">Matrix4x4</a></dt>
+    <dd></dd>
+    <dt><code>rayModel</code> <a class="xref" href="HelixToolkit.Maths.Ray.html">Ray</a></dt>
+    <dd></dd>
+    <dt><code>hits</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1">List</a>&lt;<a class="xref" href="HelixToolkit.SharpDX.HitTestResult.html">HitTestResult</a>&gt;</dt>
+    <dd></dd>
+    <dt><code>isIntersect</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+    <dt><code>hitThickness</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>Only used for point/line hit test</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_IDynamicOctree_RemoveChild_" data-uid="HelixToolkit.SharpDX.IDynamicOctree.RemoveChild*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_IDynamicOctree_RemoveChild_HelixToolkit_SharpDX_IDynamicOctree_" data-uid="HelixToolkit.SharpDX.IDynamicOctree.RemoveChild(HelixToolkit.SharpDX.IDynamicOctree)">
+  RemoveChild(IDynamicOctree)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Utilities/Octrees/IDynamicOctree.cs/#L122"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Remove child from ChildNodes</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">void RemoveChild(IDynamicOctree child)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>child</code> <a class="xref" href="HelixToolkit.SharpDX.IDynamicOctree.html">IDynamicOctree</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_IDynamicOctree_RemoveSelf_" data-uid="HelixToolkit.SharpDX.IDynamicOctree.RemoveSelf*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_IDynamicOctree_RemoveSelf" data-uid="HelixToolkit.SharpDX.IDynamicOctree.RemoveSelf">
+  RemoveSelf()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Utilities/Octrees/IDynamicOctree.cs/#L117"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Remove self from parent node</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">void RemoveSelf()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Utilities/Octrees/IDynamicOctree.cs/#L8" class="edit-link">Edit this page</a>
+        </div>
+
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          Copyright (c) 2023 Helix Toolkit contributors
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

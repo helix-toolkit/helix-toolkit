@@ -1,0 +1,2173 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Class ShaderResourceViewProxy | Helix Toolkit - 3D for .NET </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Class ShaderResourceViewProxy | Helix Toolkit - 3D for .NET ">
+      
+      <meta name="description" content="A proxy container to handle view resources">
+      <link rel="icon" href="../images/favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/helix-toolkit/helix-toolkit/new/main-v3/apiSpec/new?filename=HelixToolkit_SharpDX_Utilities_ShaderResourceViewProxy.md&amp;value=---%0Auid%3A%20HelixToolkit.SharpDX.Utilities.ShaderResourceViewProxy%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="ManagedReference">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../images/favicon.ico" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="HelixToolkit.SharpDX.Utilities.ShaderResourceViewProxy">
+
+
+
+  <h1 id="HelixToolkit_SharpDX_Utilities_ShaderResourceViewProxy" data-uid="HelixToolkit.SharpDX.Utilities.ShaderResourceViewProxy" class="text-break">
+Class ShaderResourceViewProxy  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Utilities/Buffers/ShaderResourceViewProxy.cs/#L11"><i class="bi bi-code-slash"></i></a>
+  </h1>
+
+  <div class="facts text-secondary">
+    <dl><dt>Namespace</dt><dd><a class="xref" href="HelixToolkit.html">HelixToolkit</a>.<a class="xref" href="HelixToolkit.SharpDX.html">SharpDX</a>.<a class="xref" href="HelixToolkit.SharpDX.Utilities.html">Utilities</a></dd></dl>
+  <dl><dt>Assembly</dt><dd>HelixToolkit.SharpDX.dll</dd></dl>
+  </div>
+
+  <div class="markdown summary"><p>A proxy container to handle view resources</p>
+</div>
+  <div class="markdown conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class ShaderResourceViewProxy : DisposeObject, IDisposable</code></pre>
+  </div>
+
+
+
+
+  <dl class="typelist inheritance">
+    <dt>Inheritance</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
+      <div><a class="xref" href="HelixToolkit.SharpDX.DisposeObject.html">DisposeObject</a></div>
+      <div><span class="xref">ShaderResourceViewProxy</span></div>
+    </dd>
+  </dl>
+
+  <dl class="typelist implements">
+    <dt>Implements</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.idisposable">IDisposable</a></div>
+    </dd>
+  </dl>
+
+
+  <dl class="typelist inheritedMembers">
+    <dt>Inherited Members</dt>
+    <dd>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.DisposeObject.html#HelixToolkit_SharpDX_DisposeObject_RemoveAndDispose__1___0__">DisposeObject.RemoveAndDispose&lt;T&gt;(ref T)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.DisposeObject.html#HelixToolkit_SharpDX_DisposeObject_RemoveAndDispose__1___0_">DisposeObject.RemoveAndDispose&lt;T&gt;(T)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.DisposeObject.html#HelixToolkit_SharpDX_DisposeObject_RefCount">DisposeObject.RefCount</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.DisposeObject.html#HelixToolkit_SharpDX_DisposeObject_IncRef">DisposeObject.IncRef()</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.DisposeObject.html#HelixToolkit_SharpDX_DisposeObject_ForceDispose">DisposeObject.ForceDispose()</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.DisposeObject.html#HelixToolkit_SharpDX_DisposeObject_IsDisposed">DisposeObject.IsDisposed</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.DisposeObject.html#HelixToolkit_SharpDX_DisposeObject_Dispose">DisposeObject.Dispose()</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.DisposeObject.html#HelixToolkit_SharpDX_DisposeObject_Set__1___0____0_">DisposeObject.Set&lt;T&gt;(ref T, T)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">object.Equals(object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">object.Equals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode">object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype">object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone">object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals">object.ReferenceEquals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring">object.ToString()</a>
+    </div>
+  </dd></dl>
+
+
+
+
+
+
+  <h2 class="section" id="constructors">Constructors
+</h2>
+
+
+  <a id="HelixToolkit_SharpDX_Utilities_ShaderResourceViewProxy__ctor_" data-uid="HelixToolkit.SharpDX.Utilities.ShaderResourceViewProxy.#ctor*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Utilities_ShaderResourceViewProxy__ctor_SharpDX_Direct3D11_Device_" data-uid="HelixToolkit.SharpDX.Utilities.ShaderResourceViewProxy.#ctor(SharpDX.Direct3D11.Device)">
+  ShaderResourceViewProxy(Device)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Utilities/Buffers/ShaderResourceViewProxy.cs/#L88"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="HelixToolkit.SharpDX.Utilities.ShaderResourceViewProxy.html">ShaderResourceViewProxy</a> class.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ShaderResourceViewProxy(Device device)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>device</code> <span class="xref">Device</span></dt>
+    <dd><p>The device.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Utilities_ShaderResourceViewProxy__ctor_" data-uid="HelixToolkit.SharpDX.Utilities.ShaderResourceViewProxy.#ctor*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Utilities_ShaderResourceViewProxy__ctor_SharpDX_Direct3D11_Device_SharpDX_Direct3D11_Resource_" data-uid="HelixToolkit.SharpDX.Utilities.ShaderResourceViewProxy.#ctor(SharpDX.Direct3D11.Device,SharpDX.Direct3D11.Resource)">
+  ShaderResourceViewProxy(Device, Resource)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Utilities/Buffers/ShaderResourceViewProxy.cs/#L158"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ShaderResourceViewProxy(Device device, Resource resource)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>device</code> <span class="xref">Device</span></dt>
+    <dd></dd>
+    <dt><code>resource</code> <span class="xref">Resource</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Utilities_ShaderResourceViewProxy__ctor_" data-uid="HelixToolkit.SharpDX.Utilities.ShaderResourceViewProxy.#ctor*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Utilities_ShaderResourceViewProxy__ctor_SharpDX_Direct3D11_Device_SharpDX_Direct3D11_Texture1DDescription_" data-uid="HelixToolkit.SharpDX.Utilities.ShaderResourceViewProxy.#ctor(SharpDX.Direct3D11.Device,SharpDX.Direct3D11.Texture1DDescription)">
+  ShaderResourceViewProxy(Device, Texture1DDescription)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Utilities/Buffers/ShaderResourceViewProxy.cs/#L98"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="HelixToolkit.SharpDX.Utilities.ShaderResourceViewProxy.html">ShaderResourceViewProxy</a> class.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ShaderResourceViewProxy(Device device, Texture1DDescription textureDesc)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>device</code> <span class="xref">Device</span></dt>
+    <dd><p>The device.</p>
+</dd>
+    <dt><code>textureDesc</code> <span class="xref">Texture1DDescription</span></dt>
+    <dd><p>The texture desc.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Utilities_ShaderResourceViewProxy__ctor_" data-uid="HelixToolkit.SharpDX.Utilities.ShaderResourceViewProxy.#ctor*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Utilities_ShaderResourceViewProxy__ctor_SharpDX_Direct3D11_Device_SharpDX_Direct3D11_Texture1DDescription__" data-uid="HelixToolkit.SharpDX.Utilities.ShaderResourceViewProxy.#ctor(SharpDX.Direct3D11.Device,SharpDX.Direct3D11.Texture1DDescription@)">
+  ShaderResourceViewProxy(Device, ref Texture1DDescription)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Utilities/Buffers/ShaderResourceViewProxy.cs/#L128"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="HelixToolkit.SharpDX.Utilities.ShaderResourceViewProxy.html">ShaderResourceViewProxy</a> class.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ShaderResourceViewProxy(Device device, ref Texture1DDescription textureDesc)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>device</code> <span class="xref">Device</span></dt>
+    <dd><p>The device.</p>
+</dd>
+    <dt><code>textureDesc</code> <span class="xref">Texture1DDescription</span></dt>
+    <dd><p>The texture desc.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Utilities_ShaderResourceViewProxy__ctor_" data-uid="HelixToolkit.SharpDX.Utilities.ShaderResourceViewProxy.#ctor*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Utilities_ShaderResourceViewProxy__ctor_SharpDX_Direct3D11_Device_SharpDX_Direct3D11_Texture2DDescription_" data-uid="HelixToolkit.SharpDX.Utilities.ShaderResourceViewProxy.#ctor(SharpDX.Direct3D11.Device,SharpDX.Direct3D11.Texture2DDescription)">
+  ShaderResourceViewProxy(Device, Texture2DDescription)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Utilities/Buffers/ShaderResourceViewProxy.cs/#L108"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="HelixToolkit.SharpDX.Utilities.ShaderResourceViewProxy.html">ShaderResourceViewProxy</a> class.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ShaderResourceViewProxy(Device device, Texture2DDescription textureDesc)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>device</code> <span class="xref">Device</span></dt>
+    <dd><p>The device.</p>
+</dd>
+    <dt><code>textureDesc</code> <span class="xref">Texture2DDescription</span></dt>
+    <dd><p>The texture desc.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Utilities_ShaderResourceViewProxy__ctor_" data-uid="HelixToolkit.SharpDX.Utilities.ShaderResourceViewProxy.#ctor*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Utilities_ShaderResourceViewProxy__ctor_SharpDX_Direct3D11_Device_SharpDX_Direct3D11_Texture2DDescription__" data-uid="HelixToolkit.SharpDX.Utilities.ShaderResourceViewProxy.#ctor(SharpDX.Direct3D11.Device,SharpDX.Direct3D11.Texture2DDescription@)">
+  ShaderResourceViewProxy(Device, ref Texture2DDescription)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Utilities/Buffers/ShaderResourceViewProxy.cs/#L138"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="HelixToolkit.SharpDX.Utilities.ShaderResourceViewProxy.html">ShaderResourceViewProxy</a> class.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ShaderResourceViewProxy(Device device, ref Texture2DDescription textureDesc)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>device</code> <span class="xref">Device</span></dt>
+    <dd><p>The device.</p>
+</dd>
+    <dt><code>textureDesc</code> <span class="xref">Texture2DDescription</span></dt>
+    <dd><p>The texture desc.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Utilities_ShaderResourceViewProxy__ctor_" data-uid="HelixToolkit.SharpDX.Utilities.ShaderResourceViewProxy.#ctor*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Utilities_ShaderResourceViewProxy__ctor_SharpDX_Direct3D11_Device_SharpDX_Direct3D11_Texture3DDescription_" data-uid="HelixToolkit.SharpDX.Utilities.ShaderResourceViewProxy.#ctor(SharpDX.Direct3D11.Device,SharpDX.Direct3D11.Texture3DDescription)">
+  ShaderResourceViewProxy(Device, Texture3DDescription)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Utilities/Buffers/ShaderResourceViewProxy.cs/#L118"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="HelixToolkit.SharpDX.Utilities.ShaderResourceViewProxy.html">ShaderResourceViewProxy</a> class.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ShaderResourceViewProxy(Device device, Texture3DDescription textureDesc)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>device</code> <span class="xref">Device</span></dt>
+    <dd><p>The device.</p>
+</dd>
+    <dt><code>textureDesc</code> <span class="xref">Texture3DDescription</span></dt>
+    <dd><p>The texture desc.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Utilities_ShaderResourceViewProxy__ctor_" data-uid="HelixToolkit.SharpDX.Utilities.ShaderResourceViewProxy.#ctor*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Utilities_ShaderResourceViewProxy__ctor_SharpDX_Direct3D11_Device_SharpDX_Direct3D11_Texture3DDescription__" data-uid="HelixToolkit.SharpDX.Utilities.ShaderResourceViewProxy.#ctor(SharpDX.Direct3D11.Device,SharpDX.Direct3D11.Texture3DDescription@)">
+  ShaderResourceViewProxy(Device, ref Texture3DDescription)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Utilities/Buffers/ShaderResourceViewProxy.cs/#L148"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="HelixToolkit.SharpDX.Utilities.ShaderResourceViewProxy.html">ShaderResourceViewProxy</a> class.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ShaderResourceViewProxy(Device device, ref Texture3DDescription textureDesc)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>device</code> <span class="xref">Device</span></dt>
+    <dd><p>The device.</p>
+</dd>
+    <dt><code>textureDesc</code> <span class="xref">Texture3DDescription</span></dt>
+    <dd><p>The texture desc.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Utilities_ShaderResourceViewProxy__ctor_" data-uid="HelixToolkit.SharpDX.Utilities.ShaderResourceViewProxy.#ctor*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Utilities_ShaderResourceViewProxy__ctor_SharpDX_Direct3D11_ShaderResourceView_" data-uid="HelixToolkit.SharpDX.Utilities.ShaderResourceViewProxy.#ctor(SharpDX.Direct3D11.ShaderResourceView)">
+  ShaderResourceViewProxy(ShaderResourceView)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Utilities/Buffers/ShaderResourceViewProxy.cs/#L166"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="HelixToolkit.SharpDX.Utilities.ShaderResourceViewProxy.html">ShaderResourceViewProxy</a> class.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ShaderResourceViewProxy(ShaderResourceView view)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>view</code> <span class="xref">ShaderResourceView</span></dt>
+    <dd><p>The view.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <h2 class="section" id="properties">Properties
+</h2>
+
+
+  <a id="HelixToolkit_SharpDX_Utilities_ShaderResourceViewProxy_DepthStencilView_" data-uid="HelixToolkit.SharpDX.Utilities.ShaderResourceViewProxy.DepthStencilView*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Utilities_ShaderResourceViewProxy_DepthStencilView" data-uid="HelixToolkit.SharpDX.Utilities.ShaderResourceViewProxy.DepthStencilView">
+  DepthStencilView
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Utilities/Buffers/ShaderResourceViewProxy.cs/#L36"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the depth stencil view.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public DepthStencilView? DepthStencilView { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">DepthStencilView</span></dt>
+    <dd><p>The depth stencil view.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Utilities_ShaderResourceViewProxy_Empty_" data-uid="HelixToolkit.SharpDX.Utilities.ShaderResourceViewProxy.Empty*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Utilities_ShaderResourceViewProxy_Empty" data-uid="HelixToolkit.SharpDX.Utilities.ShaderResourceViewProxy.Empty">
+  Empty
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Utilities/Buffers/ShaderResourceViewProxy.cs/#L15"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static ShaderResourceViewProxy Empty { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.Utilities.ShaderResourceViewProxy.html">ShaderResourceViewProxy</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Utilities_ShaderResourceViewProxy_Guid_" data-uid="HelixToolkit.SharpDX.Utilities.ShaderResourceViewProxy.Guid*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Utilities_ShaderResourceViewProxy_Guid" data-uid="HelixToolkit.SharpDX.Utilities.ShaderResourceViewProxy.Guid">
+  Guid
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Utilities/Buffers/ShaderResourceViewProxy.cs/#L14"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Guid Guid { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.guid">Guid</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Utilities_ShaderResourceViewProxy_RenderTargetView_" data-uid="HelixToolkit.SharpDX.Utilities.ShaderResourceViewProxy.RenderTargetView*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Utilities_ShaderResourceViewProxy_RenderTargetView" data-uid="HelixToolkit.SharpDX.Utilities.ShaderResourceViewProxy.RenderTargetView">
+  RenderTargetView
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Utilities/Buffers/ShaderResourceViewProxy.cs/#L50"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the render target view.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public RenderTargetView? RenderTargetView { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">RenderTargetView</span></dt>
+    <dd><p>The render target view.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Utilities_ShaderResourceViewProxy_Resource_" data-uid="HelixToolkit.SharpDX.Utilities.ShaderResourceViewProxy.Resource*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Utilities_ShaderResourceViewProxy_Resource" data-uid="HelixToolkit.SharpDX.Utilities.ShaderResourceViewProxy.Resource">
+  Resource
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Utilities/Buffers/ShaderResourceViewProxy.cs/#L64"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the resource.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Resource? Resource { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">Resource</span></dt>
+    <dd><p>The resource.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Utilities_ShaderResourceViewProxy_TextureFormat_" data-uid="HelixToolkit.SharpDX.Utilities.ShaderResourceViewProxy.TextureFormat*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Utilities_ShaderResourceViewProxy_TextureFormat" data-uid="HelixToolkit.SharpDX.Utilities.ShaderResourceViewProxy.TextureFormat">
+  TextureFormat
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Utilities/Buffers/ShaderResourceViewProxy.cs/#L75"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Format TextureFormat { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">Format</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Utilities_ShaderResourceViewProxy_TextureView_" data-uid="HelixToolkit.SharpDX.Utilities.ShaderResourceViewProxy.TextureView*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Utilities_ShaderResourceViewProxy_TextureView" data-uid="HelixToolkit.SharpDX.Utilities.ShaderResourceViewProxy.TextureView">
+  TextureView
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Utilities/Buffers/ShaderResourceViewProxy.cs/#L22"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the texture view.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ShaderResourceView? TextureView { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">ShaderResourceView</span></dt>
+    <dd><p>The texture view.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h2 class="section" id="methods">Methods
+</h2>
+
+
+  <a id="HelixToolkit_SharpDX_Utilities_ShaderResourceViewProxy_CreateDepthStencilView_" data-uid="HelixToolkit.SharpDX.Utilities.ShaderResourceViewProxy.CreateDepthStencilView*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Utilities_ShaderResourceViewProxy_CreateDepthStencilView" data-uid="HelixToolkit.SharpDX.Utilities.ShaderResourceViewProxy.CreateDepthStencilView">
+  CreateDepthStencilView()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Utilities/Buffers/ShaderResourceViewProxy.cs/#L378"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void CreateDepthStencilView()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Utilities_ShaderResourceViewProxy_CreateDepthStencilView_" data-uid="HelixToolkit.SharpDX.Utilities.ShaderResourceViewProxy.CreateDepthStencilView*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Utilities_ShaderResourceViewProxy_CreateDepthStencilView_SharpDX_Direct3D11_DepthStencilViewDescription_" data-uid="HelixToolkit.SharpDX.Utilities.ShaderResourceViewProxy.CreateDepthStencilView(SharpDX.Direct3D11.DepthStencilViewDescription)">
+  CreateDepthStencilView(DepthStencilViewDescription)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Utilities/Buffers/ShaderResourceViewProxy.cs/#L388"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void CreateDepthStencilView(DepthStencilViewDescription desc)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>desc</code> <span class="xref">DepthStencilViewDescription</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Utilities_ShaderResourceViewProxy_CreateDepthStencilView_" data-uid="HelixToolkit.SharpDX.Utilities.ShaderResourceViewProxy.CreateDepthStencilView*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Utilities_ShaderResourceViewProxy_CreateDepthStencilView_SharpDX_Direct3D11_DepthStencilViewDescription__" data-uid="HelixToolkit.SharpDX.Utilities.ShaderResourceViewProxy.CreateDepthStencilView(SharpDX.Direct3D11.DepthStencilViewDescription@)">
+  CreateDepthStencilView(ref DepthStencilViewDescription)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Utilities/Buffers/ShaderResourceViewProxy.cs/#L393"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void CreateDepthStencilView(ref DepthStencilViewDescription desc)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>desc</code> <span class="xref">DepthStencilViewDescription</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Utilities_ShaderResourceViewProxy_CreateRenderTargetView_" data-uid="HelixToolkit.SharpDX.Utilities.ShaderResourceViewProxy.CreateRenderTargetView*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Utilities_ShaderResourceViewProxy_CreateRenderTargetView" data-uid="HelixToolkit.SharpDX.Utilities.ShaderResourceViewProxy.CreateRenderTargetView">
+  CreateRenderTargetView()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Utilities/Buffers/ShaderResourceViewProxy.cs/#L368"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Creates the render target.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void CreateRenderTargetView()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Utilities_ShaderResourceViewProxy_CreateTextureView_" data-uid="HelixToolkit.SharpDX.Utilities.ShaderResourceViewProxy.CreateTextureView*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Utilities_ShaderResourceViewProxy_CreateTextureView" data-uid="HelixToolkit.SharpDX.Utilities.ShaderResourceViewProxy.CreateTextureView">
+  CreateTextureView()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Utilities/Buffers/ShaderResourceViewProxy.cs/#L336"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Creates the view.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void CreateTextureView()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Utilities_ShaderResourceViewProxy_CreateTextureView_" data-uid="HelixToolkit.SharpDX.Utilities.ShaderResourceViewProxy.CreateTextureView*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Utilities_ShaderResourceViewProxy_CreateTextureView_SharpDX_Direct3D11_ShaderResourceViewDescription_" data-uid="HelixToolkit.SharpDX.Utilities.ShaderResourceViewProxy.CreateTextureView(SharpDX.Direct3D11.ShaderResourceViewDescription)">
+  CreateTextureView(ShaderResourceViewDescription)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Utilities/Buffers/ShaderResourceViewProxy.cs/#L349"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Creates the view.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void CreateTextureView(ShaderResourceViewDescription desc)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>desc</code> <span class="xref">ShaderResourceViewDescription</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Utilities_ShaderResourceViewProxy_CreateTextureView_" data-uid="HelixToolkit.SharpDX.Utilities.ShaderResourceViewProxy.CreateTextureView*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Utilities_ShaderResourceViewProxy_CreateTextureView_SharpDX_Direct3D11_ShaderResourceViewDescription__" data-uid="HelixToolkit.SharpDX.Utilities.ShaderResourceViewProxy.CreateTextureView(SharpDX.Direct3D11.ShaderResourceViewDescription@)">
+  CreateTextureView(ref ShaderResourceViewDescription)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Utilities/Buffers/ShaderResourceViewProxy.cs/#L356"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Creates the view.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void CreateTextureView(ref ShaderResourceViewDescription desc)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>desc</code> <span class="xref">ShaderResourceViewDescription</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Utilities_ShaderResourceViewProxy_CreateView_" data-uid="HelixToolkit.SharpDX.Utilities.ShaderResourceViewProxy.CreateView*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Utilities_ShaderResourceViewProxy_CreateView_HelixToolkit_SharpDX_TextureModel_System_Boolean_System_Boolean_" data-uid="HelixToolkit.SharpDX.Utilities.ShaderResourceViewProxy.CreateView(HelixToolkit.SharpDX.TextureModel,System.Boolean,System.Boolean)">
+  CreateView(TextureModel?, bool, bool)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Utilities/Buffers/ShaderResourceViewProxy.cs/#L284"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Creates the view from texture model.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void CreateView(TextureModel? texture, bool createSRV = true, bool enableAutoGenMipMap = true)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>texture</code> <a class="xref" href="HelixToolkit.SharpDX.TextureModel.html">TextureModel</a></dt>
+    <dd><p>The stream.</p>
+</dd>
+    <dt><code>createSRV</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p>Create ShaderResourceView</p>
+</dd>
+    <dt><code>enableAutoGenMipMap</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p>Enable auto mipmaps generation</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentoutofrangeexception">ArgumentOutOfRangeException</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+  <a id="HelixToolkit_SharpDX_Utilities_ShaderResourceViewProxy_CreateView_" data-uid="HelixToolkit.SharpDX.Utilities.ShaderResourceViewProxy.CreateView*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Utilities_ShaderResourceViewProxy_CreateView_SharpDX_Direct3D11_DepthStencilViewDescription_" data-uid="HelixToolkit.SharpDX.Utilities.ShaderResourceViewProxy.CreateView(SharpDX.Direct3D11.DepthStencilViewDescription)">
+  CreateView(DepthStencilViewDescription)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Utilities/Buffers/ShaderResourceViewProxy.cs/#L311"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Creates the view.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void CreateView(DepthStencilViewDescription desc)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>desc</code> <span class="xref">DepthStencilViewDescription</span></dt>
+    <dd><p>The desc.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Utilities_ShaderResourceViewProxy_CreateView_" data-uid="HelixToolkit.SharpDX.Utilities.ShaderResourceViewProxy.CreateView*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Utilities_ShaderResourceViewProxy_CreateView_SharpDX_Direct3D11_Device_System_IO_Stream_System_Boolean_System_Boolean_" data-uid="HelixToolkit.SharpDX.Utilities.ShaderResourceViewProxy.CreateView(SharpDX.Direct3D11.Device,System.IO.Stream,System.Boolean,System.Boolean)">
+  CreateView(Device, Stream, bool, bool)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Utilities/Buffers/ShaderResourceViewProxy.cs/#L766"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Creates ShaderResourceViewProxy from common file formats such as Jpg, Bmp, DDS, Png, etc</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static ShaderResourceViewProxy CreateView(Device device, Stream texture, bool createSRV = true, bool generateMipMaps = true)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>device</code> <span class="xref">Device</span></dt>
+    <dd><p>The device.</p>
+</dd>
+    <dt><code>texture</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.io.stream">Stream</a></dt>
+    <dd><p>The texture.</p>
+</dd>
+    <dt><code>createSRV</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p>if set to <code>true</code> [create SRV].</p>
+</dd>
+    <dt><code>generateMipMaps</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.Utilities.ShaderResourceViewProxy.html">ShaderResourceViewProxy</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Utilities_ShaderResourceViewProxy_CreateView_" data-uid="HelixToolkit.SharpDX.Utilities.ShaderResourceViewProxy.CreateView*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Utilities_ShaderResourceViewProxy_CreateView_SharpDX_Direct3D11_Device_System_IntPtr_System_Int32_System_Int32_SharpDX_DXGI_Format_System_Boolean_System_Boolean_" data-uid="HelixToolkit.SharpDX.Utilities.ShaderResourceViewProxy.CreateView(SharpDX.Direct3D11.Device,System.IntPtr,System.Int32,System.Int32,SharpDX.DXGI.Format,System.Boolean,System.Boolean)">
+  CreateView(Device, nint, int, int, Format, bool, bool)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Utilities/Buffers/ShaderResourceViewProxy.cs/#L803"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Creates the 2D texture view from raw pixel byte array</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static ShaderResourceViewProxy CreateView(Device device, nint dataPtr, int width, int height, Format format, bool createSRV = true, bool generateMipMaps = true)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>device</code> <span class="xref">Device</span></dt>
+    <dd><p>The device.</p>
+</dd>
+    <dt><code>dataPtr</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.intptr">nint</a></dt>
+    <dd><p>The data PTR.</p>
+</dd>
+    <dt><code>width</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The width.</p>
+</dd>
+    <dt><code>height</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The height.</p>
+</dd>
+    <dt><code>format</code> <span class="xref">Format</span></dt>
+    <dd><p>The format.</p>
+</dd>
+    <dt><code>createSRV</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p>if set to <code>true</code> [create SRV].</p>
+</dd>
+    <dt><code>generateMipMaps</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.Utilities.ShaderResourceViewProxy.html">ShaderResourceViewProxy</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Utilities_ShaderResourceViewProxy_CreateView_" data-uid="HelixToolkit.SharpDX.Utilities.ShaderResourceViewProxy.CreateView*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Utilities_ShaderResourceViewProxy_CreateView_SharpDX_Direct3D11_RenderTargetViewDescription_" data-uid="HelixToolkit.SharpDX.Utilities.ShaderResourceViewProxy.CreateView(SharpDX.Direct3D11.RenderTargetViewDescription)">
+  CreateView(RenderTargetViewDescription)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Utilities/Buffers/ShaderResourceViewProxy.cs/#L324"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Creates the view.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void CreateView(RenderTargetViewDescription desc)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>desc</code> <span class="xref">RenderTargetViewDescription</span></dt>
+    <dd><p>The desc.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Utilities_ShaderResourceViewProxy_CreateView_" data-uid="HelixToolkit.SharpDX.Utilities.ShaderResourceViewProxy.CreateView*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Utilities_ShaderResourceViewProxy_CreateView_SharpDX_Direct3D11_ShaderResourceViewDescription_" data-uid="HelixToolkit.SharpDX.Utilities.ShaderResourceViewProxy.CreateView(SharpDX.Direct3D11.ShaderResourceViewDescription)">
+  CreateView(ShaderResourceViewDescription)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Utilities/Buffers/ShaderResourceViewProxy.cs/#L298"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Creates the view.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void CreateView(ShaderResourceViewDescription desc)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>desc</code> <span class="xref">ShaderResourceViewDescription</span></dt>
+    <dd><p>The desc.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Utilities_ShaderResourceViewProxy_CreateView_" data-uid="HelixToolkit.SharpDX.Utilities.ShaderResourceViewProxy.CreateView*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Utilities_ShaderResourceViewProxy_CreateView_System_IntPtr_System_Int32_SharpDX_DXGI_Format_System_Boolean_System_Boolean_" data-uid="HelixToolkit.SharpDX.Utilities.ShaderResourceViewProxy.CreateView(System.IntPtr,System.Int32,SharpDX.DXGI.Format,System.Boolean,System.Boolean)">
+  CreateView(nint, int, Format, bool, bool)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Utilities/Buffers/ShaderResourceViewProxy.cs/#L466"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Creates the shader resource view from data ptr.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void CreateView(nint dataPtr, int width, Format format, bool createSRV = true, bool generateMipMaps = true)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>dataPtr</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.intptr">nint</a></dt>
+    <dd><p>The data PTR.</p>
+</dd>
+    <dt><code>width</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The width.</p>
+</dd>
+    <dt><code>format</code> <span class="xref">Format</span></dt>
+    <dd><p>The format.</p>
+</dd>
+    <dt><code>createSRV</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p>if set to <code>true</code> [create SRV].</p>
+</dd>
+    <dt><code>generateMipMaps</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Utilities_ShaderResourceViewProxy_CreateView_" data-uid="HelixToolkit.SharpDX.Utilities.ShaderResourceViewProxy.CreateView*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Utilities_ShaderResourceViewProxy_CreateView_System_IntPtr_System_Int32_System_Int32_SharpDX_DXGI_Format_System_Boolean_System_Boolean_" data-uid="HelixToolkit.SharpDX.Utilities.ShaderResourceViewProxy.CreateView(System.IntPtr,System.Int32,System.Int32,SharpDX.DXGI.Format,System.Boolean,System.Boolean)">
+  CreateView(nint, int, int, Format, bool, bool)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Utilities/Buffers/ShaderResourceViewProxy.cs/#L567"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Creates the shader resource view from data ptr.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void CreateView(nint dataPtr, int width, int height, Format format, bool createSRV = true, bool generateMipMaps = true)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>dataPtr</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.intptr">nint</a></dt>
+    <dd><p>The data PTR.</p>
+</dd>
+    <dt><code>width</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The width.</p>
+</dd>
+    <dt><code>height</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The height.</p>
+</dd>
+    <dt><code>format</code> <span class="xref">Format</span></dt>
+    <dd><p>The format.</p>
+</dd>
+    <dt><code>createSRV</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p>if set to <code>true</code> [create SRV].</p>
+</dd>
+    <dt><code>generateMipMaps</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Utilities_ShaderResourceViewProxy_CreateView_" data-uid="HelixToolkit.SharpDX.Utilities.ShaderResourceViewProxy.CreateView*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Utilities_ShaderResourceViewProxy_CreateView_System_IntPtr_System_Int32_System_Int32_System_Int32_SharpDX_DXGI_Format_System_Boolean_System_Boolean_" data-uid="HelixToolkit.SharpDX.Utilities.ShaderResourceViewProxy.CreateView(System.IntPtr,System.Int32,System.Int32,System.Int32,SharpDX.DXGI.Format,System.Boolean,System.Boolean)">
+  CreateView(nint, int, int, int, Format, bool, bool)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Utilities/Buffers/ShaderResourceViewProxy.cs/#L671"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Creates the view.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void CreateView(nint dataPtr, int width, int height, int depth, Format format, bool createSRV = true, bool generateMipMaps = true)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>dataPtr</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.intptr">nint</a></dt>
+    <dd></dd>
+    <dt><code>width</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The width.</p>
+</dd>
+    <dt><code>height</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The height.</p>
+</dd>
+    <dt><code>depth</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The depth.</p>
+</dd>
+    <dt><code>format</code> <span class="xref">Format</span></dt>
+    <dd><p>The format.</p>
+</dd>
+    <dt><code>createSRV</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p>if set to <code>true</code> [create SRV].</p>
+</dd>
+    <dt><code>generateMipMaps</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Utilities_ShaderResourceViewProxy_CreateViewFromColorArray_" data-uid="HelixToolkit.SharpDX.Utilities.ShaderResourceViewProxy.CreateViewFromColorArray*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Utilities_ShaderResourceViewProxy_CreateViewFromColorArray_HelixToolkit_Maths_Color4___" data-uid="HelixToolkit.SharpDX.Utilities.ShaderResourceViewProxy.CreateViewFromColorArray(HelixToolkit.Maths.Color4[])">
+  CreateViewFromColorArray(Color4[])
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Utilities/Buffers/ShaderResourceViewProxy.cs/#L712"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Creates the 1D texture view from color array.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void CreateViewFromColorArray(Color4[] array)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>array</code> <a class="xref" href="HelixToolkit.Maths.Color4.html">Color4</a>[]</dt>
+    <dd><p>The array.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Utilities_ShaderResourceViewProxy_CreateViewFromColorArray_" data-uid="HelixToolkit.SharpDX.Utilities.ShaderResourceViewProxy.CreateViewFromColorArray*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Utilities_ShaderResourceViewProxy_CreateViewFromColorArray_HelixToolkit_Maths_Color4___System_Int32_System_Int32_System_Boolean_System_Boolean_" data-uid="HelixToolkit.SharpDX.Utilities.ShaderResourceViewProxy.CreateViewFromColorArray(HelixToolkit.Maths.Color4[],System.Int32,System.Int32,System.Boolean,System.Boolean)">
+  CreateViewFromColorArray(Color4[], int, int, bool, bool)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Utilities/Buffers/ShaderResourceViewProxy.cs/#L724"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Creates the 2D texture view from color array.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void CreateViewFromColorArray(Color4[] array, int width, int height, bool createSRV = true, bool generateMipMaps = true)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>array</code> <a class="xref" href="HelixToolkit.Maths.Color4.html">Color4</a>[]</dt>
+    <dd><p>The array.</p>
+</dd>
+    <dt><code>width</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The width.</p>
+</dd>
+    <dt><code>height</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The height.</p>
+</dd>
+    <dt><code>createSRV</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+    <dt><code>generateMipMaps</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Utilities_ShaderResourceViewProxy_CreateViewFromColorArray_" data-uid="HelixToolkit.SharpDX.Utilities.ShaderResourceViewProxy.CreateViewFromColorArray*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Utilities_ShaderResourceViewProxy_CreateViewFromColorArray_SharpDX_Direct3D11_Device_HelixToolkit_Maths_Color4___" data-uid="HelixToolkit.SharpDX.Utilities.ShaderResourceViewProxy.CreateViewFromColorArray(SharpDX.Direct3D11.Device,HelixToolkit.Maths.Color4[])">
+  CreateViewFromColorArray(Device, Color4[])
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Utilities/Buffers/ShaderResourceViewProxy.cs/#L816"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Creates the 1D texture view from color array.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static ShaderResourceViewProxy CreateViewFromColorArray(Device device, Color4[] array)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>device</code> <span class="xref">Device</span></dt>
+    <dd></dd>
+    <dt><code>array</code> <a class="xref" href="HelixToolkit.Maths.Color4.html">Color4</a>[]</dt>
+    <dd><p>The array.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.Utilities.ShaderResourceViewProxy.html">ShaderResourceViewProxy</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Utilities_ShaderResourceViewProxy_CreateViewFromColorArray_" data-uid="HelixToolkit.SharpDX.Utilities.ShaderResourceViewProxy.CreateViewFromColorArray*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Utilities_ShaderResourceViewProxy_CreateViewFromColorArray_SharpDX_Direct3D11_Device_HelixToolkit_Maths_Color4___System_Int32_System_Int32_System_Boolean_System_Boolean_" data-uid="HelixToolkit.SharpDX.Utilities.ShaderResourceViewProxy.CreateViewFromColorArray(SharpDX.Direct3D11.Device,HelixToolkit.Maths.Color4[],System.Int32,System.Int32,System.Boolean,System.Boolean)">
+  CreateViewFromColorArray(Device, Color4[], int, int, bool, bool)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Utilities/Buffers/ShaderResourceViewProxy.cs/#L831"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Creates the 2D texture view from color array.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static ShaderResourceViewProxy CreateViewFromColorArray(Device device, Color4[] array, int width, int height, bool createSRV = true, bool generateMipMaps = true)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>device</code> <span class="xref">Device</span></dt>
+    <dd></dd>
+    <dt><code>array</code> <a class="xref" href="HelixToolkit.Maths.Color4.html">Color4</a>[]</dt>
+    <dd><p>The array.</p>
+</dd>
+    <dt><code>width</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The width.</p>
+</dd>
+    <dt><code>height</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The height.</p>
+</dd>
+    <dt><code>createSRV</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+    <dt><code>generateMipMaps</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.Utilities.ShaderResourceViewProxy.html">ShaderResourceViewProxy</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Utilities_ShaderResourceViewProxy_CreateViewFromPixelData_" data-uid="HelixToolkit.SharpDX.Utilities.ShaderResourceViewProxy.CreateViewFromPixelData*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Utilities_ShaderResourceViewProxy_CreateViewFromPixelData_SharpDX_Direct3D11_Device_HelixToolkit_Maths_Half4___System_Int32_System_Int32_System_Int32_SharpDX_DXGI_Format_System_Boolean_System_Boolean_" data-uid="HelixToolkit.SharpDX.Utilities.ShaderResourceViewProxy.CreateViewFromPixelData(SharpDX.Direct3D11.Device,HelixToolkit.Maths.Half4[],System.Int32,System.Int32,System.Int32,SharpDX.DXGI.Format,System.Boolean,System.Boolean)">
+  CreateViewFromPixelData(Device, Half4[], int, int, int, Format, bool, bool)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Utilities/Buffers/ShaderResourceViewProxy.cs/#L871"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Creates the view from pixel data.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static ShaderResourceViewProxy CreateViewFromPixelData(Device device, Half4[] pixels, int width, int height, int depth, Format format, bool createSRV = true, bool generateMipMaps = true)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>device</code> <span class="xref">Device</span></dt>
+    <dd><p>The device.</p>
+</dd>
+    <dt><code>pixels</code> <a class="xref" href="HelixToolkit.Maths.Half4.html">Half4</a>[]</dt>
+    <dd><p>The pixels.</p>
+</dd>
+    <dt><code>width</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The width.</p>
+</dd>
+    <dt><code>height</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The height.</p>
+</dd>
+    <dt><code>depth</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The depth.</p>
+</dd>
+    <dt><code>format</code> <span class="xref">Format</span></dt>
+    <dd><p>The format.</p>
+</dd>
+    <dt><code>createSRV</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p>if set to <code>true</code> [create SRV].</p>
+</dd>
+    <dt><code>generateMipMaps</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p>if set to <code>true</code> [generate mip maps].</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.Utilities.ShaderResourceViewProxy.html">ShaderResourceViewProxy</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Utilities_ShaderResourceViewProxy_CreateViewFromPixelData_" data-uid="HelixToolkit.SharpDX.Utilities.ShaderResourceViewProxy.CreateViewFromPixelData*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Utilities_ShaderResourceViewProxy_CreateViewFromPixelData_SharpDX_Direct3D11_Device_System_Byte___System_Int32_System_Int32_System_Int32_SharpDX_DXGI_Format_System_Boolean_System_Boolean_" data-uid="HelixToolkit.SharpDX.Utilities.ShaderResourceViewProxy.CreateViewFromPixelData(SharpDX.Direct3D11.Device,System.Byte[],System.Int32,System.Int32,System.Int32,SharpDX.DXGI.Format,System.Boolean,System.Boolean)">
+  CreateViewFromPixelData(Device, byte[], int, int, int, Format, bool, bool)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Utilities/Buffers/ShaderResourceViewProxy.cs/#L851"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Creates the 3D texture view from raw pixel array</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static ShaderResourceViewProxy CreateViewFromPixelData(Device device, byte[] pixels, int width, int height, int depth, Format format, bool createSRV = true, bool generateMipMaps = true)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>device</code> <span class="xref">Device</span></dt>
+    <dd><p>The device.</p>
+</dd>
+    <dt><code>pixels</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">byte</a>[]</dt>
+    <dd><p>The pixels.</p>
+</dd>
+    <dt><code>width</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The width.</p>
+</dd>
+    <dt><code>height</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The height.</p>
+</dd>
+    <dt><code>depth</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The depth.</p>
+</dd>
+    <dt><code>format</code> <span class="xref">Format</span></dt>
+    <dd><p>The format.</p>
+</dd>
+    <dt><code>createSRV</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p>if set to <code>true</code> [create SRV].</p>
+</dd>
+    <dt><code>generateMipMaps</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.Utilities.ShaderResourceViewProxy.html">ShaderResourceViewProxy</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Utilities_ShaderResourceViewProxy_CreateViewFromPixelData_" data-uid="HelixToolkit.SharpDX.Utilities.ShaderResourceViewProxy.CreateViewFromPixelData*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Utilities_ShaderResourceViewProxy_CreateViewFromPixelData_SharpDX_Direct3D11_Device_System_IntPtr_System_Int32_System_Int32_System_Int32_SharpDX_DXGI_Format_System_Boolean_System_Boolean_" data-uid="HelixToolkit.SharpDX.Utilities.ShaderResourceViewProxy.CreateViewFromPixelData(SharpDX.Direct3D11.Device,System.IntPtr,System.Int32,System.Int32,System.Int32,SharpDX.DXGI.Format,System.Boolean,System.Boolean)">
+  CreateViewFromPixelData(Device, nint, int, int, int, Format, bool, bool)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Utilities/Buffers/ShaderResourceViewProxy.cs/#L891"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Creates the view from pixel data.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static ShaderResourceViewProxy CreateViewFromPixelData(Device device, nint pixels, int width, int height, int depth, Format format, bool createSRV = true, bool generateMipMaps = true)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>device</code> <span class="xref">Device</span></dt>
+    <dd><p>The device.</p>
+</dd>
+    <dt><code>pixels</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.intptr">nint</a></dt>
+    <dd><p>The pixels.</p>
+</dd>
+    <dt><code>width</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The width.</p>
+</dd>
+    <dt><code>height</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The height.</p>
+</dd>
+    <dt><code>depth</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The depth.</p>
+</dd>
+    <dt><code>format</code> <span class="xref">Format</span></dt>
+    <dd><p>The format.</p>
+</dd>
+    <dt><code>createSRV</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p>if set to <code>true</code> [create SRV].</p>
+</dd>
+    <dt><code>generateMipMaps</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.Utilities.ShaderResourceViewProxy.html">ShaderResourceViewProxy</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Utilities_ShaderResourceViewProxy_CreateView_" data-uid="HelixToolkit.SharpDX.Utilities.ShaderResourceViewProxy.CreateView*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Utilities_ShaderResourceViewProxy_CreateView__1_SharpDX_Direct3D11_Device___0___SharpDX_DXGI_Format_System_Boolean_System_Boolean_" data-uid="HelixToolkit.SharpDX.Utilities.ShaderResourceViewProxy.CreateView``1(SharpDX.Direct3D11.Device,``0[],SharpDX.DXGI.Format,System.Boolean,System.Boolean)">
+  CreateView&lt;T&gt;(Device, T[], Format, bool, bool)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Utilities/Buffers/ShaderResourceViewProxy.cs/#L750"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Creates ShaderResourceViewProxy from 2D texture array</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static ShaderResourceViewProxy CreateView&lt;T&gt;(Device device, T[] array, Format format, bool createSRV = true, bool generateMipMaps = true) where T : unmanaged</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>device</code> <span class="xref">Device</span></dt>
+    <dd><p>The device.</p>
+</dd>
+    <dt><code>array</code> T[]</dt>
+    <dd><p>The array.</p>
+</dd>
+    <dt><code>format</code> <span class="xref">Format</span></dt>
+    <dd><p>The format.</p>
+</dd>
+    <dt><code>createSRV</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p>if set to <code>true</code> [create SRV].</p>
+</dd>
+    <dt><code>generateMipMaps</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.Utilities.ShaderResourceViewProxy.html">ShaderResourceViewProxy</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Type Parameters</h4>
+  <dl class="parameters">
+    <dt><code>T</code></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Utilities_ShaderResourceViewProxy_CreateView_" data-uid="HelixToolkit.SharpDX.Utilities.ShaderResourceViewProxy.CreateView*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Utilities_ShaderResourceViewProxy_CreateView__1_SharpDX_Direct3D11_Device___0___System_Int32_System_Int32_SharpDX_DXGI_Format_System_Boolean_System_Boolean_" data-uid="HelixToolkit.SharpDX.Utilities.ShaderResourceViewProxy.CreateView``1(SharpDX.Direct3D11.Device,``0[],System.Int32,System.Int32,SharpDX.DXGI.Format,System.Boolean,System.Boolean)">
+  CreateView&lt;T&gt;(Device, T[], int, int, Format, bool, bool)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Utilities/Buffers/ShaderResourceViewProxy.cs/#L784"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Creates the 2D texture view from data array</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static ShaderResourceViewProxy CreateView&lt;T&gt;(Device device, T[] array, int width, int height, Format format, bool createSRV = true, bool generateMipMaps = true) where T : unmanaged</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>device</code> <span class="xref">Device</span></dt>
+    <dd><p>The device.</p>
+</dd>
+    <dt><code>array</code> T[]</dt>
+    <dd><p>The array.</p>
+</dd>
+    <dt><code>width</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The width.</p>
+</dd>
+    <dt><code>height</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The height.</p>
+</dd>
+    <dt><code>format</code> <span class="xref">Format</span></dt>
+    <dd><p>The format.</p>
+</dd>
+    <dt><code>createSRV</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p>if set to <code>true</code> [create SRV].</p>
+</dd>
+    <dt><code>generateMipMaps</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.Utilities.ShaderResourceViewProxy.html">ShaderResourceViewProxy</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Type Parameters</h4>
+  <dl class="parameters">
+    <dt><code>T</code></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Utilities_ShaderResourceViewProxy_CreateView_" data-uid="HelixToolkit.SharpDX.Utilities.ShaderResourceViewProxy.CreateView*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Utilities_ShaderResourceViewProxy_CreateView__1___0___SharpDX_DXGI_Format_System_Boolean_System_Boolean_" data-uid="HelixToolkit.SharpDX.Utilities.ShaderResourceViewProxy.CreateView``1(``0[],SharpDX.DXGI.Format,System.Boolean,System.Boolean)">
+  CreateView&lt;T&gt;(T[], Format, bool, bool)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Utilities/Buffers/ShaderResourceViewProxy.cs/#L410"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Creates the 1D texture view from data array.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void CreateView&lt;T&gt;(T[] array, Format format, bool createSRV = true, bool generateMipMaps = true) where T : unmanaged</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>array</code> T[]</dt>
+    <dd><p>The array.</p>
+</dd>
+    <dt><code>format</code> <span class="xref">Format</span></dt>
+    <dd><p>The format.</p>
+</dd>
+    <dt><code>createSRV</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p>if set to <code>true</code> [create SRV].</p>
+</dd>
+    <dt><code>generateMipMaps</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p>if set to <code>true</code> [generate mip maps].</p>
+</dd>
+  </dl>
+
+
+  <h4 class="section">Type Parameters</h4>
+  <dl class="parameters">
+    <dt><code>T</code></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Utilities_ShaderResourceViewProxy_CreateView_" data-uid="HelixToolkit.SharpDX.Utilities.ShaderResourceViewProxy.CreateView*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Utilities_ShaderResourceViewProxy_CreateView__1___0___System_Int32_SharpDX_DXGI_Format_System_Boolean_System_Boolean_" data-uid="HelixToolkit.SharpDX.Utilities.ShaderResourceViewProxy.CreateView``1(``0[],System.Int32,SharpDX.DXGI.Format,System.Boolean,System.Boolean)">
+  CreateView&lt;T&gt;(T[], int, Format, bool, bool)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Utilities/Buffers/ShaderResourceViewProxy.cs/#L424"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Creates the 1D texture view from data array.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void CreateView&lt;T&gt;(T[] array, int length, Format format, bool createSRV = true, bool generateMipMaps = true) where T : unmanaged</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>array</code> T[]</dt>
+    <dd><p>The array.</p>
+</dd>
+    <dt><code>length</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>data length</p>
+</dd>
+    <dt><code>format</code> <span class="xref">Format</span></dt>
+    <dd><p>The pixel format.</p>
+</dd>
+    <dt><code>createSRV</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p>if set to <code>true</code> [create SRV].</p>
+</dd>
+    <dt><code>generateMipMaps</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+  <h4 class="section">Type Parameters</h4>
+  <dl class="parameters">
+    <dt><code>T</code></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Utilities_ShaderResourceViewProxy_CreateView_" data-uid="HelixToolkit.SharpDX.Utilities.ShaderResourceViewProxy.CreateView*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Utilities_ShaderResourceViewProxy_CreateView__1___0___System_Int32_System_Int32_SharpDX_DXGI_Format_System_Boolean_System_Boolean_" data-uid="HelixToolkit.SharpDX.Utilities.ShaderResourceViewProxy.CreateView``1(``0[],System.Int32,System.Int32,SharpDX.DXGI.Format,System.Boolean,System.Boolean)">
+  CreateView&lt;T&gt;(T[], int, int, Format, bool, bool)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Utilities/Buffers/ShaderResourceViewProxy.cs/#L519"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Creates the 2D texture view from data array.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void CreateView&lt;T&gt;(T[] array, int width, int height, Format format, bool createSRV = true, bool generateMipMaps = true) where T : unmanaged</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>array</code> T[]</dt>
+    <dd><p>The array.</p>
+</dd>
+    <dt><code>width</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The width.</p>
+</dd>
+    <dt><code>height</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The height.</p>
+</dd>
+    <dt><code>format</code> <span class="xref">Format</span></dt>
+    <dd><p>The format.</p>
+</dd>
+    <dt><code>createSRV</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p>if set to <code>true</code> [create SRV].</p>
+</dd>
+    <dt><code>generateMipMaps</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+  <h4 class="section">Type Parameters</h4>
+  <dl class="parameters">
+    <dt><code>T</code></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentoutofrangeexception">ArgumentOutOfRangeException</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+  <a id="HelixToolkit_SharpDX_Utilities_ShaderResourceViewProxy_CreateView_" data-uid="HelixToolkit.SharpDX.Utilities.ShaderResourceViewProxy.CreateView*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Utilities_ShaderResourceViewProxy_CreateView__1___0___System_Int32_System_Int32_System_Int32_SharpDX_DXGI_Format_System_Boolean_System_Boolean_" data-uid="HelixToolkit.SharpDX.Utilities.ShaderResourceViewProxy.CreateView``1(``0[],System.Int32,System.Int32,System.Int32,SharpDX.DXGI.Format,System.Boolean,System.Boolean)">
+  CreateView&lt;T&gt;(T[], int, int, int, Format, bool, bool)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Utilities/Buffers/ShaderResourceViewProxy.cs/#L622"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Creates the view from 3D texture byte array.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void CreateView&lt;T&gt;(T[] pixels, int width, int height, int depth, Format format, bool createSRV = true, bool generateMipMaps = true) where T : unmanaged</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>pixels</code> T[]</dt>
+    <dd><p>The pixels.</p>
+</dd>
+    <dt><code>width</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The width.</p>
+</dd>
+    <dt><code>height</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The height.</p>
+</dd>
+    <dt><code>depth</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The depth.</p>
+</dd>
+    <dt><code>format</code> <span class="xref">Format</span></dt>
+    <dd><p>The format.</p>
+</dd>
+    <dt><code>createSRV</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p>if set to <code>true</code> [create SRV].</p>
+</dd>
+    <dt><code>generateMipMaps</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+  <h4 class="section">Type Parameters</h4>
+  <dl class="parameters">
+    <dt><code>T</code></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentoutofrangeexception">ArgumentOutOfRangeException</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+  <a id="HelixToolkit_SharpDX_Utilities_ShaderResourceViewProxy_OnDispose_" data-uid="HelixToolkit.SharpDX.Utilities.ShaderResourceViewProxy.OnDispose*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Utilities_ShaderResourceViewProxy_OnDispose_System_Boolean_" data-uid="HelixToolkit.SharpDX.Utilities.ShaderResourceViewProxy.OnDispose(System.Boolean)">
+  OnDispose(bool)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Utilities/Buffers/ShaderResourceViewProxy.cs/#L730"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Disposes of object resources.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected override void OnDispose(bool disposeManagedResources)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>disposeManagedResources</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p>If true, managed resources should be
+disposed of in addition to unmanaged resources.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <h2 class="section" id="operators">Operators
+</h2>
+
+
+  <a id="HelixToolkit_SharpDX_Utilities_ShaderResourceViewProxy_op_Implicit_" data-uid="HelixToolkit.SharpDX.Utilities.ShaderResourceViewProxy.op_Implicit*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Utilities_ShaderResourceViewProxy_op_Implicit_HelixToolkit_SharpDX_Utilities_ShaderResourceViewProxy__SharpDX_Direct3D11_DepthStencilView" data-uid="HelixToolkit.SharpDX.Utilities.ShaderResourceViewProxy.op_Implicit(HelixToolkit.SharpDX.Utilities.ShaderResourceViewProxy)~SharpDX.Direct3D11.DepthStencilView">
+  implicit operator DepthStencilView?(ShaderResourceViewProxy?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Utilities/Buffers/ShaderResourceViewProxy.cs/#L918"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Performs an implicit conversion from <a class="xref" href="HelixToolkit.SharpDX.Utilities.ShaderResourceViewProxy.html">ShaderResourceViewProxy</a> to <a class="xref" href="HelixToolkit.SharpDX.Utilities.ShaderResourceViewProxy.html#HelixToolkit_SharpDX_Utilities_ShaderResourceViewProxy_DepthStencilView">DepthStencilView</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static implicit operator DepthStencilView?(ShaderResourceViewProxy? proxy)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>proxy</code> <a class="xref" href="HelixToolkit.SharpDX.Utilities.ShaderResourceViewProxy.html">ShaderResourceViewProxy</a></dt>
+    <dd><p>The proxy.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><span class="xref">DepthStencilView</span></dt>
+    <dd><p>The result of the conversion.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Utilities_ShaderResourceViewProxy_op_Implicit_" data-uid="HelixToolkit.SharpDX.Utilities.ShaderResourceViewProxy.op_Implicit*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Utilities_ShaderResourceViewProxy_op_Implicit_HelixToolkit_SharpDX_Utilities_ShaderResourceViewProxy__SharpDX_Direct3D11_RenderTargetView" data-uid="HelixToolkit.SharpDX.Utilities.ShaderResourceViewProxy.op_Implicit(HelixToolkit.SharpDX.Utilities.ShaderResourceViewProxy)~SharpDX.Direct3D11.RenderTargetView">
+  implicit operator RenderTargetView?(ShaderResourceViewProxy?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Utilities/Buffers/ShaderResourceViewProxy.cs/#L929"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Performs an implicit conversion from <a class="xref" href="HelixToolkit.SharpDX.Utilities.ShaderResourceViewProxy.html">ShaderResourceViewProxy</a> to <a class="xref" href="HelixToolkit.SharpDX.Utilities.ShaderResourceViewProxy.html#HelixToolkit_SharpDX_Utilities_ShaderResourceViewProxy_RenderTargetView">RenderTargetView</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static implicit operator RenderTargetView?(ShaderResourceViewProxy? proxy)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>proxy</code> <a class="xref" href="HelixToolkit.SharpDX.Utilities.ShaderResourceViewProxy.html">ShaderResourceViewProxy</a></dt>
+    <dd><p>The proxy.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><span class="xref">RenderTargetView</span></dt>
+    <dd><p>The result of the conversion.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Utilities_ShaderResourceViewProxy_op_Implicit_" data-uid="HelixToolkit.SharpDX.Utilities.ShaderResourceViewProxy.op_Implicit*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Utilities_ShaderResourceViewProxy_op_Implicit_HelixToolkit_SharpDX_Utilities_ShaderResourceViewProxy__SharpDX_Direct3D11_ShaderResourceView" data-uid="HelixToolkit.SharpDX.Utilities.ShaderResourceViewProxy.op_Implicit(HelixToolkit.SharpDX.Utilities.ShaderResourceViewProxy)~SharpDX.Direct3D11.ShaderResourceView">
+  implicit operator ShaderResourceView?(ShaderResourceViewProxy?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Utilities/Buffers/ShaderResourceViewProxy.cs/#L907"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Performs an implicit conversion from <a class="xref" href="HelixToolkit.SharpDX.Utilities.ShaderResourceViewProxy.html">ShaderResourceViewProxy</a> to <span class="xref">SharpDX.Direct3D11.ShaderResourceView</span>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static implicit operator ShaderResourceView?(ShaderResourceViewProxy? proxy)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>proxy</code> <a class="xref" href="HelixToolkit.SharpDX.Utilities.ShaderResourceViewProxy.html">ShaderResourceViewProxy</a></dt>
+    <dd><p>The proxy.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><span class="xref">ShaderResourceView</span></dt>
+    <dd><p>The result of the conversion.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Utilities/Buffers/ShaderResourceViewProxy.cs/#L11" class="edit-link">Edit this page</a>
+        </div>
+
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          Copyright (c) 2023 Helix Toolkit contributors
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

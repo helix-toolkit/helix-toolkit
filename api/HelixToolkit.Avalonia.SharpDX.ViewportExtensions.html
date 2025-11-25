@@ -1,0 +1,1194 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Class ViewportExtensions | Helix Toolkit - 3D for .NET </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Class ViewportExtensions | Helix Toolkit - 3D for .NET ">
+      
+      <meta name="description" content="Provides extension methods for .">
+      <link rel="icon" href="../images/favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/helix-toolkit/helix-toolkit/new/main-v3/apiSpec/new?filename=HelixToolkit_Avalonia_SharpDX_ViewportExtensions.md&amp;value=---%0Auid%3A%20HelixToolkit.Avalonia.SharpDX.ViewportExtensions%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="ManagedReference">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../images/favicon.ico" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="HelixToolkit.Avalonia.SharpDX.ViewportExtensions">
+
+
+
+  <h1 id="HelixToolkit_Avalonia_SharpDX_ViewportExtensions" data-uid="HelixToolkit.Avalonia.SharpDX.ViewportExtensions" class="text-break">
+Class ViewportExtensions  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Avalonia.SharpDX/Extensions/ViewportExtensions.cs/#L18"><i class="bi bi-code-slash"></i></a>
+  </h1>
+
+  <div class="facts text-secondary">
+    <dl><dt>Namespace</dt><dd><a class="xref" href="HelixToolkit.html">HelixToolkit</a>.<a class="xref" href="HelixToolkit.Avalonia.html">Avalonia</a>.<a class="xref" href="HelixToolkit.Avalonia.SharpDX.html">SharpDX</a></dd></dl>
+  <dl><dt>Assembly</dt><dd>HelixToolkit.Avalonia.SharpDX.dll</dd></dl>
+  </div>
+
+  <div class="markdown summary"><p>Provides extension methods for <a class="xref" href="HelixToolkit.Avalonia.SharpDX.Viewport3DX.html">Viewport3DX</a>.</p>
+</div>
+  <div class="markdown conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static class ViewportExtensions</code></pre>
+  </div>
+
+
+
+
+  <dl class="typelist inheritance">
+    <dt>Inheritance</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
+      <div><span class="xref">ViewportExtensions</span></div>
+    </dd>
+  </dl>
+
+
+
+  <dl class="typelist inheritedMembers">
+    <dt>Inherited Members</dt>
+    <dd>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">object.Equals(object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">object.Equals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode">object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype">object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone">object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals">object.ReferenceEquals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring">object.ToString()</a>
+    </div>
+  </dd></dl>
+
+
+
+
+
+
+  <h2 class="section" id="fields">Fields
+</h2>
+
+
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_ViewportExtensions_EmptyHits" data-uid="HelixToolkit.Avalonia.SharpDX.ViewportExtensions.EmptyHits">
+  EmptyHits
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Avalonia.SharpDX/Extensions/ViewportExtensions.cs/#L143"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly HitTestResult[] EmptyHits</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.HitTestResult.html">HitTestResult</a>[]</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+  <h2 class="section" id="methods">Methods
+</h2>
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_ViewportExtensions_FindHits_" data-uid="HelixToolkit.Avalonia.SharpDX.ViewportExtensions.FindHits*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_ViewportExtensions_FindHits_HelixToolkit_Avalonia_SharpDX_Viewport3DX_Avalonia_Point_" data-uid="HelixToolkit.Avalonia.SharpDX.ViewportExtensions.FindHits(HelixToolkit.Avalonia.SharpDX.Viewport3DX,Avalonia.Point)">
+  FindHits(Viewport3DX, Point)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Avalonia.SharpDX/Extensions/ViewportExtensions.cs/#L157"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Finds the hits for a given 2D viewport position.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static IList&lt;HitTestResult&gt; FindHits(this Viewport3DX viewport, Point position)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>viewport</code> <a class="xref" href="HelixToolkit.Avalonia.SharpDX.Viewport3DX.html">Viewport3DX</a></dt>
+    <dd><p>The viewport.</p>
+</dd>
+    <dt><code>position</code> <span class="xref">Point</span></dt>
+    <dd><p>The position.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ilist-1">IList</a>&lt;<a class="xref" href="HelixToolkit.SharpDX.HitTestResult.html">HitTestResult</a>&gt;</dt>
+    <dd><p>List of hits, sorted with the nearest hit first.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_ViewportExtensions_FindNearest_" data-uid="HelixToolkit.Avalonia.SharpDX.ViewportExtensions.FindNearest*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_ViewportExtensions_FindNearest_HelixToolkit_Avalonia_SharpDX_Viewport3DX_Avalonia_Point_System_Numerics_Vector3__System_Numerics_Vector3__HelixToolkit_Avalonia_SharpDX_Element3D__HelixToolkit_SharpDX_Model_Scene_SceneNode__" data-uid="HelixToolkit.Avalonia.SharpDX.ViewportExtensions.FindNearest(HelixToolkit.Avalonia.SharpDX.Viewport3DX,Avalonia.Point,System.Numerics.Vector3@,System.Numerics.Vector3@,HelixToolkit.Avalonia.SharpDX.Element3D@,HelixToolkit.SharpDX.Model.Scene.SceneNode@)">
+  FindNearest(Viewport3DX, Point, out Vector3, out Vector3, out Element3D?, out SceneNode?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Avalonia.SharpDX/Extensions/ViewportExtensions.cs/#L184"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Finds the nearest point and its normal.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool FindNearest(this Viewport3DX viewport, Point position, out Vector3 point, out Vector3 normal, out Element3D? model, out SceneNode? node)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>viewport</code> <a class="xref" href="HelixToolkit.Avalonia.SharpDX.Viewport3DX.html">Viewport3DX</a></dt>
+    <dd><p>The viewport.</p>
+</dd>
+    <dt><code>position</code> <span class="xref">Point</span></dt>
+    <dd><p>The position.</p>
+</dd>
+    <dt><code>point</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd><p>The point.</p>
+</dd>
+    <dt><code>normal</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd><p>The normal.</p>
+</dd>
+    <dt><code>model</code> <a class="xref" href="HelixToolkit.Avalonia.SharpDX.Element3D.html">Element3D</a></dt>
+    <dd><p>The model.</p>
+</dd>
+    <dt><code>node</code> <a class="xref" href="HelixToolkit.SharpDX.Model.Scene.SceneNode.html">SceneNode</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p>The find nearest.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_ViewportExtensions_FindNearestPoint_" data-uid="HelixToolkit.Avalonia.SharpDX.ViewportExtensions.FindNearestPoint*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_ViewportExtensions_FindNearestPoint_HelixToolkit_Avalonia_SharpDX_Viewport3DX_Avalonia_Point_" data-uid="HelixToolkit.Avalonia.SharpDX.ViewportExtensions.FindNearestPoint(HelixToolkit.Avalonia.SharpDX.Viewport3DX,Avalonia.Point)">
+  FindNearestPoint(Viewport3DX, Point)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Avalonia.SharpDX/Extensions/ViewportExtensions.cs/#L214"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Find the coordinates of the nearest point given a 2D position in the viewport</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Vector3? FindNearestPoint(this Viewport3DX viewport, Point position)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>viewport</code> <a class="xref" href="HelixToolkit.Avalonia.SharpDX.Viewport3DX.html">Viewport3DX</a></dt>
+    <dd><p>The viewport.</p>
+</dd>
+    <dt><code>position</code> <span class="xref">Point</span></dt>
+    <dd><p>The position.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a>?</dt>
+    <dd><p>The nearest point, or null if no point was found.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_ViewportExtensions_GetScreenViewProjectionMatrix3D_" data-uid="HelixToolkit.Avalonia.SharpDX.ViewportExtensions.GetScreenViewProjectionMatrix3D*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_ViewportExtensions_GetScreenViewProjectionMatrix3D_HelixToolkit_Avalonia_SharpDX_Viewport3DX_" data-uid="HelixToolkit.Avalonia.SharpDX.ViewportExtensions.GetScreenViewProjectionMatrix3D(HelixToolkit.Avalonia.SharpDX.Viewport3DX)">
+  GetScreenViewProjectionMatrix3D(Viewport3DX)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Avalonia.SharpDX/Extensions/ViewportExtensions.cs/#L63"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the total transform for a Viewport3DX.
+Old name of this function: GetTotalTransform
+New name of the function: GetScreenViewProjectionTransform</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Matrix4x4 GetScreenViewProjectionMatrix3D(this Viewport3DX viewport)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>viewport</code> <a class="xref" href="HelixToolkit.Avalonia.SharpDX.Viewport3DX.html">Viewport3DX</a></dt>
+    <dd><p>The viewport.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.matrix4x4">Matrix4x4</a></dt>
+    <dd><p>The total transform.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_ViewportExtensions_GetTotalNumberOfTriangles_" data-uid="HelixToolkit.Avalonia.SharpDX.ViewportExtensions.GetTotalNumberOfTriangles*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_ViewportExtensions_GetTotalNumberOfTriangles_HelixToolkit_Avalonia_SharpDX_Viewport3DX_" data-uid="HelixToolkit.Avalonia.SharpDX.ViewportExtensions.GetTotalNumberOfTriangles(HelixToolkit.Avalonia.SharpDX.Viewport3DX)">
+  GetTotalNumberOfTriangles(Viewport3DX)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Avalonia.SharpDX/Extensions/ViewportExtensions.cs/#L25"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the total number of triangles in the viewport.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static int GetTotalNumberOfTriangles(this Viewport3DX viewport)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>viewport</code> <a class="xref" href="HelixToolkit.Avalonia.SharpDX.Viewport3DX.html">Viewport3DX</a></dt>
+    <dd><p>The viewport.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The total number of triangles</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_ViewportExtensions_GetViewProjectionMatrix3D_" data-uid="HelixToolkit.Avalonia.SharpDX.ViewportExtensions.GetViewProjectionMatrix3D*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_ViewportExtensions_GetViewProjectionMatrix3D_HelixToolkit_Avalonia_SharpDX_Viewport3DX_" data-uid="HelixToolkit.Avalonia.SharpDX.ViewportExtensions.GetViewProjectionMatrix3D(HelixToolkit.Avalonia.SharpDX.Viewport3DX)">
+  GetViewProjectionMatrix3D(Viewport3DX)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Avalonia.SharpDX/Extensions/ViewportExtensions.cs/#L51"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the camera transform.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Matrix4x4 GetViewProjectionMatrix3D(this Viewport3DX viewport)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>viewport</code> <a class="xref" href="HelixToolkit.Avalonia.SharpDX.Viewport3DX.html">Viewport3DX</a></dt>
+    <dd><p>The viewport.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.matrix4x4">Matrix4x4</a></dt>
+    <dd><p>The camera transform.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_ViewportExtensions_GetViewportMatrix3D_" data-uid="HelixToolkit.Avalonia.SharpDX.ViewportExtensions.GetViewportMatrix3D*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_ViewportExtensions_GetViewportMatrix3D_HelixToolkit_Avalonia_SharpDX_Viewport3DX_" data-uid="HelixToolkit.Avalonia.SharpDX.ViewportExtensions.GetViewportMatrix3D(HelixToolkit.Avalonia.SharpDX.Viewport3DX)">
+  GetViewportMatrix3D(Viewport3DX)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Avalonia.SharpDX/Extensions/ViewportExtensions.cs/#L77"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the viewport transform aka the screen-space transform.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Matrix4x4 GetViewportMatrix3D(this Viewport3DX viewport)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>viewport</code> <a class="xref" href="HelixToolkit.Avalonia.SharpDX.Viewport3DX.html">Viewport3DX</a></dt>
+    <dd><p>The viewport.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.matrix4x4">Matrix4x4</a></dt>
+    <dd><p>The transform.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_ViewportExtensions_Project_" data-uid="HelixToolkit.Avalonia.SharpDX.ViewportExtensions.Project*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_ViewportExtensions_Project_HelixToolkit_Avalonia_SharpDX_Viewport3DX_System_Numerics_Vector3_" data-uid="HelixToolkit.Avalonia.SharpDX.ViewportExtensions.Project(HelixToolkit.Avalonia.SharpDX.Viewport3DX,System.Numerics.Vector3)">
+  Project(Viewport3DX, Vector3)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Avalonia.SharpDX/Extensions/ViewportExtensions.cs/#L322"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Projects the specified 3D point to a 2D screen point.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Point Project(this Viewport3DX viewport, Vector3 point)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>viewport</code> <a class="xref" href="HelixToolkit.Avalonia.SharpDX.Viewport3DX.html">Viewport3DX</a></dt>
+    <dd><p>The viewport.</p>
+</dd>
+    <dt><code>point</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd><p>The 3D point.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><span class="xref">Point</span></dt>
+    <dd><p>The point.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_ViewportExtensions_ResizeAndArrange_" data-uid="HelixToolkit.Avalonia.SharpDX.ViewportExtensions.ResizeAndArrange*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_ViewportExtensions_ResizeAndArrange_HelixToolkit_Avalonia_SharpDX_Viewport3DX_System_Int32_System_Int32_" data-uid="HelixToolkit.Avalonia.SharpDX.ViewportExtensions.ResizeAndArrange(HelixToolkit.Avalonia.SharpDX.Viewport3DX,System.Int32,System.Int32)">
+  ResizeAndArrange(Viewport3DX, int, int)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Avalonia.SharpDX/Extensions/ViewportExtensions.cs/#L340"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Resizes and arranges the viewport.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void ResizeAndArrange(this Viewport3DX view, int width, int height)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>view</code> <a class="xref" href="HelixToolkit.Avalonia.SharpDX.Viewport3DX.html">Viewport3DX</a></dt>
+    <dd><p>The view.</p>
+</dd>
+    <dt><code>width</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The width.</p>
+</dd>
+    <dt><code>height</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The height.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_ViewportExtensions_SaveScreen_" data-uid="HelixToolkit.Avalonia.SharpDX.ViewportExtensions.SaveScreen*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_ViewportExtensions_SaveScreen_HelixToolkit_Avalonia_SharpDX_Viewport3DX_System_String_" data-uid="HelixToolkit.Avalonia.SharpDX.ViewportExtensions.SaveScreen(HelixToolkit.Avalonia.SharpDX.Viewport3DX,System.String)">
+  SaveScreen(Viewport3DX, string)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Avalonia.SharpDX/Extensions/ViewportExtensions.cs/#L359"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Saves the bitmap.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void SaveScreen(this Viewport3DX view, string fileName)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>view</code> <a class="xref" href="HelixToolkit.Avalonia.SharpDX.Viewport3DX.html">Viewport3DX</a></dt>
+    <dd><p>The view.</p>
+</dd>
+    <dt><code>fileName</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>Name of the file.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_ViewportExtensions_SaveScreen_" data-uid="HelixToolkit.Avalonia.SharpDX.ViewportExtensions.SaveScreen*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_ViewportExtensions_SaveScreen_HelixToolkit_Avalonia_SharpDX_Viewport3DX_System_String_HelixToolkit_SharpDX_Direct2DImageFormat_" data-uid="HelixToolkit.Avalonia.SharpDX.ViewportExtensions.SaveScreen(HelixToolkit.Avalonia.SharpDX.Viewport3DX,System.String,HelixToolkit.SharpDX.Direct2DImageFormat)">
+  SaveScreen(Viewport3DX, string, Direct2DImageFormat)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Avalonia.SharpDX/Extensions/ViewportExtensions.cs/#L387"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Saves the bitmap.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void SaveScreen(this Viewport3DX view, string fileName, Direct2DImageFormat format)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>view</code> <a class="xref" href="HelixToolkit.Avalonia.SharpDX.Viewport3DX.html">Viewport3DX</a></dt>
+    <dd><p>The view.</p>
+</dd>
+    <dt><code>fileName</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>Name of the file.</p>
+</dd>
+    <dt><code>format</code> <a class="xref" href="HelixToolkit.SharpDX.Direct2DImageFormat.html">Direct2DImageFormat</a></dt>
+    <dd><p>The format.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_ViewportExtensions_Traverse_" data-uid="HelixToolkit.Avalonia.SharpDX.ViewportExtensions.Traverse*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_ViewportExtensions_Traverse__1_HelixToolkit_Avalonia_SharpDX_Element3D_System_Action___0_System_Numerics_Matrix4x4__" data-uid="HelixToolkit.Avalonia.SharpDX.ViewportExtensions.Traverse``1(HelixToolkit.Avalonia.SharpDX.Element3D,System.Action{``0,System.Numerics.Matrix4x4})">
+  Traverse&lt;T&gt;(Element3D, Action&lt;T, Matrix4x4&gt;)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Avalonia.SharpDX/Extensions/ViewportExtensions.cs/#L137"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Traverses the Visual3D/Element3D tree and invokes the specified action on each Element3D of the specified type.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void Traverse&lt;T&gt;(this Element3D element, Action&lt;T, Matrix4x4&gt; action) where T : Element3D</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>element</code> <a class="xref" href="HelixToolkit.Avalonia.SharpDX.Element3D.html">Element3D</a></dt>
+    <dd><p>The element.</p>
+</dd>
+    <dt><code>action</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.action-2">Action</a>&lt;T, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.matrix4x4">Matrix4x4</a>&gt;</dt>
+    <dd><p>The action.</p>
+</dd>
+  </dl>
+
+
+  <h4 class="section">Type Parameters</h4>
+  <dl class="parameters">
+    <dt><code>T</code></dt>
+    <dd><p>The type filter.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_ViewportExtensions_Traverse_" data-uid="HelixToolkit.Avalonia.SharpDX.ViewportExtensions.Traverse*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_ViewportExtensions_Traverse__1_HelixToolkit_Avalonia_SharpDX_Viewport3DX_System_Action___0_System_Numerics_Matrix4x4__" data-uid="HelixToolkit.Avalonia.SharpDX.ViewportExtensions.Traverse``1(HelixToolkit.Avalonia.SharpDX.Viewport3DX,System.Action{``0,System.Numerics.Matrix4x4})">
+  Traverse&lt;T&gt;(Viewport3DX, Action&lt;T, Matrix4x4&gt;)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Avalonia.SharpDX/Extensions/ViewportExtensions.cs/#L95"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Traverses the Visual3D/Element3D tree and invokes the specified action on each Element3D of the specified type.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void Traverse&lt;T&gt;(this Viewport3DX viewport, Action&lt;T, Matrix4x4&gt; action) where T : Element3D</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>viewport</code> <a class="xref" href="HelixToolkit.Avalonia.SharpDX.Viewport3DX.html">Viewport3DX</a></dt>
+    <dd><p>The viewport.</p>
+</dd>
+    <dt><code>action</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.action-2">Action</a>&lt;T, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.matrix4x4">Matrix4x4</a>&gt;</dt>
+    <dd><p>The action.</p>
+</dd>
+  </dl>
+
+
+  <h4 class="section">Type Parameters</h4>
+  <dl class="parameters">
+    <dt><code>T</code></dt>
+    <dd><p>The type filter.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_ViewportExtensions_Traverse_" data-uid="HelixToolkit.Avalonia.SharpDX.ViewportExtensions.Traverse*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_ViewportExtensions_Traverse__1_HelixToolkit_Avalonia_SharpDX_Viewport3DX_System_Func___0_System_Boolean__" data-uid="HelixToolkit.Avalonia.SharpDX.ViewportExtensions.Traverse``1(HelixToolkit.Avalonia.SharpDX.Viewport3DX,System.Func{``0,System.Boolean})">
+  Traverse&lt;T&gt;(Viewport3DX, Func&lt;T, bool&gt;)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Avalonia.SharpDX/Extensions/ViewportExtensions.cs/#L113"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Traverses the specified action.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void Traverse&lt;T&gt;(this Viewport3DX viewport, Func&lt;T, bool&gt; function) where T : Element3D</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>viewport</code> <a class="xref" href="HelixToolkit.Avalonia.SharpDX.Viewport3DX.html">Viewport3DX</a></dt>
+    <dd><p>The viewport.</p>
+</dd>
+    <dt><code>function</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.func-2">Func</a>&lt;T, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a>&gt;</dt>
+    <dd><p>The function. Return true to continue traverse, otherwise stop at current node</p>
+</dd>
+  </dl>
+
+
+  <h4 class="section">Type Parameters</h4>
+  <dl class="parameters">
+    <dt><code>T</code></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_ViewportExtensions_UnProject_" data-uid="HelixToolkit.Avalonia.SharpDX.ViewportExtensions.UnProject*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_ViewportExtensions_UnProject_HelixToolkit_Avalonia_SharpDX_Viewport3DX_Avalonia_Point_" data-uid="HelixToolkit.Avalonia.SharpDX.ViewportExtensions.UnProject(HelixToolkit.Avalonia.SharpDX.Viewport3DX,Avalonia.Point)">
+  UnProject(Viewport3DX, Point)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Avalonia.SharpDX/Extensions/ViewportExtensions.cs/#L241"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Un-projects a 2D screen point.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Ray UnProject(this Viewport3DX viewport, Point point2d)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>viewport</code> <a class="xref" href="HelixToolkit.Avalonia.SharpDX.Viewport3DX.html">Viewport3DX</a></dt>
+    <dd><p>The viewport.</p>
+</dd>
+    <dt><code>point2d</code> <span class="xref">Point</span></dt>
+    <dd><p>The input point.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Maths.Ray.html">Ray</a></dt>
+    <dd><p>The ray.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_ViewportExtensions_UnProject_" data-uid="HelixToolkit.Avalonia.SharpDX.ViewportExtensions.UnProject*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_ViewportExtensions_UnProject_HelixToolkit_Avalonia_SharpDX_Viewport3DX_System_Numerics_Vector2_" data-uid="HelixToolkit.Avalonia.SharpDX.ViewportExtensions.UnProject(HelixToolkit.Avalonia.SharpDX.Viewport3DX,System.Numerics.Vector2)">
+  UnProject(Viewport3DX, Vector2)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Avalonia.SharpDX/Extensions/ViewportExtensions.cs/#L229"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Un-projects a 2D screen point.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Ray UnProject(this Viewport3DX viewport, Vector2 point2d)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>viewport</code> <a class="xref" href="HelixToolkit.Avalonia.SharpDX.Viewport3DX.html">Viewport3DX</a></dt>
+    <dd><p>The viewport.</p>
+</dd>
+    <dt><code>point2d</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector2">Vector2</a></dt>
+    <dd><p>The input point.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Maths.Ray.html">Ray</a></dt>
+    <dd><p>The ray.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_ViewportExtensions_UnProjectOnPlane_" data-uid="HelixToolkit.Avalonia.SharpDX.ViewportExtensions.UnProjectOnPlane*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_ViewportExtensions_UnProjectOnPlane_HelixToolkit_Avalonia_SharpDX_Viewport3DX_Avalonia_Point_" data-uid="HelixToolkit.Avalonia.SharpDX.ViewportExtensions.UnProjectOnPlane(HelixToolkit.Avalonia.SharpDX.Viewport3DX,Avalonia.Point)">
+  UnProjectOnPlane(Viewport3DX, Point)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Avalonia.SharpDX/Extensions/ViewportExtensions.cs/#L307"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Un-projects a point from the screen (2D) to a point on the plane trough the camera target point.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Vector3? UnProjectOnPlane(this Viewport3DX viewport, Point p)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>viewport</code> <a class="xref" href="HelixToolkit.Avalonia.SharpDX.Viewport3DX.html">Viewport3DX</a></dt>
+    <dd><p>The viewport.</p>
+</dd>
+    <dt><code>p</code> <span class="xref">Point</span></dt>
+    <dd><p>The 2D point.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a>?</dt>
+    <dd><p>A 3D point.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_ViewportExtensions_UnProjectOnPlane_" data-uid="HelixToolkit.Avalonia.SharpDX.ViewportExtensions.UnProjectOnPlane*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_ViewportExtensions_UnProjectOnPlane_HelixToolkit_Avalonia_SharpDX_Viewport3DX_Avalonia_Point_System_Numerics_Vector3_System_Numerics_Vector3_" data-uid="HelixToolkit.Avalonia.SharpDX.ViewportExtensions.UnProjectOnPlane(HelixToolkit.Avalonia.SharpDX.Viewport3DX,Avalonia.Point,System.Numerics.Vector3,System.Numerics.Vector3)">
+  UnProjectOnPlane(Viewport3DX, Point, Vector3, Vector3)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Avalonia.SharpDX/Extensions/ViewportExtensions.cs/#L264"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Un-project a point from the screen (2D) to a point on plane (3D)</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Vector3? UnProjectOnPlane(this Viewport3DX viewport, Point p, Vector3 position, Vector3 normal)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>viewport</code> <a class="xref" href="HelixToolkit.Avalonia.SharpDX.Viewport3DX.html">Viewport3DX</a></dt>
+    <dd><p>The viewport.</p>
+</dd>
+    <dt><code>p</code> <span class="xref">Point</span></dt>
+    <dd><p>The 2D point.</p>
+</dd>
+    <dt><code>position</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd><p>plane position</p>
+</dd>
+    <dt><code>normal</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd><p>plane normal</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a>?</dt>
+    <dd><p>A 3D point.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_ViewportExtensions_UnProjectOnPlane_" data-uid="HelixToolkit.Avalonia.SharpDX.ViewportExtensions.UnProjectOnPlane*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_ViewportExtensions_UnProjectOnPlane_HelixToolkit_Avalonia_SharpDX_Viewport3DX_System_Numerics_Vector2_System_Numerics_Plane_" data-uid="HelixToolkit.Avalonia.SharpDX.ViewportExtensions.UnProjectOnPlane(HelixToolkit.Avalonia.SharpDX.Viewport3DX,System.Numerics.Vector2,System.Numerics.Plane)">
+  UnProjectOnPlane(Viewport3DX, Vector2, Plane)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Avalonia.SharpDX/Extensions/ViewportExtensions.cs/#L283"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Vector3? UnProjectOnPlane(this Viewport3DX viewport, Vector2 p, Plane plane)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>viewport</code> <a class="xref" href="HelixToolkit.Avalonia.SharpDX.Viewport3DX.html">Viewport3DX</a></dt>
+    <dd></dd>
+    <dt><code>p</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector2">Vector2</a></dt>
+    <dd></dd>
+    <dt><code>plane</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.plane">Plane</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a>?</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_ViewportExtensions_ZoomByChangingFieldOfView_" data-uid="HelixToolkit.Avalonia.SharpDX.ViewportExtensions.ZoomByChangingFieldOfView*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_ViewportExtensions_ZoomByChangingFieldOfView_HelixToolkit_Avalonia_SharpDX_Viewport3DX_System_Double_" data-uid="HelixToolkit.Avalonia.SharpDX.ViewportExtensions.ZoomByChangingFieldOfView(HelixToolkit.Avalonia.SharpDX.Viewport3DX,System.Double)">
+  ZoomByChangingFieldOfView(Viewport3DX, double)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Avalonia.SharpDX/Extensions/ViewportExtensions.cs/#L468"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Changes the field of view and tries to keep the scale fixed.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void ZoomByChangingFieldOfView(this Viewport3DX viewport, double delta)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>viewport</code> <a class="xref" href="HelixToolkit.Avalonia.SharpDX.Viewport3DX.html">Viewport3DX</a></dt>
+    <dd><p>The viewport.</p>
+</dd>
+    <dt><code>delta</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd><p>The relative change in fov.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_ViewportExtensions_ZoomExtents_" data-uid="HelixToolkit.Avalonia.SharpDX.ViewportExtensions.ZoomExtents*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_ViewportExtensions_ZoomExtents_HelixToolkit_Avalonia_SharpDX_Viewport3DX_HelixToolkit_Maths_BoundingBox_System_Double_" data-uid="HelixToolkit.Avalonia.SharpDX.ViewportExtensions.ZoomExtents(HelixToolkit.Avalonia.SharpDX.Viewport3DX,HelixToolkit.Maths.BoundingBox,System.Double)">
+  ZoomExtents(Viewport3DX, BoundingBox, double)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Avalonia.SharpDX/Extensions/ViewportExtensions.cs/#L429"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Zooms to the extents of the specified bounding box.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void ZoomExtents(this Viewport3DX viewport, BoundingBox bounds, double animationTime = 0)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>viewport</code> <a class="xref" href="HelixToolkit.Avalonia.SharpDX.Viewport3DX.html">Viewport3DX</a></dt>
+    <dd><p>The viewport.</p>
+</dd>
+    <dt><code>bounds</code> <a class="xref" href="HelixToolkit.Maths.BoundingBox.html">BoundingBox</a></dt>
+    <dd><p>The bounding rectangle.</p>
+</dd>
+    <dt><code>animationTime</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd><p>The animation time.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_ViewportExtensions_ZoomExtents_" data-uid="HelixToolkit.Avalonia.SharpDX.ViewportExtensions.ZoomExtents*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_ViewportExtensions_ZoomExtents_HelixToolkit_Avalonia_SharpDX_Viewport3DX_System_Double_" data-uid="HelixToolkit.Avalonia.SharpDX.ViewportExtensions.ZoomExtents(HelixToolkit.Avalonia.SharpDX.Viewport3DX,System.Double)">
+  ZoomExtents(Viewport3DX, double)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Avalonia.SharpDX/Extensions/ViewportExtensions.cs/#L411"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Zooms to the extents of the specified viewport.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void ZoomExtents(this Viewport3DX viewport, double animationTime = 0)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>viewport</code> <a class="xref" href="HelixToolkit.Avalonia.SharpDX.Viewport3DX.html">Viewport3DX</a></dt>
+    <dd><p>The viewport.</p>
+</dd>
+    <dt><code>animationTime</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd><p>The animation time.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_ViewportExtensions_ZoomExtents_" data-uid="HelixToolkit.Avalonia.SharpDX.ViewportExtensions.ZoomExtents*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_ViewportExtensions_ZoomExtents_HelixToolkit_Avalonia_SharpDX_Viewport3DX_System_Numerics_Vector3_System_Double_System_Double_" data-uid="HelixToolkit.Avalonia.SharpDX.ViewportExtensions.ZoomExtents(HelixToolkit.Avalonia.SharpDX.Viewport3DX,System.Numerics.Vector3,System.Double,System.Double)">
+  ZoomExtents(Viewport3DX, Vector3, double, double)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Avalonia.SharpDX/Extensions/ViewportExtensions.cs/#L441"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Zooms to the extents of the specified bounding sphere.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void ZoomExtents(this Viewport3DX viewport, Vector3 center, double radius, double animationTime = 0)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>viewport</code> <a class="xref" href="HelixToolkit.Avalonia.SharpDX.Viewport3DX.html">Viewport3DX</a></dt>
+    <dd><p>The viewport.</p>
+</dd>
+    <dt><code>center</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd><p>The center of the sphere.</p>
+</dd>
+    <dt><code>radius</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd><p>The radius of the sphere.</p>
+</dd>
+    <dt><code>animationTime</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd><p>The animation time.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Avalonia_SharpDX_ViewportExtensions_ZoomToRectangle_" data-uid="HelixToolkit.Avalonia.SharpDX.ViewportExtensions.ZoomToRectangle*"></a>
+
+  <h3 id="HelixToolkit_Avalonia_SharpDX_ViewportExtensions_ZoomToRectangle_HelixToolkit_Avalonia_SharpDX_Viewport3DX_Avalonia_Rect_" data-uid="HelixToolkit.Avalonia.SharpDX.ViewportExtensions.ZoomToRectangle(HelixToolkit.Avalonia.SharpDX.Viewport3DX,Avalonia.Rect)">
+  ZoomToRectangle(Viewport3DX, Rect)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Avalonia.SharpDX/Extensions/ViewportExtensions.cs/#L451"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Zooms the viewport to the specified rectangle.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void ZoomToRectangle(this Viewport3DX viewport, Rect rectangle)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>viewport</code> <a class="xref" href="HelixToolkit.Avalonia.SharpDX.Viewport3DX.html">Viewport3DX</a></dt>
+    <dd><p>The viewport.</p>
+</dd>
+    <dt><code>rectangle</code> <span class="xref">Rect</span></dt>
+    <dd><p>The rectangle.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Avalonia.SharpDX/Extensions/ViewportExtensions.cs/#L18" class="edit-link">Edit this page</a>
+        </div>
+
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          Copyright (c) 2023 Helix Toolkit contributors
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

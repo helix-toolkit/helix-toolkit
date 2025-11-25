@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Class StaticLineGeometryOctree | Helix Toolkit - 3D for .NET </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Class StaticLineGeometryOctree | Helix Toolkit - 3D for .NET ">
+      
+      <meta name="description" content="Static octree for line geometry">
+      <link rel="icon" href="../images/favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/helix-toolkit/helix-toolkit/new/main-v3/apiSpec/new?filename=HelixToolkit_SharpDX_Utilities_StaticLineGeometryOctree.md&amp;value=---%0Auid%3A%20HelixToolkit.SharpDX.Utilities.StaticLineGeometryOctree%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="ManagedReference">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../images/favicon.ico" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="HelixToolkit.SharpDX.Utilities.StaticLineGeometryOctree">
+
+
+
+  <h1 id="HelixToolkit_SharpDX_Utilities_StaticLineGeometryOctree" data-uid="HelixToolkit.SharpDX.Utilities.StaticLineGeometryOctree" class="text-break">
+Class StaticLineGeometryOctree  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Utilities/Octrees/StaticOctrees/StaticLineGeometryOctree.cs/#L9"><i class="bi bi-code-slash"></i></a>
+  </h1>
+
+  <div class="facts text-secondary">
+    <dl><dt>Namespace</dt><dd><a class="xref" href="HelixToolkit.html">HelixToolkit</a>.<a class="xref" href="HelixToolkit.SharpDX.html">SharpDX</a>.<a class="xref" href="HelixToolkit.SharpDX.Utilities.html">Utilities</a></dd></dl>
+  <dl><dt>Assembly</dt><dd>HelixToolkit.SharpDX.dll</dd></dl>
+  </div>
+
+  <div class="markdown summary"><p>Static octree for line geometry</p>
+</div>
+  <div class="markdown conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class StaticLineGeometryOctree : StaticOctree&lt;KeyValuePair&lt;int, BoundingBox&gt;&gt;, IOctreeBasic</code></pre>
+  </div>
+
+
+
+
+  <dl class="typelist inheritance">
+    <dt>Inheritance</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
+      <div><a class="xref" href="HelixToolkit.SharpDX.Utilities.StaticOctree-1.html">StaticOctree</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.keyvaluepair-2">KeyValuePair</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a>, <a class="xref" href="HelixToolkit.Maths.BoundingBox.html">BoundingBox</a>&gt;&gt;</div>
+      <div><span class="xref">StaticLineGeometryOctree</span></div>
+    </dd>
+  </dl>
+
+  <dl class="typelist implements">
+    <dt>Implements</dt>
+    <dd>
+      <div><a class="xref" href="HelixToolkit.SharpDX.IOctreeBasic.html">IOctreeBasic</a></div>
+    </dd>
+  </dl>
+
+
+  <dl class="typelist inheritedMembers">
+    <dt>Inherited Members</dt>
+    <dd>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Utilities.StaticOctree-1.html#HelixToolkit_SharpDX_Utilities_StaticOctree_1_OctantSize">StaticOctree&lt;KeyValuePair&lt;int, BoundingBox&gt;&gt;.OctantSize</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Utilities.StaticOctree-1.html#HelixToolkit_SharpDX_Utilities_StaticOctree_1_Hit">StaticOctree&lt;KeyValuePair&lt;int, BoundingBox&gt;&gt;.Hit</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Utilities.StaticOctree-1.html#HelixToolkit_SharpDX_Utilities_StaticOctree_1_OctantArraySize">StaticOctree&lt;KeyValuePair&lt;int, BoundingBox&gt;&gt;.OctantArraySize</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Utilities.StaticOctree-1.html#HelixToolkit_SharpDX_Utilities_StaticOctree_1_HitPathBoundingBoxes">StaticOctree&lt;KeyValuePair&lt;int, BoundingBox&gt;&gt;.HitPathBoundingBoxes</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Utilities.StaticOctree-1.html#HelixToolkit_SharpDX_Utilities_StaticOctree_1_MIN_SIZE">StaticOctree&lt;KeyValuePair&lt;int, BoundingBox&gt;&gt;.MIN_SIZE</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Utilities.StaticOctree-1.html#HelixToolkit_SharpDX_Utilities_StaticOctree_1_Parameter">StaticOctree&lt;KeyValuePair&lt;int, BoundingBox&gt;&gt;.Parameter</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Utilities.StaticOctree-1.html#HelixToolkit_SharpDX_Utilities_StaticOctree_1_Objects">StaticOctree&lt;KeyValuePair&lt;int, BoundingBox&gt;&gt;.Objects</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Utilities.StaticOctree-1.html#HelixToolkit_SharpDX_Utilities_StaticOctree_1_TreeBuilt">StaticOctree&lt;KeyValuePair&lt;int, BoundingBox&gt;&gt;.TreeBuilt</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Utilities.StaticOctree-1.html#HelixToolkit_SharpDX_Utilities_StaticOctree_1_Bound">StaticOctree&lt;KeyValuePair&lt;int, BoundingBox&gt;&gt;.Bound</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Utilities.StaticOctree-1.html#HelixToolkit_SharpDX_Utilities_StaticOctree_1_BuildTree">StaticOctree&lt;KeyValuePair&lt;int, BoundingBox&gt;&gt;.BuildTree()</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Utilities.StaticOctree-1.html#HelixToolkit_SharpDX_Utilities_StaticOctree_1_GetObjects">StaticOctree&lt;KeyValuePair&lt;int, BoundingBox&gt;&gt;.GetObjects()</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Utilities.StaticOctree-1.html#HelixToolkit_SharpDX_Utilities_StaticOctree_1_GetMaxBound">StaticOctree&lt;KeyValuePair&lt;int, BoundingBox&gt;&gt;.GetMaxBound()</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Utilities.StaticOctree-1.html#HelixToolkit_SharpDX_Utilities_StaticOctree_1_CheckDimension_HelixToolkit_Maths_BoundingBox__">StaticOctree&lt;KeyValuePair&lt;int, BoundingBox&gt;&gt;.CheckDimension(ref BoundingBox)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Utilities.StaticOctree-1.html#HelixToolkit_SharpDX_Utilities_StaticOctree_1_BuildSubTree_System_Int32_">StaticOctree&lt;KeyValuePair&lt;int, BoundingBox&gt;&gt;.BuildSubTree(int)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Utilities.StaticOctree-1.html#HelixToolkit_SharpDX_Utilities_StaticOctree_1_GetBoundingBoxFromItem__0__">StaticOctree&lt;KeyValuePair&lt;int, BoundingBox&gt;&gt;.GetBoundingBoxFromItem(ref KeyValuePair&lt;int, BoundingBox&gt;)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Utilities.StaticOctree-1.html#HelixToolkit_SharpDX_Utilities_StaticOctree_1_FindEnclosingBox_System_Int32_">StaticOctree&lt;KeyValuePair&lt;int, BoundingBox&gt;&gt;.FindEnclosingBox(int)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Utilities.StaticOctree-1.html#HelixToolkit_SharpDX_Utilities_StaticOctree_1_CreateOctants_HelixToolkit_Maths_BoundingBox__System_Single_">StaticOctree&lt;KeyValuePair&lt;int, BoundingBox&gt;&gt;.CreateOctants(ref BoundingBox, float)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Utilities.StaticOctree-1.html#HelixToolkit_SharpDX_Utilities_StaticOctree_1_IsContains_HelixToolkit_Maths_BoundingBox__HelixToolkit_Maths_BoundingBox__0__">StaticOctree&lt;KeyValuePair&lt;int, BoundingBox&gt;&gt;.IsContains(ref BoundingBox, BoundingBox, ref KeyValuePair&lt;int, BoundingBox&gt;)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Utilities.StaticOctree-1.html#HelixToolkit_SharpDX_Utilities_StaticOctree_1_TreeTraversal_System_Collections_Generic_Stack_System_Collections_Generic_KeyValuePair_System_Int32_System_Int32___System_Action_System_Int32__System_Func_System_Int32_System_Boolean__">StaticOctree&lt;KeyValuePair&lt;int, BoundingBox&gt;&gt;.TreeTraversal(Stack&lt;KeyValuePair&lt;int, int&gt;&gt;, Action&lt;int&gt;, Func&lt;int, bool&gt;)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Utilities.StaticOctree-1.html#HelixToolkit_SharpDX_Utilities_StaticOctree_1_HitTest_HelixToolkit_SharpDX_HitTestContext_System_Object_HelixToolkit_SharpDX_Geometry3D_System_Numerics_Matrix4x4_System_Collections_Generic_List_HelixToolkit_SharpDX_HitTestResult___">StaticOctree&lt;KeyValuePair&lt;int, BoundingBox&gt;&gt;.HitTest(HitTestContext, object, Geometry3D, Matrix4x4, ref List&lt;HitTestResult&gt;)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Utilities.StaticOctree-1.html#HelixToolkit_SharpDX_Utilities_StaticOctree_1_HitTest_HelixToolkit_SharpDX_HitTestContext_System_Object_HelixToolkit_SharpDX_Geometry3D_System_Numerics_Matrix4x4_System_Boolean_System_Collections_Generic_List_HelixToolkit_SharpDX_HitTestResult___">StaticOctree&lt;KeyValuePair&lt;int, BoundingBox&gt;&gt;.HitTest(HitTestContext, object, Geometry3D, Matrix4x4, bool, ref List&lt;HitTestResult&gt;)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Utilities.StaticOctree-1.html#HelixToolkit_SharpDX_Utilities_StaticOctree_1_HitTest_HelixToolkit_SharpDX_HitTestContext_System_Object_HelixToolkit_SharpDX_Geometry3D_System_Numerics_Matrix4x4_System_Collections_Generic_List_HelixToolkit_SharpDX_HitTestResult___System_Single_">StaticOctree&lt;KeyValuePair&lt;int, BoundingBox&gt;&gt;.HitTest(HitTestContext, object, Geometry3D, Matrix4x4, ref List&lt;HitTestResult&gt;, float)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Utilities.StaticOctree-1.html#HelixToolkit_SharpDX_Utilities_StaticOctree_1_HitTest_HelixToolkit_SharpDX_HitTestContext_System_Object_HelixToolkit_SharpDX_Geometry3D_System_Numerics_Matrix4x4_System_Boolean_System_Collections_Generic_List_HelixToolkit_SharpDX_HitTestResult___System_Single_">StaticOctree&lt;KeyValuePair&lt;int, BoundingBox&gt;&gt;.HitTest(HitTestContext, object, Geometry3D, Matrix4x4, bool, ref List&lt;HitTestResult&gt;, float)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Utilities.StaticOctree-1.html#HelixToolkit_SharpDX_Utilities_StaticOctree_1_FindNearestPointBySphere_HelixToolkit_SharpDX_HitTestContext_HelixToolkit_Maths_BoundingSphere__System_Collections_Generic_List_HelixToolkit_SharpDX_HitTestResult___">StaticOctree&lt;KeyValuePair&lt;int, BoundingBox&gt;&gt;.FindNearestPointBySphere(HitTestContext, ref BoundingSphere, ref List&lt;HitTestResult&gt;)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Utilities.StaticOctree-1.html#HelixToolkit_SharpDX_Utilities_StaticOctree_1_FindNearestPointFromPoint_HelixToolkit_SharpDX_HitTestContext_System_Numerics_Vector3__System_Collections_Generic_List_HelixToolkit_SharpDX_HitTestResult___System_Single_">StaticOctree&lt;KeyValuePair&lt;int, BoundingBox&gt;&gt;.FindNearestPointFromPoint(HitTestContext, ref Vector3, ref List&lt;HitTestResult&gt;, float)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Utilities.StaticOctree-1.html#HelixToolkit_SharpDX_Utilities_StaticOctree_1_FindNearestPointByPointAndSearchRadius_HelixToolkit_SharpDX_HitTestContext_System_Numerics_Vector3__System_Single_System_Collections_Generic_List_HelixToolkit_SharpDX_HitTestResult___">StaticOctree&lt;KeyValuePair&lt;int, BoundingBox&gt;&gt;.FindNearestPointByPointAndSearchRadius(HitTestContext, ref Vector3, float, ref List&lt;HitTestResult&gt;)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Utilities.StaticOctree-1.html#HelixToolkit_SharpDX_Utilities_StaticOctree_1_FindNearestPointBySphereExcludeChild_HelixToolkit_SharpDX_Utilities_StaticOctree__0__Octant__HelixToolkit_SharpDX_HitTestContext_HelixToolkit_Maths_BoundingSphere__System_Collections_Generic_List_HelixToolkit_SharpDX_HitTestResult___System_Boolean__">StaticOctree&lt;KeyValuePair&lt;int, BoundingBox&gt;&gt;.FindNearestPointBySphereExcludeChild(ref StaticOctree&lt;KeyValuePair&lt;int, BoundingBox&gt;&gt;.Octant, HitTestContext, ref BoundingSphere, ref List&lt;HitTestResult&gt;, ref bool)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Utilities.StaticOctree-1.html#HelixToolkit_SharpDX_Utilities_StaticOctree_1_HitTestCurrentNodeExcludeChild_HelixToolkit_SharpDX_Utilities_StaticOctree__0__Octant__HelixToolkit_SharpDX_HitTestContext_System_Object_HelixToolkit_SharpDX_Geometry3D_System_Numerics_Matrix4x4_HelixToolkit_Maths_Ray__System_Boolean_System_Collections_Generic_List_HelixToolkit_SharpDX_HitTestResult___System_Boolean__System_Single_">StaticOctree&lt;KeyValuePair&lt;int, BoundingBox&gt;&gt;.HitTestCurrentNodeExcludeChild(ref StaticOctree&lt;KeyValuePair&lt;int, BoundingBox&gt;&gt;.Octant, HitTestContext, object, Geometry3D, Matrix4x4, ref Ray, bool, ref List&lt;HitTestResult&gt;, ref bool, float)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Utilities.StaticOctree-1.html#HelixToolkit_SharpDX_Utilities_StaticOctree_1_CreateOctreeLineModel">StaticOctree&lt;KeyValuePair&lt;int, BoundingBox&gt;&gt;.CreateOctreeLineModel()</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Utilities.StaticOctree-1.html#HelixToolkit_SharpDX_Utilities_StaticOctree_1_BoxContainsBox_HelixToolkit_Maths_BoundingBox__HelixToolkit_Maths_BoundingBox__">StaticOctree&lt;KeyValuePair&lt;int, BoundingBox&gt;&gt;.BoxContainsBox(ref BoundingBox, ref BoundingBox)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Utilities.StaticOctree-1.html#HelixToolkit_SharpDX_Utilities_StaticOctree_1_BoxDisjointSphere_HelixToolkit_Maths_BoundingBox_HelixToolkit_Maths_BoundingSphere__">StaticOctree&lt;KeyValuePair&lt;int, BoundingBox&gt;&gt;.BoxDisjointSphere(BoundingBox, ref BoundingSphere)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">object.Equals(object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">object.Equals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode">object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype">object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone">object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals">object.ReferenceEquals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring">object.ToString()</a>
+    </div>
+  </dd></dl>
+
+
+
+
+
+
+  <h2 class="section" id="constructors">Constructors
+</h2>
+
+
+  <a id="HelixToolkit_SharpDX_Utilities_StaticLineGeometryOctree__ctor_" data-uid="HelixToolkit.SharpDX.Utilities.StaticLineGeometryOctree.#ctor*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Utilities_StaticLineGeometryOctree__ctor_System_Collections_Generic_IList_System_Numerics_Vector3__System_Collections_Generic_IList_System_Int32__HelixToolkit_SharpDX_OctreeBuildParameter_" data-uid="HelixToolkit.SharpDX.Utilities.StaticLineGeometryOctree.#ctor(System.Collections.Generic.IList{System.Numerics.Vector3},System.Collections.Generic.IList{System.Int32},HelixToolkit.SharpDX.OctreeBuildParameter)">
+  StaticLineGeometryOctree(IList&lt;Vector3&gt;?, IList&lt;int&gt;?, OctreeBuildParameter)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Utilities/Octrees/StaticOctrees/StaticLineGeometryOctree.cs/#L26"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="HelixToolkit.SharpDX.Utilities.StaticLineGeometryOctree.html">StaticLineGeometryOctree</a> class.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public StaticLineGeometryOctree(IList&lt;Vector3&gt;? positions, IList&lt;int&gt;? indices, OctreeBuildParameter parameter)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>positions</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ilist-1">IList</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a>&gt;</dt>
+    <dd><p>The positions.</p>
+</dd>
+    <dt><code>indices</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ilist-1">IList</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a>&gt;</dt>
+    <dd><p>The indices.</p>
+</dd>
+    <dt><code>parameter</code> <a class="xref" href="HelixToolkit.SharpDX.OctreeBuildParameter.html">OctreeBuildParameter</a></dt>
+    <dd><p>The parameter.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <h2 class="section" id="fields">Fields
+</h2>
+
+
+
+  <h3 id="HelixToolkit_SharpDX_Utilities_StaticLineGeometryOctree_Indices" data-uid="HelixToolkit.SharpDX.Utilities.StaticLineGeometryOctree.Indices">
+  Indices
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Utilities/Octrees/StaticOctrees/StaticLineGeometryOctree.cs/#L18"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected readonly IList&lt;int&gt;? Indices</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ilist-1">IList</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="HelixToolkit_SharpDX_Utilities_StaticLineGeometryOctree_Positions" data-uid="HelixToolkit.SharpDX.Utilities.StaticLineGeometryOctree.Positions">
+  Positions
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Utilities/Octrees/StaticOctrees/StaticLineGeometryOctree.cs/#L14"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected readonly IList&lt;Vector3&gt;? Positions</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ilist-1">IList</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+  <h2 class="section" id="methods">Methods
+</h2>
+
+
+  <a id="HelixToolkit_SharpDX_Utilities_StaticLineGeometryOctree_FindNearestPointBySphereExcludeChild_" data-uid="HelixToolkit.SharpDX.Utilities.StaticLineGeometryOctree.FindNearestPointBySphereExcludeChild*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Utilities_StaticLineGeometryOctree_FindNearestPointBySphereExcludeChild_HelixToolkit_SharpDX_Utilities_StaticOctree_System_Collections_Generic_KeyValuePair_System_Int32_HelixToolkit_Maths_BoundingBox___Octant__HelixToolkit_SharpDX_HitTestContext_HelixToolkit_Maths_BoundingSphere__System_Collections_Generic_List_HelixToolkit_SharpDX_HitTestResult___System_Boolean__" data-uid="HelixToolkit.SharpDX.Utilities.StaticLineGeometryOctree.FindNearestPointBySphereExcludeChild(HelixToolkit.SharpDX.Utilities.StaticOctree{System.Collections.Generic.KeyValuePair{System.Int32,HelixToolkit.Maths.BoundingBox}}.Octant@,HelixToolkit.SharpDX.HitTestContext,HelixToolkit.Maths.BoundingSphere@,System.Collections.Generic.List{HelixToolkit.SharpDX.HitTestResult}@,System.Boolean@)">
+  FindNearestPointBySphereExcludeChild(ref Octant, HitTestContext?, ref BoundingSphere, ref List&lt;HitTestResult&gt;, ref bool)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Utilities/Octrees/StaticOctrees/StaticLineGeometryOctree.cs/#L191"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected override bool FindNearestPointBySphereExcludeChild(ref StaticOctree&lt;KeyValuePair&lt;int, BoundingBox&gt;&gt;.Octant octant, HitTestContext? context, ref BoundingSphere sphere, ref List&lt;HitTestResult&gt; result, ref bool isIntersect)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>octant</code> <a class="xref" href="HelixToolkit.SharpDX.Utilities.StaticOctree-1.html">StaticOctree</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.keyvaluepair-2">KeyValuePair</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a>, <a class="xref" href="HelixToolkit.Maths.BoundingBox.html">BoundingBox</a>&gt;&gt;.<a class="xref" href="HelixToolkit.SharpDX.Utilities.StaticOctree-1.Octant.html">Octant</a></dt>
+    <dd></dd>
+    <dt><code>context</code> <a class="xref" href="HelixToolkit.SharpDX.HitTestContext.html">HitTestContext</a></dt>
+    <dd></dd>
+    <dt><code>sphere</code> <a class="xref" href="HelixToolkit.Maths.BoundingSphere.html">BoundingSphere</a></dt>
+    <dd></dd>
+    <dt><code>result</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1">List</a>&lt;<a class="xref" href="HelixToolkit.SharpDX.HitTestResult.html">HitTestResult</a>&gt;</dt>
+    <dd></dd>
+    <dt><code>isIntersect</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Utilities_StaticLineGeometryOctree_GetBoundingBoxFromItem_" data-uid="HelixToolkit.SharpDX.Utilities.StaticLineGeometryOctree.GetBoundingBoxFromItem*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Utilities_StaticLineGeometryOctree_GetBoundingBoxFromItem_System_Collections_Generic_KeyValuePair_System_Int32_HelixToolkit_Maths_BoundingBox___" data-uid="HelixToolkit.SharpDX.Utilities.StaticLineGeometryOctree.GetBoundingBoxFromItem(System.Collections.Generic.KeyValuePair{System.Int32,HelixToolkit.Maths.BoundingBox}@)">
+  GetBoundingBoxFromItem(ref KeyValuePair&lt;int, BoundingBox&gt;)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Utilities/Octrees/StaticOctrees/StaticLineGeometryOctree.cs/#L69"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected override BoundingBox GetBoundingBoxFromItem(ref KeyValuePair&lt;int, BoundingBox&gt; item)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>item</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.keyvaluepair-2">KeyValuePair</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a>, <a class="xref" href="HelixToolkit.Maths.BoundingBox.html">BoundingBox</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Maths.BoundingBox.html">BoundingBox</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Utilities_StaticLineGeometryOctree_GetMaxBound_" data-uid="HelixToolkit.SharpDX.Utilities.StaticLineGeometryOctree.GetMaxBound*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Utilities_StaticLineGeometryOctree_GetMaxBound" data-uid="HelixToolkit.SharpDX.Utilities.StaticLineGeometryOctree.GetMaxBound">
+  GetMaxBound()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Utilities/Octrees/StaticOctrees/StaticLineGeometryOctree.cs/#L64"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Get the max bounding box of the octree</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected override BoundingBox GetMaxBound()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Maths.BoundingBox.html">BoundingBox</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Utilities_StaticLineGeometryOctree_GetObjects_" data-uid="HelixToolkit.SharpDX.Utilities.StaticLineGeometryOctree.GetObjects*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Utilities_StaticLineGeometryOctree_GetObjects" data-uid="HelixToolkit.SharpDX.Utilities.StaticLineGeometryOctree.GetObjects">
+  GetObjects()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Utilities/Octrees/StaticOctrees/StaticLineGeometryOctree.cs/#L36"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the objects.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected override KeyValuePair&lt;int, BoundingBox&gt;[] GetObjects()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.keyvaluepair-2">KeyValuePair</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a>, <a class="xref" href="HelixToolkit.Maths.BoundingBox.html">BoundingBox</a>&gt;[]</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_Utilities_StaticLineGeometryOctree_HitTestCurrentNodeExcludeChild_" data-uid="HelixToolkit.SharpDX.Utilities.StaticLineGeometryOctree.HitTestCurrentNodeExcludeChild*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_Utilities_StaticLineGeometryOctree_HitTestCurrentNodeExcludeChild_HelixToolkit_SharpDX_Utilities_StaticOctree_System_Collections_Generic_KeyValuePair_System_Int32_HelixToolkit_Maths_BoundingBox___Octant__HelixToolkit_SharpDX_HitTestContext_System_Object_HelixToolkit_SharpDX_Geometry3D_System_Numerics_Matrix4x4_HelixToolkit_Maths_Ray__System_Boolean_System_Collections_Generic_List_HelixToolkit_SharpDX_HitTestResult___System_Boolean__System_Single_" data-uid="HelixToolkit.SharpDX.Utilities.StaticLineGeometryOctree.HitTestCurrentNodeExcludeChild(HelixToolkit.SharpDX.Utilities.StaticOctree{System.Collections.Generic.KeyValuePair{System.Int32,HelixToolkit.Maths.BoundingBox}}.Octant@,HelixToolkit.SharpDX.HitTestContext,System.Object,HelixToolkit.SharpDX.Geometry3D,System.Numerics.Matrix4x4,HelixToolkit.Maths.Ray@,System.Boolean,System.Collections.Generic.List{HelixToolkit.SharpDX.HitTestResult}@,System.Boolean@,System.Single)">
+  HitTestCurrentNodeExcludeChild(ref Octant, HitTestContext?, object?, Geometry3D?, Matrix4x4, ref Ray, bool, ref List&lt;HitTestResult&gt;, ref bool, float)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Utilities/Octrees/StaticOctrees/StaticLineGeometryOctree.cs/#L87"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected override bool HitTestCurrentNodeExcludeChild(ref StaticOctree&lt;KeyValuePair&lt;int, BoundingBox&gt;&gt;.Octant octant, HitTestContext? context, object? model, Geometry3D? geometry, Matrix4x4 modelMatrix, ref Ray rayModel, bool returnMultiple, ref List&lt;HitTestResult&gt; hits, ref bool isIntersect, float hitThickness)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>octant</code> <a class="xref" href="HelixToolkit.SharpDX.Utilities.StaticOctree-1.html">StaticOctree</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.keyvaluepair-2">KeyValuePair</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a>, <a class="xref" href="HelixToolkit.Maths.BoundingBox.html">BoundingBox</a>&gt;&gt;.<a class="xref" href="HelixToolkit.SharpDX.Utilities.StaticOctree-1.Octant.html">Octant</a></dt>
+    <dd></dd>
+    <dt><code>context</code> <a class="xref" href="HelixToolkit.SharpDX.HitTestContext.html">HitTestContext</a></dt>
+    <dd></dd>
+    <dt><code>model</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></dt>
+    <dd></dd>
+    <dt><code>geometry</code> <a class="xref" href="HelixToolkit.SharpDX.Geometry3D.html">Geometry3D</a></dt>
+    <dd></dd>
+    <dt><code>modelMatrix</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.matrix4x4">Matrix4x4</a></dt>
+    <dd></dd>
+    <dt><code>rayModel</code> <a class="xref" href="HelixToolkit.Maths.Ray.html">Ray</a></dt>
+    <dd></dd>
+    <dt><code>returnMultiple</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+    <dt><code>hits</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1">List</a>&lt;<a class="xref" href="HelixToolkit.SharpDX.HitTestResult.html">HitTestResult</a>&gt;</dt>
+    <dd></dd>
+    <dt><code>isIntersect</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+    <dt><code>hitThickness</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/Utilities/Octrees/StaticOctrees/StaticLineGeometryOctree.cs/#L9" class="edit-link">Edit this page</a>
+        </div>
+
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          Copyright (c) 2023 Helix Toolkit contributors
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

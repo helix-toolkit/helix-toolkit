@@ -1,0 +1,1681 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Class ContentPresenter2D | Helix Toolkit - 3D for .NET </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Class ContentPresenter2D | Helix Toolkit - 3D for .NET ">
+      
+      
+      <link rel="icon" href="../images/favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/helix-toolkit/helix-toolkit/new/main-v3/apiSpec/new?filename=HelixToolkit_Wpf_SharpDX_Elements2D_ContentPresenter2D.md&amp;value=---%0Auid%3A%20HelixToolkit.Wpf.SharpDX.Elements2D.ContentPresenter2D%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="ManagedReference">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../images/favicon.ico" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="HelixToolkit.Wpf.SharpDX.Elements2D.ContentPresenter2D">
+
+
+
+  <h1 id="HelixToolkit_Wpf_SharpDX_Elements2D_ContentPresenter2D" data-uid="HelixToolkit.Wpf.SharpDX.Elements2D.ContentPresenter2D" class="text-break">
+Class ContentPresenter2D  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Model/Elements2D/ContentPresenter2D.cs/#L33"><i class="bi bi-code-slash"></i></a>
+  </h1>
+
+  <div class="facts text-secondary">
+    <dl><dt>Namespace</dt><dd><a class="xref" href="HelixToolkit.html">HelixToolkit</a>.<a class="xref" href="HelixToolkit.Wpf.html">Wpf</a>.<a class="xref" href="HelixToolkit.Wpf.SharpDX.html">SharpDX</a>.<a class="xref" href="HelixToolkit.Wpf.SharpDX.Elements2D.html">Elements2D</a></dd></dl>
+  <dl><dt>Assembly</dt><dd>HelixToolkit.Wpf.SharpDX.dll</dd></dl>
+  </div>
+
+  <div class="markdown summary"></div>
+  <div class="markdown conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class ContentPresenter2D : Element2D, IAnimatable, ISupportInitialize, IFrameworkInputElement, IInputElement, IQueryAmbient, IDisposable, ITransformable2D, IHitable2D</code></pre>
+  </div>
+
+
+
+
+  <dl class="typelist inheritance">
+    <dt>Inheritance</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.threading.dispatcherobject">DispatcherObject</a></div>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.dependencyobject">DependencyObject</a></div>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement">ContentElement</a></div>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.frameworkcontentelement">FrameworkContentElement</a></div>
+      <div><a class="xref" href="HelixToolkit.Wpf.SharpDX.Core2D.Element2DCore.html">Element2DCore</a></div>
+      <div><a class="xref" href="HelixToolkit.Wpf.SharpDX.Elements2D.Element2D.html">Element2D</a></div>
+      <div><span class="xref">ContentPresenter2D</span></div>
+    </dd>
+  </dl>
+
+  <dl class="typelist implements">
+    <dt>Implements</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.animation.ianimatable">IAnimatable</a></div>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.componentmodel.isupportinitialize">ISupportInitialize</a></div>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.iframeworkinputelement">IFrameworkInputElement</a></div>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.iinputelement">IInputElement</a></div>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.markup.iqueryambient">IQueryAmbient</a></div>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.idisposable">IDisposable</a></div>
+      <div><a class="xref" href="HelixToolkit.Wpf.SharpDX.Elements2D.ITransformable2D.html">ITransformable2D</a></div>
+      <div><a class="xref" href="HelixToolkit.SharpDX.IHitable2D.html">IHitable2D</a></div>
+    </dd>
+  </dl>
+
+
+  <dl class="typelist inheritedMembers">
+    <dt>Inherited Members</dt>
+    <dd>
+    <div>
+      <a class="xref" href="HelixToolkit.Wpf.SharpDX.Elements2D.Element2D.html#HelixToolkit_Wpf_SharpDX_Elements2D_Element2D_VisibilityProperty">Element2D.VisibilityProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.Wpf.SharpDX.Elements2D.Element2D.html#HelixToolkit_Wpf_SharpDX_Elements2D_Element2D_Visibility">Element2D.Visibility</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.Wpf.SharpDX.Elements2D.Element2D.html#HelixToolkit_Wpf_SharpDX_Elements2D_Element2D_IsHitTestVisibleProperty">Element2D.IsHitTestVisibleProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.Wpf.SharpDX.Elements2D.Element2D.html#HelixToolkit_Wpf_SharpDX_Elements2D_Element2D_IsHitTestVisible">Element2D.IsHitTestVisible</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.Wpf.SharpDX.Elements2D.Element2D.html#HelixToolkit_Wpf_SharpDX_Elements2D_Element2D_IsMouseOverProperty">Element2D.IsMouseOverProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.Wpf.SharpDX.Elements2D.Element2D.html#HelixToolkit_Wpf_SharpDX_Elements2D_Element2D_IsMouseOver">Element2D.IsMouseOver</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.Wpf.SharpDX.Elements2D.Element2D.html#HelixToolkit_Wpf_SharpDX_Elements2D_Element2D_WidthProperty">Element2D.WidthProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.Wpf.SharpDX.Elements2D.Element2D.html#HelixToolkit_Wpf_SharpDX_Elements2D_Element2D_Width">Element2D.Width</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.Wpf.SharpDX.Elements2D.Element2D.html#HelixToolkit_Wpf_SharpDX_Elements2D_Element2D_HeightProperty">Element2D.HeightProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.Wpf.SharpDX.Elements2D.Element2D.html#HelixToolkit_Wpf_SharpDX_Elements2D_Element2D_Height">Element2D.Height</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.Wpf.SharpDX.Elements2D.Element2D.html#HelixToolkit_Wpf_SharpDX_Elements2D_Element2D_MinimumWidthProperty">Element2D.MinimumWidthProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.Wpf.SharpDX.Elements2D.Element2D.html#HelixToolkit_Wpf_SharpDX_Elements2D_Element2D_MinimumWidth">Element2D.MinimumWidth</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.Wpf.SharpDX.Elements2D.Element2D.html#HelixToolkit_Wpf_SharpDX_Elements2D_Element2D_MinimumHeightProperty">Element2D.MinimumHeightProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.Wpf.SharpDX.Elements2D.Element2D.html#HelixToolkit_Wpf_SharpDX_Elements2D_Element2D_MinimumHeight">Element2D.MinimumHeight</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.Wpf.SharpDX.Elements2D.Element2D.html#HelixToolkit_Wpf_SharpDX_Elements2D_Element2D_MaximumWidthProperty">Element2D.MaximumWidthProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.Wpf.SharpDX.Elements2D.Element2D.html#HelixToolkit_Wpf_SharpDX_Elements2D_Element2D_MaximumWidth">Element2D.MaximumWidth</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.Wpf.SharpDX.Elements2D.Element2D.html#HelixToolkit_Wpf_SharpDX_Elements2D_Element2D_MaximumHeightProperty">Element2D.MaximumHeightProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.Wpf.SharpDX.Elements2D.Element2D.html#HelixToolkit_Wpf_SharpDX_Elements2D_Element2D_MaximumHeight">Element2D.MaximumHeight</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.Wpf.SharpDX.Elements2D.Element2D.html#HelixToolkit_Wpf_SharpDX_Elements2D_Element2D_HorizontalAlignment">Element2D.HorizontalAlignment</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.Wpf.SharpDX.Elements2D.Element2D.html#HelixToolkit_Wpf_SharpDX_Elements2D_Element2D_HorizontalAlignmentProperty">Element2D.HorizontalAlignmentProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.Wpf.SharpDX.Elements2D.Element2D.html#HelixToolkit_Wpf_SharpDX_Elements2D_Element2D_VerticalAlignment">Element2D.VerticalAlignment</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.Wpf.SharpDX.Elements2D.Element2D.html#HelixToolkit_Wpf_SharpDX_Elements2D_Element2D_VerticalAlignmentProperty">Element2D.VerticalAlignmentProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.Wpf.SharpDX.Elements2D.Element2D.html#HelixToolkit_Wpf_SharpDX_Elements2D_Element2D_Margin">Element2D.Margin</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.Wpf.SharpDX.Elements2D.Element2D.html#HelixToolkit_Wpf_SharpDX_Elements2D_Element2D_MarginProperty">Element2D.MarginProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.Wpf.SharpDX.Elements2D.Element2D.html#HelixToolkit_Wpf_SharpDX_Elements2D_Element2D_TransformProperty">Element2D.TransformProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.Wpf.SharpDX.Elements2D.Element2D.html#HelixToolkit_Wpf_SharpDX_Elements2D_Element2D_Transform">Element2D.Transform</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.Wpf.SharpDX.Elements2D.Element2D.html#HelixToolkit_Wpf_SharpDX_Elements2D_Element2D_RenderTransformOrigin">Element2D.RenderTransformOrigin</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.Wpf.SharpDX.Elements2D.Element2D.html#HelixToolkit_Wpf_SharpDX_Elements2D_Element2D_RenderTransformOriginProperty">Element2D.RenderTransformOriginProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.Wpf.SharpDX.Elements2D.Element2D.html#HelixToolkit_Wpf_SharpDX_Elements2D_Element2D_EnableBitmapCache">Element2D.EnableBitmapCache</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.Wpf.SharpDX.Elements2D.Element2D.html#HelixToolkit_Wpf_SharpDX_Elements2D_Element2D_EnableBitmapCacheProperty">Element2D.EnableBitmapCacheProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.Wpf.SharpDX.Elements2D.Element2D.html#HelixToolkit_Wpf_SharpDX_Elements2D_Element2D_MouseDown2DEvent">Element2D.MouseDown2DEvent</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.Wpf.SharpDX.Elements2D.Element2D.html#HelixToolkit_Wpf_SharpDX_Elements2D_Element2D_MouseUp2DEvent">Element2D.MouseUp2DEvent</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.Wpf.SharpDX.Elements2D.Element2D.html#HelixToolkit_Wpf_SharpDX_Elements2D_Element2D_MouseMove2DEvent">Element2D.MouseMove2DEvent</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.Wpf.SharpDX.Elements2D.Element2D.html#HelixToolkit_Wpf_SharpDX_Elements2D_Element2D_MouseEnter2DEvent">Element2D.MouseEnter2DEvent</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.Wpf.SharpDX.Elements2D.Element2D.html#HelixToolkit_Wpf_SharpDX_Elements2D_Element2D_MouseLeave2DEvent">Element2D.MouseLeave2DEvent</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.Wpf.SharpDX.Elements2D.Element2D.html#HelixToolkit_Wpf_SharpDX_Elements2D_Element2D_MouseDown2D">Element2D.MouseDown2D</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.Wpf.SharpDX.Elements2D.Element2D.html#HelixToolkit_Wpf_SharpDX_Elements2D_Element2D_MouseUp2D">Element2D.MouseUp2D</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.Wpf.SharpDX.Elements2D.Element2D.html#HelixToolkit_Wpf_SharpDX_Elements2D_Element2D_MouseMove2D">Element2D.MouseMove2D</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.Wpf.SharpDX.Elements2D.Element2D.html#HelixToolkit_Wpf_SharpDX_Elements2D_Element2D_MouseEnter2D">Element2D.MouseEnter2D</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.Wpf.SharpDX.Elements2D.Element2D.html#HelixToolkit_Wpf_SharpDX_Elements2D_Element2D_MouseLeave2D">Element2D.MouseLeave2D</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.Wpf.SharpDX.Elements2D.Element2D.html#HelixToolkit_Wpf_SharpDX_Elements2D_Element2D_OnMouseEnter2D_HelixToolkit_Wpf_SharpDX_Elements2D_Mouse2DEventArgs_">Element2D.OnMouseEnter2D(Mouse2DEventArgs)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.Wpf.SharpDX.Elements2D.Element2D.html#HelixToolkit_Wpf_SharpDX_Elements2D_Element2D_OnMouseLeave2D_HelixToolkit_Wpf_SharpDX_Elements2D_Mouse2DEventArgs_">Element2D.OnMouseLeave2D(Mouse2DEventArgs)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.Wpf.SharpDX.Elements2D.Element2D.html#HelixToolkit_Wpf_SharpDX_Elements2D_Element2D_OnMouseOverChanged_System_Boolean_System_Boolean_">Element2D.OnMouseOverChanged(bool, bool)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.Wpf.SharpDX.Core2D.Element2DCore.html#HelixToolkit_Wpf_SharpDX_Core2D_Element2DCore_GUID">Element2DCore.GUID</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.Wpf.SharpDX.Core2D.Element2DCore.html#HelixToolkit_Wpf_SharpDX_Core2D_Element2DCore_IsAttached">Element2DCore.IsAttached</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.Wpf.SharpDX.Core2D.Element2DCore.html#HelixToolkit_Wpf_SharpDX_Core2D_Element2DCore_SceneNode">Element2DCore.SceneNode</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.Wpf.SharpDX.Core2D.Element2DCore.html#HelixToolkit_Wpf_SharpDX_Core2D_Element2DCore_OnAttached">Element2DCore.OnAttached()</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.Wpf.SharpDX.Core2D.Element2DCore.html#HelixToolkit_Wpf_SharpDX_Core2D_Element2DCore_OnDetached">Element2DCore.OnDetached()</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.Wpf.SharpDX.Core2D.Element2DCore.html#HelixToolkit_Wpf_SharpDX_Core2D_Element2DCore_OnUpdate_HelixToolkit_SharpDX_RenderContext2D_">Element2DCore.OnUpdate(RenderContext2D)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.Wpf.SharpDX.Core2D.Element2DCore.html#HelixToolkit_Wpf_SharpDX_Core2D_Element2DCore_AssignDefaultValuesToSceneNode_HelixToolkit_SharpDX_Model_Scene2D_SceneNode2D_">Element2DCore.AssignDefaultValuesToSceneNode(SceneNode2D)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.Wpf.SharpDX.Core2D.Element2DCore.html#HelixToolkit_Wpf_SharpDX_Core2D_Element2DCore_OnSceneNodeCreated">Element2DCore.OnSceneNodeCreated</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.Wpf.SharpDX.Core2D.Element2DCore.html#HelixToolkit_Wpf_SharpDX_Core2D_Element2DCore_HitTest_System_Numerics_Vector2_HelixToolkit_SharpDX_HitTest2DResult__">Element2DCore.HitTest(Vector2, out HitTest2DResult)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.Wpf.SharpDX.Core2D.Element2DCore.html#HelixToolkit_Wpf_SharpDX_Core2D_Element2DCore_InvalidateRender">Element2DCore.InvalidateRender()</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.Wpf.SharpDX.Core2D.Element2DCore.html#HelixToolkit_Wpf_SharpDX_Core2D_Element2DCore_InvalidateMeasure">Element2DCore.InvalidateMeasure()</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.Wpf.SharpDX.Core2D.Element2DCore.html#HelixToolkit_Wpf_SharpDX_Core2D_Element2DCore_InvalidateArrange">Element2DCore.InvalidateArrange()</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.Wpf.SharpDX.Core2D.Element2DCore.html#HelixToolkit_Wpf_SharpDX_Core2D_Element2DCore_Dispose_System_Boolean_">Element2DCore.Dispose(bool)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.Wpf.SharpDX.Core2D.Element2DCore.html#HelixToolkit_Wpf_SharpDX_Core2D_Element2DCore_Dispose">Element2DCore.Dispose()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.frameworkcontentelement.bindinggroupproperty">FrameworkContentElement.BindingGroupProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.frameworkcontentelement.contextmenuclosingevent">FrameworkContentElement.ContextMenuClosingEvent</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.frameworkcontentelement.contextmenuopeningevent">FrameworkContentElement.ContextMenuOpeningEvent</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.frameworkcontentelement.contextmenuproperty">FrameworkContentElement.ContextMenuProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.frameworkcontentelement.cursorproperty">FrameworkContentElement.CursorProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.frameworkcontentelement.datacontextproperty">FrameworkContentElement.DataContextProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.frameworkcontentelement.defaultstylekeyproperty">FrameworkContentElement.DefaultStyleKeyProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.frameworkcontentelement.focusvisualstyleproperty">FrameworkContentElement.FocusVisualStyleProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.frameworkcontentelement.forcecursorproperty">FrameworkContentElement.ForceCursorProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.frameworkcontentelement.inputscopeproperty">FrameworkContentElement.InputScopeProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.frameworkcontentelement.languageproperty">FrameworkContentElement.LanguageProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.frameworkcontentelement.loadedevent">FrameworkContentElement.LoadedEvent</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.frameworkcontentelement.nameproperty">FrameworkContentElement.NameProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.frameworkcontentelement.overridesdefaultstyleproperty">FrameworkContentElement.OverridesDefaultStyleProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.frameworkcontentelement.styleproperty">FrameworkContentElement.StyleProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.frameworkcontentelement.tagproperty">FrameworkContentElement.TagProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.frameworkcontentelement.tooltipclosingevent">FrameworkContentElement.ToolTipClosingEvent</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.frameworkcontentelement.tooltipopeningevent">FrameworkContentElement.ToolTipOpeningEvent</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.frameworkcontentelement.tooltipproperty">FrameworkContentElement.ToolTipProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.frameworkcontentelement.unloadedevent">FrameworkContentElement.UnloadedEvent</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.frameworkcontentelement.addlogicalchild">FrameworkContentElement.AddLogicalChild(object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.frameworkcontentelement.begininit">FrameworkContentElement.BeginInit()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.frameworkcontentelement.beginstoryboard#system-windows-frameworkcontentelement-beginstoryboard(system-windows-media-animation-storyboard)">FrameworkContentElement.BeginStoryboard(Storyboard)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.frameworkcontentelement.beginstoryboard#system-windows-frameworkcontentelement-beginstoryboard(system-windows-media-animation-storyboard-system-windows-media-animation-handoffbehavior)">FrameworkContentElement.BeginStoryboard(Storyboard, HandoffBehavior)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.frameworkcontentelement.beginstoryboard#system-windows-frameworkcontentelement-beginstoryboard(system-windows-media-animation-storyboard-system-windows-media-animation-handoffbehavior-system-boolean)">FrameworkContentElement.BeginStoryboard(Storyboard, HandoffBehavior, bool)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.frameworkcontentelement.bringintoview">FrameworkContentElement.BringIntoView()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.frameworkcontentelement.endinit">FrameworkContentElement.EndInit()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.frameworkcontentelement.findname">FrameworkContentElement.FindName(string)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.frameworkcontentelement.findresource">FrameworkContentElement.FindResource(object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.frameworkcontentelement.getbindingexpression">FrameworkContentElement.GetBindingExpression(DependencyProperty)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.frameworkcontentelement.getuiparentcore">FrameworkContentElement.GetUIParentCore()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.frameworkcontentelement.movefocus">FrameworkContentElement.MoveFocus(TraversalRequest)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.frameworkcontentelement.oncontextmenuclosing">FrameworkContentElement.OnContextMenuClosing(ContextMenuEventArgs)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.frameworkcontentelement.oncontextmenuopening">FrameworkContentElement.OnContextMenuOpening(ContextMenuEventArgs)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.frameworkcontentelement.ongotfocus">FrameworkContentElement.OnGotFocus(RoutedEventArgs)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.frameworkcontentelement.oninitialized">FrameworkContentElement.OnInitialized(EventArgs)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.frameworkcontentelement.onpropertychanged">FrameworkContentElement.OnPropertyChanged(DependencyPropertyChangedEventArgs)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.frameworkcontentelement.onstylechanged">FrameworkContentElement.OnStyleChanged(Style, Style)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.frameworkcontentelement.ontooltipclosing">FrameworkContentElement.OnToolTipClosing(ToolTipEventArgs)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.frameworkcontentelement.ontooltipopening">FrameworkContentElement.OnToolTipOpening(ToolTipEventArgs)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.frameworkcontentelement.predictfocus">FrameworkContentElement.PredictFocus(FocusNavigationDirection)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.frameworkcontentelement.registername">FrameworkContentElement.RegisterName(string, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.frameworkcontentelement.removelogicalchild">FrameworkContentElement.RemoveLogicalChild(object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.frameworkcontentelement.setbinding#system-windows-frameworkcontentelement-setbinding(system-windows-dependencyproperty-system-string)">FrameworkContentElement.SetBinding(DependencyProperty, string)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.frameworkcontentelement.setbinding#system-windows-frameworkcontentelement-setbinding(system-windows-dependencyproperty-system-windows-data-bindingbase)">FrameworkContentElement.SetBinding(DependencyProperty, BindingBase)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.frameworkcontentelement.setresourcereference">FrameworkContentElement.SetResourceReference(DependencyProperty, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.frameworkcontentelement.tryfindresource">FrameworkContentElement.TryFindResource(object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.frameworkcontentelement.unregistername">FrameworkContentElement.UnregisterName(string)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.frameworkcontentelement.updatedefaultstyle">FrameworkContentElement.UpdateDefaultStyle()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.frameworkcontentelement.bindinggroup">FrameworkContentElement.BindingGroup</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.frameworkcontentelement.contextmenu">FrameworkContentElement.ContextMenu</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.frameworkcontentelement.cursor">FrameworkContentElement.Cursor</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.frameworkcontentelement.datacontext">FrameworkContentElement.DataContext</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.frameworkcontentelement.defaultstylekey">FrameworkContentElement.DefaultStyleKey</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.frameworkcontentelement.focusvisualstyle">FrameworkContentElement.FocusVisualStyle</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.frameworkcontentelement.forcecursor">FrameworkContentElement.ForceCursor</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.frameworkcontentelement.inputscope">FrameworkContentElement.InputScope</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.frameworkcontentelement.isinitialized">FrameworkContentElement.IsInitialized</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.frameworkcontentelement.isloaded">FrameworkContentElement.IsLoaded</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.frameworkcontentelement.language">FrameworkContentElement.Language</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.frameworkcontentelement.logicalchildren">FrameworkContentElement.LogicalChildren</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.frameworkcontentelement.name">FrameworkContentElement.Name</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.frameworkcontentelement.overridesdefaultstyle">FrameworkContentElement.OverridesDefaultStyle</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.frameworkcontentelement.parent">FrameworkContentElement.Parent</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.frameworkcontentelement.resources">FrameworkContentElement.Resources</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.frameworkcontentelement.style">FrameworkContentElement.Style</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.frameworkcontentelement.tag">FrameworkContentElement.Tag</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.frameworkcontentelement.templatedparent">FrameworkContentElement.TemplatedParent</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.frameworkcontentelement.tooltip">FrameworkContentElement.ToolTip</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.frameworkcontentelement.contextmenuclosing">FrameworkContentElement.ContextMenuClosing</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.frameworkcontentelement.contextmenuopening">FrameworkContentElement.ContextMenuOpening</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.frameworkcontentelement.datacontextchanged">FrameworkContentElement.DataContextChanged</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.frameworkcontentelement.initialized">FrameworkContentElement.Initialized</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.frameworkcontentelement.loaded">FrameworkContentElement.Loaded</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.frameworkcontentelement.sourceupdated">FrameworkContentElement.SourceUpdated</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.frameworkcontentelement.targetupdated">FrameworkContentElement.TargetUpdated</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.frameworkcontentelement.tooltipclosing">FrameworkContentElement.ToolTipClosing</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.frameworkcontentelement.tooltipopening">FrameworkContentElement.ToolTipOpening</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.frameworkcontentelement.unloaded">FrameworkContentElement.Unloaded</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.allowdropproperty">ContentElement.AllowDropProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.areanytouchescapturedproperty">ContentElement.AreAnyTouchesCapturedProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.areanytouchescapturedwithinproperty">ContentElement.AreAnyTouchesCapturedWithinProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.areanytouchesdirectlyoverproperty">ContentElement.AreAnyTouchesDirectlyOverProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.areanytouchesoverproperty">ContentElement.AreAnyTouchesOverProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.dragenterevent">ContentElement.DragEnterEvent</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.dragleaveevent">ContentElement.DragLeaveEvent</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.dragoverevent">ContentElement.DragOverEvent</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.dropevent">ContentElement.DropEvent</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.focusableproperty">ContentElement.FocusableProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.givefeedbackevent">ContentElement.GiveFeedbackEvent</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.gotfocusevent">ContentElement.GotFocusEvent</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.gotkeyboardfocusevent">ContentElement.GotKeyboardFocusEvent</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.gotmousecaptureevent">ContentElement.GotMouseCaptureEvent</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.gotstyluscaptureevent">ContentElement.GotStylusCaptureEvent</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.gottouchcaptureevent">ContentElement.GotTouchCaptureEvent</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.isenabledproperty">ContentElement.IsEnabledProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.isfocusedproperty">ContentElement.IsFocusedProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.iskeyboardfocusedproperty">ContentElement.IsKeyboardFocusedProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.iskeyboardfocuswithinproperty">ContentElement.IsKeyboardFocusWithinProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.ismousecapturedproperty">ContentElement.IsMouseCapturedProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.ismousecapturewithinproperty">ContentElement.IsMouseCaptureWithinProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.ismousedirectlyoverproperty">ContentElement.IsMouseDirectlyOverProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.isstyluscapturedproperty">ContentElement.IsStylusCapturedProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.isstyluscapturewithinproperty">ContentElement.IsStylusCaptureWithinProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.isstylusdirectlyoverproperty">ContentElement.IsStylusDirectlyOverProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.isstylusoverproperty">ContentElement.IsStylusOverProperty</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.keydownevent">ContentElement.KeyDownEvent</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.keyupevent">ContentElement.KeyUpEvent</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.lostfocusevent">ContentElement.LostFocusEvent</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.lostkeyboardfocusevent">ContentElement.LostKeyboardFocusEvent</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.lostmousecaptureevent">ContentElement.LostMouseCaptureEvent</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.loststyluscaptureevent">ContentElement.LostStylusCaptureEvent</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.losttouchcaptureevent">ContentElement.LostTouchCaptureEvent</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.mousedownevent">ContentElement.MouseDownEvent</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.mouseenterevent">ContentElement.MouseEnterEvent</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.mouseleaveevent">ContentElement.MouseLeaveEvent</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.mouseleftbuttondownevent">ContentElement.MouseLeftButtonDownEvent</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.mouseleftbuttonupevent">ContentElement.MouseLeftButtonUpEvent</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.mousemoveevent">ContentElement.MouseMoveEvent</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.mouserightbuttondownevent">ContentElement.MouseRightButtonDownEvent</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.mouserightbuttonupevent">ContentElement.MouseRightButtonUpEvent</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.mouseupevent">ContentElement.MouseUpEvent</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.mousewheelevent">ContentElement.MouseWheelEvent</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.previewdragenterevent">ContentElement.PreviewDragEnterEvent</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.previewdragleaveevent">ContentElement.PreviewDragLeaveEvent</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.previewdragoverevent">ContentElement.PreviewDragOverEvent</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.previewdropevent">ContentElement.PreviewDropEvent</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.previewgivefeedbackevent">ContentElement.PreviewGiveFeedbackEvent</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.previewgotkeyboardfocusevent">ContentElement.PreviewGotKeyboardFocusEvent</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.previewkeydownevent">ContentElement.PreviewKeyDownEvent</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.previewkeyupevent">ContentElement.PreviewKeyUpEvent</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.previewlostkeyboardfocusevent">ContentElement.PreviewLostKeyboardFocusEvent</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.previewmousedownevent">ContentElement.PreviewMouseDownEvent</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.previewmouseleftbuttondownevent">ContentElement.PreviewMouseLeftButtonDownEvent</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.previewmouseleftbuttonupevent">ContentElement.PreviewMouseLeftButtonUpEvent</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.previewmousemoveevent">ContentElement.PreviewMouseMoveEvent</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.previewmouserightbuttondownevent">ContentElement.PreviewMouseRightButtonDownEvent</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.previewmouserightbuttonupevent">ContentElement.PreviewMouseRightButtonUpEvent</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.previewmouseupevent">ContentElement.PreviewMouseUpEvent</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.previewmousewheelevent">ContentElement.PreviewMouseWheelEvent</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.previewquerycontinuedragevent">ContentElement.PreviewQueryContinueDragEvent</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.previewstylusbuttondownevent">ContentElement.PreviewStylusButtonDownEvent</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.previewstylusbuttonupevent">ContentElement.PreviewStylusButtonUpEvent</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.previewstylusdownevent">ContentElement.PreviewStylusDownEvent</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.previewstylusinairmoveevent">ContentElement.PreviewStylusInAirMoveEvent</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.previewstylusinrangeevent">ContentElement.PreviewStylusInRangeEvent</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.previewstylusmoveevent">ContentElement.PreviewStylusMoveEvent</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.previewstylusoutofrangeevent">ContentElement.PreviewStylusOutOfRangeEvent</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.previewstylussystemgestureevent">ContentElement.PreviewStylusSystemGestureEvent</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.previewstylusupevent">ContentElement.PreviewStylusUpEvent</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.previewtextinputevent">ContentElement.PreviewTextInputEvent</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.previewtouchdownevent">ContentElement.PreviewTouchDownEvent</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.previewtouchmoveevent">ContentElement.PreviewTouchMoveEvent</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.previewtouchupevent">ContentElement.PreviewTouchUpEvent</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.querycontinuedragevent">ContentElement.QueryContinueDragEvent</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.querycursorevent">ContentElement.QueryCursorEvent</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.stylusbuttondownevent">ContentElement.StylusButtonDownEvent</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.stylusbuttonupevent">ContentElement.StylusButtonUpEvent</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.stylusdownevent">ContentElement.StylusDownEvent</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.stylusenterevent">ContentElement.StylusEnterEvent</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.stylusinairmoveevent">ContentElement.StylusInAirMoveEvent</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.stylusinrangeevent">ContentElement.StylusInRangeEvent</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.stylusleaveevent">ContentElement.StylusLeaveEvent</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.stylusmoveevent">ContentElement.StylusMoveEvent</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.stylusoutofrangeevent">ContentElement.StylusOutOfRangeEvent</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.stylussystemgestureevent">ContentElement.StylusSystemGestureEvent</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.stylusupevent">ContentElement.StylusUpEvent</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.textinputevent">ContentElement.TextInputEvent</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.touchdownevent">ContentElement.TouchDownEvent</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.touchenterevent">ContentElement.TouchEnterEvent</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.touchleaveevent">ContentElement.TouchLeaveEvent</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.touchmoveevent">ContentElement.TouchMoveEvent</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.touchupevent">ContentElement.TouchUpEvent</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.addhandler#system-windows-contentelement-addhandler(system-windows-routedevent-system-delegate)">ContentElement.AddHandler(RoutedEvent, Delegate)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.addhandler#system-windows-contentelement-addhandler(system-windows-routedevent-system-delegate-system-boolean)">ContentElement.AddHandler(RoutedEvent, Delegate, bool)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.addtoeventroute">ContentElement.AddToEventRoute(EventRoute, RoutedEventArgs)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.applyanimationclock#system-windows-contentelement-applyanimationclock(system-windows-dependencyproperty-system-windows-media-animation-animationclock)">ContentElement.ApplyAnimationClock(DependencyProperty, AnimationClock)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.applyanimationclock#system-windows-contentelement-applyanimationclock(system-windows-dependencyproperty-system-windows-media-animation-animationclock-system-windows-media-animation-handoffbehavior)">ContentElement.ApplyAnimationClock(DependencyProperty, AnimationClock, HandoffBehavior)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.beginanimation#system-windows-contentelement-beginanimation(system-windows-dependencyproperty-system-windows-media-animation-animationtimeline)">ContentElement.BeginAnimation(DependencyProperty, AnimationTimeline)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.beginanimation#system-windows-contentelement-beginanimation(system-windows-dependencyproperty-system-windows-media-animation-animationtimeline-system-windows-media-animation-handoffbehavior)">ContentElement.BeginAnimation(DependencyProperty, AnimationTimeline, HandoffBehavior)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.capturemouse">ContentElement.CaptureMouse()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.capturestylus">ContentElement.CaptureStylus()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.capturetouch">ContentElement.CaptureTouch(TouchDevice)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.focus">ContentElement.Focus()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.getanimationbasevalue">ContentElement.GetAnimationBaseValue(DependencyProperty)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.oncreateautomationpeer">ContentElement.OnCreateAutomationPeer()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.ondragenter">ContentElement.OnDragEnter(DragEventArgs)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.ondragleave">ContentElement.OnDragLeave(DragEventArgs)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.ondragover">ContentElement.OnDragOver(DragEventArgs)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.ondrop">ContentElement.OnDrop(DragEventArgs)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.ongivefeedback">ContentElement.OnGiveFeedback(GiveFeedbackEventArgs)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.ongotkeyboardfocus">ContentElement.OnGotKeyboardFocus(KeyboardFocusChangedEventArgs)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.ongotmousecapture">ContentElement.OnGotMouseCapture(MouseEventArgs)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.ongotstyluscapture">ContentElement.OnGotStylusCapture(StylusEventArgs)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.ongottouchcapture">ContentElement.OnGotTouchCapture(TouchEventArgs)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.oniskeyboardfocusedchanged">ContentElement.OnIsKeyboardFocusedChanged(DependencyPropertyChangedEventArgs)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.oniskeyboardfocuswithinchanged">ContentElement.OnIsKeyboardFocusWithinChanged(DependencyPropertyChangedEventArgs)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.onismousecapturedchanged">ContentElement.OnIsMouseCapturedChanged(DependencyPropertyChangedEventArgs)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.onismousecapturewithinchanged">ContentElement.OnIsMouseCaptureWithinChanged(DependencyPropertyChangedEventArgs)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.onismousedirectlyoverchanged">ContentElement.OnIsMouseDirectlyOverChanged(DependencyPropertyChangedEventArgs)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.onisstyluscapturedchanged">ContentElement.OnIsStylusCapturedChanged(DependencyPropertyChangedEventArgs)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.onisstyluscapturewithinchanged">ContentElement.OnIsStylusCaptureWithinChanged(DependencyPropertyChangedEventArgs)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.onisstylusdirectlyoverchanged">ContentElement.OnIsStylusDirectlyOverChanged(DependencyPropertyChangedEventArgs)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.onkeydown">ContentElement.OnKeyDown(KeyEventArgs)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.onkeyup">ContentElement.OnKeyUp(KeyEventArgs)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.onlostfocus">ContentElement.OnLostFocus(RoutedEventArgs)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.onlostkeyboardfocus">ContentElement.OnLostKeyboardFocus(KeyboardFocusChangedEventArgs)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.onlostmousecapture">ContentElement.OnLostMouseCapture(MouseEventArgs)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.onloststyluscapture">ContentElement.OnLostStylusCapture(StylusEventArgs)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.onlosttouchcapture">ContentElement.OnLostTouchCapture(TouchEventArgs)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.onmousedown">ContentElement.OnMouseDown(MouseButtonEventArgs)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.onmouseenter">ContentElement.OnMouseEnter(MouseEventArgs)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.onmouseleave">ContentElement.OnMouseLeave(MouseEventArgs)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.onmouseleftbuttondown">ContentElement.OnMouseLeftButtonDown(MouseButtonEventArgs)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.onmouseleftbuttonup">ContentElement.OnMouseLeftButtonUp(MouseButtonEventArgs)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.onmousemove">ContentElement.OnMouseMove(MouseEventArgs)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.onmouserightbuttondown">ContentElement.OnMouseRightButtonDown(MouseButtonEventArgs)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.onmouserightbuttonup">ContentElement.OnMouseRightButtonUp(MouseButtonEventArgs)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.onmouseup">ContentElement.OnMouseUp(MouseButtonEventArgs)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.onmousewheel">ContentElement.OnMouseWheel(MouseWheelEventArgs)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.onpreviewdragenter">ContentElement.OnPreviewDragEnter(DragEventArgs)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.onpreviewdragleave">ContentElement.OnPreviewDragLeave(DragEventArgs)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.onpreviewdragover">ContentElement.OnPreviewDragOver(DragEventArgs)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.onpreviewdrop">ContentElement.OnPreviewDrop(DragEventArgs)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.onpreviewgivefeedback">ContentElement.OnPreviewGiveFeedback(GiveFeedbackEventArgs)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.onpreviewgotkeyboardfocus">ContentElement.OnPreviewGotKeyboardFocus(KeyboardFocusChangedEventArgs)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.onpreviewkeydown">ContentElement.OnPreviewKeyDown(KeyEventArgs)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.onpreviewkeyup">ContentElement.OnPreviewKeyUp(KeyEventArgs)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.onpreviewlostkeyboardfocus">ContentElement.OnPreviewLostKeyboardFocus(KeyboardFocusChangedEventArgs)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.onpreviewmousedown">ContentElement.OnPreviewMouseDown(MouseButtonEventArgs)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.onpreviewmouseleftbuttondown">ContentElement.OnPreviewMouseLeftButtonDown(MouseButtonEventArgs)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.onpreviewmouseleftbuttonup">ContentElement.OnPreviewMouseLeftButtonUp(MouseButtonEventArgs)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.onpreviewmousemove">ContentElement.OnPreviewMouseMove(MouseEventArgs)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.onpreviewmouserightbuttondown">ContentElement.OnPreviewMouseRightButtonDown(MouseButtonEventArgs)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.onpreviewmouserightbuttonup">ContentElement.OnPreviewMouseRightButtonUp(MouseButtonEventArgs)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.onpreviewmouseup">ContentElement.OnPreviewMouseUp(MouseButtonEventArgs)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.onpreviewmousewheel">ContentElement.OnPreviewMouseWheel(MouseWheelEventArgs)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.onpreviewquerycontinuedrag">ContentElement.OnPreviewQueryContinueDrag(QueryContinueDragEventArgs)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.onpreviewstylusbuttondown">ContentElement.OnPreviewStylusButtonDown(StylusButtonEventArgs)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.onpreviewstylusbuttonup">ContentElement.OnPreviewStylusButtonUp(StylusButtonEventArgs)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.onpreviewstylusdown">ContentElement.OnPreviewStylusDown(StylusDownEventArgs)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.onpreviewstylusinairmove">ContentElement.OnPreviewStylusInAirMove(StylusEventArgs)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.onpreviewstylusinrange">ContentElement.OnPreviewStylusInRange(StylusEventArgs)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.onpreviewstylusmove">ContentElement.OnPreviewStylusMove(StylusEventArgs)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.onpreviewstylusoutofrange">ContentElement.OnPreviewStylusOutOfRange(StylusEventArgs)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.onpreviewstylussystemgesture">ContentElement.OnPreviewStylusSystemGesture(StylusSystemGestureEventArgs)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.onpreviewstylusup">ContentElement.OnPreviewStylusUp(StylusEventArgs)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.onpreviewtextinput">ContentElement.OnPreviewTextInput(TextCompositionEventArgs)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.onpreviewtouchdown">ContentElement.OnPreviewTouchDown(TouchEventArgs)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.onpreviewtouchmove">ContentElement.OnPreviewTouchMove(TouchEventArgs)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.onpreviewtouchup">ContentElement.OnPreviewTouchUp(TouchEventArgs)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.onquerycontinuedrag">ContentElement.OnQueryContinueDrag(QueryContinueDragEventArgs)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.onquerycursor">ContentElement.OnQueryCursor(QueryCursorEventArgs)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.onstylusbuttondown">ContentElement.OnStylusButtonDown(StylusButtonEventArgs)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.onstylusbuttonup">ContentElement.OnStylusButtonUp(StylusButtonEventArgs)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.onstylusdown">ContentElement.OnStylusDown(StylusDownEventArgs)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.onstylusenter">ContentElement.OnStylusEnter(StylusEventArgs)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.onstylusinairmove">ContentElement.OnStylusInAirMove(StylusEventArgs)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.onstylusinrange">ContentElement.OnStylusInRange(StylusEventArgs)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.onstylusleave">ContentElement.OnStylusLeave(StylusEventArgs)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.onstylusmove">ContentElement.OnStylusMove(StylusEventArgs)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.onstylusoutofrange">ContentElement.OnStylusOutOfRange(StylusEventArgs)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.onstylussystemgesture">ContentElement.OnStylusSystemGesture(StylusSystemGestureEventArgs)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.onstylusup">ContentElement.OnStylusUp(StylusEventArgs)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.ontextinput">ContentElement.OnTextInput(TextCompositionEventArgs)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.ontouchdown">ContentElement.OnTouchDown(TouchEventArgs)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.ontouchenter">ContentElement.OnTouchEnter(TouchEventArgs)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.ontouchleave">ContentElement.OnTouchLeave(TouchEventArgs)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.ontouchmove">ContentElement.OnTouchMove(TouchEventArgs)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.ontouchup">ContentElement.OnTouchUp(TouchEventArgs)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.raiseevent">ContentElement.RaiseEvent(RoutedEventArgs)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.releasealltouchcaptures">ContentElement.ReleaseAllTouchCaptures()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.releasemousecapture">ContentElement.ReleaseMouseCapture()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.releasestyluscapture">ContentElement.ReleaseStylusCapture()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.releasetouchcapture">ContentElement.ReleaseTouchCapture(TouchDevice)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.removehandler">ContentElement.RemoveHandler(RoutedEvent, Delegate)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.allowdrop">ContentElement.AllowDrop</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.areanytouchescaptured">ContentElement.AreAnyTouchesCaptured</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.areanytouchescapturedwithin">ContentElement.AreAnyTouchesCapturedWithin</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.areanytouchesdirectlyover">ContentElement.AreAnyTouchesDirectlyOver</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.areanytouchesover">ContentElement.AreAnyTouchesOver</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.commandbindings">ContentElement.CommandBindings</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.focusable">ContentElement.Focusable</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.hasanimatedproperties">ContentElement.HasAnimatedProperties</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.inputbindings">ContentElement.InputBindings</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.isenabled">ContentElement.IsEnabled</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.isenabledcore">ContentElement.IsEnabledCore</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.isfocused">ContentElement.IsFocused</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.isinputmethodenabled">ContentElement.IsInputMethodEnabled</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.iskeyboardfocused">ContentElement.IsKeyboardFocused</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.iskeyboardfocuswithin">ContentElement.IsKeyboardFocusWithin</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.ismousecaptured">ContentElement.IsMouseCaptured</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.ismousecapturewithin">ContentElement.IsMouseCaptureWithin</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.ismousedirectlyover">ContentElement.IsMouseDirectlyOver</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.isstyluscaptured">ContentElement.IsStylusCaptured</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.isstyluscapturewithin">ContentElement.IsStylusCaptureWithin</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.isstylusdirectlyover">ContentElement.IsStylusDirectlyOver</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.isstylusover">ContentElement.IsStylusOver</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.touchescaptured">ContentElement.TouchesCaptured</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.touchescapturedwithin">ContentElement.TouchesCapturedWithin</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.touchesdirectlyover">ContentElement.TouchesDirectlyOver</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.touchesover">ContentElement.TouchesOver</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.dragenter">ContentElement.DragEnter</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.dragleave">ContentElement.DragLeave</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.dragover">ContentElement.DragOver</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.drop">ContentElement.Drop</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.focusablechanged">ContentElement.FocusableChanged</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.givefeedback">ContentElement.GiveFeedback</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.gotfocus">ContentElement.GotFocus</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.gotkeyboardfocus">ContentElement.GotKeyboardFocus</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.gotmousecapture">ContentElement.GotMouseCapture</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.gotstyluscapture">ContentElement.GotStylusCapture</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.gottouchcapture">ContentElement.GotTouchCapture</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.isenabledchanged">ContentElement.IsEnabledChanged</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.iskeyboardfocusedchanged">ContentElement.IsKeyboardFocusedChanged</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.iskeyboardfocuswithinchanged">ContentElement.IsKeyboardFocusWithinChanged</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.ismousecapturedchanged">ContentElement.IsMouseCapturedChanged</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.ismousecapturewithinchanged">ContentElement.IsMouseCaptureWithinChanged</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.ismousedirectlyoverchanged">ContentElement.IsMouseDirectlyOverChanged</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.isstyluscapturedchanged">ContentElement.IsStylusCapturedChanged</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.isstyluscapturewithinchanged">ContentElement.IsStylusCaptureWithinChanged</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.isstylusdirectlyoverchanged">ContentElement.IsStylusDirectlyOverChanged</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.keydown">ContentElement.KeyDown</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.keyup">ContentElement.KeyUp</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.lostfocus">ContentElement.LostFocus</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.lostkeyboardfocus">ContentElement.LostKeyboardFocus</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.lostmousecapture">ContentElement.LostMouseCapture</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.loststyluscapture">ContentElement.LostStylusCapture</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.losttouchcapture">ContentElement.LostTouchCapture</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.mousedown">ContentElement.MouseDown</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.mouseenter">ContentElement.MouseEnter</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.mouseleave">ContentElement.MouseLeave</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.mouseleftbuttondown">ContentElement.MouseLeftButtonDown</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.mouseleftbuttonup">ContentElement.MouseLeftButtonUp</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.mousemove">ContentElement.MouseMove</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.mouserightbuttondown">ContentElement.MouseRightButtonDown</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.mouserightbuttonup">ContentElement.MouseRightButtonUp</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.mouseup">ContentElement.MouseUp</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.mousewheel">ContentElement.MouseWheel</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.previewdragenter">ContentElement.PreviewDragEnter</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.previewdragleave">ContentElement.PreviewDragLeave</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.previewdragover">ContentElement.PreviewDragOver</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.previewdrop">ContentElement.PreviewDrop</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.previewgivefeedback">ContentElement.PreviewGiveFeedback</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.previewgotkeyboardfocus">ContentElement.PreviewGotKeyboardFocus</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.previewkeydown">ContentElement.PreviewKeyDown</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.previewkeyup">ContentElement.PreviewKeyUp</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.previewlostkeyboardfocus">ContentElement.PreviewLostKeyboardFocus</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.previewmousedown">ContentElement.PreviewMouseDown</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.previewmouseleftbuttondown">ContentElement.PreviewMouseLeftButtonDown</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.previewmouseleftbuttonup">ContentElement.PreviewMouseLeftButtonUp</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.previewmousemove">ContentElement.PreviewMouseMove</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.previewmouserightbuttondown">ContentElement.PreviewMouseRightButtonDown</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.previewmouserightbuttonup">ContentElement.PreviewMouseRightButtonUp</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.previewmouseup">ContentElement.PreviewMouseUp</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.previewmousewheel">ContentElement.PreviewMouseWheel</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.previewquerycontinuedrag">ContentElement.PreviewQueryContinueDrag</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.previewstylusbuttondown">ContentElement.PreviewStylusButtonDown</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.previewstylusbuttonup">ContentElement.PreviewStylusButtonUp</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.previewstylusdown">ContentElement.PreviewStylusDown</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.previewstylusinairmove">ContentElement.PreviewStylusInAirMove</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.previewstylusinrange">ContentElement.PreviewStylusInRange</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.previewstylusmove">ContentElement.PreviewStylusMove</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.previewstylusoutofrange">ContentElement.PreviewStylusOutOfRange</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.previewstylussystemgesture">ContentElement.PreviewStylusSystemGesture</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.previewstylusup">ContentElement.PreviewStylusUp</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.previewtextinput">ContentElement.PreviewTextInput</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.previewtouchdown">ContentElement.PreviewTouchDown</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.previewtouchmove">ContentElement.PreviewTouchMove</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.previewtouchup">ContentElement.PreviewTouchUp</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.querycontinuedrag">ContentElement.QueryContinueDrag</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.querycursor">ContentElement.QueryCursor</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.stylusbuttondown">ContentElement.StylusButtonDown</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.stylusbuttonup">ContentElement.StylusButtonUp</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.stylusdown">ContentElement.StylusDown</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.stylusenter">ContentElement.StylusEnter</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.stylusinairmove">ContentElement.StylusInAirMove</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.stylusinrange">ContentElement.StylusInRange</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.stylusleave">ContentElement.StylusLeave</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.stylusmove">ContentElement.StylusMove</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.stylusoutofrange">ContentElement.StylusOutOfRange</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.stylussystemgesture">ContentElement.StylusSystemGesture</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.stylusup">ContentElement.StylusUp</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.textinput">ContentElement.TextInput</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.touchdown">ContentElement.TouchDown</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.touchenter">ContentElement.TouchEnter</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.touchleave">ContentElement.TouchLeave</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.touchmove">ContentElement.TouchMove</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.contentelement.touchup">ContentElement.TouchUp</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.dependencyobject.clearvalue#system-windows-dependencyobject-clearvalue(system-windows-dependencyproperty)">DependencyObject.ClearValue(DependencyProperty)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.dependencyobject.clearvalue#system-windows-dependencyobject-clearvalue(system-windows-dependencypropertykey)">DependencyObject.ClearValue(DependencyPropertyKey)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.dependencyobject.coercevalue">DependencyObject.CoerceValue(DependencyProperty)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.dependencyobject.equals">DependencyObject.Equals(object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.dependencyobject.gethashcode">DependencyObject.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.dependencyobject.getlocalvalueenumerator">DependencyObject.GetLocalValueEnumerator()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.dependencyobject.getvalue">DependencyObject.GetValue(DependencyProperty)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.dependencyobject.invalidateproperty">DependencyObject.InvalidateProperty(DependencyProperty)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.dependencyobject.readlocalvalue">DependencyObject.ReadLocalValue(DependencyProperty)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.dependencyobject.setcurrentvalue">DependencyObject.SetCurrentValue(DependencyProperty, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.dependencyobject.setvalue#system-windows-dependencyobject-setvalue(system-windows-dependencyproperty-system-object)">DependencyObject.SetValue(DependencyProperty, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.dependencyobject.setvalue#system-windows-dependencyobject-setvalue(system-windows-dependencypropertykey-system-object)">DependencyObject.SetValue(DependencyPropertyKey, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.dependencyobject.shouldserializeproperty">DependencyObject.ShouldSerializeProperty(DependencyProperty)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.dependencyobject.dependencyobjecttype">DependencyObject.DependencyObjectType</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.dependencyobject.issealed">DependencyObject.IsSealed</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.threading.dispatcherobject.dispatcher">DispatcherObject.Dispatcher</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">object.Equals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype">object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone">object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals">object.ReferenceEquals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring">object.ToString()</a>
+    </div>
+  </dd></dl>
+
+
+
+
+
+
+  <h2 class="section" id="fields">Fields
+</h2>
+
+
+
+  <h3 id="HelixToolkit_Wpf_SharpDX_Elements2D_ContentPresenter2D_Content2DProperty" data-uid="HelixToolkit.Wpf.SharpDX.Elements2D.ContentPresenter2D.Content2DProperty">
+  Content2DProperty
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Model/Elements2D/ContentPresenter2D.cs/#L40"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly DependencyProperty Content2DProperty</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.dependencyproperty">DependencyProperty</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+  <h2 class="section" id="properties">Properties
+</h2>
+
+
+  <a id="HelixToolkit_Wpf_SharpDX_Elements2D_ContentPresenter2D_Content2D_" data-uid="HelixToolkit.Wpf.SharpDX.Elements2D.ContentPresenter2D.Content2D*"></a>
+
+  <h3 id="HelixToolkit_Wpf_SharpDX_Elements2D_ContentPresenter2D_Content2D" data-uid="HelixToolkit.Wpf.SharpDX.Elements2D.ContentPresenter2D.Content2D">
+  Content2D
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Model/Elements2D/ContentPresenter2D.cs/#L67"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[Bindable(true)]
+public Element2D? Content2D { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Wpf.SharpDX.Elements2D.Element2D.html">Element2D</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h2 class="section" id="methods">Methods
+</h2>
+
+
+  <a id="HelixToolkit_Wpf_SharpDX_Elements2D_ContentPresenter2D_OnCreateSceneNode_" data-uid="HelixToolkit.Wpf.SharpDX.Elements2D.ContentPresenter2D.OnCreateSceneNode*"></a>
+
+  <h3 id="HelixToolkit_Wpf_SharpDX_Elements2D_ContentPresenter2D_OnCreateSceneNode" data-uid="HelixToolkit.Wpf.SharpDX.Elements2D.ContentPresenter2D.OnCreateSceneNode">
+  OnCreateSceneNode()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Model/Elements2D/ContentPresenter2D.cs/#L83"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Called when [create scene node].</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected override SceneNode2D OnCreateSceneNode()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.Model.Scene2D.SceneNode2D.html">SceneNode2D</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX.SharedModel/Model/Elements2D/ContentPresenter2D.cs/#L33" class="edit-link">Edit this page</a>
+        </div>
+
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          Copyright (c) 2023 Helix Toolkit contributors
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

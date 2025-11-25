@@ -1,0 +1,1402 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Class Image | Helix Toolkit - 3D for .NET </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Class Image | Helix Toolkit - 3D for .NET ">
+      
+      <meta name="description" content="Provides method to instantiate an image 1D/2D/3D supporting TextureArray and mipmaps on the CPU or to load/save an image from the disk.">
+      <link rel="icon" href="../images/favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/helix-toolkit/helix-toolkit/new/main-v3/apiSpec/new?filename=SharpDX_Toolkit_Graphics_Image.md&amp;value=---%0Auid%3A%20SharpDX.Toolkit.Graphics.Image%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="ManagedReference">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../images/favicon.ico" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="SharpDX.Toolkit.Graphics.Image">
+
+
+
+  <h1 id="SharpDX_Toolkit_Graphics_Image" data-uid="SharpDX.Toolkit.Graphics.Image" class="text-break">
+Class Image  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/SharpDX.Toolkit/Graphics/Image.cs/#L10"><i class="bi bi-code-slash"></i></a>
+  </h1>
+
+  <div class="facts text-secondary">
+    <dl><dt>Namespace</dt><dd><a class="xref" href="SharpDX.html">SharpDX</a>.<a class="xref" href="SharpDX.Toolkit.html">Toolkit</a>.<a class="xref" href="SharpDX.Toolkit.Graphics.html">Graphics</a></dd></dl>
+  <dl><dt>Assembly</dt><dd>HelixToolkit.SharpDX.dll</dd></dl>
+  </div>
+
+  <div class="markdown summary"><p>Provides method to instantiate an image 1D/2D/3D supporting TextureArray and mipmaps on the CPU or to load/save an image from the disk.</p>
+</div>
+  <div class="markdown conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public sealed class Image : Component, IComponent, INotifyPropertyChanged, IDisposable</code></pre>
+  </div>
+
+
+
+
+  <dl class="typelist inheritance">
+    <dt>Inheritance</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
+      <div><a class="xref" href="SharpDX.Toolkit.ComponentBase.html">ComponentBase</a></div>
+      <div><a class="xref" href="SharpDX.Toolkit.Component.html">Component</a></div>
+      <div><span class="xref">Image</span></div>
+    </dd>
+  </dl>
+
+  <dl class="typelist implements">
+    <dt>Implements</dt>
+    <dd>
+      <div><a class="xref" href="SharpDX.IComponent.html">IComponent</a></div>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.componentmodel.inotifypropertychanged">INotifyPropertyChanged</a></div>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.idisposable">IDisposable</a></div>
+    </dd>
+  </dl>
+
+
+  <dl class="typelist inheritedMembers">
+    <dt>Inherited Members</dt>
+    <dd>
+    <div>
+      <a class="xref" href="SharpDX.Toolkit.Component.html#SharpDX_Toolkit_Component_Disposing">Component.Disposing</a>
+    </div>
+    <div>
+      <a class="xref" href="SharpDX.Toolkit.Component.html#SharpDX_Toolkit_Component_Dispose">Component.Dispose()</a>
+    </div>
+    <div>
+      <a class="xref" href="SharpDX.Toolkit.ComponentBase.html#SharpDX_Toolkit_ComponentBase_Name">ComponentBase.Name</a>
+    </div>
+    <div>
+      <a class="xref" href="SharpDX.Toolkit.ComponentBase.html#SharpDX_Toolkit_ComponentBase_Tag">ComponentBase.Tag</a>
+    </div>
+    <div>
+      <a class="xref" href="SharpDX.Toolkit.ComponentBase.html#SharpDX_Toolkit_ComponentBase_PropertyChanged">ComponentBase.PropertyChanged</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">object.Equals(object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">object.Equals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode">object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype">object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals">object.ReferenceEquals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring">object.ToString()</a>
+    </div>
+  </dd></dl>
+
+
+
+
+
+
+  <h2 class="section" id="fields">Fields
+</h2>
+
+
+
+  <h3 id="SharpDX_Toolkit_Graphics_Image_Description" data-uid="SharpDX.Toolkit.Graphics.Image.Description">
+  Description
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/SharpDX.Toolkit/Graphics/Image.cs/#L64"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Description of this image.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ImageDescription Description</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="SharpDX.Toolkit.Graphics.ImageDescription.html">ImageDescription</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+  <h2 class="section" id="properties">Properties
+</h2>
+
+
+  <a id="SharpDX_Toolkit_Graphics_Image_DataPointer_" data-uid="SharpDX.Toolkit.Graphics.Image.DataPointer*"></a>
+
+  <h3 id="SharpDX_Toolkit_Graphics_Image_DataPointer" data-uid="SharpDX.Toolkit.Graphics.Image.DataPointer">
+  DataPointer
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/SharpDX.Toolkit/Graphics/Image.cs/#L200"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets a pointer to the image buffer in memory.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public nint DataPointer { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.intptr">nint</a></dt>
+    <dd><p>A pointer to the image buffer in memory.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="SharpDX_Toolkit_Graphics_Image_PixelBuffer_" data-uid="SharpDX.Toolkit.Graphics.Image.PixelBuffer*"></a>
+
+  <h3 id="SharpDX_Toolkit_Graphics_Image_PixelBuffer" data-uid="SharpDX.Toolkit.Graphics.Image.PixelBuffer">
+  PixelBuffer
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/SharpDX.Toolkit/Graphics/Image.cs/#L215"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Provides access to all pixel buffers.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public PixelBufferArray? PixelBuffer { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="SharpDX.Toolkit.Graphics.PixelBufferArray.html">PixelBufferArray</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+  <h4 class="section" id="SharpDX_Toolkit_Graphics_Image_PixelBuffer_remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>For Texture3D, each z slice of the Texture3D has a pixelBufferArray * by the number of mipmaps.
+For other textures, there is Description.MipLevels * Description.ArraySize pixel buffers.</p>
+</div>
+
+
+
+
+  <a id="SharpDX_Toolkit_Graphics_Image_TotalSizeInBytes_" data-uid="SharpDX.Toolkit.Graphics.Image.TotalSizeInBytes*"></a>
+
+  <h3 id="SharpDX_Toolkit_Graphics_Image_TotalSizeInBytes" data-uid="SharpDX.Toolkit.Graphics.Image.TotalSizeInBytes">
+  TotalSizeInBytes
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/SharpDX.Toolkit/Graphics/Image.cs/#L226"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the total number of bytes occupied by this image in memory.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int TotalSizeInBytes { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h2 class="section" id="methods">Methods
+</h2>
+
+
+  <a id="SharpDX_Toolkit_Graphics_Image_Dispose_" data-uid="SharpDX.Toolkit.Graphics.Image.Dispose*"></a>
+
+  <h3 id="SharpDX_Toolkit_Graphics_Image_Dispose_System_Boolean_" data-uid="SharpDX.Toolkit.Graphics.Image.Dispose(System.Boolean)">
+  Dispose(bool)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/SharpDX.Toolkit/Graphics/Image.cs/#L89"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected override void Dispose(bool disposeManagedResources)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>disposeManagedResources</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="SharpDX_Toolkit_Graphics_Image_GetMipMapDescription_" data-uid="SharpDX.Toolkit.Graphics.Image.GetMipMapDescription*"></a>
+
+  <h3 id="SharpDX_Toolkit_Graphics_Image_GetMipMapDescription_System_Int32_" data-uid="SharpDX.Toolkit.Graphics.Image.GetMipMapDescription(System.Int32)">
+  GetMipMapDescription(int)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/SharpDX.Toolkit/Graphics/Image.cs/#L109"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the mipmap description of this instance for the specified mipmap level.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public MipMapDescription GetMipMapDescription(int mipmap)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>mipmap</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The mipmap.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="SharpDX.Toolkit.Graphics.MipMapDescription.html">MipMapDescription</a></dt>
+    <dd><p>A description of a particular mipmap for this texture.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="SharpDX_Toolkit_Graphics_Image_GetPixelBuffer_" data-uid="SharpDX.Toolkit.Graphics.Image.GetPixelBuffer*"></a>
+
+  <h3 id="SharpDX_Toolkit_Graphics_Image_GetPixelBuffer_System_Int32_System_Int32_" data-uid="SharpDX.Toolkit.Graphics.Image.GetPixelBuffer(System.Int32,System.Int32)">
+  GetPixelBuffer(int, int)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/SharpDX.Toolkit/Graphics/Image.cs/#L121"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the pixel buffer for the specified array/z slice and mipmap level.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public PixelBuffer GetPixelBuffer(int arrayOrZSliceIndex, int mipmap)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>arrayOrZSliceIndex</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>For 3D image, the parameter is the Z slice, otherwise it is an index into the texture array.</p>
+</dd>
+    <dt><code>mipmap</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The mipmap.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="SharpDX.Toolkit.Graphics.PixelBuffer.html">PixelBuffer</a></dt>
+    <dd><p>A <a class="xref" href="SharpDX.Toolkit.Graphics.PixelBufferArray.html">PixelBufferArray</a>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentexception">ArgumentException</a></dt>
+    <dd><p>If arrayOrZSliceIndex or mipmap are out of range.</p>
+</dd>
+  </dl>
+
+
+
+  <a id="SharpDX_Toolkit_Graphics_Image_GetPixelBuffer_" data-uid="SharpDX.Toolkit.Graphics.Image.GetPixelBuffer*"></a>
+
+  <h3 id="SharpDX_Toolkit_Graphics_Image_GetPixelBuffer_System_Int32_System_Int32_System_Int32_" data-uid="SharpDX.Toolkit.Graphics.Image.GetPixelBuffer(System.Int32,System.Int32,System.Int32)">
+  GetPixelBuffer(int, int, int)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/SharpDX.Toolkit/Graphics/Image.cs/#L153"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the pixel buffer for the specified array/z slice and mipmap level.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public PixelBuffer GetPixelBuffer(int arrayIndex, int zIndex, int mipmap)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>arrayIndex</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>Index into the texture array. Must be set to 0 for 3D images.</p>
+</dd>
+    <dt><code>zIndex</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>Z index for 3D image. Must be set to 0 for all 1D/2D images.</p>
+</dd>
+    <dt><code>mipmap</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The mipmap.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="SharpDX.Toolkit.Graphics.PixelBuffer.html">PixelBuffer</a></dt>
+    <dd><p>A <a class="xref" href="SharpDX.Toolkit.Graphics.PixelBufferArray.html">PixelBufferArray</a>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentexception">ArgumentException</a></dt>
+    <dd><p>If arrayIndex, zIndex or mipmap are out of range.</p>
+</dd>
+  </dl>
+
+
+
+  <a id="SharpDX_Toolkit_Graphics_Image_Load_" data-uid="SharpDX.Toolkit.Graphics.Image.Load*"></a>
+
+  <h3 id="SharpDX_Toolkit_Graphics_Image_Load_SharpDX_DataPointer_System_Boolean_" data-uid="SharpDX.Toolkit.Graphics.Image.Load(SharpDX.DataPointer,System.Boolean)">
+  Load(DataPointer, bool)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/SharpDX.Toolkit/Graphics/Image.cs/#L405"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Loads an image from an unmanaged memory pointer.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Image? Load(DataPointer dataBuffer, bool makeACopy = false)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>dataBuffer</code> <span class="xref">DataPointer</span></dt>
+    <dd><p>Pointer to an unmanaged memory. If <code class="paramref">makeACopy</code> is false, this buffer must be allocated with <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">AllocateMemory(int, int)</a>.</p>
+</dd>
+    <dt><code>makeACopy</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p>True to copy the content of the buffer to a new allocated buffer, false otherwhise.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="SharpDX.Toolkit.Graphics.Image.html">Image</a></dt>
+    <dd><p>An new image.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+  <h4 class="section" id="SharpDX_Toolkit_Graphics_Image_Load_SharpDX_DataPointer_System_Boolean__remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>If <code class="paramref">makeACopy</code> is set to false, the returned image is now the holder of the unmanaged pointer and will release it on Dispose.</p>
+</div>
+
+
+
+
+  <a id="SharpDX_Toolkit_Graphics_Image_Load_" data-uid="SharpDX.Toolkit.Graphics.Image.Load*"></a>
+
+  <h3 id="SharpDX_Toolkit_Graphics_Image_Load_System_Byte___" data-uid="SharpDX.Toolkit.Graphics.Image.Load(System.Byte[])">
+  Load(byte[])
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/SharpDX.Toolkit/Graphics/Image.cs/#L429"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Loads an image from a managed buffer.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Image? Load(byte[] buffer)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>buffer</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">byte</a>[]</dt>
+    <dd><p>Reference to a managed buffer.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="SharpDX.Toolkit.Graphics.Image.html">Image</a></dt>
+    <dd><p>An new image.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+  <h4 class="section" id="SharpDX_Toolkit_Graphics_Image_Load_System_Byte____remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>This method support the following format: <code>dds, bmp, jpg, png, gif, tiff, wmp, tga</code>.</p>
+</div>
+
+
+
+
+  <a id="SharpDX_Toolkit_Graphics_Image_Load_" data-uid="SharpDX.Toolkit.Graphics.Image.Load*"></a>
+
+  <h3 id="SharpDX_Toolkit_Graphics_Image_Load_System_IO_Stream_" data-uid="SharpDX.Toolkit.Graphics.Image.Load(System.IO.Stream)">
+  Load(Stream)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/SharpDX.Toolkit/Graphics/Image.cs/#L455"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Loads the specified image from a stream.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Image? Load(Stream imageStream)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>imageStream</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.io.stream">Stream</a></dt>
+    <dd><p>The image stream.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="SharpDX.Toolkit.Graphics.Image.html">Image</a></dt>
+    <dd><p>An new image.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+  <h4 class="section" id="SharpDX_Toolkit_Graphics_Image_Load_System_IO_Stream__remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>This method support the following format: <code>dds, bmp, jpg, png, gif, tiff, wmp, tga</code>.</p>
+</div>
+
+
+
+
+  <a id="SharpDX_Toolkit_Graphics_Image_Load_" data-uid="SharpDX.Toolkit.Graphics.Image.Load*"></a>
+
+  <h3 id="SharpDX_Toolkit_Graphics_Image_Load_System_IntPtr_System_Int32_System_Boolean_" data-uid="SharpDX.Toolkit.Graphics.Image.Load(System.IntPtr,System.Int32,System.Boolean)">
+  Load(nint, int, bool)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/SharpDX.Toolkit/Graphics/Image.cs/#L418"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Loads an image from an unmanaged memory pointer.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Image? Load(nint dataPointer, int dataSize, bool makeACopy = false)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>dataPointer</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.intptr">nint</a></dt>
+    <dd><p>Pointer to an unmanaged memory. If <code class="paramref">makeACopy</code> is false, this buffer must be allocated with <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">AllocateMemory(int, int)</a>.</p>
+</dd>
+    <dt><code>dataSize</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>Size of the unmanaged buffer.</p>
+</dd>
+    <dt><code>makeACopy</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p>True to copy the content of the buffer to a new allocated buffer, false otherwise.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="SharpDX.Toolkit.Graphics.Image.html">Image</a></dt>
+    <dd><p>An new image.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+  <h4 class="section" id="SharpDX_Toolkit_Graphics_Image_Load_System_IntPtr_System_Int32_System_Boolean__remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>If <code class="paramref">makeACopy</code> is set to false, the returned image is now the holder of the unmanaged pointer and will release it on Dispose.</p>
+</div>
+
+
+
+
+  <a id="SharpDX_Toolkit_Graphics_Image_Load_" data-uid="SharpDX.Toolkit.Graphics.Image.Load*"></a>
+
+  <h3 id="SharpDX_Toolkit_Graphics_Image_Load_System_String_" data-uid="SharpDX.Toolkit.Graphics.Image.Load(System.String)">
+  Load(string)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/SharpDX.Toolkit/Graphics/Image.cs/#L490"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Loads the specified image from a file.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Image? Load(string fileName)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>fileName</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The filename.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="SharpDX.Toolkit.Graphics.Image.html">Image</a></dt>
+    <dd><p>An new image.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+  <h4 class="section" id="SharpDX_Toolkit_Graphics_Image_Load_System_String__remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>This method support the following format: <code>dds, bmp, jpg, png, gif, tiff, wmp, tga</code>.</p>
+</div>
+
+
+
+
+  <a id="SharpDX_Toolkit_Graphics_Image_New_" data-uid="SharpDX.Toolkit.Graphics.Image.New*"></a>
+
+  <h3 id="SharpDX_Toolkit_Graphics_Image_New_SharpDX_Toolkit_Graphics_ImageDescription_" data-uid="SharpDX.Toolkit.Graphics.Image.New(SharpDX.Toolkit.Graphics.ImageDescription)">
+  New(ImageDescription)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/SharpDX.Toolkit/Graphics/Image.cs/#L272"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Creates a new instance of <a class="xref" href="SharpDX.Toolkit.Graphics.Image.html">Image</a> from an image description.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Image New(ImageDescription description)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>description</code> <a class="xref" href="SharpDX.Toolkit.Graphics.ImageDescription.html">ImageDescription</a></dt>
+    <dd><p>The image description.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="SharpDX.Toolkit.Graphics.Image.html">Image</a></dt>
+    <dd><p>A new image.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="SharpDX_Toolkit_Graphics_Image_New_" data-uid="SharpDX.Toolkit.Graphics.Image.New*"></a>
+
+  <h3 id="SharpDX_Toolkit_Graphics_Image_New_SharpDX_Toolkit_Graphics_ImageDescription_System_IntPtr_" data-uid="SharpDX.Toolkit.Graphics.Image.New(SharpDX.Toolkit.Graphics.ImageDescription,System.IntPtr)">
+  New(ImageDescription, nint)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/SharpDX.Toolkit/Graphics/Image.cs/#L336"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Creates a new instance of <a class="xref" href="SharpDX.Toolkit.Graphics.Image.html">Image</a> from an image description.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Image New(ImageDescription description, nint dataPointer)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>description</code> <a class="xref" href="SharpDX.Toolkit.Graphics.ImageDescription.html">ImageDescription</a></dt>
+    <dd><p>The image description.</p>
+</dd>
+    <dt><code>dataPointer</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.intptr">nint</a></dt>
+    <dd><p>Pointer to an existing buffer.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="SharpDX.Toolkit.Graphics.Image.html">Image</a></dt>
+    <dd><p>A new image.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="SharpDX_Toolkit_Graphics_Image_New1D_" data-uid="SharpDX.Toolkit.Graphics.Image.New1D*"></a>
+
+  <h3 id="SharpDX_Toolkit_Graphics_Image_New1D_System_Int32_SharpDX_Toolkit_Graphics_MipMapCount_SharpDX_Toolkit_Graphics_PixelFormat_System_Int32_" data-uid="SharpDX.Toolkit.Graphics.Image.New1D(System.Int32,SharpDX.Toolkit.Graphics.MipMapCount,SharpDX.Toolkit.Graphics.PixelFormat,System.Int32)">
+  New1D(int, MipMapCount, PixelFormat, int)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/SharpDX.Toolkit/Graphics/Image.cs/#L285"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Creates a new instance of a 1D <a class="xref" href="SharpDX.Toolkit.Graphics.Image.html">Image</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Image New1D(int width, MipMapCount mipMapCount, PixelFormat format, int arraySize = 1)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>width</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The width.</p>
+</dd>
+    <dt><code>mipMapCount</code> <a class="xref" href="SharpDX.Toolkit.Graphics.MipMapCount.html">MipMapCount</a></dt>
+    <dd><p>The mip map count.</p>
+</dd>
+    <dt><code>format</code> <a class="xref" href="SharpDX.Toolkit.Graphics.PixelFormat.html">PixelFormat</a></dt>
+    <dd><p>The format.</p>
+</dd>
+    <dt><code>arraySize</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>Size of the array.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="SharpDX.Toolkit.Graphics.Image.html">Image</a></dt>
+    <dd><p>A new image.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="SharpDX_Toolkit_Graphics_Image_New1D_" data-uid="SharpDX.Toolkit.Graphics.Image.New1D*"></a>
+
+  <h3 id="SharpDX_Toolkit_Graphics_Image_New1D_System_Int32_SharpDX_Toolkit_Graphics_MipMapCount_SharpDX_Toolkit_Graphics_PixelFormat_System_Int32_System_IntPtr_" data-uid="SharpDX.Toolkit.Graphics.Image.New1D(System.Int32,SharpDX.Toolkit.Graphics.MipMapCount,SharpDX.Toolkit.Graphics.PixelFormat,System.Int32,System.IntPtr)">
+  New1D(int, MipMapCount, PixelFormat, int, nint)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/SharpDX.Toolkit/Graphics/Image.cs/#L350"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Creates a new instance of a 1D <a class="xref" href="SharpDX.Toolkit.Graphics.Image.html">Image</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Image New1D(int width, MipMapCount mipMapCount, PixelFormat format, int arraySize, nint dataPointer)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>width</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The width.</p>
+</dd>
+    <dt><code>mipMapCount</code> <a class="xref" href="SharpDX.Toolkit.Graphics.MipMapCount.html">MipMapCount</a></dt>
+    <dd><p>The mip map count.</p>
+</dd>
+    <dt><code>format</code> <a class="xref" href="SharpDX.Toolkit.Graphics.PixelFormat.html">PixelFormat</a></dt>
+    <dd><p>The format.</p>
+</dd>
+    <dt><code>arraySize</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>Size of the array.</p>
+</dd>
+    <dt><code>dataPointer</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.intptr">nint</a></dt>
+    <dd><p>Pointer to an existing buffer.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="SharpDX.Toolkit.Graphics.Image.html">Image</a></dt>
+    <dd><p>A new image.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="SharpDX_Toolkit_Graphics_Image_New2D_" data-uid="SharpDX.Toolkit.Graphics.Image.New2D*"></a>
+
+  <h3 id="SharpDX_Toolkit_Graphics_Image_New2D_System_Int32_System_Int32_SharpDX_Toolkit_Graphics_MipMapCount_SharpDX_Toolkit_Graphics_PixelFormat_System_Int32_" data-uid="SharpDX.Toolkit.Graphics.Image.New2D(System.Int32,System.Int32,SharpDX.Toolkit.Graphics.MipMapCount,SharpDX.Toolkit.Graphics.PixelFormat,System.Int32)">
+  New2D(int, int, MipMapCount, PixelFormat, int)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/SharpDX.Toolkit/Graphics/Image.cs/#L299"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Creates a new instance of a 2D <a class="xref" href="SharpDX.Toolkit.Graphics.Image.html">Image</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Image New2D(int width, int height, MipMapCount mipMapCount, PixelFormat format, int arraySize = 1)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>width</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The width.</p>
+</dd>
+    <dt><code>height</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The height.</p>
+</dd>
+    <dt><code>mipMapCount</code> <a class="xref" href="SharpDX.Toolkit.Graphics.MipMapCount.html">MipMapCount</a></dt>
+    <dd><p>The mip map count.</p>
+</dd>
+    <dt><code>format</code> <a class="xref" href="SharpDX.Toolkit.Graphics.PixelFormat.html">PixelFormat</a></dt>
+    <dd><p>The format.</p>
+</dd>
+    <dt><code>arraySize</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>Size of the array.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="SharpDX.Toolkit.Graphics.Image.html">Image</a></dt>
+    <dd><p>A new image.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="SharpDX_Toolkit_Graphics_Image_New2D_" data-uid="SharpDX.Toolkit.Graphics.Image.New2D*"></a>
+
+  <h3 id="SharpDX_Toolkit_Graphics_Image_New2D_System_Int32_System_Int32_SharpDX_Toolkit_Graphics_MipMapCount_SharpDX_Toolkit_Graphics_PixelFormat_System_Int32_System_IntPtr_" data-uid="SharpDX.Toolkit.Graphics.Image.New2D(System.Int32,System.Int32,SharpDX.Toolkit.Graphics.MipMapCount,SharpDX.Toolkit.Graphics.PixelFormat,System.Int32,System.IntPtr)">
+  New2D(int, int, MipMapCount, PixelFormat, int, nint)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/SharpDX.Toolkit/Graphics/Image.cs/#L365"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Creates a new instance of a 2D <a class="xref" href="SharpDX.Toolkit.Graphics.Image.html">Image</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Image New2D(int width, int height, MipMapCount mipMapCount, PixelFormat format, int arraySize, nint dataPointer)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>width</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The width.</p>
+</dd>
+    <dt><code>height</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The height.</p>
+</dd>
+    <dt><code>mipMapCount</code> <a class="xref" href="SharpDX.Toolkit.Graphics.MipMapCount.html">MipMapCount</a></dt>
+    <dd><p>The mip map count.</p>
+</dd>
+    <dt><code>format</code> <a class="xref" href="SharpDX.Toolkit.Graphics.PixelFormat.html">PixelFormat</a></dt>
+    <dd><p>The format.</p>
+</dd>
+    <dt><code>arraySize</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>Size of the array.</p>
+</dd>
+    <dt><code>dataPointer</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.intptr">nint</a></dt>
+    <dd><p>Pointer to an existing buffer.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="SharpDX.Toolkit.Graphics.Image.html">Image</a></dt>
+    <dd><p>A new image.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="SharpDX_Toolkit_Graphics_Image_New3D_" data-uid="SharpDX.Toolkit.Graphics.Image.New3D*"></a>
+
+  <h3 id="SharpDX_Toolkit_Graphics_Image_New3D_System_Int32_System_Int32_System_Int32_SharpDX_Toolkit_Graphics_MipMapCount_SharpDX_Toolkit_Graphics_PixelFormat_" data-uid="SharpDX.Toolkit.Graphics.Image.New3D(System.Int32,System.Int32,System.Int32,SharpDX.Toolkit.Graphics.MipMapCount,SharpDX.Toolkit.Graphics.PixelFormat)">
+  New3D(int, int, int, MipMapCount, PixelFormat)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/SharpDX.Toolkit/Graphics/Image.cs/#L325"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Creates a new instance of a 3D <a class="xref" href="SharpDX.Toolkit.Graphics.Image.html">Image</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Image New3D(int width, int height, int depth, MipMapCount mipMapCount, PixelFormat format)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>width</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The width.</p>
+</dd>
+    <dt><code>height</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The height.</p>
+</dd>
+    <dt><code>depth</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The depth.</p>
+</dd>
+    <dt><code>mipMapCount</code> <a class="xref" href="SharpDX.Toolkit.Graphics.MipMapCount.html">MipMapCount</a></dt>
+    <dd><p>The mip map count.</p>
+</dd>
+    <dt><code>format</code> <a class="xref" href="SharpDX.Toolkit.Graphics.PixelFormat.html">PixelFormat</a></dt>
+    <dd><p>The format.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="SharpDX.Toolkit.Graphics.Image.html">Image</a></dt>
+    <dd><p>A new image.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="SharpDX_Toolkit_Graphics_Image_New3D_" data-uid="SharpDX.Toolkit.Graphics.Image.New3D*"></a>
+
+  <h3 id="SharpDX_Toolkit_Graphics_Image_New3D_System_Int32_System_Int32_System_Int32_SharpDX_Toolkit_Graphics_MipMapCount_SharpDX_Toolkit_Graphics_PixelFormat_System_IntPtr_" data-uid="SharpDX.Toolkit.Graphics.Image.New3D(System.Int32,System.Int32,System.Int32,SharpDX.Toolkit.Graphics.MipMapCount,SharpDX.Toolkit.Graphics.PixelFormat,System.IntPtr)">
+  New3D(int, int, int, MipMapCount, PixelFormat, nint)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/SharpDX.Toolkit/Graphics/Image.cs/#L393"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Creates a new instance of a 3D <a class="xref" href="SharpDX.Toolkit.Graphics.Image.html">Image</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Image New3D(int width, int height, int depth, MipMapCount mipMapCount, PixelFormat format, nint dataPointer)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>width</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The width.</p>
+</dd>
+    <dt><code>height</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The height.</p>
+</dd>
+    <dt><code>depth</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The depth.</p>
+</dd>
+    <dt><code>mipMapCount</code> <a class="xref" href="SharpDX.Toolkit.Graphics.MipMapCount.html">MipMapCount</a></dt>
+    <dd><p>The mip map count.</p>
+</dd>
+    <dt><code>format</code> <a class="xref" href="SharpDX.Toolkit.Graphics.PixelFormat.html">PixelFormat</a></dt>
+    <dd><p>The format.</p>
+</dd>
+    <dt><code>dataPointer</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.intptr">nint</a></dt>
+    <dd><p>Pointer to an existing buffer.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="SharpDX.Toolkit.Graphics.Image.html">Image</a></dt>
+    <dd><p>A new image.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="SharpDX_Toolkit_Graphics_Image_NewCube_" data-uid="SharpDX.Toolkit.Graphics.Image.NewCube*"></a>
+
+  <h3 id="SharpDX_Toolkit_Graphics_Image_NewCube_System_Int32_SharpDX_Toolkit_Graphics_MipMapCount_SharpDX_Toolkit_Graphics_PixelFormat_" data-uid="SharpDX.Toolkit.Graphics.Image.NewCube(System.Int32,SharpDX.Toolkit.Graphics.MipMapCount,SharpDX.Toolkit.Graphics.PixelFormat)">
+  NewCube(int, MipMapCount, PixelFormat)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/SharpDX.Toolkit/Graphics/Image.cs/#L311"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Creates a new instance of a Cube <a class="xref" href="SharpDX.Toolkit.Graphics.Image.html">Image</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Image NewCube(int width, MipMapCount mipMapCount, PixelFormat format)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>width</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The width.</p>
+</dd>
+    <dt><code>mipMapCount</code> <a class="xref" href="SharpDX.Toolkit.Graphics.MipMapCount.html">MipMapCount</a></dt>
+    <dd><p>The mip map count.</p>
+</dd>
+    <dt><code>format</code> <a class="xref" href="SharpDX.Toolkit.Graphics.PixelFormat.html">PixelFormat</a></dt>
+    <dd><p>The format.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="SharpDX.Toolkit.Graphics.Image.html">Image</a></dt>
+    <dd><p>A new image.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="SharpDX_Toolkit_Graphics_Image_NewCube_" data-uid="SharpDX.Toolkit.Graphics.Image.NewCube*"></a>
+
+  <h3 id="SharpDX_Toolkit_Graphics_Image_NewCube_System_Int32_SharpDX_Toolkit_Graphics_MipMapCount_SharpDX_Toolkit_Graphics_PixelFormat_System_IntPtr_" data-uid="SharpDX.Toolkit.Graphics.Image.NewCube(System.Int32,SharpDX.Toolkit.Graphics.MipMapCount,SharpDX.Toolkit.Graphics.PixelFormat,System.IntPtr)">
+  NewCube(int, MipMapCount, PixelFormat, nint)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/SharpDX.Toolkit/Graphics/Image.cs/#L378"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Creates a new instance of a Cube <a class="xref" href="SharpDX.Toolkit.Graphics.Image.html">Image</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Image NewCube(int width, MipMapCount mipMapCount, PixelFormat format, nint dataPointer)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>width</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The width.</p>
+</dd>
+    <dt><code>mipMapCount</code> <a class="xref" href="SharpDX.Toolkit.Graphics.MipMapCount.html">MipMapCount</a></dt>
+    <dd><p>The mip map count.</p>
+</dd>
+    <dt><code>format</code> <a class="xref" href="SharpDX.Toolkit.Graphics.PixelFormat.html">PixelFormat</a></dt>
+    <dd><p>The format.</p>
+</dd>
+    <dt><code>dataPointer</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.intptr">nint</a></dt>
+    <dd><p>Pointer to an existing buffer.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="SharpDX.Toolkit.Graphics.Image.html">Image</a></dt>
+    <dd><p>A new image.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="SharpDX_Toolkit_Graphics_Image_Register_" data-uid="SharpDX.Toolkit.Graphics.Image.Register*"></a>
+
+  <h3 id="SharpDX_Toolkit_Graphics_Image_Register_SharpDX_Toolkit_Graphics_ImageFileType_SharpDX_Toolkit_Graphics_Image_ImageLoadDelegate_SharpDX_Toolkit_Graphics_Image_ImageSaveDelegate_" data-uid="SharpDX.Toolkit.Graphics.Image.Register(SharpDX.Toolkit.Graphics.ImageFileType,SharpDX.Toolkit.Graphics.Image.ImageLoadDelegate,SharpDX.Toolkit.Graphics.Image.ImageSaveDelegate)">
+  Register(ImageFileType, ImageLoadDelegate, ImageSaveDelegate)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/SharpDX.Toolkit/Graphics/Image.cs/#L176"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Registers a loader/saver for a specified image file type.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void Register(ImageFileType type, Image.ImageLoadDelegate loader, Image.ImageSaveDelegate saver)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>type</code> <a class="xref" href="SharpDX.Toolkit.Graphics.ImageFileType.html">ImageFileType</a></dt>
+    <dd><p>The file type (use integer and explicit casting to <a class="xref" href="SharpDX.Toolkit.Graphics.ImageFileType.html">ImageFileType</a> to register other file format.</p>
+</dd>
+    <dt><code>loader</code> <a class="xref" href="SharpDX.Toolkit.Graphics.Image.html">Image</a>.<a class="xref" href="SharpDX.Toolkit.Graphics.Image.ImageLoadDelegate.html">ImageLoadDelegate</a></dt>
+    <dd><p>The loader delegate (can be null).</p>
+</dd>
+    <dt><code>saver</code> <a class="xref" href="SharpDX.Toolkit.Graphics.Image.html">Image</a>.<a class="xref" href="SharpDX.Toolkit.Graphics.Image.ImageSaveDelegate.html">ImageSaveDelegate</a></dt>
+    <dd><p>The saver delegate (can be null).</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentexception">ArgumentException</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+  <a id="SharpDX_Toolkit_Graphics_Image_Save_" data-uid="SharpDX.Toolkit.Graphics.Image.Save*"></a>
+
+  <h3 id="SharpDX_Toolkit_Graphics_Image_Save_System_IO_Stream_SharpDX_Toolkit_Graphics_ImageFileType_" data-uid="SharpDX.Toolkit.Graphics.Image.Save(System.IO.Stream,SharpDX.Toolkit.Graphics.ImageFileType)">
+  Save(Stream, ImageFileType)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/SharpDX.Toolkit/Graphics/Image.cs/#L942"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Saves this instance to a stream.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Save(Stream imageStream, ImageFileType fileType)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>imageStream</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.io.stream">Stream</a></dt>
+    <dd><p>The destination stream.</p>
+</dd>
+    <dt><code>fileType</code> <a class="xref" href="SharpDX.Toolkit.Graphics.ImageFileType.html">ImageFileType</a></dt>
+    <dd><p>Specify the output format.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h4 class="section" id="SharpDX_Toolkit_Graphics_Image_Save_System_IO_Stream_SharpDX_Toolkit_Graphics_ImageFileType__remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>This method support the following format: <code>dds, bmp, jpg, png, gif, tiff, wmp, tga</code>.</p>
+</div>
+
+
+
+
+  <a id="SharpDX_Toolkit_Graphics_Image_Save_" data-uid="SharpDX.Toolkit.Graphics.Image.Save*"></a>
+
+  <h3 id="SharpDX_Toolkit_Graphics_Image_Save_System_String_" data-uid="SharpDX.Toolkit.Graphics.Image.Save(System.String)">
+  Save(string)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/SharpDX.Toolkit/Graphics/Image.cs/#L879"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Saves this instance to a file.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Save(string fileName)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>fileName</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The destination file. Filename must end with a known extension (dds, bmp, jpg, png, gif, tiff, wmp, tga)</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="SharpDX_Toolkit_Graphics_Image_Save_" data-uid="SharpDX.Toolkit.Graphics.Image.Save*"></a>
+
+  <h3 id="SharpDX_Toolkit_Graphics_Image_Save_System_String_SharpDX_Toolkit_Graphics_ImageFileType_" data-uid="SharpDX.Toolkit.Graphics.Image.Save(System.String,SharpDX.Toolkit.Graphics.ImageFileType)">
+  Save(string, ImageFileType)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/SharpDX.Toolkit/Graphics/Image.cs/#L928"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Saves this instance to a file.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Save(string fileName, ImageFileType fileType)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>fileName</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The destination file.</p>
+</dd>
+    <dt><code>fileType</code> <a class="xref" href="SharpDX.Toolkit.Graphics.ImageFileType.html">ImageFileType</a></dt>
+    <dd><p>Specify the output format.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h4 class="section" id="SharpDX_Toolkit_Graphics_Image_Save_System_String_SharpDX_Toolkit_Graphics_ImageFileType__remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>This method support the following format: <code>dds, bmp, jpg, png, gif, tiff, wmp, tga</code>.</p>
+</div>
+
+
+
+
+  <a id="SharpDX_Toolkit_Graphics_Image_ToDataBox_" data-uid="SharpDX.Toolkit.Graphics.Image.ToDataBox*"></a>
+
+  <h3 id="SharpDX_Toolkit_Graphics_Image_ToDataBox" data-uid="SharpDX.Toolkit.Graphics.Image.ToDataBox">
+  ToDataBox()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/SharpDX.Toolkit/Graphics/Image.cs/#L238"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the databox from this image.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public DataBox[] ToDataBox()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><span class="xref">DataBox</span>[]</dt>
+    <dd><p>The databox of this image.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/SharpDX.Toolkit/Graphics/Image.cs/#L10" class="edit-link">Edit this page</a>
+        </div>
+
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          Copyright (c) 2023 Helix Toolkit contributors
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

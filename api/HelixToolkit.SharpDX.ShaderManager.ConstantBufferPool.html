@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Class ConstantBufferPool | Helix Toolkit - 3D for .NET </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Class ConstantBufferPool | Helix Toolkit - 3D for .NET ">
+      
+      <meta name="description" content="Pool to store and share constant buffers. Do not dispose constant buffer object externally.">
+      <link rel="icon" href="../images/favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/helix-toolkit/helix-toolkit/new/main-v3/apiSpec/new?filename=HelixToolkit_SharpDX_ShaderManager_ConstantBufferPool.md&amp;value=---%0Auid%3A%20HelixToolkit.SharpDX.ShaderManager.ConstantBufferPool%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="ManagedReference">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../images/favicon.ico" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="HelixToolkit.SharpDX.ShaderManager.ConstantBufferPool">
+
+
+
+  <h1 id="HelixToolkit_SharpDX_ShaderManager_ConstantBufferPool" data-uid="HelixToolkit.SharpDX.ShaderManager.ConstantBufferPool" class="text-break">
+Class ConstantBufferPool  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/ShaderManager/ConstantBufferPool.cs/#L12"><i class="bi bi-code-slash"></i></a>
+  </h1>
+
+  <div class="facts text-secondary">
+    <dl><dt>Namespace</dt><dd><a class="xref" href="HelixToolkit.html">HelixToolkit</a>.<a class="xref" href="HelixToolkit.SharpDX.html">SharpDX</a>.<a class="xref" href="HelixToolkit.SharpDX.ShaderManager.html">ShaderManager</a></dd></dl>
+  <dl><dt>Assembly</dt><dd>HelixToolkit.SharpDX.dll</dd></dl>
+  </div>
+
+  <div class="markdown summary"><p>Pool to store and share constant buffers. Do not dispose constant buffer object externally.</p>
+</div>
+  <div class="markdown conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public sealed class ConstantBufferPool : ReferenceCountedDictionaryPool&lt;string, ConstantBufferProxy, ConstantBufferDescription&gt;, IConstantBufferPool, IDisposable</code></pre>
+  </div>
+
+
+
+
+  <dl class="typelist inheritance">
+    <dt>Inheritance</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
+      <div><a class="xref" href="HelixToolkit.SharpDX.DisposeObject.html">DisposeObject</a></div>
+      <div><a class="xref" href="HelixToolkit.SharpDX.Utilities.ReferenceCountedDictionaryPool-3.html">ReferenceCountedDictionaryPool</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>, <a class="xref" href="HelixToolkit.SharpDX.Utilities.ConstantBufferProxy.html">ConstantBufferProxy</a>, <a class="xref" href="HelixToolkit.SharpDX.Shaders.ConstantBufferDescription.html">ConstantBufferDescription</a>&gt;</div>
+      <div><span class="xref">ConstantBufferPool</span></div>
+    </dd>
+  </dl>
+
+  <dl class="typelist implements">
+    <dt>Implements</dt>
+    <dd>
+      <div><a class="xref" href="HelixToolkit.SharpDX.ShaderManager.IConstantBufferPool.html">IConstantBufferPool</a></div>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.idisposable">IDisposable</a></div>
+    </dd>
+  </dl>
+
+
+  <dl class="typelist inheritedMembers">
+    <dt>Inherited Members</dt>
+    <dd>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Utilities.ReferenceCountedDictionaryPool-3.html#HelixToolkit_SharpDX_Utilities_ReferenceCountedDictionaryPool_3_DictionaryCount">ReferenceCountedDictionaryPool&lt;string, ConstantBufferProxy, ConstantBufferDescription&gt;.DictionaryCount</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Utilities.ReferenceCountedDictionaryPool-3.html#HelixToolkit_SharpDX_Utilities_ReferenceCountedDictionaryPool_3_Count">ReferenceCountedDictionaryPool&lt;string, ConstantBufferProxy, ConstantBufferDescription&gt;.Count</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Utilities.ReferenceCountedDictionaryPool-3.html#HelixToolkit_SharpDX_Utilities_ReferenceCountedDictionaryPool_3_TryCreateOrGet__0__2__1__">ReferenceCountedDictionaryPool&lt;string, ConstantBufferProxy, ConstantBufferDescription&gt;.TryCreateOrGet(string, ConstantBufferDescription, out ConstantBufferProxy)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Utilities.ReferenceCountedDictionaryPool-3.html#HelixToolkit_SharpDX_Utilities_ReferenceCountedDictionaryPool_3_TryGet__0__1__">ReferenceCountedDictionaryPool&lt;string, ConstantBufferProxy, ConstantBufferDescription&gt;.TryGet(string, out ConstantBufferProxy)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.Utilities.ReferenceCountedDictionaryPool-3.html#HelixToolkit_SharpDX_Utilities_ReferenceCountedDictionaryPool_3_TryDetach__0__1__">ReferenceCountedDictionaryPool&lt;string, ConstantBufferProxy, ConstantBufferDescription&gt;.TryDetach(string, out ConstantBufferProxy)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.DisposeObject.html#HelixToolkit_SharpDX_DisposeObject_RemoveAndDispose__1___0__">DisposeObject.RemoveAndDispose&lt;T&gt;(ref T)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.DisposeObject.html#HelixToolkit_SharpDX_DisposeObject_RemoveAndDispose__1___0_">DisposeObject.RemoveAndDispose&lt;T&gt;(T)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.DisposeObject.html#HelixToolkit_SharpDX_DisposeObject_RefCount">DisposeObject.RefCount</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.DisposeObject.html#HelixToolkit_SharpDX_DisposeObject_IncRef">DisposeObject.IncRef()</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.DisposeObject.html#HelixToolkit_SharpDX_DisposeObject_ForceDispose">DisposeObject.ForceDispose()</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.DisposeObject.html#HelixToolkit_SharpDX_DisposeObject_IsDisposed">DisposeObject.IsDisposed</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.SharpDX.DisposeObject.html#HelixToolkit_SharpDX_DisposeObject_Dispose">DisposeObject.Dispose()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">object.Equals(object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">object.Equals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode">object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype">object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals">object.ReferenceEquals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring">object.ToString()</a>
+    </div>
+  </dd></dl>
+
+
+
+
+
+
+  <h2 class="section" id="constructors">Constructors
+</h2>
+
+
+  <a id="HelixToolkit_SharpDX_ShaderManager_ConstantBufferPool__ctor_" data-uid="HelixToolkit.SharpDX.ShaderManager.ConstantBufferPool.#ctor*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_ShaderManager_ConstantBufferPool__ctor_SharpDX_Direct3D11_Device_" data-uid="HelixToolkit.SharpDX.ShaderManager.ConstantBufferPool.#ctor(SharpDX.Direct3D11.Device)">
+  ConstantBufferPool(Device)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/ShaderManager/ConstantBufferPool.cs/#L21"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="HelixToolkit.SharpDX.ShaderManager.ConstantBufferPool.html">ConstantBufferPool</a> class.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ConstantBufferPool(Device device)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>device</code> <span class="xref">Device</span></dt>
+    <dd><p>The device.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <h2 class="section" id="properties">Properties
+</h2>
+
+
+  <a id="HelixToolkit_SharpDX_ShaderManager_ConstantBufferPool_Device_" data-uid="HelixToolkit.SharpDX.ShaderManager.ConstantBufferPool.Device*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_ShaderManager_ConstantBufferPool_Device" data-uid="HelixToolkit.SharpDX.ShaderManager.ConstantBufferPool.Device">
+  Device
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/ShaderManager/ConstantBufferPool.cs/#L16"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the device.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Device Device { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">Device</span></dt>
+    <dd><p>The device.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h2 class="section" id="methods">Methods
+</h2>
+
+
+  <a id="HelixToolkit_SharpDX_ShaderManager_ConstantBufferPool_CanCreate_" data-uid="HelixToolkit.SharpDX.ShaderManager.ConstantBufferPool.CanCreate*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_ShaderManager_ConstantBufferPool_CanCreate_System_String__HelixToolkit_SharpDX_Shaders_ConstantBufferDescription__" data-uid="HelixToolkit.SharpDX.ShaderManager.ConstantBufferPool.CanCreate(System.String@,HelixToolkit.SharpDX.Shaders.ConstantBufferDescription@)">
+  CanCreate(ref string, ref ConstantBufferDescription)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/ShaderManager/ConstantBufferPool.cs/#L27"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected override bool CanCreate(ref string key, ref ConstantBufferDescription argument)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>key</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+    <dt><code>argument</code> <a class="xref" href="HelixToolkit.SharpDX.Shaders.ConstantBufferDescription.html">ConstantBufferDescription</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_ShaderManager_ConstantBufferPool_OnCreate_" data-uid="HelixToolkit.SharpDX.ShaderManager.ConstantBufferPool.OnCreate*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_ShaderManager_ConstantBufferPool_OnCreate_System_String__HelixToolkit_SharpDX_Shaders_ConstantBufferDescription__" data-uid="HelixToolkit.SharpDX.ShaderManager.ConstantBufferPool.OnCreate(System.String@,HelixToolkit.SharpDX.Shaders.ConstantBufferDescription@)">
+  OnCreate(ref string, ref ConstantBufferDescription)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/ShaderManager/ConstantBufferPool.cs/#L38"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Creates the specified constant buffer.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected override ConstantBufferProxy OnCreate(ref string key, ref ConstantBufferDescription description)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>key</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The key.</p>
+</dd>
+    <dt><code>description</code> <a class="xref" href="HelixToolkit.SharpDX.Shaders.ConstantBufferDescription.html">ConstantBufferDescription</a></dt>
+    <dd><p>The description.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.Utilities.ConstantBufferProxy.html">ConstantBufferProxy</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_ShaderManager_ConstantBufferPool_Register_" data-uid="HelixToolkit.SharpDX.ShaderManager.ConstantBufferPool.Register*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_ShaderManager_ConstantBufferPool_Register_HelixToolkit_SharpDX_Shaders_ConstantBufferDescription_" data-uid="HelixToolkit.SharpDX.ShaderManager.ConstantBufferPool.Register(HelixToolkit.SharpDX.Shaders.ConstantBufferDescription)">
+  Register(ConstantBufferDescription)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/ShaderManager/ConstantBufferPool.cs/#L79"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Registers the specified description.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ConstantBufferProxy? Register(ConstantBufferDescription description)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>description</code> <a class="xref" href="HelixToolkit.SharpDX.Shaders.ConstantBufferDescription.html">ConstantBufferDescription</a></dt>
+    <dd><p>The description.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.Utilities.ConstantBufferProxy.html">ConstantBufferProxy</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_SharpDX_ShaderManager_ConstantBufferPool_Register_" data-uid="HelixToolkit.SharpDX.ShaderManager.ConstantBufferPool.Register*"></a>
+
+  <h3 id="HelixToolkit_SharpDX_ShaderManager_ConstantBufferPool_Register_System_String_System_Int32_" data-uid="HelixToolkit.SharpDX.ShaderManager.ConstantBufferPool.Register(System.String,System.Int32)">
+  Register(string, int)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/ShaderManager/ConstantBufferPool.cs/#L74"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Registers the specified name.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ConstantBufferProxy? Register(string name, int structSize)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>name</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The name.</p>
+</dd>
+    <dt><code>structSize</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>Size of the structure.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.SharpDX.Utilities.ConstantBufferProxy.html">ConstantBufferProxy</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.SharpDX/ShaderManager/ConstantBufferPool.cs/#L12" class="edit-link">Edit this page</a>
+        </div>
+
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          Copyright (c) 2023 Helix Toolkit contributors
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

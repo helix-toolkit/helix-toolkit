@@ -1,0 +1,1372 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Class KerkytheaExporter | Helix Toolkit - 3D for .NET </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Class KerkytheaExporter | Helix Toolkit - 3D for .NET ">
+      
+      <meta name="description" content="Exports the 3D visual tree to a Kerkythea input file.">
+      <link rel="icon" href="../images/favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/helix-toolkit/helix-toolkit/new/main-v3/apiSpec/new?filename=HelixToolkit_Wpf_KerkytheaExporter.md&amp;value=---%0Auid%3A%20HelixToolkit.Wpf.KerkytheaExporter%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="ManagedReference">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../images/favicon.ico" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="HelixToolkit.Wpf.KerkytheaExporter">
+
+
+
+  <h1 id="HelixToolkit_Wpf_KerkytheaExporter" data-uid="HelixToolkit.Wpf.KerkytheaExporter" class="text-break">
+Class KerkytheaExporter  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Wpf/Exporters/KerkytheaExporter.cs/#L16"><i class="bi bi-code-slash"></i></a>
+  </h1>
+
+  <div class="facts text-secondary">
+    <dl><dt>Namespace</dt><dd><a class="xref" href="HelixToolkit.html">HelixToolkit</a>.<a class="xref" href="HelixToolkit.Wpf.html">Wpf</a></dd></dl>
+  <dl><dt>Assembly</dt><dd>HelixToolkit.Wpf.dll</dd></dl>
+  </div>
+
+  <div class="markdown summary"><p>Exports the 3D visual tree to a <a href="http://www.kerkythea.net/joomla">Kerkythea</a> input file.</p>
+</div>
+  <div class="markdown conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public sealed class KerkytheaExporter : Exporter&lt;KerkytheaExporter.KerkytheaWriter&gt;, IExporter</code></pre>
+  </div>
+
+
+
+
+  <dl class="typelist inheritance">
+    <dt>Inheritance</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
+      <div><a class="xref" href="HelixToolkit.Wpf.Exporter-1.html">Exporter</a>&lt;<a class="xref" href="HelixToolkit.Wpf.KerkytheaExporter.html">KerkytheaExporter</a>.<a class="xref" href="HelixToolkit.Wpf.KerkytheaExporter.KerkytheaWriter.html">KerkytheaWriter</a>&gt;</div>
+      <div><span class="xref">KerkytheaExporter</span></div>
+    </dd>
+  </dl>
+
+  <dl class="typelist implements">
+    <dt>Implements</dt>
+    <dd>
+      <div><a class="xref" href="HelixToolkit.Wpf.IExporter.html">IExporter</a></div>
+    </dd>
+  </dl>
+
+
+  <dl class="typelist inheritedMembers">
+    <dt>Inherited Members</dt>
+    <dd>
+    <div>
+      <a class="xref" href="HelixToolkit.Wpf.Exporter-1.html#HelixToolkit_Wpf_Exporter_1_Export_System_Windows_Controls_Viewport3D_System_IO_Stream_">Exporter&lt;KerkytheaExporter.KerkytheaWriter&gt;.Export(Viewport3D, Stream)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.Wpf.Exporter-1.html#HelixToolkit_Wpf_Exporter_1_Export_System_Windows_Media_Media3D_Visual3D_System_IO_Stream_">Exporter&lt;KerkytheaExporter.KerkytheaWriter&gt;.Export(Visual3D, Stream)</a>
+    </div>
+    <div>
+      <a class="xref" href="HelixToolkit.Wpf.Exporter-1.html#HelixToolkit_Wpf_Exporter_1_Export_System_Windows_Media_Media3D_Model3D_System_IO_Stream_">Exporter&lt;KerkytheaExporter.KerkytheaWriter&gt;.Export(Model3D, Stream)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">object.Equals(object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">object.Equals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode">object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype">object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals">object.ReferenceEquals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring">object.ToString()</a>
+    </div>
+  </dd></dl>
+
+
+
+
+
+
+  <h2 class="section" id="constructors">Constructors
+</h2>
+
+
+  <a id="HelixToolkit_Wpf_KerkytheaExporter__ctor_" data-uid="HelixToolkit.Wpf.KerkytheaExporter.#ctor*"></a>
+
+  <h3 id="HelixToolkit_Wpf_KerkytheaExporter__ctor" data-uid="HelixToolkit.Wpf.KerkytheaExporter.#ctor">
+  KerkytheaExporter()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Wpf/Exporters/KerkytheaExporter.cs/#L26"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="HelixToolkit.Wpf.KerkytheaExporter.html">KerkytheaExporter</a> class.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public KerkytheaExporter()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <h2 class="section" id="properties">Properties
+</h2>
+
+
+  <a id="HelixToolkit_Wpf_KerkytheaExporter_Aperture_" data-uid="HelixToolkit.Wpf.KerkytheaExporter.Aperture*"></a>
+
+  <h3 id="HelixToolkit_Wpf_KerkytheaExporter_Aperture" data-uid="HelixToolkit.Wpf.KerkytheaExporter.Aperture">
+  Aperture
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Wpf/Exporters/KerkytheaExporter.cs/#L76"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the aperture.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string Aperture { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The aperture.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_KerkytheaExporter_BackgroundColor_" data-uid="HelixToolkit.Wpf.KerkytheaExporter.BackgroundColor*"></a>
+
+  <h3 id="HelixToolkit_Wpf_KerkytheaExporter_BackgroundColor" data-uid="HelixToolkit.Wpf.KerkytheaExporter.BackgroundColor">
+  BackgroundColor
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Wpf/Exporters/KerkytheaExporter.cs/#L82"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the color of the background.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Color BackgroundColor { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.color">Color</a></dt>
+    <dd><p>The color of the background.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_KerkytheaExporter_FileCreator_" data-uid="HelixToolkit.Wpf.KerkytheaExporter.FileCreator*"></a>
+
+  <h3 id="HelixToolkit_Wpf_KerkytheaExporter_FileCreator" data-uid="HelixToolkit.Wpf.KerkytheaExporter.FileCreator">
+  FileCreator
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Wpf/Exporters/KerkytheaExporter.cs/#L88"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the texture file creator.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Func&lt;string, Stream&gt; FileCreator { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.func-2">Func</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.io.stream">Stream</a>&gt;</dt>
+    <dd><p>The file creator.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_KerkytheaExporter_FocalLength_" data-uid="HelixToolkit.Wpf.KerkytheaExporter.FocalLength*"></a>
+
+  <h3 id="HelixToolkit_Wpf_KerkytheaExporter_FocalLength" data-uid="HelixToolkit.Wpf.KerkytheaExporter.FocalLength">
+  FocalLength
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Wpf/Exporters/KerkytheaExporter.cs/#L94"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the length of the focal.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public double FocalLength { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd><p>The length of the focal.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_KerkytheaExporter_FocusDistance_" data-uid="HelixToolkit.Wpf.KerkytheaExporter.FocusDistance*"></a>
+
+  <h3 id="HelixToolkit_Wpf_KerkytheaExporter_FocusDistance" data-uid="HelixToolkit.Wpf.KerkytheaExporter.FocusDistance">
+  FocusDistance
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Wpf/Exporters/KerkytheaExporter.cs/#L100"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the focus distance.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public double FocusDistance { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd><p>The focus distance.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_KerkytheaExporter_Height_" data-uid="HelixToolkit.Wpf.KerkytheaExporter.Height*"></a>
+
+  <h3 id="HelixToolkit_Wpf_KerkytheaExporter_Height" data-uid="HelixToolkit.Wpf.KerkytheaExporter.Height">
+  Height
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Wpf/Exporters/KerkytheaExporter.cs/#L106"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the height.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int Height { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The height.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_KerkytheaExporter_LensSamples_" data-uid="HelixToolkit.Wpf.KerkytheaExporter.LensSamples*"></a>
+
+  <h3 id="HelixToolkit_Wpf_KerkytheaExporter_LensSamples" data-uid="HelixToolkit.Wpf.KerkytheaExporter.LensSamples">
+  LensSamples
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Wpf/Exporters/KerkytheaExporter.cs/#L112"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the lens samples.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int LensSamples { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The lens samples.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_KerkytheaExporter_LightMultiplier_" data-uid="HelixToolkit.Wpf.KerkytheaExporter.LightMultiplier*"></a>
+
+  <h3 id="HelixToolkit_Wpf_KerkytheaExporter_LightMultiplier" data-uid="HelixToolkit.Wpf.KerkytheaExporter.LightMultiplier">
+  LightMultiplier
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Wpf/Exporters/KerkytheaExporter.cs/#L118"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the light multiplier.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public double LightMultiplier { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd><p>The light multiplier.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_KerkytheaExporter_Name_" data-uid="HelixToolkit.Wpf.KerkytheaExporter.Name*"></a>
+
+  <h3 id="HelixToolkit_Wpf_KerkytheaExporter_Name" data-uid="HelixToolkit.Wpf.KerkytheaExporter.Name">
+  Name
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Wpf/Exporters/KerkytheaExporter.cs/#L124"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the name.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string Name { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The name.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_KerkytheaExporter_ReflectionColor_" data-uid="HelixToolkit.Wpf.KerkytheaExporter.ReflectionColor*"></a>
+
+  <h3 id="HelixToolkit_Wpf_KerkytheaExporter_ReflectionColor" data-uid="HelixToolkit.Wpf.KerkytheaExporter.ReflectionColor">
+  ReflectionColor
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Wpf/Exporters/KerkytheaExporter.cs/#L130"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the color of the reflection.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Color ReflectionColor { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.color">Color</a></dt>
+    <dd><p>The color of the reflection.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_KerkytheaExporter_Reflections_" data-uid="HelixToolkit.Wpf.KerkytheaExporter.Reflections*"></a>
+
+  <h3 id="HelixToolkit_Wpf_KerkytheaExporter_Reflections" data-uid="HelixToolkit.Wpf.KerkytheaExporter.Reflections">
+  Reflections
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Wpf/Exporters/KerkytheaExporter.cs/#L136"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets a value indicating whether this <a class="xref" href="HelixToolkit.Wpf.KerkytheaExporter.html">KerkytheaExporter</a> is reflections.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool Reflections { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><code>true</code> if reflections; otherwise, <code>false</code>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_KerkytheaExporter_RenderSetting_" data-uid="HelixToolkit.Wpf.KerkytheaExporter.RenderSetting*"></a>
+
+  <h3 id="HelixToolkit_Wpf_KerkytheaExporter_RenderSetting" data-uid="HelixToolkit.Wpf.KerkytheaExporter.RenderSetting">
+  RenderSetting
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Wpf/Exporters/KerkytheaExporter.cs/#L142"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the render setting.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public KerkytheaExporter.RenderSettings RenderSetting { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Wpf.KerkytheaExporter.html">KerkytheaExporter</a>.<a class="xref" href="HelixToolkit.Wpf.KerkytheaExporter.RenderSettings.html">RenderSettings</a></dt>
+    <dd><p>The render setting.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_KerkytheaExporter_ShadowColor_" data-uid="HelixToolkit.Wpf.KerkytheaExporter.ShadowColor*"></a>
+
+  <h3 id="HelixToolkit_Wpf_KerkytheaExporter_ShadowColor" data-uid="HelixToolkit.Wpf.KerkytheaExporter.ShadowColor">
+  ShadowColor
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Wpf/Exporters/KerkytheaExporter.cs/#L148"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the color of the shadow.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Color ShadowColor { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.color">Color</a></dt>
+    <dd><p>The color of the shadow.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_KerkytheaExporter_Shadows_" data-uid="HelixToolkit.Wpf.KerkytheaExporter.Shadows*"></a>
+
+  <h3 id="HelixToolkit_Wpf_KerkytheaExporter_Shadows" data-uid="HelixToolkit.Wpf.KerkytheaExporter.Shadows">
+  Shadows
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Wpf/Exporters/KerkytheaExporter.cs/#L154"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets a value indicating whether this <a class="xref" href="HelixToolkit.Wpf.KerkytheaExporter.html">KerkytheaExporter</a> is shadows.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool Shadows { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><code>true</code> if shadows; otherwise, <code>false</code>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_KerkytheaExporter_SoftShadows_" data-uid="HelixToolkit.Wpf.KerkytheaExporter.SoftShadows*"></a>
+
+  <h3 id="HelixToolkit_Wpf_KerkytheaExporter_SoftShadows" data-uid="HelixToolkit.Wpf.KerkytheaExporter.SoftShadows">
+  SoftShadows
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Wpf/Exporters/KerkytheaExporter.cs/#L160"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets a value indicating whether [soft shadows].</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool SoftShadows { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><code>true</code> if [soft shadows]; otherwise, <code>false</code>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_KerkytheaExporter_TextureHeight_" data-uid="HelixToolkit.Wpf.KerkytheaExporter.TextureHeight*"></a>
+
+  <h3 id="HelixToolkit_Wpf_KerkytheaExporter_TextureHeight" data-uid="HelixToolkit.Wpf.KerkytheaExporter.TextureHeight">
+  TextureHeight
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Wpf/Exporters/KerkytheaExporter.cs/#L166"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the height of the texture.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int TextureHeight { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The height of the texture.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_KerkytheaExporter_TexturePath_" data-uid="HelixToolkit.Wpf.KerkytheaExporter.TexturePath*"></a>
+
+  <h3 id="HelixToolkit_Wpf_KerkytheaExporter_TexturePath" data-uid="HelixToolkit.Wpf.KerkytheaExporter.TexturePath">
+  TexturePath
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Wpf/Exporters/KerkytheaExporter.cs/#L172"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the texture path.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string? TexturePath { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The texture path.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_KerkytheaExporter_TextureWidth_" data-uid="HelixToolkit.Wpf.KerkytheaExporter.TextureWidth*"></a>
+
+  <h3 id="HelixToolkit_Wpf_KerkytheaExporter_TextureWidth" data-uid="HelixToolkit.Wpf.KerkytheaExporter.TextureWidth">
+  TextureWidth
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Wpf/Exporters/KerkytheaExporter.cs/#L178"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the width of the texture.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int TextureWidth { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The width of the texture.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_KerkytheaExporter_Threads_" data-uid="HelixToolkit.Wpf.KerkytheaExporter.Threads*"></a>
+
+  <h3 id="HelixToolkit_Wpf_KerkytheaExporter_Threads" data-uid="HelixToolkit.Wpf.KerkytheaExporter.Threads">
+  Threads
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Wpf/Exporters/KerkytheaExporter.cs/#L184"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the threads.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int Threads { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The threads.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_KerkytheaExporter_Width_" data-uid="HelixToolkit.Wpf.KerkytheaExporter.Width*"></a>
+
+  <h3 id="HelixToolkit_Wpf_KerkytheaExporter_Width" data-uid="HelixToolkit.Wpf.KerkytheaExporter.Width">
+  Width
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Wpf/Exporters/KerkytheaExporter.cs/#L190"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the width.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int Width { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The width.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h2 class="section" id="methods">Methods
+</h2>
+
+
+  <a id="HelixToolkit_Wpf_KerkytheaExporter_Close_" data-uid="HelixToolkit.Wpf.KerkytheaExporter.Close*"></a>
+
+  <h3 id="HelixToolkit_Wpf_KerkytheaExporter_Close_HelixToolkit_Wpf_KerkytheaExporter_KerkytheaWriter_" data-uid="HelixToolkit.Wpf.KerkytheaExporter.Close(HelixToolkit.Wpf.KerkytheaExporter.KerkytheaWriter)">
+  Close(KerkytheaWriter)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Wpf/Exporters/KerkytheaExporter.cs/#L701"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Closes this exporter.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected override void Close(KerkytheaExporter.KerkytheaWriter writer)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>writer</code> <a class="xref" href="HelixToolkit.Wpf.KerkytheaExporter.html">KerkytheaExporter</a>.<a class="xref" href="HelixToolkit.Wpf.KerkytheaExporter.KerkytheaWriter.html">KerkytheaWriter</a></dt>
+    <dd><p>The writer.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_KerkytheaExporter_Create_" data-uid="HelixToolkit.Wpf.KerkytheaExporter.Create*"></a>
+
+  <h3 id="HelixToolkit_Wpf_KerkytheaExporter_Create_System_IO_Stream_" data-uid="HelixToolkit.Wpf.KerkytheaExporter.Create(System.IO.Stream)">
+  Create(Stream)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Wpf/Exporters/KerkytheaExporter.cs/#L370"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Creates the writer for the specified stream.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected override KerkytheaExporter.KerkytheaWriter Create(Stream stream)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>stream</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.io.stream">Stream</a></dt>
+    <dd><p>The stream.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="HelixToolkit.Wpf.KerkytheaExporter.html">KerkytheaExporter</a>.<a class="xref" href="HelixToolkit.Wpf.KerkytheaExporter.KerkytheaWriter.html">KerkytheaWriter</a></dt>
+    <dd><p>The writer.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_KerkytheaExporter_ExportCamera_" data-uid="HelixToolkit.Wpf.KerkytheaExporter.ExportCamera*"></a>
+
+  <h3 id="HelixToolkit_Wpf_KerkytheaExporter_ExportCamera_HelixToolkit_Wpf_KerkytheaExporter_KerkytheaWriter_System_Windows_Media_Media3D_Camera_" data-uid="HelixToolkit.Wpf.KerkytheaExporter.ExportCamera(HelixToolkit.Wpf.KerkytheaExporter.KerkytheaWriter,System.Windows.Media.Media3D.Camera)">
+  ExportCamera(KerkytheaWriter, Camera)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Wpf/Exporters/KerkytheaExporter.cs/#L381"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Exports the camera.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected override void ExportCamera(KerkytheaExporter.KerkytheaWriter writer, Camera c)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>writer</code> <a class="xref" href="HelixToolkit.Wpf.KerkytheaExporter.html">KerkytheaExporter</a>.<a class="xref" href="HelixToolkit.Wpf.KerkytheaExporter.KerkytheaWriter.html">KerkytheaWriter</a></dt>
+    <dd><p>The writer.</p>
+</dd>
+    <dt><code>c</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.media3d.camera">Camera</a></dt>
+    <dd><p>The camera.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.invalidoperationexception">InvalidOperationException</a></dt>
+    <dd><p>Only perspective cameras are supported.</p>
+</dd>
+  </dl>
+
+
+
+  <a id="HelixToolkit_Wpf_KerkytheaExporter_ExportHeader_" data-uid="HelixToolkit.Wpf.KerkytheaExporter.ExportHeader*"></a>
+
+  <h3 id="HelixToolkit_Wpf_KerkytheaExporter_ExportHeader_HelixToolkit_Wpf_KerkytheaExporter_KerkytheaWriter_" data-uid="HelixToolkit.Wpf.KerkytheaExporter.ExportHeader(HelixToolkit.Wpf.KerkytheaExporter.KerkytheaWriter)">
+  ExportHeader(KerkytheaWriter)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Wpf/Exporters/KerkytheaExporter.cs/#L424"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Exports the document header.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected override void ExportHeader(KerkytheaExporter.KerkytheaWriter writer)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>writer</code> <a class="xref" href="HelixToolkit.Wpf.KerkytheaExporter.html">KerkytheaExporter</a>.<a class="xref" href="HelixToolkit.Wpf.KerkytheaExporter.KerkytheaWriter.html">KerkytheaWriter</a></dt>
+    <dd><p>The writer.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_KerkytheaExporter_ExportLight_" data-uid="HelixToolkit.Wpf.KerkytheaExporter.ExportLight*"></a>
+
+  <h3 id="HelixToolkit_Wpf_KerkytheaExporter_ExportLight_HelixToolkit_Wpf_KerkytheaExporter_KerkytheaWriter_System_Windows_Media_Media3D_Light_System_Windows_Media_Media3D_Transform3D_" data-uid="HelixToolkit.Wpf.KerkytheaExporter.ExportLight(HelixToolkit.Wpf.KerkytheaExporter.KerkytheaWriter,System.Windows.Media.Media3D.Light,System.Windows.Media.Media3D.Transform3D)">
+  ExportLight(KerkytheaWriter, Light, Transform3D)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Wpf/Exporters/KerkytheaExporter.cs/#L492"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Exports the light.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected override void ExportLight(KerkytheaExporter.KerkytheaWriter writer, Light l, Transform3D t)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>writer</code> <a class="xref" href="HelixToolkit.Wpf.KerkytheaExporter.html">KerkytheaExporter</a>.<a class="xref" href="HelixToolkit.Wpf.KerkytheaExporter.KerkytheaWriter.html">KerkytheaWriter</a></dt>
+    <dd><p>The writer.</p>
+</dd>
+    <dt><code>l</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.media3d.light">Light</a></dt>
+    <dd><p>The light.</p>
+</dd>
+    <dt><code>t</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.media3d.transform3d">Transform3D</a></dt>
+    <dd><p>The transform.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_KerkytheaExporter_ExportMesh_" data-uid="HelixToolkit.Wpf.KerkytheaExporter.ExportMesh*"></a>
+
+  <h3 id="HelixToolkit_Wpf_KerkytheaExporter_ExportMesh_HelixToolkit_Wpf_KerkytheaExporter_KerkytheaWriter_System_Windows_Media_Media3D_MeshGeometry3D_" data-uid="HelixToolkit.Wpf.KerkytheaExporter.ExportMesh(HelixToolkit.Wpf.KerkytheaExporter.KerkytheaWriter,System.Windows.Media.Media3D.MeshGeometry3D)">
+  ExportMesh(KerkytheaWriter, MeshGeometry3D)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Wpf/Exporters/KerkytheaExporter.cs/#L197"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Exports the mesh.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void ExportMesh(KerkytheaExporter.KerkytheaWriter writer, MeshGeometry3D m)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>writer</code> <a class="xref" href="HelixToolkit.Wpf.KerkytheaExporter.html">KerkytheaExporter</a>.<a class="xref" href="HelixToolkit.Wpf.KerkytheaExporter.KerkytheaWriter.html">KerkytheaWriter</a></dt>
+    <dd><p>The writer.</p>
+</dd>
+    <dt><code>m</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.media3d.meshgeometry3d">MeshGeometry3D</a></dt>
+    <dd><p>The mesh.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_KerkytheaExporter_ExportModel_" data-uid="HelixToolkit.Wpf.KerkytheaExporter.ExportModel*"></a>
+
+  <h3 id="HelixToolkit_Wpf_KerkytheaExporter_ExportModel_HelixToolkit_Wpf_KerkytheaExporter_KerkytheaWriter_System_Windows_Media_Media3D_GeometryModel3D_System_Windows_Media_Media3D_Transform3D_" data-uid="HelixToolkit.Wpf.KerkytheaExporter.ExportModel(HelixToolkit.Wpf.KerkytheaExporter.KerkytheaWriter,System.Windows.Media.Media3D.GeometryModel3D,System.Windows.Media.Media3D.Transform3D)">
+  ExportModel(KerkytheaWriter, GeometryModel3D, Transform3D)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Wpf/Exporters/KerkytheaExporter.cs/#L607"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Exports the model.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected override void ExportModel(KerkytheaExporter.KerkytheaWriter writer, GeometryModel3D g, Transform3D transform)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>writer</code> <a class="xref" href="HelixToolkit.Wpf.KerkytheaExporter.html">KerkytheaExporter</a>.<a class="xref" href="HelixToolkit.Wpf.KerkytheaExporter.KerkytheaWriter.html">KerkytheaWriter</a></dt>
+    <dd><p>The writer.</p>
+</dd>
+    <dt><code>g</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.media3d.geometrymodel3d">GeometryModel3D</a></dt>
+    <dd><p>The model geometry.</p>
+</dd>
+    <dt><code>transform</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.media3d.transform3d">Transform3D</a></dt>
+    <dd><p>The transform.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_KerkytheaExporter_ExportViewport_" data-uid="HelixToolkit.Wpf.KerkytheaExporter.ExportViewport*"></a>
+
+  <h3 id="HelixToolkit_Wpf_KerkytheaExporter_ExportViewport_HelixToolkit_Wpf_KerkytheaExporter_KerkytheaWriter_System_Windows_Controls_Viewport3D_" data-uid="HelixToolkit.Wpf.KerkytheaExporter.ExportViewport(HelixToolkit.Wpf.KerkytheaExporter.KerkytheaWriter,System.Windows.Controls.Viewport3D)">
+  ExportViewport(KerkytheaWriter, Viewport3D)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Wpf/Exporters/KerkytheaExporter.cs/#L652"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Exports the specified viewport.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected override void ExportViewport(KerkytheaExporter.KerkytheaWriter writer, Viewport3D v)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>writer</code> <a class="xref" href="HelixToolkit.Wpf.KerkytheaExporter.html">KerkytheaExporter</a>.<a class="xref" href="HelixToolkit.Wpf.KerkytheaExporter.KerkytheaWriter.html">KerkytheaWriter</a></dt>
+    <dd><p>The writer.</p>
+</dd>
+    <dt><code>v</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.controls.viewport3d">Viewport3D</a></dt>
+    <dd><p>The viewport to export.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_KerkytheaExporter_RegisterMaterial_" data-uid="HelixToolkit.Wpf.KerkytheaExporter.RegisterMaterial*"></a>
+
+  <h3 id="HelixToolkit_Wpf_KerkytheaExporter_RegisterMaterial_System_Windows_Media_Media3D_Material_System_IO_Stream_" data-uid="HelixToolkit.Wpf.KerkytheaExporter.RegisterMaterial(System.Windows.Media.Media3D.Material,System.IO.Stream)">
+  RegisterMaterial(Material, Stream)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Wpf/Exporters/KerkytheaExporter.cs/#L275"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Registers a material.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void RegisterMaterial(Material m, Stream stream)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>m</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.windows.media.media3d.material">Material</a></dt>
+    <dd><p>The material to register.</p>
+</dd>
+    <dt><code>stream</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.io.stream">Stream</a></dt>
+    <dd><p>The material stream.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_KerkytheaExporter_ValueOrDefault_" data-uid="HelixToolkit.Wpf.KerkytheaExporter.ValueOrDefault*"></a>
+
+  <h3 id="HelixToolkit_Wpf_KerkytheaExporter_ValueOrDefault_System_Double_System_Double_" data-uid="HelixToolkit.Wpf.KerkytheaExporter.ValueOrDefault(System.Double,System.Double)">
+  ValueOrDefault(double, double)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Wpf/Exporters/KerkytheaExporter.cs/#L1263"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Returns the <code class="paramref">value</code> or the <code class="paramref">defaultValue</code> if the <code class="paramref">value</code> is NaN.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static double ValueOrDefault(double value, double defaultValue)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd><p>The value.</p>
+</dd>
+    <dt><code>defaultValue</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd><p>The default value.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd><p>The value.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_KerkytheaExporter_WriteMetropolisLightTransport_" data-uid="HelixToolkit.Wpf.KerkytheaExporter.WriteMetropolisLightTransport*"></a>
+
+  <h3 id="HelixToolkit_Wpf_KerkytheaExporter_WriteMetropolisLightTransport_HelixToolkit_Wpf_KerkytheaExporter_KerkytheaWriter_System_String_" data-uid="HelixToolkit.Wpf.KerkytheaExporter.WriteMetropolisLightTransport(HelixToolkit.Wpf.KerkytheaExporter.KerkytheaWriter,System.String)">
+  WriteMetropolisLightTransport(KerkytheaWriter, string)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Wpf/Exporters/KerkytheaExporter.cs/#L287"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Writes the Metropolis Light Transport properties.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void WriteMetropolisLightTransport(KerkytheaExporter.KerkytheaWriter writer, string name)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>writer</code> <a class="xref" href="HelixToolkit.Wpf.KerkytheaExporter.html">KerkytheaExporter</a>.<a class="xref" href="HelixToolkit.Wpf.KerkytheaExporter.KerkytheaWriter.html">KerkytheaWriter</a></dt>
+    <dd><p>The writer.</p>
+</dd>
+    <dt><code>name</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The name of the MLP ray tracer.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_KerkytheaExporter_WriteStandardRayTracer_" data-uid="HelixToolkit.Wpf.KerkytheaExporter.WriteStandardRayTracer*"></a>
+
+  <h3 id="HelixToolkit_Wpf_KerkytheaExporter_WriteStandardRayTracer_HelixToolkit_Wpf_KerkytheaExporter_KerkytheaWriter_System_String_" data-uid="HelixToolkit.Wpf.KerkytheaExporter.WriteStandardRayTracer(HelixToolkit.Wpf.KerkytheaExporter.KerkytheaWriter,System.String)">
+  WriteStandardRayTracer(KerkytheaWriter, string)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Wpf/Exporters/KerkytheaExporter.cs/#L310"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Writes the standard ray tracer properties.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void WriteStandardRayTracer(KerkytheaExporter.KerkytheaWriter writer, string name)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>writer</code> <a class="xref" href="HelixToolkit.Wpf.KerkytheaExporter.html">KerkytheaExporter</a>.<a class="xref" href="HelixToolkit.Wpf.KerkytheaExporter.KerkytheaWriter.html">KerkytheaWriter</a></dt>
+    <dd><p>The writer.</p>
+</dd>
+    <dt><code>name</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The name of the ray tracer.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="HelixToolkit_Wpf_KerkytheaExporter_WriteThreadedRaytracer_" data-uid="HelixToolkit.Wpf.KerkytheaExporter.WriteThreadedRaytracer*"></a>
+
+  <h3 id="HelixToolkit_Wpf_KerkytheaExporter_WriteThreadedRaytracer_HelixToolkit_Wpf_KerkytheaExporter_KerkytheaWriter_System_Int32_" data-uid="HelixToolkit.Wpf.KerkytheaExporter.WriteThreadedRaytracer(HelixToolkit.Wpf.KerkytheaExporter.KerkytheaWriter,System.Int32)">
+  WriteThreadedRaytracer(KerkytheaWriter, int)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Wpf/Exporters/KerkytheaExporter.cs/#L351"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Writes the threaded ray tracer properties.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void WriteThreadedRaytracer(KerkytheaExporter.KerkytheaWriter writer, int threads)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>writer</code> <a class="xref" href="HelixToolkit.Wpf.KerkytheaExporter.html">KerkytheaExporter</a>.<a class="xref" href="HelixToolkit.Wpf.KerkytheaExporter.KerkytheaWriter.html">KerkytheaWriter</a></dt>
+    <dd><p>The writer.</p>
+</dd>
+    <dt><code>threads</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The number of threads.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/helix-toolkit/helix-toolkit/blob/main-v3/Source/HelixToolkit.Wpf/Exporters/KerkytheaExporter.cs/#L16" class="edit-link">Edit this page</a>
+        </div>
+
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          Copyright (c) 2023 Helix Toolkit contributors
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>
