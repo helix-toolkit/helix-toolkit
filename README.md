@@ -44,9 +44,9 @@ Please download full source code to run examples.
 
 Description         | Value
 --------------------|-----------------------
-Web page            | http://helix-toolkit.github.io/
+Web page            | https://helix-toolkit.github.io/
 Wiki                | https://github.com/helix-toolkit/helix-toolkit/wiki
-Documentation       | http://helix-toolkit.readthedocs.io/
+Documentation       | [https://helix-toolkit.github.io/develop3](https://helix-toolkit.github.io/helix-toolkit/develop3/)
 Chat                | https://gitter.im/helix-toolkit/helix-toolkit
 Source repository   | http://github.com/helix-toolkit/helix-toolkit
 Latest build        | http://ci.appveyor.com/project/holance/helix-toolkit
@@ -59,6 +59,34 @@ Twitter             | https://twitter.com/hashtag/Helix3DToolkit
 ## Project Build
 
 **Visual Studio 2022.**
+
+## Documentation
+
+### Automated Documentation Generation
+
+This project uses [DocFX](https://dotnet.github.io/docfx/) to automatically generate comprehensive API documentation from C# XML comments. 
+
+**View Documentation:**
+- **API Documentation**: Automatically generated and deployed to GitHub Pages
+- **Build Locally**: See [Source/Documentation/README.md](/Source/Documentation/README.md) for instructions
+
+**Build Documentation Locally:**
+
+Windows:
+```cmd
+cd Source
+build-doc.cmd
+```
+
+Linux/macOS:
+```bash
+cd Source
+./build-doc.sh
+```
+
+The documentation is automatically built and published via GitHub Actions on every push to the main branch.
+
+For more details on writing and building documentation, see the [Documentation README](/Source/Documentation/README.md).
 
 ## Notes
 
@@ -107,25 +135,27 @@ Please use the following template to report bugs.
 - Sample Code:
 
 ## News
-#### 2025-11-06
-[v3.0.0](https://github.com/helix-toolkit/helix-toolkit/releases/tag/v3.0.0) releases are available on nuget. [Release Note](/CHANGELOG.md)
+#### 2025-11-10
+[v3.1.1](https://github.com/helix-toolkit/helix-toolkit/releases/tag/v3.1.1) releases are available on nuget. [Release Note](/CHANGELOG.md)
 
 :bangbang: HelixToolkit v2 is in maintainance mode (Will only release new version on critical bug fixes). Moving forward, our focus will shift to the development of v3.
 
-- [HelixToolkit.Maths](https://www.nuget.org/packages/HelixToolkit.Maths/3.0.0-ci0001)
-- [HelixToolkit.Geometry](https://www.nuget.org/packages/HelixToolkit.Geometry/3.0.0-ci0001)
-- [HelixToolkit.SharpDX](https://www.nuget.org/packages/HelixToolkit.SharpDX/3.0.0-ci0001)
-- [HelixToolkit.WPF.SharpDX](https://www.nuget.org/packages/HelixToolkit.Wpf.SharpDX/3.0.0-ci0001)
-- [HelixToolkit.WinUI.SharpDX](https://www.nuget.org/packages/HelixToolkit.WinUI.SharpDX/3.0.0-ci0001)
-- [HelixToolkit.Avalonia.SharpDX](https://www.nuget.org/packages/HelixToolkit.Avalonia.SharpDX/3.0.0-ci0001)
-- [HelixToolkit.SharpDX.Assimp](https://www.nuget.org/packages/HelixToolkit.SharpDX.Assimp/3.0.0-ci0001)
-- [HelixToolkit.WPF](https://www.nuget.org/packages/HelixToolkit.Wpf/3.0.0-ci0001)
-- [HelixToolkit.Wpf.TDxInput](https://www.nuget.org/packages/HelixToolkit.Wpf.TDxInput/3.0.0-ci0001)
+- [HelixToolkit.Maths](https://www.nuget.org/packages/HelixToolkit.Maths/3.1.1)
+- [HelixToolkit.Geometry](https://www.nuget.org/packages/HelixToolkit.Geometry/3.1.1)
+- [HelixToolkit.SharpDX](https://www.nuget.org/packages/HelixToolkit.SharpDX/3.1.1)
+- [HelixToolkit.WPF.SharpDX](https://www.nuget.org/packages/HelixToolkit.Wpf.SharpDX/3.1.1)
+- [HelixToolkit.WinUI.SharpDX](https://www.nuget.org/packages/HelixToolkit.WinUI.SharpDX/3.1.1)
+- [HelixToolkit.Avalonia.SharpDX](https://www.nuget.org/packages/HelixToolkit.Avalonia.SharpDX/3.1.1)
+- [HelixToolkit.SharpDX.Assimp](https://www.nuget.org/packages/HelixToolkit.SharpDX.Assimp/3.1.1)
+- [HelixToolkit.WPF](https://www.nuget.org/packages/HelixToolkit.Wpf/3.1.1)
+- [HelixToolkit.Wpf.TDxInput](https://www.nuget.org/packages/HelixToolkit.Wpf.TDxInput/3.1.1)
 - 
 #### Changes (Please refer to [Release Note](https://github.com/helix-toolkit/helix-toolkit/blob/master/CHANGELOG.md) for details)
 
 #### 2023-03-17
 Nightly build myget feed link has been updated to: https://www.myget.org/F/helixtoolkit-nightly
+
+
 
 
 

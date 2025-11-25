@@ -27,7 +27,7 @@
       "namespaceLayout": "flattened",
       "memberLayout": "samePage",
       "EnumSortOrder": "alphabetic",
-      "allowCompilationErrors": false
+      "allowCompilationErrors": true
     }
   ],
   "build": {

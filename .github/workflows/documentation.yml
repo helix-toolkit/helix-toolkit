@@ -1,0 +1,66 @@
+name: Documentation
+
+on:
+  push:
+    branches:
+      - main-v3
+      - develop3
+    paths:
+      - 'Source/**/*.cs'
+      - 'Source/Documentation/**'
+      - '.github/workflows/documentation.yml'
+  pull_request:
+    branches:
+      - main-v3
+      - develop3
+    paths:
+      - 'Source/**/*.cs'
+      - 'Source/Documentation/**'
+      - '.github/workflows/documentation.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  build-and-deploy-docs:
+    runs-on: windows-latest
+    if: github.event_name == 'push'
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: |
+          6.0.x
+          8.0.x
+
+    - name: Restore NuGet packages
+      run: dotnet restore ./Source/HelixToolkit.sln
+
+    - name: Install DocFX
+      run: dotnet tool update docfx --tool-path ./tools
+
+    - name: Build Documentation
+      env:
+        CI: true
+      run: ./tools/docfx ./Source/Documentation/docfx.json
+
+    - name: Deploy to GitHub Pages
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./Source/Documentation/_site
+        destination_dir: ${{ github.ref_name == 'main-v3' && '.' || github.ref_name }}
+        keep_files: true
