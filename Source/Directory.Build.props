@@ -29,23 +29,23 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="$(SolutionDir)..\LICENSE">
+    <None Include="$(MSBuildThisFileDirectory)..\LICENSE">
       <Pack>True</Pack>
       <PackagePath></PackagePath>
     </None>
-    <None Include="$(SolutionDir)..\AUTHORS">
+    <None Include="$(MSBuildThisFileDirectory)..\AUTHORS">
       <Pack>True</Pack>
       <PackagePath></PackagePath>
     </None>
-    <None Include="$(SolutionDir)..\CONTRIBUTORS">
+    <None Include="$(MSBuildThisFileDirectory)..\CONTRIBUTORS">
       <Pack>True</Pack>
       <PackagePath></PackagePath>
     </None>
-    <None Include="$(SolutionDir)..\README.md">
+    <None Include="$(MSBuildThisFileDirectory)..\README.md">
       <Pack>True</Pack>
       <PackagePath></PackagePath>
     </None>
-    <None Include="$(SolutionDir)..\Images\helixtoolkit.png">
+    <None Include="$(MSBuildThisFileDirectory)..\Images\helixtoolkit.png">
       <Pack>True</Pack>
       <PackagePath></PackagePath>
     </None>
