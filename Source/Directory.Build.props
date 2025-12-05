@@ -1,7 +1,6 @@
 ﻿<Project>
 
   <PropertyGroup>
-    <SolutionDir Condition="'$(SolutionDir)'==''">$(MSBuildThisFileDirectory)</SolutionDir>
     <Version>3.0.0</Version>
     <IsPackable>false</IsPackable>
     <Description>Helix Toolkit is a collection of 3D components for .NET.</Description>
