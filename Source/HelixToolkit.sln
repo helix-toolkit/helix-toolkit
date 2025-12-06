@@ -184,6 +184,30 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmptyDemo", "Examples\Avalo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmptyDemo.Desktop", "Examples\Avalonia.SharpDX\EmptyDemo.Desktop\EmptyDemo.Desktop.csproj", "{487BFDEC-FA3F-B340-C7A9-996355E7CAF3}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionItems", "SolutionItems", "{A0D03153-CEC3-486F-893A-AD3D6E285847}"
+	ProjectSection(SolutionItems) = preProject
+		Directory.Build.props = Directory.Build.props
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Doc", "Doc", "{6CD3A0A7-147D-4E70-ACDD-F738D96303A0}"
+	ProjectSection(SolutionItems) = preProject
+		..\AUTHORS = ..\AUTHORS
+		..\CHANGELOG.md = ..\CHANGELOG.md
+		..\CONTRIBUTORS = ..\CONTRIBUTORS
+		..\DOCUMENTATION.md = ..\DOCUMENTATION.md
+		..\DOC_GEN_CHECKLIST.md = ..\DOC_GEN_CHECKLIST.md
+		..\DOC_GEN_SUMMARY.md = ..\DOC_GEN_SUMMARY.md
+		..\LICENSE = ..\LICENSE
+		..\README.md = ..\README.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Workflows", "Workflows", "{2129A396-609D-4BAD-BF44-7905156C0ACE}"
+	ProjectSection(SolutionItems) = preProject
+		..\.github\workflows\ci.yml = ..\.github\workflows\ci.yml
+		..\.github\workflows\documentation.yml = ..\.github\workflows\documentation.yml
+		..\.github\workflows\manual-build.yml = ..\.github\workflows\manual-build.yml
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -1600,6 +1624,8 @@ Global
 		{02EA681E-C7D8-13C7-8484-4AC65E1B71E8} = {B96B3A02-1D3A-404B-A5A7-2E9E72957FF0}
 		{013D36F4-19C9-9740-4865-6632D2727839} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 		{487BFDEC-FA3F-B340-C7A9-996355E7CAF3} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{6CD3A0A7-147D-4E70-ACDD-F738D96303A0} = {A0D03153-CEC3-486F-893A-AD3D6E285847}
+		{2129A396-609D-4BAD-BF44-7905156C0ACE} = {A0D03153-CEC3-486F-893A-AD3D6E285847}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {7710B882-AC91-43E6-B85B-4ECE9C2157D1}
