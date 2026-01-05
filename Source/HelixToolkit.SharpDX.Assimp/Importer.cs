@@ -1,8 +1,7 @@
-﻿using SharpAssimp;
-using SharpAssimp.Configs;
-using HelixToolkit.SharpDX.Model;
+﻿using HelixToolkit.SharpDX.Model;
 using Microsoft.Extensions.Logging;
-using SharpDX;
+using SharpAssimp;
+using SharpAssimp.Configs;
 using System.Text;
 using HxAnimations = HelixToolkit.SharpDX.Animations;
 using HxScene = HelixToolkit.SharpDX.Model.Scene;
@@ -200,6 +199,10 @@ public partial class Importer : IDisposable
             {
                 postProcess |= PostProcessSteps.FlipWindingOrder;
             }
+            if(string.Equals(fileName, ".obj", StringComparison.OrdinalIgnoreCase))
+            {
+                postProcess &= ~PostProcessSteps.FindDegenerates;
+            }
             var assimpScene = importer.ImportFile(filePath, postProcess);
 
             return BuildScene(assimpScene, out scene);
@@ -270,6 +273,10 @@ public partial class Importer : IDisposable
             if (configuration.FlipWindingOrder)
             {
                 postProcess |= PostProcessSteps.FlipWindingOrder;
+            }
+            if (string.Equals(formatHint, ".obj", StringComparison.OrdinalIgnoreCase))
+            {
+                postProcess &= ~PostProcessSteps.FindDegenerates;
             }
             var assimpScene = importer.ImportFileFromStream(fileStream, postProcess, formatHint);
             return BuildScene(assimpScene, out scene);
