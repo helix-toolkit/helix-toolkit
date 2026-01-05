@@ -23,7 +23,7 @@ public sealed class TransformArgs : EventArgs
     /// Initializes a new instance of the <see cref="TransformArgs"/> class.
     /// </summary>
     /// <param name="transform">The transform.</param>
-    public TransformArgs(ref Matrix transform)
+    public TransformArgs(in Matrix transform)
     {
         Transform = transform;
     }

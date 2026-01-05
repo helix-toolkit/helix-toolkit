@@ -651,14 +651,24 @@ public abstract partial class SceneNode : DisposeObject, IComparable<SceneNode>,
         if (NeedMatrixUpdate)
         {
             parent.TryGetTarget(out var target);
-            TotalModelMatrixInternal = modelMatrix * (target == null ? Matrix.Identity : target.TotalModelMatrixInternal);
+            //TotalModelMatrixInternal = modelMatrix * (target == null ? Matrix.Identity : target.TotalModelMatrixInternal);
+
+            if (target is not null && target.IsAnimationNode)
+            {
+                TotalModelMatrixInternal = modelMatrix * (target == null ? Matrix.Identity : target.TotalModelMatrixInternal);
+            }
+            else
+            {
+                TotalModelMatrixInternal = (target == null ? Matrix.Identity : target.TotalModelMatrixInternal) * modelMatrix;
+            }
+
             for (var i = 0; i < ItemsInternal.Count; ++i)
             {
                 ItemsInternal[i].NeedMatrixUpdate = true;
             }
             NeedMatrixUpdate = false;
             OnTransformChanged(ref TotalModelMatrixInternal);
-            TransformChanged?.Invoke(this, new TransformArgs(ref TotalModelMatrixInternal));
+            TransformChanged?.Invoke(this, new TransformArgs(in TotalModelMatrixInternal));
         }
     }
     /// <summary>
