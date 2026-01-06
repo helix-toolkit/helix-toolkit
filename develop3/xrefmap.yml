@@ -110608,13 +110608,13 @@ references:
   nameWithType: TransformArgs.TransformArgs(Matrix4x4)
   nameWithType.vb: TransformArgs.New(Matrix4x4)
 - uid: HelixToolkit.SharpDX.TransformArgs.#ctor(System.Numerics.Matrix4x4@)
-  name: TransformArgs(ref Matrix4x4)
+  name: TransformArgs(in Matrix4x4)
   href: api/HelixToolkit.SharpDX.TransformArgs.html#HelixToolkit_SharpDX_TransformArgs__ctor_System_Numerics_Matrix4x4__
   commentId: M:HelixToolkit.SharpDX.TransformArgs.#ctor(System.Numerics.Matrix4x4@)
   name.vb: New(Matrix4x4)
-  fullName: HelixToolkit.SharpDX.TransformArgs.TransformArgs(ref System.Numerics.Matrix4x4)
+  fullName: HelixToolkit.SharpDX.TransformArgs.TransformArgs(in System.Numerics.Matrix4x4)
   fullName.vb: HelixToolkit.SharpDX.TransformArgs.New(System.Numerics.Matrix4x4)
-  nameWithType: TransformArgs.TransformArgs(ref Matrix4x4)
+  nameWithType: TransformArgs.TransformArgs(in Matrix4x4)
   nameWithType.vb: TransformArgs.New(Matrix4x4)
 - uid: HelixToolkit.SharpDX.TransformArgs.#ctor*
   name: TransformArgs
