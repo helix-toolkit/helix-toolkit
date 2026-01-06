@@ -159574,6 +159574,12 @@ references:
   commentId: F:HelixToolkit.Wpf.PlyReader.PlyDataTypes._uint
   fullName: HelixToolkit.Wpf.PlyReader.PlyDataTypes._uint
   nameWithType: PlyReader.PlyDataTypes._uint
+- uid: HelixToolkit.Wpf.PlyReader.PlyDataTypes._uint32
+  name: _uint32
+  href: api/HelixToolkit.Wpf.PlyReader.PlyDataTypes.html#HelixToolkit_Wpf_PlyReader_PlyDataTypes__uint32
+  commentId: F:HelixToolkit.Wpf.PlyReader.PlyDataTypes._uint32
+  fullName: HelixToolkit.Wpf.PlyReader.PlyDataTypes._uint32
+  nameWithType: PlyReader.PlyDataTypes._uint32
 - uid: HelixToolkit.Wpf.PlyReader.PlyDataTypes._uint8
   name: _uint8
   href: api/HelixToolkit.Wpf.PlyReader.PlyDataTypes.html#HelixToolkit_Wpf_PlyReader_PlyDataTypes__uint8

@@ -6027,7 +6027,7 @@
   "api/HelixToolkit.Wpf.PlyReader.PlyDataTypes.html": {
     "href": "api/HelixToolkit.Wpf.PlyReader.PlyDataTypes.html",
     "title": "Enum PlyReader.PlyDataTypes | Helix Toolkit - 3D for .NET",
-    "summary": "Enum PlyReader.PlyDataTypes Namespace HelixToolkit.Wpf Assembly HelixToolkit.Wpf.dll Specifies the types of ply data types. public enum PlyReader.PlyDataTypes Extension Methods NativeHelper.ToStruct<T1, T2>(T1) Fields _char = 0 character _double = 10 double-precision float _float = 8 single-precision float _float32 = 9 single-precision float _int = 4 integer _int32 = 5 integer _short = 2 short integer _uchar = 1 unsigned character _uint = 6 unsigned integer _uint8 = 7 unsigned integer _ushort = 3 unsigned short integer"
+    "summary": "Enum PlyReader.PlyDataTypes Namespace HelixToolkit.Wpf Assembly HelixToolkit.Wpf.dll Specifies the types of ply data types. public enum PlyReader.PlyDataTypes Extension Methods NativeHelper.ToStruct<T1, T2>(T1) Fields _char = 0 character _double = 11 double-precision float _float = 9 single-precision float _float32 = 10 single-precision float _int = 4 integer _int32 = 5 integer _short = 2 short integer _uchar = 1 unsigned character _uint = 6 unsigned integer _uint32 = 7 unsigned integer _uint8 = 8 unsigned integer _ushort = 3 unsigned short integer"
   },
   "api/HelixToolkit.Wpf.PlyReader.PlyElement.html": {
     "href": "api/HelixToolkit.Wpf.PlyReader.PlyElement.html",
