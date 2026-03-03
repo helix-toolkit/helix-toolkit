@@ -3808,7 +3808,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "HelixToolkit.SharpDX.ArrayStorage",
-      "Summary": "<p sourcefile=\"api/HelixToolkit.SharpDX.ArrayStorage.yml\" sourcestartlinenumber=\"1\">A array buffer defined by its struct size.</p>\n<p>\nTo use it, caller must first call <xref href=\"HelixToolkit.SharpDX.ArrayStorage.GetId\" data-throw-if-not-resolved=\"false\"></xref> to obtain an unique id in order to modify the buffer. \nCaller must restrictly use this unique id to access the buffer.\n</p>\nCaller must call <xref href=\"HelixToolkit.SharpDX.ArrayStorage.ReleaseId(System.Int32)\" data-throw-if-not-resolved=\"false\"></xref> to release the id once \ncaller is no longer needed to use this buffer. The released id will be reused by an new caller.\n"
+      "Summary": "<p sourcefile=\"api/HelixToolkit.SharpDX.ArrayStorage.yml\" sourcestartlinenumber=\"1\">A array buffer defined by its struct size.</p>\n<p>\nTo use it, caller must first call <xref href=\"HelixToolkit.SharpDX.ArrayStorage.GetId\" data-throw-if-not-resolved=\"false\"></xref> to obtain an unique id in order to modify the buffer. \nCaller must restrictly use this unique id to access the buffer.\n</p>\n<p sourcefile=\"api/HelixToolkit.SharpDX.ArrayStorage.yml\" sourcestartlinenumber=\"8\">Caller must call <xref href=\"HelixToolkit.SharpDX.ArrayStorage.ReleaseId(System.Int32)\" data-throw-if-not-resolved=\"false\"></xref> to release the id once\ncaller is no longer needed to use this buffer. The released id will be reused by an new caller.</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -12194,7 +12194,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "HelixToolkit.SharpDX.Utilities.ReferenceCountedDictionaryPool<TKey, TValue, TArgument>",
-      "Summary": "<p sourcefile=\"api/HelixToolkit.SharpDX.Utilities.ReferenceCountedDictionaryPool-3.yml\" sourcestartlinenumber=\"1\">Base implementation for reference counted dictionary.</p>\n<p></p>\nObject with same key will be returned by the pool or create an new object if key is not dictionary. \nAnd object reference count will be incremented by 1.\n<p></p>\nSet autoDispose = true in constructor if you want to automatically dispose the object once not being used from outside.\n"
+      "Summary": "<p sourcefile=\"api/HelixToolkit.SharpDX.Utilities.ReferenceCountedDictionaryPool-3.yml\" sourcestartlinenumber=\"1\">Base implementation for reference counted dictionary.</p>\n<p></p>\n<p sourcefile=\"api/HelixToolkit.SharpDX.Utilities.ReferenceCountedDictionaryPool-3.yml\" sourcestartlinenumber=\"5\">Object with same key will be returned by the pool or create an new object if key is not dictionary.\nAnd object reference count will be incremented by 1.</p>\n<p></p>\n<p sourcefile=\"api/HelixToolkit.SharpDX.Utilities.ReferenceCountedDictionaryPool-3.yml\" sourcestartlinenumber=\"10\">Set autoDispose = true in constructor if you want to automatically dispose the object once not being used from outside.</p>\n"
     },
     {
       "type": "ManagedReference",
