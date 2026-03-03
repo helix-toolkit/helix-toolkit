@@ -1232,6 +1232,7 @@ public partial class Viewport3DX
             if (viewport.renderHostInternal is not null)
             {
                 viewport.renderHostInternal.SharedModelContainer = (IModelContainer?)e.NewValue;
+                viewport.InvalidateSceneGraph();
             }
         });
 
