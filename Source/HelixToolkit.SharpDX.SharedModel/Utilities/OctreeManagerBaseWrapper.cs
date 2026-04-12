@@ -5,6 +5,8 @@
 using Windows.UI.Core;
 #elif WPF
 using System.Windows.Threading;
+#elif AVALONIA
+using Avalonia.Threading;
 #else
 #error Unknown framework
 #endif
@@ -14,6 +16,8 @@ using System.Windows.Threading;
 namespace HelixToolkit.WinUI.SharpDX;
 #elif WPF
 namespace HelixToolkit.Wpf.SharpDX;
+#elif AVALONIA
+namespace HelixToolkit.Avalonia.SharpDX;
 #else
 #error Unknown framework
 #endif
@@ -27,87 +31,86 @@ public abstract class OctreeManagerBaseWrapper : FrameworkContentElement, IOctre
     /// The octree property
     /// </summary>
     public static readonly DependencyProperty OctreeProperty
-        = DependencyProperty.Register("Octree", typeof(IOctreeBasic), typeof(OctreeManagerBaseWrapper),
-            new PropertyMetadata(null));
+        = HelixProperty.Register<OctreeManagerBaseWrapper, IOctreeBasic?>("Octree", null);
 
     /// <summary>
     /// The enable octree output property
     /// </summary>
     public static readonly DependencyProperty EnableOctreeOutputProperty
-        = DependencyProperty.Register("EnableOctreeOutput", typeof(bool), typeof(OctreeManagerBaseWrapper),
-            new PropertyMetadata(false,
+        = HelixProperty.Register<OctreeManagerBaseWrapper, bool>("EnableOctreeOutput",
+            false,
                 (s, e) =>
                 {
                     if (s is OctreeManagerBaseWrapper wrapper)
                     {
-                        wrapper.enableOctreeOutput = (bool)e.NewValue;
+                        wrapper.enableOctreeOutput = (bool)e.NewValue!;
                     }
-                }));
+                });
 
     /// <summary>
     /// The minimum size property
     /// </summary>
     public static readonly DependencyProperty MinSizeProperty
-        = DependencyProperty.Register("MinSize", typeof(float), typeof(OctreeManagerBaseWrapper),
-            new PropertyMetadata(1f, (s, e) =>
+        = HelixProperty.Register<OctreeManagerBaseWrapper, float>("MinSize",
+            1f, (s, e) =>
             {
                 if (s is OctreeManagerBaseWrapper wrapper)
                 {
-                    wrapper.Manager.Parameter.MinimumOctantSize = (float)e.NewValue;
+                    wrapper.Manager.Parameter.MinimumOctantSize = (float)e.NewValue!;
                 }
-            }));
+            });
 
     /// <summary>
     /// The automatic delete if empty property
     /// </summary>
     public static readonly DependencyProperty AutoDeleteIfEmptyProperty
-        = DependencyProperty.Register("AutoDeleteIfEmpty", typeof(bool), typeof(OctreeManagerBaseWrapper),
-            new PropertyMetadata(true, (s, e) =>
+        = HelixProperty.Register<OctreeManagerBaseWrapper, bool>("AutoDeleteIfEmpty",
+            true, (s, e) =>
             {
                 if (s is OctreeManagerBaseWrapper wrapper)
                 {
-                    wrapper.Manager.Parameter.AutoDeleteIfEmpty = (bool)e.NewValue;
+                    wrapper.Manager.Parameter.AutoDeleteIfEmpty = (bool)e.NewValue!;
                 }
-            }));
+            });
 
     /// <summary>
     /// The cubify property property
     /// </summary>
     public static readonly DependencyProperty CubifyPropertyProperty
-        = DependencyProperty.Register("Cubify", typeof(bool), typeof(OctreeManagerBaseWrapper),
-            new PropertyMetadata(false, (s, e) =>
+        = HelixProperty.Register<OctreeManagerBaseWrapper, bool>("Cubify",
+            false, (s, e) =>
             {
                 if (s is OctreeManagerBaseWrapper wrapper)
                 {
-                    wrapper.Manager.Parameter.Cubify = (bool)e.NewValue;
+                    wrapper.Manager.Parameter.Cubify = (bool)e.NewValue!;
                 }
-            }));
+            });
 
     /// <summary>
     /// The record hit path bounding boxes property
     /// </summary>
     public static readonly DependencyProperty RecordHitPathBoundingBoxesProperty
-        = DependencyProperty.Register("RecordHitPathBoundingBoxes", typeof(bool), typeof(OctreeManagerBaseWrapper),
-            new PropertyMetadata(false, (s, e) =>
+        = HelixProperty.Register<OctreeManagerBaseWrapper, bool>("RecordHitPathBoundingBoxes",
+            false, (s, e) =>
             {
                 if (s is OctreeManagerBaseWrapper wrapper)
                 {
-                    wrapper.Manager.Parameter.RecordHitPathBoundingBoxes = (bool)e.NewValue;
+                    wrapper.Manager.Parameter.RecordHitPathBoundingBoxes = (bool)e.NewValue!;
                 }
-            }));
+            });
 
     /// <summary>
     /// The minimum object size to split property
     /// </summary>
     public static readonly DependencyProperty MinObjectSizeToSplitProperty
-        = DependencyProperty.Register("MinObjectSizeToSplit", typeof(int), typeof(OctreeManagerBaseWrapper),
-            new PropertyMetadata(0, (s, e) =>
+        = HelixProperty.Register<OctreeManagerBaseWrapper, int>("MinObjectSizeToSplit",
+            0, (s, e) =>
             {
                 if (s is OctreeManagerBaseWrapper wrapper)
                 {
-                    wrapper.Manager.Parameter.MinObjectSizeToSplit = (int)e.NewValue;
+                    wrapper.Manager.Parameter.MinObjectSizeToSplit = (int)e.NewValue!;
                 }
-            }));
+            });
 
     /// <summary>
     /// Gets or sets the octree.
@@ -141,7 +144,7 @@ public abstract class OctreeManagerBaseWrapper : FrameworkContentElement, IOctre
         }
         get
         {
-            return (bool)GetValue(EnableOctreeOutputProperty);
+            return (bool)GetValue(EnableOctreeOutputProperty)!;
         }
     }
 
@@ -156,7 +159,7 @@ public abstract class OctreeManagerBaseWrapper : FrameworkContentElement, IOctre
         }
         get
         {
-            return (float)GetValue(MinSizeProperty);
+            return (float)GetValue(MinSizeProperty)!;
         }
     }
     /// <summary>
@@ -170,7 +173,7 @@ public abstract class OctreeManagerBaseWrapper : FrameworkContentElement, IOctre
         }
         get
         {
-            return (bool)GetValue(AutoDeleteIfEmptyProperty);
+            return (bool)GetValue(AutoDeleteIfEmptyProperty)!;
         }
     }
     /// <summary>
@@ -184,7 +187,7 @@ public abstract class OctreeManagerBaseWrapper : FrameworkContentElement, IOctre
         }
         get
         {
-            return (bool)GetValue(CubifyPropertyProperty);
+            return (bool)GetValue(CubifyPropertyProperty)!;
         }
     }
     /// <summary>
@@ -198,7 +201,7 @@ public abstract class OctreeManagerBaseWrapper : FrameworkContentElement, IOctre
         }
         get
         {
-            return (bool)GetValue(RecordHitPathBoundingBoxesProperty);
+            return (bool)GetValue(RecordHitPathBoundingBoxesProperty)!;
         }
     }
     /// <summary>
@@ -212,13 +215,15 @@ public abstract class OctreeManagerBaseWrapper : FrameworkContentElement, IOctre
         }
         get
         {
-            return (int)GetValue(MinObjectSizeToSplitProperty);
+            return (int)GetValue(MinObjectSizeToSplitProperty)!;
         }
     }
 #if false
 #elif WINUI
     private IAsyncAction? octreeOpt;
 #elif WPF
+    private DispatcherOperation? octreeOpt;
+#elif AVALONIA
     private DispatcherOperation? octreeOpt;
 #else
 #error Unknown framework
@@ -268,6 +273,21 @@ public abstract class OctreeManagerBaseWrapper : FrameworkContentElement, IOctre
                                 this.Octree = null;
                                 this.Octree = e.Octree;
                             }));
+                    }
+#elif AVALONIA
+                    if (octreeOpt != null && octreeOpt.Status == DispatcherOperationStatus.Pending)
+                    {
+                        octreeOpt.Abort();
+                    }
+                    if (enableOctreeOutput)
+                    {
+                        octreeOpt = Dispatcher.UIThread.InvokeAsync(
+                            new Action(() =>
+                            {
+                                this.Octree = null;
+                                this.Octree = e.Octree;
+                            }),
+                            DispatcherPriority.Background);
                     }
 #else
 #error Unknown framework

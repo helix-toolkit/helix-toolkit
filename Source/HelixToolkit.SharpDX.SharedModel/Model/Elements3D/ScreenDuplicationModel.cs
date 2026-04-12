@@ -5,6 +5,9 @@ using HelixToolkit.WinUI.SharpDX.Model;
 #elif WPF
 using HelixToolkit.Wpf.SharpDX.Model;
 using System.Windows;
+#elif AVALONIA
+using HelixToolkit.Avalonia.SharpDX.Model;
+using Avalonia;
 #else
 #error Unknown framework
 #endif
@@ -14,6 +17,8 @@ using System.Windows;
 namespace HelixToolkit.WinUI.SharpDX;
 #elif WPF
 namespace HelixToolkit.Wpf.SharpDX;
+#elif AVALONIA
+namespace HelixToolkit.Avalonia.SharpDX;
 #else
 #error Unknown framework
 #endif
@@ -38,7 +43,7 @@ public class ScreenDuplicationModel : Element3D
     {
         get
         {
-            return (Rect)GetValue(CaptureRectangleProperty);
+            return (Rect)GetValue(CaptureRectangleProperty)!;
         }
         set
         {
@@ -49,16 +54,17 @@ public class ScreenDuplicationModel : Element3D
     /// The screen rectangle property
     /// </summary>
     public static readonly DependencyProperty CaptureRectangleProperty =
-        DependencyProperty.Register("CaptureRectangle", typeof(Rect), typeof(ScreenDuplicationModel), new PropertyMetadata(new Rect(),
+        HelixProperty.Register<ScreenDuplicationModel, Rect>("CaptureRectangle",
+            new Rect(),
             (d, e) =>
             {
-                var rect = (Rect)e.NewValue;
+                var rect = (Rect)e.NewValue!;
 
                 if (d is Element3DCore { SceneNode: ScreenDuplicationNode node })
                 {
                     node.CaptureRectangle = new Rectangle((int)rect.Left, (int)rect.Top, (int)rect.Width, (int)rect.Height);
                 }
-            }));
+            });
 
     /// <summary>
     /// Gets or sets the display index.
@@ -70,7 +76,7 @@ public class ScreenDuplicationModel : Element3D
     {
         get
         {
-            return (int)GetValue(DisplayIndexProperty);
+            return (int)GetValue(DisplayIndexProperty)!;
         }
         set
         {
@@ -81,14 +87,15 @@ public class ScreenDuplicationModel : Element3D
     /// The display index property
     /// </summary>
     public static readonly DependencyProperty DisplayIndexProperty =
-        DependencyProperty.Register("DisplayIndex", typeof(int), typeof(ScreenDuplicationModel), new PropertyMetadata(0,
+        HelixProperty.Register<ScreenDuplicationModel, int>("DisplayIndex",
+            0,
             (d, e) =>
             {
                 if (d is Element3DCore { SceneNode: ScreenDuplicationNode node })
                 {
-                    node.DisplayIndex = (int)e.NewValue;
+                    node.DisplayIndex = (int)e.NewValue!;
                 }
-            }));
+            });
 
     /// <summary>
     /// Gets or sets a value indicating whether [stretch to fill].
@@ -100,7 +107,7 @@ public class ScreenDuplicationModel : Element3D
     {
         get
         {
-            return (bool)GetValue(StretchToFillProperty);
+            return (bool)GetValue(StretchToFillProperty)!;
         }
         set
         {
@@ -112,14 +119,15 @@ public class ScreenDuplicationModel : Element3D
     /// The stretch to fill property
     /// </summary>
     public static readonly DependencyProperty StretchToFillProperty =
-        DependencyProperty.Register("StretchToFill", typeof(bool), typeof(ScreenDuplicationModel), new PropertyMetadata(false,
+        HelixProperty.Register<ScreenDuplicationModel, bool>("StretchToFill",
+            false,
             (d, e) =>
             {
                 if (d is Element3DCore { SceneNode: ScreenDuplicationNode node })
                 {
-                    node.StretchToFill = (bool)e.NewValue;
+                    node.StretchToFill = (bool)e.NewValue!;
                 }
-            }));
+            });
 
     /// <summary>
     /// Gets or sets a value indicating whether [show mouse cursor].
@@ -131,7 +139,7 @@ public class ScreenDuplicationModel : Element3D
     {
         get
         {
-            return (bool)GetValue(ShowMouseCursorProperty);
+            return (bool)GetValue(ShowMouseCursorProperty)!;
         }
         set
         {
@@ -143,14 +151,15 @@ public class ScreenDuplicationModel : Element3D
     /// The show mouse cursor property
     /// </summary>
     public static readonly DependencyProperty ShowMouseCursorProperty =
-        DependencyProperty.Register("ShowMouseCursor", typeof(bool), typeof(ScreenDuplicationModel), new PropertyMetadata(true,
+        HelixProperty.Register<ScreenDuplicationModel, bool>("ShowMouseCursor",
+            true,
             (d, e) =>
             {
                 if (d is Element3DCore { SceneNode: ScreenDuplicationNode node })
                 {
-                    node.ShowMouseCursor = (bool)e.NewValue;
+                    node.ShowMouseCursor = (bool)e.NewValue!;
                 }
-            }));
+            });
 
     /// <summary>
     /// Initializes a new instance of the <see cref="ScreenDuplicationModel"/> class.

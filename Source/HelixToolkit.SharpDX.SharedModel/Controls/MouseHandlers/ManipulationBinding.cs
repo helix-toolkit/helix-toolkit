@@ -3,6 +3,8 @@
 #elif WINUI
 #elif WPF
 using System.ComponentModel;
+#elif AVALONIA
+using System.ComponentModel;
 #else
 #error Unknown framework
 #endif
@@ -12,6 +14,8 @@ using System.ComponentModel;
 namespace HelixToolkit.WinUI.SharpDX;
 #elif WPF
 namespace HelixToolkit.Wpf.SharpDX;
+#elif AVALONIA
+namespace HelixToolkit.Avalonia.SharpDX;
 #else
 #error Unknown framework
 #endif
@@ -29,6 +33,8 @@ public class ManipulationBinding : InputBinding
 #if false
 #elif WINUI
 #elif WPF
+    [TypeConverter(typeof(ManipulationGestureConverter))]
+#elif AVALONIA
     [TypeConverter(typeof(ManipulationGestureConverter))]
 #else
 #error Unknown framework

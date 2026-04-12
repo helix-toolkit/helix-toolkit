@@ -30,8 +30,7 @@
         </h:HelixViewport3D>
         <StackPanel Orientation="Horizontal"
                     HorizontalAlignment="Left"
-                    VerticalAlignment="Bottom"
-                    Opacity="0.5">
+                    VerticalAlignment="Bottom">
             <WrapPanel>
                 <Slider x:Name="diameterSlider"
                      Value="0.4"

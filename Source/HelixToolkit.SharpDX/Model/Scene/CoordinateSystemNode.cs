@@ -176,7 +176,7 @@ public class CoordinateSystemNode : ScreenSpacedNode
     public CoordinateSystemNode()
     {
         IsHitTestVisible = false;
-        CameraType = ScreenSpacedCameraType.Perspective;
+        CameraType = ScreenSpacedCameraType.Auto;
         arrowMeshModel.Material = new ColorMaterialCore();
         arrowMeshModel.CullMode = CullMode.Back;
         axisBillboard.EnableViewFrustumCheck = false;
@@ -296,5 +296,20 @@ public class CoordinateSystemNode : ScreenSpacedNode
     protected override bool CanHitTest(HitTestContext? context)
     {
         return false;
+    }
+
+    protected override void OnCoordinateSystemChanged(bool isRightHand)
+    {
+        base.OnCoordinateSystemChanged(isRightHand);
+
+        if (axisBillboard.Geometry is BillboardText3D labelText)
+        {
+            float scale = Mode == ScreenSpacedMode.RelativeScreenSpaced ? 0.5f : 4.0f;
+
+            for (int i = 0; i < 3; i++)
+            {
+                labelText.TextInfo[i].Scale = scale;
+            }
+        }
     }
 }

@@ -7,6 +7,8 @@ using System.ComponentModel;
 using HelixToolkit.WinUI.SharpDX.Elements2D;
 #elif WPF
 using HelixToolkit.Wpf.SharpDX.Elements2D;
+#elif AVALONIA
+using HelixToolkit.Avalonia.SharpDX.Elements2D;
 #else
 #error Unknown framework
 #endif
@@ -16,6 +18,8 @@ using HelixToolkit.Wpf.SharpDX.Elements2D;
 namespace HelixToolkit.WinUI.SharpDX;
 #elif WPF
 namespace HelixToolkit.Wpf.SharpDX;
+#elif AVALONIA
+namespace HelixToolkit.Avalonia.SharpDX;
 #else
 #error Unknown framework
 #endif

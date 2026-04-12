@@ -6,6 +6,8 @@ using HelixToolkit.SharpDX.Model.Scene;
 using HelixToolkit.WinUI.SharpDX.Model;
 #elif WPF
 using HelixToolkit.Wpf.SharpDX.Model;
+#elif AVALONIA
+using HelixToolkit.Avalonia.SharpDX.Model;
 #else
 #error Unknown framework
 #endif
@@ -15,6 +17,8 @@ using HelixToolkit.Wpf.SharpDX.Model;
 namespace HelixToolkit.WinUI.SharpDX;
 #elif WPF
 namespace HelixToolkit.Wpf.SharpDX;
+#elif AVALONIA
+namespace HelixToolkit.Avalonia.SharpDX;
 #else
 #error Unknown framework
 #endif
@@ -29,23 +33,23 @@ public class InstancingBillboardModel3D : BillboardTextModel3D
     /// List of instance parameter. 
     /// </summary>
     public static readonly DependencyProperty InstanceAdvArrayProperty =
-        DependencyProperty.Register("InstanceParamArray", typeof(IList<BillboardInstanceParameter>), typeof(InstancingBillboardModel3D),
-            new PropertyMetadata(null, (d, e) =>
+        HelixProperty.Register<InstancingBillboardModel3D, IList<BillboardInstanceParameter>?>("InstanceParamArray",
+            null, (d, e) =>
             {
                 if (d is Element3DCore { SceneNode: InstancingBillboardNode node })
                 {
                     node.InstanceParamArray = e.NewValue as IList<BillboardInstanceParameter>;
                 }
-            }));
+            });
 
     /// <summary>
     /// List of instance parameters. 
     /// </summary>
-    public IList<BillboardInstanceParameter> InstanceParamArray
+    public IList<BillboardInstanceParameter>? InstanceParamArray
     {
         get
         {
-            return (IList<BillboardInstanceParameter>)this.GetValue(InstanceAdvArrayProperty);
+            return (IList<BillboardInstanceParameter>?)this.GetValue(InstanceAdvArrayProperty);
         }
         set
         {

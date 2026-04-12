@@ -1,0 +1,66 @@
+# A single-file workflow that only runs when manually triggered (workflow_dispatch).
+# It mirrors the build job from your CI but does not publish packages.
+on:
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: 'Branch or ref to build (e.g. main or refs/heads/feature/x)'
+        required: true
+        default: 'main'
+      dotnet_version:
+        description: '.NET SDK version to use (e.g. 8.0.x, 6.0.x)'
+        required: true
+        default: '8.0.x'
+      configuration:
+        description: 'Build configuration'
+        required: true
+        default: 'Release'
+
+name: Manual build
+
+jobs:
+  build:
+    runs-on: windows-latest
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.inputs.branch }}
+          fetch-depth: 0
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ github.event.inputs.dotnet_version }}
+
+      - name: Setup msbuild
+        uses: microsoft/setup-msbuild@v2
+
+      - name: Install GitVersion (optional, keeps parity with CI)
+        run: choco install gitversion.portable --version=5.12.0 -y
+
+      - name: Restore NuGet packages
+        run: nuget restore .\Source\HelixToolkit.sln
+
+      - name: Run GitVersion
+        run: gitversion /l console /output buildserver /updateprojectfiles
+
+      - name: Build Shaders
+        run: dotnet build .\Source\HelixToolkit.Native.ShaderBuilder\HelixToolkit.Native.ShaderBuilder.csproj --configuration ${{ github.event.inputs.configuration }} --no-restore
+
+      - name: Build solution
+        run: dotnet build .\Source\HelixToolkit.sln --configuration ${{ github.event.inputs.configuration }} --no-restore
+
+      - name: Run tests
+        run: .\Source\run-tests.cmd ${{ github.event.inputs.configuration }}
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: manual-build-artifacts
+          path: |
+            Source/**/bin/${{ github.event.inputs.configuration }}/**/*.nupkg
+            Source/**/bin/${{ github.event.inputs.configuration }}/**/*.snupkg

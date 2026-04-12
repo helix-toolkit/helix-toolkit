@@ -5,6 +5,9 @@ using Microsoft.UI.Xaml.Data;
 using System.Globalization;
 using System.Windows;
 using System.Windows.Data;
+#elif AVALONIA
+using Avalonia.Data.Converters;
+using System.Globalization;
 #else
 #error Unknown framework
 #endif
@@ -14,6 +17,8 @@ using System.Windows.Data;
 namespace HelixToolkit.WinUI.SharpDX;
 #elif WPF
 namespace HelixToolkit.Wpf.SharpDX;
+#elif AVALONIA
+namespace HelixToolkit.Avalonia.SharpDX;
 #else
 #error Unknown framework
 #endif
@@ -38,10 +43,24 @@ public sealed class EmptyStringToVisibilityConverter : IValueConverter
     public object? Convert(object? value, Type targetType, object? parameter, string language)
 #elif WPF
     public object? Convert(object? value, Type targetType, object parameter, CultureInfo culture)
+#elif AVALONIA
+    public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
 #else
 #error Unknown framework
 #endif
     {
+#if AVALONIA
+        if (targetType == typeof(bool) && value is string s)
+        {
+            bool isNotNullOrEmpty = !string.IsNullOrEmpty(s);
+            if (isNotNullOrEmpty != this.Inverted)
+            {
+                return true;
+            }
+
+            return false;
+        }
+#else
         if (targetType == typeof(Visibility) && value is string s)
         {
             bool isNotNullOrEmpty = !string.IsNullOrEmpty(s);
@@ -52,6 +71,7 @@ public sealed class EmptyStringToVisibilityConverter : IValueConverter
 
             return Visibility.Collapsed;
         }
+#endif
 
         return null;
     }
@@ -61,6 +81,8 @@ public sealed class EmptyStringToVisibilityConverter : IValueConverter
     public object? ConvertBack(object? value, Type targetType, object? parameter, string language)
 #elif WPF
     public object ConvertBack(object? value, Type targetType, object parameter, CultureInfo culture)
+#elif AVALONIA
+    public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
 #else
 #error Unknown framework
 #endif

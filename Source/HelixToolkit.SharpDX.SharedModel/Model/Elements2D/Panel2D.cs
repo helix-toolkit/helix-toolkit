@@ -10,6 +10,10 @@ using Microsoft.UI.Xaml.Media;
 #elif WPF
 using System.Windows.Markup;
 using System.Windows.Media;
+#elif AVALONIA
+using Avalonia.LogicalTree;
+using Avalonia.Media;
+using Avalonia.Metadata;
 #else
 #error Unknown framework
 #endif
@@ -19,6 +23,8 @@ using System.Windows.Media;
 namespace HelixToolkit.WinUI.SharpDX.Elements2D;
 #elif WPF
 namespace HelixToolkit.Wpf.SharpDX.Elements2D;
+#elif AVALONIA
+namespace HelixToolkit.Avalonia.SharpDX.Elements2D;
 #else
 #error Unknown framework
 #endif
@@ -28,6 +34,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D;
 [ContentProperty(Name = "Children")]
 #elif WPF
 [ContentProperty("Children")]
+#elif AVALONIA
 #else
 #error Unknown framework
 #endif
@@ -37,6 +44,7 @@ public class Panel2D : Element2D
 #elif WINUI
     new
 #elif WPF
+#elif AVALONIA
 #else
 #error Unknown framework
 #endif
@@ -44,7 +52,7 @@ public class Panel2D : Element2D
     {
         get
         {
-            return (Brush)GetValue(BackgroundProperty);
+            return (Brush)GetValue(BackgroundProperty)!;
         }
         set
         {
@@ -56,12 +64,16 @@ public class Panel2D : Element2D
 #elif WINUI
     new
 #elif WPF
+#elif AVALONIA
 #else
 #error Unknown framework
 #endif
     public static readonly DependencyProperty BackgroundProperty =
-        DependencyProperty.Register("Background", typeof(Brush), typeof(Panel2D), new PropertyMetadata(new SolidColorBrush(Colors.Transparent)));
+        HelixProperty.Register<Panel2D, Brush>("Background", new SolidColorBrush(Colors.Transparent));
 
+#if AVALONIA
+    [Content]
+#endif
     public ObservableCollection<Element2D> Children
     {
         get;
@@ -84,7 +96,14 @@ public class Panel2D : Element2D
         {
             foreach (var item in SceneNode.Items)
             {
+#if false
+#elif WINUI || WPF
                 this.RemoveLogicalChild(item.WrapperSource);
+#elif AVALONIA
+                this.RemoveLogicalChild(item.WrapperSource as ILogical);
+#else
+#error Unknown framework
+#endif
             }
 
             (SceneNode as PanelNode2D)?.Clear();

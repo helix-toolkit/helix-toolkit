@@ -38,11 +38,6 @@ public class VolumeTextureNode : SceneNode
 
     private MaterialVariable? materialVariable;
 
-    public VolumeTextureNode()
-    {
-        RenderType = RenderType.Transparent;
-    }
-
     protected override bool OnAttach(IEffectsManager effectsManager)
     {
         if (base.OnAttach(effectsManager))

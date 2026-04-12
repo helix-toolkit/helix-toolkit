@@ -1,7 +1,6 @@
 ﻿<Project>
 
   <PropertyGroup>
-    <SolutionDir Condition="'$(SolutionDir)'==''">$(MSBuildThisFileDirectory)</SolutionDir>
     <Version>3.0.0</Version>
     <IsPackable>false</IsPackable>
     <Description>Helix Toolkit is a collection of 3D components for .NET.</Description>
@@ -24,24 +23,28 @@
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
 
+  <PropertyGroup>
+    <AvaloniaVersion>11.2.0</AvaloniaVersion>
+  </PropertyGroup>
+
   <ItemGroup>
-    <None Include="$(SolutionDir)..\LICENSE">
+    <None Include="$(MSBuildThisFileDirectory)..\LICENSE">
       <Pack>True</Pack>
       <PackagePath></PackagePath>
     </None>
-    <None Include="$(SolutionDir)..\AUTHORS">
+    <None Include="$(MSBuildThisFileDirectory)..\AUTHORS">
       <Pack>True</Pack>
       <PackagePath></PackagePath>
     </None>
-    <None Include="$(SolutionDir)..\CONTRIBUTORS">
+    <None Include="$(MSBuildThisFileDirectory)..\CONTRIBUTORS">
       <Pack>True</Pack>
       <PackagePath></PackagePath>
     </None>
-    <None Include="$(SolutionDir)..\README.md">
+    <None Include="$(MSBuildThisFileDirectory)..\README.md">
       <Pack>True</Pack>
       <PackagePath></PackagePath>
     </None>
-    <None Include="$(SolutionDir)..\Images\helixtoolkit.png">
+    <None Include="$(MSBuildThisFileDirectory)..\Images\helixtoolkit.png">
       <Pack>True</Pack>
       <PackagePath></PackagePath>
     </None>

@@ -5,6 +5,8 @@
 using HelixToolkit.WinUI.SharpDX.Model;
 #elif WPF
 using HelixToolkit.Wpf.SharpDX.Model;
+#elif AVALONIA
+using HelixToolkit.Avalonia.SharpDX.Model;
 #else
 #error Unknown framework
 #endif
@@ -14,6 +16,8 @@ using HelixToolkit.Wpf.SharpDX.Model;
 namespace HelixToolkit.WinUI.SharpDX;
 #elif WPF
 namespace HelixToolkit.Wpf.SharpDX;
+#elif AVALONIA
+namespace HelixToolkit.Avalonia.SharpDX;
 #else
 #error Unknown framework
 #endif
@@ -29,26 +33,28 @@ public abstract class MaterialGeometryModel3D : GeometryModel3D
     /// 
     /// </summary>
     public static readonly DependencyProperty MaterialProperty =
-        DependencyProperty.Register("Material", typeof(Material), typeof(MaterialGeometryModel3D), new PropertyMetadata(null, (d, e) =>
+        HelixProperty.Register<MaterialGeometryModel3D, Material?>("Material",
+            null, (d, e) =>
         {
             if (d is Element3DCore { SceneNode: MaterialGeometryNode core })
             {
                 core.Material = (Material?)e.NewValue;
             }
-        }));
+        });
 
     /// <summary>
     /// Specifiy if model material is transparent. 
     /// During rendering, transparent objects are rendered after opaque objects. Transparent objects' order in scene graph are preserved.
     /// </summary>
     public static readonly DependencyProperty IsTransparentProperty =
-        DependencyProperty.Register("IsTransparent", typeof(bool), typeof(MaterialGeometryModel3D), new PropertyMetadata(false, (d, e) =>
+        HelixProperty.Register<MaterialGeometryModel3D, bool>("IsTransparent",
+            false, (d, e) =>
         {
             if (d is Element3DCore { SceneNode: MaterialGeometryNode core })
             {
-                core.IsTransparent = (bool)e.NewValue;
+                core.IsTransparent = (bool)e.NewValue!;
             }
-        }));
+        });
 
     /// <summary>
     /// 
@@ -73,7 +79,7 @@ public abstract class MaterialGeometryModel3D : GeometryModel3D
     {
         get
         {
-            return (bool)GetValue(IsTransparentProperty);
+            return (bool)GetValue(IsTransparentProperty)!;
         }
         set
         {

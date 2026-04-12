@@ -5,15 +5,17 @@
 namespace HelixToolkit.WinUI.SharpDX;
 #elif WPF
 namespace HelixToolkit.Wpf.SharpDX;
+#elif AVALONIA
+namespace HelixToolkit.Avalonia.SharpDX;
 #else
 #error Unknown framework
 #endif
 
 public class OctreeLineGeometryModel3D : CompositeModel3D
 {
-    public static readonly DependencyProperty OctreeProperty
-        = DependencyProperty.Register("Octree", typeof(IOctreeBasic), typeof(OctreeLineGeometryModel3D),
-            new PropertyMetadata(null, (s, e) =>
+    public static readonly DependencyProperty OctreeProperty =
+        HelixProperty.Register<OctreeLineGeometryModel3D, IOctreeBasic?>("Octree",
+            null, (s, e) =>
             {
                 if (s is not OctreeLineGeometryModel3D d)
                 {
@@ -35,15 +37,15 @@ public class OctreeLineGeometryModel3D : CompositeModel3D
                     }
                 }
                 d.CreateOctreeLines();
-            }));
+            });
 
-    public static readonly DependencyProperty LineColorProperty
-        = DependencyProperty.Register("LineColor", typeof(UIColor), typeof(OctreeLineGeometryModel3D), new PropertyMetadata(UIColors.Green));
+    public static readonly DependencyProperty LineColorProperty =
+        HelixProperty.Register<OctreeLineGeometryModel3D, UIColor>("LineColor", UIColors.Green);
 
-    public static readonly DependencyProperty HitLineColorProperty
-        = DependencyProperty.Register("HitLineColor", typeof(UIColor), typeof(OctreeLineGeometryModel3D), new PropertyMetadata(UIColors.Red));
+    public static readonly DependencyProperty HitLineColorProperty =
+        HelixProperty.Register<OctreeLineGeometryModel3D, UIColor>("HitLineColor", UIColors.Red);
 
-    public IOctreeBasic Octree
+    public IOctreeBasic? Octree
     {
         set
         {
@@ -51,7 +53,7 @@ public class OctreeLineGeometryModel3D : CompositeModel3D
         }
         get
         {
-            return (IOctreeBasic)GetValue(OctreeProperty);
+            return (IOctreeBasic?)GetValue(OctreeProperty);
         }
     }
 
@@ -63,7 +65,7 @@ public class OctreeLineGeometryModel3D : CompositeModel3D
         }
         get
         {
-            return (UIColor)GetValue(LineColorProperty);
+            return (UIColor)GetValue(LineColorProperty)!;
         }
     }
     public UIColor HitLineColor
@@ -74,7 +76,7 @@ public class OctreeLineGeometryModel3D : CompositeModel3D
         }
         get
         {
-            return (UIColor)GetValue(HitLineColorProperty);
+            return (UIColor)GetValue(HitLineColorProperty)!;
         }
     }
 
@@ -101,7 +103,16 @@ public class OctreeLineGeometryModel3D : CompositeModel3D
 
     private void CreateOctreeLines()
     {
-        if (Octree != null && Visibility == UIVisibility.Visible && IsRendering)
+        if (Octree != null
+#if false
+#elif WINUI || WPF
+            && Visibility == UIVisibility.Visible
+#elif AVALONIA
+            && Visibility == true
+#else
+#error Unknown framework
+#endif
+            && IsRendering)
         {
             OctreeVisual.Geometry = Octree.CreateOctreeLineModel();
             OctreeVisual.Color = LineColor;
@@ -114,7 +125,17 @@ public class OctreeLineGeometryModel3D : CompositeModel3D
 
     private void OctreeLineGeometryModel3D_OnHit(object? sender, EventArgs args)
     {
-        if (sender is IOctreeBasic node && node.HitPathBoundingBoxes.Count > 0 && Visibility == UIVisibility.Visible && IsRendering)
+        if (sender is IOctreeBasic node
+            && node.HitPathBoundingBoxes.Count > 0
+#if false
+#elif WINUI || WPF
+            && Visibility == UIVisibility.Visible
+#elif AVALONIA
+            && Visibility == true
+#else
+#error Unknown framework
+#endif
+            && IsRendering)
         {
             HitVisual.Geometry = node.HitPathBoundingBoxes.CreatePathLines();
             HitVisual.Color = HitLineColor;

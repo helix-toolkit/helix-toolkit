@@ -86,7 +86,24 @@ namespace HelixToolkit.Maths
                 default: throw new ArgumentOutOfRangeException(nameof(index), "Indices for Plane run from 0 to 3, inclusive.");
             }
         }
-
+        /// <summary>
+        /// Get the origin of the plane.
+        /// </summary>
+        /// <param name="plane"></param>
+        /// <returns></returns>
+        public static Vector3 GetPlanOrigin(ref Plane plane)
+        {
+            return -plane.D * Vector3.Normalize(plane.Normal);
+        }
+        /// <summary>
+        /// Get the origin of the plane.
+        /// </summary>
+        /// <param name="plane"></param>
+        /// <returns></returns>
+        public static Vector3 GetPlanOrigin(this Plane plane)
+        {
+            return GetPlanOrigin(ref plane);
+        }
         /// <summary>
         /// Creates an array containing the elements of the plane.
         /// </summary>

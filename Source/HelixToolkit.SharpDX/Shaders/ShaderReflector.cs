@@ -74,6 +74,10 @@ public sealed class ShaderReflector : IShaderReflector
                         var uDescTyped = new UAVDescription(res.Name, stage, UnorderedAccessViewType.RWTyped);
                         UAVMappings.Add(res.Name, uDescTyped.CreateMapping(res.BindPoint));
                         break;
+                    case ShaderInputType.UnorderedAccessViewRWStructured:
+                        var uDescRWStr = new UAVDescription(res.Name, stage, UnorderedAccessViewType.RWStructured);
+                        UAVMappings.Add(res.Name, uDescRWStr.CreateMapping(res.BindPoint));
+                        break;
                     case ShaderInputType.Sampler:
                         SamplerMappings.Add(res.Name, new SamplerMapping(res.BindPoint, res.Name, stage));
                         break;

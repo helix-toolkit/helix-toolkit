@@ -6,13 +6,14 @@
         <Configuration>
           <Format>cobertura</Format>
           <UseSourceLink>true</UseSourceLink>
+          <SingleHit>true</SingleHit>
         </Configuration>
       </DataCollector>
     </DataCollectors>
   </DataCollectionRunSettings>
   <InProcDataCollectionRunSettings>
     <InProcDataCollectors>
-      <InProcDataCollector assemblyQualifiedName="Coverlet.Collector.DataCollection.CoverletInProcDataCollector, coverlet.collector, Version=6.0.2.0, Culture=neutral, PublicKeyToken=null"
+      <InProcDataCollector assemblyQualifiedName="Coverlet.Collector.DataCollection.CoverletInProcDataCollector, coverlet.collector, Version=6.0.4.0, Culture=neutral, PublicKeyToken=null"
                      friendlyName="XPlat Code Coverage"
                      enabled="True"
                      codebase="coverlet.collector.dll" />

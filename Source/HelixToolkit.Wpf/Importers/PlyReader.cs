@@ -348,6 +348,10 @@ public sealed class PlyReader : ModelReader
         /// <summary>
         /// unsigned integer
         /// </summary>
+        _uint32,
+        /// <summary>
+        /// unsigned integer
+        /// </summary>
         _uint8,
         /// <summary>
         /// single-precision float
@@ -718,6 +722,7 @@ public sealed class PlyReader : ModelReader
                 result = int.Parse(propValue);
                 break;
             case PlyDataTypes._uint:
+            case PlyDataTypes._uint32:
                 result = uint.Parse(propValue);
                 break;
             case PlyDataTypes._float:
@@ -774,6 +779,7 @@ public sealed class PlyReader : ModelReader
                     break;
                 }
             case PlyDataTypes._uint:
+            case PlyDataTypes._uint32:
                 {
                     result = reverseBytes ? BitConverter.ToUInt32(reader.ReadBytes(4).Reverse().ToArray(), 0) : reader.ReadUInt32();
                     break;

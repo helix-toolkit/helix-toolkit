@@ -1,5 +1,5 @@
-﻿using Assimp;
-using Assimp.Unmanaged;
+﻿using SharpAssimp;
+using SharpAssimp.Unmanaged;
 using HelixToolkit.SharpDX.Model;
 using SharpDX.Direct3D11;
 using System.Diagnostics.CodeAnalysis;
@@ -34,7 +34,7 @@ public partial class Exporter
     /// </summary>
     /// <param name="phong">The phong.</param>
     /// <param name="assimpMaterial">The assimp material.</param>
-    protected virtual void AddProperties(PhongMaterialCore phong, global::Assimp.Material assimpMaterial)
+    protected virtual void AddProperties(PhongMaterialCore phong, global::SharpAssimp.Material assimpMaterial)
     {
         assimpMaterial.ShadingMode = ShadingMode.Blinn;
         assimpMaterial.AddProperty(new MaterialProperty(AiMatKeys.COLOR_DIFFUSE_BASE, phong.DiffuseColor.ToAssimpColor4D()));
@@ -88,7 +88,7 @@ public partial class Exporter
     /// </summary>
     /// <param name="pbr">The PBR.</param>
     /// <param name="assimpMaterial">The assimp material.</param>
-    protected virtual void AddProperties(PBRMaterialCore pbr, global::Assimp.Material assimpMaterial)
+    protected virtual void AddProperties(PBRMaterialCore pbr, global::SharpAssimp.Material assimpMaterial)
     {
         assimpMaterial.ShadingMode = ShadingMode.Fresnel;
         assimpMaterial.AddProperty(new MaterialProperty(AiMatKeys.COLOR_DIFFUSE_BASE, pbr.AlbedoColor.ToAssimpColor4D()));
@@ -98,7 +98,7 @@ public partial class Exporter
         assimpMaterial.AddProperty(new MaterialProperty(GLTFMatKeys.AI_MATKEY_GLTF_ROUGHNESS_FACTOR, pbr.RoughnessFactor));
         if (pbr.AmbientOcclusionFactor != 1)
         {
-            assimpMaterial.AddProperty(new MaterialProperty(AiMatKeys.COLOR_AMBIENT, new Color4D(pbr.AmbientOcclusionFactor)));
+            assimpMaterial.AddProperty(new MaterialProperty(AiMatKeys.COLOR_AMBIENT, new Vector4(pbr.AmbientOcclusionFactor)));
         }
         if (pbr.ReflectanceFactor != 0)
         {
@@ -150,7 +150,7 @@ public partial class Exporter
     /// </summary>
     /// <param name="diffuse">The diffuse.</param>
     /// <param name="assimpMaterial">The assimp material.</param>
-    protected virtual void AddProperties(DiffuseMaterialCore diffuse, global::Assimp.Material assimpMaterial)
+    protected virtual void AddProperties(DiffuseMaterialCore diffuse, global::SharpAssimp.Material assimpMaterial)
     {
         assimpMaterial.ShadingMode = ShadingMode.Gouraud;
         assimpMaterial.AddProperty(new MaterialProperty(AiMatKeys.COLOR_DIFFUSE_BASE, diffuse.DiffuseColor.ToAssimpColor4D()));
@@ -160,9 +160,9 @@ public partial class Exporter
     /// </summary>
     /// <param name="material">The material.</param>
     /// <returns></returns>
-    protected virtual global::Assimp.Material OnCreateAssimpMaterial(MaterialCore material)
+    protected virtual global::SharpAssimp.Material OnCreateAssimpMaterial(MaterialCore material)
     {
-        var assimpMaterial = new global::Assimp.Material()
+        var assimpMaterial = new global::SharpAssimp.Material()
         {
             Name = string.IsNullOrEmpty(material.Name) ? $"MAT_{Interlocked.Increment(ref MaterialIndexForNoName)}" : material.Name
         };

@@ -28,7 +28,8 @@ public class ObjExporterTests
         var viewport = new Viewport3DX();
         viewport.Items.Add(mesh);
 
-        string temp = Path.GetTempPath();
+        string temp = Path.GetTempFileName();
+        string tempName = Path.GetFileName(temp);
         var objPath = temp + "model.obj";
         var mtlPath = temp + "model.mtl";
 
@@ -40,7 +41,7 @@ public class ObjExporterTests
             }
 
             string contentObj = File.ReadAllText(objPath);
-            string expectedObj = @"mtllib ./model.mtl
+            string expectedObj = @"mtllib ./" + tempName + @"model.mtl
 o object1
 g group1
 usemtl mat1
@@ -68,6 +69,8 @@ f 1/1 2/2 3/3
 
             if (File.Exists(mtlPath))
                 File.Delete(mtlPath);
+
+            File.Delete(temp);
         }
     }
 }

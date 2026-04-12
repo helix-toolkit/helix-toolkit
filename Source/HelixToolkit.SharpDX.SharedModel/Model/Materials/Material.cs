@@ -6,6 +6,8 @@ using HelixToolkit.SharpDX.Model;
 namespace HelixToolkit.WinUI.SharpDX;
 #elif WPF
 namespace HelixToolkit.Wpf.SharpDX;
+#elif AVALONIA
+namespace HelixToolkit.Avalonia.SharpDX;
 #else
 #error Unknown framework
 #endif
@@ -24,21 +26,29 @@ public abstract class Material : Freezable
         }
     }
 
-    public static readonly DependencyProperty NameProperty =
-        DependencyProperty.Register("Name", typeof(string), typeof(Material), new PropertyMetadata(null,
+    public static readonly
+#if AVALONIA
+        new
+#endif
+        DependencyProperty NameProperty =
+        HelixProperty.Register<Material, string>("Name", string.Empty,
             (d, e) =>
             {
                 if (d is Material material && material.Core is not null)
                 {
-                    material.Core.Name = (string)e.NewValue;
+                    material.Core.Name = (string)e.NewValue!;
                 }
-            }));
+            });
 
-    public string Name
+    public
+#if AVALONIA
+        new
+#endif
+        string Name
     {
         get
         {
-            return (string)this.GetValue(NameProperty);
+            return (string)this.GetValue(NameProperty)!;
         }
         set
         {

@@ -1,4 +1,5 @@
 ﻿using NUnit.Framework;
+using System.Collections;
 using System.Diagnostics.CodeAnalysis;
 
 namespace HelixToolkit.Tests;
@@ -48,5 +49,47 @@ public class StringExtensionsTests
             Assert.That(s1[1], Is.EqualTo("2"));
             Assert.That(s1[2], Is.EqualTo("3"));
         });
+    }
+
+    [Test]
+    public void EnumerateToString_Default()
+    {
+        IEnumerable list = new List<string>()
+        {
+            "1",
+            "2",
+            "3"
+        };
+
+        string str = list.EnumerateToString();
+        Assert.That(str, Is.EqualTo("1 2 3"));
+    }
+
+    [Test]
+    public void EnumerateToString_Prefix()
+    {
+        IEnumerable list = new List<string>()
+        {
+            "1",
+            "2",
+            "3"
+        };
+
+        string str = list.EnumerateToString("v");
+        Assert.That(str, Is.EqualTo("v1 v2 v3"));
+    }
+
+    [Test]
+    public void EnumerateToString_Separator()
+    {
+        IEnumerable list = new List<string>()
+        {
+            "1",
+            "2",
+            "3"
+        };
+
+        string str = list.EnumerateToString(null, ";");
+        Assert.That(str, Is.EqualTo("1;2;3"));
     }
 }

@@ -1,6 +1,7 @@
 ﻿#if NET6_0_OR_GREATER
 using System.Runtime.Intrinsics.X86;
 using System.Runtime.Intrinsics;
+using HelixToolkit.Maths;
 #endif
 
 namespace HelixToolkit.Wpf;
@@ -10,7 +11,7 @@ internal static class FloatingPointArrayConverters
     public unsafe static void ConvertFloatToDouble<T1, T2>(int arrayCount, T1[] floatArray, T2[] doubleArray)
     {
 #if NET8_0_OR_GREATER
-        if (Avx512F.IsSupported)
+        if (MathSettings.EnableSIMD && Avx512F.IsSupported)
         {
             int floatCount = Vector256<float>.Count;
             int length = arrayCount / floatCount;
@@ -46,7 +47,7 @@ internal static class FloatingPointArrayConverters
 #endif
 
 #if NET6_0_OR_GREATER
-        if (Avx.IsSupported)
+        if (MathSettings.EnableSIMD && Avx.IsSupported)
         {
             int floatCount = Vector128<float>.Count;
             int length = arrayCount / floatCount;
@@ -101,7 +102,7 @@ internal static class FloatingPointArrayConverters
     public unsafe static void ConvertDoubleToFloat<T1, T2>(int arrayCount, T1[] doubleArray, T2[] floatArray)
     {
 #if NET8_0_OR_GREATER
-        if (Avx512F.IsSupported)
+        if (MathSettings.EnableSIMD && Avx512F.IsSupported)
         {
             int doubleCount = Vector512<double>.Count;
             int length = arrayCount / doubleCount;
@@ -137,7 +138,7 @@ internal static class FloatingPointArrayConverters
 #endif
 
 #if NET6_0_OR_GREATER
-        if (Avx.IsSupported)
+        if (MathSettings.EnableSIMD && Avx.IsSupported)
         {
             int doubleCount = Vector256<double>.Count;
             int length = arrayCount / doubleCount;

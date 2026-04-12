@@ -5,16 +5,18 @@ using HelixToolkit.SharpDX.Model.Scene2D;
 using HelixToolkit.WinUI.SharpDX.Core2D;
 using HelixToolkit.WinUI.SharpDX.Extensions;
 using Microsoft.UI.Xaml.Media;
-using Thickness = Microsoft.UI.Xaml.Thickness;
 using DashStyle = SharpDX.Direct2D1.DashStyle;
 using DashStyles = SharpDX.Direct2D1.DashStyle;
 #elif WPF
 using HelixToolkit.Wpf.SharpDX.Core2D;
 using HelixToolkit.Wpf.SharpDX.Extensions;
 using System.Windows.Media;
-using Thickness = System.Windows.Thickness;
 using DashStyle = System.Windows.Media.DashStyle;
 using DashStyles = System.Windows.Media.DashStyles;
+#elif AVALONIA
+using HelixToolkit.Avalonia.SharpDX.Core2D;
+using HelixToolkit.Avalonia.SharpDX.Extensions;
+using Avalonia.Media;
 #else
 #error Unknown framework
 #endif
@@ -24,6 +26,8 @@ using DashStyles = System.Windows.Media.DashStyles;
 namespace HelixToolkit.WinUI.SharpDX.Elements2D;
 #elif WPF
 namespace HelixToolkit.Wpf.SharpDX.Elements2D;
+#elif AVALONIA
+namespace HelixToolkit.Avalonia.SharpDX.Elements2D;
 #else
 #error Unknown framework
 #endif
@@ -34,6 +38,7 @@ public class Border2D : ContentElement2D
 #elif WINUI
     new
 #elif WPF
+#elif AVALONIA
 #else
 #error Unknown framework
 #endif
@@ -41,7 +46,7 @@ public class Border2D : ContentElement2D
     {
         get
         {
-            return (double)GetValue(CornerRadiusProperty);
+            return (double)GetValue(CornerRadiusProperty)!;
         }
         set
         {
@@ -53,31 +58,34 @@ public class Border2D : ContentElement2D
 #elif WINUI
     new
 #elif WPF
+#elif AVALONIA
 #else
 #error Unknown framework
 #endif
     public static readonly DependencyProperty CornerRadiusProperty =
-        DependencyProperty.Register("CornerRadius", typeof(double), typeof(Border2D), new PropertyMetadata(0.0,
+        HelixProperty.Register<Border2D, double>("CornerRadius",
+            0.0,
             (d, e) =>
             {
                 if (d is Element2DCore { SceneNode: BorderNode2D node })
                 {
-                    node.CornerRadius = (float)(double)e.NewValue;
+                    node.CornerRadius = (float)(double)e.NewValue!;
                 }
-            }));
+            });
 
 #if false
 #elif WINUI
     new
 #elif WPF
+#elif AVALONIA
 #else
 #error Unknown framework
 #endif
-    public Thickness Padding
+    public UIThickness Padding
     {
         get
         {
-            return (Thickness)GetValue(PaddingProperty);
+            return (UIThickness)GetValue(PaddingProperty)!;
         }
         set
         {
@@ -89,41 +97,46 @@ public class Border2D : ContentElement2D
 #elif WINUI
     new
 #elif WPF
+#elif AVALONIA
 #else
 #error Unknown framework
 #endif
     public static readonly DependencyProperty PaddingProperty =
-        DependencyProperty.Register("Padding", typeof(Thickness), typeof(Border2D), new PropertyMetadata(new Thickness(0, 0, 0, 0),
+        HelixProperty.Register<Border2D, UIThickness>("Padding",
+            new UIThickness(0, 0, 0, 0),
             (d, e) =>
             {
                 if (d is Element2DCore { SceneNode: BorderNode2D node })
                 {
-                    node.Padding = ((Thickness)e.NewValue).ToD2DThickness();
+                    node.Padding = ((UIThickness)e.NewValue!).ToD2DThickness();
                 }
-            }));
+            });
 
     #region Stroke properties
 #if false
 #elif WINUI
     new
 #elif WPF
+#elif AVALONIA
 #else
 #error Unknown framework
 #endif
-    public static readonly DependencyProperty BorderBrushProperty
-        = DependencyProperty.Register("BorderBrush", typeof(Brush), typeof(Border2D), new PropertyMetadata(new SolidColorBrush(UIColors.Black),
+    public static readonly DependencyProperty BorderBrushProperty =
+        HelixProperty.Register<Border2D, Brush>("BorderBrush",
+            new SolidColorBrush(UIColors.Black),
             (d, e) =>
             {
                 if (d is Border2D node)
                 {
                     node.strokeChanged = true;
                 }
-            }));
+            });
 
 #if false
 #elif WINUI
     new
 #elif WPF
+#elif AVALONIA
 #else
 #error Unknown framework
 #endif
@@ -135,19 +148,20 @@ public class Border2D : ContentElement2D
         }
         get
         {
-            return (Brush)GetValue(BorderBrushProperty);
+            return (Brush)GetValue(BorderBrushProperty)!;
         }
     }
 
-    public static readonly DependencyProperty StrokeDashCapProperty
-    = DependencyProperty.Register("StrokeDashCap", typeof(PenLineCap), typeof(Border2D), new PropertyMetadata(PenLineCap.Flat,
+    public static readonly DependencyProperty StrokeDashCapProperty =
+        HelixProperty.Register<Border2D, PenLineCap>("StrokeDashCap",
+            PenLineCap.Flat,
         (d, e) =>
         {
             if (d is Element2DCore { SceneNode: BorderNode2D node })
             {
-                node.StrokeDashCap = ((PenLineCap)e.NewValue).ToD2DCapStyle();
+                node.StrokeDashCap = ((PenLineCap)e.NewValue!).ToD2DCapStyle();
             }
-        }));
+        });
 
     public PenLineCap StrokeDashCap
     {
@@ -157,19 +171,20 @@ public class Border2D : ContentElement2D
         }
         get
         {
-            return (PenLineCap)GetValue(StrokeDashCapProperty);
+            return (PenLineCap)GetValue(StrokeDashCapProperty)!;
         }
     }
 
-    public static readonly DependencyProperty StrokeStartLineCapProperty
-        = DependencyProperty.Register("StrokeStartLineCap", typeof(PenLineCap), typeof(Border2D), new PropertyMetadata(PenLineCap.Flat,
+    public static readonly DependencyProperty StrokeStartLineCapProperty =
+        HelixProperty.Register<Border2D, PenLineCap>("StrokeStartLineCap",
+            PenLineCap.Flat,
             (d, e) =>
             {
                 if (d is Element2DCore { SceneNode: BorderNode2D node })
                 {
-                    node.StrokeStartLineCap = ((PenLineCap)e.NewValue).ToD2DCapStyle();
+                    node.StrokeStartLineCap = ((PenLineCap)e.NewValue!).ToD2DCapStyle();
                 }
-            }));
+            });
 
     public PenLineCap StrokeStartLineCap
     {
@@ -179,19 +194,20 @@ public class Border2D : ContentElement2D
         }
         get
         {
-            return (PenLineCap)GetValue(StrokeStartLineCapProperty);
+            return (PenLineCap)GetValue(StrokeStartLineCapProperty)!;
         }
     }
 
-    public static readonly DependencyProperty StrokeEndLineCapProperty
-    = DependencyProperty.Register("StrokeEndLineCap", typeof(PenLineCap), typeof(Border2D), new PropertyMetadata(PenLineCap.Flat,
-        (d, e) =>
-        {
-            if (d is Element2DCore { SceneNode: BorderNode2D node })
+    public static readonly DependencyProperty StrokeEndLineCapProperty =
+        HelixProperty.Register<Border2D, PenLineCap>("StrokeEndLineCap",
+            PenLineCap.Flat,
+            (d, e) =>
             {
-                node.StrokeEndLineCap = ((PenLineCap)e.NewValue).ToD2DCapStyle();
-            }
-        }));
+                if (d is Element2DCore { SceneNode: BorderNode2D node })
+                {
+                    node.StrokeEndLineCap = ((PenLineCap)e.NewValue!).ToD2DCapStyle();
+                }
+            });
 
     public PenLineCap StrokeEndLineCap
     {
@@ -201,19 +217,24 @@ public class Border2D : ContentElement2D
         }
         get
         {
-            return (PenLineCap)GetValue(StrokeEndLineCapProperty);
+            return (PenLineCap)GetValue(StrokeEndLineCapProperty)!;
         }
     }
 
-    public static readonly DependencyProperty StrokeDashStyleProperty
-        = DependencyProperty.Register("StrokeDashStyle", typeof(DashStyle), typeof(Border2D), new PropertyMetadata(DashStyles.Solid,
+    public static readonly DependencyProperty StrokeDashStyleProperty =
+        HelixProperty.Register<Border2D, DashStyle>("StrokeDashStyle",
+#if WINUI || WPF
+            DashStyles.Solid,
+#elif AVALONIA
+            new DashStyle(),
+#endif
             (d, e) =>
             {
                 if (d is Element2DCore { SceneNode: BorderNode2D node })
                 {
-                    node.StrokeDashStyle = ((DashStyle)e.NewValue).ToD2DDashStyle();
+                    node.StrokeDashStyle = ((DashStyle)e.NewValue!).ToD2DDashStyle();
                 }
-            }));
+            });
 
     public DashStyle StrokeDashStyle
     {
@@ -223,19 +244,20 @@ public class Border2D : ContentElement2D
         }
         get
         {
-            return (DashStyle)GetValue(StrokeDashStyleProperty);
+            return (DashStyle)GetValue(StrokeDashStyleProperty)!;
         }
     }
 
-    public static readonly DependencyProperty StrokeDashOffsetProperty
-        = DependencyProperty.Register("StrokeDashOffset", typeof(double), typeof(Border2D), new PropertyMetadata(0.0,
+    public static readonly DependencyProperty StrokeDashOffsetProperty =
+        HelixProperty.Register<Border2D, double>("StrokeDashOffset",
+            0.0,
             (d, e) =>
             {
                 if (d is Element2DCore { SceneNode: BorderNode2D node })
                 {
-                    node.StrokeDashOffset = (float)(double)e.NewValue;
+                    node.StrokeDashOffset = (float)(double)e.NewValue!;
                 }
-            }));
+            });
 
     public double StrokeDashOffset
     {
@@ -245,19 +267,20 @@ public class Border2D : ContentElement2D
         }
         get
         {
-            return (double)GetValue(StrokeDashOffsetProperty);
+            return (double)GetValue(StrokeDashOffsetProperty)!;
         }
     }
 
-    public static readonly DependencyProperty StrokeLineJoinProperty
-    = DependencyProperty.Register("StrokeLineJoin", typeof(PenLineJoin), typeof(Border2D), new PropertyMetadata(PenLineJoin.Miter,
+    public static readonly DependencyProperty StrokeLineJoinProperty =
+        HelixProperty.Register<Border2D, PenLineJoin>("StrokeLineJoin",
+            PenLineJoin.Miter,
         (d, e) =>
         {
             if (d is Element2DCore { SceneNode: BorderNode2D node })
             {
-                node.StrokeLineJoin = ((PenLineJoin)e.NewValue).ToD2DLineJoin();
+                node.StrokeLineJoin = ((PenLineJoin)e.NewValue!).ToD2DLineJoin();
             }
-        }));
+        });
 
     public PenLineJoin StrokeLineJoin
     {
@@ -267,19 +290,20 @@ public class Border2D : ContentElement2D
         }
         get
         {
-            return (PenLineJoin)GetValue(StrokeLineJoinProperty);
+            return (PenLineJoin)GetValue(StrokeLineJoinProperty)!;
         }
     }
 
-    public static readonly DependencyProperty StrokeMiterLimitProperty
-        = DependencyProperty.Register("StrokeMiterLimit", typeof(double), typeof(Border2D), new PropertyMetadata(1.0,
+    public static readonly DependencyProperty StrokeMiterLimitProperty =
+        HelixProperty.Register<Border2D, double>("StrokeMiterLimit",
+            1.0,
             (d, e) =>
             {
                 if (d is Element2DCore { SceneNode: BorderNode2D node })
                 {
-                    node.StrokeMiterLimit = (float)(double)e.NewValue;
+                    node.StrokeMiterLimit = (float)(double)e.NewValue!;
                 }
-            }));
+            });
 
     public double StrokeMiterLimit
     {
@@ -289,7 +313,7 @@ public class Border2D : ContentElement2D
         }
         get
         {
-            return (double)GetValue(StrokeMiterLimitProperty);
+            return (double)GetValue(StrokeMiterLimitProperty)!;
         }
     }
 
@@ -297,27 +321,29 @@ public class Border2D : ContentElement2D
 #elif WINUI
     new
 #elif WPF
+#elif AVALONIA
 #else
 #error Unknown framework
 #endif
-    public static readonly DependencyProperty BorderThicknessProperty
-        = DependencyProperty.Register("BorderThickness", typeof(Thickness), typeof(Border2D),
-            new PropertyMetadata(new Thickness(0, 0, 0, 0), (d, e) =>
+    public static readonly DependencyProperty BorderThicknessProperty =
+        HelixProperty.Register<Border2D, UIThickness>("BorderThickness",
+            new UIThickness(0, 0, 0, 0), (d, e) =>
             {
                 if (d is Element2DCore { SceneNode: BorderNode2D node })
                 {
-                    node.BorderThickness = ((Thickness)e.NewValue).ToD2DThickness();
+                    node.BorderThickness = ((UIThickness)e.NewValue!).ToD2DThickness();
                 }
-            }));
+            });
 
 #if false
 #elif WINUI
     new
 #elif WPF
+#elif AVALONIA
 #else
 #error Unknown framework
 #endif
-    public Thickness BorderThickness
+    public UIThickness BorderThickness
     {
         set
         {
@@ -325,7 +351,7 @@ public class Border2D : ContentElement2D
         }
         get
         {
-            return (Thickness)GetValue(BorderThicknessProperty);
+            return (UIThickness)GetValue(BorderThicknessProperty)!;
         }
     }
     #endregion

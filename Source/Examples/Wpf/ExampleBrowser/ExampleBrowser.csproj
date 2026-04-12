@@ -13,12 +13,12 @@
     <PackageReference Include="CommunityToolkit.Common" Version="8.3.2" />
     <PackageReference Include="CommunityToolkit.Diagnostics" Version="8.3.2" />
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.3.2" />
-    <PackageReference Include="DependencyPropertyGenerator" Version="1.4.0">
+    <PackageReference Include="DependencyPropertyGenerator" Version="1.5.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>compile; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="NAudio" Version="2.2.1" />
-    <PackageReference Include="PolySharp" Version="1.14.1">
+    <PackageReference Include="PolySharp" Version="1.15.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
@@ -49,6 +49,7 @@
     <Resource Include="Examples\Hippo\Icons\*.xaml" />
     <Resource Include="Examples\Hippo\Application.ico" />
     <Resource Include="Examples\Lego\lego.png" />
+    <Resource Include="Examples\MeshBuilderSample\TextureTestImage.png"/>
     <Resource Include="Examples\ParticleSystem\smoke.png" />
     <Resource Include="Examples\SolarSystem\Textures\*.jpg" />
     <Resource Include="Examples\Voxels\MyModel.xml" />
@@ -109,6 +110,9 @@
     <Reference Include="Petzold.Media3D">
       <HintPath>..\..\..\..\Components\Petzold.Media3D.dll</HintPath>
     </Reference>
+    <Reference Include="SRTM">
+      <HintPath>..\..\..\..\Components\SRTM.dll</HintPath>
+    </Reference>
     <Reference Include="Triangle">
       <HintPath>..\..\..\..\Components\Triangle.dll</HintPath>
     </Reference>
@@ -121,8 +125,15 @@
     <None Include="Examples\Panorama\Models\**\*.*">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Remove="Examples\MeshBuilderSample\TextureTestImage.png" />
     <None Remove="Examples\Voxels\MyModel.xml" />
     <None Update="Examples\Terrain\Models\crater_0513.btz">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Examples\Terrain\Models\N34W119.hgt.zip">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Examples\Terrain\Models\N43E042.hgt.zip">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

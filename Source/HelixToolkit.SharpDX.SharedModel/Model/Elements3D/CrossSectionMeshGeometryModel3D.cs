@@ -7,6 +7,8 @@ using SharpDX;
 using HelixToolkit.WinUI.SharpDX.Model;
 #elif WPF
 using HelixToolkit.Wpf.SharpDX.Model;
+#elif AVALONIA
+using HelixToolkit.Avalonia.SharpDX.Model;
 #else
 #error Unknown framework
 #endif
@@ -16,6 +18,8 @@ using HelixToolkit.Wpf.SharpDX.Model;
 namespace HelixToolkit.WinUI.SharpDX;
 #elif WPF
 namespace HelixToolkit.Wpf.SharpDX;
+#elif AVALONIA
+namespace HelixToolkit.Avalonia.SharpDX;
 #else
 #error Unknown framework
 #endif
@@ -36,7 +40,7 @@ public class CrossSectionMeshGeometryModel3D : MeshGeometryModel3D
     {
         get
         {
-            return (CuttingOperation)GetValue(CuttingOperationProperty);
+            return (CuttingOperation)GetValue(CuttingOperationProperty)!;
         }
         set
         {
@@ -48,28 +52,29 @@ public class CrossSectionMeshGeometryModel3D : MeshGeometryModel3D
     /// The cutting operation property
     /// </summary>
     public static readonly DependencyProperty CuttingOperationProperty =
-        DependencyProperty.Register("CuttingOperation", typeof(CuttingOperation), typeof(CrossSectionMeshGeometryModel3D),
-            new PropertyMetadata(CuttingOperation.Intersect, (d, e) =>
+        HelixProperty.Register<CrossSectionMeshGeometryModel3D, CuttingOperation>("CuttingOperation",
+            CuttingOperation.Intersect, (d, e) =>
             {
                 if (d is Element3DCore { SceneNode: CrossSectionMeshNode node })
                 {
-                    node.CuttingOperation = (CuttingOperation)e.NewValue;
+                    node.CuttingOperation = (CuttingOperation)e.NewValue!;
                 }
-            }));
+            });
 
 
     /// <summary>
     /// Defines the CrossSectionColorProperty
     /// </summary>
-    public static readonly DependencyProperty CrossSectionColorProperty = DependencyProperty.Register("CrossSectionColor", typeof(UIColor), typeof(CrossSectionMeshGeometryModel3D),
-                new PropertyMetadata(UIColors.Firebrick,
+    public static readonly DependencyProperty CrossSectionColorProperty =
+        HelixProperty.Register<CrossSectionMeshGeometryModel3D, UIColor>("CrossSectionColor",
+            UIColors.Firebrick,
        (d, e) =>
        {
            if (d is Element3DCore { SceneNode: CrossSectionMeshNode node })
            {
-               node.CrossSectionColor = ((UIColor)e.NewValue).ToColor4();
+               node.CrossSectionColor = ((UIColor)e.NewValue!).ToColor4();
            }
-       }));
+       });
 
     /// <summary>
     /// Gets or sets the CrossSectionColor
@@ -82,21 +87,22 @@ public class CrossSectionMeshGeometryModel3D : MeshGeometryModel3D
         }
         get
         {
-            return (UIColor)GetValue(CrossSectionColorProperty);
+            return (UIColor)GetValue(CrossSectionColorProperty)!;
         }
     }
     /// <summary>
     /// Enable CrossSection Plane
     /// </summary>
-    public static readonly DependencyProperty EnablePlane1Property = DependencyProperty.Register("EnablePlane1", typeof(bool), typeof(CrossSectionMeshGeometryModel3D),
-       new PropertyMetadata(false,
+    public static readonly DependencyProperty EnablePlane1Property =
+        HelixProperty.Register<CrossSectionMeshGeometryModel3D, bool>("EnablePlane1",
+            false,
        (d, e) =>
        {
            if (d is Element3DCore { SceneNode: CrossSectionMeshNode node })
            {
-               node.EnablePlane1 = (bool)e.NewValue;
+               node.EnablePlane1 = (bool)e.NewValue!;
            }
-       }));
+       });
 
     /// <summary>
     /// Enable CrossSection Plane
@@ -109,22 +115,23 @@ public class CrossSectionMeshGeometryModel3D : MeshGeometryModel3D
         }
         get
         {
-            return (bool)GetValue(EnablePlane1Property);
+            return (bool)GetValue(EnablePlane1Property)!;
         }
     }
 
     /// <summary>
     /// Enable CrossSection Plane
     /// </summary>
-    public static readonly DependencyProperty EnablePlane2Property = DependencyProperty.Register("EnablePlane2", typeof(bool), typeof(CrossSectionMeshGeometryModel3D),
-       new PropertyMetadata(false,
+    public static readonly DependencyProperty EnablePlane2Property =
+        HelixProperty.Register<CrossSectionMeshGeometryModel3D, bool>("EnablePlane2",
+            false,
        (d, e) =>
        {
            if (d is Element3DCore { SceneNode: CrossSectionMeshNode node })
            {
-               node.EnablePlane2 = (bool)e.NewValue;
+               node.EnablePlane2 = (bool)e.NewValue!;
            }
-       }));
+       });
 
     /// <summary>
     /// Enable CrossSection Plane
@@ -137,22 +144,23 @@ public class CrossSectionMeshGeometryModel3D : MeshGeometryModel3D
         }
         get
         {
-            return (bool)GetValue(EnablePlane2Property);
+            return (bool)GetValue(EnablePlane2Property)!;
         }
     }
 
     /// <summary>
     /// Enable CrossSection Plane
     /// </summary>
-    public static readonly DependencyProperty EnablePlane3Property = DependencyProperty.Register("EnablePlane3", typeof(bool), typeof(CrossSectionMeshGeometryModel3D),
-       new PropertyMetadata(false,
+    public static readonly DependencyProperty EnablePlane3Property =
+        HelixProperty.Register<CrossSectionMeshGeometryModel3D, bool>("EnablePlane3",
+            false,
        (d, e) =>
        {
            if (d is Element3DCore { SceneNode: CrossSectionMeshNode node })
            {
-               node.EnablePlane3 = (bool)e.NewValue;
+               node.EnablePlane3 = (bool)e.NewValue!;
            }
-       }));
+       });
 
     /// <summary>
     /// Enable CrossSection Plane
@@ -165,22 +173,23 @@ public class CrossSectionMeshGeometryModel3D : MeshGeometryModel3D
         }
         get
         {
-            return (bool)GetValue(EnablePlane3Property);
+            return (bool)GetValue(EnablePlane3Property)!;
         }
     }
 
     /// <summary>
     /// Enable CrossSection Plane
     /// </summary>
-    public static readonly DependencyProperty EnablePlane4Property = DependencyProperty.Register("EnablePlane4", typeof(bool), typeof(CrossSectionMeshGeometryModel3D),
-       new PropertyMetadata(false,
+    public static readonly DependencyProperty EnablePlane4Property =
+        HelixProperty.Register<CrossSectionMeshGeometryModel3D, bool>("EnablePlane4",
+            false,
        (d, e) =>
        {
            if (d is Element3DCore { SceneNode: CrossSectionMeshNode node })
            {
-               node.EnablePlane4 = (bool)e.NewValue;
+               node.EnablePlane4 = (bool)e.NewValue!;
            }
-       }));
+       });
 
     /// <summary>
     /// Enable CrossSection Plane
@@ -193,22 +202,23 @@ public class CrossSectionMeshGeometryModel3D : MeshGeometryModel3D
         }
         get
         {
-            return (bool)GetValue(EnablePlane4Property);
+            return (bool)GetValue(EnablePlane4Property)!;
         }
     }
 
     /// <summary>
     /// Enable CrossSection Plane
     /// </summary>
-    public static readonly DependencyProperty EnablePlane5Property = DependencyProperty.Register("EnablePlane5", typeof(bool), typeof(CrossSectionMeshGeometryModel3D),
-       new PropertyMetadata(false,
+    public static readonly DependencyProperty EnablePlane5Property =
+        HelixProperty.Register<CrossSectionMeshGeometryModel3D, bool>("EnablePlane5",
+            false,
        (d, e) =>
        {
            if (d is Element3DCore { SceneNode: CrossSectionMeshNode node })
            {
-               node.EnablePlane5 = (bool)e.NewValue;
+               node.EnablePlane5 = (bool)e.NewValue!;
            }
-       }));
+       });
 
     /// <summary>
     /// Enable CrossSection Plane
@@ -221,22 +231,23 @@ public class CrossSectionMeshGeometryModel3D : MeshGeometryModel3D
         }
         get
         {
-            return (bool)GetValue(EnablePlane5Property);
+            return (bool)GetValue(EnablePlane5Property)!;
         }
     }
 
     /// <summary>
     /// Enable CrossSection Plane
     /// </summary>
-    public static readonly DependencyProperty EnablePlane6Property = DependencyProperty.Register("EnablePlane6", typeof(bool), typeof(CrossSectionMeshGeometryModel3D),
-       new PropertyMetadata(false,
+    public static readonly DependencyProperty EnablePlane6Property =
+        HelixProperty.Register<CrossSectionMeshGeometryModel3D, bool>("EnablePlane6",
+            false,
        (d, e) =>
        {
            if (d is Element3DCore { SceneNode: CrossSectionMeshNode node })
            {
-               node.EnablePlane6 = (bool)e.NewValue;
+               node.EnablePlane6 = (bool)e.NewValue!;
            }
-       }));
+       });
 
     /// <summary>
     /// Enable CrossSection Plane
@@ -249,22 +260,23 @@ public class CrossSectionMeshGeometryModel3D : MeshGeometryModel3D
         }
         get
         {
-            return (bool)GetValue(EnablePlane6Property);
+            return (bool)GetValue(EnablePlane6Property)!;
         }
     }
 
     /// <summary>
     /// Enable CrossSection Plane
     /// </summary>
-    public static readonly DependencyProperty EnablePlane7Property = DependencyProperty.Register("EnablePlane7", typeof(bool), typeof(CrossSectionMeshGeometryModel3D),
-       new PropertyMetadata(false,
+    public static readonly DependencyProperty EnablePlane7Property =
+        HelixProperty.Register<CrossSectionMeshGeometryModel3D, bool>("EnablePlane7",
+            false,
        (d, e) =>
        {
            if (d is Element3DCore { SceneNode: CrossSectionMeshNode node })
            {
-               node.EnablePlane7 = (bool)e.NewValue;
+               node.EnablePlane7 = (bool)e.NewValue!;
            }
-       }));
+       });
 
     /// <summary>
     /// Enable CrossSection Plane
@@ -277,22 +289,23 @@ public class CrossSectionMeshGeometryModel3D : MeshGeometryModel3D
         }
         get
         {
-            return (bool)GetValue(EnablePlane7Property);
+            return (bool)GetValue(EnablePlane7Property)!;
         }
     }
 
     /// <summary>
     /// Enable CrossSection Plane
     /// </summary>
-    public static readonly DependencyProperty EnablePlane8Property = DependencyProperty.Register("EnablePlane8", typeof(bool), typeof(CrossSectionMeshGeometryModel3D),
-       new PropertyMetadata(false,
+    public static readonly DependencyProperty EnablePlane8Property =
+        HelixProperty.Register<CrossSectionMeshGeometryModel3D, bool>("EnablePlane8",
+            false,
        (d, e) =>
        {
            if (d is Element3DCore { SceneNode: CrossSectionMeshNode node })
            {
-               node.EnablePlane8 = (bool)e.NewValue;
+               node.EnablePlane8 = (bool)e.NewValue!;
            }
-       }));
+       });
 
     /// <summary>
     /// Enable CrossSection Plane
@@ -305,22 +318,23 @@ public class CrossSectionMeshGeometryModel3D : MeshGeometryModel3D
         }
         get
         {
-            return (bool)GetValue(EnablePlane8Property);
+            return (bool)GetValue(EnablePlane8Property)!;
         }
     }
 
     /// <summary>
     /// Defines the Plane1Property
     /// </summary>
-    public static readonly DependencyProperty Plane1Property = DependencyProperty.Register("Plane1", typeof(Plane), typeof(CrossSectionMeshGeometryModel3D),
-       new PropertyMetadata(new Plane(),
+    public static readonly DependencyProperty Plane1Property =
+        HelixProperty.Register<CrossSectionMeshGeometryModel3D, Plane>("Plane1",
+            new Plane(),
        (d, e) =>
        {
            if (d is Element3DCore { SceneNode: CrossSectionMeshNode node })
            {
-               node.Plane1 = (Plane)e.NewValue;
+               node.Plane1 = (Plane)e.NewValue!;
            }
-       }));
+       });
 
     /// <summary>
     /// Gets or sets the Plane1
@@ -333,22 +347,23 @@ public class CrossSectionMeshGeometryModel3D : MeshGeometryModel3D
         }
         get
         {
-            return (Plane)GetValue(Plane1Property);
+            return (Plane)GetValue(Plane1Property)!;
         }
     }
 
     /// <summary>
     /// Defines the Plane2Property
     /// </summary>
-    public static readonly DependencyProperty Plane2Property = DependencyProperty.Register("Plane2", typeof(Plane), typeof(CrossSectionMeshGeometryModel3D),
-       new PropertyMetadata(new Plane(),
+    public static readonly DependencyProperty Plane2Property =
+        HelixProperty.Register<CrossSectionMeshGeometryModel3D, Plane>("Plane2",
+            new Plane(),
        (d, e) =>
        {
            if (d is Element3DCore { SceneNode: CrossSectionMeshNode node })
            {
-               node.Plane2 = (Plane)e.NewValue;
+               node.Plane2 = (Plane)e.NewValue!;
            }
-       }));
+       });
 
     /// <summary>
     /// Gets or sets the Plane2
@@ -361,22 +376,23 @@ public class CrossSectionMeshGeometryModel3D : MeshGeometryModel3D
         }
         get
         {
-            return (Plane)GetValue(Plane2Property);
+            return (Plane)GetValue(Plane2Property)!;
         }
     }
 
     /// <summary>
     /// Defines the Plane3Property
     /// </summary>
-    public static readonly DependencyProperty Plane3Property = DependencyProperty.Register("Plane3", typeof(Plane), typeof(CrossSectionMeshGeometryModel3D),
-       new PropertyMetadata(new Plane(),
+    public static readonly DependencyProperty Plane3Property =
+        HelixProperty.Register<CrossSectionMeshGeometryModel3D, Plane>("Plane3",
+            new Plane(),
        (d, e) =>
        {
            if (d is Element3DCore { SceneNode: CrossSectionMeshNode node })
            {
-               node.Plane3 = (Plane)e.NewValue;
+               node.Plane3 = (Plane)e.NewValue!;
            }
-       }));
+       });
 
     /// <summary>
     /// Gets or sets the Plane3
@@ -389,22 +405,23 @@ public class CrossSectionMeshGeometryModel3D : MeshGeometryModel3D
         }
         get
         {
-            return (Plane)GetValue(Plane3Property);
+            return (Plane)GetValue(Plane3Property)!;
         }
     }
 
     /// <summary>
     /// Defines the Plane4Property
     /// </summary>
-    public static readonly DependencyProperty Plane4Property = DependencyProperty.Register("Plane4", typeof(Plane), typeof(CrossSectionMeshGeometryModel3D),
-       new PropertyMetadata(new Plane(),
+    public static readonly DependencyProperty Plane4Property =
+        HelixProperty.Register<CrossSectionMeshGeometryModel3D, Plane>("Plane4",
+            new Plane(),
        (d, e) =>
        {
            if (d is Element3DCore { SceneNode: CrossSectionMeshNode node })
            {
-               node.Plane4 = (Plane)e.NewValue;
+               node.Plane4 = (Plane)e.NewValue!;
            }
-       }));
+       });
 
     /// <summary>
     /// Gets or sets the Plane4
@@ -417,22 +434,23 @@ public class CrossSectionMeshGeometryModel3D : MeshGeometryModel3D
         }
         get
         {
-            return (Plane)GetValue(Plane4Property);
+            return (Plane)GetValue(Plane4Property)!;
         }
     }
 
     /// <summary>
     /// Defines the Plane5Property
     /// </summary>
-    public static readonly DependencyProperty Plane5Property = DependencyProperty.Register("Plane5", typeof(Plane), typeof(CrossSectionMeshGeometryModel3D),
-       new PropertyMetadata(new Plane(),
+    public static readonly DependencyProperty Plane5Property =
+        HelixProperty.Register<CrossSectionMeshGeometryModel3D, Plane>("Plane5",
+            new Plane(),
        (d, e) =>
        {
            if (d is Element3DCore { SceneNode: CrossSectionMeshNode node })
            {
-               node.Plane5 = (Plane)e.NewValue;
+               node.Plane5 = (Plane)e.NewValue!;
            }
-       }));
+       });
 
     /// <summary>
     /// Gets or sets the Plane5
@@ -445,22 +463,23 @@ public class CrossSectionMeshGeometryModel3D : MeshGeometryModel3D
         }
         get
         {
-            return (Plane)GetValue(Plane5Property);
+            return (Plane)GetValue(Plane5Property)!;
         }
     }
 
     /// <summary>
     /// Defines the Plane6Property
     /// </summary>
-    public static readonly DependencyProperty Plane6Property = DependencyProperty.Register("Plane6", typeof(Plane), typeof(CrossSectionMeshGeometryModel3D),
-       new PropertyMetadata(new Plane(),
+    public static readonly DependencyProperty Plane6Property =
+        HelixProperty.Register<CrossSectionMeshGeometryModel3D, Plane>("Plane6",
+            new Plane(),
        (d, e) =>
        {
            if (d is Element3DCore { SceneNode: CrossSectionMeshNode node })
            {
-               node.Plane6 = (Plane)e.NewValue;
+               node.Plane6 = (Plane)e.NewValue!;
            }
-       }));
+       });
 
     /// <summary>
     /// Gets or sets the Plane6
@@ -473,22 +492,23 @@ public class CrossSectionMeshGeometryModel3D : MeshGeometryModel3D
         }
         get
         {
-            return (Plane)GetValue(Plane6Property);
+            return (Plane)GetValue(Plane6Property)!;
         }
     }
 
     /// <summary>
     /// Defines the Plane7Property
     /// </summary>
-    public static readonly DependencyProperty Plane7Property = DependencyProperty.Register("Plane7", typeof(Plane), typeof(CrossSectionMeshGeometryModel3D),
-       new PropertyMetadata(new Plane(),
+    public static readonly DependencyProperty Plane7Property =
+        HelixProperty.Register<CrossSectionMeshGeometryModel3D, Plane>("Plane7",
+            new Plane(),
        (d, e) =>
        {
            if (d is Element3DCore { SceneNode: CrossSectionMeshNode node })
            {
-               node.Plane7 = (Plane)e.NewValue;
+               node.Plane7 = (Plane)e.NewValue!;
            }
-       }));
+       });
 
     /// <summary>
     /// Gets or sets the Plane7
@@ -501,22 +521,23 @@ public class CrossSectionMeshGeometryModel3D : MeshGeometryModel3D
         }
         get
         {
-            return (Plane)GetValue(Plane7Property);
+            return (Plane)GetValue(Plane7Property)!;
         }
     }
 
     /// <summary>
     /// Defines the Plane8Property
     /// </summary>
-    public static readonly DependencyProperty Plane8Property = DependencyProperty.Register("Plane8", typeof(Plane), typeof(CrossSectionMeshGeometryModel3D),
-       new PropertyMetadata(new Plane(),
+    public static readonly DependencyProperty Plane8Property =
+        HelixProperty.Register<CrossSectionMeshGeometryModel3D, Plane>("Plane8",
+            new Plane(),
        (d, e) =>
        {
            if (d is Element3DCore { SceneNode: CrossSectionMeshNode node })
            {
-               node.Plane8 = (Plane)e.NewValue;
+               node.Plane8 = (Plane)e.NewValue!;
            }
-       }));
+       });
 
     /// <summary>
     /// Gets or sets the Plane8
@@ -529,7 +550,7 @@ public class CrossSectionMeshGeometryModel3D : MeshGeometryModel3D
         }
         get
         {
-            return (Plane)GetValue(Plane8Property);
+            return (Plane)GetValue(Plane8Property)!;
         }
     }
     #endregion

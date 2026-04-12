@@ -1,6 +1,23 @@
-﻿using System.Windows.Input;
+﻿#if false
+#elif WINUI
+using Windows.UI.Core;
+#elif WPF
+using System.Windows.Input;
+#elif AVALONIA
+#else
+#error Unknown framework
+#endif
 
+#if false
+#elif WINUI
+namespace HelixToolkit.WinUI.SharpDX;
+#elif WPF
 namespace HelixToolkit.Wpf.SharpDX;
+#elif AVALONIA
+namespace HelixToolkit.Avalonia.SharpDX;
+#else
+#error Unknown framework
+#endif
 
 /// <summary>
 /// Handles panning.
@@ -26,7 +43,7 @@ internal class PanHandler : MouseGestureHandler
     /// <summary>
     /// Occurs when the position is changed during a manipulation.
     /// </summary>
-    /// <param name="e">The <see cref="Point"/> instance containing the event data.</param>
+    /// <param name="e">The <see cref="Point2D"/> instance containing the event data.</param>
     public override void Delta(Point e)
     {
         base.Delta(e);
@@ -36,11 +53,13 @@ internal class PanHandler : MouseGestureHandler
             return;
         }
 
-        var thisPoint3D = this.UnProject(e, this.panPoint3D, this.Camera.CameraInternal.LookDirection);
         if (Camera.CameraInternal.LookDirection.LengthSquared() < 1e-5f)
         {
             return;
         }
+
+        var thisPoint3D = this.UnProject(e, this.panPoint3D, this.Camera.CameraInternal.LookDirection);
+
         if (this.LastPoint3D == null || thisPoint3D == null)
         {
             return;
@@ -71,15 +90,18 @@ internal class PanHandler : MouseGestureHandler
             this.Controller.StopSpin();
             this.Controller.StopZooming();
         }
+
+        if (this.Camera is null)
+        {
+            return;
+        }
+
         if (this.CameraMode == global::HelixToolkit.SharpDX.CameraMode.FixedPosition)
         {
             return;
         }
 
-        if (this.Camera is not null)
-        {
-            this.Camera.Position += delta.ToVector3D();
-        }
+        this.Camera.Position += delta.ToVector3D();
     }
 
     /// <summary>
@@ -133,10 +155,12 @@ internal class PanHandler : MouseGestureHandler
         }
 
         this.panPoint3D = this.Camera.CameraInternal.Target;
+
         if (this.MouseDownNearestPoint3D.HasValue)
         {
             this.panPoint3D = this.MouseDownNearestPoint3D.Value;
         }
+
         this.LastPoint3D = this.UnProject(this.MouseDownPoint, this.panPoint3D, this.Camera.CameraInternal.LookDirection);
     }
 
@@ -157,7 +181,7 @@ internal class PanHandler : MouseGestureHandler
     /// <returns>
     /// A cursor.
     /// </returns>
-    protected override Cursor GetCursor()
+    protected override UICursor GetCursor()
     {
         return this.Controller.PanCursor;
     }
@@ -170,7 +194,7 @@ internal class PanHandler : MouseGestureHandler
     /// </param>
     protected override void OnInertiaStarting(double elapsedTime)
     {
-        var speed = (this.LastPoint - this.MouseDownPoint) * (40.0 / elapsedTime);
-        this.Controller.AddPanForce((float)speed.X, (float)speed.Y);
+        var speed = (this.LastPoint.ToVector2() - this.MouseDownPoint.ToVector2()) * (40.0f / (float)elapsedTime);
+        this.Controller.AddPanForce(speed.X, speed.Y);
     }
 }

@@ -18,13 +18,20 @@ public class ObjExporterTests : ExporterTests
     {
         string dir = Path.GetDirectoryName(typeof(ObjExporterTests).Assembly.Location) ?? "";
         dir = Path.Combine(dir!, string.Concat(Enumerable.Repeat("..\\", 5)));
+
+        if (Path.GetFullPath(dir).EndsWith("Source\\", StringComparison.OrdinalIgnoreCase))
+        {
+            dir = Path.Combine(dir, "..\\");
+        }
+
         Directory.SetCurrentDirectory(dir);
     }
 
     [Test]
     public void ShouldThrowExceptionIfMaterialsFileIsNotSpecified()
     {
-        string path = "temp.obj";
+        string temp = Path.GetTempFileName();
+        string path = temp + "temp.obj";
 
         try
         {
@@ -36,16 +43,17 @@ public class ObjExporterTests : ExporterTests
         }
         finally
         {
-            if (File.Exists(path))
-                File.Delete(path);
+            DeleteFileWithoutException(path);
+            DeleteFileWithoutException(temp);
         }
     }
 
     [Test]
     public void Export_SimpleModel_ValidOutput()
     {
-        string path = "temp.obj";
-        string mtlPath = Path.ChangeExtension(path, ".mtl");
+        string temp = Path.GetTempFileName();
+        string path = temp + "temp.obj";
+        string mtlPath = temp + "temp.mtl";
 
         try
         {
@@ -57,23 +65,25 @@ public class ObjExporterTests : ExporterTests
         }
         finally
         {
-            if (File.Exists(path))
-                File.Delete(path);
-
-            if (File.Exists(mtlPath))
-                File.Delete(mtlPath);
+            DeleteFileWithoutException(path);
+            DeleteFileWithoutException(mtlPath);
+            DeleteFileWithoutException(temp);
         }
     }
 
     [Test]
     public void Export_BoxWithGradientTexture_TextureExportedAsPng()
     {
-        var path = "box_gradient_png.obj";
-        var mtlPath = Path.ChangeExtension(path, ".mtl");
+        string temp = Path.GetTempFileName();
+        var path = temp + "box_gradient_png.obj";
+        var mtlPath = temp + "box_gradient_png.mtl";
+        var texturesFolder = temp + "_textures";
+
+        Directory.CreateDirectory(texturesFolder);
 
         try
         {
-            var e = new ObjExporter { MaterialsFile = mtlPath };
+            var e = new ObjExporter { MaterialsFile = mtlPath, TextureFolder = texturesFolder };
             using (var stream = File.Create(path))
             {
                 this.ExportModel(e, stream, () => new BoxVisual3D { Material = Materials.Rainbow });
@@ -81,26 +91,26 @@ public class ObjExporterTests : ExporterTests
         }
         finally
         {
-            if (File.Exists(path))
-                File.Delete(path);
-
-            if (File.Exists(mtlPath))
-                File.Delete(mtlPath);
-
-            if (File.Exists("mat1.png"))
-                File.Delete("mat1.png");
+            DeleteFileWithoutException(path);
+            DeleteFileWithoutException(mtlPath);
+            DeleteFileWithoutException(temp);
+            DeleteDirectoryWithoutException(texturesFolder);
         }
     }
 
     [Test]
     public void Export_BoxWithGradientTexture_TextureExportedAsJpg()
     {
-        var path = "box_gradient_jpg.obj";
-        var mtlPath = Path.ChangeExtension(path, ".mtl");
+        string temp = Path.GetTempFileName();
+        var path = temp + "box_gradient_jpg.obj";
+        var mtlPath = temp + "box_gradient_jpg.mtl";
+        var texturesFolder = temp + "_textures";
+
+        Directory.CreateDirectory(texturesFolder);
 
         try
         {
-            var e = new ObjExporter { TextureExtension = ".jpg", MaterialsFile = mtlPath };
+            var e = new ObjExporter { TextureExtension = ".jpg", MaterialsFile = mtlPath, TextureFolder = texturesFolder };
             using (var stream = File.Create(path))
             {
                 this.ExportModel(e, stream, () => new BoxVisual3D { Material = Materials.Rainbow });
@@ -108,14 +118,10 @@ public class ObjExporterTests : ExporterTests
         }
         finally
         {
-            if (File.Exists(path))
-                File.Delete(path);
-
-            if (File.Exists(mtlPath))
-                File.Delete(mtlPath);
-
-            if (File.Exists("mat1.jpg"))
-                File.Delete("mat1.jpg");
+            DeleteFileWithoutException(path);
+            DeleteFileWithoutException(mtlPath);
+            DeleteFileWithoutException(temp);
+            DeleteDirectoryWithoutException(texturesFolder);
         }
     }
 
@@ -134,7 +140,8 @@ public class ObjExporterTests : ExporterTests
         var viewport = new HelixViewport3D();
         viewport.Items.Add(mesh);
 
-        string temp = Path.GetTempPath();
+        string temp = Path.GetTempFileName();
+        string tempName = Path.GetFileName(temp);
         var objPath = temp + "model.obj";
         var mtlPath = temp + "model.mtl";
 
@@ -143,7 +150,7 @@ public class ObjExporterTests : ExporterTests
             viewport.Export(objPath);
 
             string contentObj = File.ReadAllText(objPath);
-            string expectedObj = @"mtllib ./model.mtl
+            string expectedObj = @"mtllib ./" + tempName + @"model.mtl
 o object1
 g group1
 usemtl mat1
@@ -166,11 +173,9 @@ f 1/1 2/2 3/3
         }
         finally
         {
-            if (File.Exists(objPath))
-                File.Delete(objPath);
-
-            if (File.Exists(mtlPath))
-                File.Delete(mtlPath);
+            DeleteFileWithoutException(objPath);
+            DeleteFileWithoutException(mtlPath);
+            DeleteFileWithoutException(temp);
         }
     }
 
@@ -290,5 +295,29 @@ f 1/1 2/2 3/3
 
         ClassicAssert.AreEqual(originalMesh.Positions[0], modelMesh.Positions[0]);
         ClassicAssert.AreEqual(originalMesh.Normals[0], modelMesh.Normals[0]);
+    }
+
+    private static void DeleteFileWithoutException(string path)
+    {
+        try
+        {
+            if (File.Exists(path))
+                File.Delete(path);
+        }
+        catch (IOException)
+        {
+        }
+    }
+
+    private static void DeleteDirectoryWithoutException(string path)
+    {
+        try
+        {
+            if (Directory.Exists(path))
+                Directory.Delete(path, true);
+        }
+        catch
+        {
+        }
     }
 }

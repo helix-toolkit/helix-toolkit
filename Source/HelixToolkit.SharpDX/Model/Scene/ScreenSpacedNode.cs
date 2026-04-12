@@ -189,6 +189,15 @@ public class ScreenSpacedNode : GroupNode
             if (RenderCore is IScreenSpacedRenderParams core)
             {
                 core.Mode = value;
+
+                if (core is ScreenSpacedMeshRenderCore renderCore)
+                {
+                    OnCoordinateSystemChanged(renderCore.IsRightHand);
+                }
+                else
+                {
+                    OnCoordinateSystemChanged(true);
+                }
             }
         }
         get
@@ -326,12 +335,12 @@ public class ScreenSpacedNode : GroupNode
         return core;
     }
 
-    private void Core_OnCoordinateSystemChanged(object? sender, BoolArgs e)
+    private void Core_OnCoordinateSystemChanged(object? sender, BoolArgs isRightHand)
     {
-        OnCoordinateSystemChanged(e.Value);
+        OnCoordinateSystemChanged(isRightHand.Value);
     }
 
-    protected virtual void OnCoordinateSystemChanged(bool e)
+    protected virtual void OnCoordinateSystemChanged(bool isRightHand)
     {
     }
 

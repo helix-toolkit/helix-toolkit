@@ -5,6 +5,8 @@
 using HelixToolkit.WinUI.SharpDX.Model;
 #elif WPF
 using HelixToolkit.Wpf.SharpDX.Model;
+#elif AVALONIA
+using HelixToolkit.Avalonia.SharpDX.Model;
 #else
 #error Unknown framework
 #endif
@@ -14,6 +16,8 @@ using HelixToolkit.Wpf.SharpDX.Model;
 namespace HelixToolkit.WinUI.SharpDX;
 #elif WPF
 namespace HelixToolkit.Wpf.SharpDX;
+#elif AVALONIA
+namespace HelixToolkit.Avalonia.SharpDX;
 #else
 #error Unknown framework
 #endif
@@ -35,7 +39,7 @@ public class TopMostGroup3D : GroupModel3D
     {
         get
         {
-            return (bool)GetValue(EnableTopMostProperty);
+            return (bool)GetValue(EnableTopMostProperty)!;
         }
         set
         {
@@ -45,13 +49,14 @@ public class TopMostGroup3D : GroupModel3D
 
     // Using a DependencyProperty as the backing store for EnableTopMost.  This enables animation, styling, binding, etc...
     public static readonly DependencyProperty EnableTopMostProperty =
-        DependencyProperty.Register("EnableTopMost", typeof(bool), typeof(TopMostGroup3D), new PropertyMetadata(true, (d, e) =>
+        HelixProperty.Register<TopMostGroup3D, bool>("EnableTopMost",
+            true, (d, e) =>
         {
             if (d is Element3DCore { SceneNode: TopMostGroupNode node })
             {
-                node.EnableTopMost = (bool)e.NewValue;
+                node.EnableTopMost = (bool)e.NewValue!;
             }
-        }));
+        });
 
     protected override SceneNode OnCreateSceneNode()
     {

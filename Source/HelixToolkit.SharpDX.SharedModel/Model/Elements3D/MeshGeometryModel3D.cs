@@ -6,6 +6,8 @@ using SharpDX.Direct3D11;
 using HelixToolkit.WinUI.SharpDX.Model;
 #elif WPF
 using HelixToolkit.Wpf.SharpDX.Model;
+#elif AVALONIA
+using HelixToolkit.Avalonia.SharpDX.Model;
 #else
 #error Unknown framework
 #endif
@@ -15,6 +17,8 @@ using HelixToolkit.Wpf.SharpDX.Model;
 namespace HelixToolkit.WinUI.SharpDX;
 #elif WPF
 namespace HelixToolkit.Wpf.SharpDX;
+#elif AVALONIA
+namespace HelixToolkit.Avalonia.SharpDX;
 #else
 #error Unknown framework
 #endif
@@ -28,62 +32,67 @@ public class MeshGeometryModel3D : MaterialGeometryModel3D
     /// <summary>
     /// The front counter clockwise property
     /// </summary>
-    public static readonly DependencyProperty FrontCounterClockwiseProperty = DependencyProperty.Register("FrontCounterClockwise", typeof(bool), typeof(MeshGeometryModel3D),
-        new PropertyMetadata(true, (d, e) =>
+    public static readonly DependencyProperty FrontCounterClockwiseProperty =
+        HelixProperty.Register<MeshGeometryModel3D, bool>("FrontCounterClockwise",
+            true, (d, e) =>
         {
             if (d is Element3DCore { SceneNode: MeshNode node })
             {
-                node.FrontCCW = (bool)e.NewValue;
+                node.FrontCCW = (bool)e.NewValue!;
             }
-        }));
+        });
 
     /// <summary>
     /// The cull mode property
     /// </summary>
-    public static readonly DependencyProperty CullModeProperty = DependencyProperty.Register("CullMode", typeof(CullMode), typeof(MeshGeometryModel3D),
-        new PropertyMetadata(CullMode.None, (d, e) =>
+    public static readonly DependencyProperty CullModeProperty =
+        HelixProperty.Register<MeshGeometryModel3D, CullMode>("CullMode",
+            CullMode.None, (d, e) =>
         {
             if (d is Element3DCore { SceneNode: MeshNode node })
             {
-                node.CullMode = (CullMode)e.NewValue;
+                node.CullMode = (CullMode)e.NewValue!;
             }
-        }));
+        });
 
     /// <summary>
     /// The invert normal property
     /// </summary>
-    public static readonly DependencyProperty InvertNormalProperty = DependencyProperty.Register("InvertNormal", typeof(bool), typeof(MeshGeometryModel3D),
-        new PropertyMetadata(false, (d, e) =>
+    public static readonly DependencyProperty InvertNormalProperty =
+        HelixProperty.Register<MeshGeometryModel3D, bool>("InvertNormal",
+            false, (d, e) =>
         {
             if (d is Element3DCore { SceneNode: MeshNode node })
             {
-                node.InvertNormal = (bool)e.NewValue;
+                node.InvertNormal = (bool)e.NewValue!;
             }
-        }));
+        });
 
     /// <summary>
     /// The render wireframe property
     /// </summary>
     public static readonly DependencyProperty RenderWireframeProperty =
-        DependencyProperty.Register("RenderWireframe", typeof(bool), typeof(MeshGeometryModel3D), new PropertyMetadata(false, (d, e) =>
+        HelixProperty.Register<MeshGeometryModel3D, bool>("RenderWireframe",
+            false, (d, e) =>
         {
             if (d is Element3DCore { SceneNode: MeshNode node })
             {
-                node.RenderWireframe = (bool)e.NewValue;
+                node.RenderWireframe = (bool)e.NewValue!;
             }
-        }));
+        });
 
     /// <summary>
     /// The wireframe color property
     /// </summary>
     public static readonly DependencyProperty WireframeColorProperty =
-        DependencyProperty.Register("WireframeColor", typeof(UIColor), typeof(MeshGeometryModel3D), new PropertyMetadata(UIColors.SkyBlue, (d, e) =>
+        HelixProperty.Register<MeshGeometryModel3D, UIColor>("WireframeColor",
+            UIColors.SkyBlue, (d, e) =>
         {
             if (d is Element3DCore { SceneNode: MeshNode node })
             {
-                node.WireframeColor = ((UIColor)e.NewValue).ToColor4();
+                node.WireframeColor = ((UIColor)e.NewValue!).ToColor4();
             }
-        }));
+        });
 
     /// <summary>
     /// Gets or sets a value indicating whether [render overlapping wireframe].
@@ -95,7 +104,7 @@ public class MeshGeometryModel3D : MaterialGeometryModel3D
     {
         get
         {
-            return (bool)GetValue(RenderWireframeProperty);
+            return (bool)GetValue(RenderWireframeProperty)!;
         }
         set
         {
@@ -113,7 +122,7 @@ public class MeshGeometryModel3D : MaterialGeometryModel3D
     {
         get
         {
-            return (UIColor)GetValue(WireframeColorProperty);
+            return (UIColor)GetValue(WireframeColorProperty)!;
         }
         set
         {
@@ -134,7 +143,7 @@ public class MeshGeometryModel3D : MaterialGeometryModel3D
         }
         get
         {
-            return (bool)GetValue(FrontCounterClockwiseProperty);
+            return (bool)GetValue(FrontCounterClockwiseProperty)!;
         }
     }
 
@@ -152,7 +161,7 @@ public class MeshGeometryModel3D : MaterialGeometryModel3D
         }
         get
         {
-            return (CullMode)GetValue(CullModeProperty);
+            return (CullMode)GetValue(CullModeProperty)!;
         }
     }
 
@@ -167,11 +176,12 @@ public class MeshGeometryModel3D : MaterialGeometryModel3D
         }
         get
         {
-            return (bool)GetValue(InvertNormalProperty);
+            return (bool)GetValue(InvertNormalProperty)!;
         }
     }
 
     #endregion
+
     /// <summary>
     /// Called when [create scene node].
     /// </summary>

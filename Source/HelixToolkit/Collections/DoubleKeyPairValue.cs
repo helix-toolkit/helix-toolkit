@@ -70,6 +70,6 @@ public sealed class DoubleKeyPairValue<K, T, V>
     /// </returns>
     public override string ToString()
     {
-        return Key1 + " - " + Key2 + " - " + Value;
+        return Key1.ToString() + " - " + Key2.ToString() + " - " + Value?.ToString();
     }
 }
