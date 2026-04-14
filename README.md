@@ -156,8 +156,11 @@ Please use the following template to report bugs.
 Nightly build myget feed link has been updated to: https://www.myget.org/F/helixtoolkit-nightly
 
 
+## Samples
 
-
-
+![ModelLoader](https://github.com/helix-toolkit/helix-toolkit.github.io/blob/master/assets/HelixToolkit/SharpDX/PBRHelmet.PNG)
+![PostEffects](https://github.com/helix-toolkit/helix-toolkit.github.io/blob/master/assets/HelixToolkit/SharpDX/PostEffects.PNG)
+![BoneSkinning](https://github.com/helix-toolkit/helix-toolkit.github.io/blob/master/assets/HelixToolkit/SharpDX/SkeletonAnimation.PNG)
+![VolumeRendering](https://github.com/helix-toolkit/helix-toolkit.github.io/blob/master/assets/HelixToolkit/SharpDX/VolumeRendering.png)
 
 
