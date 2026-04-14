@@ -67,6 +67,10 @@ public static class BitmapExtensions
         {
             return null;
         }
+        if (deviceResources.Device2D is null)
+        {
+            return null;
+        }
 
         var bitmap = new global::SharpDX.WIC.Bitmap(deviceResources.WICImgFactory, width, height, global::SharpDX.WIC.PixelFormat.Format32bppBGR,
             BitmapCreateCacheOption.CacheOnDemand);
