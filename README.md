@@ -134,7 +134,12 @@ Please use the following template to report bugs.
 - Reproduce Steps:
 - Sample Code:
 
+## What's next?
+
+We are currently developing the [next generation helix toolkit engine](https://github.com/helix-toolkit/helix-toolkit-nex) based on vulkun with modern 3D engine architecture. You can provide feature requests [here](https://github.com/helix-toolkit/helix-toolkit-nex/discussions/6).
+
 ## News
+
 #### 2025-11-25
 [v3.1.2](https://github.com/helix-toolkit/helix-toolkit/releases/tag/v3.1.2) releases are available on nuget. [Release Note](/CHANGELOG.md)
 
