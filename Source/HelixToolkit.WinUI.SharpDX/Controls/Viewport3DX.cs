@@ -1245,10 +1245,8 @@ public partial class Viewport3DX : Control, IViewport3DX
         {
             currentHit = null;
         }
-        if (currentHit is not null)
-        {
-            this.OnMouse3DDown?.Invoke(this, new MouseDown3DEventArgs(currentHit, pt, this, originalInputEventArgs));
-        }
+
+        this.OnMouse3DDown?.Invoke(this, new MouseDown3DEventArgs(currentHit, pt, this, originalInputEventArgs));
     }
 
     private bool ViewBoxHitTest(Point p)
@@ -1329,10 +1327,7 @@ public partial class Viewport3DX : Control, IViewport3DX
             }
         }
 
-        if (currentHit is not null)
-        {
-            this.OnMouse3DMove?.Invoke(this, new MouseMove3DEventArgs(currentHit, pt, this, originalInputEventArgs));
-        }
+        this.OnMouse3DMove?.Invoke(this, new MouseMove3DEventArgs(currentHit, pt, this, originalInputEventArgs));
     }
 
     /// <summary>
@@ -1368,13 +1363,10 @@ public partial class Viewport3DX : Control, IViewport3DX
             {
                 node.RaiseMouseUpEvent(this, pt.ToVector2(), currentHit, originalInputEventArgs);
             }
-            this.currentHit = null;
         }
 
-        if (this.currentHit is not null)
-        {
-            this.OnMouse3DUp?.Invoke(this, new MouseUp3DEventArgs(currentHit, pt, this, originalInputEventArgs));
-        }
+        this.OnMouse3DUp?.Invoke(this, new MouseUp3DEventArgs(currentHit, pt, this, originalInputEventArgs));
+        this.currentHit = null;
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

@@ -40,14 +40,28 @@ public sealed partial class MainWindow : Window
         MainVM.Target = this;
 
         viewport.OnMouse3DDown += Viewport_OnMouse3DDown;
+        viewport.OnMouse3DUp += Viewport_OnMouse3DUp;
+        viewport.OnMouse3DMove += Viewport_OnMouse3DMove;
     }
+
+    private bool didMouseMove = false;
 
     private void Viewport_OnMouse3DDown(object? sender, MouseDown3DEventArgs e)
     {
-        if (e.HitTestResult == null)
-        {
-            return;
-        }
+        didMouseMove = false;
+    }
+
+	private void Viewport_OnMouse3DMove(object? sender, MouseMove3DEventArgs e)
+	{
+		didMouseMove = true;
+	}
+
+	private void Viewport_OnMouse3DUp(object? sender, MouseUp3DEventArgs e)
+    {
+		if (didMouseMove || e.HitTestResult == null)
+		{
+			return;
+		}
         if (e.HitTestResult.ModelHit is SceneNode node && node.Tag is AttachedNodeViewModel vm)
         {
             vm.Selected = !vm.Selected;
