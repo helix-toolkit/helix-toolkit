@@ -66824,6 +66824,19 @@ references:
   isSpec: "True"
   fullName: HelixToolkit.SharpDX.EffectsManager.HasTechnique
   nameWithType: EffectsManager.HasTechnique
+- uid: HelixToolkit.SharpDX.EffectsManager.Initialize2DRendering
+  name: Initialize2DRendering
+  href: api/HelixToolkit.SharpDX.EffectsManager.html#HelixToolkit_SharpDX_EffectsManager_Initialize2DRendering
+  commentId: P:HelixToolkit.SharpDX.EffectsManager.Initialize2DRendering
+  fullName: HelixToolkit.SharpDX.EffectsManager.Initialize2DRendering
+  nameWithType: EffectsManager.Initialize2DRendering
+- uid: HelixToolkit.SharpDX.EffectsManager.Initialize2DRendering*
+  name: Initialize2DRendering
+  href: api/HelixToolkit.SharpDX.EffectsManager.html#HelixToolkit_SharpDX_EffectsManager_Initialize2DRendering_
+  commentId: Overload:HelixToolkit.SharpDX.EffectsManager.Initialize2DRendering
+  isSpec: "True"
+  fullName: HelixToolkit.SharpDX.EffectsManager.Initialize2DRendering
+  nameWithType: EffectsManager.Initialize2DRendering
 - uid: HelixToolkit.SharpDX.EffectsManager.Initialized
   name: Initialized
   href: api/HelixToolkit.SharpDX.EffectsManager.html#HelixToolkit_SharpDX_EffectsManager_Initialized
@@ -67062,6 +67075,19 @@ references:
   isSpec: "True"
   fullName: HelixToolkit.SharpDX.EffectsManagerConfiguration.EnableSoftwareRendering
   nameWithType: EffectsManagerConfiguration.EnableSoftwareRendering
+- uid: HelixToolkit.SharpDX.EffectsManagerConfiguration.Initialize2DRendering
+  name: Initialize2DRendering
+  href: api/HelixToolkit.SharpDX.EffectsManagerConfiguration.html#HelixToolkit_SharpDX_EffectsManagerConfiguration_Initialize2DRendering
+  commentId: P:HelixToolkit.SharpDX.EffectsManagerConfiguration.Initialize2DRendering
+  fullName: HelixToolkit.SharpDX.EffectsManagerConfiguration.Initialize2DRendering
+  nameWithType: EffectsManagerConfiguration.Initialize2DRendering
+- uid: HelixToolkit.SharpDX.EffectsManagerConfiguration.Initialize2DRendering*
+  name: Initialize2DRendering
+  href: api/HelixToolkit.SharpDX.EffectsManagerConfiguration.html#HelixToolkit_SharpDX_EffectsManagerConfiguration_Initialize2DRendering_
+  commentId: Overload:HelixToolkit.SharpDX.EffectsManagerConfiguration.Initialize2DRendering
+  isSpec: "True"
+  fullName: HelixToolkit.SharpDX.EffectsManagerConfiguration.Initialize2DRendering
+  nameWithType: EffectsManagerConfiguration.Initialize2DRendering
 - uid: HelixToolkit.SharpDX.EnumHelper
   name: EnumHelper
   href: api/HelixToolkit.SharpDX.EnumHelper.html
