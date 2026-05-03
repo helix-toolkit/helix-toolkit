@@ -253,6 +253,14 @@ public class EffectsManager : DisposeObject, IEffectsManager
         get;
     } = false;
     /// <summary>
+    /// 
+    /// </summary>
+    public bool Initialize2DRendering
+    {
+        get;
+    } = true;
+
+    /// <summary>
     /// Initializes a new instance of the <see cref="EffectsManager"/> class.
     /// </summary>
     public EffectsManager()
@@ -275,6 +283,7 @@ public class EffectsManager : DisposeObject, IEffectsManager
     public EffectsManager(EffectsManagerConfiguration configuration)
     {
         EnableSoftwareRendering = configuration.EnableSoftwareRendering;
+        Initialize2DRendering = configuration.Initialize2DRendering;
         Initialize(configuration.AdapterIndex);
     }
 
@@ -380,11 +389,14 @@ public class EffectsManager : DisposeObject, IEffectsManager
         factory2D = new global::SharpDX.Direct2D1.Factory1(global::SharpDX.Direct2D1.FactoryType.MultiThreaded);
         wicImgFactory = new global::SharpDX.WIC.ImagingFactory();
         directWriteFactory = new global::SharpDX.DirectWrite.Factory(global::SharpDX.DirectWrite.FactoryType.Shared);
-        using (var dxgiDevice2 = device.QueryInterface<global::SharpDX.DXGI.Device>())
+        if (Initialize2DRendering)
         {
-            device2D = new global::SharpDX.Direct2D1.Device(factory2D, dxgiDevice2);
-            deviceContext2D = new global::SharpDX.Direct2D1.DeviceContext(device2D,
-                global::SharpDX.Direct2D1.DeviceContextOptions.EnableMultithreadedOptimizations);
+            using (var dxgiDevice2 = device.QueryInterface<global::SharpDX.DXGI.Device>())
+            {
+                device2D = new global::SharpDX.Direct2D1.Device(factory2D, dxgiDevice2);
+                deviceContext2D = new global::SharpDX.Direct2D1.DeviceContext(device2D,
+                    global::SharpDX.Direct2D1.DeviceContextOptions.EnableMultithreadedOptimizations);
+            }
         }
         Initialized = true;
     }

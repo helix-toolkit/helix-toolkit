@@ -17,4 +17,15 @@ public sealed class EffectsManagerConfiguration
     {
         set; get;
     } = false;
+
+    /// <summary>
+    /// Initialize 2D Rendering.
+    /// </summary>
+    /// <remarks>
+    /// Must be disabled when debugging with RenderDoc, for example
+    /// </remarks>
+    public bool Initialize2DRendering
+    {
+        set; get;
+    } = true;
 }
