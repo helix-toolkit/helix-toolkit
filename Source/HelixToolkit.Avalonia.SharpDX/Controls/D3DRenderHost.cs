@@ -41,6 +41,9 @@ internal sealed class D3DRenderHost : DefaultRenderHost
         base.OnStartD3D();
         Initialize().Wait();
         _parent.PropertyChanged += ParentPropertyChanged;
+        // Start the render loop after initialization is complete.
+        // This ensures the first frame is queued even if Bounds have not changed.
+        QueueNextFrame();
     }
 
     protected override void OnEndingD3D()
@@ -51,6 +54,7 @@ internal sealed class D3DRenderHost : DefaultRenderHost
             FreeGraphicsResources();
         }
         _initialized = false;
+        _updateQueued = false; // Reset so QueueNextFrame can re-register on reattach.
         base.OnEndingD3D();
     }
 
@@ -58,7 +62,14 @@ internal sealed class D3DRenderHost : DefaultRenderHost
     {
         try
         {
-            var selfVisual = ElementComposition.GetElementVisual(_parent)!;
+            var selfVisual = ElementComposition.GetElementVisual(_parent);
+            if (selfVisual is null)
+            {
+                _info = "Parent visual is not attached to compositor";
+                _initialized = false;
+                return;
+            }
+
             _compositor = selfVisual.Compositor;
 
             Surface = _compositor.CreateDrawingSurface();
@@ -75,6 +86,7 @@ internal sealed class D3DRenderHost : DefaultRenderHost
         catch (Exception e)
         {
             _info = e.ToString();
+            _initialized = false;
         }
     }
 
@@ -138,7 +150,7 @@ internal sealed class D3DRenderHost : DefaultRenderHost
 
         if (EffectsManager is null || EffectsManager.Device is null)
         {
-            return (true, string.Empty);
+            return (false, "EffectsManager or Device is null");
         }
 
         _device = EffectsManager.Device;

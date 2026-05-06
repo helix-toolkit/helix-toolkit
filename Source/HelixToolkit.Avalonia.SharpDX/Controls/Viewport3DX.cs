@@ -1461,7 +1461,10 @@ public partial class Viewport3DX : TemplatedControl, IViewport3DX
         //    parentWindow.Closed -= ParentWindow_Closed;
         //}
 
-        Dispose();
+        // Do not dispose here. Detach from visual tree is handled by D3DDrawingSurfaceBase.OnDetachedFromVisualTree.
+        // Disposing here would destroy the render infrastructure and prevent reattachment (e.g., after TabControl tab switch).
+        // Only detach renderables; D3D resources will be released via EndD3D() when the surface is detached from visual tree.
+        Detach();
     }
 
     /// <summary>
