@@ -189,6 +189,10 @@ public abstract class GroupNodeBase : SceneNode
         }
         ItemsInternal.Clear();
         itemHashSet.Clear();
+        if (IsAttached)
+        {
+            InvalidateSceneGraph();
+        }
         Cleared?.Invoke(this, new OnChildNodeChangedArgs(null, Operation.Clear));
     }
     /// <summary>
@@ -207,6 +211,10 @@ public abstract class GroupNodeBase : SceneNode
             }
             ItemsInternal.Remove(node);
             node.Parent = null;
+            if (IsAttached)
+            {
+                InvalidateSceneGraph();
+            }
             ChildNodeRemoved?.Invoke(this, new OnChildNodeChangedArgs(node, Operation.Remove));
             return true;
         }
