@@ -72,7 +72,7 @@ internal static class FloatingPointArrayConverters
 
                 for (int i = length * floatCount; i < arrayCount; i++)
                 {
-                    *doubleData = *floatData;
+                    *doubleData = (double)*floatData;
                     floatData++;
                     doubleData++;
                 }
