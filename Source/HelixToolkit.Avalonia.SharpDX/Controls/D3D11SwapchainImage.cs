@@ -91,6 +91,15 @@ internal sealed class D3D11SwapchainImage
             LastPresent.Dispose();
         }
 
+        if (_imported is not null)
+        {
+            // Server-side dispose of the imported GPU image; Avalonia marshals this to
+            // the render thread. Leaving it to the GC would dispose GPU resources on
+            // the finalizer thread (AvaloniaUI/Avalonia#21865).
+            _ = _imported.DisposeAsync();
+            _imported = null;
+        }
+
         RenderTargetView.Dispose();
         _mutex.Dispose();
         _texture.Dispose();
