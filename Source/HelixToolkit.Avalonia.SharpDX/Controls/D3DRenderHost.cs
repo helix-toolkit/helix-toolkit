@@ -55,7 +55,32 @@ internal sealed class D3DRenderHost : DefaultRenderHost
         }
         _initialized = false;
         _updateQueued = false; // Reset so QueueNextFrame can re-register on reattach.
+        ReleaseCompositionResources();
         base.OnEndingD3D();
+    }
+
+    private void ReleaseCompositionResources()
+    {
+        if (!global::Avalonia.Threading.Dispatcher.UIThread.CheckAccess())
+        {
+            global::Avalonia.Threading.Dispatcher.UIThread.Post(ReleaseCompositionResources);
+            return;
+        }
+
+        // Deterministically tear down the composition objects instead of leaking them
+        // to the GC. A leaked CompositionDrawingSurface leaves its server-side surface
+        // snapshot to Avalonia's Ref<T> critical finalizer, which then performs GPU
+        // cleanup (context MakeCurrent + native SKImage dispose) on the .NET finalizer
+        // thread, racing the compositor render loop (AvaloniaUI/Avalonia#21865).
+        ElementComposition.SetElementChildVisual(_parent, null);
+        if (_visual is not null)
+        {
+            _visual.Surface = null;
+            _visual = null;
+        }
+        Surface?.Dispose();
+        Surface = null;
+        _compositor = null;
     }
 
     private async Task Initialize()
@@ -109,11 +134,11 @@ internal sealed class D3DRenderHost : DefaultRenderHost
     {
         _updateQueued = false;
         var root = _parent.GetVisualRoot();
-        if (root == null)
+        if (root == null || _visual is null)
             return;
 
         Rect bounds = _parent.Bounds;
-        _visual!.Size = new(bounds.Width, bounds.Height);
+        _visual.Size = new(bounds.Width, bounds.Height);
         //_pixelSize = PixelSize.FromSize(bounds.Size, root.RenderScaling);
         _pixelSize = PixelSize.FromSize(bounds.Size, 1.0);
         Resize(_pixelSize.Width, _pixelSize.Height);
