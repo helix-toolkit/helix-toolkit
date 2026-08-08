@@ -1154,31 +1154,57 @@ public abstract class DX11RenderHostBase : DisposeObject, IRenderHost
         ActualWidth = Math.Max(2, width * DpiScale);
         ActualHeight = Math.Max(2, height * DpiScale);
         logger.LogInformation("Resizing. Width = {0}; Height = {1};", width, height);
-        lock (lockObj)
+        try
         {
-            if (IsInitialized)
+            lock (lockObj)
             {
-                StopRendering();
-                var texture = renderBuffer?.Resize((int)Math.Floor(ActualWidth), (int)Math.Floor(ActualHeight));
-                if (texture is not null)
+                if (IsInitialized)
                 {
-                    OnNewRenderTargetTexture?.Invoke(this, new Texture2DArgs(texture));
-                }
-                if (Viewport != null)
-                {
-                    var overlay = Viewport.D2DRenderables.FirstOrDefault();
-                    if (overlay != null)
+                    StopRendering();
+                    var texture = renderBuffer?.Resize((int)Math.Floor(ActualWidth), (int)Math.Floor(ActualHeight));
+                    if (texture is not null)
                     {
-                        if (dpiChanged)
-                        {
-                            overlay.Detach();
-                            overlay.Attach(this);
-                        }
-                        overlay.InvalidateAll();
+                        OnNewRenderTargetTexture?.Invoke(this, new Texture2DArgs(texture));
                     }
+                    if (Viewport != null)
+                    {
+                        var overlay = Viewport.D2DRenderables.FirstOrDefault();
+                        if (overlay != null)
+                        {
+                            if (dpiChanged)
+                            {
+                                overlay.Detach();
+                                overlay.Attach(this);
+                            }
+                            overlay.InvalidateAll();
+                        }
+                    }
+                    StartRendering();
                 }
-                StartRendering();
             }
+        }
+        catch (SharpDXException ex)
+        {
+            var desc = ResultDescriptor.Find(ex.ResultCode);
+            if (desc == global::SharpDX.DXGI.ResultCode.DeviceRemoved || desc == global::SharpDX.DXGI.ResultCode.DeviceReset
+                || desc == global::SharpDX.DXGI.ResultCode.DeviceHung || desc == global::SharpDX.Direct2D1.ResultCode.RecreateTarget
+                || desc == global::SharpDX.DXGI.ResultCode.AccessLost)
+            {
+                logger.LogWarning("Device Lost during resize, code = {0}", desc.Code);
+                RenderBuffer_OnDeviceLost(RenderBuffer, EventArgs.Empty);
+            }
+            else
+            {
+                logger.LogError("DirectX Error during resize. Exception: {0}", ex);
+                EndD3D();
+                ExceptionOccurred?.Invoke(this, new RelayExceptionEventArgs(ex));
+            }
+        }
+        catch (Exception ex)
+        {
+            logger.LogError("Error during resize. Exception: {0}", ex);
+            EndD3D();
+            ExceptionOccurred?.Invoke(this, new RelayExceptionEventArgs(ex));
         }
     }
 
