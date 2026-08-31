@@ -1,7 +1,6 @@
 ﻿using SharpDX;
 using SharpDX.Mathematics.Interop;
 using System.Runtime.CompilerServices;
-using System.Windows.Media.Media3D;
 
 #if false
 #elif WINUI
@@ -261,20 +260,15 @@ public static class Media3DExtension
     public static Transform3D AppendTransform(this Transform3D t1, Transform3D t2)
     {
         var m = t1.Value;
-
         m.Append(t2.Value);
-
-
-        return new MatrixTransform3D(m);
+        return new System.Windows.Media.Media3D.MatrixTransform3D(m);
     }
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Transform3D PrependTransform(this Transform3D t1, Transform3D t2)
     {
         var m = t1.Value;
-
         m.Prepend(t2.Value);
-
-        return new MatrixTransform3D(m);
+        return new System.Windows.Media.Media3D.MatrixTransform3D(m);
     }
 #elif AVALONIA
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
