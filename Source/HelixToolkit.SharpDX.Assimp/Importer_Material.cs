@@ -121,7 +121,7 @@ public partial class Importer
         }
         if (material.HasNonTextureProperty(GLTFMatKeys.AI_MATKEY_GLTF_ROUGHNESS_FACTOR))
         {
-            pbr.RoughnessFactor = material.GetNonTextureProperty(GLTFMatKeys.AI_MATKEY_GLTF_METALLIC_FACTOR)
+            pbr.RoughnessFactor = material.GetNonTextureProperty(GLTFMatKeys.AI_MATKEY_GLTF_ROUGHNESS_FACTOR)
                 ?.GetFloatValue() ?? 0.0f;
         }
         else if (material.HasColorSpecular && material.HasShininess)
