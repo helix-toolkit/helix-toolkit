@@ -138,6 +138,7 @@ public partial class Importer : IDisposable
     {
         Configuration.EnableParallelProcessing = parallelLoad;
         Configuration.AssimpPostProcessSteps = postprocessSteps;
+        Configuration.AssimpPropertyConfig = configs;
         return Load(filePath);
     }
 
