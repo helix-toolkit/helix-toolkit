@@ -36,14 +36,17 @@ public partial class Importer
             if (posCount == 0)
             {
                 channel.PositionKeys.Add(new VectorKey(0, new Vector3()));
+                posCount = channel.PositionKeyCount;
             }
             if (rotCount == 0)
             {
-                channel.RotationKeys.Add(new QuaternionKey(0, new Quaternion()));
+                channel.RotationKeys.Add(new QuaternionKey(0, Quaternion.Identity));
+                rotCount = channel.RotationKeyCount;
             }
             if (scaleCount == 0)
             {
                 channel.ScalingKeys.Add(new VectorKey(0, new Vector3(1, 1, 1)));
+                scaleCount = channel.ScalingKeyCount;
             }
             int i = 0, j = 0, k = 0;
             double nextT1 = channel.PositionKeys[i].Time,
