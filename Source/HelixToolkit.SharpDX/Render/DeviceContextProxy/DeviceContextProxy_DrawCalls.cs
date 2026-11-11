@@ -97,7 +97,7 @@ public partial class DeviceContextProxy
     public void DrawIndexedInstanced(int indexCountPerInstance, int instanceCount, int startIndexLocation, int baseVertexLocation, int startInstanceLocation)
     {
         ++NumberOfDrawCalls;
-        deviceContext?.DrawIndexedInstanced(indexCountPerInstance, instanceCount, startIndexLocation, baseVertexLocation, startIndexLocation);
+        deviceContext?.DrawIndexedInstanced(indexCountPerInstance, instanceCount, startIndexLocation, baseVertexLocation, startInstanceLocation);
     }
 
     /// <summary>
