@@ -57,7 +57,6 @@ public sealed class ConstantBufferComponent : CoreComponent
                 modelConstBuffer = technique.ConstantBufferPool.Register(bufferDesc);
                 storage = technique.EffectsManager.StructArrayPool?.Register(bufferDesc.StructSize);
                 storageId = storage?.GetId() ?? 0;
-                storageId = storage?.GetId() ?? 0;
             }
             IsValid = bufferDesc != null && ModelConstBuffer != null;
         }
