@@ -512,7 +512,7 @@ namespace HelixToolkit.Maths
             Matrix.Invert(Transformation, out Matrix invTrans);
 
             Vector3Helper.TransformCoordinate(ref L1, ref invTrans, out Vector3 LB1);
-            Vector3Helper.TransformCoordinate(ref L1, ref invTrans, out Vector3 LB2);
+            Vector3Helper.TransformCoordinate(ref L2, ref invTrans, out Vector3 LB2);
 
             // Get line midpoint and extent
             Vector3 LMid = (LB1 + LB2) * 0.5f;
@@ -936,7 +936,7 @@ namespace HelixToolkit.Maths
         /// </returns>
         public readonly string ToString(string? format, IFormatProvider? formatProvider)
         {
-            return format == null && formatProvider == null 
+            return format == null && formatProvider == null
                 ? string.Empty
                 : format == null
                 ? ToString(formatProvider!)
