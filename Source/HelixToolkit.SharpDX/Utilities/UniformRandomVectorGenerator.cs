@@ -13,8 +13,8 @@ public class UniformRandomVectorGenerator : IRandomVector
         get
         {
             var x = random.NextFloat(MinVector.X, MaxVector.X);
-            var y = random.NextFloat(MinVector.Y, MaxVector.Z);
-            var z = random.NextFloat(MinVector.Y, MaxVector.Z);
+            var y = random.NextFloat(MinVector.Y, MaxVector.Y);
+            var z = random.NextFloat(MinVector.Z, MaxVector.Z);
             return new Vector3(x, y, z);
         }
     }
