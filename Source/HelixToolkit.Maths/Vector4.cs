@@ -526,7 +526,7 @@ namespace HelixToolkit.Maths
             if (MathSettings.EnableSIMD && Sse.IsSupported)
             {
                 Vector128<float> min128 = Vector128.Create(min.X, min.Y, min.Z, min.W);
-                Vector128<float> max128 = Vector128.Create(max.X, max.Y, max.Z, min.W);
+                Vector128<float> max128 = Vector128.Create(max.X, max.Y, max.Z, max.W);
                 Vector128<float> value128 = Vector128.Create(value.X, value.Y, value.Z, value.W);
                 value128 = Sse.Max(value128, min128);
                 value128 = Sse.Min(value128, max128);
