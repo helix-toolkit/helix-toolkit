@@ -112,7 +112,8 @@ namespace HelixToolkit.UWP
                                 if (currTechnique != node.EffectTechnique)
                                 {
                                     currTechnique = node.EffectTechnique;
-                                    ssaoPass1 = currTechnique[DefaultPassNames.MeshSSAOPass];
+                                    // A node without an effect technique (for example one that was just detached) has no SSAO pass.
+                                    ssaoPass1 = currTechnique?[DefaultPassNames.MeshSSAOPass] ?? ShaderPass.NullPass;
                                 }
                                 if (ssaoPass1.IsNULL)
                                 {
