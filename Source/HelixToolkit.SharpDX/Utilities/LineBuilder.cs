@@ -433,7 +433,7 @@ public class LineBuilder
     /// <param name="tp"></param>
     /// <param name="sc"></param>
     /// <param name="tc"></param>
-    /// <param name="sIsRay"></param>
+    /// <param name="sIsRay">True when s is a ray: it starts at <paramref name="s0"/> and goes on past <paramref name="s1"/> without end.</param>
     /// <returns></returns>
     public static float GetLineToLineDistance(
         Vector3 s0, Vector3 s1, Vector3 t0, Vector3 t1, out Vector3 sp, out Vector3 tp, out float sc, out float tc, bool sIsRay = false)
@@ -466,22 +466,19 @@ public class LineBuilder
             sN = (b * e - c * d);
             tN = (a * e - b * d);
 
-            if (!sIsRay)
+            if (sN < 0.0f)
             {
-                if (sN < 0.0f)
-                {
-                    // sc < 0 => the s=0 edge is visible
-                    sN = 0.0f;
-                    tN = e;
-                    tD = c;
-                }
-                else if (sN > sD)
-                {
-                    // sc > 1  => the s=1 edge is visible
-                    sN = sD;
-                    tN = e + b;
-                    tD = c;
-                }
+                // sc < 0 => the s=0 edge is visible (also the start of a ray)
+                sN = 0.0f;
+                tN = e;
+                tD = c;
+            }
+            else if (!sIsRay && sN > sD)
+            {
+                // sc > 1  => the s=1 edge is visible (a ray has no end)
+                sN = sD;
+                tN = e + b;
+                tD = c;
             }
         }
 
@@ -494,7 +491,7 @@ public class LineBuilder
             {
                 sN = 0.0f;
             }
-            else if (-d > a)
+            else if (!sIsRay && -d > a)
             {
                 sN = sD;
             }
@@ -513,7 +510,7 @@ public class LineBuilder
             {
                 sN = 0;
             }
-            else if ((-d + b) > a)
+            else if (!sIsRay && (-d + b) > a)
             {
                 sN = sD;
             }
